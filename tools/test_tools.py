@@ -869,5 +869,51 @@ class TestPatchImageSnippets(unittest.TestCase):
             self.assertEqual(dupes, set(), "%s redeclares %s" % (label, sorted(dupes)))
 
 
+class TestPatchAnchorNormalisation(unittest.TestCase):
+    """The anchor normaliser, exercised through the patterns actually shipped.
+
+    There is no browser here, so the JS cannot be run — but the regexes can be
+    lifted out of the emitted snippet and applied with Python's `re`, which has
+    the same semantics for these three character classes. That keeps the test
+    honest: it fails if someone edits the pattern in medium_patch, not if
+    someone edits a copy of it in the test.
+    """
+
+    def norm(self, text):
+        rules = re.findall(r"\.replace\(/(.+?)/g, '(.*?)'\)", medium_patch.NORMALISE)
+        # Deliberately not a count assertion: the rules may be merged or split
+        # without changing behaviour, and pinning the number would make every
+        # test here fail on the guard instead of on what it actually checks.
+        self.assertTrue(rules, "no replace() rules found in NORMALISE")
+        for pattern, repl in rules:
+            text = re.sub(pattern.encode().decode("unicode_escape"),
+                          repl.encode().decode("unicode_escape"), text)
+        return text.strip()
+
+    def test_hair_spaced_em_dash_matches_an_anchor_written_with_spaces(self):
+        # The real miss: Medium renders "A — B" as "A<hair>—<hair>B" with no
+        # ordinary spaces, so an anchor copied from article.md found nothing.
+        rendered = "Stack Overflow\u200a\u2014\u200aAgents on a leash"
+        authored = "Stack Overflow \u2014 Agents on a leash"
+        self.assertEqual(self.norm(rendered), self.norm(authored))
+
+    def test_double_em_dash_in_a_title_also_lines_up(self):
+        rendered = "Harness \u200a\u2014\u200a \u200a\u2014\u200a \u628a\u7cfb\u7d71"
+        authored = "Harness\u2014\u2014\u628a\u7cfb\u7d71"
+        self.assertEqual(self.norm(rendered), self.norm(authored))
+
+    def test_nbsp_and_bom_do_not_defeat_an_anchor(self):
+        self.assertEqual(self.norm("\ufeffAGENTS.md\u00a0\uff1a\u5beb\u5c0d"),
+                         self.norm("AGENTS.md\uff1a\u5beb\u5c0d"))
+
+    def test_ordinary_word_spacing_is_still_significant(self):
+        # Collapsing runs is fine; deleting spaces entirely would make anchors
+        # match text that does not actually read the same.
+        self.assertNotEqual(self.norm("make test FILTER"), self.norm("maketestFILTER"))
+
+    def test_runs_of_whitespace_collapse_to_one(self):
+        self.assertEqual(self.norm("a\n\n  b"), self.norm("a b"))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

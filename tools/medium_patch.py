@@ -42,8 +42,14 @@ EDITOR = ".postArticle-content"
 # Escapes, not the literal characters: they are invisible in an editor, so a
 # stray edit to the class would silently change what every anchor matches.
 # Same set verify_draft.py folds away (hair space, thin space, BOM, NBSP).
+#
+# Spacing around an em dash goes too, for the same reason verify_draft.py does
+# it. Medium renders `A — B` as `A<hair>—<hair>B` with no ordinary spaces, so
+# dropping the hair spaces alone leaves `A—B` in the editor against `A — B` in
+# an anchor copied from article.md, and the anchor silently matches nothing.
 NORMALISE = r"""
   const norm = s => s.replace(/[\u200A\u2009\uFEFF\u00A0]/g, '')
+                     .replace(/[ \t]*\u2014[ \t]*/g, '\u2014')
                      .replace(/\s+/g, ' ').trim();
 """
 
