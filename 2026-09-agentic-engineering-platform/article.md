@@ -484,6 +484,17 @@ production correctness
 
 ---
 
+### 本系列文章
+
+本文是「Agentic Engineering 三部曲」的總論，三篇深掘分別把組織、技術、營運講到可以直接開工的深度：
+
+1. **總論（本篇）**：市場現況、DevOps 對照、決策框架與前 90 天藍圖
+2. [一、組織篇：誰來做？Platform + Federation 的組織設計實務](../2026-09-agentic-org-design/article.md)——編制、champion 制度、整併決策、預算敘事
+3. [二、技術篇：Harness 藍圖——把系統變成 agent 讀得懂的地方](../2026-10-agentic-harness-blueprint/article.md)——AGENTS.md 三層架構、MCP gateway、sandbox、brownfield playbook
+4. [三、營運篇：Eval、單位經濟與規模化——把 agent 當產品營運](../2026-11-agentic-eval-economics/article.md)——eval pipeline、成本模型、指標反作弊、scaling gates
+
+---
+
 ### References
 
 1. OpenAI — [Harness engineering: leveraging Codex in an agent-first world](https://openai.com/index/harness-engineering/)
