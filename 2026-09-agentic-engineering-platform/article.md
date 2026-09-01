@@ -506,4 +506,10 @@ production correctness
 
 ---
 
+### AI 協作說明
+
+本文由筆者提出初步構想與章節架構，文字撰寫由 AI（Claude）協作完成，再經筆者逐節校閱與修訂後定稿。文中觀點與判斷為筆者所持，文責亦由筆者自負。
+
+---
+
 *本文發表於 [Medium @fantasybz](https://medium.com/@fantasybz)。若你也在建立組織的 Agentic Engineering 能力，歡迎交流。*
