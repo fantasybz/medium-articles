@@ -1,18 +1,24 @@
 <!--
 Medium 發布指南（此註解區塊不要貼進 Medium）
-1. 開新 story：https://medium.com/new-story
-2. 全文複製下方內容貼上（從標題那行開始）。
-3. 看到 📌【在此插入…】的行：刪掉該行，按 + 插入 images/ 裡對應的 PNG。
-4. 系列連結：發布後把「系列文章」段的 GitHub 相對連結換成各篇的 Medium URL。
-5. code block：在 Medium 選取後按 ``` 轉成 code block。
-6. Add tags 建議：AI, Software Engineering, Engineering Management, Agentic AI, DevOps
+
+【四篇同時發布，建議流程】
+1. 依序開四則 story（總論 → 組織篇 → 技術篇 → 營運篇）：https://medium.com/new-story
+2. 各篇貼上對應的 medium-paste.md 內容（從標題那行開始，不含本註解）。
+3. 看到 📌【在此插入…】的行：刪掉該行，按 + 插入同目錄 images/ 裡對應的 PNG。
+4. 四篇都存成草稿後，記下各篇的 Medium URL。
+5. 回頭編輯每一篇，把兩處的系列連結換成真正的 Medium URL：
+   (a) 開頭的「系列導覽」那一行
+   (b) 文末的「系列文章」清單
+   （貼上版裡這些連結是 GitHub 相對路徑，在 Medium 上無效，務必替換）
+6. code block：在 Medium 選取後按 ``` 轉成 code block。
+7. 四篇一起 Publish。Tags 建議：AI, Software Engineering, Engineering Management, Agentic AI, DevOps
 -->
 
 # Agentic Engineering 三部曲（二）：Harness 藍圖——把系統變成 agent 讀得懂的地方
 
 > **TL;DR** — 三部曲第二篇，寫給要動手蓋的人。核心論點：agent 產出品質的上限不在 model，在你的 harness——context、tools、environment、feedback、guardrails 這五層的品質。本篇給出每一層的 reference implementation：AGENTS.md 的三層架構與防腐機制、MCP gateway 的最小可行設計、sandbox 選型、feedback loop 的 legibility checklist，以及 brownfield 系統的三階段改造 playbook。目標是 Staff engineer 讀完可以直接開工。
 
-> 系列導覽：[總論](../2026-09-agentic-engineering-platform/article.md) → [一、組織篇](../2026-09-agentic-org-design/article.md) → **二、技術篇（本篇）** → 三、營運篇
+> 系列導覽：[總論](../2026-09-agentic-engineering-platform/article.md) → [一、組織篇](../2026-09-agentic-org-design/article.md) → **二、技術篇（本篇）** → [三、營運篇](../2026-11-agentic-eval-economics/article.md)
 
 ---
 
@@ -38,10 +44,10 @@ Prompt 只是 context 層裡的一小片。這也是為什麼業界的用語從 
 
 寫作原則只有兩條：
 
-1. **每一行都要回答「agent 最可能在哪裡做錯」**。描述性內容（這是一個電商後端專案……）是雜訊；指令性內容（怎麼驗證、哪裡不能碰、什麼指令跑什麼）才是 context。
+1. **每一行都要回答「agent 最可能在哪裡做錯」**。描述性內容是雜訊；指令性內容（怎麼驗證、哪裡不能碰、什麼指令跑什麼）才是 context。
 2. **Repo 層壓在 100 行以內**。Context window 不是瓶頸，注意力才是——什麼都寫，等於什麼都沒寫。
 
-一段合格的 repo 層長這樣（每行都對應一種真實犯過的錯）：
+總論給了好壞對照，這裡給可以直接抄的完整版——一段合格的 repo 層長這樣（每行都對應一種真實犯過的錯）：
 
 ```markdown
 ## Build & Test
@@ -59,7 +65,7 @@ Prompt 只是 context 層裡的一小片。這也是為什麼業界的用語從 
 
 ### 防止文件墳場的兩個機制
 
-組織篇講過 AGENTS.md 淪為文件墳場是四大失敗模式之一。技術上的解法有兩個：
+總論點名的四大失敗模式之一，就是 AGENTS.md 淪為文件墳場：每個 repo 都寫了，卻沒有人負責維護、沒有 eval 驗證它是否真的改善 agent 產出。技術上的解法有兩個：
 
 **機制一：鮮度 CI check**。AGENTS.md 裡提到的指令，在 CI 裡實際執行一次——指令失效，PR 直接擋下。文件跟著 code 一起腐爛的老問題，用 CI 解：
 
@@ -187,7 +193,7 @@ Harness 蓋好之後，下一個問題是：你怎麼知道它有沒有用、值
 1. [總論：別急著打造你的 Devin](../2026-09-agentic-engineering-platform/article.md)
 2. [一、組織篇：誰來做？Platform + Federation 的組織設計實務](../2026-09-agentic-org-design/article.md)
 3. **二、技術篇（本篇）**
-4. 三、營運篇：Eval、單位經濟與規模化（即將發布）
+4. [三、營運篇：Eval、單位經濟與規模化——把 agent 當產品營運](../2026-11-agentic-eval-economics/article.md)
 
 ---
 

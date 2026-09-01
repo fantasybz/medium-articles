@@ -2,6 +2,8 @@
 
 > **TL;DR** — 多數 Engineering Group 不需要成立一個「幫各 Team 做 Agent」的 silo，但很值得成立一個小型的 **Agentic Engineering Platform / Enablement Team**。而且不要從零打造完整的 agent runtime：正確策略是「**買/採用通用 agent runtime，自建 organization-specific harness layer**」。如果用 DevOps 的歷史對照，2026 年 9 月的 Agentic Engineering，大約等於 DevOps / Cloud Native 的 2014–2016 年：方向已經確定，基礎元件開始出現，但最佳實務與組織架構還沒定型。文末附上前 90 天的行動藍圖。
 
+> 系列導覽：**總論（本篇）** → [一、組織篇](../2026-09-agentic-org-design/article.md) → [二、技術篇](../2026-10-agentic-harness-blueprint/article.md) → [三、營運篇](../2026-11-agentic-eval-economics/article.md)
+
 ---
 
 ## 一、每個 Engineering VP 都在問的問題
@@ -195,11 +197,11 @@ Ownership 的切分如下：
 | Engineering 規模 | 建議 |
 |---:|---|
 | < 30 人 | 不成立 Team；1–2 位 champions |
-| 30–100 人 | 2–4 人的 Agentic Enablement Pod |
+| 30–100 人 | 仍不編專職：2 位 champions（各 20%）+ 1 位 sponsor；champions 過載才開 2–4 人的 Enablement Pod |
 | 100–500 人 | **4–8 人的 permanent Agentic Platform Team** |
-| > 500 人 | Agent Platform + Eval + Security 專業分工 |
+| > 500 人 | Agent Platform + Eval + Security 專業分工（8–12 人起跳） |
 
-即使超過 500 人，我也不會讓中央 Team 負責「替大家做 agents」。
+即使超過 500 人，我也不會讓中央 Team 負責「替大家做 agents」。每一級的實際編制圖、skill mix，以及「什麼時候該升到下一級」的訊號，見[組織篇](../2026-09-agentic-org-design/article.md)。
 
 還有一個常被跳過的問題：**champion 怎麼選、人怎麼轉型**。好的 agent champion 不是「最會寫 prompt 的人」，而是原本就擅長經營 developer experience 的人——會寫測試、會整理文件、對 CI/CD 與 tooling 有 sense 的工程師。因為 harness engineering 本質上就是 DX engineering 的延伸，對象從人換成了 agent 而已。
 
@@ -248,23 +250,20 @@ mindmap
 
 **Prompt 反而可能是其中最不重要的一小塊。**這也是為什麼業界最近開始講 Harness Engineering，而不再是 Prompt Engineering。
 
-### 一段具體的 AGENTS.md
+### AGENTS.md：寫對與寫錯的差別
 
-「Context」那一支值得給一個具體的樣子。好的 AGENTS.md 不是專案簡介，而是寫給 agent 的 operating manual——每一行都在回答「agent 最可能在哪裡做錯」：
+「Context」那一支值得給一個具體的樣子。好的 AGENTS.md 不是專案簡介，而是寫給 agent 的 operating manual——它存在的目的不是介紹，是預防：
 
-```markdown
-## Build & Test
-- 跑單元測試：`make test`（改動後必跑；CI 只是最後防線）
+```text
+# 寫錯了：描述現況
+本專案是訂單系統，使用 Go 與 PostgreSQL，採用 clean architecture。
+
+# 寫對了：預防犯錯
 - 只跑受影響的測試：`make test FILTER=<path>`——全量測試很慢，別預設跑全量
-
-## Conventions
-- API handler 一律走 `internal/api/` 的 pattern，不要直接在 router 寫邏輯
-- DB migration 用 `make migration name=<snake_case>` 產生，禁止手寫 SQL 檔名
-
-## Boundaries
 - `legacy/` 目錄唯讀：只能呼叫，不能修改——要改，先開 issue 給 @platform-team
-- 任何跨 service 的 schema 變更，必須先更新 `contracts/` 並跑過 contract tests
 ```
+
+上面那段每一句都是真的，但 agent 讀完之後，能做的事一件也沒有多。下面那段每一行都對應一種真實犯過的錯。
 
 判斷品質的標準只有一個：**新來的 agent（或新來的工程師）拿著它，第一天能不能不問人，就交出第一個正確的 PR。**
 
@@ -484,7 +483,7 @@ production correctness
 
 ---
 
-### 本系列文章
+### 系列文章
 
 本文是「Agentic Engineering 三部曲」的總論，三篇深掘分別把組織、技術、營運講到可以直接開工的深度：
 

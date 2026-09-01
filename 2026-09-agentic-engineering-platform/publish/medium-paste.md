@@ -1,17 +1,24 @@
 <!--
 Medium 發布指南（此註解區塊不要貼進 Medium）
-1. 開新 story：https://medium.com/new-story
-2. 全文複製下方內容貼上（從標題那行開始）。
-3. 看到 📌【在此插入…】的行：刪掉該行，按 + 插入對應的 PNG（zip 內附）。
-4. 圖片下方可加 caption（圖檔對應段落主題）。
-5. AGENTS.md 範例與 North Star 公式那兩段：在 Medium 中選取後按 ``` 轉成 code block。
-6. 引號連結都已是行內 markdown，Medium 貼上後自動轉連結；若沒有，選取文字按 ⌘K 補上。
-7. 發布前：Add tags 建議 AI, Software Engineering, Engineering Management, Agentic AI, DevOps
+
+【四篇同時發布，建議流程】
+1. 依序開四則 story（總論 → 組織篇 → 技術篇 → 營運篇）：https://medium.com/new-story
+2. 各篇貼上對應的 medium-paste.md 內容（從標題那行開始，不含本註解）。
+3. 看到 📌【在此插入…】的行：刪掉該行，按 + 插入同目錄 images/ 裡對應的 PNG。
+4. 四篇都存成草稿後，記下各篇的 Medium URL。
+5. 回頭編輯每一篇，把兩處的系列連結換成真正的 Medium URL：
+   (a) 開頭的「系列導覽」那一行
+   (b) 文末的「系列文章」清單
+   （貼上版裡這些連結是 GitHub 相對路徑，在 Medium 上無效，務必替換）
+6. code block：在 Medium 選取後按 ``` 轉成 code block。
+7. 四篇一起 Publish。Tags 建議：AI, Software Engineering, Engineering Management, Agentic AI, DevOps
 -->
 
 # 別急著打造你的 Devin：Agentic Engineering 的組織策略與 90 天行動藍圖
 
 > **TL;DR** — 多數 Engineering Group 不需要成立一個「幫各 Team 做 Agent」的 silo，但很值得成立一個小型的 **Agentic Engineering Platform / Enablement Team**。而且不要從零打造完整的 agent runtime：正確策略是「**買/採用通用 agent runtime，自建 organization-specific harness layer**」。如果用 DevOps 的歷史對照，2026 年 9 月的 Agentic Engineering，大約等於 DevOps / Cloud Native 的 2014–2016 年：方向已經確定，基礎元件開始出現，但最佳實務與組織架構還沒定型。文末附上前 90 天的行動藍圖。
+
+> 系列導覽：**總論（本篇）** → [一、組織篇](../2026-09-agentic-org-design/article.md) → [二、技術篇](../2026-10-agentic-harness-blueprint/article.md) → [三、營運篇](../2026-11-agentic-eval-economics/article.md)
 
 ---
 
@@ -126,7 +133,7 @@ Ownership 的切分如下：
 
 📌【在此插入表 table-04.png】
 
-即使超過 500 人，我也不會讓中央 Team 負責「替大家做 agents」。
+即使超過 500 人，我也不會讓中央 Team 負責「替大家做 agents」。每一級的實際編制圖、skill mix，以及「什麼時候該升到下一級」的訊號，見[組織篇](../2026-09-agentic-org-design/article.md)。
 
 還有一個常被跳過的問題：**champion 怎麼選、人怎麼轉型**。好的 agent champion 不是「最會寫 prompt 的人」，而是原本就擅長經營 developer experience 的人——會寫測試、會整理文件、對 CI/CD 與 tooling 有 sense 的工程師。因為 harness engineering 本質上就是 DX engineering 的延伸，對象從人換成了 agent 而已。
 
@@ -142,23 +149,20 @@ Ownership 的切分如下：
 
 **Prompt 反而可能是其中最不重要的一小塊。**這也是為什麼業界最近開始講 Harness Engineering，而不再是 Prompt Engineering。
 
-### 一段具體的 AGENTS.md
+### AGENTS.md：寫對與寫錯的差別
 
-「Context」那一支值得給一個具體的樣子。好的 AGENTS.md 不是專案簡介，而是寫給 agent 的 operating manual——每一行都在回答「agent 最可能在哪裡做錯」：
+「Context」那一支值得給一個具體的樣子。好的 AGENTS.md 不是專案簡介，而是寫給 agent 的 operating manual——它存在的目的不是介紹，是預防：
 
-```markdown
-## Build & Test
-- 跑單元測試：`make test`（改動後必跑；CI 只是最後防線）
+```text
+# 寫錯了：描述現況
+本專案是訂單系統，使用 Go 與 PostgreSQL，採用 clean architecture。
+
+# 寫對了：預防犯錯
 - 只跑受影響的測試：`make test FILTER=<path>`——全量測試很慢，別預設跑全量
-
-## Conventions
-- API handler 一律走 `internal/api/` 的 pattern，不要直接在 router 寫邏輯
-- DB migration 用 `make migration name=<snake_case>` 產生，禁止手寫 SQL 檔名
-
-## Boundaries
 - `legacy/` 目錄唯讀：只能呼叫，不能修改——要改，先開 issue 給 @platform-team
-- 任何跨 service 的 schema 變更，必須先更新 `contracts/` 並跑過 contract tests
 ```
+
+上面那段每一句都是真的，但 agent 讀完之後，能做的事一件也沒有多。下面那段每一行都對應一種真實犯過的錯。
 
 判斷品質的標準只有一個：**新來的 agent（或新來的工程師）拿著它，第一天能不能不問人，就交出第一個正確的 PR。**
 
@@ -288,6 +292,17 @@ production correctness
 > **讓任何 agent 都能在你的 Engineering System 裡工作得很好。**
 
 這會是比押注 Codex、Claude Code、Copilot 或 Devin 哪一家勝出，更長期的資產。
+
+---
+
+### 系列文章
+
+本文是「Agentic Engineering 三部曲」的總論，三篇深掘分別把組織、技術、營運講到可以直接開工的深度：
+
+1. **總論（本篇）**：市場現況、DevOps 對照、決策框架與前 90 天藍圖
+2. [一、組織篇：誰來做？Platform + Federation 的組織設計實務](../2026-09-agentic-org-design/article.md)——編制、champion 制度、整併決策、預算敘事
+3. [二、技術篇：Harness 藍圖——把系統變成 agent 讀得懂的地方](../2026-10-agentic-harness-blueprint/article.md)——AGENTS.md 三層架構、MCP gateway、sandbox、brownfield playbook
+4. [三、營運篇：Eval、單位經濟與規模化——把 agent 當產品營運](../2026-11-agentic-eval-economics/article.md)——eval pipeline、成本模型、指標反作弊、scaling gates
 
 ---
 

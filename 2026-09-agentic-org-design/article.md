@@ -2,7 +2,7 @@
 
 > **TL;DR** — 這是[《別急著打造你的 Devin》](../2026-09-agentic-engineering-platform/article.md)的第一篇深掘。總論的結論是：不要成立中央 Agent Team，要成立小型的 Agentic Platform Team。這一篇把「怎麼組」講到可以直接拿去開編制會議的程度：三種規模的實際編制、champion 制度的選拔與考核、與現有 DevEx / SRE 的整併決策，以及向 CFO 提案時的預算敘事。
 
-> 系列導覽：[總論](../2026-09-agentic-engineering-platform/article.md) → **一、組織篇（本篇）** → 二、技術篇 → 三、營運篇
+> 系列導覽：[總論](../2026-09-agentic-engineering-platform/article.md) → **一、組織篇（本篇）** → [二、技術篇](../2026-10-agentic-harness-blueprint/article.md) → [三、營運篇](../2026-11-agentic-eval-economics/article.md)
 
 ---
 
@@ -143,7 +143,7 @@ SRE 的角色也一樣：agent observability 直接復用 SRE 的 o11y stack（t
 
 ---
 
-## 六、預算與提案:向 CFO 說什麼
+## 六、預算與提案：向 CFO 說什麼
 
 預算分三個 bucket，第三個最常被漏列：
 
@@ -191,8 +191,8 @@ SRE 的角色也一樣：agent observability 直接復用 SRE 的 o11y stack（t
 
 1. [總論：別急著打造你的 Devin](../2026-09-agentic-engineering-platform/article.md)
 2. **一、組織篇（本篇）**
-3. 二、技術篇：Harness 藍圖（即將發布）
-4. 三、營運篇：Eval、單位經濟與規模化（即將發布）
+3. [二、技術篇：Harness 藍圖——把系統變成 agent 讀得懂的地方](../2026-10-agentic-harness-blueprint/article.md)
+4. [三、營運篇：Eval、單位經濟與規模化——把 agent 當產品營運](../2026-11-agentic-eval-economics/article.md)
 
 ---
 

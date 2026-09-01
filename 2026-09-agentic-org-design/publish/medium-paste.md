@@ -1,18 +1,24 @@
 <!--
 Medium 發布指南（此註解區塊不要貼進 Medium）
-1. 開新 story：https://medium.com/new-story
-2. 全文複製下方內容貼上（從標題那行開始）。
-3. 看到 📌【在此插入…】的行：刪掉該行，按 + 插入 images/ 裡對應的 PNG。
-4. 系列連結：發布後把「系列文章」段的 GitHub 相對連結換成各篇的 Medium URL。
-5. code block：在 Medium 選取後按 ``` 轉成 code block。
-6. Add tags 建議：AI, Software Engineering, Engineering Management, Agentic AI, DevOps
+
+【四篇同時發布，建議流程】
+1. 依序開四則 story（總論 → 組織篇 → 技術篇 → 營運篇）：https://medium.com/new-story
+2. 各篇貼上對應的 medium-paste.md 內容（從標題那行開始，不含本註解）。
+3. 看到 📌【在此插入…】的行：刪掉該行，按 + 插入同目錄 images/ 裡對應的 PNG。
+4. 四篇都存成草稿後，記下各篇的 Medium URL。
+5. 回頭編輯每一篇，把兩處的系列連結換成真正的 Medium URL：
+   (a) 開頭的「系列導覽」那一行
+   (b) 文末的「系列文章」清單
+   （貼上版裡這些連結是 GitHub 相對路徑，在 Medium 上無效，務必替換）
+6. code block：在 Medium 選取後按 ``` 轉成 code block。
+7. 四篇一起 Publish。Tags 建議：AI, Software Engineering, Engineering Management, Agentic AI, DevOps
 -->
 
 # Agentic Engineering 三部曲（一）：誰來做？Platform + Federation 的組織設計實務
 
 > **TL;DR** — 這是[《別急著打造你的 Devin》](../2026-09-agentic-engineering-platform/article.md)的第一篇深掘。總論的結論是：不要成立中央 Agent Team，要成立小型的 Agentic Platform Team。這一篇把「怎麼組」講到可以直接拿去開編制會議的程度：三種規模的實際編制、champion 制度的選拔與考核、與現有 DevEx / SRE 的整併決策，以及向 CFO 提案時的預算敘事。
 
-> 系列導覽：[總論](../2026-09-agentic-engineering-platform/article.md) → **一、組織篇（本篇）** → 二、技術篇 → 三、營運篇
+> 系列導覽：[總論](../2026-09-agentic-engineering-platform/article.md) → **一、組織篇（本篇）** → [二、技術篇](../2026-10-agentic-harness-blueprint/article.md) → [三、營運篇](../2026-11-agentic-eval-economics/article.md)
 
 ---
 
@@ -98,7 +104,7 @@ SRE 的角色也一樣：agent observability 直接復用 SRE 的 o11y stack（t
 
 ---
 
-## 六、預算與提案:向 CFO 說什麼
+## 六、預算與提案：向 CFO 說什麼
 
 預算分三個 bucket，第三個最常被漏列：
 
@@ -142,8 +148,8 @@ SRE 的角色也一樣：agent observability 直接復用 SRE 的 o11y stack（t
 
 1. [總論：別急著打造你的 Devin](../2026-09-agentic-engineering-platform/article.md)
 2. **一、組織篇（本篇）**
-3. 二、技術篇：Harness 藍圖（即將發布）
-4. 三、營運篇：Eval、單位經濟與規模化（即將發布）
+3. [二、技術篇：Harness 藍圖——把系統變成 agent 讀得懂的地方](../2026-10-agentic-harness-blueprint/article.md)
+4. [三、營運篇：Eval、單位經濟與規模化——把 agent 當產品營運](../2026-11-agentic-eval-economics/article.md)
 
 ---
 
