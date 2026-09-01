@@ -15,6 +15,9 @@ Medium 草稿：標題、內文、所有插圖，並在結束前逐塊比對確�
 跑完會印出草稿網址。**它刻意不設 tag、不選封面圖、不發布**——那三件事需要人看過再決定，
 而且發布會寄信給所有訂閱者且無法收回。
 
+一次要發多篇時先看下面的〈發文數量上限〉：Medium 限制同一作者 24 小時內最多
+**發布或排程 2 篇**，超過的那幾篇連草稿都建好了也送不出去。
+
 前置需求：macOS（要用 `security` 讀 Keychain、`openssl` 解密）、`python3`、Chrome 已登入 Medium、gstack 的 `browse`。
 
 ---
@@ -89,6 +92,27 @@ cookie 值貼進 repo。**
 
 順序因此天然正確：figure 落在它原本 📌 標記的位置，最後再由 `verify_draft.py`
 用 graf index 驗一次。
+
+---
+
+## 發文數量上限
+
+Medium 限制同一作者 **24 小時內最多發布或排程 2 篇**。撞到時 Publish 對話框會出現：
+
+> The author of this story has published or scheduled the maximum of two stories
+> in the past 24 hours. Please try to publish or schedule again in 24 hours.
+
+幾件實測過的事：
+
+- **排程不是繞道**。錯誤訊息裡的「or schedule」是認真的：把日期改成明天再按
+  Schedule to publish，一樣被同一個計數器擋下來。三篇沒辦法在今晚一次排完。
+- 撞到之後 Publish 與 Schedule 兩顆按鈕會變成 disabled，**重新整理才會恢復**，
+  不然會誤以為是 UI 壞了。
+- 計數器算的是「過去 24 小時」的滑動視窗，不是自然日。所以第三篇要等的是
+  **最早那篇發布時間的 24 小時之後**，不是等到隔天午夜。
+- 草稿本身不受限：內容、topics、封面圖都可以先設好放著，之後只差按 Publish。
+
+因此一個系列要連續發布時，最省事的排法是**一天一篇**。
 
 ---
 
