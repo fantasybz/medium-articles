@@ -4,9 +4,9 @@ Medium articles by [@fantasybz](https://medium.com/@fantasybz) — long-form pos
 
 ## Articles
 
-| 日期 | 文章 | Medium |
-|---|---|---|
-| 2026-09 | [別急著打造你的 Devin：Agentic Engineering 的組織策略與 90 天行動藍圖](2026-09-agentic-engineering-platform/article.md) | [已發布](https://fantasybz.medium.com/%E5%88%A5%E6%80%A5%E8%91%97%E6%89%93%E9%80%A0%E4%BD%A0%E7%9A%84-devin-agentic-engineering-%E7%9A%84%E7%B5%84%E7%B9%94%E7%AD%96%E7%95%A5%E8%88%87-90-%E5%A4%A9%E8%A1%8C%E5%8B%95%E8%97%8D%E5%9C%96-7342ababc417) |
+| 日期 | 文章 | Medium | 發布紀錄 |
+|---|---|---|---|
+| 2026-09 | [別急著打造你的 Devin：Agentic Engineering 的組織策略與 90 天行動藍圖](2026-09-agentic-engineering-platform/article.md) | [已發布](https://fantasybz.medium.com/%E5%88%A5%E6%80%A5%E8%91%97%E6%89%93%E9%80%A0%E4%BD%A0%E7%9A%84-devin-agentic-engineering-%E7%9A%84%E7%B5%84%E7%B9%94%E7%AD%96%E7%95%A5%E8%88%87-90-%E5%A4%A9%E8%A1%8C%E5%8B%95%E8%97%8D%E5%9C%96-7342ababc417) | [PUBLISHED.md](2026-09-agentic-engineering-platform/publish/PUBLISHED.md) |
 
 ## Structure
 

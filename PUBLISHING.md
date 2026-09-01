@@ -15,7 +15,7 @@ Medium 草稿：標題、內文、所有插圖，並在結束前逐塊比對確�
 跑完會印出草稿網址。**它刻意不設 tag、不選封面圖、不發布**——那三件事需要人看過再決定，
 而且發布會寄信給所有訂閱者且無法收回。
 
-前置需求：macOS（要用 `security` 讀 Keychain、`openssl` 解密）、Chrome 已登入 Medium、gstack 的 `browse`。
+前置需求：macOS（要用 `security` 讀 Keychain、`openssl` 解密）、`python3`、Chrome 已登入 Medium、gstack 的 `browse`。
 
 ---
 
@@ -28,7 +28,7 @@ Medium 的 API 早就形同廢棄，所以只能開瀏覽器。中間踩過的�
 |---|---|---|
 | `medium.com` 回 403 “you have been blocked” | Cloudflare 擋 headless Chromium | `browse --headed`（要先 `browse disconnect`，而且**每一次呼叫**都要帶 `--headed`） |
 | 匯入 cookie 後仍然是登出狀態 | `cookie-import-browser chrome` 在 macOS 解不開加密的 cookie，只匯進明文那幾個 | `tools/chrome_cookies.py` 自己從 Keychain 解密 |
-| `cookie-import` 整包被拒 | 匯出的 cookie 含 `fantasybz.medium.com` 這種子網域，不是當前頁面網域的後綴 | `chrome_cookies.py` 預設只留 `medium.com` / `.medium.com` |
+| `cookie-import` 整包被拒 | 匯出的 cookie 含 `fantasybz.medium.com` 這種子網域，不是當前頁面網域的後綴 | `chrome_cookies.py` 預設只留 `medium.com` / `.medium.com`（真的要子網域才加 `--subdomains`） |
 | 標題開頭少幾個字 | placeholder span 會吃掉最初幾個 keystroke | 標題也用 paste 送進去，不要用 type |
 | 小標跟章節標題一樣大 | Medium 把 `<h1>/<h2>/<h3>` 都對到 `graf--h3` | `##` 出 `<h2>`、`###` 出 `<h4>` |
 | code block 被切成好幾塊 | `<pre>` 裡的空行會拆 graf | 空行換成一個空白字元 |
@@ -48,8 +48,8 @@ Medium 的 API 早就形同廢棄，所以只能開瀏覽器。中間踩過的�
 |---|---|
 | `md2medium.py` | `medium-paste.md` → `{title, html, images}` 的 JSON |
 | `chrome_cookies.py` | 從 macOS Chrome 解密匯出某網域的 cookie |
-| `medium_js.py` | 產生餵給 `browse eval` 的瀏覽器片段（標題／內文／圖片／placeholder） |
-| `verify_draft.py` | 把編輯器裡的實際內容跟轉換後的 payload 逐塊比對，並清點連結數 |
+| `medium_js.py` | 產生餵給 `browse eval` 的瀏覽器片段（標題／內文／圖片／placeholder）；另有 `selectors` 子指令，吐出給 shell `eval` 的選擇器變數 |
+| `verify_draft.py` | 把編輯器裡的實際內容跟轉換後的 payload 逐塊比對，清點連結數，並比對每張圖落在第幾個 graf |
 | `medium_draft.sh` | 把上面全部串起來 |
 | `test_tools.py` | 這些腳本的單元測試：`python3 tools/test_tools.py` |
 
@@ -80,7 +80,8 @@ cookie 值貼進 repo。**
 
 1. 找到對應的佔位段落，把游標放上去，貼上 PNG。
 2. 等上傳完成——沒傳完之前 `<img>` 的 src 還是 blob URL，
-   傳完會變成 `cdn-images-1.medium.com`。
+   傳完會變成 `cdn-images` 或 `miro.medium` 的網址。同時要數 figure 張數：
+   只檢查「沒有壞掉的 src」的話，新的 figure 還沒出現時就會先通過。
 3. 刪掉佔位段落：Medium 是把 figure 插在游標段落的**上面**，
    佔位段落還在。第一次 Backspace 清掉選取的文字，第二次刪掉空段落。
    按下去之前會先確認選到的真的是那個 marker——沒選到就中止，
@@ -107,9 +108,11 @@ cookie 值貼進 repo。**
 ## Medium 會改動的排版
 
 `——` 會被塞進 hair space（U+200A）變成看起來鬆一點的長破折號。這是 Medium
-對所有作者的 em dash 都會做的處理，不是貼上時掉字，`verify_draft.py` 因此只把
-**em dash 周圍**的空白正規化掉——一般的字間空白照樣比對，所以真的把字黏在一起
-的貼上失敗還是會被抓到。想維持原樣只能在 Medium 編輯器裡逐處手動改，不建議。
+對所有作者的 em dash 都會做的處理，不是貼上時掉字，`verify_draft.py` 因此會把
+**em dash 周圍**的空白收回來；一併正規化掉的還有 thin space／hair space／BOM、
+NBSP、彎引號，以及 code block 的 `Auto (…)` 語言標籤。連續空白只會被收成一個、
+不會被刪掉，所以真的把字黏在一起的貼上失敗還是會被抓到。想維持原樣只能在
+Medium 編輯器裡逐處手動改，不建議。
 
 ---
 

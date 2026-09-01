@@ -9,9 +9,10 @@ the layout and [PUBLISHING.md](PUBLISHING.md) for how a post gets to Medium.
 python3 tools/test_tools.py
 ```
 
-Stdlib `unittest`, no dependencies, no network, no browser. Covers the pure
-parts of `tools/`: the markdown conversion, the draft verifier's normalisation,
-the cookie domain filter, and the generated browser snippets.
+Stdlib `unittest`, no dependencies, no network, no browser. Covers the parts of
+`tools/` that run without one: the markdown conversion, the draft verifier's
+normalisation and figure-placement check, the cookie domain filter and v10
+decryption, the generated browser snippets, and each script's CLI entry point.
 
 The browser-driving half is deliberately not unit tested — it needs a real
 logged-in Medium session. `tools/medium_draft.sh` covers itself instead: it
