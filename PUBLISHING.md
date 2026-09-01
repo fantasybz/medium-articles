@@ -53,6 +53,7 @@ Medium 的 API 早就形同廢棄，所以只能開瀏覽器。中間踩過的�
 | `chrome_cookies.py` | 從 macOS Chrome 解密匯出某網域的 cookie |
 | `medium_js.py` | 產生餵給 `browse eval` 的瀏覽器片段（標題／內文／圖片／placeholder）；另有 `selectors` 子指令，吐出給 shell `eval` 的選擇器變數 |
 | `verify_draft.py` | 把編輯器裡的實際內容跟轉換後的 payload 逐塊比對，清點連結數，並比對每張圖落在第幾個 graf |
+| `medium_patch.py` | 改**已發布**的文章：找到某幾個 graf、整段換掉、換圖、刪圖 |
 | `medium_draft.sh` | 把上面全部串起來 |
 | `test_tools.py` | 這些腳本的單元測試：`python3 tools/test_tools.py` |
 
@@ -94,6 +95,58 @@ cookie 值貼進 repo。**
 用 graf index 驗一次。
 
 ---
+
+## 改已發布的文章
+
+`medium_draft.sh` 只會建新草稿。文章上線之後要改，只能進 Medium 編輯器，
+但同一套合成 paste 也能做得很精準——選一段 graf，把新的 HTML 貼上去蓋掉：
+
+```bash
+python3 tools/medium_patch.py html .context/frag/x.md > /tmp/x.html   # markdown → Medium HTML
+python3 tools/medium_patch.py find "某段開頭"                          # 先確認錨點只中一個
+python3 tools/medium_patch.py replace "起" "訖" /tmp/x.html --dry      # 先看會蓋掉哪幾段
+python3 tools/medium_patch.py replace "起" "訖" /tmp/x.html            # 真的貼
+```
+
+危險的是選取，不是貼上：錨點只要中了兩個 graf（或零個），選到的範圍就會不一樣，
+而這是在讀者看得到的文章上動刀。所以每個 snippet 都要求錨點**剛好中一個**，
+中了別的數量就回報錯誤而不是猜；`--dry` 會把「將被蓋掉的每一段」印出來再決定。
+
+改完用 repo 既有的那道關卡驗一次最保險：把 `medium-paste.md` 轉成 payload，
+再用 `verify_draft.py` 跟編輯器的實際內容逐塊比對。
+
+### 貼上的最後一塊會跟下一段合併
+
+這一條踩過：選取 graf 63–65 貼上「小標＋段落＋code block＋新段落」之後，
+**最後那個 `<p>` 併進了選取範圍後面那一段**，變成一段又臭又長的文字，
+graf 總數也因此沒有如預期增加。
+
+規則是：**貼上內容的最後一個 block，如果和選取範圍後面那個 graf 是同一種類型，
+兩者會合併**。`<p>` 接 `<p>` 會併；`<li>` 接 `<h4>`、`<p>` 接 `<figure>` 不會。
+
+解法是把選取範圍往後延伸到「下一個 graf 是不同類型」為止，一起重貼。
+例如要改的段落後面還有兩段 `<p>`、再後面才是 `<h3>`，那就三段一起換掉。
+判斷方式很簡單：貼之前先數 graf，貼完再數一次，對不上就是併到了。
+
+### 換圖
+
+換一張已經在線上的圖要兩步，因為 Medium 沒有「replace image」：
+
+```bash
+python3 tools/medium_patch.py image "圖後面那段的開頭" path/to/new.png   # 新圖插在該段之前
+python3 tools/medium_patch.py drop  "1*舊圖的CDN檔名"                    # 選取舊圖
+browse --headed press Backspace                                          # 刪掉
+```
+
+兩件事要注意。一是 `drop` 只負責**選取**、不會自己按鍵，按之前先確認回報的檔名
+是不是你要刪的那張——這跟 `medium_draft.sh` 是同一個理由。二是用 DOM Range
+選取 figure 之後按 Backspace **沒有作用**：Medium 有自己的一套選取，
+要對 `<img>` 送出完整的 pointer/mouse 事件序列，讓 figure 拿到
+`is-selected is-mediaFocused` 之後才刪得掉。刪完會留下一個空段落
+（`graf--empty`），把游標放進去再按一次 Backspace 才乾淨。
+
+存檔按的是 **Save and publish**。它算更新、不算新發布，
+所以不會吃掉下面〈發文數量上限〉的配額。
 
 ## 發文數量上限
 

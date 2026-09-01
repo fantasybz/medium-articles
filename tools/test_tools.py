@@ -27,6 +27,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import chrome_cookies
 import md2medium
 import medium_js
+import medium_patch
 import verify_draft
 
 
@@ -688,6 +689,184 @@ class TestMediumJsCLI(unittest.TestCase):
         out = run_tool(os.path.join(TOOLS, "medium_js.py"), "slot", "a.png")
         self.assertEqual(out.returncode, 0, out.stderr)
         self.assertIn("IMGSLOT-a.png-ENDSLOT", out.stdout)
+
+
+
+
+class TestPatchFragment(unittest.TestCase):
+    """fragment_html has to agree with the converter that built the live post.
+
+    A patch is pasted next to grafs produced by md2medium, so any divergence in
+    block mapping shows up as one subheading rendering a different size from its
+    neighbours — visible to readers, invisible in the diff.
+    """
+
+    def test_subheading_maps_to_h4_like_the_body_converter(self):
+        # ### is graf--h4 in the body; a patch emitting <h3> would render big.
+        self.assertIn("<h4>系列文章</h4>",
+                      medium_patch.fragment_html("### 系列文章\n"))
+
+    def test_section_heading_maps_to_h2_like_the_body_converter(self):
+        self.assertIn("<h2>", medium_patch.fragment_html("## 十二、結語\n"))
+
+    def test_throwaway_title_does_not_leak_into_the_output(self):
+        # fragment_html prepends "# _" to satisfy convert(); if that ever landed
+        # in html the patch would paste a stray heading into the article.
+        out = medium_patch.fragment_html("一般段落\n")
+        self.assertNotIn("_", out)
+        self.assertEqual(out, "<p>一般段落</p>")
+
+    def test_links_and_ordered_lists_survive(self):
+        out = medium_patch.fragment_html(
+            "1. [組織篇](https://example.com/a)——編制\n2. 技術篇（尚未發布）\n")
+        self.assertIn('<a href="https://example.com/a">組織篇</a>', out)
+        self.assertEqual(out.count("<li>"), 2)
+
+    def test_blank_line_in_a_code_block_stays_one_block(self):
+        # Same rule as the body: a split <pre> becomes two boxes in the editor.
+        out = medium_patch.fragment_html("```text\na\n\nb\n```\n")
+        self.assertEqual(out.count("<pre>"), 1)
+
+
+class TestPatchSnippets(unittest.TestCase):
+    def snippets(self):
+        return {
+            "find": medium_patch.find_js("anchor"),
+            "replace": medium_patch.replace_js("a", "b", "<p>x</p>"),
+            "dry": medium_patch.replace_js("a", "b", "<p>x</p>", dry=True),
+        }
+
+    def test_every_snippet_is_a_self_invoking_expression(self):
+        for label, js in self.snippets().items():
+            self.assertTrue(js.strip().startswith("(() =>"), label)
+            self.assertTrue(js.strip().endswith(")()"), label)
+
+    def test_no_duplicate_const_declarations(self):
+        # The shared NORMALISE/PICK blocks and the callers all declare names;
+        # a collision is a SyntaxError at eval time, not at generation time.
+        for label, js in self.snippets().items():
+            declared = re.findall(r"\bconst\s+([A-Za-z_$][\w$]*)", js)
+            dupes = {n for n in declared if declared.count(n) > 1}
+            self.assertEqual(dupes, set(),
+                             "%s redeclares %s" % (label, sorted(dupes)))
+
+    def test_dry_run_never_dispatches_a_paste(self):
+        # The whole point of --dry is that it is safe to fire at a live post.
+        self.assertNotIn("dispatchEvent",
+                         medium_patch.replace_js("a", "b", "<p>x</p>", dry=True)
+                         .split("if (true)")[0] + "")
+        dry = medium_patch.replace_js("a", "b", "<p>x</p>", dry=True)
+        before_guard, after_guard = dry.split("if (true) return", 1)
+        self.assertNotIn("dispatchEvent", before_guard)
+
+    def test_live_run_does_dispatch_a_paste(self):
+        self.assertIn("dispatchEvent", medium_patch.replace_js("a", "b", "<p>x</p>"))
+        self.assertIn("if (false) return",
+                      medium_patch.replace_js("a", "b", "<p>x</p>"))
+
+    def test_refuses_an_ambiguous_or_missing_anchor(self):
+        js = medium_patch.replace_js("a", "b", "<p>x</p>")
+        self.assertIn("a.length !== 1", js)
+        self.assertIn("b.length !== 1", js)
+
+    def test_refuses_a_backwards_range(self):
+        self.assertIn("b[0] < a[0]", medium_patch.replace_js("a", "b", "<p>x</p>"))
+
+    def test_anchor_cannot_break_out_of_the_js_string_literal(self):
+        # Anchors come from argv and are not validated anywhere.
+        evil = 'x");fetch("https://evil.test");//'
+        js = medium_patch.replace_js(evil, "b", "<p>x</p>")
+        literal = js.split("const a = pick(")[1].split("), b = pick(")[0]
+        self.assertEqual(json.loads(literal), evil)
+
+    def test_replacement_html_cannot_break_out_of_the_js_string_literal(self):
+        evil = '</p>";fetch("https://evil.test");//'
+        js = medium_patch.replace_js("a", "b", evil)
+        literal = js.split("const HTML = ")[1].split(";\n")[0]
+        self.assertEqual(json.loads(literal), evil)
+
+    def test_a_percent_sign_in_the_replacement_survives_formatting(self):
+        # The snippet is built with %-formatting; a stray % in a URL-encoded
+        # Medium link would blow up or corrupt the payload if interpolated.
+        html = '<a href="https://x.test/%E5%88%A5">別</a>'
+        js = medium_patch.replace_js("a", "b", html)
+        literal = js.split("const HTML = ")[1].split(";\n")[0]
+        self.assertEqual(json.loads(literal), html)
+
+
+class TestMediumPatchCLI(unittest.TestCase):
+    def test_unknown_snippet_name_exits(self):
+        out = run_tool(os.path.join(TOOLS, "medium_patch.py"), "bogus", "x")
+        self.assertNotEqual(out.returncode, 0)
+        self.assertIn("unknown snippet", out.stderr)
+
+    def test_replace_requires_all_three_arguments(self):
+        out = run_tool(os.path.join(TOOLS, "medium_patch.py"), "replace", "a")
+        self.assertNotEqual(out.returncode, 0)
+
+    def test_html_subcommand_converts_a_file(self):
+        d = tempfile.TemporaryDirectory()
+        self.addCleanup(d.cleanup)
+        frag = os.path.join(d.name, "f.md")
+        with open(frag, "w", encoding="utf-8") as fh:
+            fh.write("### 系列文章\n")
+        out = run_tool(os.path.join(TOOLS, "medium_patch.py"), "html", frag)
+        self.assertEqual(out.returncode, 0)
+        self.assertEqual(out.stdout.strip(), "<h4>系列文章</h4>")
+
+
+class TestPatchImageSnippets(unittest.TestCase):
+    def png(self):
+        d = tempfile.TemporaryDirectory()
+        self.addCleanup(d.cleanup)
+        path = os.path.join(d.name, "table-04.png")
+        with open(path, "wb") as fh:
+            fh.write(b"\x89PNG\r\n\x1a\nnot-a-real-png")
+        return path
+
+    def test_image_snippet_embeds_decodable_bytes(self):
+        path = self.png()
+        with open(path, "rb") as fh:
+            raw = fh.read()
+        js = medium_patch.image_js("anchor", path)
+        encoded = js.split("const bin = atob(")[1].split(");")[0]
+        self.assertEqual(base64.b64decode(json.loads(encoded)), raw)
+
+    def test_image_snippet_uses_the_basename_not_the_temp_path(self):
+        # The File name becomes the upload's filename; a temp path would leak
+        # the whole directory into Medium.
+        js = medium_patch.image_js("anchor", self.png())
+        self.assertIn(json.dumps("table-04.png"), js)
+        self.assertNotIn(tempfile.gettempdir(), js.split("const file")[1][:200])
+
+    def test_image_and_drop_refuse_an_ambiguous_anchor(self):
+        self.assertIn("hit.length !== 1", medium_patch.image_js("a", self.png()))
+        self.assertIn("hits.length !== 1", medium_patch.drop_js("a.png"))
+
+    def test_drop_only_selects_and_never_presses(self):
+        # medium_draft.sh learned this the hard way: the snippet must confirm
+        # what is selected and leave the Backspace to the caller, so a miss
+        # cannot eat article content.
+        js = medium_patch.drop_js("a.png")
+        self.assertNotIn("Backspace", js)
+        self.assertIn("selected", js)
+
+    def test_drop_reports_which_figure_it_selected(self):
+        js = medium_patch.drop_js("a.png")
+        self.assertIn("split('/').pop()", js)
+
+    def test_image_and_drop_are_self_invoking_expressions(self):
+        for label, js in {"image": medium_patch.image_js("a", self.png()),
+                          "drop": medium_patch.drop_js("a.png")}.items():
+            self.assertTrue(js.strip().startswith("(() =>"), label)
+            self.assertTrue(js.strip().endswith(")()"), label)
+
+    def test_image_and_drop_have_no_duplicate_const_declarations(self):
+        for label, js in {"image": medium_patch.image_js("a", self.png()),
+                          "drop": medium_patch.drop_js("a.png")}.items():
+            declared = re.findall(r"\bconst\s+([A-Za-z_$][\w$]*)", js)
+            dupes = {n for n in declared if declared.count(n) > 1}
+            self.assertEqual(dupes, set(), "%s redeclares %s" % (label, sorted(dupes)))
 
 
 if __name__ == "__main__":
