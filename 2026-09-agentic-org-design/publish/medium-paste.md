@@ -1,17 +1,26 @@
 <!--
 Medium 發布指南（此註解區塊不要貼進 Medium）
 
-【四篇同時發布，建議流程】
-1. 依序開四則 story（總論 → 組織篇 → 技術篇 → 營運篇）：https://medium.com/new-story
-2. 各篇貼上對應的 medium-paste.md 內容（從標題那行開始，不含本註解）。
+自動化：`./tools/medium_draft.sh <article-dir>` 會建好草稿並比對內容，停在發布前一步。
+細節見 repo 根目錄的 PUBLISHING.md。以下是手動流程與發布後必做的收尾。
+
+【系列狀態】總論已發布（見其 publish/PUBLISHED.md）；三部曲三篇建議一起發布。
+
+【手動流程】
+1. 開新 story：https://medium.com/new-story
+2. 貼上下方內容（從標題那行開始，不含本註解）。
 3. 看到 📌【在此插入…】的行：刪掉該行，按 + 插入同目錄 images/ 裡對應的 PNG。
-4. 四篇都存成草稿後，記下各篇的 Medium URL。
-5. 回頭編輯每一篇，把兩處的系列連結換成真正的 Medium URL：
-   (a) 開頭的「系列導覽」那一行
-   (b) 文末的「系列文章」清單
-   （貼上版裡這些連結是 GitHub 相對路徑，在 Medium 上無效，務必替換）
-6. code block：在 Medium 選取後按 ``` 轉成 code block。
-7. 四篇一起 Publish。Tags 建議：AI, Software Engineering, Engineering Management, Agentic AI, DevOps
+4. code block：在 Medium 選取後按 ``` 轉成 code block。
+5. 封面圖選流程圖，不要選表格截圖（縮到卡片尺寸看不清）。
+6. Tags 建議：AI, Software Engineering, Engineering Management, Agentic AI, DevOps
+
+【發布後收尾——不做的話系列會斷】
+7. 記下本篇 Medium URL，補進 repo 的 README 索引與 publish/PUBLISHED.md。
+8. 把本篇兩處的系列連結換成真正的 Medium URL：
+   (a) 開頭「系列導覽」那一行
+   (b) 文末「系列文章」清單
+   （貼上版裡這些是 GitHub 相對路徑，在 Medium 上無效，務必替換）
+9. 回頭編輯已發布的其他篇，把指向本篇的連結補上。
 -->
 
 # Agentic Engineering 三部曲（一）：誰來做？Platform + Federation 的組織設計實務
