@@ -34,6 +34,8 @@ flowchart LR
     style E fill:#ffe0e0,stroke:#c0392b
 ```
 
+先用兩組調查數字定錨。Google 的 2025 DORA report（近 5,000 名受訪者）顯示，**90% 的工程師已在工作中使用 AI**，每天中位數投入 2 小時——但對 AI 產出抱持高度信任的只有約 24%。Stack Overflow 的調查則顯示，AI agent 的使用率一年內從 31% 跳升到 59%，同時有 87% 的開發者擔心 agent 產出的正確性。兩組數字合起來讀，訊息很清楚：**採用早已不是瓶頸，信任與驗證才是**——這正是後面 harness 與 eval 兩章要解的問題。
+
 各家生態的重點與真正重要的訊號如下：
 
 | 生態 | 目前重點 | 我認為真正重要的訊號 |
@@ -245,6 +247,26 @@ mindmap
 ```
 
 **Prompt 反而可能是其中最不重要的一小塊。**這也是為什麼業界最近開始講 Harness Engineering，而不再是 Prompt Engineering。
+
+### 一段具體的 AGENTS.md
+
+「Context」那一支值得給一個具體的樣子。好的 AGENTS.md 不是專案簡介，而是寫給 agent 的 operating manual——每一行都在回答「agent 最可能在哪裡做錯」：
+
+```markdown
+## Build & Test
+- 跑單元測試：`make test`（改動後必跑；CI 只是最後防線）
+- 只跑受影響的測試：`make test FILTER=<path>`——全量測試很慢，別預設跑全量
+
+## Conventions
+- API handler 一律走 `internal/api/` 的 pattern，不要直接在 router 寫邏輯
+- DB migration 用 `make migration name=<snake_case>` 產生，禁止手寫 SQL 檔名
+
+## Boundaries
+- `legacy/` 目錄唯讀：只能呼叫，不能修改——要改，先開 issue 給 @platform-team
+- 任何跨 service 的 schema 變更，必須先更新 `contracts/` 並跑過 contract tests
+```
+
+判斷品質的標準只有一個：**新來的 agent（或新來的工程師）拿著它，第一天能不能不問人，就交出第一個正確的 PR。**
 
 把這個 harness 放進整個系統，就是公司真正應該擁有的那一層：
 
@@ -468,7 +490,9 @@ production correctness
 2. Anthropic — [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents)
 3. GitHub — [Research, plan, and code with Copilot cloud agent](https://github.blog/changelog/2026-04-01-research-plan-and-code-with-copilot-cloud-agent/)、[Creating custom agents for Copilot cloud agent](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/create-custom-agents)
 4. Cursor — [What we've learned building cloud agents](https://cursor.com/blog/cloud-agent-lessons)、[How we set up our cloud agent environment](https://cursor.com/blog/cloud-agent-environment)
-5. Linux Foundation — [Announcing the Agentic AI Foundation(AAIF)](https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation)
+5. Linux Foundation — [Announcing the Agentic AI Foundation（AAIF）](https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation)
+6. Google — [2025 DORA report: How are developers using AI?](https://blog.google/innovation-and-ai/technology/developers-tools/dora-report-2025/)
+7. Stack Overflow — [Agents on a leash: Agentic AI remains mostly monitored at work](https://stackoverflow.blog/2026/05/27/agents-on-a-leash-agentic-ai-remains-mostly-monitored-at-work/)
 
 ---
 
