@@ -1,5 +1,9 @@
 <!--
 Medium 發布指南（此註解區塊不要貼進 Medium）
+
+自動化：`./tools/medium_draft.sh <article-dir>` 會做完下面 1–6 步並比對內容，
+停在發布前。細節見 repo 根目錄的 PUBLISHING.md。以下是手動流程。
+
 1. 開新 story：https://medium.com/new-story
 2. 全文複製下方內容貼上（從標題那行開始）。
 3. 看到 📌【在此插入…】的行：刪掉該行，按 + 插入對應的 PNG（zip 內附）。
