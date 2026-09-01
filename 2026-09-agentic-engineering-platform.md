@@ -1,4 +1,4 @@
-# 別急著打造你的 Devin：2026 年 Agentic Engineering 的組織策略與 Harness 藍圖
+# 別急著打造你的 Devin：Agentic Engineering 的組織策略與 90 天行動藍圖
 
 > **TL;DR** — 多數 Engineering Group 不需要成立一個「幫各 Team 做 Agent」的 silo，但很值得成立一個小型的 **Agentic Engineering Platform / Enablement Team**。而且不要從零打造完整的 agent runtime：正確策略是「**買/採用通用 agent runtime，自建 organization-specific harness layer**」。如果用 DevOps 的歷史對照，2026 年 9 月的 Agentic Engineering，大約等於 DevOps / Cloud Native 的 2014–2016 年：方向已經確定，基礎元件開始出現，但最佳實務與組織架構還沒定型。文末附上前 90 天的行動藍圖。
 
