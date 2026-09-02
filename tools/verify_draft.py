@@ -19,10 +19,15 @@ Usage:
 Exits non-zero on any mismatch.
 
 Medium rewrites some whitespace on purpose: it wraps every em dash in hair
-spaces (U+200A), so the article's `——` comes back looking like `— —`. That is
-its house typography applied to every author, not lost content. Only that
-rewrite is normalised away — ordinary word spacing is still compared, so a
+spaces (U+200A), so `A — B` comes back with invisible padding around the dash.
+That is its house typography applied to every author, not lost content. Only
+that rewrite is normalised away — ordinary word spacing is still compared, so a
 paste that silently welds words together is still a mismatch.
+
+A double dash `——` never reaches here: md2medium.py rejects it at conversion
+time, because this very normalisation would hide it. Folding the spacing is
+what makes Medium's padding invisible to the comparison, so a `——` rendered
+as `— —` would compare equal and ship unnoticed.
 
 Links are counted separately. innerText cannot see an <a>, so a paste that
 lost every hyperlink in the article reads as identical text; the anchor count

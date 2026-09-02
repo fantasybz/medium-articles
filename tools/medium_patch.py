@@ -18,12 +18,14 @@ Usage:
     python3 tools/medium_patch.py replace <start> <end> <html-file> > /tmp/rep.js
     python3 tools/medium_patch.py replace <start> <end> <f> --dry   > /tmp/rep.js
     python3 tools/medium_patch.py image  <anchor> <file.png>        > /tmp/img.js
-    python3 tools/medium_patch.py drop   <anchor>                   > /tmp/drop.js
+    python3 tools/medium_patch.py drop   <img-src-fragment>         > /tmp/drop.js
     python3 tools/medium_patch.py subst  <from> <to>                > /tmp/sub.js
 
 `start` and `end` are substrings of the first and last graf to replace; pass the
-same string twice to replace a single graf. Anchors are matched against
-`innerText`, so use text as it renders, not as it appears in markdown.
+same string twice to replace a single graf. Anchors for `find`, `replace` and
+`image` are matched against `innerText`, so use text as it renders, not as it
+appears in markdown. `drop` is the exception: figures carry no text, so it
+matches against the image's src instead.
 """
 
 import base64
@@ -33,8 +35,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from md2medium import convert
-
-EDITOR = ".postArticle-content"
+from medium_js import EDITOR  # one definition of the editor selector
 
 # Medium pads em dashes with a hair space (see PUBLISHING.md), so an anchor
 # copied from article.md would not match the rendered innerText. Callers get a
@@ -57,10 +58,13 @@ NORMALISE = r"""
 # Resolve one anchor to exactly one graf index. Declares `pick` for the callers.
 PICK = r"""
   const grafs = [...document.querySelectorAll('%s .graf')];
+  // Normalised once, not once per pick(): replace_js calls pick() twice and
+  // innerText forces layout, so the naive form pays for two full passes.
+  const texts = grafs.map(g => norm(g.innerText));
   const pick = (anchor) => {
     const want = norm(anchor);
     const hits = [];
-    grafs.forEach((g, i) => { if (norm(g.innerText).includes(want)) hits.push(i); });
+    texts.forEach((t, i) => { if (t.includes(want)) hits.push(i); });
     return hits;
   };
 """ % EDITOR
@@ -129,7 +133,14 @@ def image_js(anchor, path):
     paragraph following the figure being replaced.
     """
     with open(path, "rb") as fh:
-        data = base64.b64encode(fh.read()).decode()
+        raw = fh.read()
+    # The snippet hardcodes image/png and uploads to a public CDN. A mistyped
+    # or glob-expanded path would otherwise base64 whatever it found and post
+    # it to the article — chrome_cookies.py writes a live session file two
+    # directories away. Check the magic bytes instead of trusting the name.
+    if not raw.startswith(b"\x89PNG\r\n\x1a\n"):
+        sys.exit("not a PNG (magic bytes do not match): " + path)
+    data = base64.b64encode(raw).decode()
     return """(() => {
 %s%s
   const hit = pick(%s);
@@ -190,6 +201,15 @@ def subst_js(old, new):
     One at a time, on purpose: the caller loops until `remaining` is 0, and
     each pass re-reads the DOM, so an edit that shifts the tree cannot make
     a stale offset point at the wrong characters.
+
+    Matching is literal, and that is a trap worth naming: Medium pads every em
+    dash with a hair space, so a source `——` is stored as HAIR — HAIR — SPACE
+    and searching for a bare `——` finds only the copies inside code blocks,
+    where Medium adds no padding. A literal miss therefore cannot be reported
+    as `remaining: 0` on its own — the no-hit branch also counts occurrences
+    with the invisibles stripped and returns that as `rendered`, so a caller
+    that sees `rendered > 0` knows the article is not clean and that it needs
+    the rendered form of the string (see PUBLISHING.md 〈改已發布的文章〉).
     """
     return """(() => {
   const editor = document.querySelector('%s');
@@ -206,10 +226,22 @@ def subst_js(old, new):
   };
   const hits = walk();
   if (!hits.length) {
-    // innerText still showing it means the match straddles two text nodes,
-    // which this cannot fix — say so rather than reporting a clean finish.
-    const split = editor.innerText.includes(OLD);
-    return JSON.stringify({ remaining: 0, split });
+    // Two ways "no literal hit" is NOT a clean finish, and both must be said
+    // out loud or the caller stops on a false zero:
+    //   split    — the match straddles two text nodes, which this cannot fix
+    //   rendered — the text is there but padded with the invisibles Medium
+    //              inserts, so the literal never matches (the —— case)
+    // Escapes, not the literal characters (this template is not a raw
+    // string, so a single backslash would be collapsed by Python and the
+    // JS would carry invisible characters instead of readable escapes).
+    const strip = t => t.replace(/[\\u200A\\u2009\\uFEFF\\u00A0]/g, '');
+    const bare = strip(OLD);
+    let raw = '';
+    const tw = document.createTreeWalker(editor, NodeFilter.SHOW_TEXT);
+    let tn;
+    while ((tn = tw.nextNode())) raw += tn.data;
+    const rendered = bare ? strip(raw).split(bare).length - 1 : 0;
+    return JSON.stringify({ remaining: 0, split: editor.innerText.includes(OLD), rendered });
   }
   const [node, at] = hits[0];
   editor.focus();
@@ -234,6 +266,10 @@ def main():
     if not args:
         sys.exit(__doc__)
     kind = args[0]
+    if dry and kind != "replace":
+        # Silently ignoring it would run the live action on a published post
+        # for someone who thought they had asked for a rehearsal.
+        sys.exit("--dry only applies to replace, not " + kind)
     if kind == "html":
         if len(args) != 2:
             sys.exit("html needs a markdown file")

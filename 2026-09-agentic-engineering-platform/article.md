@@ -2,7 +2,7 @@
 
 > **TL;DR** — 多數 Engineering Group 不需要成立一個「幫各 Team 做 Agent」的 silo，但很值得成立一個小型的 **Agentic Engineering Platform / Enablement Team**。而且不要從零打造完整的 agent runtime：正確策略是「**買/採用通用 agent runtime，自建 organization-specific harness layer**」。如果用 DevOps 的歷史對照，2026 年 9 月的 Agentic Engineering，大約等於 DevOps / Cloud Native 的 2014–2016 年：方向已經確定，基礎元件開始出現，但最佳實務與組織架構還沒定型。文末附上前 90 天的行動藍圖。
 
-> 系列導覽：**總論（本篇）** → [一、組織篇](../2026-09-agentic-org-design/article.md) → [二、技術篇](../2026-10-agentic-harness-blueprint/article.md) → [三、營運篇](../2026-11-agentic-eval-economics/article.md)
+> 系列導覽：**總論（本篇）** → [一、組織篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%80-%E8%AA%B0%E4%BE%86%E5%81%9A-platform-federation-%E7%9A%84%E7%B5%84%E7%B9%94%E8%A8%AD%E8%A8%88%E5%AF%A6%E5%8B%99-9d9353ef7f3a) → [二、技術篇](../2026-10-agentic-harness-blueprint/article.md) → [三、營運篇](../2026-11-agentic-eval-economics/article.md)
 
 ---
 
@@ -201,7 +201,7 @@ Ownership 的切分如下：
 | 100–500 人 | **4–8 人的 permanent Agentic Platform Team** |
 | > 500 人 | Agent Platform + Eval + Security 專業分工（8–12 人起跳） |
 
-即使超過 500 人，我也不會讓中央 Team 負責「替大家做 agents」。每一級的實際編制圖、skill mix，以及「什麼時候該升到下一級」的訊號，見[組織篇](../2026-09-agentic-org-design/article.md)。
+即使超過 500 人，我也不會讓中央 Team 負責「替大家做 agents」。每一級的實際編制圖、skill mix，以及「什麼時候該升到下一級」的訊號，見[組織篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%80-%E8%AA%B0%E4%BE%86%E5%81%9A-platform-federation-%E7%9A%84%E7%B5%84%E7%B9%94%E8%A8%AD%E8%A8%88%E5%AF%A6%E5%8B%99-9d9353ef7f3a)。
 
 還有一個常被跳過的問題：**champion 怎麼選、人怎麼轉型**。好的 agent champion 不是「最會寫 prompt 的人」，而是原本就擅長經營 developer experience 的人—會寫測試、會整理文件、對 CI/CD 與 tooling 有 sense 的工程師。因為 harness engineering 本質上就是 DX engineering 的延伸，對象從人換成了 agent 而已。
 
@@ -488,7 +488,7 @@ production correctness
 本文是「Agentic Engineering 三部曲」的總論，三篇深掘分別把組織、技術、營運講到可以直接開工的深度：
 
 1. **總論（本篇）**：市場現況、DevOps 對照、決策框架與前 90 天藍圖
-2. [一、組織篇：誰來做？Platform + Federation 的組織設計實務](../2026-09-agentic-org-design/article.md)—編制、champion 制度、整併決策、預算敘事
+2. [一、組織篇：誰來做？Platform + Federation 的組織設計實務](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%80-%E8%AA%B0%E4%BE%86%E5%81%9A-platform-federation-%E7%9A%84%E7%B5%84%E7%B9%94%E8%A8%AD%E8%A8%88%E5%AF%A6%E5%8B%99-9d9353ef7f3a)—編制、champion 制度、整併決策、預算敘事
 3. [二、技術篇：Harness 藍圖—把系統變成 agent 讀得懂的地方](../2026-10-agentic-harness-blueprint/article.md)—AGENTS.md 三層架構、MCP gateway、sandbox、brownfield playbook
 4. [三、營運篇：Eval、單位經濟與規模化—把 agent 當產品營運](../2026-11-agentic-eval-economics/article.md)—eval pipeline、成本模型、指標反作弊、scaling gates
 

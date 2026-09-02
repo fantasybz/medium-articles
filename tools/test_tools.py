@@ -442,7 +442,7 @@ class TestSnippets(unittest.TestCase):
         # which throws SyntaxError at eval time, not at generation time. It was
         # image_js that hit it, so every snippet has to be checked, not most.
         for label, js in self.all_snippets().items():
-            declared = re.findall(r"\bconst\s+([A-Za-z_$][\w$]*)", js)
+            declared = const_names(js)
             dupes = {n for n in declared if declared.count(n) > 1}
             self.assertEqual(dupes, set(),
                              "%s redeclares %s:\n%s" % (label, sorted(dupes), js))
@@ -564,6 +564,27 @@ class TestProfiles(unittest.TestCase):
 
 
 TOOLS = os.path.dirname(os.path.abspath(__file__))
+
+
+
+def const_names(js):
+    r"""Every name a `const` binds, including 2nd declarators and destructuring.
+
+    `re.findall(r"const\s+(\w+)")` sees only the first declarator, so it is
+    blind to `const a = .., b = ..` and to `const [node, at] = ..` — which is
+    most of what these snippets actually declare. A guard that cannot see the
+    collision it exists to catch is worse than no guard.
+    """
+    names = []
+    for line in js.splitlines():
+        m = re.search(r"\bconst\s+(.*)$", line)
+        if not m:
+            continue
+        rest = m.group(1)
+        for group in re.findall(r"\[([^\]]*)\]\s*=", rest):
+            names += re.findall(r"[A-Za-z_$][\w$]*", group)
+        names += re.findall(r"(?:^|,)\s*([A-Za-z_$][\w$]*)\s*=(?!=)", rest)
+    return names
 
 
 def run_tool(*args):
@@ -746,7 +767,7 @@ class TestPatchSnippets(unittest.TestCase):
         # The shared NORMALISE/PICK blocks and the callers all declare names;
         # a collision is a SyntaxError at eval time, not at generation time.
         for label, js in self.snippets().items():
-            declared = re.findall(r"\bconst\s+([A-Za-z_$][\w$]*)", js)
+            declared = const_names(js)
             dupes = {n for n in declared if declared.count(n) > 1}
             self.assertEqual(dupes, set(),
                              "%s redeclares %s" % (label, sorted(dupes)))
@@ -865,7 +886,7 @@ class TestPatchImageSnippets(unittest.TestCase):
     def test_image_and_drop_have_no_duplicate_const_declarations(self):
         for label, js in {"image": medium_patch.image_js("a", self.png()),
                           "drop": medium_patch.drop_js("a.png")}.items():
-            declared = re.findall(r"\bconst\s+([A-Za-z_$][\w$]*)", js)
+            declared = const_names(js)
             dupes = {n for n in declared if declared.count(n) > 1}
             self.assertEqual(dupes, set(), "%s redeclares %s" % (label, sorted(dupes)))
 
@@ -929,6 +950,16 @@ class TestDoubleDashCheck(unittest.TestCase):
         with self.assertRaises(SystemExit) as cm:
             md2medium.convert("# T\n\n\u4e00\u2014\u2014\u4e8c\n")
         self.assertIn("——", str(cm.exception))
+
+    def test_the_line_number_accounts_for_the_stripped_checklist(self):
+        # Every real publish/medium-paste.md opens with an HTML comment block
+        # that convert() removes before numbering. Reporting the post-strip
+        # index sends the author to the wrong line of the file they must edit.
+        src = "<!--\nchecklist\nmore\n-->\n\n# T\n\nfine\n\n\u4e00\u2014\u2014\u4e8c\n"
+        self.assertEqual(src.split("\n").index("\u4e00\u2014\u2014\u4e8c") + 1, 10)
+        with self.assertRaises(SystemExit) as cm:
+            md2medium.convert(src)
+        self.assertIn("line 10", str(cm.exception))
 
     def test_the_error_points_at_the_offending_line(self):
         with self.assertRaises(SystemExit) as cm:
@@ -998,7 +1029,7 @@ class TestPatchSubst(unittest.TestCase):
         self.assertTrue(js.strip().endswith(")()"))
 
     def test_no_duplicate_const_declarations(self):
-        declared = re.findall(r"\bconst\s+([A-Za-z_$][\w$]*)", self.js())
+        declared = const_names(self.js())
         dupes = {n for n in declared if declared.count(n) > 1}
         self.assertEqual(dupes, set(), "redeclares %s" % sorted(dupes))
 
@@ -1012,9 +1043,23 @@ class TestPatchSubst(unittest.TestCase):
         # happens to sit there. Same reason drop_js reports what it selected.
         self.assertIn("sel.toString() !== OLD", self.js())
 
-    def test_it_reports_how_many_remain(self):
-        # The caller loops on this; without it there is no termination signal.
-        self.assertIn("remaining", self.js())
+    def test_the_success_path_recounts_what_is_left(self):
+        # `remaining` in the no-hit early return is not enough: the caller
+        # loops on the value returned *after* a substitution, so asserting on
+        # the snippet as a whole passes even if that recount is deleted.
+        after_early_return = self.js().split("const [node, at] = hits[0];", 1)[1]
+        self.assertIn("remaining: walk().length", after_early_return)
+
+    def test_a_literal_miss_is_not_reported_as_a_clean_finish(self):
+        # Medium stores `——` as HAIR — HAIR — SPACE, so the literal never
+        # matches in prose and a bare `remaining: 0` would say "done" on an
+        # article that still has every one of them.
+        early = self.js().split("const [node, at] = hits[0];", 1)[0]
+        # Not just the word "rendered": the count has to be DERIVED from the
+        # invisible-stripped text, or a constant 0 would satisfy the assertion
+        # and restore exactly the false clean this exists to prevent.
+        self.assertIn("strip(raw).split(bare).length - 1", early)
+        self.assertIn("\\u200A", early)
 
     def test_it_flags_a_match_split_across_text_nodes(self):
         # Reporting remaining:0 while innerText still shows the string would
@@ -1024,6 +1069,108 @@ class TestPatchSubst(unittest.TestCase):
     def test_it_replaces_only_one_occurrence_per_call(self):
         self.assertIn("hits[0]", self.js())
         self.assertIn("replaced: 1", self.js())
+
+
+class TestConstNameExtractor(unittest.TestCase):
+    """Guards the guard: a blind extractor makes every dupe check vacuous."""
+
+    def test_sees_a_second_declarator(self):
+        self.assertEqual(const_names("  const a = f(), b = g();"), ["a", "b"])
+
+    def test_sees_destructured_bindings(self):
+        self.assertEqual(const_names("  const [node, at] = hits[0];"), ["node", "at"])
+
+    def test_does_not_invent_names_from_arrow_params_or_calls(self):
+        self.assertEqual(const_names("  const norm = s => s.replace(/x/g, '');"), ["norm"])
+
+    def test_it_catches_a_collision_the_old_regex_missed(self):
+        js = medium_patch.replace_js("a", "b", "<p>x</p>") + "\n  const b = 1;"
+        names = const_names(js)
+        self.assertGreater(names.count("b"), 1)
+
+
+class TestPatchCLI(unittest.TestCase):
+    """The CLI is the surface an operator actually points at a published post."""
+
+    def files(self):
+        d = tempfile.TemporaryDirectory()
+        self.addCleanup(d.cleanup)
+        html = os.path.join(d.name, "f.html")
+        with open(html, "w", encoding="utf-8") as fh:
+            fh.write("<p>x</p>")
+        png = os.path.join(d.name, "a.png")
+        with open(png, "wb") as fh:
+            fh.write(b"\x89PNG\r\n\x1a\n")
+        return html, png
+
+    def patch(self, *args):
+        return run_tool(os.path.join(TOOLS, "medium_patch.py"), *args)
+
+    def test_the_dry_flag_reaches_the_generated_snippet(self):
+        # dry is read straight off sys.argv; without this the flag can be
+        # broken while every unit test still passes, and --dry is the only
+        # rehearsal an operator gets before editing a live article.
+        html, _ = self.files()
+        out = self.patch("replace", "a", "b", html, "--dry")
+        self.assertEqual(out.returncode, 0, out.stderr)
+        self.assertIn("if (true) return", out.stdout)
+        self.assertNotIn("dispatchEvent", out.stdout.split("if (true) return")[0])
+
+    def test_without_the_flag_the_snippet_is_live(self):
+        html, _ = self.files()
+        out = self.patch("replace", "a", "b", html)
+        self.assertEqual(out.returncode, 0, out.stderr)
+        self.assertIn("if (false) return", out.stdout)
+        self.assertIn("dispatchEvent", out.stdout)
+
+    def test_dry_is_refused_for_subcommands_that_do_not_honour_it(self):
+        # Silently ignoring it would run the live action for someone who
+        # believed they had asked for a rehearsal.
+        for args in (["subst", "a", "b"], ["find", "a"], ["drop", "a.png"]):
+            out = self.patch(*args, "--dry")
+            self.assertNotEqual(out.returncode, 0, args)
+            self.assertIn("--dry only applies to replace", out.stderr)
+
+    def test_find_and_drop_carry_their_argument(self):
+        out = self.patch("find", "導言")
+        self.assertEqual(out.returncode, 0, out.stderr)
+        self.assertIn(json.dumps("導言", ensure_ascii=False), out.stdout)
+        out = self.patch("drop", "table-04.png")
+        self.assertEqual(out.returncode, 0, out.stderr)
+        self.assertIn("table-04.png", out.stdout)
+
+    def test_subst_emits_a_snippet_that_reports_remaining(self):
+        out = self.patch("subst", "——", "—")
+        self.assertEqual(out.returncode, 0, out.stderr)
+        self.assertIn("remaining", out.stdout)
+
+    def test_image_embeds_the_file(self):
+        _, png = self.files()
+        out = self.patch("image", "導言", png)
+        self.assertEqual(out.returncode, 0, out.stderr)
+        self.assertIn("atob(", out.stdout)
+
+    def test_image_refuses_a_file_that_is_not_a_png(self):
+        # The snippet hardcodes image/png and uploads to a public CDN; a wrong
+        # path would otherwise post arbitrary local bytes to the article.
+        d = tempfile.TemporaryDirectory()
+        self.addCleanup(d.cleanup)
+        bogus = os.path.join(d.name, "cookies.json")
+        with open(bogus, "w", encoding="utf-8") as fh:
+            fh.write('{"sid":"SECRET"}')
+        out = self.patch("image", "導言", bogus)
+        self.assertNotEqual(out.returncode, 0)
+        self.assertIn("not a PNG", out.stderr)
+        self.assertNotIn("SECRET", out.stdout)
+
+    def test_no_arguments_exits_nonzero(self):
+        out = self.patch()
+        self.assertNotEqual(out.returncode, 0)
+
+    def test_each_subcommand_rejects_a_wrong_argument_count(self):
+        for args in (["find"], ["find", "a", "b"], ["drop"], ["subst", "a"],
+                     ["html"], ["replace", "a"]):
+            self.assertNotEqual(self.patch(*args).returncode, 0, "%s" % args)
 
 
 if __name__ == "__main__":

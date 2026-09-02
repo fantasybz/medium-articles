@@ -72,7 +72,12 @@ def inline(text):
 
 def convert(markdown):
     # The leading HTML comment is the human checklist, not article content.
-    markdown = re.sub(r"^<!--.*?-->\s*", "", markdown, flags=re.S)
+    body = re.sub(r"^<!--.*?-->\s*", "", markdown, flags=re.S)
+    # Every real medium-paste.md opens with that comment, so line numbers in
+    # error messages have to be reported against the file the author will open,
+    # not against the text left after the strip.
+    offset = markdown.count("\n") - body.count("\n")
+    markdown = body
     lines = markdown.split("\n")
 
     # Checked before anything is emitted, and fatal rather than a warning: the
@@ -82,7 +87,7 @@ def convert(markdown):
     if bad:
         sys.exit("double em dash (——) found on %d line(s); Medium renders it "
                  "as `— —`. Use a single —:\n%s"
-                 % (len(bad), "\n".join("  line %d: %s" % (k, l.strip()[:78])
+                 % (len(bad), "\n".join("  line %d: %s" % (k + offset, l.strip()[:78])
                                         for k, l in bad[:10])))
 
     out, images = [], []
@@ -136,7 +141,7 @@ def convert(markdown):
             sys.exit("line %d is a 📌 line the slot pattern does not accept:\n"
                      "  %s\n"
                      "expected 📌【在此插入圖 name.png】 with a name matching "
-                     "[A-Za-z0-9-]+.png" % (i + 1, stripped))
+                     "[A-Za-z0-9-]+.png" % (i + 1 + offset, stripped))
 
         if stripped.startswith(">"):
             buf = []
