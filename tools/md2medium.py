@@ -35,6 +35,23 @@ SLOT_MARK = "IMGSLOT-%s-ENDSLOT"
 
 BLOCK_START = re.compile(r"^(#{1,6}\s|[-*]\s|\d+\.\s|>|```|-{3,}$|📌)")
 
+# One definition of a fence, shared by the double-dash check and the parser:
+# if the two ever disagreed about where a code block starts, the check would be
+# skipping (or flagging) lines the converter treats the other way.
+FENCE_OPEN = re.compile(r"^```(\w*)\s*$")
+FENCE_CLOSE = re.compile(r"^```\s*$")
+
+# Medium pads every em dash with a hair space (U+200A), so a CJK double dash
+# `——` renders as `— —`: a visible gap in the middle of what should be one
+# unbroken stroke. Nothing downstream can undo it — verify_draft.py folds that
+# spacing away precisely so it does not read as a paste failure, which means a
+# double dash would otherwise ship unnoticed. Use a single `—` instead.
+#
+# Code blocks are exempt: Medium adds no hair spaces inside a <pre>, so `——`
+# renders there exactly as written, and `——` is the correct CJK dash. Flagging
+# it would force the sample code to use punctuation the sample is not teaching.
+DOUBLE_DASH = re.compile("\u2014{2,}")
+
 
 def inline(text):
     """Markdown inline syntax to HTML, code spans protected from escaping."""
@@ -63,10 +80,45 @@ def inline(text):
     )
 
 
+def double_dash_lines(lines):
+    """The 1-based lines carrying a `——`, ignoring anything inside a fence.
+
+    Shared with the test that sweeps every article in the repo, so the guard
+    and the gate cannot disagree about which lines count.
+    """
+    bad, in_code = [], False
+    for k, line in enumerate(lines):
+        fence = line.strip()
+        if in_code:
+            in_code = not FENCE_CLOSE.match(fence)
+            continue
+        if FENCE_OPEN.match(fence):
+            in_code = True
+            continue
+        if DOUBLE_DASH.search(line):
+            bad.append((k + 1, line))
+    return bad
+
+
 def convert(markdown):
     # The leading HTML comment is the human checklist, not article content.
-    markdown = re.sub(r"^<!--.*?-->\s*", "", markdown, flags=re.S)
+    body = re.sub(r"^<!--.*?-->\s*", "", markdown, flags=re.S)
+    # Every real medium-paste.md opens with that comment, so line numbers in
+    # error messages have to be reported against the file the author will open,
+    # not against the text left after the strip.
+    offset = markdown.count("\n") - body.count("\n")
+    markdown = body
     lines = markdown.split("\n")
+
+    # Checked before anything is emitted, and fatal rather than a warning: the
+    # damage is cosmetic but it lands on every reader, and a warning printed
+    # mid-run is exactly the kind of thing that scrolls past unread.
+    bad = double_dash_lines(lines)
+    if bad:
+        sys.exit("double em dash (——) found on %d line(s); Medium renders it "
+                 "as `— —`. Use a single —:\n%s"
+                 % (len(bad), "\n".join("  line %d: %s" % (k + offset, l.strip()[:78])
+                                        for k, l in bad[:10])))
 
     out, images = [], []
     title = None
@@ -78,10 +130,10 @@ def convert(markdown):
             i += 1
             continue
 
-        if re.match(r"^```(\w*)\s*$", stripped):
+        if FENCE_OPEN.match(stripped):
             i += 1
             buf = []
-            while i < n and not re.match(r"^```\s*$", lines[i].strip()):
+            while i < n and not FENCE_CLOSE.match(lines[i].strip()):
                 buf.append(lines[i])
                 i += 1
             i += 1
@@ -119,7 +171,7 @@ def convert(markdown):
             sys.exit("line %d is a 📌 line the slot pattern does not accept:\n"
                      "  %s\n"
                      "expected 📌【在此插入圖 name.png】 with a name matching "
-                     "[A-Za-z0-9-]+.png" % (i + 1, stripped))
+                     "[A-Za-z0-9-]+.png" % (i + 1 + offset, stripped))
 
         if stripped.startswith(">"):
             buf = []
