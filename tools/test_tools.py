@@ -12,6 +12,7 @@ at the end of every run.
 """
 
 import base64
+import glob
 import json
 import os
 import re
@@ -961,18 +962,30 @@ class TestDoubleDashCheck(unittest.TestCase):
 
     def test_every_shipped_article_is_clean(self):
         # The regression guard for the actual fix: all four articles were
-        # rewritten from —— to —, and both files of each pair must stay that way.
+        # rewritten from —— to —, and every file of each pack must stay that way.
+        # Globbed rather than a fixed list of two names: the English editions
+        # arrived as article.en.md + publish/en/medium-paste.md and would have
+        # sat outside a hardcoded pair, unchecked.
         root = os.path.dirname(TOOLS)
         found = []
-        for name in sorted(os.listdir(root)):
-            for rel in ("article.md", os.path.join("publish", "medium-paste.md")):
-                path = os.path.join(root, name, rel)
-                if os.path.exists(path):
-                    with open(path, encoding="utf-8") as fh:
-                        for k, line in enumerate(fh, 1):
-                            if md2medium.DOUBLE_DASH.search(line):
-                                found.append("%s/%s:%d" % (name, rel, k))
+        for pattern in ("*/article*.md", "*/publish/medium-paste.md",
+                        "*/publish/*/medium-paste.md"):
+            for path in sorted(glob.glob(os.path.join(root, pattern))):
+                with open(path, encoding="utf-8") as fh:
+                    for k, line in enumerate(fh, 1):
+                        if md2medium.DOUBLE_DASH.search(line):
+                            found.append("%s:%d" % (os.path.relpath(path, root), k))
         self.assertEqual(found, [])
+
+    def test_the_guard_actually_looks_at_the_english_packs(self):
+        # A glob that silently matches nothing would make the test above pass
+        # forever. Assert the English editions are really in its scope.
+        root = os.path.dirname(TOOLS)
+        seen = [os.path.relpath(p, root) for p in glob.glob(os.path.join(root, "*/article*.md"))]
+        self.assertTrue([p for p in seen if p.endswith("article.en.md")],
+                        "no article.en.md matched; the guard would not cover them")
+        seen_paste = glob.glob(os.path.join(root, "*/publish/*/medium-paste.md"))
+        self.assertTrue(seen_paste, "no publish/<lang>/medium-paste.md matched")
 
 
 class TestPatchSubst(unittest.TestCase):
