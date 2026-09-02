@@ -10,8 +10,10 @@ editions are published separately; cross-link the two once both are live.
 [Manual flow]
 1. New story: https://medium.com/new-story
 2. Paste the content below (start at the title line; exclude this comment).
-3. Where you see a line marked INSERT IMAGE: delete that line and use + to insert
-   the matching PNG from the images/ folder next to this file.
+3. Where you see a marker line starting with the pin emoji: delete that line and
+   use + to insert the matching PNG from the images/ folder next to this file.
+   (The marker text is Chinese because the repo tooling parses that exact format;
+   the line is deleted on insert, so it never reaches readers.)
 4. Code blocks: select in Medium and press ``` to convert.
 5. Cover image: pick a flow diagram, never a table screenshot (unreadable at card size).
 6. Suggested tags: AI, Software Engineering, Engineering Management, Agentic AI, DevOps
@@ -54,13 +56,13 @@ What follows walks from the state of the market, through the lessons DevOps alre
 
 The whole industry has visibly shifted rightward, and the center of gravity is now pressing on the last two stages:
 
-INSERT IMAGE: diagram-01.png
+📌【在此插入圖 diagram-01.png】
 
 Two surveys are worth anchoring on. Google's 2025 DORA report (nearly 5,000 respondents) found that **90% of engineers now use AI at work**, with a median of two hours a day spent on it — yet only about 24% report high trust in what it produces. Stack Overflow's data shows AI agent usage jumping from 31% to 59% in a single year, while 87% of developers worry about the correctness of agent output. Read together, the message is unambiguous: **adoption stopped being the bottleneck a while ago. Trust and verification are the bottleneck now** — which is exactly what the harness and eval sections below are about.
 
 Here's what each ecosystem is pushing on, and the signal I think actually matters:
 
-INSERT IMAGE: table-01.png
+📌【在此插入表 table-01.png】
 
 A few of these deserve unpacking.
 
@@ -92,11 +94,11 @@ In December 2025 the Linux Foundation formed the [Agentic AI Foundation (AAIF)](
 
 The two eras map onto each other almost item for item:
 
-INSERT IMAGE: table-02.png
+📌【在此插入表 table-02.png】
 
 Lay the two timelines on top of each other:
 
-INSERT IMAGE: diagram-02.png
+📌【在此插入圖 diagram-02.png】
 
 My read is that **2026 is the Kubernetes moment**. Everyone already accepts that agents are here to stay. What's still being fought over is how they execute, how they get context, how they reach tools, how they collaborate, how they're constrained, and how they're observed.
 
@@ -110,7 +112,7 @@ Plenty of companies stood up standalone DevOps teams early on, only to convert "
 
 ## 4. Don't build this team
 
-INSERT IMAGE: diagram-03.png
+📌【在此插入圖 diagram-03.png】
 
 This design fails for two reasons:
 
@@ -129,11 +131,11 @@ Beyond the central agent team, three failure modes show up just as often and get
 
 The right shape is **platform plus federation**: a central platform team paves roads, domain teams drive themselves onto them, and embedded champions connect the two.
 
-INSERT IMAGE: diagram-04.png
+📌【在此插入圖 diagram-04.png】
 
 Ownership splits like this:
 
-INSERT IMAGE: table-03.png
+📌【在此插入表 table-03.png】
 
 The single most important idea in that table:
 
@@ -143,7 +145,7 @@ Those are two entirely different jobs.
 
 On sizing — these are my numbers, not an industry standard:
 
-INSERT IMAGE: table-04.png
+📌【在此插入表 table-04.png】
 
 Even past 500 engineers, I would not put a central team in charge of "making agents for everyone else." For the actual org charts at each tier, the skill mix, and the signals that tell you it's time to move up a tier, see [the org design piece](../2026-09-agentic-org-design/article.en.md).
 
@@ -157,7 +159,7 @@ As for junior engineers, my view runs against the fashionable pessimism. The sca
 
 Here's how I define the harness a company builds for itself:
 
-INSERT IMAGE: diagram-05.png
+📌【在此插入圖 diagram-05.png】
 
 **The prompt may well be the least important piece in there.** Which is why the industry conversation has moved from prompt engineering to harness engineering.
 
@@ -180,7 +182,7 @@ There's only one test for quality: **can a new agent — or a new engineer — t
 
 Put the harness into the wider system, and you get the layer a company should genuinely own:
 
-INSERT IMAGE: diagram-06.png
+📌【在此插入圖 diagram-06.png】
 
 Note carefully: **owning that middle layer is not the same as writing your own Claude Code.**
 
@@ -202,7 +204,7 @@ In OpenAI's harness engineering piece, the most important thing isn't Codex. It'
 
 Turn logs, metrics, traces, browser state, DOM, screenshots, tests, architecture, dependency rules, CI, and PR feedback into things an agent can query, operate, and verify directly. Once you have, the delivery pipeline looks like this:
 
-INSERT IMAGE: diagram-07.png
+📌【在此插入圖 diagram-07.png】
 
 What's left for humans is intent, architecture, constraints, taste, risk, prioritization, and acceptance. **That, to me, is the actual definition of Agentic Engineering.**
 
@@ -222,7 +224,7 @@ The counterintuitive part: this ordering is identical to what you'd invest in to
 
 This may be the most consequential judgment in the whole piece:
 
-INSERT IMAGE: diagram-08.png
+📌【在此插入圖 diagram-08.png】
 
 Compressed into one line:
 
@@ -270,7 +272,7 @@ production correctness
 
 Paired with a set of operating metrics:
 
-INSERT IMAGE: table-05.png
+📌【在此插入表 table-05.png】
 
 **Cost per successful task** deserves unpacking, because agent unit economics behave nothing like headcount. A single successful autonomous run can cost anywhere from tens of cents to tens of dollars, and the driver is retry count and context size — not how hard the task was. Two practical rules:
 
@@ -287,7 +289,7 @@ One prediction while we're here: by 2028–2030, the name "Agentic Engineering t
 
 If you decide to do this, here's how I'd sequence the first 90 days:
 
-INSERT IMAGE: table-06.png
+📌【在此插入表 table-06.png】
 
 Three warnings:
 

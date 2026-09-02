@@ -10,8 +10,10 @@ editions are published separately; cross-link the two once both are live.
 [Manual flow]
 1. New story: https://medium.com/new-story
 2. Paste the content below (start at the title line; exclude this comment).
-3. Where you see a line marked INSERT IMAGE: delete that line and use + to insert
-   the matching PNG from the images/ folder next to this file.
+3. Where you see a marker line starting with the pin emoji: delete that line and
+   use + to insert the matching PNG from the images/ folder next to this file.
+   (The marker text is Chinese because the repo tooling parses that exact format;
+   the line is deleted on insert, so it never reaches readers.)
 4. Code blocks: select in Medium and press ``` to convert.
 5. Cover image: pick a flow diagram, never a table screenshot (unreadable at card size).
 6. Suggested tags: AI, Software Engineering, Engineering Management, Agentic AI, DevOps
@@ -42,7 +44,7 @@ The prompt is one slice of the context layer. Which is why the industry vocabula
 
 This piece covers the implementation of the first five layers. Evals get part three, because they're an operations problem as much as a technical one.
 
-INSERT IMAGE: diagram-01.png
+📌【在此插入圖 diagram-01.png】
 
 One premise worth stating up front: **none of these five layers is purchasable.** You can buy the runtime — that was the overview's conclusion. But the context is yours, the conventions are yours, the feedback loop is yours. These five layers *are* the asset you actually own.
 
@@ -52,7 +54,7 @@ One premise worth stating up front: **none of these five layers is purchasable.*
 
 A single AGENTS.md doesn't survive an organization past about 50 engineers — org standards, repo specifics, and module exceptions all pile into one document nobody wants to maintain. Split it into three tiers:
 
-INSERT IMAGE: table-01.png
+📌【在此插入表 table-01.png】
 
 There are only two writing rules:
 
@@ -98,13 +100,13 @@ The overview named the AGENTS.md graveyard as one of four failure modes: every r
 
 Letting every agent connect directly to every MCP server goes out of control within three months: every agent holding an over-broad token, no centralized audit, no rate limiting, tool names colliding. The gateway is a thin layer that solves exactly four problems:
 
-INSERT IMAGE: diagram-02.png
+📌【在此插入圖 diagram-02.png】
 
 **The minimum viable version is a registry (one YAML file is enough) plus an identity broker plus an audit log.** What not to build yet: intelligent routing, semantic caching, an internal tool marketplace. Those are problems for the 200-engineer scale; building them in v1 only delays launch.
 
 Tools come in three tiers, with policy attached to the tier:
 
-INSERT IMAGE: table-02.png
+📌【在此插入表 table-02.png】
 
 The principle behind the tiers is **the cost of recovery when it goes wrong**, not the complexity of the operation. A bad PR can be closed. An external email cannot be recalled.
 
@@ -114,7 +116,7 @@ The principle behind the tiers is **the cost of recovery when it goes wrong**, n
 
 An agent needs somewhere it can safely run commands, install dependencies, and edit files. Three options:
 
-INSERT IMAGE: table-03.png
+📌【在此插入表 table-03.png】
 
 Two practical points that affect success more than the choice itself:
 
@@ -129,7 +131,7 @@ An agent hitting a wall doesn't look like an error report. It looks like **repea
 
 "Agent legibility" means turning logs, tests, traces, and browser state into things the agent can query and verify by itself. Here's a checklist to score any repo:
 
-INSERT IMAGE: table-04.png
+📌【在此插入表 table-04.png】
 
 Log renovation has the highest return of anything on that list. The same error, written two ways, is night and day for an agent:
 
@@ -180,7 +182,7 @@ tools:
 
 Everything above assumes a system with tests, structured logs, and documented architecture. The reality at most enterprises is a fifteen-year-old legacy monolith with none of the three. Renovation runs in three phases, and the order cannot be swapped:
 
-INSERT IMAGE: diagram-03.png
+📌【在此插入圖 diagram-03.png】
 
 **Phase 1: verifiable.** Don't chase coverage; chase "if you break it, something catches it." Characterization tests (the golden master technique) record current behavior as a baseline — they don't judge whether it's correct, they detect when it changes. There's an elegant bootstrap here: **writing characterization tests is the safest possible first task to give an agent in a brownfield system.** It only describes existing behavior and changes nothing, so the risk is near zero — and its output, the tests, make every subsequent task safer. The chicken-and-egg problem solves itself through this loop.
 

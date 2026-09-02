@@ -10,8 +10,10 @@ editions are published separately; cross-link the two once both are live.
 [Manual flow]
 1. New story: https://medium.com/new-story
 2. Paste the content below (start at the title line; exclude this comment).
-3. Where you see a line marked INSERT IMAGE: delete that line and use + to insert
-   the matching PNG from the images/ folder next to this file.
+3. Where you see a marker line starting with the pin emoji: delete that line and
+   use + to insert the matching PNG from the images/ folder next to this file.
+   (The marker text is Chinese because the repo tooling parses that exact format;
+   the line is deleted on insert, so it never reaches readers.)
 4. Code blocks: select in Medium and press ``` to convert.
 5. Cover image: pick a flow diagram, never a table screenshot (unreadable at card size).
 6. Suggested tags: AI, Software Engineering, Engineering Management, Agentic AI, DevOps
@@ -50,7 +52,7 @@ Why evals come first: the overview's judgment was that **the eval dataset is the
 
 Most teams stall on the first step: where do evals come from? The answer is that they're already in your engineering history — what's missing is the harvesting pipeline:
 
-INSERT IMAGE: diagram-01.png
+📌【在此插入圖 diagram-01.png】
 
 Each source has its own character:
 
@@ -78,7 +80,7 @@ scoring: rubric                    # rubric / exact / llm_judge
 
 ### Three tiers, each with a job
 
-INSERT IMAGE: table-01.png
+📌【在此插入表 table-01.png】
 
 The frontier tier is the one most often skipped, and it answers the most valuable question: **what couldn't the agent do before that the latest model can now?** That directly determines whether to widen the permission scope (see the gates in section 5).
 
@@ -107,7 +109,7 @@ One autonomous run costs model tokens (typically 60–80%), plus sandbox compute
 
 Different work goes to different model tiers, with the routing logic living in the platform (the gateway from part two) so teams don't each decide for themselves:
 
-INSERT IMAGE: table-02.png
+📌【在此插入表 table-02.png】
 
 ### Budget guardrails
 
@@ -121,11 +123,11 @@ INSERT IMAGE: table-02.png
 
 The overview gave the North Star formula. Here it is expanded into a measurable tree:
 
-INSERT IMAGE: diagram-02.png
+📌【在此插入圖 diagram-02.png】
 
 Every one of these gets gamed — not out of malice, but because Goodhart's law operates daily. So design the antidote at the same time you design the metric:
 
-INSERT IMAGE: table-03.png
+📌【在此插入表 table-03.png】
 
 The principle in one line: **metrics come in pairs — every speed metric needs a quality metric beside it.** Grade any single number in isolation and you will get that number, along with everything that was sacrificed to produce it. This is the 2.0 version of the vanity metrics lesson from the DevOps era.
 
@@ -135,9 +137,9 @@ The principle in one line: **metrics come in pairs — every speed metric needs 
 
 The overview gave the first 90 days: pick pilots, measure a baseline, build evals. The most common mistake once the pilot ends is declaring victory and rolling out everywhere. Scale through gates instead — each with explicit quantitative conditions that unlock the next step:
 
-INSERT IMAGE: table-04.png
+📌【在此插入表 table-04.png】
 
-INSERT IMAGE: diagram-03.png
+📌【在此插入圖 diagram-03.png】
 
 Two disciplines. **When you're stuck, go back and fix it — don't push through.** Failing G2 usually means a harness problem (part two); failing G3 usually means guardrails and eval coverage. And: **expansion speed is set by evals and escape rate, not by the roadmap.** "Q3 says company-wide rollout" is not a reason G2 passes automatically.
 

@@ -10,8 +10,10 @@ editions are published separately; cross-link the two once both are live.
 [Manual flow]
 1. New story: https://medium.com/new-story
 2. Paste the content below (start at the title line; exclude this comment).
-3. Where you see a line marked INSERT IMAGE: delete that line and use + to insert
-   the matching PNG from the images/ folder next to this file.
+3. Where you see a marker line starting with the pin emoji: delete that line and
+   use + to insert the matching PNG from the images/ folder next to this file.
+   (The marker text is Chinese because the repo tooling parses that exact format;
+   the line is deleted on insert, so it never reaches readers.)
 4. Code blocks: select in Medium and press ``` to convert.
 5. Cover image: pick a flow diagram, never a table screenshot (unreadable at card size).
 6. Suggested tags: AI, Software Engineering, Engineering Management, Agentic AI, DevOps
@@ -52,9 +54,9 @@ All three forces are real. But what they optimize for is manageability, not outp
 
 The overview gave the concept. Here it is at RACI resolution across the three roles:
 
-INSERT IMAGE: diagram-01.png
+📌【在此插入圖 diagram-01.png】
 
-INSERT IMAGE: table-01.png
+📌【在此插入表 table-01.png】
 
 The most important cell in that table is the last row: **production ownership always stays with the domain team.** Any design that routes "the agent's code broke production" to the platform team will collapse into finger-pointing at the first incident.
 
@@ -70,7 +72,7 @@ The most important cell in that table is the last row: **production ownership al
 
 ### 200 engineers: a 4–6 person platform pod
 
-INSERT IMAGE: diagram-02.png
+📌【在此插入圖 diagram-02.png】
 
 The key thing about skill mix: this is a **product team, not a research team**. Its product is the paved road and its customers are internal engineers. So hire people who have built developer tooling, CI, and test infrastructure — not people with model research backgrounds. And borrow that half-person of security: giving the security team a stake up front is far cheaper than getting sent back by an audit later.
 
@@ -82,7 +84,7 @@ The key thing about skill mix: this is a **product team, not a research team**. 
 
 The three tiers side by side:
 
-INSERT IMAGE: table-02.png
+📌【在此插入表 table-02.png】
 
 ---
 
@@ -92,7 +94,7 @@ A champion isn't a title. It's a job with a job description. The way it gets bro
 
 **Selection criteria** (these matter more than seniority):
 
-INSERT IMAGE: table-03.png
+📌【在此插入表 table-03.png】
 
 **Time and evaluation:**
 
@@ -108,7 +110,7 @@ INSERT IMAGE: table-03.png
 
 Most companies already have a DevEx team, a platform team, or SRE. Who owns agentic? Use this tree:
 
-INSERT IMAGE: diagram-03.png
+📌【在此插入圖 diagram-03.png】
 
 The principle in one line: **an agentic platform is the next chapter of your IDP, not a parallel universe.** They will merge eventually; separating is only a concession to startup speed. Which is why an independent pod should share backlog tooling and design review with the IDP from day one.
 
@@ -120,7 +122,7 @@ SRE works the same way: reuse the existing observability stack for agent observa
 
 Budget splits into three buckets, and the third is the one that gets left out:
 
-INSERT IMAGE: table-04.png
+📌【在此插入表 table-04.png】
 
 **The ROI narrative.** Don't use "this replaces N engineers." It frightens the team, and it isn't accurate anyway. Use **attention leverage** instead: the drop in human review minutes per PR, multiplied by total PR volume, equals engineering attention freed. Pair it with evidence that production escape rate held flat, which proves you didn't buy speed with quality.
 
