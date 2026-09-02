@@ -14,7 +14,7 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 5. 封面圖選流程圖，不要選表格截圖（縮到卡片尺寸看不清）。
 6. Tags 建議：AI, Software Engineering, Engineering Management, Agentic AI, DevOps
 
-【發布後收尾——不做的話系列會斷】
+【發布後收尾—不做的話系列會斷】
 7. 記下本篇 Medium URL，補進 repo 的 README 索引與 publish/PUBLISHED.md。
 8. 把本篇兩處的系列連結換成真正的 Medium URL：
    (a) 開頭「系列導覽」那一行
@@ -53,7 +53,7 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 
 📌【在此插入圖 diagram-01.png】
 
-先用兩組調查數字定錨。Google 的 2025 DORA report（近 5,000 名受訪者）顯示，**90% 的工程師已在工作中使用 AI**，每天中位數投入 2 小時——但對 AI 產出抱持高度信任的只有約 24%。Stack Overflow 的調查則顯示，AI agent 的使用率一年內從 31% 跳升到 59%，同時有 87% 的開發者擔心 agent 產出的正確性。兩組數字合起來讀，訊息很清楚：**採用早已不是瓶頸，信任與驗證才是**——這正是後面 harness 與 eval 兩章要解的問題。
+先用兩組調查數字定錨。Google 的 2025 DORA report（近 5,000 名受訪者）顯示，**90% 的工程師已在工作中使用 AI**，每天中位數投入 2 小時—但對 AI 產出抱持高度信任的只有約 24%。Stack Overflow 的調查則顯示，AI agent 的使用率一年內從 31% 跳升到 59%，同時有 87% 的開發者擔心 agent 產出的正確性。兩組數字合起來讀，訊息很清楚：**採用早已不是瓶頸，信任與驗證才是**—這正是後面 harness 與 eval 兩章要解的問題。
 
 各家生態的重點與真正重要的訊號如下：
 
@@ -77,11 +77,11 @@ GitHub 的方向非常像當年 CI/CD 的平台化。[Copilot cloud agent](https
 
 ### Cursor：CI Runner 演化史的重演
 
-Cursor 也在解相同問題：每個 [Cloud Agent](https://cursor.com/blog/cloud-agent-lessons) 都有 dedicated VM、repo、dependencies、secrets 與 network policy，完成工作後提供 screenshot、影片、logs 等 artifacts，讓人類驗證「結果」而不是盯著 agent 的每一步。他們甚至開始 [cache ready-to-use development environments](https://cursor.com/blog/cloud-agent-environment)，因為 agent infrastructure 的 startup time 已經成為效能瓶頸——這非常像早期 CI runner → containerized CI → warm runner 的演化。
+Cursor 也在解相同問題：每個 [Cloud Agent](https://cursor.com/blog/cloud-agent-lessons) 都有 dedicated VM、repo、dependencies、secrets 與 network policy，完成工作後提供 screenshot、影片、logs 等 artifacts，讓人類驗證「結果」而不是盯著 agent 的每一步。他們甚至開始 [cache ready-to-use development environments](https://cursor.com/blog/cloud-agent-environment)，因為 agent infrastructure 的 startup time 已經成為效能瓶頸—這非常像早期 CI runner → containerized CI → warm runner 的演化。
 
 ### 最大的訊號：標準化開始收斂
 
-2025 年 12 月，Linux Foundation 成立 [Agentic AI Foundation（AAIF）](https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation)，納入 **MCP、AGENTS.md、goose**；截至 2026 年 8 月，AAIF 已有 247 個 member organizations。這代表業界開始把「model ↔ tools ↔ repository context」這些介面標準化，而不是讓每一家 agent 都有自己的封閉 integration——非常像當年 CNCF 生態開始收斂的時刻。
+2025 年 12 月，Linux Foundation 成立 [Agentic AI Foundation（AAIF）](https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation)，納入 **MCP、AGENTS.md、goose**；截至 2026 年 8 月，AAIF 已有 247 個 member organizations。這代表業界開始把「model ↔ tools ↔ repository context」這些介面標準化，而不是讓每一家 agent 都有自己的封閉 integration—非常像當年 CNCF 生態開始收斂的時刻。
 
 ---
 
@@ -112,13 +112,13 @@ Cursor 也在解相同問題：每個 [Cloud Agent](https://cursor.com/blog/clou
 這種設計必然失敗，原因有二：
 
 1. 它只是把等待 Ops 的 ticket queue，換成等待 Agent Team 的 ticket queue。
-2. Agent Team 永遠不可能比 domain team 更懂 business context——而 context 恰好是 agent 產出品質的決定因素。
+2. Agent Team 永遠不可能比 domain team 更懂 business context—而 context 恰好是 agent 產出品質的決定因素。
 
 除了中央 Agent Team，還有三種同樣常見、但比較少被點名的失敗模式：
 
-- **自己造 runtime**：投入 6–12 個月自建內部版 Claude Code 或 Devin。vendor 的下一個 release 就會讓它過時——你是在跟整個產業的資本支出對賭，而且賭輸的機率接近 100%。
+- **自己造 runtime**：投入 6–12 個月自建內部版 Claude Code 或 Devin。vendor 的下一個 release 就會讓它過時—你是在跟整個產業的資本支出對賭，而且賭輸的機率接近 100%。
 - **AGENTS.md 文件墳場**：轟轟烈烈地要求每個 repo 都寫 AGENTS.md，但沒有人負責維護、沒有 eval 驗證它是否真的改善 agent 產出。半年後它就跟公司 wiki 一樣過時。context 是需要 ownership 的 living artifact，不是寫一次就封存的文件。
-- **Review 成為新瓶頸**：agent 產出 PR 的速度是人類的十倍，review 流程卻完全沒變。結果不是交付變快，而是 review queue 爆炸、reviewer 疲乏、rubber-stamp 放行——品質問題只是往後移到 production。這也是為什麼 agent review agent 與 eval，必須跟產出能力同步投資。
+- **Review 成為新瓶頸**：agent 產出 PR 的速度是人類的十倍，review 流程卻完全沒變。結果不是交付變快，而是 review queue 爆炸、reviewer 疲乏、rubber-stamp 放行—品質問題只是往後移到 production。這也是為什麼 agent review agent 與 eval，必須跟產出能力同步投資。
 
 ---
 
@@ -144,9 +144,9 @@ Ownership 的切分如下：
 
 即使超過 500 人，我也不會讓中央 Team 負責「替大家做 agents」。每一級的實際編制圖、skill mix，以及「什麼時候該升到下一級」的訊號，見[組織篇](../2026-09-agentic-org-design/article.md)。
 
-還有一個常被跳過的問題：**champion 怎麼選、人怎麼轉型**。好的 agent champion 不是「最會寫 prompt 的人」，而是原本就擅長經營 developer experience 的人——會寫測試、會整理文件、對 CI/CD 與 tooling 有 sense 的工程師。因為 harness engineering 本質上就是 DX engineering 的延伸，對象從人換成了 agent 而已。
+還有一個常被跳過的問題：**champion 怎麼選、人怎麼轉型**。好的 agent champion 不是「最會寫 prompt 的人」，而是原本就擅長經營 developer experience 的人—會寫測試、會整理文件、對 CI/CD 與 tooling 有 sense 的工程師。因為 harness engineering 本質上就是 DX engineering 的延伸，對象從人換成了 agent 而已。
 
-至於 junior engineer，我的看法與流行的悲觀論相反：agent 時代最稀缺的能力——拆解問題、定義驗收條件、判斷產出品質——恰好要靠大量 review agent 的產出來練成。組織應該刻意把「review agent 的 PR」設計成 junior 的訓練路徑，而不是把這件事全部留給 senior，然後困惑為什麼三年後沒有人能接班。
+至於 junior engineer，我的看法與流行的悲觀論相反：agent 時代最稀缺的能力—拆解問題、定義驗收條件、判斷產出品質—恰好要靠大量 review agent 的產出來練成。組織應該刻意把「review agent 的 PR」設計成 junior 的訓練路徑，而不是把這件事全部留給 senior，然後困惑為什麼三年後沒有人能接班。
 
 ---
 
@@ -160,15 +160,15 @@ Ownership 的切分如下：
 
 ### AGENTS.md：寫對與寫錯的差別
 
-「Context」那一支值得給一個具體的樣子。好的 AGENTS.md 不是專案簡介，而是寫給 agent 的 operating manual——它存在的目的不是介紹，是預防：
+「Context」那一支值得給一個具體的樣子。好的 AGENTS.md 不是專案簡介，而是寫給 agent 的 operating manual—它存在的目的不是介紹，是預防：
 
 ```text
 # 寫錯了：描述現況
 本專案是訂單系統，使用 Go 與 PostgreSQL，採用 clean architecture。
 
 # 寫對了：預防犯錯
-- 只跑受影響的測試：`make test FILTER=<path>`——全量測試很慢，別預設跑全量
-- `legacy/` 目錄唯讀：只能呼叫，不能修改——要改，先開 issue 給 @platform-team
+- 只跑受影響的測試：`make test FILTER=<path>`—全量測試很慢，別預設跑全量
+- `legacy/` 目錄唯讀：只能呼叫，不能修改—要改，先開 issue 給 @platform-team
 ```
 
 上面那段每一句都是真的，但 agent 讀完之後，能做的事一件也沒有多。下面那段每一行都對應一種真實犯過的錯。
@@ -185,7 +185,7 @@ Ownership 的切分如下：
 
 上圖的 Policy / Identity 與 Guardrails 值得單獨強調，因為當你拿這套架構去說服 CISO 時，被問的一定是這一塊：
 
-- **Identity 與最小權限**：每個 agent run 都應該有自己的 identity 與 scoped credentials——只拿得到這個 task 需要的 repo、secrets 與 API，而不是共用一組人類的 token。出事的時候，「哪個 agent、哪次 run、用什麼權限做的」必須能在五分鐘內回答。
+- **Identity 與最小權限**：每個 agent run 都應該有自己的 identity 與 scoped credentials—只拿得到這個 task 需要的 repo、secrets 與 API，而不是共用一組人類的 token。出事的時候，「哪個 agent、哪次 run、用什麼權限做的」必須能在五分鐘內回答。
 - **Prompt injection 是真實的攻擊面**：agent 會讀 issue、PR comment、外部網頁與 log，這些全是不可信輸入。tool 權限分級與 sandbox 的 egress policy 是底線，不是加分項。
 - **Audit trail**：每個 agent 的每個 tool call 都要可追溯。等到 compliance 來問「這段程式碼當初是誰決定這樣寫的」才開始補，就太遲了。
 
@@ -205,13 +205,13 @@ OpenAI 那篇 Harness Engineering 文章裡，我認為最重要的東西甚至�
 
 ### Brownfield 怎麼辦
 
-上面的流程圖隱含了一個假設：系統本來就有測試、log 有結構、架構有文件。多數企業的現實是 15 年的 legacy monolith，三者皆無——而這正是 legibility 投資需要排序的原因。我的建議順序：
+上面的流程圖隱含了一個假設：系統本來就有測試、log 有結構、架構有文件。多數企業的現實是 15 年的 legacy monolith，三者皆無—而這正是 legibility 投資需要排序的原因。我的建議順序：
 
 1. **先補 characterization tests**：讓 agent 有 feedback 可以驗證自己的修改，這是其他一切的前提。
 2. **再結構化 logs / traces**：讓 agent 能自己 debug，而不是每次都把 stack trace 貼回來問人。
 3. **最後才是 architecture rules 與文件**：這一層價值最高，但沒有前兩層，agent 讀得懂也做不對。
 
-反直覺的是，這個順序跟「讓新進工程師快速上手」的投資完全同構——agent legibility 與 human legibility 是同一件事。這也是為什麼即使 agent 路線失敗，這筆投資也幾乎不會白費。
+反直覺的是，這個順序跟「讓新進工程師快速上手」的投資完全同構—agent legibility 與 human legibility 是同一件事。這也是為什麼即使 agent 路線失敗，這筆投資也幾乎不會白費。
 
 ---
 
@@ -233,13 +233,13 @@ OpenAI 那篇 Harness Engineering 文章裡，我認為最重要的東西甚至�
 
 前面說 eval dataset 是不會被 model release 抹掉的護城河，但多數團隊卡在第一步：「eval 要從哪裡來？」答案是：**你的工程歷史裡已經有了。**
 
-- **從 incident 回收**：每份 post-mortem 都是現成的 eval case——給 agent 當時的 context 與症狀，它能不能找到 root cause？
+- **從 incident 回收**：每份 post-mortem 都是現成的 eval case—給 agent 當時的 context 與症狀，它能不能找到 root cause？
 - **從 PR history 回收**：被 reviewer 打回的 agent PR，連同 review comment，就是最真實的 negative example；一次就過關的，則是 golden path。
 - **Golden tasks**：挑 10–20 個有代表性的已完成任務（bug fix、小 feature、refactor 各幾個），固定 context 與驗收條件。每次 model 或 harness 改版，就重跑一輪。
 
-維護成本比想像中低：eval 不需要一開始就全自動化，每月一次人工 review 打分數，就足以回答兩個最貴的問題——「新 model 出來了，我們該不該換」與「harness 這次改動，是變好還是變壞」。沒有 eval 的組織只能靠感覺回答這兩題，而感覺，在 vendor 的行銷與 demo 面前不堪一擊。
+維護成本比想像中低：eval 不需要一開始就全自動化，每月一次人工 review 打分數，就足以回答兩個最貴的問題—「新 model 出來了，我們該不該換」與「harness 這次改動，是變好還是變壞」。沒有 eval 的組織只能靠感覺回答這兩題，而感覺，在 vendor 的行銷與 demo 面前不堪一擊。
 
-這就是「複利」的意思：市場上每一次 model 升級、每一家 vendor 的價格戰，都會讓你的 eval dataset 增值一次——因為只有你能在一天內用自己的工作負載驗證新選項，別人只能讀 benchmark 猜。
+這就是「複利」的意思：市場上每一次 model 升級、每一家 vendor 的價格戰，都會讓你的 eval dataset 增值一次—因為只有你能在一天內用自己的工作負載驗證新選項，別人只能讀 benchmark 猜。
 
 ---
 
@@ -274,7 +274,7 @@ production correctness
 - **Model routing**：用最強的 model 做 planning 與 review，用便宜的 model 跑大量 generation 與 eval。這一層路由邏輯放在 platform，各 team 不需要各自發明。
 - **把 Agent Retry Rate 當成 leading indicator**：retry 燒掉的錢，幾乎都是 context 與 feedback loop 沒做好的稅。retry rate 降不下來，先修 harness，不要先怪 model。
 
-這才能避免重演早期 DevOps 的 vanity metrics——「部署次數很多，所以我們 DevOps 做得很好」。
+這才能避免重演早期 DevOps 的 vanity metrics—「部署次數很多，所以我們 DevOps 做得很好」。
 
 順帶一個預測：到 2028–2030 年，「Agentic Engineering Team」這個名字可能會逐漸消失，就像今天成熟的工程組織不會特別成立「Git Team」或「CI Team」。Agentic capability 最終會被吸收進 Developer Platform、SRE、Security 與 Engineering Productivity 之中。
 
@@ -288,7 +288,7 @@ production correctness
 
 三個提醒：
 
-1. **Pilot 選「痛但不致命」的情境**——internal tools、測試補強、bug backlog，不要選 mission-critical path。
+1. **Pilot 選「痛但不致命」的情境**—internal tools、測試補強、bug backlog，不要選 mission-critical path。
 2. **Baseline 沒量就開跑，三個月後你將無法證明任何事**。這是最常見、代價也最高的失誤。
 3. **平台 team 的第一個客戶是 pilot team，不是全公司**。太早追求 coverage，是 platform team 死掉最常見的方式。
 
@@ -309,9 +309,9 @@ production correctness
 本文是「Agentic Engineering 三部曲」的總論，三篇深掘分別把組織、技術、營運講到可以直接開工的深度：
 
 1. **總論（本篇）**：市場現況、DevOps 對照、決策框架與前 90 天藍圖
-2. [一、組織篇：誰來做？Platform + Federation 的組織設計實務](../2026-09-agentic-org-design/article.md)——編制、champion 制度、整併決策、預算敘事
-3. [二、技術篇：Harness 藍圖——把系統變成 agent 讀得懂的地方](../2026-10-agentic-harness-blueprint/article.md)——AGENTS.md 三層架構、MCP gateway、sandbox、brownfield playbook
-4. [三、營運篇：Eval、單位經濟與規模化——把 agent 當產品營運](../2026-11-agentic-eval-economics/article.md)——eval pipeline、成本模型、指標反作弊、scaling gates
+2. [一、組織篇：誰來做？Platform + Federation 的組織設計實務](../2026-09-agentic-org-design/article.md)—編制、champion 制度、整併決策、預算敘事
+3. [二、技術篇：Harness 藍圖—把系統變成 agent 讀得懂的地方](../2026-10-agentic-harness-blueprint/article.md)—AGENTS.md 三層架構、MCP gateway、sandbox、brownfield playbook
+4. [三、營運篇：Eval、單位經濟與規模化—把 agent 當產品營運](../2026-11-agentic-eval-economics/article.md)—eval pipeline、成本模型、指標反作弊、scaling gates
 
 ---
 

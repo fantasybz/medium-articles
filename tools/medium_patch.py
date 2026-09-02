@@ -19,6 +19,7 @@ Usage:
     python3 tools/medium_patch.py replace <start> <end> <f> --dry   > /tmp/rep.js
     python3 tools/medium_patch.py image  <anchor> <file.png>        > /tmp/img.js
     python3 tools/medium_patch.py drop   <anchor>                   > /tmp/drop.js
+    python3 tools/medium_patch.py subst  <from> <to>                > /tmp/sub.js
 
 `start` and `end` are substrings of the first and last graf to replace; pass the
 same string twice to replace a single graf. Anchors are matched against
@@ -177,6 +178,56 @@ def drop_js(anchor):
 """ % (EDITOR, json.dumps(anchor, ensure_ascii=False), EDITOR)
 
 
+def subst_js(old, new):
+    """Replace the first literal `old` with `new`, reporting how many remain.
+
+    For fixing a string that recurs all through a story — `——` was the case
+    this exists for — where re-pasting whole grafs would be absurd and would
+    also have to rebuild every figure. This selects just the offending
+    characters inside their own text node, so inline links, marks and code
+    blocks either side are untouched.
+
+    One at a time, on purpose: the caller loops until `remaining` is 0, and
+    each pass re-reads the DOM, so an edit that shifts the tree cannot make
+    a stale offset point at the wrong characters.
+    """
+    return """(() => {
+  const editor = document.querySelector('%s');
+  const OLD = %s, NEW = %s;
+  const walk = () => {
+    const w = document.createTreeWalker(editor, NodeFilter.SHOW_TEXT);
+    const found = [];
+    let node;
+    while ((node = w.nextNode())) {
+      let at = node.data.indexOf(OLD);
+      while (at !== -1) { found.push([node, at]); at = node.data.indexOf(OLD, at + OLD.length); }
+    }
+    return found;
+  };
+  const hits = walk();
+  if (!hits.length) {
+    // innerText still showing it means the match straddles two text nodes,
+    // which this cannot fix — say so rather than reporting a clean finish.
+    const split = editor.innerText.includes(OLD);
+    return JSON.stringify({ remaining: 0, split });
+  }
+  const [node, at] = hits[0];
+  editor.focus();
+  const range = document.createRange();
+  range.setStart(node, at);
+  range.setEnd(node, at + OLD.length);
+  const sel = getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+  if (sel.toString() !== OLD) return JSON.stringify({ err: 'selected ' + JSON.stringify(sel.toString()) });
+  const dt = new DataTransfer();
+  dt.setData('text/plain', NEW);
+  node.parentElement.dispatchEvent(new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true }));
+  return JSON.stringify({ replaced: 1, remaining: walk().length });
+})()
+""" % (EDITOR, json.dumps(old, ensure_ascii=False), json.dumps(new, ensure_ascii=False))
+
+
 def main():
     args = [a for a in sys.argv[1:] if a != "--dry"]
     dry = "--dry" in sys.argv
@@ -196,6 +247,10 @@ def main():
         if len(args) != 3:
             sys.exit("image needs <anchor> <file.png>")
         print(image_js(args[1], args[2]))
+    elif kind == "subst":
+        if len(args) != 3:
+            sys.exit("subst needs <from> <to>")
+        print(subst_js(args[1], args[2]))
     elif kind == "drop":
         if len(args) != 2:
             sys.exit("drop needs a figure src fragment")

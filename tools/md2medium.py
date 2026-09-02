@@ -35,6 +35,13 @@ SLOT_MARK = "IMGSLOT-%s-ENDSLOT"
 
 BLOCK_START = re.compile(r"^(#{1,6}\s|[-*]\s|\d+\.\s|>|```|-{3,}$|📌)")
 
+# Medium pads every em dash with a hair space (U+200A), so a CJK double dash
+# `——` renders as `— —`: a visible gap in the middle of what should be one
+# unbroken stroke. Nothing downstream can undo it — verify_draft.py folds that
+# spacing away precisely so it does not read as a paste failure, which means a
+# double dash would otherwise ship unnoticed. Use a single `—` instead.
+DOUBLE_DASH = re.compile("\u2014{2,}")
+
 
 def inline(text):
     """Markdown inline syntax to HTML, code spans protected from escaping."""
@@ -67,6 +74,16 @@ def convert(markdown):
     # The leading HTML comment is the human checklist, not article content.
     markdown = re.sub(r"^<!--.*?-->\s*", "", markdown, flags=re.S)
     lines = markdown.split("\n")
+
+    # Checked before anything is emitted, and fatal rather than a warning: the
+    # damage is cosmetic but it lands on every reader, and a warning printed
+    # mid-run is exactly the kind of thing that scrolls past unread.
+    bad = [(k + 1, l) for k, l in enumerate(lines) if DOUBLE_DASH.search(l)]
+    if bad:
+        sys.exit("double em dash (——) found on %d line(s); Medium renders it "
+                 "as `— —`. Use a single —:\n%s"
+                 % (len(bad), "\n".join("  line %d: %s" % (k, l.strip()[:78])
+                                        for k, l in bad[:10])))
 
     out, images = [], []
     title = None

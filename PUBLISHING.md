@@ -36,6 +36,7 @@ Medium 的 API 早就形同廢棄，所以只能開瀏覽器。中間踩過的�
 | 小標跟章節標題一樣大 | Medium 把 `<h1>/<h2>/<h3>` 都對到 `graf--h3` | `##` 出 `<h2>`、`###` 出 `<h4>` |
 | code block 被切成好幾塊 | `<pre>` 裡的空行會拆 graf | 空行換成一個空白字元 |
 | 圖沒進去但流程說成功 | 📌 那行的檔名不符 `[A-Za-z0-9-]+.png`，被當成一般段落 | `md2medium.py` 現在直接報錯，不再默默放行 |
+| 破折號在線上裂成 `— —` | 原文用了中文習慣的 `——`，而 Medium 會在每個 em dash 兩側加 hair space | 一律用單個 `—`；`md2medium.py` 現在遇到 `——` 直接報錯 |
 
 核心手法是**合成 paste 事件**。Medium 的舊版編輯器不檢查 `event.isTrusted`，
 所以 `DataTransfer` 上掛 `text/html` 就能一次貼進整篇排版好的內文，
@@ -219,12 +220,25 @@ Medium 限制同一作者 **24 小時內最多發布或排程 2 篇**。撞到�
 
 ## Medium 會改動的排版
 
-`——` 會被塞進 hair space（U+200A）變成看起來鬆一點的長破折號。這是 Medium
-對所有作者的 em dash 都會做的處理，不是貼上時掉字，`verify_draft.py` 因此會把
-**em dash 周圍**的空白收回來；一併正規化掉的還有 thin space／hair space／BOM、
-NBSP、彎引號，以及 code block 的 `Auto (…)` 語言標籤。連續空白只會被收成一個、
-不會被刪掉，所以真的把字黏在一起的貼上失敗還是會被抓到。想維持原樣只能在
-Medium 編輯器裡逐處手動改，不建議。
+Medium 會在**每一個** em dash 前後塞進 hair space（U+200A）。這是它對所有作者
+都會做的處理，不是貼上時掉字，`verify_draft.py` 因此會把 em dash 周圍的空白
+收回來；一併正規化掉的還有 thin space／hair space／BOM、NBSP、彎引號，
+以及 code block 的 `Auto (…)` 語言標籤。連續空白只會被收成一個、不會被刪掉，
+所以真的把字黏在一起的貼上失敗還是會被抓到。
+
+### 破折號一律用單個 `—`，不要用 `——`
+
+中文排版習慣用兩個 em dash 當破折號，但因為 Medium 會在**每一個** em dash
+兩側都加 hair space，`——` 上線後會變成 `— —`：本來該是一筆到底的破折號，
+中間裂開一道明顯的縫。單個 `—` 則只是兩側各鬆一點，看起來正常。
+
+這件事後面沒有任何一關會攔到——`verify_draft.py` 正是為了不把 hair space
+誤判成貼上失敗，才刻意把 em dash 周圍的空白收掉，於是 `——` 會一路過關，
+只有讀者看得到。所以檢查放在最前面：`md2medium.py` 遇到 `——` 直接報錯，
+連 payload 都不會產出，code block 裡也一樣算。
+
+已發布的文章要改的話，用 `medium_patch.py subst` 逐處把 `——` 換成 `—`
+（見〈改已發布的文章〉），不必整篇重貼。
 
 ---
 

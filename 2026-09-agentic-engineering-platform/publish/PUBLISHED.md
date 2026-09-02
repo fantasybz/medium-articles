@@ -30,7 +30,8 @@ Topics 原本填 `Agentic AI`，Medium 正規化成 `Agentic Ai`。
 | 閱讀時間 | 18 min read |
 
 `<path>`、`<snake_case>` 這類角括號在 code block 裡都完整保留。
-唯一被 Medium 改掉的是 21 處 `——` 被加上 hair space，屬於它的排版慣例。
+發布當下唯一被 Medium 改掉的是 em dash 被加上 hair space，屬於它的排版慣例；
+後來連同破折號本身一起改了，見下面的同步紀錄第 8 項。
 
 ---
 
@@ -49,6 +50,7 @@ Topics 原本填 `Agentic AI`，Medium 正規化成 `Agentic Ai`。
 | 5 | 第六節 | 「一段具體的 AGENTS.md」整節換成「AGENTS.md：寫對與寫錯的差別」好壞對照版 | ✅ |
 | 6 | 文末小標 | 「本系列文章」→「系列文章」 | ✅ |
 | 7 | 文末（系列文章之後、署名那行之前） | 新增「AI 協作說明」小節 | ✅ |
+| 8 | 全篇 | 破折號 `——` 一律改成單個 `—`（24 處）。Medium 會在每個 em dash 兩側加 hair space，`——` 上線後會裂成 `— —` | ✅ |
 
 ## ⚠️ 還差的：三部曲後兩篇的連結
 

@@ -8,8 +8,8 @@ Medium articles by [@fantasybz](https://medium.com/@fantasybz) — long-form pos
 |---|---|---|---|
 | 2026-09 | [別急著打造你的 Devin：Agentic Engineering 的組織策略與 90 天行動藍圖](2026-09-agentic-engineering-platform/article.md)（三部曲總論） | [已發布](https://fantasybz.medium.com/%E5%88%A5%E6%80%A5%E8%91%97%E6%89%93%E9%80%A0%E4%BD%A0%E7%9A%84-devin-agentic-engineering-%E7%9A%84%E7%B5%84%E7%B9%94%E7%AD%96%E7%95%A5%E8%88%87-90-%E5%A4%A9%E8%A1%8C%E5%8B%95%E8%97%8D%E5%9C%96-7342ababc417) | [PUBLISHED.md](2026-09-agentic-engineering-platform/publish/PUBLISHED.md) |
 | 2026-09 | [三部曲（一）組織篇：誰來做？Platform + Federation 的組織設計實務](2026-09-agentic-org-design/article.md) | [已發布](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%80-%E8%AA%B0%E4%BE%86%E5%81%9A-platform-federation-%E7%9A%84%E7%B5%84%E7%B9%94%E8%A8%AD%E8%A8%88%E5%AF%A6%E5%8B%99-9d9353ef7f3a) | [PUBLISHED.md](2026-09-agentic-org-design/publish/PUBLISHED.md) |
-| 2026-10 | [三部曲（二）技術篇：Harness 藍圖——把系統變成 agent 讀得懂的地方](2026-10-agentic-harness-blueprint/article.md) | 草稿已備妥，未排程（見 [PUBLISHING.md](PUBLISHING.md) 的〈發文數量上限〉） | [PUBLISHED.md](2026-10-agentic-harness-blueprint/publish/PUBLISHED.md) |
-| 2026-11 | [三部曲（三）營運篇：Eval、單位經濟與規模化——把 agent 當產品營運](2026-11-agentic-eval-economics/article.md) | 草稿已備妥，未排程（見 [PUBLISHING.md](PUBLISHING.md) 的〈發文數量上限〉） | [PUBLISHED.md](2026-11-agentic-eval-economics/publish/PUBLISHED.md) |
+| 2026-10 | [三部曲（二）技術篇：Harness 藍圖—把系統變成 agent 讀得懂的地方](2026-10-agentic-harness-blueprint/article.md) | 草稿已備妥，未排程（見 [PUBLISHING.md](PUBLISHING.md) 的〈發文數量上限〉） | [PUBLISHED.md](2026-10-agentic-harness-blueprint/publish/PUBLISHED.md) |
+| 2026-11 | [三部曲（三）營運篇：Eval、單位經濟與規模化—把 agent 當產品營運](2026-11-agentic-eval-economics/article.md) | 草稿已備妥，未排程（見 [PUBLISHING.md](PUBLISHING.md) 的〈發文數量上限〉） | [PUBLISHED.md](2026-11-agentic-eval-economics/publish/PUBLISHED.md) |
 
 ## Structure
 

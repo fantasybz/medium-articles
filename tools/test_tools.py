@@ -718,7 +718,7 @@ class TestPatchFragment(unittest.TestCase):
 
     def test_links_and_ordered_lists_survive(self):
         out = medium_patch.fragment_html(
-            "1. [組織篇](https://example.com/a)——編制\n2. 技術篇（尚未發布）\n")
+            "1. [組織篇](https://example.com/a)—編制\n2. 技術篇（尚未發布）\n")
         self.assertIn('<a href="https://example.com/a">組織篇</a>', out)
         self.assertEqual(out.count("<li>"), 2)
 
@@ -913,6 +913,104 @@ class TestPatchAnchorNormalisation(unittest.TestCase):
 
     def test_runs_of_whitespace_collapse_to_one(self):
         self.assertEqual(self.norm("a\n\n  b"), self.norm("a b"))
+
+
+class TestDoubleDashCheck(unittest.TestCase):
+    """`——` must never reach Medium: it renders as `— —`, a gap mid-stroke.
+
+    This has to be caught at conversion, because nothing downstream can see it.
+    verify_draft.py deliberately folds em-dash spacing away so Medium's hair
+    spaces do not read as a paste failure — which means a double dash sails
+    through every later check and only shows up to readers.
+    """
+
+    def test_double_dash_is_rejected(self):
+        with self.assertRaises(SystemExit) as cm:
+            md2medium.convert("# T\n\n\u4e00\u2014\u2014\u4e8c\n")
+        self.assertIn("——", str(cm.exception))
+
+    def test_the_error_points_at_the_offending_line(self):
+        with self.assertRaises(SystemExit) as cm:
+            md2medium.convert("# T\n\nfine\n\n\u4e00\u2014\u2014\u4e8c\n")
+        msg = str(cm.exception)
+        self.assertIn("line 5", msg)
+        self.assertIn("\u4e00\u2014\u2014\u4e8c", msg)
+
+    def test_a_single_em_dash_is_left_alone(self):
+        self.assertEqual(md2medium.convert("# T\n\n\u4e00\u2014\u4e8c\n")["html"],
+                         "<p>\u4e00\u2014\u4e8c</p>")
+
+    def test_en_dash_is_not_mistaken_for_it(self):
+        # 2014-2016 style ranges use U+2013 and are fine.
+        self.assertEqual(md2medium.convert("# T\n\n2014\u20132016\n")["html"],
+                         "<p>2014\u20132016</p>")
+
+    def test_two_em_dashes_in_one_line_but_apart_are_fine(self):
+        out = md2medium.convert("# T\n\n\u4e00\u2014\u4e8c\u3001\u4e09\u2014\u56db\n")["html"]
+        self.assertEqual(out, "<p>\u4e00\u2014\u4e8c\u3001\u4e09\u2014\u56db</p>")
+
+    def test_a_run_of_three_is_rejected_too(self):
+        with self.assertRaises(SystemExit):
+            md2medium.convert("# T\n\n\u4e00\u2014\u2014\u2014\u4e8c\n")
+
+    def test_it_is_caught_inside_a_code_block(self):
+        # Code blocks carried two of the real occurrences, and they render the
+        # same way, so the check must not skip fenced content.
+        with self.assertRaises(SystemExit):
+            md2medium.convert("# T\n\n```text\na\u2014\u2014b\n```\n")
+
+    def test_every_shipped_article_is_clean(self):
+        # The regression guard for the actual fix: all four articles were
+        # rewritten from —— to —, and both files of each pair must stay that way.
+        root = os.path.dirname(TOOLS)
+        found = []
+        for name in sorted(os.listdir(root)):
+            for rel in ("article.md", os.path.join("publish", "medium-paste.md")):
+                path = os.path.join(root, name, rel)
+                if os.path.exists(path):
+                    with open(path, encoding="utf-8") as fh:
+                        for k, line in enumerate(fh, 1):
+                            if md2medium.DOUBLE_DASH.search(line):
+                                found.append("%s/%s:%d" % (name, rel, k))
+        self.assertEqual(found, [])
+
+
+class TestPatchSubst(unittest.TestCase):
+    def js(self):
+        return medium_patch.subst_js("\u2014\u2014", "\u2014")
+
+    def test_is_a_self_invoking_expression(self):
+        js = self.js()
+        self.assertTrue(js.strip().startswith("(() =>"))
+        self.assertTrue(js.strip().endswith(")()"))
+
+    def test_no_duplicate_const_declarations(self):
+        declared = re.findall(r"\bconst\s+([A-Za-z_$][\w$]*)", self.js())
+        dupes = {n for n in declared if declared.count(n) > 1}
+        self.assertEqual(dupes, set(), "redeclares %s" % sorted(dupes))
+
+    def test_both_strings_are_embedded_as_json(self):
+        js = medium_patch.subst_js("a\"b", "c\\d")
+        self.assertIn(json.dumps("a\"b"), js)
+        self.assertIn(json.dumps("c\\d"), js)
+
+    def test_it_verifies_the_selection_before_pasting(self):
+        # A range built from a stale offset would otherwise replace whatever
+        # happens to sit there. Same reason drop_js reports what it selected.
+        self.assertIn("sel.toString() !== OLD", self.js())
+
+    def test_it_reports_how_many_remain(self):
+        # The caller loops on this; without it there is no termination signal.
+        self.assertIn("remaining", self.js())
+
+    def test_it_flags_a_match_split_across_text_nodes(self):
+        # Reporting remaining:0 while innerText still shows the string would
+        # look like a clean finish and silently leave the article wrong.
+        self.assertIn("split", self.js())
+
+    def test_it_replaces_only_one_occurrence_per_call(self):
+        self.assertIn("hits[0]", self.js())
+        self.assertIn("replaced: 1", self.js())
 
 
 if __name__ == "__main__":
