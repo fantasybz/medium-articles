@@ -36,7 +36,7 @@ Medium 的 API 早就形同廢棄，所以只能開瀏覽器。中間踩過的�
 | 小標跟章節標題一樣大 | Medium 把 `<h1>/<h2>/<h3>` 都對到 `graf--h3` | `##` 出 `<h2>`、`###` 出 `<h4>` |
 | code block 被切成好幾塊 | `<pre>` 裡的空行會拆 graf | 空行換成一個空白字元 |
 | 圖沒進去但流程說成功 | 📌 那行的檔名不符 `[A-Za-z0-9-]+.png`，被當成一般段落 | `md2medium.py` 現在直接報錯，不再默默放行 |
-| 破折號在線上裂成 `— —` | 原文用了中文習慣的 `——`，而 Medium 會在每個 em dash 兩側加 hair space | 一律用單個 `—`；`md2medium.py` 現在遇到 `——` 直接報錯 |
+| 破折號在線上裂成 `— —` | 內文用了中文習慣的 `——`，而 Medium 會在每個 em dash 兩側加 hair space | 內文一律用單個 `—`；`md2medium.py` 遇到 `——` 直接報錯（code block 例外，那裡不會裂） |
 
 核心手法是**合成 paste 事件**。Medium 的舊版編輯器不檢查 `event.isTrusted`，
 所以 `DataTransfer` 上掛 `text/html` 就能一次貼進整篇排版好的內文，
@@ -251,7 +251,12 @@ Medium 會在**每一個** em dash 前後塞進 hair space（U+200A）。這是�
 這件事後面沒有任何一關會攔到——`verify_draft.py` 正是為了不把 hair space
 誤判成貼上失敗，才刻意把 em dash 周圍的空白收掉，於是 `——` 會一路過關，
 只有讀者看得到。所以檢查放在最前面：`md2medium.py` 遇到 `——` 直接報錯，
-連 payload 都不會產出，code block 裡也一樣算。
+連 payload 都不會產出。
+
+**code block 例外。** Medium 不會在 `<pre>` 裡加 hair space，所以 code block
+裡的 `——` 上線後就是原樣的 `——`，不會裂開；那裡本來就該用中文的雙破折號。
+檢查因此會跳過 fence 內的行——fence 的判斷跟 parser 共用同一組 regex，
+免得兩邊對「哪裡算 code block」的認知會分岔。
 
 已發布的文章要改的話用 `medium_patch.py subst` 逐處換，不必整篇重貼。
 但要換**兩種形式**，只換一種會以為改完了其實沒有：
@@ -261,13 +266,23 @@ Medium 會在**每一個** em dash 前後塞進 hair space（U+200A）。這是�
 #    hair space，所以直接找 `——` 在內文裡一個都找不到
 python3 tools/medium_patch.py subst " — — " " — "
 # 2) 原字形式：只有 code block 裡才有，Medium 不會在 code block 加 hair space
-python3 tools/medium_patch.py subst "——" "—"
+#    ——但 code block 的 `——` 是對的，不要動它，所以這一段通常根本不該跑
 ```
 
 每一種都要迴圈跑到回報 `remaining: 0`。`subst` 找不到字面值時會另外回報
-`rendered`：那是把 hair space 這類隱形字元剝掉之後還數得到幾處。
-**`rendered` 不是 0 就代表還沒改完**，只是你拿去比對的字串形式不對——
-這個回報存在的理由，就是不讓「找不到」被誤讀成「改完了」。
+兩件事：`split`（字串跨了兩個 text node，這支工具處理不了）與 `rendered`
+（把 hair space 這類隱形字元剝掉之後還數得到幾處）。**兩個只要不是 0／false
+就代表還沒改完**，只是你拿去比對的字串形式不對——這兩個回報存在的理由，
+就是不讓「找不到」被誤讀成「改完了」。
+
+還有兩個實際踩過的坑：
+
+- **新字串不能包含舊字串**，否則迴圈會一直比中自己剛換上去的結果，永遠不收斂。
+  想把 `—X` 換成 `——X` 就是這種情況。繞法是走一個中繼符號：先 `—X` → `⟦DD⟧X`，
+  再 `⟦DD⟧` → `——`，兩步都不自我匹配。
+- **Medium 會把行內 `` `code` `` 切成獨立的 text node**，即使在 code block 裡也一樣。
+  所以錨點跨過一個反引號就會回報 `split: true`；換一個落在同一個 text node
+  裡的錨點即可。
 
 ---
 

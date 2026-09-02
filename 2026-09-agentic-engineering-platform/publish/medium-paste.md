@@ -167,8 +167,8 @@ Ownership 的切分如下：
 本專案是訂單系統，使用 Go 與 PostgreSQL，採用 clean architecture。
 
 # 寫對了：預防犯錯
-- 只跑受影響的測試：`make test FILTER=<path>`—全量測試很慢，別預設跑全量
-- `legacy/` 目錄唯讀：只能呼叫，不能修改—要改，先開 issue 給 @platform-team
+- 只跑受影響的測試：`make test FILTER=<path>`——全量測試很慢，別預設跑全量
+- `legacy/` 目錄唯讀：只能呼叫，不能修改——要改，先開 issue 給 @platform-team
 ```
 
 上面那段每一句都是真的，但 agent 讀完之後，能做的事一件也沒有多。下面那段每一行都對應一種真實犯過的錯。

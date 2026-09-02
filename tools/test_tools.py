@@ -985,11 +985,26 @@ class TestDoubleDashCheck(unittest.TestCase):
         with self.assertRaises(SystemExit):
             md2medium.convert("# T\n\n\u4e00\u2014\u2014\u2014\u4e8c\n")
 
-    def test_it_is_caught_inside_a_code_block(self):
-        # Code blocks carried two of the real occurrences, and they render the
-        # same way, so the check must not skip fenced content.
-        with self.assertRaises(SystemExit):
-            md2medium.convert("# T\n\n```text\na\u2014\u2014b\n```\n")
+    def test_a_code_block_is_exempt(self):
+        # Medium adds no hair spaces inside a <pre>, so `——` renders there
+        # exactly as written and is the correct CJK dash. Flagging it would
+        # force the AGENTS.md sample to use punctuation it is not teaching.
+        out = md2medium.convert("# T\n\n```text\na\u2014\u2014b\n```\n")["html"]
+        self.assertEqual(out, "<pre><code>a\u2014\u2014b</code></pre>")
+
+    def test_the_exemption_ends_with_the_fence(self):
+        # The obvious way to get the exemption wrong is to latch it on and
+        # stop checking the rest of the file.
+        with self.assertRaises(SystemExit) as cm:
+            md2medium.convert("# T\n\n```text\na\u2014\u2014b\n```\n\n\u4e00\u2014\u2014\u4e8c\n")
+        self.assertIn("\u4e00\u2014\u2014\u4e8c", str(cm.exception))
+
+    def test_the_fence_scan_agrees_with_the_converter(self):
+        # double_dash_lines is what the repo sweep below uses; if it drifted
+        # from the fence rules convert() applies, the sweep would pass on a
+        # file convert() rejects.
+        lines = ["prose ok", "```text", "a\u2014\u2014b", "```", "\u4e00\u2014\u2014\u4e8c"]
+        self.assertEqual([k for k, _ in md2medium.double_dash_lines(lines)], [5])
 
     def test_every_shipped_article_is_clean(self):
         # The regression guard for the actual fix: all four articles were
@@ -1003,9 +1018,11 @@ class TestDoubleDashCheck(unittest.TestCase):
                         "*/publish/*/medium-paste.md"):
             for path in sorted(glob.glob(os.path.join(root, pattern))):
                 with open(path, encoding="utf-8") as fh:
-                    for k, line in enumerate(fh, 1):
-                        if md2medium.DOUBLE_DASH.search(line):
-                            found.append("%s:%d" % (os.path.relpath(path, root), k))
+                    lines = fh.read().split("\n")
+                # Same fence-aware scan convert() gates on, not a second copy
+                # of the rule: code blocks legitimately keep their `——`.
+                for k, _ in md2medium.double_dash_lines(lines):
+                    found.append("%s:%d" % (os.path.relpath(path, root), k))
         self.assertEqual(found, [])
 
     def test_the_guard_actually_looks_at_the_english_packs(self):

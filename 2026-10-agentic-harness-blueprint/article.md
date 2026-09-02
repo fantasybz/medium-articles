@@ -68,14 +68,14 @@ flowchart TB
 ```markdown
 ## Build & Test
 - 跑單元測試：`make test`（改動後必跑；CI 只是最後防線）
-- 只跑受影響的測試：`make test FILTER=<path>`—全量測試很慢，別預設跑全量
+- 只跑受影響的測試：`make test FILTER=<path>`——全量測試很慢，別預設跑全量
 
 ## Conventions
 - API handler 一律走 `internal/api/` 的 pattern，不要直接在 router 寫邏輯
 - DB migration 用 `make migration name=<snake_case>` 產生，禁止手寫 SQL 檔名
 
 ## Boundaries
-- `legacy/` 目錄唯讀：只能呼叫，不能修改—要改，先開 issue 給 @platform-team
+- `legacy/` 目錄唯讀：只能呼叫，不能修改——要改，先開 issue 給 @platform-team
 - 任何跨 service 的 schema 變更，必須先更新 `contracts/` 並跑過 contract tests
 ```
 
