@@ -9,8 +9,14 @@ Medium 草稿：標題、內文、所有插圖，並在結束前逐塊比對確�
 以及比對每張圖落在第幾個 graf（只數張數的話，圖跑到別的章節照樣「全部相符」）。
 
 ```bash
-./tools/medium_draft.sh 2026-09-agentic-engineering-platform
+./tools/medium_draft.sh 2026-09-agentic-engineering-platform        # publish/
+./tools/medium_draft.sh 2026-09-agentic-engineering-platform en     # publish/en/
 ```
+
+第二個參數選語言包。省略是預設的 `publish/`，給 `en` 就整包換成 `publish/en/`——
+**內文與插圖一起換**。這個參數存在的理由就是後者：只把 paste 檔指到翻譯版、
+圖片還是讀 `publish/images`，會把中文圖配到英文文章上，而且後面每一關都還是「全部相符」，
+因為它們比對的是轉換後的 payload，不是語言。
 
 跑完會印出草稿網址。**它刻意不設 tag、不選封面圖、不發布**——那三件事需要人看過再決定，
 而且發布會寄信給所有訂閱者且無法收回。
@@ -55,7 +61,7 @@ Medium 的 API 早就形同廢棄，所以只能開瀏覽器。中間踩過的�
 | `medium_js.py` | 產生餵給 `browse eval` 的瀏覽器片段（標題／內文／圖片／placeholder）；另有 `selectors` 子指令，吐出給 shell `eval` 的選擇器變數 |
 | `verify_draft.py` | 把編輯器裡的實際內容跟轉換後的 payload 逐塊比對，清點連結數，並比對每張圖落在第幾個 graf |
 | `medium_patch.py` | 改**已發布**的文章：找到某幾個 graf、整段換掉、逐處換字串、換圖、刪圖 |
-| `medium_draft.sh` | 把上面全部串起來 |
+| `medium_draft.sh` | 把上面全部串起來；第二個參數選 `publish/<lang>/` 語言包 |
 | `test_tools.py` | 這些腳本的單元測試：`python3 tools/test_tools.py` |
 
 先確認抓得到登入中的 session：

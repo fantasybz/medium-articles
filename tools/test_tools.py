@@ -1190,5 +1190,92 @@ class TestPatchCLI(unittest.TestCase):
             self.assertNotEqual(self.patch(*args).returncode, 0, "%s" % args)
 
 
+class TestMediumDraftLangPack(unittest.TestCase):
+    """Path resolution in medium_draft.sh, exercised without a browser.
+
+    Every check here happens before the script touches `browse`, which is what
+    makes it testable at all. The failure being guarded against is quiet: point
+    the driver at a translated medium-paste.md while it still uploads
+    publish/images and it ships the wrong figures, and every later gate —
+    block diff, link count, figure-position check — still reports a match,
+    because those compare against the payload, not against the language.
+    """
+
+    SCRIPT = os.path.join(TOOLS, "medium_draft.sh")
+
+    def article(self, packs):
+        """A throwaway repo root holding a copy of the driver and one article.
+
+        The driver resolves paths from its OWN location (`dirname $0/..`), not
+        from the cwd, so the copy has to live in the fake root or every path it
+        builds would point back at the real repo.
+        """
+        d = tempfile.TemporaryDirectory()
+        self.addCleanup(d.cleanup)
+        os.makedirs(os.path.join(d.name, "tools"))
+        script = os.path.join(d.name, "tools", "medium_draft.sh")
+        shutil.copy(self.SCRIPT, script)
+        root = os.path.join(d.name, "2026-01-sample")
+        for pack, has_images in packs.items():
+            pub = os.path.join(root, "publish", pack) if pack else os.path.join(root, "publish")
+            os.makedirs(pub, exist_ok=True)
+            with open(os.path.join(pub, "medium-paste.md"), "w", encoding="utf-8") as fh:
+                fh.write("# T\n\nbody\n")
+            if has_images:
+                os.makedirs(os.path.join(pub, "images"), exist_ok=True)
+        return script, "2026-01-sample"
+
+    def run_driver(self, script, *args):
+        return subprocess.run(["bash", script] + list(args),
+                              capture_output=True, text=True)
+
+    def test_usage_mentions_the_lang_argument(self):
+        out = self.run_driver(self.SCRIPT)
+        self.assertNotEqual(out.returncode, 0)
+        self.assertIn("[lang]", out.stderr)
+
+    def test_a_lang_that_is_a_path_is_refused(self):
+        # 'en/../..' would walk out of the article directory entirely.
+        for bad in ("../etc", "en/../..", "a/b", "en;rm"):
+            out = self.run_driver(self.SCRIPT, "2026-09-agentic-org-design", bad)
+            self.assertNotEqual(out.returncode, 0, bad)
+            self.assertIn("invalid lang", out.stderr, bad)
+
+    def test_the_lang_pack_uses_its_own_images_not_the_default_pack(self):
+        # THE regression: publish/images exists and is valid, publish/en/images
+        # does not. Resolving images from the default pack would sail past
+        # validation; resolving them from the lang pack must fail loudly.
+        script, name = self.article({"": True, "en": False})
+        out = self.run_driver(script, name, "en")
+        self.assertNotEqual(out.returncode, 0)
+        self.assertIn("no such images dir", out.stderr)
+        self.assertIn(os.path.join("publish", "en", "images"), out.stderr)
+
+    def test_omitting_the_lang_uses_the_default_pack(self):
+        # Mirror: only the en pack exists, so the no-lang run must look for
+        # publish/medium-paste.md and say so.
+        script, name = self.article({"en": True})
+        out = self.run_driver(script, name)
+        self.assertNotEqual(out.returncode, 0)
+        self.assertIn("no such paste file", out.stderr)
+        self.assertIn(os.path.join("publish", "medium-paste.md"), out.stderr)
+        self.assertNotIn(os.path.join("publish", "en"), out.stderr)
+
+    def test_a_missing_lang_pack_names_the_pack_it_wanted(self):
+        script, name = self.article({"": True})
+        out = self.run_driver(script, name, "fr")
+        self.assertNotEqual(out.returncode, 0)
+        self.assertIn(os.path.join("publish", "fr", "medium-paste.md"), out.stderr)
+
+    def test_every_shipped_lang_pack_is_complete(self):
+        # Each publish/<lang>/ must carry both halves; a pack with a paste file
+        # and no images dir would only fail at drive time.
+        root = os.path.dirname(TOOLS)
+        for paste in sorted(glob.glob(os.path.join(root, "*/publish/*/medium-paste.md"))):
+            pack = os.path.dirname(paste)
+            self.assertTrue(os.path.isdir(os.path.join(pack, "images")),
+                            "%s has no images/" % os.path.relpath(pack, root))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
