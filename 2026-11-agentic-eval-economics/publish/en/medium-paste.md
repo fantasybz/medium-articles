@@ -32,7 +32,7 @@ editions are published separately; cross-link the two once both are live.
 
 > **TL;DR** — The final part. You bought the runtime, organized the way part one describes, built the harness from part two. Then what? Most adoptions die on "then what": no evals, so the model-switch decision comes down to a hunch; no cost model, so the CFO shows up six months later with a knife; no gaming-resistant metrics, so the numbers look great while nobody actually gets faster. This piece covers the full operations layer: the eval dataset pipeline and its tiers, unit economics and model routing, the metric tree with an anti-gaming counter for each metric, the scaling gates that come after the pilot, and how to manage vendors.
 
-> Series: [Overview](../2026-09-agentic-engineering-platform/article.en.md) → [1. Org Design](../2026-09-agentic-org-design/article.en.md) → [2. The Harness Blueprint](../2026-10-agentic-harness-blueprint/article.en.md) → **3. Evals and Unit Economics (this piece)**
+> Series: Overview (coming soon) → 1. Org Design (coming soon) → 2. The Harness Blueprint (coming soon) → **3. Evals and Unit Economics (this piece)**
 
 ---
 
@@ -167,9 +167,9 @@ If you can only start three things: **measure a baseline, pick a pilot, and buil
 
 ### The series
 
-1. [Overview: Don't Build Your Own Devin](../2026-09-agentic-engineering-platform/article.en.md)
-2. [1. Org Design: who does this? Platform plus federation in practice](../2026-09-agentic-org-design/article.en.md)
-3. [2. The Harness Blueprint: making your system legible to agents](../2026-10-agentic-harness-blueprint/article.en.md)
+1. Overview: Don't Build Your Own Devin (coming soon)
+2. 1. Org Design: who does this? Platform plus federation in practice (coming soon)
+3. 2. The Harness Blueprint: making your system legible to agents (coming soon)
 4. **3. Evals, Unit Economics, and Scaling (this piece)**
 
 ---

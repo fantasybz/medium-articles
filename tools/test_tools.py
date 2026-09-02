@@ -189,6 +189,18 @@ class TestVerifyDraft(unittest.TestCase):
     def test_code_language_label_is_ignored(self):
         self.assertEqual(verify_draft.normalise("x\nAuto (VB.NET)", False), "x")
 
+    def test_curly_double_quotes_are_normalised(self):
+        # Medium curls both kinds of quote as house typography, exactly like
+        # the hair space around an em dash. Only the singles were folded, which
+        # held up while every article was Chinese and quoted with 「」; the
+        # first English draft failed 15 correct blocks on quote shape alone.
+        self.assertEqual(verify_draft.normalise('say "hi"', False),
+                         verify_draft.normalise("say \u201chi\u201d", False))
+
+    def test_curly_quotes_do_not_make_different_text_compare_equal(self):
+        self.assertNotEqual(verify_draft.normalise('say "hi"', False),
+                            verify_draft.normalise("say \u201cbye\u201d", False))
+
     def test_nbsp_and_curly_quote_are_normalised(self):
         self.assertEqual(verify_draft.normalise("<p>don’t go</p>", True),
                          verify_draft.normalise("don't go", False))

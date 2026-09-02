@@ -102,6 +102,11 @@ def normalise(text, from_html):
     for spacer in (THIN_SPACE, HAIR_SPACE, BOM):
         text = text.replace(spacer, "")
     text = text.replace(NBSP, " ").replace("\u2019", "'").replace("\u2018", "'")
+    # Curly doubles too. Medium curls both kinds; only the singles were folded
+    # here, which held up for as long as every article was Chinese and quoted
+    # with 「」. The first English draft turned 15 correct blocks into
+    # mismatches on nothing but quote shape.
+    text = text.replace("\u201c", '"').replace("\u201d", '"')
     text = EM_DASH_RUN.sub(EM_DASH, text)
     # Collapse runs of spaces, but never delete them: welded-together words are
     # a real content loss and must not compare equal.

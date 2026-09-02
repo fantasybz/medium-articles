@@ -32,7 +32,7 @@ editions are published separately; cross-link the two once both are live.
 
 > **TL;DR** — Most engineering groups don't need a silo whose job is "building agents for other teams." What they do need is a small **Agentic Engineering Platform / Enablement team**. And don't build a complete agent runtime from scratch: the winning strategy is **buy the generic agent runtime, build the organization-specific harness layer**. If you map it onto DevOps history, Agentic Engineering in September 2026 sits roughly where DevOps and Cloud Native sat in 2014–2016: the direction is settled, the primitives are arriving, but the best practices and org structures haven't crystallized. A 90-day action blueprint is at the end.
 
-> Series: **Overview (this piece)** → [1. Org Design](../2026-09-agentic-org-design/article.en.md) → [2. The Harness Blueprint](../2026-10-agentic-harness-blueprint/article.en.md) → [3. Evals and Unit Economics](../2026-11-agentic-eval-economics/article.en.md)
+> Series: **Overview (this piece)** → 1. Org Design (coming soon) → 2. The Harness Blueprint (coming soon) → 3. Evals and Unit Economics (coming soon)
 
 ---
 
@@ -147,7 +147,7 @@ On sizing — these are my numbers, not an industry standard:
 
 📌【在此插入表 table-04.png】
 
-Even past 500 engineers, I would not put a central team in charge of "making agents for everyone else." For the actual org charts at each tier, the skill mix, and the signals that tell you it's time to move up a tier, see [the org design piece](../2026-09-agentic-org-design/article.en.md).
+Even past 500 engineers, I would not put a central team in charge of "making agents for everyone else." For the actual org charts at each tier, the skill mix, and the signals that tell you it's time to move up a tier, see the org design piece (coming soon).
 
 One question that gets skipped: **how you pick champions, and how people transition.** A good agent champion is not "the person best at prompting." It's whoever was already good at developer experience — the engineer who writes tests, keeps documentation honest, and has taste in CI/CD and tooling. Harness engineering is DX engineering with the audience swapped from humans to agents.
 
@@ -314,9 +314,9 @@ That will outlast whichever of Codex, Claude Code, Copilot, or Devin happens to 
 This is the overview of a four-part series on Agentic Engineering. Each deep dive takes one dimension — organization, technology, operations — down to the level where you can start work:
 
 1. **Overview (this piece)**: market state, the DevOps parallel, the decision framework, and the 90-day blueprint
-2. [1. Org Design: who does this? Platform plus federation in practice](../2026-09-agentic-org-design/article.en.md) — headcount, the champion system, merge decisions, budget narrative
-3. [2. The Harness Blueprint: making your system legible to agents](../2026-10-agentic-harness-blueprint/article.en.md) — three-tier AGENTS.md, MCP gateway, sandboxing, brownfield playbook
-4. [3. Evals, Unit Economics, and Scaling: running agents like a product](../2026-11-agentic-eval-economics/article.en.md) — eval pipeline, cost model, gaming-resistant metrics, scaling gates
+2. 1. Org Design: who does this? Platform plus federation in practice (coming soon) — headcount, the champion system, merge decisions, budget narrative
+3. 2. The Harness Blueprint: making your system legible to agents (coming soon) — three-tier AGENTS.md, MCP gateway, sandboxing, brownfield playbook
+4. 3. Evals, Unit Economics, and Scaling: running agents like a product (coming soon) — eval pipeline, cost model, gaming-resistant metrics, scaling gates
 
 ---
 
