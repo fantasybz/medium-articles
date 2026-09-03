@@ -333,4 +333,4 @@ production correctness
 
 ---
 
-*本文發表於 [Medium @fantasybz](https://medium.com/@fantasybz)。若你也在建立組織的 Agentic Engineering 能力，歡迎交流。*
+*本文發表於 [Medium @fantasybz](https://medium.com/@fantasybz)。英文版：[English edition](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9)。若你也在建立組織的 Agentic Engineering 能力，歡迎交流。*
