@@ -54,6 +54,17 @@ PASTE="$PUBLISH/medium-paste.md"
 # pack, before anything opens a browser.
 [ -f "$PASTE" ] || { echo "no such paste file: $PASTE" >&2; exit "$EX_USAGE"; }
 [ -d "$IMAGES" ] || { echo "no such images dir: $IMAGES" >&2; exit "$EX_USAGE"; }
+# $ARTICLE gets no charset check (article dirs are dated slugs, not a fixed
+# set), so assert the resolved pack is actually inside the repo. Both guards
+# above pass happily for '../../../tmp/whatever', and every PNG in that
+# directory would then be base64'd into the draft and uploaded to Medium's
+# public CDN. Resolve with pwd -P so symlinks cannot dodge the prefix test.
+ROOT_ABS="$(cd "$ROOT" && pwd -P)"
+PUBLISH_ABS="$(cd "$PUBLISH" && pwd -P)"
+case "$PUBLISH_ABS/" in
+  "$ROOT_ABS"/*) ;;
+  *) echo "pack resolves outside the repo: $PUBLISH_ABS" >&2; exit "$EX_USAGE" ;;
+esac
 WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
 

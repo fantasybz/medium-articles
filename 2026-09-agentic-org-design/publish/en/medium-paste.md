@@ -1,7 +1,7 @@
 <!--
 Medium publishing guide (do NOT paste this comment block into Medium)
 
-Automation: `./tools/medium_draft.sh <article-dir>` builds the draft and diffs the
+Automation: `./tools/medium_draft.sh <article-dir> en` builds the draft and diffs the
 content, stopping one step before publish. See PUBLISHING.md. Manual flow below.
 
 [Series status] English edition of the Agentic Engineering series. The Chinese

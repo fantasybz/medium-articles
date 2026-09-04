@@ -93,12 +93,26 @@ def expected_figure_positions(payload):
     return [i for i, b in enumerate(graf_sequence(payload)) if SLOT_P.match(b)]
 
 
-def normalise(text, from_html):
+def normalise(text, from_html, in_code=False):
+    """Fold the rewrites Medium applies, so only real differences remain.
+
+    `in_code` turns the typography folds OFF. Medium applies none of them
+    inside a <pre> (that is why a CJK `——` survives there intact), so folding
+    them in a code block cannot fix a Medium rewrite — it can only hide a real
+    one. A curled quote in a shipped snippet is a syntax error for whoever
+    copies it, and this comparison is the only thing that would catch it.
+    """
     if from_html:
         # Strip tags BEFORE unescaping, so a code block quoting <p>hi</p> keeps
         # its own content instead of having it eaten as markup.
         text = html.unescape(TAGS.sub("", text))
-    text = LANG_LABEL.sub("", text)
+    text = LANG_LABEL.sub("", text)   # the language picker label is real, even in code
+    if in_code:
+        # Whitespace still collapses: Medium's own indentation handling is not
+        # something this gate has ever policed, and tightening it here would be
+        # a separate change with its own failure modes.
+        text = re.sub(r"[ \t]+", " ", text)
+        return re.sub(r"[ \t]*\n[ \t]*", "\n", text).strip()
     for spacer in (THIN_SPACE, HAIR_SPACE, BOM):
         text = text.replace(spacer, "")
     text = text.replace(NBSP, " ").replace("\u2019", "'").replace("\u2018", "'")
@@ -145,8 +159,13 @@ def main():
     editor = load_editor(sys.argv[2])
     actual = editor.get("texts", [])
 
-    expected = [normalise(b, True) for b in expected_blocks(payload)]
-    got = [normalise(g, False) for g in actual]
+    # Which blocks are code is decided from the payload (the editor side has
+    # had its tags stripped by then), and applied to both sides by position.
+    raw = expected_blocks(payload)
+    in_code = [b.startswith("<pre>") for b in raw]
+    expected = [normalise(b, True, c) for b, c in zip(raw, in_code)]
+    got = [normalise(g, False, in_code[i] if i < len(in_code) else False)
+           for i, g in enumerate(actual)]
 
     print("expected %d text blocks, editor has %d" % (len(expected), len(got)))
     bad = 0

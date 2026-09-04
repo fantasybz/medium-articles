@@ -164,10 +164,15 @@ graf 總數也因此沒有如預期增加。
 所以連續處理多篇時，goto 之後、動手之前，先斷言標題是對的再繼續：
 
 ```bash
-guard=$(B js "(()=>{const t=document.querySelector('.postArticle-content .graf').innerText;
-               return /Part 2/.test(t)?'OK':'WRONG:'+t.slice(0,40)})()")
+eval "$(python3 tools/medium_js.py selectors)"   # EDITOR_SEL, 不要再抄一份選擇器
+WANT="Part 3"                                    # ← 你正要改的那一篇，不是你剛改完的那一篇
+guard=$(B js "(()=>{const t=document.querySelector('$EDITOR_SEL .graf').innerText;
+               return new RegExp('$WANT').test(t)?'OK':'WRONG:'+t.slice(0,40)})()")
 case "$guard" in OK*) ;; *) echo "ABORT: $guard" >&2; exit 1;; esac
 ```
+
+`WANT` 要填**目標**那一篇的標題片段。填成上一篇的話，這個守衛會在 bug 真的發生時
+（頁面還停在上一篇）通過、在 goto 成功時中止——剛好反過來，等於沒有守衛。
 
 教訓有兩層：一是 `{"replaced":1}` 只證明「找到並替換了一個 graf」，不證明
 「替換在對的文章、對的位置」；二是**每一步都逐塊比對**的價值就在這裡——
@@ -258,7 +263,8 @@ Medium 限制同一作者 **24 小時內最多發布或排程 2 篇**。撞到�
 
 ### 目前的發布佇列（2026-09-02 決定）
 
-中文四篇已於 2026-09-03 全部上線並完全互連。剩下英文四篇。
+中文四篇已於 2026-09-03 全部上線並完全互連。英文版 Overview 與 Part 1 也已上線，
+剩下 Part 2、Part 3。
 
 | 順位 | 文章 | Post ID | 狀態 |
 |---:|---|---|---|
@@ -271,8 +277,10 @@ Medium 限制同一作者 **24 小時內最多發布或排程 2 篇**。撞到�
 | 1 | Part 2 Harness（英） | `3facc281f633` | 草稿，備妥 |
 | 2 | Part 3 Evals（英） | `1cb1855a2046` | 草稿，備妥 |
 
-**能發幾篇就發幾篇**（2026-09-02 決定，原本是一天一篇）。上限允許就繼續發，
-被擋下來再停，所以六篇大約三天發完：09-03 兩篇中文、09-04 與 09-05 各兩篇英文。
+**能發幾篇就發幾篇**（2026-09-02 決定，原本是一天一篇）。上限允許就繼續發，被擋下來再停。
+
+實際節奏比當初估的慢，因為 24 小時視窗是滾動的、不是自然日，每天真正空出的名額
+常常只有一個：09-02 技術篇、09-03 營運篇＋EN Overview、09-04 EN Part 1。
 
 一次要連發兩篇時，順序不能只是「發完再補」：**下一篇發布之前，先把它草稿裡
 指向剛上線那篇的連結補好**，它才會一上線就是完整的。補完再發，發完再回頭補
@@ -342,4 +350,5 @@ python3 tools/medium_patch.py subst " — — " " — "
 
 ## 已發布
 
-見 [README.md](README.md) 的文章表，以及各篇的 `publish/PUBLISHED.md`。
+見 [README.md](README.md) 的文章表，以及各篇的 `publish/PUBLISHED.md`
+（英文版另有 `publish/en/PUBLISHED.md`）。

@@ -25,7 +25,8 @@ YYYY-MM-slug/
     ├── PUBLISHED.md    # 發布後補：網址、tag、封面圖、核對結果
     └── en/             # 英文發布包（結構同上，圖表為英文版）
         ├── medium-paste.md
-        └── images/
+        ├── images/     # 英文版有自己的圖，不與上層共用
+        └── PUBLISHED.md
 ```
 
 ## Publishing
@@ -33,7 +34,8 @@ YYYY-MM-slug/
 `publish/medium-paste.md` 可以自己手貼，也可以跑：
 
 ```bash
-./tools/medium_draft.sh YYYY-MM-slug
+./tools/medium_draft.sh YYYY-MM-slug        # 中文包 publish/
+./tools/medium_draft.sh YYYY-MM-slug en     # 英文包 publish/en/（內文與圖片一起換）
 ```
 
 它會建好一份完整草稿並比對內容，停在發布前一步。細節與踩過的坑見
