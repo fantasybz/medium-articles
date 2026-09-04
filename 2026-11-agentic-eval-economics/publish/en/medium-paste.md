@@ -23,7 +23,7 @@ editions are published separately; cross-link the two once both are live.
 8. Replace the series links in two places with real Medium URLs:
    (a) the "Series:" line near the top
    (b) the "The series" list at the end
-   (these are GitHub relative paths in the paste version and are dead on Medium)
+   (an unpublished part appears here as plain text "(coming soon)", not as a relative path)
 9. Go back and add links to this piece from the other parts already published.
 10. Add a line to the Chinese edition pointing at this English version, and vice versa.
 -->

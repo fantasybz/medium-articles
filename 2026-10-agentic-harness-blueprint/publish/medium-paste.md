@@ -4,7 +4,9 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 自動化：`./tools/medium_draft.sh <article-dir>` 會建好草稿並比對內容，停在發布前一步。
 細節見 repo 根目錄的 PUBLISHING.md。以下是手動流程與發布後必做的收尾。
 
-【系列狀態】總論已發布（見其 publish/PUBLISHED.md）；三部曲三篇建議一起發布。
+【系列狀態】中文四篇已於 2026-09-03 全部上線並完全互連；狀態一律以各篇
+publish/PUBLISHED.md 為準。四篇不可能「一起發布」：Medium 限制同一作者 24 小時內
+最多發布或排程 2 篇，見 PUBLISHING.md 的〈發文數量上限〉。
 
 【手動流程】
 1. 開新 story：https://medium.com/new-story
@@ -19,7 +21,7 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 8. 把本篇兩處的系列連結換成真正的 Medium URL：
    (a) 開頭「系列導覽」那一行
    (b) 文末「系列文章」清單
-   （貼上版裡這些是 GitHub 相對路徑，在 Medium 上無效，務必替換）
+   （尚未發布的篇在這裡是純文字「（即將發布）」，不是相對路徑；上線後換成真正的 URL）
 9. 回頭編輯已發布的其他篇，把指向本篇的連結補上。
 -->
 
