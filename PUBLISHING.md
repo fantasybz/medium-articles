@@ -15,6 +15,9 @@ Medium 草稿：標題、內文、所有插圖，並在結束前逐塊比對確�
 跑完會印出草稿網址。**它刻意不設 tag、不選封面圖、不發布**——那三件事需要人看過再決定，
 而且發布會寄信給所有訂閱者且無法收回。
 
+一次要發多篇時先看下面的〈發文數量上限〉：Medium 限制同一作者 24 小時內最多
+**發布或排程 2 篇**，超過的那幾篇連草稿都建好了也送不出去。
+
 前置需求：macOS（要用 `security` 讀 Keychain、`openssl` 解密）、`python3`、Chrome 已登入 Medium、gstack 的 `browse`。
 
 ---
@@ -33,6 +36,7 @@ Medium 的 API 早就形同廢棄，所以只能開瀏覽器。中間踩過的�
 | 小標跟章節標題一樣大 | Medium 把 `<h1>/<h2>/<h3>` 都對到 `graf--h3` | `##` 出 `<h2>`、`###` 出 `<h4>` |
 | code block 被切成好幾塊 | `<pre>` 裡的空行會拆 graf | 空行換成一個空白字元 |
 | 圖沒進去但流程說成功 | 📌 那行的檔名不符 `[A-Za-z0-9-]+.png`，被當成一般段落 | `md2medium.py` 現在直接報錯，不再默默放行 |
+| 破折號在線上裂成 `— —` | 內文用了中文習慣的 `——`，而 Medium 會在每個 em dash 兩側加 hair space | 內文一律用單個 `—`；`md2medium.py` 遇到 `——` 直接報錯（code block 例外，那裡不會裂） |
 
 核心手法是**合成 paste 事件**。Medium 的舊版編輯器不檢查 `event.isTrusted`，
 所以 `DataTransfer` 上掛 `text/html` 就能一次貼進整篇排版好的內文，
@@ -50,6 +54,7 @@ Medium 的 API 早就形同廢棄，所以只能開瀏覽器。中間踩過的�
 | `chrome_cookies.py` | 從 macOS Chrome 解密匯出某網域的 cookie |
 | `medium_js.py` | 產生餵給 `browse eval` 的瀏覽器片段（標題／內文／圖片／placeholder）；另有 `selectors` 子指令，吐出給 shell `eval` 的選擇器變數 |
 | `verify_draft.py` | 把編輯器裡的實際內容跟轉換後的 payload 逐塊比對，清點連結數，並比對每張圖落在第幾個 graf |
+| `medium_patch.py` | 改**已發布**的文章：找到某幾個 graf、整段換掉、逐處換字串、換圖、刪圖 |
 | `medium_draft.sh` | 把上面全部串起來 |
 | `test_tools.py` | 這些腳本的單元測試：`python3 tools/test_tools.py` |
 
@@ -92,6 +97,109 @@ cookie 值貼進 repo。**
 
 ---
 
+## 改已發布的文章
+
+`medium_draft.sh` 只會建新草稿。文章上線之後要改，只能進 Medium 編輯器，
+但同一套合成 paste 也能做得很精準——選一段 graf，把新的 HTML 貼上去蓋掉：
+
+```bash
+W=$(mktemp -d)                                                     # 別用固定的 /tmp 檔名
+python3 tools/medium_patch.py html frag.md > "$W/x.html"           # markdown → Medium HTML
+python3 tools/medium_patch.py find "某段開頭"                       # 先確認錨點只中一個
+python3 tools/medium_patch.py replace "起" "訖" "$W/x.html" --dry   # 先看會蓋掉哪幾段
+python3 tools/medium_patch.py replace "起" "訖" "$W/x.html"         # 真的貼
+```
+
+產生的片段會餵進一個登入中的 Medium session，所以別寫到固定的 `/tmp/x.js`——
+同機器上任何人都能先把那個檔名佔走或改掉。`medium_draft.sh` 用的就是 `mktemp -d`。
+
+危險的是選取，不是貼上：錨點只要中了兩個 graf（或零個），選到的範圍就會不一樣，
+而這是在讀者看得到的文章上動刀。所以每個 snippet 都要求錨點**剛好中一個**，
+中了別的數量就回報錯誤而不是猜；`--dry` 會把「將被蓋掉的每一段」印出來再決定。
+
+改完用 repo 既有的那道關卡驗一次最保險：把 `medium-paste.md` 轉成 payload，
+再用 `verify_draft.py` 跟編輯器的實際內容逐塊比對。
+
+### 貼上的最後一塊會跟下一段合併
+
+這一條踩過：選取 graf 63–65 貼上「小標＋段落＋code block＋新段落」之後，
+**最後那個 `<p>` 併進了選取範圍後面那一段**，變成一段又臭又長的文字，
+graf 總數也因此沒有如預期增加。
+
+實測到會不會併，看的是「最後一個貼上的 block」與「選取範圍後面那個 graf」的組合，
+而且**不對稱**——不是「同類型才併」那麼簡單：
+
+| 最後貼上的 | 後面那個 graf | 結果 |
+|---|---|---|
+| `<p>` | `<p>` | **併** |
+| `<h4>` | `<li>` | **併** |
+| `<li>` | `<h4>` | 不併 |
+| `<li>` | `<p>` | 不併 |
+| `<p>` | `<h3>` | 不併 |
+| `<p>` | `<figure>` | 不併 |
+| 任何 | （沒有下一段，貼在文末） | 不併 |
+
+與其背這張表，**可靠的做法是每次都數 graf**：貼之前記下總數，貼完再數一次，
+和預期對不上就是併到了，回頭把那一段拆開。把選取範圍往後延伸、讓貼上的內容
+結束在標題或圖片之前，通常就能避開。
+
+延伸選取時要注意錨點會不會變得有歧義。實際遇過一次：`三、營運篇（本篇）`
+同時出現在文末清單和開頭的「系列導覽」那行裡，`replace` 因此回報
+`end anchor matched 2` 而拒絕動作——這正是它該做的事，換一個獨一無二的錨點就好。
+
+### 換圖
+
+換一張已經在線上的圖要兩步，因為 Medium 沒有「replace image」：
+
+```bash
+# 1. 貼新圖（插在指定那段之前）
+python3 tools/medium_patch.py image "圖後面那段的開頭" path/to/new.png
+# 2. 等上傳完成——沒傳完之前 <img> 還是 blob URL，這時就刪舊圖會刪錯
+#    輪詢到 figure 數 +1 且沒有壞掉的 src 為止（medium_draft.sh 裡有現成寫法）
+# 3. 選取舊圖，確認回報的檔名真的是你要刪的那張
+python3 tools/medium_patch.py drop "1*舊圖的CDN檔名"
+# 4. 讓 Medium 自己的選取生效，再按 Backspace（見下）
+```
+
+三件事要注意。
+
+一是 `drop` 只負責**選取**、不會自己按鍵；按之前先確認它回報的檔名是不是你要刪的
+那張——這跟 `medium_draft.sh` 是同一個理由。
+
+二是**光用 DOM Range 選取 figure 之後按 Backspace 沒有作用**。Medium 有自己的
+一套選取，要先對 `<img>` 送出完整的 pointer/mouse 事件序列
+（`pointerdown`／`mousedown`／`pointerup`／`mouseup`／`click`），讓 figure 拿到
+`is-selected is-mediaFocused`，Backspace 才刪得掉。所以上面第 4 步不是單純一個
+`browse press Backspace`。刪完還會留下一個空段落（`graf--empty`），把游標放進去
+再按一次 Backspace 才乾淨。
+
+三是 `image` 一送出 paste 就回傳，**不會等上傳完成**。第 2 步的等待要自己做，
+不然第 3 步會在新圖還沒落地時就把舊圖刪掉。
+
+存檔按的是 **Save and publish**。它算更新、不算新發布，
+所以不會吃掉下面〈發文數量上限〉的配額。
+
+## 發文數量上限
+
+Medium 限制同一作者 **24 小時內最多發布或排程 2 篇**。撞到時 Publish 對話框會出現：
+
+> The author of this story has published or scheduled the maximum of two stories
+> in the past 24 hours. Please try to publish or schedule again in 24 hours.
+
+幾件實測過的事：
+
+- **排程不是繞道**。錯誤訊息裡的「or schedule」是認真的：把日期改成明天再按
+  Schedule to publish，一樣被同一個計數器擋下來。三篇沒辦法在今晚一次排完。
+- 撞到之後 Publish 與 Schedule 兩顆按鈕會變成 disabled，**重新整理才會恢復**，
+  不然會誤以為是 UI 壞了。
+- 計數器算的是「過去 24 小時」的滑動視窗，不是自然日。所以第三篇要等的是
+  **最早那篇發布時間的 24 小時之後**，不是等到隔天午夜。
+- 草稿本身不受限：內容、topics、封面圖都可以先設好放著，之後只差按 Publish。
+
+因此一個系列要連續發布時，最省事的排法是**一天一篇**。
+
+---
+
 ## 收尾（手動）
 
 草稿好了之後，在 Publish 對話框裡：
@@ -105,14 +213,76 @@ cookie 值貼進 repo。**
 
 ---
 
+## 把一個系列剩下的篇數發完
+
+系列文章互相連結，但每篇的網址要發布後才存在，而 Medium 一天只讓你發兩篇
+（見上面〈發文數量上限〉）。所以順序是固定的，照著做就不會留下死連結：
+
+1. **發下一篇**。只按該草稿的 Publish，**不要重跑 `medium_draft.sh`**——
+   重建會換掉 Post ID 與網址，已發布的那篇還會再寄一次訂閱信。
+   topics 與封面圖在建草稿時就設好了，不用再動。
+2. **記下它的真實網址**。
+3. **回頭補連結**。用 `medium_patch.py` 把其他各篇裡對應的
+   「…（即將發布）」純文字換成真正的 Medium 連結；已發布的那幾篇改完按
+   **Save and publish**（算更新，不吃發文配額、不會重寄信）。
+4. **再發下一篇之前**，先把它草稿裡指向「已經上線的那幾篇」的連結補好，
+   這樣它一上線就是完整的，不必事後再改。
+5. 每篇改完都逐塊比對一次，並確認整篇已經沒有 `article.md` 開頭的 href、
+   也沒有殘留的「（即將發布）」。
+
+哪幾處還要補，記在各篇的 `publish/PUBLISHED.md` 裡（草稿那幾篇連草稿網址、
+已設好的 topics 與封面圖也一起記著）。那些檔案就是這件事的狀態機——
+先讀它們，不要憑印象。
+
 ## Medium 會改動的排版
 
-`——` 會被塞進 hair space（U+200A）變成看起來鬆一點的長破折號。這是 Medium
-對所有作者的 em dash 都會做的處理，不是貼上時掉字，`verify_draft.py` 因此會把
-**em dash 周圍**的空白收回來；一併正規化掉的還有 thin space／hair space／BOM、
-NBSP、彎引號，以及 code block 的 `Auto (…)` 語言標籤。連續空白只會被收成一個、
-不會被刪掉，所以真的把字黏在一起的貼上失敗還是會被抓到。想維持原樣只能在
-Medium 編輯器裡逐處手動改，不建議。
+Medium 會在**每一個** em dash 前後塞進 hair space（U+200A）。這是它對所有作者
+都會做的處理，不是貼上時掉字，`verify_draft.py` 因此會把 em dash 周圍的空白
+收回來；一併正規化掉的還有 thin space／hair space／BOM、NBSP、彎引號，
+以及 code block 的 `Auto (…)` 語言標籤。連續空白只會被收成一個、不會被刪掉，
+所以真的把字黏在一起的貼上失敗還是會被抓到。
+
+### 破折號一律用單個 `—`，不要用 `——`
+
+中文排版習慣用兩個 em dash 當破折號，但因為 Medium 會在**每一個** em dash
+兩側都加 hair space，`——` 上線後會變成 `— —`：本來該是一筆到底的破折號，
+中間裂開一道明顯的縫。單個 `—` 則只是兩側各鬆一點，看起來正常。
+
+這件事後面沒有任何一關會攔到——`verify_draft.py` 正是為了不把 hair space
+誤判成貼上失敗，才刻意把 em dash 周圍的空白收掉，於是 `——` 會一路過關，
+只有讀者看得到。所以檢查放在最前面：`md2medium.py` 遇到 `——` 直接報錯，
+連 payload 都不會產出。
+
+**code block 例外。** Medium 不會在 `<pre>` 裡加 hair space，所以 code block
+裡的 `——` 上線後就是原樣的 `——`，不會裂開；那裡本來就該用中文的雙破折號。
+檢查因此會跳過 fence 內的行——fence 的判斷跟 parser 共用同一組 regex，
+免得兩邊對「哪裡算 code block」的認知會分岔。
+
+已發布的文章要改的話用 `medium_patch.py subst` 逐處換，不必整篇重貼。
+但要換**兩種形式**，只換一種會以為改完了其實沒有：
+
+```bash
+# 1) 算繪後的形式：Medium 把 `——` 存成 HAIR — HAIR — SPACE，兩個 dash 中間隔著
+#    hair space，所以直接找 `——` 在內文裡一個都找不到
+python3 tools/medium_patch.py subst " — — " " — "
+# 2) 原字形式：只有 code block 裡才有，Medium 不會在 code block 加 hair space
+#    ——但 code block 的 `——` 是對的，不要動它，所以這一段通常根本不該跑
+```
+
+每一種都要迴圈跑到回報 `remaining: 0`。`subst` 找不到字面值時會另外回報
+兩件事：`split`（字串跨了兩個 text node，這支工具處理不了）與 `rendered`
+（把 hair space 這類隱形字元剝掉之後還數得到幾處）。**兩個只要不是 0／false
+就代表還沒改完**，只是你拿去比對的字串形式不對——這兩個回報存在的理由，
+就是不讓「找不到」被誤讀成「改完了」。
+
+還有兩個實際踩過的坑：
+
+- **新字串不能包含舊字串**，否則迴圈會一直比中自己剛換上去的結果，永遠不收斂。
+  想把 `—X` 換成 `——X` 就是這種情況。繞法是走一個中繼符號：先 `—X` → `⟦DD⟧X`，
+  再 `⟦DD⟧` → `——`，兩步都不自我匹配。
+- **Medium 會把行內 `` `code` `` 切成獨立的 text node**，即使在 code block 裡也一樣。
+  所以錨點跨過一個反引號就會回報 `split: true`；換一個落在同一個 text node
+  裡的錨點即可。
 
 ---
 

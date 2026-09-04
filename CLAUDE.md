@@ -12,7 +12,9 @@ python3 tools/test_tools.py
 Stdlib `unittest`, no dependencies, no network, no browser. Covers the parts of
 `tools/` that run without one: the markdown conversion, the draft verifier's
 normalisation and figure-placement check, the cookie domain filter and v10
-decryption, the generated browser snippets, and each script's CLI entry point.
+decryption, the generated browser snippets (both `medium_js.py` for new drafts
+and `medium_patch.py` for edits to published posts), and each script's CLI
+entry point.
 
 The browser-driving half is deliberately not unit tested — it needs a real
 logged-in Medium session. `tools/medium_draft.sh` covers itself instead: it
