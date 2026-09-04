@@ -32,7 +32,7 @@ editions are published separately; cross-link the two once both are live.
 
 > **TL;DR** — Part two, written for the people who have to build it. The core claim: the ceiling on agent output quality isn't the model, it's your harness — the quality of five layers: context, tools, environment, feedback, and guardrails. This piece gives a reference implementation for each: the three-tier AGENTS.md architecture and the two mechanisms that keep it from rotting, a minimum viable MCP gateway, sandbox selection, a legibility checklist for feedback loops, and a three-phase renovation playbook for brownfield systems. The target is that a staff engineer can finish reading and start work.
 
-> Series: [Overview](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9) → 1. Org Design (coming soon) → **2. The Harness Blueprint (this piece)** → 3. Evals and Unit Economics (coming soon)
+> Series: [Overview](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9) → [1. Org Design](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987) → **2. The Harness Blueprint (this piece)** → 3. Evals and Unit Economics (coming soon)
 
 ---
 
@@ -205,7 +205,7 @@ Once the harness is built, the next question is: how do you know it's working, a
 ### The series
 
 1. [Overview: Don't Build Your Own Devin](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9)
-2. 1. Org Design: who does this? Platform plus federation in practice (coming soon)
+2. [1. Org Design: who does this? Platform plus federation in practice](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987)
 3. **2. The Harness Blueprint (this piece)**
 4. 3. Evals, Unit Economics, and Scaling: running agents like a product (coming soon)
 

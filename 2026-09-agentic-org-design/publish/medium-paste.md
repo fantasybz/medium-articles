@@ -168,4 +168,4 @@ SRE 的角色也一樣：agent observability 直接復用 SRE 的 o11y stack（t
 
 ---
 
-*本文發表於 [Medium @fantasybz](https://medium.com/@fantasybz)。若你正在設計組織的 Agentic Engineering 編制，歡迎交流。*
+*本文發表於 [Medium @fantasybz](https://medium.com/@fantasybz)。英文版：[English edition](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987)。若你正在設計組織的 Agentic Engineering 編制，歡迎交流。*
