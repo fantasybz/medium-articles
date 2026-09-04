@@ -2,7 +2,7 @@
 
 > **TL;DR** — The final part. You bought the runtime, organized the way part one describes, built the harness from part two. Then what? Most adoptions die on "then what": no evals, so the model-switch decision comes down to a hunch; no cost model, so the CFO shows up six months later with a knife; no gaming-resistant metrics, so the numbers look great while nobody actually gets faster. This piece covers the full operations layer: the eval dataset pipeline and its tiers, unit economics and model routing, the metric tree with an anti-gaming counter for each metric, the scaling gates that come after the pilot, and how to manage vendors.
 
-> Series: [Overview](../2026-09-agentic-engineering-platform/article.en.md) → [1. Org Design](../2026-09-agentic-org-design/article.en.md) → [2. The Harness Blueprint](../2026-10-agentic-harness-blueprint/article.en.md) → **3. Evals and Unit Economics (this piece)**
+> Series: [Overview](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9) → [1. Org Design](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987) → 2. The Harness Blueprint (coming soon) → **3. Evals and Unit Economics (this piece)**
 
 ---
 
@@ -187,9 +187,9 @@ If you can only start three things: **measure a baseline, pick a pilot, and buil
 
 ### The series
 
-1. [Overview: Don't Build Your Own Devin](../2026-09-agentic-engineering-platform/article.en.md)
-2. [1. Org Design: who does this? Platform plus federation in practice](../2026-09-agentic-org-design/article.en.md)
-3. [2. The Harness Blueprint: making your system legible to agents](../2026-10-agentic-harness-blueprint/article.en.md)
+1. [Overview: Don't Build Your Own Devin](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9)
+2. [1. Org Design: who does this? Platform plus federation in practice](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987)
+3. 2. The Harness Blueprint: making your system legible to agents (coming soon)
 4. **3. Evals, Unit Economics, and Scaling (this piece)**
 
 ---
@@ -208,4 +208,4 @@ The initial concept and chapter structure are the author's; the prose was drafte
 
 ---
 
-*Originally published in Chinese. Also on [Medium @fantasybz](https://medium.com/@fantasybz) — if you're taking Agentic Engineering from pilot to scale, I'd like to hear from you.*
+*Originally published in Chinese: [中文版](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%89-eval-%E5%96%AE%E4%BD%8D%E7%B6%93%E6%BF%9F%E8%88%87%E8%A6%8F%E6%A8%A1%E5%8C%96-%E6%8A%8A-agent-%E7%95%B6%E7%94%A2%E5%93%81%E7%87%9F%E9%81%8B-d6d9623c2dc6). Also on [Medium @fantasybz](https://medium.com/@fantasybz) — if you're taking Agentic Engineering from pilot to scale, I'd like to hear from you.*

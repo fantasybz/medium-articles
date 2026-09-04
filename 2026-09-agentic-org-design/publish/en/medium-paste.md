@@ -1,7 +1,7 @@
 <!--
 Medium publishing guide (do NOT paste this comment block into Medium)
 
-Automation: `./tools/medium_draft.sh <article-dir>` builds the draft and diffs the
+Automation: `./tools/medium_draft.sh <article-dir> en` builds the draft and diffs the
 content, stopping one step before publish. See PUBLISHING.md. Manual flow below.
 
 [Series status] English edition of the Agentic Engineering series. The Chinese
@@ -23,16 +23,16 @@ editions are published separately; cross-link the two once both are live.
 8. Replace the series links in two places with real Medium URLs:
    (a) the "Series:" line near the top
    (b) the "The series" list at the end
-   (these are GitHub relative paths in the paste version and are dead on Medium)
+   (an unpublished part appears here as plain text "(coming soon)", not as a relative path)
 9. Go back and add links to this piece from the other parts already published.
 10. Add a line to the Chinese edition pointing at this English version, and vice versa.
 -->
 
 # Agentic Engineering, Part 1 — Who Does This? Platform Plus Federation in Practice
 
-> **TL;DR** — The first deep dive from [Don't Build Your Own Devin](../2026-09-agentic-engineering-platform/article.en.md). The overview's conclusion: don't stand up a central agent team, stand up a small Agentic Platform team. This piece takes "how do you actually organize it" down to the level you could walk into a headcount meeting with: real org charts at three company sizes, how to select and evaluate champions, how to merge with your existing DevEx or SRE function, and the budget narrative that works with a CFO.
+> **TL;DR** — The first deep dive from [Don't Build Your Own Devin](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9). The overview's conclusion: don't stand up a central agent team, stand up a small Agentic Platform team. This piece takes "how do you actually organize it" down to the level you could walk into a headcount meeting with: real org charts at three company sizes, how to select and evaluate champions, how to merge with your existing DevEx or SRE function, and the budget narrative that works with a CFO.
 
-> Series: [Overview](../2026-09-agentic-engineering-platform/article.en.md) → **1. Org Design (this piece)** → [2. The Harness Blueprint](../2026-10-agentic-harness-blueprint/article.en.md) → [3. Evals and Unit Economics](../2026-11-agentic-eval-economics/article.en.md)
+> Series: [Overview](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9) → **1. Org Design (this piece)** → 2. The Harness Blueprint (coming soon) → 3. Evals and Unit Economics (coming soon)
 
 ---
 
@@ -160,10 +160,10 @@ The next piece covers what the platform team actually builds: the three-tier AGE
 
 ### The series
 
-1. [Overview: Don't Build Your Own Devin](../2026-09-agentic-engineering-platform/article.en.md)
+1. [Overview: Don't Build Your Own Devin](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9)
 2. **1. Org Design (this piece)**
-3. [2. The Harness Blueprint: making your system legible to agents](../2026-10-agentic-harness-blueprint/article.en.md)
-4. [3. Evals, Unit Economics, and Scaling: running agents like a product](../2026-11-agentic-eval-economics/article.en.md)
+3. 2. The Harness Blueprint: making your system legible to agents (coming soon)
+4. 3. Evals, Unit Economics, and Scaling: running agents like a product (coming soon)
 
 ---
 
@@ -173,4 +173,4 @@ The initial concept and chapter structure are the author's; the prose was drafte
 
 ---
 
-*Originally published in Chinese. Also on [Medium @fantasybz](https://medium.com/@fantasybz) — if you're designing the org structure for Agentic Engineering, I'd like to hear from you.*
+*Originally published in Chinese: [中文版](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%80-%E8%AA%B0%E4%BE%86%E5%81%9A-platform-federation-%E7%9A%84%E7%B5%84%E7%B9%94%E8%A8%AD%E8%A8%88%E5%AF%A6%E5%8B%99-9d9353ef7f3a). Also on [Medium @fantasybz](https://medium.com/@fantasybz) — if you're designing the org structure for Agentic Engineering, I'd like to hear from you.*

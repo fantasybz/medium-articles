@@ -1,7 +1,7 @@
 <!--
 Medium publishing guide (do NOT paste this comment block into Medium)
 
-Automation: `./tools/medium_draft.sh <article-dir>` builds the draft and diffs the
+Automation: `./tools/medium_draft.sh <article-dir> en` builds the draft and diffs the
 content, stopping one step before publish. See PUBLISHING.md. Manual flow below.
 
 [Series status] English edition of the Agentic Engineering series. The Chinese
@@ -23,7 +23,7 @@ editions are published separately; cross-link the two once both are live.
 8. Replace the series links in two places with real Medium URLs:
    (a) the "Series:" line near the top
    (b) the "The series" list at the end
-   (these are GitHub relative paths in the paste version and are dead on Medium)
+   (an unpublished part appears here as plain text "(coming soon)", not as a relative path)
 9. Go back and add links to this piece from the other parts already published.
 10. Add a line to the Chinese edition pointing at this English version, and vice versa.
 -->
@@ -32,7 +32,7 @@ editions are published separately; cross-link the two once both are live.
 
 > **TL;DR** — Most engineering groups don't need a silo whose job is "building agents for other teams." What they do need is a small **Agentic Engineering Platform / Enablement team**. And don't build a complete agent runtime from scratch: the winning strategy is **buy the generic agent runtime, build the organization-specific harness layer**. If you map it onto DevOps history, Agentic Engineering in September 2026 sits roughly where DevOps and Cloud Native sat in 2014–2016: the direction is settled, the primitives are arriving, but the best practices and org structures haven't crystallized. A 90-day action blueprint is at the end.
 
-> Series: **Overview (this piece)** → [1. Org Design](../2026-09-agentic-org-design/article.en.md) → [2. The Harness Blueprint](../2026-10-agentic-harness-blueprint/article.en.md) → [3. Evals and Unit Economics](../2026-11-agentic-eval-economics/article.en.md)
+> Series: **Overview (this piece)** → [1. Org Design](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987) → 2. The Harness Blueprint (coming soon) → 3. Evals and Unit Economics (coming soon)
 
 ---
 
@@ -147,7 +147,7 @@ On sizing — these are my numbers, not an industry standard:
 
 📌【在此插入表 table-04.png】
 
-Even past 500 engineers, I would not put a central team in charge of "making agents for everyone else." For the actual org charts at each tier, the skill mix, and the signals that tell you it's time to move up a tier, see [the org design piece](../2026-09-agentic-org-design/article.en.md).
+Even past 500 engineers, I would not put a central team in charge of "making agents for everyone else." For the actual org charts at each tier, the skill mix, and the signals that tell you it's time to move up a tier, see [the org design piece](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987).
 
 One question that gets skipped: **how you pick champions, and how people transition.** A good agent champion is not "the person best at prompting." It's whoever was already good at developer experience — the engineer who writes tests, keeps documentation honest, and has taste in CI/CD and tooling. Harness engineering is DX engineering with the audience swapped from humans to agents.
 
@@ -314,9 +314,9 @@ That will outlast whichever of Codex, Claude Code, Copilot, or Devin happens to 
 This is the overview of a four-part series on Agentic Engineering. Each deep dive takes one dimension — organization, technology, operations — down to the level where you can start work:
 
 1. **Overview (this piece)**: market state, the DevOps parallel, the decision framework, and the 90-day blueprint
-2. [1. Org Design: who does this? Platform plus federation in practice](../2026-09-agentic-org-design/article.en.md) — headcount, the champion system, merge decisions, budget narrative
-3. [2. The Harness Blueprint: making your system legible to agents](../2026-10-agentic-harness-blueprint/article.en.md) — three-tier AGENTS.md, MCP gateway, sandboxing, brownfield playbook
-4. [3. Evals, Unit Economics, and Scaling: running agents like a product](../2026-11-agentic-eval-economics/article.en.md) — eval pipeline, cost model, gaming-resistant metrics, scaling gates
+2. [1. Org Design: who does this? Platform plus federation in practice](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987) — headcount, the champion system, merge decisions, budget narrative
+3. 2. The Harness Blueprint: making your system legible to agents (coming soon) — three-tier AGENTS.md, MCP gateway, sandboxing, brownfield playbook
+4. 3. Evals, Unit Economics, and Scaling: running agents like a product (coming soon) — eval pipeline, cost model, gaming-resistant metrics, scaling gates
 
 ---
 
@@ -338,4 +338,4 @@ The initial concept and chapter structure are the author's; the prose was drafte
 
 ---
 
-*Originally published in Chinese. Also on [Medium @fantasybz](https://medium.com/@fantasybz) — if you're building Agentic Engineering capability in your organization, I'd like to hear from you.*
+*Originally published in Chinese: [中文版](https://fantasybz.medium.com/%E5%88%A5%E6%80%A5%E8%91%97%E6%89%93%E9%80%A0%E4%BD%A0%E7%9A%84-devin-agentic-engineering-%E7%9A%84%E7%B5%84%E7%B9%94%E7%AD%96%E7%95%A5%E8%88%87-90-%E5%A4%A9%E8%A1%8C%E5%8B%95%E8%97%8D%E5%9C%96-7342ababc417). Also on [Medium @fantasybz](https://medium.com/@fantasybz) — if you're building Agentic Engineering capability in your organization, I'd like to hear from you.*

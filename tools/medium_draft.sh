@@ -2,6 +2,7 @@
 # Build a fully populated, verified Medium draft from an article directory.
 #
 #   ./tools/medium_draft.sh 2026-09-agentic-engineering-platform
+#   ./tools/medium_draft.sh 2026-09-agentic-engineering-platform en
 #
 # Stops at a verified draft and prints its URL. It deliberately does NOT set
 # topics, choose the preview image, or publish: those need a human look, and
@@ -22,14 +23,48 @@ readonly EX_TEMPFAIL=75
 
 
 ARTICLE="${1:-}"
+# Optional language pack. Empty means the default (Chinese) pack in publish/;
+# anything else selects publish/<lang>/, which carries its own medium-paste.md
+# AND its own images — the whole reason this argument exists is that pointing
+# the driver at a translated paste file while it still uploads publish/images
+# would ship the wrong figures with a clean-looking verification.
+LANG_PACK="${2:-}"
 if [ -z "$ARTICLE" ]; then
-  echo "usage: $0 <article-dir>" >&2
+  echo "usage: $0 <article-dir> [lang]" >&2
+  echo "       lang selects publish/<lang>/ (e.g. 'en'); omit for publish/" >&2
   exit "$EX_USAGE"
 fi
+# A directory name, not a path: 'en/../..' would walk out of the article.
+case "$LANG_PACK" in
+  *[!a-zA-Z0-9_-]*)
+    echo "invalid lang '$LANG_PACK': letters, digits, - and _ only" >&2
+    exit "$EX_USAGE" ;;
+esac
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 TOOLS="$ROOT/tools"
-IMAGES="$ROOT/$ARTICLE/publish/images"
+if [ -n "$LANG_PACK" ]; then
+  PUBLISH="$ROOT/$ARTICLE/publish/$LANG_PACK"
+else
+  PUBLISH="$ROOT/$ARTICLE/publish"
+fi
+IMAGES="$PUBLISH/images"
+PASTE="$PUBLISH/medium-paste.md"
+# Checked here rather than left to md2medium: a missing pack should say which
+# pack, before anything opens a browser.
+[ -f "$PASTE" ] || { echo "no such paste file: $PASTE" >&2; exit "$EX_USAGE"; }
+[ -d "$IMAGES" ] || { echo "no such images dir: $IMAGES" >&2; exit "$EX_USAGE"; }
+# $ARTICLE gets no charset check (article dirs are dated slugs, not a fixed
+# set), so assert the resolved pack is actually inside the repo. Both guards
+# above pass happily for '../../../tmp/whatever', and every PNG in that
+# directory would then be base64'd into the draft and uploaded to Medium's
+# public CDN. Resolve with pwd -P so symlinks cannot dodge the prefix test.
+ROOT_ABS="$(cd "$ROOT" && pwd -P)"
+PUBLISH_ABS="$(cd "$PUBLISH" && pwd -P)"
+case "$PUBLISH_ABS/" in
+  "$ROOT_ABS"/*) ;;
+  *) echo "pack resolves outside the repo: $PUBLISH_ABS" >&2; exit "$EX_USAGE" ;;
+esac
 WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
 
@@ -44,7 +79,7 @@ B() { "$BROWSE" --headed "$@"; }
 step() { printf '\n== %s\n' "$1"; }
 
 step "converting markdown"
-python3 "$TOOLS/md2medium.py" "$ROOT/$ARTICLE" --out "$WORK/payload.json"
+python3 "$TOOLS/md2medium.py" "$PASTE" --out "$WORK/payload.json"
 
 step "starting headed browser"
 "$BROWSE" disconnect >/dev/null 2>&1 || true

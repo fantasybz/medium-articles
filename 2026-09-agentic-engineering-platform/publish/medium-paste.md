@@ -4,7 +4,9 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 自動化：`./tools/medium_draft.sh <article-dir>` 會建好草稿並比對內容，停在發布前一步。
 細節見 repo 根目錄的 PUBLISHING.md。以下是手動流程與發布後必做的收尾。
 
-【系列狀態】總論已發布（見其 publish/PUBLISHED.md）；三部曲三篇建議一起發布。
+【系列狀態】中文四篇已於 2026-09-03 全部上線並完全互連；狀態一律以各篇
+publish/PUBLISHED.md 為準。四篇不可能「一起發布」：Medium 限制同一作者 24 小時內
+最多發布或排程 2 篇，見 PUBLISHING.md 的〈發文數量上限〉。
 
 【手動流程】
 1. 開新 story：https://medium.com/new-story
@@ -19,7 +21,7 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 8. 把本篇兩處的系列連結換成真正的 Medium URL：
    (a) 開頭「系列導覽」那一行
    (b) 文末「系列文章」清單
-   （貼上版裡這些是 GitHub 相對路徑，在 Medium 上無效，務必替換）
+   （尚未發布的篇在這裡是純文字「（即將發布）」，不是相對路徑；上線後換成真正的 URL）
 9. 回頭編輯已發布的其他篇，把指向本篇的連結補上。
 -->
 
@@ -27,7 +29,7 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 
 > **TL;DR** — 多數 Engineering Group 不需要成立一個「幫各 Team 做 Agent」的 silo，但很值得成立一個小型的 **Agentic Engineering Platform / Enablement Team**。而且不要從零打造完整的 agent runtime：正確策略是「**買/採用通用 agent runtime，自建 organization-specific harness layer**」。如果用 DevOps 的歷史對照，2026 年 9 月的 Agentic Engineering，大約等於 DevOps / Cloud Native 的 2014–2016 年：方向已經確定，基礎元件開始出現，但最佳實務與組織架構還沒定型。文末附上前 90 天的行動藍圖。
 
-> 系列導覽：**總論（本篇）** → [一、組織篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%80-%E8%AA%B0%E4%BE%86%E5%81%9A-platform-federation-%E7%9A%84%E7%B5%84%E7%B9%94%E8%A8%AD%E8%A8%88%E5%AF%A6%E5%8B%99-9d9353ef7f3a) → [二、技術篇](../2026-10-agentic-harness-blueprint/article.md) → [三、營運篇](../2026-11-agentic-eval-economics/article.md)
+> 系列導覽：**總論（本篇）** → [一、組織篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%80-%E8%AA%B0%E4%BE%86%E5%81%9A-platform-federation-%E7%9A%84%E7%B5%84%E7%B9%94%E8%A8%AD%E8%A8%88%E5%AF%A6%E5%8B%99-9d9353ef7f3a) → [二、技術篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%BA%8C-harness-%E8%97%8D%E5%9C%96-%E6%8A%8A%E7%B3%BB%E7%B5%B1%E8%AE%8A%E6%88%90-agent-%E8%AE%80%E5%BE%97%E6%87%82%E7%9A%84%E5%9C%B0%E6%96%B9-f2a139f5b561) → [三、營運篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%89-eval-%E5%96%AE%E4%BD%8D%E7%B6%93%E6%BF%9F%E8%88%87%E8%A6%8F%E6%A8%A1%E5%8C%96-%E6%8A%8A-agent-%E7%95%B6%E7%94%A2%E5%93%81%E7%87%9F%E9%81%8B-d6d9623c2dc6)
 
 ---
 
@@ -310,8 +312,8 @@ production correctness
 
 1. **總論（本篇）**：市場現況、DevOps 對照、決策框架與前 90 天藍圖
 2. [一、組織篇：誰來做？Platform + Federation 的組織設計實務](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%80-%E8%AA%B0%E4%BE%86%E5%81%9A-platform-federation-%E7%9A%84%E7%B5%84%E7%B9%94%E8%A8%AD%E8%A8%88%E5%AF%A6%E5%8B%99-9d9353ef7f3a)—編制、champion 制度、整併決策、預算敘事
-3. [二、技術篇：Harness 藍圖—把系統變成 agent 讀得懂的地方](../2026-10-agentic-harness-blueprint/article.md)—AGENTS.md 三層架構、MCP gateway、sandbox、brownfield playbook
-4. [三、營運篇：Eval、單位經濟與規模化—把 agent 當產品營運](../2026-11-agentic-eval-economics/article.md)—eval pipeline、成本模型、指標反作弊、scaling gates
+3. [二、技術篇：Harness 藍圖—把系統變成 agent 讀得懂的地方](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%BA%8C-harness-%E8%97%8D%E5%9C%96-%E6%8A%8A%E7%B3%BB%E7%B5%B1%E8%AE%8A%E6%88%90-agent-%E8%AE%80%E5%BE%97%E6%87%82%E7%9A%84%E5%9C%B0%E6%96%B9-f2a139f5b561)—AGENTS.md 三層架構、MCP gateway、sandbox、brownfield playbook
+4. [三、營運篇：Eval、單位經濟與規模化—把 agent 當產品營運](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%89-eval-%E5%96%AE%E4%BD%8D%E7%B6%93%E6%BF%9F%E8%88%87%E8%A6%8F%E6%A8%A1%E5%8C%96-%E6%8A%8A-agent-%E7%95%B6%E7%94%A2%E5%93%81%E7%87%9F%E9%81%8B-d6d9623c2dc6)—eval pipeline、成本模型、指標反作弊、scaling gates
 
 ---
 
@@ -333,4 +335,4 @@ production correctness
 
 ---
 
-*本文發表於 [Medium @fantasybz](https://medium.com/@fantasybz)。若你也在建立組織的 Agentic Engineering 能力，歡迎交流。*
+*本文發表於 [Medium @fantasybz](https://medium.com/@fantasybz)。英文版：[English edition](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9)。若你也在建立組織的 Agentic Engineering 能力，歡迎交流。*
