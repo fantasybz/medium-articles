@@ -25,26 +25,20 @@
 總論給了概念圖，這裡把三個角色的分工落到 RACI 的精度：
 
 ```mermaid
-flowchart LR
-    subgraph PT["Agentic Platform Team（4–8 人）"]
-        P1["Runtime 整合與升級"]
-        P2["MCP gateway 與權限"]
-        P3["Eval framework"]
-        P4["成本與觀測"]
-    end
-    subgraph CH["Embedded Champions（每 team 1 位、20% 時間）"]
-        C1["把 paved road 帶進 team"]
-        C2["把痛點帶回 platform"]
-    end
-    subgraph DT["Domain Teams"]
-        D1["AGENTS.md 與 domain context"]
-        D2["Eval cases"]
-        D3["產出的最終品質"]
-    end
+flowchart TB
+    PT["<b>Agentic Platform Team</b>（4–8 人）
+    Runtime 整合與升級　・　MCP gateway 與權限
+    Eval framework　・　成本與觀測"]
+    CH["<b>Embedded Champions</b>（每 team 1 位、20% 時間）
+    把 paved road 帶進 team　・　把痛點帶回 platform"]
+    DT["<b>Domain Teams</b>
+    AGENTS.md 與 domain context　・　Eval cases
+    產出的最終品質與 production ownership"]
     PT -->|paved roads / 工具 / 訓練| CH
     CH -->|回饋 / 需求 / 最佳實務| PT
-    CH -.->|嵌入| DT
-    style PT fill:#d4edda,stroke:#2e7d32
+    CH -->|嵌入| DT
+    style PT fill:#d4edda,stroke:#2e7d32,stroke-width:2px
+    style CH fill:#fff3cd,stroke:#b8860b,stroke-width:2px
 ```
 
 | 事項 | Platform Team | Champion | Domain Team |
@@ -74,13 +68,19 @@ flowchart LR
 
 ```mermaid
 flowchart TB
-    VP["VP Engineering"] --> PL["Platform Lead（1）"]
-    VP --> G["Champions Guild<br/>（8–10 位、各 20% 時間）"]
-    PL --> IE["Infra / Sandbox（1–2）"]
-    PL --> DX["DX / Context 工程（1）"]
-    PL --> EV["Eval / 觀測（1）"]
-    PL --> SEC["Security（0.5，向資安 team 借）"]
-    style PL fill:#d4edda,stroke:#2e7d32
+    VP["VP Engineering"]
+    PL["Platform Lead（1）"]
+    TEAM["<b>Platform Pod（4–6 人）</b>
+    Infra / Sandbox（1–2）
+    DX / Context 工程（1）
+    Eval / 觀測（1）
+    Security（0.5，向資安 team 借）"]
+    G["<b>Champions Guild</b>
+    8–10 位、各 20% 時間"]
+    VP --> PL --> TEAM
+    VP --> G
+    style PL fill:#d4edda,stroke:#2e7d32,stroke-width:2px
+    style TEAM fill:#f4f7f5,stroke:#2e5e46
 ```
 
 Skill mix 的重點：這是 **product team，不是 research team**—它的產品是 paved road，客戶是內部工程師。所以要找的是做過 developer tooling、CI、test infra 的人，而不是模型研究背景的人。Security 那 0.5 個人用借的：讓資安 team 有參與感，比之後被稽核打回來便宜得多。

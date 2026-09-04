@@ -27,13 +27,20 @@ What follows walks from the state of the market, through the lessons DevOps alre
 The whole industry has visibly shifted rightward, and the center of gravity is now pressing on the last two stages:
 
 ```mermaid
-flowchart LR
-    A["AI Autocomplete"] --> B["Chat Assistant"]
-    B --> C["Coding Agent"]
-    C --> D["Autonomous Agent"]
-    D --> E["Multi-agent<br/>Engineering System"]
-    style D fill:#fff3cd,stroke:#b8860b
-    style E fill:#ffe0e0,stroke:#c0392b
+flowchart TB
+    A["<b>AI Autocomplete</b>
+    completes the line you are typing; humans still drive line by line"]
+    B["<b>Chat Assistant</b>
+    Q&A help; humans ferry text between editor and chat box"]
+    C["<b>Coding Agent</b>
+    reads the repo, runs commands, edits across files; humans review each step"]
+    D["<b>Autonomous Agent</b>
+    runs a whole task unattended; humans only accept the result"]
+    E["<b>Multi-agent Engineering System</b>
+    agents divide work and review each other; humans govern the boundaries"]
+    A --> B --> C --> D --> E
+    style D fill:#fff3cd,stroke:#b8860b,stroke-width:2px
+    style E fill:#ffe0e0,stroke:#c0392b,stroke-width:2px
 ```
 
 Two surveys are worth anchoring on. Google's 2025 DORA report (nearly 5,000 respondents) found that **90% of engineers now use AI at work**, with a median of two hours a day spent on it — yet only about 24% report high trust in what it produces. Stack Overflow's data shows AI agent usage jumping from 31% to 59% in a single year, while 87% of developers worry about the correctness of agent output. Read together, the message is unambiguous: **adoption stopped being the bottleneck a while ago. Trust and verification are the bottleneck now** — which is exactly what the harness and eval sections below are about.
@@ -97,20 +104,22 @@ The two eras map onto each other almost item for item:
 Lay the two timelines on top of each other:
 
 ```mermaid
-timeline
-    title DevOps and Agentic Engineering, side by side
-    section DevOps era
-        2009 : DevOps movement takes hold
-        2013 : Docker
-        2014 : Kubernetes
-        2016 : SRE goes mainstream
-        2020 : Platform Engineering
-    section Agentic era
-        2024 : Copilot-style assistance
-        2025 : Coding agents mature
-        2026 : Harness and MCP standardization (now)
-        2027 : Agent platformization
-        2029 : Agent-native engineering
+flowchart TB
+    DO["<b>DevOps era</b>
+    2009　DevOps movement takes hold
+    2013　Docker
+    2014　Kubernetes
+    2016　SRE goes mainstream
+    2020　Platform Engineering"]
+    AG["<b>Agentic era</b>
+    2024　Copilot-style assistance
+    2025　Coding agents mature
+    2026　Harness and MCP standardization (now)
+    2027　Agent platformization
+    2029　Agent-native engineering"]
+    DO -->|the same arc, about 15 years apart| AG
+    style DO fill:#e8e6f7,stroke:#5b52a3,stroke-width:2px
+    style AG fill:#fdf6c9,stroke:#b8860b,stroke-width:2px
 ```
 
 My read is that **2026 is the Kubernetes moment**. Everyone already accepts that agents are here to stay. What's still being fought over is how they execute, how they get context, how they reach tools, how they collaborate, how they're constrained, and how they're observed.
@@ -271,29 +280,17 @@ Put the harness into the wider system, and you get the layer a company should ge
 
 ```mermaid
 flowchart TB
-    TEAMS["Engineering Teams"] --> PLATFORM
-    subgraph PLATFORM["Agentic Engineering Platform (the harness layer you should own)"]
-        direction LR
-        P1["Policy / Identity"]
-        P2["Context / AGENTS.md"]
-        P3["MCP / Tool Registry"]
-        P4["Environment Templates"]
-        P5["Evals"]
-        P6["Observability"]
-        P7["Cost / Model Routing"]
-        P8["Workflow / Guardrails"]
-    end
-    PLATFORM --> CODEX["Codex"]
-    PLATFORM --> CLAUDE["Claude Code"]
-    PLATFORM --> COPILOT["Copilot"]
-    CODEX --> ENV["Ephemeral Dev Environment"]
-    CLAUDE --> ENV
-    COPILOT --> ENV
-    ENV --> GH["GitHub"]
-    ENV --> CI["CI/CD"]
-    ENV --> MCP["MCP"]
-    MCP --> INT["Jira / Logs / DB / Observability / Internal APIs"]
-    style PLATFORM fill:#d4edda,stroke:#2e7d32
+    TEAMS["Engineering Teams"]
+    PLATFORM["<b>Agentic Engineering Platform</b> (the harness layer you should own)
+    Policy / Identity　・　Context / AGENTS.md　・　MCP / Tool Registry
+    Environment Templates　・　Evals　・　Observability
+    Cost / Model Routing　・　Workflow / Guardrails"]
+    RT["Agent Runtimes: Codex　・　Claude Code　・　Copilot"]
+    ENV["Ephemeral Dev Environment"]
+    OUT["GitHub　・　CI/CD　・　MCP"]
+    INT["Jira / Logs / DB / Observability / Internal APIs"]
+    TEAMS --> PLATFORM --> RT --> ENV --> OUT --> INT
+    style PLATFORM fill:#d4edda,stroke:#2e7d32,stroke-width:2px
 ```
 
 Note carefully: **owning that middle layer is not the same as writing your own Claude Code.**

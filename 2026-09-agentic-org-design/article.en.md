@@ -25,26 +25,20 @@ All three forces are real. But what they optimize for is manageability, not outp
 The overview gave the concept. Here it is at RACI resolution across the three roles:
 
 ```mermaid
-flowchart LR
-    subgraph PT["Agentic Platform Team (4–8 people)"]
-        P1["Runtime integration and upgrades"]
-        P2["MCP gateway and permissions"]
-        P3["Eval framework"]
-        P4["Cost and observability"]
-    end
-    subgraph CH["Embedded Champions (1 per team, 20% time)"]
-        C1["Bring paved roads into the team"]
-        C2["Bring pain points back to platform"]
-    end
-    subgraph DT["Domain Teams"]
-        D1["AGENTS.md and domain context"]
-        D2["Eval cases"]
-        D3["Final quality of output"]
-    end
+flowchart TB
+    PT["<b>Agentic Platform Team</b> (4–8 people)
+    Runtime integration and upgrades　・　MCP gateway and permissions
+    Eval framework　・　Cost and observability"]
+    CH["<b>Embedded Champions</b> (1 per team, 20% time)
+    Bring paved roads into the team　・　Bring pain points back to platform"]
+    DT["<b>Domain Teams</b>
+    AGENTS.md and domain context　・　Eval cases
+    Final output quality and production ownership"]
     PT -->|paved roads / tooling / training| CH
     CH -->|feedback / requests / practices| PT
-    CH -.->|embedded in| DT
-    style PT fill:#d4edda,stroke:#2e7d32
+    CH -->|embedded in| DT
+    style PT fill:#d4edda,stroke:#2e7d32,stroke-width:2px
+    style CH fill:#fff3cd,stroke:#b8860b,stroke-width:2px
 ```
 
 | Item | Platform Team | Champion | Domain Team |
@@ -74,13 +68,19 @@ The most important cell in that table is the last row: **production ownership al
 
 ```mermaid
 flowchart TB
-    VP["VP Engineering"] --> PL["Platform Lead (1)"]
-    VP --> G["Champions Guild<br/>(8–10 people, 20% time each)"]
-    PL --> IE["Infra / Sandbox (1–2)"]
-    PL --> DX["DX / Context engineering (1)"]
-    PL --> EV["Eval / Observability (1)"]
-    PL --> SEC["Security (0.5, borrowed from the security team)"]
-    style PL fill:#d4edda,stroke:#2e7d32
+    VP["VP Engineering"]
+    PL["Platform Lead (1)"]
+    TEAM["<b>Platform Pod (4–6 people)</b>
+    Infra / Sandbox (1–2)
+    DX / Context engineering (1)
+    Eval / Observability (1)
+    Security (0.5, borrowed from the security team)"]
+    G["<b>Champions Guild</b>
+    8–10 people, 20% time each"]
+    VP --> PL --> TEAM
+    VP --> G
+    style PL fill:#d4edda,stroke:#2e7d32,stroke-width:2px
+    style TEAM fill:#f4f7f5,stroke:#2e5e46
 ```
 
 The key thing about skill mix: this is a **product team, not a research team**. Its product is the paved road and its customers are internal engineers. So hire people who have built developer tooling, CI, and test infrastructure — not people with model research backgrounds. And borrow that half-person of security: giving the security team a stake up front is far cheaper than getting sent back by an audit later.
