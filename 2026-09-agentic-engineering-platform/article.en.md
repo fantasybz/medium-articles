@@ -317,31 +317,21 @@ In OpenAI's harness engineering piece, the most important thing isn't Codex. It'
 Turn logs, metrics, traces, browser state, DOM, screenshots, tests, architecture, dependency rules, CI, and PR feedback into things an agent can query, operate, and verify directly. Once you have, the delivery pipeline looks like this:
 
 ```mermaid
-flowchart TD
-    BR["Bug report"] --> RP["Agent reproduces"]
-    RP --> IL["Inspect logs / traces"]
-    IL --> MC["Modify code"]
-    MC --> RT["Run tests"]
-    RT --> RA["Run the app"]
-    RA --> VU["Verify UI"]
-    VU --> AR["Agent review"]
-    AR --> PR["PR"]
-    PR --> CI["CI"]
-    CI -->|red| FX["Fix CI"]
-    FX --> CI
+flowchart TB
+    BR["Bug report"] --> AL
+    AL["<b>The agent's automated loop</b>
+    reproduce → inspect logs / traces → modify code
+    → run tests → run the app → verify UI"]
+    AL -->|tests pass| AR["Agent review"]
+    AR --> CI["PR → CI"]
+    CI -->|red, back to the loop| AL
     CI -->|green| MG["Merge"]
-    subgraph HUMAN["What stays human"]
-        H1["Intent"]
-        H2["Architecture"]
-        H3["Constraints"]
-        H4["Taste"]
-        H5["Risk"]
-        H6["Prioritization"]
-        H7["Acceptance"]
-    end
+    HUMAN["<b>What stays human</b>
+    Intent · Architecture · Constraints · Taste · Risk · Prioritization · Acceptance"]
     HUMAN -.->|governs| BR
     HUMAN -.->|governs| MG
-    style HUMAN fill:#e3f2fd,stroke:#1565c0
+    style HUMAN fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+    style AL fill:#f4f7f5,stroke:#2e5e46,stroke-width:2px
 ```
 
 What's left for humans is intent, architecture, constraints, taste, risk, prioritization, and acceptance. **That, to me, is the actual definition of Agentic Engineering.**
@@ -363,29 +353,25 @@ The counterintuitive part: this ordering is identical to what you'd invest in to
 This may be the most consequential judgment in the whole piece:
 
 ```mermaid
-flowchart LR
-    subgraph BUY["Buy / adopt"]
-        direction TB
-        B1["Codex / Claude Code /<br/>Copilot / Antigravity"]
-        B2["Base agent loop"]
-        B3["Generic planning / memory"]
-        B4["Generic code search"]
-        B5["Generic sandbox technology"]
-    end
-    subgraph BUILD["Build / own"]
-        direction TB
-        C1["Company context"]
-        C2["MCP gateway"]
-        C3["Identity / permissions"]
-        C4["Repo conventions /<br/>architecture constraints"]
-        C5["Internal tools"]
-        C6["Eval dataset"]
-        C7["Observability / cost controls"]
-        C8["Workflow integration"]
-    end
+flowchart TB
+    BUY["<b>Buy / adopt</b>
+    • Codex / Claude Code / Copilot / Antigravity
+    • Base agent loop
+    • Generic planning / memory
+    • Generic code search
+    • Generic sandbox technology"]
+    BUILD["<b>Build / own</b>
+    • Company context
+    • MCP gateway
+    • Identity / permissions
+    • Repo conventions / architecture constraints
+    • Internal tools
+    • Eval dataset
+    • Observability / cost controls
+    • Workflow integration"]
     BUY -->|compose| BUILD
-    style BUY fill:#fff3cd,stroke:#b8860b
-    style BUILD fill:#d4edda,stroke:#2e7d32
+    style BUY fill:#fff3cd,stroke:#b8860b,stroke-width:2px
+    style BUILD fill:#d4edda,stroke:#2e7d32,stroke-width:2px
 ```
 
 Compressed into one line:

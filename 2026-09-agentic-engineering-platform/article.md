@@ -317,31 +317,21 @@ OpenAI 那篇 Harness Engineering 文章裡，我認為最重要的東西甚至�
 把 logs、metrics、traces、browser、DOM、screenshots、tests、architecture、dependency rules、CI、PR feedback，全部變成 agent 可以直接 query / operate / validate 的東西。做到之後，整條交付流程長這樣：
 
 ```mermaid
-flowchart TD
-    BR["Bug report"] --> RP["Agent reproduce"]
-    RP --> IL["Inspect logs / traces"]
-    IL --> MC["Modify code"]
-    MC --> RT["Run tests"]
-    RT --> RA["Run app"]
-    RA --> VU["Verify UI"]
-    VU --> AR["Agent review"]
-    AR --> PR["PR"]
-    PR --> CI["CI"]
-    CI -->|red| FX["Fix CI"]
-    FX --> CI
+flowchart TB
+    BR["Bug report"] --> AL
+    AL["<b>Agent 自動執行的迴圈</b>
+    重現問題 → 查 logs / traces → 修改程式碼
+    → 跑測試 → 跑 app → 驗證 UI"]
+    AL -->|測試通過| AR["Agent review"]
+    AR --> CI["PR → CI"]
+    CI -->|red 退回迴圈| AL
     CI -->|green| MG["Merge"]
-    subgraph HUMAN["人類保留的工作"]
-        H1["Intent"]
-        H2["Architecture"]
-        H3["Constraints"]
-        H4["Taste"]
-        H5["Risk"]
-        H6["Prioritization"]
-        H7["Acceptance"]
-    end
+    HUMAN["<b>人類保留的工作</b>
+    Intent ・ Architecture ・ Constraints ・ Taste ・ Risk ・ Prioritization ・ Acceptance"]
     HUMAN -.->|governs| BR
     HUMAN -.->|governs| MG
-    style HUMAN fill:#e3f2fd,stroke:#1565c0
+    style HUMAN fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+    style AL fill:#f4f7f5,stroke:#2e5e46,stroke-width:2px
 ```
 
 人類只剩下 intent、architecture、constraints、taste、risk、prioritization、acceptance。**這就是我認為 Agentic Engineering 真正的定義。**
@@ -363,29 +353,25 @@ flowchart TD
 這可能是整題最關鍵的判斷：
 
 ```mermaid
-flowchart LR
-    subgraph BUY["Buy / Adopt（買或採用）"]
-        direction TB
-        B1["Codex / Claude Code /<br/>Copilot / Antigravity"]
-        B2["Base agent loop"]
-        B3["Generic planning / memory"]
-        B4["Generic code search"]
-        B5["Generic sandbox technology"]
-    end
-    subgraph BUILD["Build / Own（自建並擁有）"]
-        direction TB
-        C1["Company context"]
-        C2["MCP gateway"]
-        C3["Identity / permissions"]
-        C4["Repo conventions /<br/>architecture constraints"]
-        C5["Internal tools"]
-        C6["Eval dataset"]
-        C7["Observability / cost controls"]
-        C8["Workflow integration"]
-    end
+flowchart TB
+    BUY["<b>Buy / Adopt（買或採用）</b>
+    • Codex / Claude Code / Copilot / Antigravity
+    • Base agent loop
+    • Generic planning / memory
+    • Generic code search
+    • Generic sandbox technology"]
+    BUILD["<b>Build / Own（自建並擁有）</b>
+    • Company context
+    • MCP gateway
+    • Identity / permissions
+    • Repo conventions / architecture constraints
+    • Internal tools
+    • Eval dataset
+    • Observability / cost controls
+    • Workflow integration"]
     BUY -->|組合| BUILD
-    style BUY fill:#fff3cd,stroke:#b8860b
-    style BUILD fill:#d4edda,stroke:#2e7d32
+    style BUY fill:#fff3cd,stroke:#b8860b,stroke-width:2px
+    style BUILD fill:#d4edda,stroke:#2e7d32,stroke-width:2px
 ```
 
 簡化成一句話：
