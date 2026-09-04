@@ -208,15 +208,12 @@ tools:
 Everything above assumes a system with tests, structured logs, and documented architecture. The reality at most enterprises is a fifteen-year-old legacy monolith with none of the three. Renovation runs in three phases, and the order cannot be swapped:
 
 ```mermaid
-flowchart TB
-    S1["<b>Phase 1 (1–2 months): verifiable</b>
-    Characterization tests lock in current behavior"]
-    S2["<b>Phase 2 (2–3 months): observable</b>
-    Structured logs, trace ID propagation, error message renovation"]
-    S3["<b>Phase 3 (ongoing): constrained</b>
-    Architecture rules in CI, AGENTS.md filled in"]
-    S1 --> S2 --> S3
-    style S1 fill:#d4edda,stroke:#2e7d32,stroke-width:2px
+flowchart LR
+    S1["Phase 1 (1–2 months)<br/>Verifiable"] --> S2["Phase 2 (2–3 months)<br/>Observable"] --> S3["Phase 3 (ongoing)<br/>Constrained"]
+    S1 -.- T1["Characterization tests<br/>lock in current behavior"]
+    S2 -.- T2["Structured logs, trace IDs<br/>error message renovation"]
+    S3 -.- T3["Architecture rules in CI<br/>AGENTS.md filled in"]
+    style S1 fill:#d4edda,stroke:#2e7d32
 ```
 
 **Phase 1: verifiable.** Don't chase coverage; chase "if you break it, something catches it." Characterization tests (the golden master technique) record current behavior as a baseline — they don't judge whether it's correct, they detect when it changes. There's an elegant bootstrap here: **writing characterization tests is the safest possible first task to give an agent in a brownfield system.** It only describes existing behavior and changes nothing, so the risk is near zero — and its output, the tests, make every subsequent task safer. The chicken-and-egg problem solves itself through this loop.

@@ -27,20 +27,13 @@
 整個產業已經明顯從左邊往右邊移動，而且重心正在壓到最後兩個階段：
 
 ```mermaid
-flowchart TB
-    A["<b>AI Autocomplete</b>
-    補完你正在打的那一行，人類仍逐行主導"]
-    B["<b>Chat Assistant</b>
-    問答式協助，人類在編輯器與對話框之間搬運"]
-    C["<b>Coding Agent</b>
-    能讀 repo、跑指令、跨檔案修改，人類逐步審核"]
-    D["<b>Autonomous Agent</b>
-    長時間自主執行整個任務，人類只驗收結果"]
-    E["<b>Multi-agent Engineering System</b>
-    agent 之間分工與互相 review，人類治理邊界"]
-    A --> B --> C --> D --> E
-    style D fill:#fff3cd,stroke:#b8860b,stroke-width:2px
-    style E fill:#ffe0e0,stroke:#c0392b,stroke-width:2px
+flowchart LR
+    A["AI Autocomplete"] --> B["Chat Assistant"]
+    B --> C["Coding Agent"]
+    C --> D["Autonomous Agent"]
+    D --> E["Multi-agent<br/>Engineering System"]
+    style D fill:#fff3cd,stroke:#b8860b
+    style E fill:#ffe0e0,stroke:#c0392b
 ```
 
 先用兩組調查數字定錨。Google 的 2025 DORA report（近 5,000 名受訪者）顯示，**90% 的工程師已在工作中使用 AI**，每天中位數投入 2 小時—但對 AI 產出抱持高度信任的只有約 24%。Stack Overflow 的調查則顯示，AI agent 的使用率一年內從 31% 跳升到 59%，同時有 87% 的開發者擔心 agent 產出的正確性。兩組數字合起來讀，訊息很清楚：**採用早已不是瓶頸，信任與驗證才是**—這正是後面 harness 與 eval 兩章要解的問題。
@@ -104,22 +97,20 @@ Cursor 也在解相同問題：每個 [Cloud Agent](https://cursor.com/blog/clou
 把兩條時間軸疊起來看：
 
 ```mermaid
-flowchart TB
-    DO["<b>DevOps 時代</b>
-    2009　DevOps 運動興起
-    2013　Docker
-    2014　Kubernetes
-    2016　SRE 普及
-    2020　Platform Engineering"]
-    AG["<b>Agentic 時代</b>
-    2024　Copilot 式輔助
-    2025　Coding Agents 成熟
-    2026　Harness 與 MCP 標準化（現在）
-    2027　Agent Platform 化
-    2029　Agent-native Engineering"]
-    DO -->|同一條演化路徑，相隔約 15 年| AG
-    style DO fill:#e8e6f7,stroke:#5b52a3,stroke-width:2px
-    style AG fill:#fdf6c9,stroke:#b8860b,stroke-width:2px
+timeline
+    title DevOps 與 Agentic Engineering 的平行時間軸
+    section DevOps 時代
+        2009 : DevOps 運動興起
+        2013 : Docker
+        2014 : Kubernetes
+        2016 : SRE 普及
+        2020 : Platform Engineering
+    section Agentic 時代
+        2024 : Copilot 式輔助
+        2025 : Coding Agents 成熟
+        2026 : Harness 與 MCP 標準化（現在）
+        2027 : Agent Platform 化
+        2029 : Agent-native Engineering
 ```
 
 我認為 **2026 就是 Kubernetes 出現前後的那個時間點**。大家已經知道 agent 一定會存在，現在正在爭的是：agent 怎麼執行、怎麼拿 context、怎麼連 tools、怎麼彼此協作、怎麼被限制、怎麼被觀測。
@@ -280,17 +271,29 @@ mindmap
 
 ```mermaid
 flowchart TB
-    TEAMS["Engineering Teams"]
-    PLATFORM["<b>Agentic Engineering Platform</b>（公司應該擁有的 harness layer）
-    Policy / Identity　・　Context / AGENTS.md　・　MCP / Tool Registry
-    Environment Templates　・　Evals　・　Observability
-    Cost / Model Routing　・　Workflow / Guardrails"]
-    RT["Agent Runtimes：Codex　・　Claude Code　・　Copilot"]
-    ENV["Ephemeral Dev Environment"]
-    OUT["GitHub　・　CI/CD　・　MCP"]
-    INT["Jira / Logs / DB / Observability / Internal APIs"]
-    TEAMS --> PLATFORM --> RT --> ENV --> OUT --> INT
-    style PLATFORM fill:#d4edda,stroke:#2e7d32,stroke-width:2px
+    TEAMS["Engineering Teams"] --> PLATFORM
+    subgraph PLATFORM["Agentic Engineering Platform（公司應該擁有的 harness layer）"]
+        direction LR
+        P1["Policy / Identity"]
+        P2["Context / AGENTS.md"]
+        P3["MCP / Tool Registry"]
+        P4["Environment Templates"]
+        P5["Evals"]
+        P6["Observability"]
+        P7["Cost / Model Routing"]
+        P8["Workflow / Guardrails"]
+    end
+    PLATFORM --> CODEX["Codex"]
+    PLATFORM --> CLAUDE["Claude Code"]
+    PLATFORM --> COPILOT["Copilot"]
+    CODEX --> ENV["Ephemeral Dev Environment"]
+    CLAUDE --> ENV
+    COPILOT --> ENV
+    ENV --> GH["GitHub"]
+    ENV --> CI["CI/CD"]
+    ENV --> MCP["MCP"]
+    MCP --> INT["Jira / Logs / DB / Observability / Internal APIs"]
+    style PLATFORM fill:#d4edda,stroke:#2e7d32
 ```
 
 注意：**擁有中間那一層，不等於自己再寫一個 Claude Code。**

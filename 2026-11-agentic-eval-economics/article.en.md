@@ -23,19 +23,16 @@ Why evals come first: the overview's judgment was that **the eval dataset is the
 Most teams stall on the first step: where do evals come from? The answer is that they're already in your engineering history — what's missing is the harvesting pipeline:
 
 ```mermaid
-flowchart TB
-    SRC["<b>Three sources</b>
-    Incidents / post-mortems　・　PR history (rejected and clean-passing)
-    Hand-picked golden tasks"]
-    X["Eval extraction (agent-assisted)"]
-    DS["<b>Eval dataset</b>
-    versioned, in the same repo as code"]
-    RUN["Scheduled runs: harness change / model upgrade / weekly"]
-    SCORE["Scoring: automated + monthly human sample"]
-    DEC["Decisions: switch models? fix the harness? widen permissions?"]
-    SRC --> X --> DS --> RUN --> SCORE --> DEC
+flowchart LR
+    SRC1["Incidents /<br/>post-mortems"] --> X["Eval extraction<br/>(agent-assisted)"]
+    SRC2["PR history<br/>(rejected and clean-passing)"] --> X
+    SRC3["Hand-picked<br/>golden tasks"] --> X
+    X --> DS["Eval dataset<br/>(versioned, in the same repo as code)"]
+    DS --> RUN["Scheduled runs<br/>(harness change / model upgrade / weekly)"]
+    RUN --> SCORE["Scoring<br/>(automated + monthly human sample)"]
+    SCORE --> DEC["Decisions: switch models? fix the harness? widen permissions?"]
     DEC -.->|new failures feed back| DS
-    style DS fill:#d4edda,stroke:#2e7d32,stroke-width:2px
+    style DS fill:#d4edda,stroke:#2e7d32
 ```
 
 Each source has its own character:
@@ -117,23 +114,19 @@ Different work goes to different model tiers, with the routing logic living in t
 The overview gave the North Star formula. Here it is expanded into a measurable tree:
 
 ```mermaid
-mindmap
-  root((Effective<br/>Engineering<br/>Leverage))
-    Delegation
-      Share of tasks delegated
-      Task-type coverage
-    Completion
-      End-to-end completion rate
-      Retry rate
-      Autonomous completion rate
-    Attention
-      Human time per task
-      Review minutes per PR
-      Waiting and context switching
-    Quality
-      Production correctness
-      Escape rate
-      Revert rate
+flowchart TD
+    NS["Effective Engineering Leverage"] --> A["Delegation<br/>share of tasks successfully delegated"]
+    NS --> B["Completion<br/>end-to-end completion rate"]
+    NS --> C["Attention<br/>human time per task"]
+    NS --> D["Quality<br/>production correctness"]
+    A --> A1["Task-type coverage"]
+    B --> B1["Retry rate"]
+    B --> B2["Autonomous completion rate"]
+    C --> C1["Review minutes per PR"]
+    C --> C2["Waiting and context switching"]
+    D --> D1["Escape rate"]
+    D --> D2["Revert rate"]
+    style NS fill:#d4edda,stroke:#2e7d32
 ```
 
 Every one of these gets gamed — not out of malice, but because Goodhart's law operates daily. So design the antidote at the same time you design the metric:
@@ -160,20 +153,12 @@ The overview gave the first 90 days: pick pilots, measure a baseline, build eval
 | **G3: deeper autonomy** | Frontier evals consistently stable; six months of audit with no serious incidents | Allowlisted dangerous tools, multi-step autonomous runs |
 
 ```mermaid
-flowchart TB
-    P["Pilot (90 days)"]
-    G1{"G1: pilot complete"}
-    E1["Expand to 25% of teams"]
-    G2{"G2: scale validated"}
-    E2["All teams + write-tier tools"]
-    G3{"G3: deeper autonomy"}
-    E3["Allowlisted dangerous tools, multi-step autonomous runs"]
-    F1["Go back and fix the harness or the org"]
-    P --> G1 --> E1 --> G2 --> E2 --> G3 --> E3
-    G1 -.->|failed| F1
+flowchart LR
+    P["Pilot (90 days)"] --> G1{"G1"} --> E1["25% of teams"] --> G2{"G2"} --> E2["All teams + write tools"] --> G3{"G3"} --> E3["Deeper autonomy"]
+    G1 -.->|failed| F1["Go back and fix<br/>the harness or the org"]
     G2 -.->|failed| F1
     G3 -.->|failed| F1
-    style F1 fill:#ffe0e0,stroke:#c0392b,stroke-width:2px
+    style F1 fill:#ffe0e0,stroke:#c0392b
 ```
 
 Two disciplines. **When you're stuck, go back and fix it — don't push through.** Failing G2 usually means a harness problem (part two); failing G3 usually means guardrails and eval coverage. And: **expansion speed is set by evals and escape rate, not by the roadmap.** "Q3 says company-wide rollout" is not a reason G2 passes automatically.

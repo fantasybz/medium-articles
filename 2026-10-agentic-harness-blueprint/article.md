@@ -208,15 +208,12 @@ tools:
 以上藍圖隱含一個假設：系統有測試、log 有結構、架構有文件。多數企業的現實是十五年的 legacy monolith，三者皆無。改造要分三個階段，順序不能顛倒：
 
 ```mermaid
-flowchart TB
-    S1["<b>階段一（1–2 個月）：可驗證</b>
-    Characterization tests 鎖住現狀行為"]
-    S2["<b>階段二（2–3 個月）：可觀測</b>
-    結構化 log、trace id 貫穿、錯誤訊息改造"]
-    S3["<b>階段三（持續）：可約束</b>
-    架構規則進 CI、AGENTS.md 補齊"]
-    S1 --> S2 --> S3
-    style S1 fill:#d4edda,stroke:#2e7d32,stroke-width:2px
+flowchart LR
+    S1["階段一（1–2 個月）<br/>可驗證"] --> S2["階段二（2–3 個月）<br/>可觀測"] --> S3["階段三（持續）<br/>可約束"]
+    S1 -.- T1["Characterization tests<br/>鎖住現狀行為"]
+    S2 -.- T2["結構化 log、trace id<br/>錯誤訊息改造"]
+    S3 -.- T3["架構規則進 CI<br/>AGENTS.md 補齊"]
+    style S1 fill:#d4edda,stroke:#2e7d32
 ```
 
 **階段一：可驗證**。不求測試覆蓋率，只求「改壞了會被抓到」—characterization tests（golden master 技法）：把現狀行為錄下來當基準，不判斷對錯，只偵測改變。這裡有個優雅的 bootstrap：**寫 characterization tests 正是 agent 在 brownfield 最安全的第一個任務**—它只描述現狀、不改行為，風險趨近於零；而它的產出（測試）又讓後續每個任務更安全。雞生蛋的問題，用這個循環解。

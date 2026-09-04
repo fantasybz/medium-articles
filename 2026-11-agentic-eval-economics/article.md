@@ -23,19 +23,16 @@
 多數團隊卡在第一步：「eval 要從哪來？」答案：你的工程歷史裡已經有了，缺的只是回收的 pipeline：
 
 ```mermaid
-flowchart TB
-    SRC["<b>三個來源</b>
-    Incidents / post-mortems　・　PR history（被打回的、一次過關的）
-    手工挑選的 golden tasks"]
-    X["Eval 抽取（agent 輔助整理）"]
-    DS["<b>Eval dataset</b>
-    版本控管，與 code 同 repo"]
-    RUN["定期執行：harness 改動 / model 升級 / 每週"]
-    SCORE["評分：自動 + 每月人工抽查"]
-    DEC["決策：換 model？修 harness？擴大授權？"]
-    SRC --> X --> DS --> RUN --> SCORE --> DEC
+flowchart LR
+    SRC1["Incidents /<br/>post-mortems"] --> X["Eval 抽取<br/>（agent 輔助整理）"]
+    SRC2["PR history<br/>（被打回的、一次過關的）"] --> X
+    SRC3["手工挑選<br/>golden tasks"] --> X
+    X --> DS["Eval dataset<br/>（版本控管，與 code 同 repo）"]
+    DS --> RUN["定期執行<br/>（harness 改動 / model 升級 / 每週）"]
+    RUN --> SCORE["評分<br/>（自動 + 每月人工抽查）"]
+    SCORE --> DEC["決策：換 model？修 harness？擴大授權？"]
     DEC -.->|新失敗案例回填| DS
-    style DS fill:#d4edda,stroke:#2e7d32,stroke-width:2px
+    style DS fill:#d4edda,stroke:#2e7d32
 ```
 
 三個來源各有特性：
@@ -117,23 +114,19 @@ Frontier 級最容易被省略，但它回答的是最值錢的問題：**agent 
 總論給了 North Star 的公式，這裡展開成可以量測的 metric tree：
 
 ```mermaid
-mindmap
-  root((Effective<br/>Engineering<br/>Leverage))
-    Delegation
-      成功委派的任務比例
-      任務類型覆蓋率
-    Completion
-      End-to-end 完成率
-      Retry rate
-      Autonomous completion rate
-    Attention
-      人類投入時間 / 任務
-      Review minutes / PR
-      等待與 context switch
-    Quality
-      Production 正確性
-      Escape rate
-      Revert rate
+flowchart TD
+    NS["Effective Engineering Leverage"] --> A["Delegation<br/>成功委派的任務比例"]
+    NS --> B["Completion<br/>End-to-end 完成率"]
+    NS --> C["Attention<br/>人類投入時間 / 任務"]
+    NS --> D["Quality<br/>Production 正確性"]
+    A --> A1["任務類型覆蓋率"]
+    B --> B1["Retry rate"]
+    B --> B2["Autonomous completion rate"]
+    C --> C1["Review minutes / PR"]
+    C --> C2["等待與 context switch"]
+    D --> D1["Escape rate"]
+    D --> D2["Revert rate"]
+    style NS fill:#d4edda,stroke:#2e7d32
 ```
 
 每個指標都會被 game—不是因為有人惡意，而是 Goodhart's law 的日常運作。所以設計指標時就要配好解藥：
@@ -160,20 +153,12 @@ mindmap
 | **G3：深度授權** | Frontier evals 連續穩定；audit 半年無重大事件 | Dangerous tools 白名單、多步 autonomous run |
 
 ```mermaid
-flowchart TB
-    P["Pilot（90 天）"]
-    G1{"G1：pilot 結業"}
-    E1["擴大到 25% teams"]
-    G2{"G2：規模驗證"}
-    E2["全員 + 開放 write 級 tools"]
-    G3{"G3：深度授權"}
-    E3["Dangerous tools 白名單、多步 autonomous run"]
-    F1["回頭修 harness / 組織"]
-    P --> G1 --> E1 --> G2 --> E2 --> G3 --> E3
-    G1 -.->|未過| F1
+flowchart LR
+    P["Pilot（90 天）"] --> G1{"G1"} --> E1["25% teams"] --> G2{"G2"} --> E2["全員 + write tools"] --> G3{"G3"} --> E3["深度授權"]
+    G1 -.->|未過| F1["回頭修 harness / 組織"]
     G2 -.->|未過| F1
     G3 -.->|未過| F1
-    style F1 fill:#ffe0e0,stroke:#c0392b,stroke-width:2px
+    style F1 fill:#ffe0e0,stroke:#c0392b
 ```
 
 兩個紀律：**卡住就回頭修，不硬推**—G2 過不了通常是 harness 問題（第二篇），G3 過不了通常是 guardrails 與 eval 覆蓋問題。以及：**擴張速度由 eval 與 escape rate 決定，不由 roadmap 決定**。Roadmap 上寫著 Q3 全面導入，不構成 G2 自動過關的理由。
