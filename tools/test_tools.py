@@ -645,6 +645,49 @@ class TestMd2MediumCLI(unittest.TestCase):
         out = run_tool(os.path.join(TOOLS, "md2medium.py"), "/nope/nothing")
         self.assertNotEqual(out.returncode, 0)
 
+    def lang_article(self, lang, default_images=(), lang_images=()):
+        """An article with a default pack and a <lang> pack, each with its own
+        images/ dir. Both packs declare the SAME slot, which is the point: the
+        real packs use identical figure filenames in both languages, so a
+        driver that fed the translated paste file while resolving images from
+        the default pack would ship the wrong figures and every later check —
+        block diff, link count, figure position — would still say "match".
+        """
+        root = tempfile.TemporaryDirectory()
+        self.addCleanup(root.cleanup)
+        body = "# T\n\n\U0001F4CC【在此插入圖 a.png】\n\n"
+        for pack, images in ((None, default_images), (lang, lang_images)):
+            pub = os.path.join(root.name, "publish", pack) if pack \
+                else os.path.join(root.name, "publish")
+            os.makedirs(os.path.join(pub, "images"), exist_ok=True)
+            with open(os.path.join(pub, "medium-paste.md"), "w", encoding="utf-8") as fh:
+                fh.write(body)
+            for name in images:
+                open(os.path.join(pub, "images", name), "wb").close()
+        return root.name
+
+    def test_a_lang_pack_resolves_images_from_its_own_dir(self):
+        # Image present ONLY in publish/en/images: converting the en paste
+        # must succeed.
+        art = self.lang_article("en", default_images=[], lang_images=["a.png"])
+        out = run_tool(os.path.join(TOOLS, "md2medium.py"),
+                       os.path.join(art, "publish", "en", "medium-paste.md"),
+                       "--out", os.path.join(art, "p.json"))
+        self.assertEqual(out.returncode, 0, out.stderr)
+
+    def test_a_lang_pack_does_not_fall_back_to_the_default_images(self):
+        # Mirror, and the one that actually catches the bug: the image exists
+        # in publish/images but NOT in publish/en/images. Resolving from the
+        # default pack would pass here and ship Chinese figures on an English
+        # article; it has to fail and name the en dir.
+        art = self.lang_article("en", default_images=["a.png"], lang_images=[])
+        out = run_tool(os.path.join(TOOLS, "md2medium.py"),
+                       os.path.join(art, "publish", "en", "medium-paste.md"),
+                       "--out", os.path.join(art, "p.json"))
+        self.assertNotEqual(out.returncode, 0)
+        self.assertIn("missing image", out.stderr)
+        self.assertIn(os.path.join("publish", "en", "images"), out.stderr)
+
 
 class TestVerifyDraftCLI(unittest.TestCase):
     """The exit code is the gate: a mismatch must never exit 0."""
@@ -1238,8 +1281,17 @@ class TestMediumDraftLangPack(unittest.TestCase):
         return script, "2026-01-sample"
 
     def run_driver(self, script, *args):
+        # Isolated HOME on purpose. The driver resolves browse from
+        # $HOME/.claude/skills/gstack/browse/dist/browse, which exists on a
+        # developer machine — so if a path guard ever regresses, these tests
+        # would reach `browse goto https://medium.com` and the suite's "no
+        # network, no browser" promise would quietly depend on the very code
+        # under test. An empty HOME makes that failure mode impossible.
+        home = tempfile.TemporaryDirectory()
+        self.addCleanup(home.cleanup)
         return subprocess.run(["bash", script] + list(args),
-                              capture_output=True, text=True)
+                              capture_output=True, text=True,
+                              env={**os.environ, "HOME": home.name})
 
     def test_usage_mentions_the_lang_argument(self):
         out = self.run_driver(self.SCRIPT)
@@ -1278,6 +1330,28 @@ class TestMediumDraftLangPack(unittest.TestCase):
         out = self.run_driver(script, name, "fr")
         self.assertNotEqual(out.returncode, 0)
         self.assertIn(os.path.join("publish", "fr", "medium-paste.md"), out.stderr)
+
+    def test_a_hyphenated_or_underscored_lang_is_accepted(self):
+        # Only rejections were covered, so `-` and `_` in the charset were
+        # dead weight: narrowing it to [a-zA-Z0-9] passed the whole suite while
+        # silently refusing a future zh-TW or pt_BR pack. A complete pack gets
+        # past validation and dies at the browse lookup instead (EX_UNAVAILABLE),
+        # which is exactly the boundary this asserts.
+        for lang in ("zh-TW", "pt_BR"):
+            script, name = self.article({lang: True})
+            out = self.run_driver(script, name, lang)
+            self.assertNotIn("invalid lang", out.stderr, lang)
+            self.assertNotIn("no such paste file", out.stderr, lang)
+            self.assertEqual(out.returncode, 69, "%s: %s" % (lang, out.stderr))
+
+    def test_usage_and_validation_failures_exit_with_EX_USAGE(self):
+        # Every other driver test only asserts "not zero". The script defines
+        # sysexits codes deliberately, so `exit "$EX_USAGE"` could become
+        # `exit 1` unnoticed.
+        script, name = self.article({"": True})
+        self.assertEqual(self.run_driver(script).returncode, 64)
+        self.assertEqual(self.run_driver(script, name, "../etc").returncode, 64)
+        self.assertEqual(self.run_driver(script, name, "fr").returncode, 64)
 
     def test_every_shipped_lang_pack_is_complete(self):
         # Each publish/<lang>/ must carry both halves; a pack with a paste file
