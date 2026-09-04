@@ -32,7 +32,7 @@ editions are published separately; cross-link the two once both are live.
 
 > **TL;DR** — Most engineering groups don't need a silo whose job is "building agents for other teams." What they do need is a small **Agentic Engineering Platform / Enablement team**. And don't build a complete agent runtime from scratch: the winning strategy is **buy the generic agent runtime, build the organization-specific harness layer**. If you map it onto DevOps history, Agentic Engineering in September 2026 sits roughly where DevOps and Cloud Native sat in 2014–2016: the direction is settled, the primitives are arriving, but the best practices and org structures haven't crystallized. A 90-day action blueprint is at the end.
 
-> Series: **Overview (this piece)** → [1. Org Design](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987) → 2. The Harness Blueprint (coming soon) → 3. Evals and Unit Economics (coming soon)
+> Series: **Overview (this piece)** → [1. Org Design](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987) → [2. The Harness Blueprint](https://fantasybz.medium.com/agentic-engineering-part-2-the-harness-blueprint-making-your-system-legible-to-agents-3facc281f633) → 3. Evals and Unit Economics (coming soon)
 
 ---
 
@@ -315,7 +315,7 @@ This is the overview of a four-part series on Agentic Engineering. Each deep div
 
 1. **Overview (this piece)**: market state, the DevOps parallel, the decision framework, and the 90-day blueprint
 2. [1. Org Design: who does this? Platform plus federation in practice](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987) — headcount, the champion system, merge decisions, budget narrative
-3. 2. The Harness Blueprint: making your system legible to agents (coming soon) — three-tier AGENTS.md, MCP gateway, sandboxing, brownfield playbook
+3. [2. The Harness Blueprint: making your system legible to agents](https://fantasybz.medium.com/agentic-engineering-part-2-the-harness-blueprint-making-your-system-legible-to-agents-3facc281f633) — three-tier AGENTS.md, MCP gateway, sandboxing, brownfield playbook
 4. 3. Evals, Unit Economics, and Scaling: running agents like a product (coming soon) — eval pipeline, cost model, gaming-resistant metrics, scaling gates
 
 ---
