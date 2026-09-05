@@ -45,7 +45,7 @@ Topics 在建草稿時就設好了，發布當下五個 chip 都還在，不必�
 | EN Part 3 草稿 `1cb1855a2046` | 同上（草稿裡先補好，發布時就是完整的）|
 | 中文版技術篇 `f2a139f5b561` | 文末「英文版：English edition」|
 
-本篇裡還有 2 處是純文字加「(coming soon)」，都指向尚未發布的 EN Part 3
-（開頭 `Series:` 那行、文末 `The series` 清單各一處）。那篇上線後要補。
+EN Part 3 於 2026-09-05 09:40 上線後，本篇裡指向它的 2 處也換成真正的連結，
+「(coming soon)」歸零。英文四篇的系列連結至此全部收乾淨。
 
 最新內容以 `article.en.md` 為準；`publish/en/medium-paste.md` 由它產生。
