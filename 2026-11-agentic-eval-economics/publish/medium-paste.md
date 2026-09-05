@@ -185,4 +185,4 @@ Frontier 級最容易被省略，但它回答的是最值錢的問題：**agent 
 
 ---
 
-*本文發表於 [Medium @fantasybz](https://medium.com/@fantasybz)。若你正在把 Agentic Engineering 從 pilot 帶到規模化，歡迎交流。*
+*本文發表於 [Medium @fantasybz](https://medium.com/@fantasybz)。英文版：[English edition](https://fantasybz.medium.com/agentic-engineering-part-3-evals-unit-economics-and-scaling-running-agents-like-a-product-1cb1855a2046)。若你正在把 Agentic Engineering 從 pilot 帶到規模化，歡迎交流。*
