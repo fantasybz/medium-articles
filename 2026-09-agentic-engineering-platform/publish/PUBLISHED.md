@@ -26,7 +26,7 @@ Topics 原本填 `Agentic AI`，Medium 正規化成 `Agentic Ai`。
 | 插圖 | 14，位置與 📌 標記一致 |
 | 章節標題 / 小標 | 12 / 9 |
 | 引言 / 列表項 / code block | 9 / 29 / 2 |
-| 內文連結 | 17 |
+| 內文連結 | 25（發布時 17；組織篇 +3、技術篇 +2、營運篇 +2、英文版 +1）|
 | 閱讀時間 | 18 min read |
 
 `<path>`、`<snake_case>` 這類角括號在 code block 裡都完整保留。
