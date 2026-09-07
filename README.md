@@ -29,6 +29,13 @@ YYYY-MM-slug/
         └── PUBLISHED.md
 ```
 
+## Research loop
+
+下個月寫什麼，由 [research/](research/README.md) 的每月迴圈決定：收集 X / Facebook /
+LinkedIn / Medium stats / arXiv 的訊號 → 三份 digest → workflow 提案、評審、選題 →
+每個主題一份「總論 + 三部曲」大綱，落選的進 backlog。第一圈的產出在
+[research/2026-09/](research/2026-09/)。
+
 ## Publishing
 
 `publish/medium-paste.md` 可以自己手貼，也可以跑：
