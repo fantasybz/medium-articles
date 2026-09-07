@@ -7,13 +7,26 @@ SyntaxError, which closed the pipe and made codex panic on stdout).
 Prints agent messages to stdout (they become the review file), and everything
 diagnostic (`turn.failed`, `error` events, missing `turn.completed`) to stderr so
 the caller can tell "Codex said nothing" from "Codex was refused".
+
+Exit codes codex_review.sh branches on:
+    0  at least one agent message and a completed turn
+    3  the turn failed or an error event arrived (refusal, usage limit)
+    4  no turn.completed: a mid-stream disconnect
+    5  the turn completed but Codex never spoke; the "review" would be a token count
 """
 import json
 import sys
 
 
 def main():
+    # The stream is UTF-8 whatever the locale says; a C locale would otherwise
+    # choke on the first CJK character in a review.
+    for stream in (sys.stdin, sys.stdout):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8")
+
     done = 0
+    spoke = 0
     failed = False
     for line in sys.stdin:
         line = line.strip()
@@ -28,6 +41,7 @@ def main():
             item = obj.get("item", {})
             itype = item.get("type", "")
             if itype == "agent_message" and item.get("text"):
+                spoke += 1
                 print(item["text"], flush=True)
             elif itype == "command_execution" and item.get("command"):
                 print("<!-- codex ran: %s -->" % item["command"][:160], flush=True)
@@ -51,6 +65,10 @@ def main():
     if done == 0:
         print("[codex] no turn.completed event: possible mid-stream disconnect.", file=sys.stderr, flush=True)
         sys.exit(4)
+    if spoke == 0:
+        print("[codex] the turn completed without an agent message; no review was produced.",
+              file=sys.stderr, flush=True)
+        sys.exit(5)
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
-"""Derive publish/medium-paste.md from article.md (or publish/en/medium-paste.md from article.en.md).
+"""Derive publish/medium-paste.md from article.md (or publish/<lang>/medium-paste.md from article.<lang>.md).
 
-    python3 research/scripts/article_to_paste.py 2026-10-green-overview          # zh: publish/medium-paste.md
-    python3 research/scripts/article_to_paste.py 2026-10-green-overview --lang en
+    python3 research/scripts/article_to_paste.py 2026-10-green-overview          # article.md    -> publish/
+    python3 research/scripts/article_to_paste.py 2026-10-green-overview --lang en # article.en.md -> publish/en/
 
 The mapping is the one every published piece already follows (checked on 2026-09-06 against
 2026-09-agentic-org-design: zero diff after mapping):
@@ -10,16 +10,41 @@ The mapping is the one every published piece already follows (checked on 2026-09
 * a markdown table          -> 📌【在此插入表 table-NN.png】
 * everything else           -> byte for byte the same (links included — tools/test_tools.py's lockstep
                                scan compares the link list and the 「（即將發布）」 count of both files)
+* a markdown link inside a captured table cell or mermaid block (`](http`, `](https`, `](../`, `](./`)
+  is refused, naming the table/figure and the cell: the PNG cannot carry it, so the paste would lack
+  a link the article has and the lockstep scan would fail with no hint why. Put the link in the prose
+  around the table, or in References.
 * a publishing-guide HTML comment is prepended; it is stripped before anything reaches Medium.
+
+Fences are tracked with tools/md2medium.py's own definitions, so what this treats as a code block is
+exactly what the converter will: a ```mermaid sample quoted inside another fence, or a `|` line inside
+one, stays code; a fence the author never closed is an error, not a diagram that swallows the rest of
+the article. The 📌 line comes from md2medium.slot_line(), so it can only be one md2medium reads back.
 
 It also writes publish/<lang>/figures.json listing which mermaid block / table becomes which PNG, so
 render_images.sh can produce the PNGs from the same source. Nothing here touches article.md.
 """
 import argparse
+import importlib.util
 import json
 import os
 import re
 import sys
+
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+
+
+def _load_md2medium():
+    # research/scripts is not a package and tools/ is not on sys.path; load
+    # the converter by path, the way notion_cookies.py loads chrome_cookies.
+    spec = importlib.util.spec_from_file_location(
+        "md2medium", os.path.join(ROOT, "tools", "md2medium.py"))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+md2medium = _load_md2medium()
 
 HEADER = """<!--
 Medium 發布指南（此註解區塊不要貼進 Medium）
@@ -49,46 +74,127 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 
 """
 
-MERMAID = re.compile(r"```mermaid\n(.*?)```", re.S)
-TABLE = re.compile(r"(?:^\|.*\n)+", re.M)
+# A table row is a line starting with a pipe, in column 0 like every table in
+# the repo. Only consulted outside a fence.
+TABLE_ROW = re.compile(r"^\|")
+# The header/body delimiter of a GFM table: |---|:--:|. Markdown puts no gap
+# between two tables that touch, so a renderer shows the second header and its
+# delimiter as two more body rows of the first; a delimiter row past the first
+# one in a run is the only sign a new table started, and the row before it is
+# that table's header.
+TABLE_SEP = re.compile(r"^\|[\s:|-]*-[\s:|-]*$")
+# The link forms tools/test_tools.py's lockstep scan counts. Inside a table or
+# mermaid block the link would vanish with the PNG, so convert() refuses them.
+CAPTURED_LINK = re.compile(r"\]\((?:http|\.\./|\./)")
+# The publish/<lang>/ directory is named after --lang, so it has to be a name.
+LANG_RE = re.compile(r"[A-Za-z0-9_-]+")
+
+
+def split_tables(rows):
+    """One run of `|` lines as the list of tables it holds."""
+    tables, cur = [], []
+    for row in rows:
+        starts_new = (TABLE_SEP.match(row) and len(cur) >= 2
+                      and any(TABLE_SEP.match(r) for r in cur)
+                      and not TABLE_SEP.match(cur[-1]))
+        if starts_new:
+            header = cur.pop()
+            tables.append(cur)
+            cur = [header]
+        cur.append(row)
+    if cur:
+        tables.append(cur)
+    return tables
 
 
 def convert(article_text):
-    figures = []
-    tables = []
+    """(paste body, mermaid sources, table sources) for one article.
 
-    def fig(m):
-        figures.append(m.group(1))
-        return "📌【在此插入圖 diagram-%02d.png】" % len(figures)
-
-    text = MERMAID.sub(fig, article_text)
-
-    def tab(m):
-        tables.append(m.group(0))
-        return "📌【在此插入表 table-%02d.png】\n" % len(tables)
-
-    text = TABLE.sub(tab, text)
-    return text, figures, tables
+    A line walk, not two regex passes over the whole text: the fence state is
+    md2medium's, so substitution happens only outside a code block and only
+    for a block opened by ```mermaid in column 0. A link inside a captured
+    block is an error: the PNG that replaces the block cannot carry it.
+    """
+    lines = article_text.split("\n")
+    out, figures, tables, lost = [], [], [], []
+    i, n = 0, len(lines)
+    while i < n:
+        line = lines[i]
+        opened = md2medium.FENCE_OPEN.match(line.strip())
+        if opened:
+            start = i
+            i += 1
+            while i < n and not md2medium.FENCE_CLOSE.match(lines[i].strip()):
+                i += 1
+            if i >= n:
+                sys.exit("line %d opens a ``` fence that is never closed; everything "
+                         "after it would become code" % (start + 1))
+            if line.startswith("```") and opened.group(1) == "mermaid":
+                figures.append("".join(l + "\n" for l in lines[start + 1:i]))
+                name = "diagram-%02d.png" % len(figures)
+                lost += [("diagram %d (%s), line %d" % (len(figures), name, k + 1), lines[k].strip())
+                         for k in range(start + 1, i) if CAPTURED_LINK.search(lines[k])]
+                out.append(md2medium.slot_line("圖", name))
+            else:
+                out.extend(lines[start:i + 1])
+            i += 1
+            continue
+        if TABLE_ROW.match(line):
+            start = i
+            while i < n and TABLE_ROW.match(lines[i]):
+                i += 1
+            k = start
+            for rows in split_tables(lines[start:i]):
+                tables.append("".join(r + "\n" for r in rows))
+                name = "table-%02d.png" % len(tables)
+                for row in rows:
+                    k += 1
+                    lost += [("table %d (%s), line %d, cell" % (len(tables), name, k), cell.strip())
+                             for cell in row.split("|") if CAPTURED_LINK.search(cell)]
+                out.append(md2medium.slot_line("表", name))
+            continue
+        out.append(line)
+        i += 1
+    if lost:
+        sys.exit("%d markdown link(s) inside a table or mermaid block. The block becomes a PNG and the "
+                 "link goes with it, so the paste would lack a link the article has and tools/test_tools.py's "
+                 "lockstep link scan would fail without saying why. Move each link into the prose or "
+                 "References:\n%s" % (len(lost), "\n".join("  %s: %s" % (where, what[:78]) for where, what in lost)))
+    return "\n".join(out), figures, tables
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("article_dir")
-    ap.add_argument("--lang", default="", help="'' for article.md → publish/, 'en' for article.en.md → publish/en/")
+    ap.add_argument("--lang", default="",
+                    help="language pack: article.<lang>.md -> publish/<lang>/ (default: article.md -> publish/)")
     ap.add_argument("--tags", default="AI, Software Engineering, Engineering Management, Agentic AI, DevOps")
     args = ap.parse_args()
 
-    src = os.path.join(args.article_dir, "article.en.md" if args.lang == "en" else "article.md")
-    out_dir = os.path.join(args.article_dir, "publish", args.lang) if args.lang else os.path.join(args.article_dir, "publish")
+    lang = args.lang
+    if lang and not LANG_RE.fullmatch(lang):
+        sys.exit("invalid lang %r: letters, digits, - and _ only (it names publish/<lang>/)" % lang)
+    # One rule for both ends, so a --lang nobody wrote for cannot read article.md
+    # and publish it under a new directory as if it were a translation.
+    src = os.path.join(args.article_dir, "article.%s.md" % lang if lang else "article.md")
+    out_dir = os.path.join(args.article_dir, "publish", lang) if lang else os.path.join(args.article_dir, "publish")
     if not os.path.isfile(src):
         sys.exit("no such article: " + src)
-    if "——" in re.sub(r"```.*?```", "", open(src).read(), flags=re.S):
-        sys.exit("double em dash (——) in prose; use a single — (md2medium.py refuses it too)")
-    text, figures, tables = convert(open(src).read())
+    with open(src, encoding="utf-8") as fh:
+        source = fh.read()
+
+    # Same fence-aware scan md2medium.py gates on; failing here saves a browser run.
+    bad = md2medium.double_dash_lines(source.split("\n"))
+    if bad:
+        sys.exit("double em dash (——) in prose on %d line(s); Medium renders it as `— —`. "
+                 "Use a single — (md2medium.py refuses it too):\n%s"
+                 % (len(bad), "\n".join("  line %d: %s" % (k, l.strip()[:78]) for k, l in bad[:10])))
+
+    text, figures, tables = convert(source)
     os.makedirs(os.path.join(out_dir, "images"), exist_ok=True)
-    with open(os.path.join(out_dir, "medium-paste.md"), "w") as fh:
-        fh.write(HEADER.format(lang_flag=" en" if args.lang == "en" else "", tags=args.tags) + text)
-    with open(os.path.join(out_dir, "figures.json"), "w") as fh:
+    with open(os.path.join(out_dir, "medium-paste.md"), "w", encoding="utf-8") as fh:
+        fh.write(HEADER.format(lang_flag=" " + lang if lang else "", tags=args.tags) + text)
+    with open(os.path.join(out_dir, "figures.json"), "w", encoding="utf-8") as fh:
         json.dump({"figures": [{"file": "diagram-%02d.png" % (i + 1), "mermaid": m} for i, m in enumerate(figures)],
                    "tables": [{"file": "table-%02d.png" % (i + 1), "markdown": t} for i, t in enumerate(tables)]},
                   fh, ensure_ascii=False, indent=1)

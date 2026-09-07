@@ -30,8 +30,24 @@ import sys
 
 # The 📌 lines in medium-paste.md, e.g. 📌【在此插入圖 diagram-01.png】
 SLOT_RE = re.compile(r"^📌【在此插入[圖表]\s*([A-Za-z0-9\-]+\.png)】$")
+# The same line as written. research/scripts/article_to_paste.py emits it and
+# the parser above reads it back; one definition, or a paste could carry a
+# marker its own converter no longer recognises.
+SLOT_LINE = "📌【在此插入%s %s】"
+SLOT_KINDS = ("圖", "表")   # a diagram, a table
 # Marker left in the pasted body; the image insert step finds and replaces it.
 SLOT_MARK = "IMGSLOT-%s-ENDSLOT"
+
+
+def slot_line(kind, filename):
+    """The 📌 line for one figure, guaranteed to be one SLOT_RE accepts."""
+    if kind not in SLOT_KINDS:
+        raise ValueError("slot kind must be %s, not %r" % (" or ".join(SLOT_KINDS), kind))
+    line = SLOT_LINE % (kind, filename)
+    if not SLOT_RE.match(line):
+        raise ValueError("%r is not a figure name the slot pattern accepts "
+                         "([A-Za-z0-9-]+.png)" % filename)
+    return line
 
 BLOCK_START = re.compile(r"^(#{1,6}\s|[-*]\s|\d+\.\s|>|```|-{3,}$|📌)")
 
