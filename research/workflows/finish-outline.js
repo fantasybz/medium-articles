@@ -8,24 +8,35 @@ export const meta = {
   ],
 }
 
-// args: { root, month, file: 'research/YYYY-MM/<slug>.md', issues: [ {severity, where, problem, fix}, ... ], skipFigures?: bool }
+// args: { root, month: 'YYYY-MM', today: 'YYYY-MM-DD',
+//         published: ['2026-09-agentic-engineering-platform', ...]   (dirs of the published articles; current list in research/README.md),
+//         file: 'research/YYYY-MM/<slug>.md',
+//         issues?: [ {severity, where, problem, fix}, ... ]          (inline), and/or
+//         issuesFile?: '<path>.json'                                 ({ "<basename>": [issue, ...] }, read by the agents themselves),
+//         skipFigures?: bool }
+// CONTEXT skeleton, MERMAID_RULES, FILE_SCHEMA and VERIFY_SCHEMA are copies of review-outlines.js (the canonical copy;
+// workflow scripts cannot import modules) — change them there first.
 const ROOT = args.root
 const DIR = `${ROOT}/research/${args.month}`
 const f = args.file.startsWith('/') ? args.file : `${ROOT}/${args.file}`
 const figPath = f.replace(/\.md$/, '.figures.md')
-// issues may be passed inline (args.issues) or as a JSON file the agents read themselves (args.issuesFile: { "<basename>": [issue, ...] })
+if (!args.today) throw new Error('args.today (YYYY-MM-DD) is required: workflow scripts have no Date')
+if (!Array.isArray(args.published) || !args.published.length) throw new Error('args.published (array of published article dirs) is required; see research/README.md for the current list')
+const PUBLISHED = args.published.map(d => `${ROOT}/${d}/article.md`)
 const issuesAll = args.issues || []
 let issues = issuesAll.filter(i => i.severity === 'blocker' || i.severity === 'major')
 const minors = issuesAll.filter(i => i.severity === 'minor')
 const ISSUES_REF = args.issuesFile ? `Read the issues from ${args.issuesFile} (JSON, keyed by the outline's basename; each issue has severity/where/problem/fix). Treat blocker and major as must-fix, minor as apply-where-cheap.` : ''
 
+const MERMAID_RULES = `the YAML frontmatter config block at the top (theme base, the themeVariables colours, flowchart spacing, subGraphTitleMargin; NO fontFamily) — never %%{init}%%; classDef own/buy/bad/human applied with class, no per-node style lines; layout width 500–900 CSS px and aspect (height/width) 0.5–1.5; ≤ 12 nodes; ≤ 3 lines × 14 CJK chars per node using <br/>; edge labels ≤ 6 chars; TB for > 5 nodes, ≤ 4 nodes per rank; fontSize 16px; no emoji; when subgraphs use direction TB, wire subgraph to subgraph (an inner node connected to the outside breaks direction TB); the two-column pattern (LR with two direction-TB subgraphs) for short linear flows`
+
 const CONTEXT = `
-Today is 2026-09-06. The author (@fantasybz, Kochi Chuang) publishes one THEME per month on Medium: one 總論 + 三部曲, in Traditional Chinese (Taiwan usage, English technical terms kept), plus an English edition. Audience: Engineering VPs / EMs / Staff engineers in Taiwan.
+Today is ${args.today}. The author (@fantasybz, Kochi Chuang) publishes one THEME per month on Medium: one 總論 + 三部曲, in Traditional Chinese (Taiwan usage, English technical terms kept), plus an English edition. Audience: Engineering VPs / EMs / Staff engineers in Taiwan.
 Reference files:
 - ${DIR}/style_brief.md, ${DIR}/selection.md (judges' objections and the adjustments the theme must honour, incl. the Notion 補充)
 - ${DIR}/arxiv.md, ${DIR}/x_digest.md, ${DIR}/community_digest.md, ${DIR}/notion_digest.md (the ONLY allowed sources for numbers; read the parts you need)
 - ${ROOT}/MERMAID.md (the Mermaid standard every figure must follow)
-- Published articles not to be repeated: ${ROOT}/2026-09-agentic-engineering-platform/article.md, ${ROOT}/2026-09-agentic-org-design/article.md, ${ROOT}/2026-10-agentic-harness-blueprint/article.md, ${ROOT}/2026-11-agentic-eval-economics/article.md
+- Published articles not to be repeated: ${PUBLISHED.join(', ')}
 Standard: the highest. Single "—" dash only, never "——".
 `
 const FILE_SCHEMA = { type: 'object', required: ['path', 'summary', 'applied', 'skipped'], properties: { path: { type: 'string' }, summary: { type: 'string' }, applied: { type: 'number' }, skipped: { type: 'array', items: { type: 'string' } } } }
@@ -57,7 +68,7 @@ let figures = null
 if (!args.skipFigures) {
   phase('Figures')
   figures = await agent(
-    `${CONTEXT}\nRead ${f} in full and ${ROOT}/MERMAID.md in full. Write ${figPath} (Write tool) containing, for EVERY figure the outline plans (總論 and each of the three parts, in order): a heading with the figure id and which piece/section it belongs to, the one-sentence caption (圖說), an expected-size line (TB/LR, node count, estimated aspect), and complete Mermaid source in a \`\`\`mermaid block that follows MERMAID.md exactly: the frontmatter config block (theme base, the themeVariables colours, flowchart spacing, subGraphTitleMargin; NO fontFamily), classDef own/buy/bad/human, TB for > 5 nodes, ≤ 12 nodes, ≤ 3 lines × 14 CJK chars per node using <br/>, edge labels ≤ 6 chars, no emoji, no per-node style lines, subgraph-to-subgraph edges when using direction TB inside subgraphs, target width 500–900px and aspect 0.5–1.5 (use the two-column pattern for short linear flows; inside an LR subgraph, chain unconnected nodes with invisible edges a ~~~ b so they sit side by side; a diamond is taller than a hexagon). If the outline already embeds Mermaid source for a figure, start from it and fix it to the standard rather than redrawing from scratch. Where a figure would be clearer as a table, say so in one line and skip the diagram. Content must come from the outline itself — do not invent. Return the path, a summary, the number of figures written, and any figure you skipped with the reason.`,
+    `${CONTEXT}\nRead ${f} in full and ${ROOT}/MERMAID.md in full. Write ${figPath} (Write tool) containing, for EVERY figure the outline plans (總論 and each of the three parts, in order): a heading with the figure id and which piece/section it belongs to, the one-sentence caption (圖說), an expected-size line (TB/LR, node count, estimated aspect), and complete Mermaid source in a \`\`\`mermaid block that follows MERMAID.md exactly: ${MERMAID_RULES}. Inside an LR subgraph, chain unconnected nodes with invisible edges a ~~~ b so they sit side by side; a diamond is taller than a hexagon. If the outline already embeds Mermaid source for a figure, start from it and fix it to the standard rather than redrawing from scratch. Where a figure would be clearer as a table, say so in one line and skip the diagram. Content must come from the outline itself — do not invent. Return the path, a summary, the number of figures written, and any figure you skipped with the reason.`,
     { label: `figures:${f.split('/').pop().slice(0, 18)}`, phase: 'Figures', schema: FILE_SCHEMA, effort: 'high' }
   )
 }

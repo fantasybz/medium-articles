@@ -5,27 +5,40 @@ export const meta = {
     { title: 'Propose', detail: '5 lenses × 4 candidate themes each' },
     { title: 'Merge', detail: 'dedupe into ≤10 distinct candidates' },
     { title: 'Judge', detail: '2 lensed judges + 1 adversarial refuter per candidate' },
-    { title: 'Select', detail: 'pick 3, sequence Oct–Dec 2026' },
+    { title: 'Select', detail: 'pick 3, sequence them over the next three months' },
     { title: 'Outline', detail: 'full 總論 + 三部曲 outline per theme, critic, revise' },
     { title: 'Backlog', detail: 'runner-up themes for later months' },
   ],
 }
 
-const ROOT = '/Users/kochi.chuang/conductor/workspaces/medium-articles/yokohama'
-const R = ROOT + '/.context/research'
-const OUT = ROOT + '/research/2026-09'
+// args: { root: <repo root>, month: 'YYYY-MM' (the research round, e.g. 2026-09), today: 'YYYY-MM-DD',
+//         published: ['2026-09-agentic-engineering-platform', ...]   (dirs of the published articles, in series order; current list in research/README.md),
+//         months?: ['2026-10', '2026-11', '2026-12'] }                 (the three months to plan; default = the three after `month`)
+// Workflow scripts have no Date and cannot import modules, so today comes in as an arg and the digests are read from
+// research/<month>/ (the four digest agents write them there; notion_digest.md and community_digest.md are local-only,
+// see research/README.md). The raw JSON collect.sh writes to .context/research/<month>/ is NOT read by this workflow.
+const ROOT = args.root
+const DIR = `${ROOT}/research/${args.month}`
+const OUT = DIR
+if (!args.today) throw new Error('args.today (YYYY-MM-DD) is required: workflow scripts have no Date')
+if (!Array.isArray(args.published) || !args.published.length) throw new Error('args.published (array of published article dirs) is required; see research/README.md for the current list')
+const PUBLISHED = args.published.map(d => `${ROOT}/${d}/article.md`)
+const nextMonths = (ym, n) => Array.from({ length: n }, (_, i) => {
+  const [y, m] = ym.split('-').map(Number)
+  const t = y * 12 + (m - 1) + i + 1
+  return `${Math.floor(t / 12)}-${String((t % 12) + 1).padStart(2, '0')}`
+})
+const TARGETS = args.months || nextMonths(args.month, 3)
 const INPUTS = `
 Read ALL of these files fully before doing anything (use the Read tool; they are long, read them in chunks if needed):
-- ${R}/style_brief.md  (how the author writes, series format, audience, reception data)
-- ${R}/x_digest.md  (X/Twitter: 355 top posts from followed accounts, 12 themes, debates, gaps)
-- ${R}/arxiv.md  (232 arXiv papers May–Sept 2026, 10 clusters, 12 signals)
-- ${R}/community_digest.md  (Taiwanese Facebook groups, the author's own FB/fan-page posts, LinkedIn, Medium stats)
-Also skim the four published articles so you know exactly what is already covered:
-- ${ROOT}/2026-09-agentic-engineering-platform/article.md (總論)
-- ${ROOT}/2026-09-agentic-org-design/article.md (一、組織篇)
-- ${ROOT}/2026-10-agentic-harness-blueprint/article.md (二、技術篇)
-- ${ROOT}/2026-11-agentic-eval-economics/article.md (三、營運篇)
-Context: today is 2026-09-05. The author (@fantasybz, Kochi Chuang) publishes one THEME per month, each theme = one 總論 (overview, ~18 min read) + 三部曲 (three deep dives, ~8–12 min each), in Traditional Chinese (Taiwan) with an English edition. The next three themes are for 2026-10, 2026-11, 2026-12. Audience: Engineering VPs / EMs / Staff engineers / platform, SRE and QA leads in Taiwan.
+- ${DIR}/style_brief.md  (how the author writes, series format, audience, reception data)
+- ${DIR}/x_digest.md  (X/Twitter: top posts from followed accounts, themes, debates, gaps — post count and date range are in the digest header)
+- ${DIR}/arxiv.md  (arXiv papers of the last few months, clusters, signals — paper count and date range are in the digest header)
+- ${DIR}/community_digest.md  (Taiwanese Facebook groups, the author's own FB/fan-page posts, LinkedIn, Medium stats)
+- ${DIR}/notion_digest.md  (the author's OWN Notion: workshop notes, book notes, certification plans, drafts — first-hand material, and corrections to the themes)
+Also skim the published articles so you know exactly what is already covered:
+${PUBLISHED.map(p => `- ${p}`).join('\n')}
+Context: today is ${args.today}. The author (@fantasybz, Kochi Chuang) publishes one THEME per month, each theme = one 總論 (overview, ~18 min read) + 三部曲 (three deep dives, ~8–12 min each), in Traditional Chinese (Taiwan) with an English edition. The next three themes are for ${TARGETS.join(', ')}. Audience: Engineering VPs / EMs / Staff engineers / platform, SRE and QA leads in Taiwan.
 `
 
 const PROPOSAL_SCHEMA = {
@@ -36,7 +49,7 @@ const PROPOSAL_SCHEMA = {
       slug: { type: 'string' }, title_zh: { type: 'string' }, title_en: { type: 'string' },
       thesis_zh: { type: 'string', description: 'one-line quotable thesis in Traditional Chinese' },
       why_now: { type: 'string', description: '3–6 sentences: what happened in the last 3 months that makes this urgent' },
-      evidence: { type: 'array', minItems: 4, items: { type: 'object', required: ['source', 'ref', 'claim'], properties: { source: { type: 'string', description: 'x | arxiv | facebook | linkedin | medium-stats | article' }, ref: { type: 'string', description: 'URL, arXiv id, group name or post handle+date exactly as it appears in the digest' }, claim: { type: 'string' } } } },
+      evidence: { type: 'array', minItems: 4, items: { type: 'object', required: ['source', 'ref', 'claim'], properties: { source: { type: 'string', description: 'x | arxiv | facebook | linkedin | medium-stats | notion | article' }, ref: { type: 'string', description: 'URL, arXiv id, group name or post handle+date exactly as it appears in the digest' }, claim: { type: 'string' } } } },
       author_fit: { type: 'string' },
       parts: { type: 'array', minItems: 3, maxItems: 3, items: { type: 'object', required: ['title_zh', 'focus'], properties: { title_zh: { type: 'string' }, focus: { type: 'string' } } } },
       overlap_risk: { type: 'string', description: 'overlap with the published series or with saturated content; how to differentiate' },
@@ -73,7 +86,7 @@ const SELECT_SCHEMA = {
   type: 'object', required: ['selected', 'runners_up', 'sequencing_rationale'],
   properties: {
     selected: { type: 'array', minItems: 3, maxItems: 3, items: { type: 'object', required: ['slug', 'month', 'title_zh', 'title_en', 'thesis_zh', 'why_this', 'adjustments', 'parts'],
-      properties: { slug: { type: 'string' }, month: { type: 'string', description: '2026-10 | 2026-11 | 2026-12' }, title_zh: { type: 'string' }, title_en: { type: 'string' }, thesis_zh: { type: 'string' }, why_this: { type: 'string' }, adjustments: { type: 'string', description: 'changes made in response to judges/refuter' },
+      properties: { slug: { type: 'string' }, month: { type: 'string', description: TARGETS.join(' | ') }, title_zh: { type: 'string' }, title_en: { type: 'string' }, thesis_zh: { type: 'string' }, why_this: { type: 'string' }, adjustments: { type: 'string', description: 'changes made in response to judges/refuter' },
         parts: { type: 'array', minItems: 3, maxItems: 3, items: { type: 'object', required: ['title_zh', 'focus'], properties: { title_zh: { type: 'string' }, focus: { type: 'string' } } } } } } },
     runners_up: { type: 'array', items: { type: 'object', required: ['slug', 'title_zh', 'reason'], properties: { slug: { type: 'string' }, title_zh: { type: 'string' }, reason: { type: 'string' } } } },
     sequencing_rationale: { type: 'string' },
@@ -133,7 +146,7 @@ log('scores: ' + scored.map(s => `${s.candidate.slug}=${s.avg.toFixed(1)}${s.ref
 
 phase('Select')
 const selection = await agent(
-  `${INPUTS}\nBelow are the judged candidates (two lensed judges with scores + rationale, one adversarial refutation each). Select the THREE themes for 2026-10, 2026-11 and 2026-12. Rules: the three must be clearly different from each other (not three angles on the same subject); each must survive its refutation or be adjusted so it does (write the adjustment); sequence them by dependency and by season (Q4 = budget season, KubeCon NA in November, year-end retros; the trilogy just published in early September). Refine title_zh / thesis_zh / the three part titles so they are ready for the outline writers. List every non-selected candidate under runners_up with a one-sentence reason (to seed a backlog). Traditional Chinese for all zh fields.\n\n${JSON.stringify(scored.map(s => ({ avg: s.avg, candidate: s.candidate, judges: s.judges, refute: s.refute })), null, 1)}`,
+  `${INPUTS}\nBelow are the judged candidates (two lensed judges with scores + rationale, one adversarial refutation each). Select the THREE themes for ${TARGETS.join(', ')}. Rules: the three must be clearly different from each other (not three angles on the same subject); each must survive its refutation or be adjusted so it does (write the adjustment); sequence them by dependency and by season (e.g. Q4 = budget season, KubeCon NA in November, year-end retros; the published series' months are in their directory names). Refine title_zh / thesis_zh / the three part titles so they are ready for the outline writers. List every non-selected candidate under runners_up with a one-sentence reason (to seed a backlog). Traditional Chinese for all zh fields.\n\n${JSON.stringify(scored.map(s => ({ avg: s.avg, candidate: s.candidate, judges: s.judges, refute: s.refute })), null, 1)}`,
   { label: 'select-3', phase: 'Select', schema: SELECT_SCHEMA, effort: 'high' }
 )
 if (!selection) throw new Error('selection failed')
@@ -155,7 +168,7 @@ THEME:\n${JSON.stringify(s, null, 1)}`,
     { label: `outline:${s.slug}`, phase: 'Outline', schema: FILE_SCHEMA, effort: 'high' }
   ),
   (f, s) => agent(
-    `${INPUTS}\nYou are a rigorous critic. Read the article plan at ${f.path} and check it against: (a) style_brief.md (format, voice, series shape, dash rule, Traditional Chinese Taiwan usage); (b) the four published articles (flag any section that repeats them instead of extending); (c) the three digests (every cited source/ref/number must actually exist there; flag anything invented or misquoted); (d) internal overlap between the 總論 and the three parts, and between the parts; (e) whether each part gives a Staff engineer or VP something they can act on (a reference implementation, a decision table, a gate); (f) whether the thesis is genuinely arguable and not a platitude. List issues with severity blocker/major/minor, where, problem, and a concrete fix.`,
+    `${INPUTS}\nYou are a rigorous critic. Read the article plan at ${f.path} and check it against: (a) style_brief.md (format, voice, series shape, dash rule, Traditional Chinese Taiwan usage); (b) the published articles (flag any section that repeats them instead of extending); (c) the four digests (every cited source/ref/number must actually exist there; flag anything invented or misquoted); (d) internal overlap between the 總論 and the three parts, and between the parts; (e) whether each part gives a Staff engineer or VP something they can act on (a reference implementation, a decision table, a gate); (f) whether the thesis is genuinely arguable and not a platitude. List issues with severity blocker/major/minor, where, problem, and a concrete fix.`,
     { label: `critic:${s.slug}`, phase: 'Outline', schema: CRITIC_SCHEMA, effort: 'high' }
   ).then(c => ({ file: f, critic: c })),
   (x, s) => agent(
@@ -166,7 +179,7 @@ THEME:\n${JSON.stringify(s, null, 1)}`,
 
 phase('Backlog')
 const backlog = await agent(
-  `${INPUTS}\nWrite ${OUT}/backlog.md (Write tool) in Traditional Chinese: a topic backlog for months after 2026-12. Input: the runner-up candidates and the selection rationale below, plus the "gaps"/"signals"/"opportunities" sections of the three digests. For each backlog entry: title_zh, one-paragraph pitch, why it did not make the top three, what evidence would promote it, and the earliest sensible month. Order by promise. Also add a short section "訊號監看清單": 10–15 concrete signals (accounts, arXiv queries, FB groups, conference dates) to watch so the backlog can be re-ranked monthly. Return path and summary.\n\nSELECTION:\n${JSON.stringify(selection, null, 1)}`,
+  `${INPUTS}\nWrite ${OUT}/backlog.md (Write tool) in Traditional Chinese: a topic backlog for months after ${TARGETS[TARGETS.length - 1]}. Input: the runner-up candidates and the selection rationale below, plus the "gaps"/"signals"/"opportunities" sections of the four digests. For each backlog entry: title_zh, one-paragraph pitch, why it did not make the top three, what evidence would promote it, and the earliest sensible month. Order by promise. Also add a short section "訊號監看清單": 10–15 concrete signals (accounts, arXiv queries, FB groups, conference dates) to watch so the backlog can be re-ranked monthly. Return path and summary.\n\nSELECTION:\n${JSON.stringify(selection, null, 1)}`,
   { label: 'backlog', phase: 'Backlog', schema: FILE_SCHEMA }
 )
 
