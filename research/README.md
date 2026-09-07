@@ -199,22 +199,10 @@ presentations 的那幾週，都是粉絲團有分享的週。這些數字放在
 - [x] 2026-10 第二輪完成（2026-09-06 14:40）：4 視角 41 major 全數修訂、驗證通過；22 張 Mermaid 圖經 `mermaid_check_all.sh` 全部 PASS（5 張由筆者重畫）。11、12 月依序進行。
 - [x] 2026-11 第二輪完成（2026-09-06 22:40）：3 視角 + 圖表視角共 70 條意見，`finish-outline.js` 驗證／修訂後補圖檔；16 張 Mermaid 全部 PASS，大綱內嵌版已同步。
 - [x] 2026-12 第二輪完成（2026-09-06 23:15）：4 視角 27 major，修訂 51 條、驗證通過（3 個殘留由筆者手修）；14 張 Mermaid 全部 PASS，大綱內嵌版已同步。
-- [ ] **10 月四篇初稿都已寫好、機械檢查全過（2026-09-07 00:10）**，等 02:00 額度重置後跑批評／修訂：
-
-      | 篇 | 目錄 | 中文字（正文） | 圖／表 | 目標字數 |
-      |---|---|---|---|---|
-      | 總論 | `2026-10-green-overview` | 7,168 | 10／9 | 3,500–4,500 |
-      | 一、測試篇 | `2026-10-green-testing` | 3,820 | 4／4 | 1,900–2,600 |
-      | 二、Review 篇 | `2026-10-green-review` | 3,925 | 4／3 | 1,900–2,600 |
-      | 三、可靠度篇 | `2026-10-green-reliability` | 2,850 | 4／3 | 1,900–2,600 |
-
-      四篇的圖全部 `mermaid_check` PASS、`article_to_paste.py` 與 `render_images.sh` 都跑過、`tools/test_tools.py` OK、`——` 為 0；
-      三部曲已先跑過一輪 zh-tw（只採納 場景→情境、是一個→是、可執行行→可執行的行；通過→透過、數據→資料、實例→實體、依賴→相依性 都是誤判，未套）。
-      批評／修訂（每篇一個 run，總論先；`prev` 帶前面各篇的目錄）：
-      `Workflow({scriptPath: "research/workflows/write-article.js", args: {root, month: "2026-09", outline: "research/2026-09/2026-10-agentic-green-is-not-done.md", figures: "research/2026-09/2026-10-agentic-green-is-not-done.figures.md", piece: "總論", dir: "2026-10-green-overview", skipDraft: true, today: "2026-09-07", published: PUBLISHED}})`（`PUBLISHED` 同「分析階段」末段的四個目錄），
-      再依序 `piece: "一、測試篇", dir: "2026-10-green-testing", prev: ["2026-10-green-overview"]`、`piece: "二、Review 篇", dir: "2026-10-green-review", prev: [總論, 測試篇]`、`piece: "三、可靠度篇", dir: "2026-10-green-reliability", prev: [前三篇]`。
-      每篇修訂後重跑 `article_to_paste.py`、`render_images.sh`、`tools/test_tools.py`，**最後**再跑一次 zh-tw（修訂會改動正文）；然後寫英文版（`article.en.md`，`--lang en`）。三份大綱的 zh-tw agent 也還沒跑完（三次都撞上限）。
-- [ ] **Codex 二審尚未跑**：2026-09-05 22:36 撞到 Codex 用量上限（重置時間 2026-09-07 10:25）。重置後三份大綱各跑一次 `research/scripts/codex_review.sh <outline.md>`；`selection.md` 也跑一次 `research/scripts/codex_review.sh research/2026-09/selection.md`（檔名以 `selection` 開頭會自動換成審選題的框架；`KIND=outline|selection` 可強制指定）。依意見修訂，再跑一次 zh-tw 檢查。
+- [x] **10 月四篇初稿已寫好並以 PR #5 併入 main（2026-09-07 09:20）**：總論 7,168 中文字、測試篇 3,820、Review 篇 3,925、可靠度篇 2,850（目標 3,500–4,500 / 1,900–2,600），圖全部 PASS、paste 與 PNG 已產、兩套測試 OK。
+- [x] **批評／修訂完成（2026-09-07 15:20）**：四篇各過三視角批評 → 修訂 → 驗證（總論兩輪，第二輪併入 Codex 對計畫的意見）；最終 zh-tw 檢查只採納 是一個→是、場景→情境、全形標點旁的空白；英文版四篇（`article.en.md`，`publish/en/`）由翻譯 agent 產出、英文圖標籤縮短到 MERMAID.md 寬度內。正文中文字：總論 4,497、測試篇 4,144、Review 篇 4,061、可靠度篇 3,221（三部曲仍高於 1,900–2,600 的目標，批評者未再要求裁減；作者校閱時可再刪）。**接下來是作者的事**：逐節校閱四篇 zh 與 en；做完「作者親手做的兩件事」；依 PUBLISHING.md 用 `tools/medium_draft.sh <dir>` 與 `<dir> en` 建草稿（Medium 每 24 小時只能發兩篇），發布後把 URL 填回四篇的系列連結與 README、PUBLISHED.md。
+- [ ] **英文版尚未經過 critic**：四篇 `article.en.md` 只做過翻譯與機械檢查（paste、lockstep、圖寬），沒有跑 evidence／reader／editor 三視角；發布前至少讓一個 agent 對照 zh 逐節核對數字與 hedge。
+- [x] **Codex 二審已跑（2026-09-07 14:04–14:25，gpt-5.5 xhigh）**：`research/2026-09/codex-review-{selection,2026-10-…,2026-11-…,2026-12-…}.md` 原話照錄。10 月的致命項已在文章批評／修訂中處理（payment PR「不讀 diff」改為「不逐行讀、只讀標紅 hunk」、READY 標非 code、0.3–0.5 元比例標為暫定啟發式、brownfield 順序與上一季總論對齊、c 不用 49% 當量測值）。**11、12 月大綱要依 Codex 意見再修一輪再寫**：11 月—「沒人量過變異」不誠實（2608.25399 有 run-to-run variance）、變異篇實驗規模砍到 A0/A/B/C 各 N=10、全系列只用一個實驗案例、12 月獨佔數字不得在 11 月出現；12 月—OTel semconv 的 `invoke_agent`/`execute_tool` 要先實查、`outcome_verified` 不能只靠 human approval、burn-rate 加 `min_events`、error budget 與 YAML 矛盾、2608.23610 的 behavioural tuple 待全文、時程砍到三個工件；Codex 總判斷「12 月目前不合格，必須重切成 flight recorder / accountability，否則把爆炸半徑提前」。
 - [ ] LinkedIn 動態牆的 selector（目前靠「Feed post」切文字，只抓到 8 篇）。
 - [ ] `collect.sh` 還沒以單一腳本從頭跑過一次；第一次請逐段看。
 - [ ] **PNG 沒有過期閘門**：已 commit 的 `publish/images/*.png` 跟算繪它們的來源沒有綁在一起。

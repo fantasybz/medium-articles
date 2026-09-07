@@ -24,11 +24,11 @@
   },
   {
    "file": "table-02.png",
-   "markdown": "| 欄 | 定義 | 從哪裡算 |\n|---|---|---|\n| pass@1 | 每個 case 單次嘗試的成功率，k 次平均後再對 golden set 平均 | 第三類證據 |\n| pass^5 | 5 次全過的 case 比例 | 第三類證據 |\n| constraint pass rate | 功能測試通過的 PR 中，constraint tests 全過的比例 | tests/constraints/ |\n"
+   "markdown": "| 欄 | 定義 | 從哪裡算 |\n|---|---|---|\n| pass@1 | 單次嘗試的成功率，用 k 次重複跑估：每個 case 過的次數除以 k，再對 golden set 平均 | 第三類證據 |\n| pass^5 | 5 次全過的 case 比例 | 第三類證據 |\n| constraint pass rate | 功能測試通過的 PR 中，constraint tests 全過的比例 | tests/constraints/ |\n"
   },
   {
    "file": "table-03.png",
-   "markdown": "| 新條件 | 門檻 | 為什麼 |\n|---|---|---|\n| pass^5 on golden set | ≥ 60%，連續兩個月（golden set 少於 30 個 case 時只報趨勢） | 一次成功不是可靠 |\n| constraint violation rate（功能測試通過的 PR 中違反 constraint tests 的比例） | < 10% 且連續兩個月不升，或已連續兩個月低於 5% | SWE-Gate 的 34% 是起點，不是常態 |\n| agent 改動行的 mutation score | ≥ 70%，連續兩個月 | 測試篇 |\n| oversight budget | 人工深讀比例 ≤ 依第四節簡化模型、以你的 T 與 c 算出的 r，且連續兩個月不升 | 預算是算出來的，不是抄來的 |\n"
+   "markdown": "| 新條件 | 門檻 | 為什麼 |\n|---|---|---|\n| pass^5 on golden set | ≥ 60%，連續兩個月，且 golden set 最少 30 個 case；少於 30 個時只報趨勢或附 Wilson 區間，不當門檻 | 一次成功不是可靠 |\n| constraint violation rate（功能測試通過的 PR 中違反 constraint tests 的比例） | < 10% 且連續兩個月不升，或已連續兩個月低於 5% | SWE-Gate 的 34% 是起點，不是常態 |\n| agent 改動行的 mutation score | ≥ 70%，連續兩個月 | 測試篇 |\n| oversight budget | 人工深讀比例 ≤ 依第四節簡化模型、以你的 T 與 c 算出的 r，且連續兩個月不升 | 預算是算出來的，不是抄來的 |\n"
   }
  ]
 }
