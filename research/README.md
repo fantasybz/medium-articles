@@ -201,7 +201,7 @@ presentations 的那幾週，都是粉絲團有分享的週。這些數字放在
 - [x] 2026-12 第二輪完成（2026-09-06 23:15）：4 視角 27 major，修訂 51 條、驗證通過（3 個殘留由筆者手修）；14 張 Mermaid 全部 PASS，大綱內嵌版已同步。
 - [x] **10 月四篇初稿已寫好並以 PR #5 併入 main（2026-09-07 09:20）**：總論 7,168 中文字、測試篇 3,820、Review 篇 3,925、可靠度篇 2,850（目標 3,500–4,500 / 1,900–2,600），圖全部 PASS、paste 與 PNG 已產、兩套測試 OK。
 - [ ] **批評／修訂進行中（2026-09-07 09:22 起，分支 `october-green-critique`）**：一個 Workflow 依序對四篇跑 `write-article.js`（`skipDraft: true`，`prev` 帶前面各篇），run id `wf_45b0f082-43c`。每篇修訂後要重跑 `article_to_paste.py`、`render_images.sh`、兩套測試，**最後**再跑一次 zh-tw；然後寫英文版（`article.en.md`，`--lang en`）；發布前先做「作者親手做的兩件事」（GitHub approve 機制實測、Teddy 同意）。
-- [ ] **Codex 二審尚未跑**：2026-09-05 22:36 撞到 Codex 用量上限（重置時間 2026-09-07 10:25）。重置後三份大綱各跑一次 `research/scripts/codex_review.sh <outline.md>`；`selection.md` 也跑一次 `research/scripts/codex_review.sh research/2026-09/selection.md`（檔名以 `selection` 開頭會自動換成審選題的框架；`KIND=outline|selection` 可強制指定）。依意見修訂，再跑一次 zh-tw 檢查。
+- [x] **Codex 二審已跑（2026-09-07 14:04–14:25，gpt-5.5 xhigh）**：`research/2026-09/codex-review-{selection,2026-10-…,2026-11-…,2026-12-…}.md` 原話照錄。10 月的致命項已在文章批評／修訂中處理（payment PR「不讀 diff」改為「不逐行讀、只讀標紅 hunk」、READY 標非 code、0.3–0.5 元比例標為暫定啟發式、brownfield 順序與上一季總論對齊、c 不用 49% 當量測值）。**11、12 月大綱要依 Codex 意見再修一輪再寫**：11 月—「沒人量過變異」不誠實（2608.25399 有 run-to-run variance）、變異篇實驗規模砍到 A0/A/B/C 各 N=10、全系列只用一個實驗案例、12 月獨佔數字不得在 11 月出現；12 月—OTel semconv 的 `invoke_agent`/`execute_tool` 要先實查、`outcome_verified` 不能只靠 human approval、burn-rate 加 `min_events`、error budget 與 YAML 矛盾、2608.23610 的 behavioural tuple 待全文、時程砍到三個工件；Codex 總判斷「12 月目前不合格，必須重切成 flight recorder / accountability，否則把爆炸半徑提前」。
 - [ ] LinkedIn 動態牆的 selector（目前靠「Feed post」切文字，只抓到 8 篇）。
 - [ ] `collect.sh` 還沒以單一腳本從頭跑過一次；第一次請逐段看。
 - [ ] **PNG 沒有過期閘門**：已 commit 的 `publish/images/*.png` 跟算繪它們的來源沒有綁在一起。

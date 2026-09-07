@@ -44,7 +44,7 @@
  "tables": [
   {
    "file": "table-01.png",
-   "markdown": "| 層 | 主張 | 錨點（in-domain） | 更多證據 |\n|---|---|---|---|\n| 功能測試過 ≠ 約束滿足 | 綠燈只檢查了 reviewer 在乎的一部分 | SWE-Gate：644 個通過功能測試的修補，221 個（34%）違反從真實 PR 評論導出的約束（75 個 Python repo、303 個任務，2026 年 9 月） | 可靠度篇 |\n| 有測試 ≠ 測到 | agent 改的程式碼有多少被測試碰到 | Test Coverage of Agentic PRs：4,882 個 agent PR，repo 原有測試只碰到 agent 改動行的 61.5%（Java）與 27.0%（Python）（2026 年 7 月） | 測試篇 |\n| 一次成功 ≠ 可靠 | pass@1 與 pass^k 是兩個數字 | 用你自己的 golden set 跑 k 次（定義在第八節） | 可靠度篇 |\n"
+   "markdown": "| 層 | 主張 | 錨點（in-domain） | 更多證據 |\n|---|---|---|---|\n| 功能測試過 ≠ 約束滿足 | 綠燈只檢查了 reviewer 在乎的一部分 | SWE-Gate：644 個通過功能測試的修補，221 個（34%）違反從真實 PR 評論導出的約束（75 個 Python repo、303 個任務，2026 年 9 月） | 可靠度篇 |\n| 有測試 ≠ 測到 | agent 改的程式碼有多少被既有測試碰到 | Test Coverage of Agentic PRs：4,882 個 agent PR，repo 原有測試只碰到 agent 改動行的 61.5%（Java）與 27.0%（Python）（2026 年 7 月） | 測試篇 |\n| 一次成功 ≠ 可靠 | pass@1 與 pass^k 是兩個數字 | 用你自己的 golden set 跑 k 次（定義在第八節） | 可靠度篇 |\n"
   },
   {
    "file": "table-02.png",
@@ -68,11 +68,11 @@
   },
   {
    "file": "table-07.png",
-   "markdown": "| 順序 | 閘 | 為什麼先 | 前提 |\n|---|---|---|---|\n| 1 | **constraint tests** | 不需要既有測試；原料從團隊規範與 incident postmortem 出發（見上第 2 項） | 零 |\n| 2 | **assertion-change diff** | 純 diff 分析，零執行成本，40 分鐘的套件不用跑 | 零 |\n| 3 | **red-then-green（bug fix PR）** | 只對受影響的測試子集跑—改到哪個 module 就跑哪個 module 的測試 | 能算受影響子集：test selection 或目錄對應 |\n| 4 | **diff-scoped mutation** | 最貴，最後裝 | 受影響子集 10 分鐘內跑完 |\n"
+   "markdown": "| 順序 | 閘 | 為什麼先 | 前提 |\n|---|---|---|---|\n| 1 | **constraint tests** | 不需要既有測試；原料從團隊規範與 incident postmortem 出發（見上第 1 項） | 零 |\n| 2 | **assertion-change diff** | 純 diff 分析，零執行成本，40 分鐘的套件不用跑 | 零 |\n| 3 | **red-then-green（bug fix PR）** | 只對受影響的測試子集跑—改到哪個 module 就跑哪個 module 的測試 | 能算受影響子集：test selection 或目錄對應 |\n| 4 | **diff-scoped mutation** | 最貴，最後裝；先報告、後阻擋 | 受影響子集 10 分鐘內跑完 |\n"
   },
   {
    "file": "table-08.png",
-   "markdown": "| 階段 | 目標 | 退出條件 |\n|---|---|---|\n| **第 1 個月** | 量六個 baseline（見上）；pilot repo 裝 assertion-change diff 與 diff-scoped mutation，red-then-green 只開 bug fix PR；抽 50 條 review 評論分類（第十節第 2 項） | 四個新數字有 baseline；mutation 報告出現在 PR 上（先不阻擋） |\n| **第 2 個月** | 前 10 條 constraint tests 進 CI；reviewer agent 換成異質 instance；PR template 加 intent 與 constraint 欄；**AI approve 不計入 required approvals**；agent 拿到 escalation tool | 至少一次 constraint test 擋下綠燈 PR；斷言弱化比例下降 |\n| **第 3 個月** | golden set 跑 k = 5 算 pass^k；用新的 G2 條件做一次授權去留決策；三個數字進 leadership 月報 | 月報有 pass@1 / pass^k / constraint pass rate 三欄，**且有人據此做過一次授權去留決策並公開理由**—擴張或不擴張都算 |\n| **第 4–6 個月** | 以 repo 為單位重複：先推 agent PR 佔比最高的 repo，依 brownfield 順序開；200 人以上把四道 check 進 paved road 的 CI template | 每月至少一個新 repo 走完第 1–2 個月；免審合併率進月報 |\n"
+   "markdown": "| 階段 | 目標 | 退出條件 |\n|---|---|---|\n| **第 1 個月** | 量六個 baseline（見上）；pilot repo 裝 brownfield 順序的前兩道—團隊規範與 incident 導出的 constraint tests、assertion-change diff；mutation 只出報告，且只在受影響子集 10 分鐘內跑完的 repo 開；抽 50 條 review 評論分類（第十節第 1 項） | 四個新數字有 baseline；前兩道 check 跑在每個 PR 上；mutation 若有開，報告出現在 PR 上，不阻擋 |\n| **第 2 個月** | 從 review 評論導出的前 10 條 constraint tests 進 CI；bug fix PR 開 red-then-green；reviewer agent 換成異質 instance；PR template 加 intent 與 constraint 欄；**AI approve 不計入 required approvals**（機制先驗證，第十節第 3 項）；agent 拿到 escalation tool | 至少一次 constraint test 擋下綠燈 PR；斷言弱化比例下降 |\n| **第 3 個月** | golden set 跑 k = 5 算 pass^k；mutation 從報告轉成閘門（有開的 repo）；用新的 G2 條件做一次授權去留決策；三個數字進 leadership 月報 | 月報有 pass@1 / pass^k / constraint pass rate 三欄，**且有人據此做過一次授權去留決策並公開理由**—擴張或不擴張都算 |\n| **第 4–6 個月** | 以 repo 為單位重複：先推 agent PR 佔比最高的 repo，依 brownfield 順序開；200 人以上把四道 check 進 paved road 的 CI template | 每月至少一個新 repo 走完第 1–2 個月；免審合併率進月報 |\n"
   }
  ]
 }

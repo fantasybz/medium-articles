@@ -30,7 +30,7 @@
 | 安全 | 不得寫入 env、不得關 TLS 驗證 | AST 與 secret scan |
 | 架構規則 | 層依賴方向；aggregate 必須繼承 EventSourcedAggregate | import graph、繼承檢查 |
 
-Pipeline 是四步：review 評論 → 規則 → constraint test → CI。規則檔的形狀借自 2026 年 7 月一篇研究：每條被接受的 review 評論，都寫成 version-controlled 規則檔裡的一條；Review 篇第三節沿用同一份規則檔。每條規則記來源 PR 與日期；半年沒觸發的規則要 review 是否已經過期。
+Pipeline 是四步：review 評論 → 規則 → constraint test → CI。規則檔的形狀借自 2026 年 7 月一篇研究：每條被接受的 review 評論，都寫成 version-controlled 規則檔裡的一條；Review 篇第三節沿用同一份規則檔。每條規則記來源 PR 與日期；半年沒觸發的規則要 review 是否已經過期。再加兩個欄位：owner（誰維護這條規則）與 expiry（到期 review 的日期）—規則會爛，就是因為沒人負責、沒有到期日，這兩欄是讓它不爛的機制。
 
 **「改不動」的實作。** 總論第二節的三分法說第三類證據是「agent 改不動的測試」，機制在這裡落地：`tests/constraints/` 與 golden set 目錄放進 CODEOWNERS、只列人類；規則檔的變更需要人類 approve；對第三類測試的任何斷言弱化，由測試篇的 Check 2 直接阻擋。agent 對 repo 有寫入權，但這三個目錄的變更沒有人類 approve 進不了 main。
 
@@ -69,6 +69,8 @@ def test_no_direct_http_client_construction():
 - 規則：不得直接建構 HttpClient；一律用 clients.http()
 - 檢查：tests/constraints/test_http_client_reuse.py
 - 最近觸發：2026-09-30（半年未觸發即 review 是否過期）
+- owner: @acme/platform-humans（維護這條規則的人）
+- expiry: 2027-03-31（到期 review：刪、留或改）
 ```
 
 ```text
@@ -125,7 +127,7 @@ review 評論變成規則、規則變成可執行的 constraint test，並有過
 
 ## 三、可靠度不是能力：pass@1 與 pass^k
 
-定義與總論第八節一字不差：golden set 的每個 case 跑 k 次；**pass@1 是每個 case 單次嘗試的成功率—k 次的平均；pass^k 是 k 次全部成功的 case 比例；兩者都先 per case 算，再對整個 golden set 取 aggregate。**「至少一次成功的比例」是 pass@k，是另一個數字，本系列不用。
+定義沿用總論第八節：golden set 的每個 case 跑 k 次；**pass@1 是單次嘗試的成功率，用 k 次重複跑來估—每個 case 是 k 次裡過的次數除以 k；pass^k 是 k 次全部成功的 case 比例；兩者都先 per case 算，再對整個 golden set 取 aggregate。**「至少一次成功的比例」是 pass@k，是另一個數字，本系列不用。
 
 一句承重的話：**pass^k 與 constraint pass rate 只能從第三類證據算**—團隊擁有的測試與 constraint tests；不能從 agent 的結案報告，或它自己加的、還沒升格的測試算。我準備 Claude Certified Architect 考試時的筆記有一條最小的例子：不能用 assistant 的回答文字去猜 loop 是否結束，要看 stop_reason。第一類證據不算證據，就是這個意思。
 
@@ -137,7 +139,7 @@ review 評論變成規則、規則變成可執行的 constraint test，並有過
 
 | 欄 | 定義 | 從哪裡算 |
 |---|---|---|
-| pass@1 | 每個 case 單次嘗試的成功率，k 次平均後再對 golden set 平均 | 第三類證據 |
+| pass@1 | 單次嘗試的成功率，用 k 次重複跑估：每個 case 過的次數除以 k，再對 golden set 平均 | 第三類證據 |
 | pass^5 | 5 次全過的 case 比例 | 第三類證據 |
 | constraint pass rate | 功能測試通過的 PR 中，constraint tests 全過的比例 | tests/constraints/ |
 
@@ -199,7 +201,7 @@ READY 是企業 agent 部署的資格審查框架（2026 年 9 月）：以可�
 
 - **p**：該分層在 golden set 上的 **pass@1**。單一 PR 的複核用的是每次嘗試的準確率，不是 k 次全過率；pass^k 留給第五節的授權擴張，不進這條式子。
 - **T**：該 blast-radius 層的可靠度目標—Review 篇分流矩陣的哪一格。
-- **c**：人工複核抓到錯誤的機率。c 對應的是測試篇那組數字裡的 49%—開發者判斷 LLM 寫的斷言，錯的只有 49% 被抓到；74% 是對的被認出來，不是抓錯率。下面算例用 c = 0.6 是取整偏樂觀，你自己的數字請用實測。人眼的抓錯率直接決定你要付多少人力—這條連結本身就是這一節的價值。
+- **c**：人工複核抓到錯誤的機率。c 用你自己抽樣深讀的歷史算—深讀過的 PR 裡事後證實有錯的，有多少比例在深讀當下就被抓到；沒有歷史就先用 0.6 起步，每月校正。測試篇那組數字—86 位開發者判斷 LLM 寫的斷言，錯的只有 49% 被抓到，對的 74% 被認出來—量的是判斷斷言，不是 PR review 抓缺陷，不能直接當 c；它在這裡只是一個警告：人眼不能假設是 100%。下面算例的 c = 0.6 就是那個起步值。人眼的抓錯率直接決定你要付多少人力—這條連結本身就是這一節的價值。
 
 算例，用自己的數字示範：
 
@@ -209,7 +211,7 @@ READY 是企業 agent 部署的資格審查框架（2026 年 9 月）：以可�
 
 讀者第一次算完多半會發現：可靠度目標訂在哪一格，比 agent 的準確率更決定人力。
 
-分配方式接 Review 篇的分流矩陣：低 radius 可驗證那一格「非指派者深讀抽樣」的比例，就是這裡算出來的 r。每一格仍有人類讀報告 approve；r 決定的是深讀比例。抽樣要分層—我的考試筆記另一條：aggregate accuracy 會掩蓋某些類型的低表現，要做 stratified random sampling。搬到 code 上，分層維度是任務類型、repo、agent 版本；p 也要分層算。
+分配方式接 Review 篇的分流矩陣：低 radius 可驗證那一格「非指派者深讀抽樣」的比例，就是這裡算出來的 r。每一格仍有人類讀報告 approve；r 決定的是深讀比例。抽樣要分層—我的考試筆記另一條：aggregate accuracy 會掩蓋某些類型的低表現，要做 stratified random sampling。搬到 code 上，分層維度是任務類型、repo、agent 版本；p 也要分層算。下圖 c 那一格的 49%–74%，是上面那個警告—人眼不是 100%—不是 c 的量測值。
 
 ```mermaid
 ---
@@ -273,11 +275,11 @@ oversight:                  # 依簡化模型，分層算
 
 ## 五、授權擴張的閘門：接回 G2
 
-營運篇 G2 的原條件是三條：retry rate 低於 15%、escape rate 持平、champions 體系自轉。本篇加四條，全部標「我的建議值（不是業界標準）」。門檻的句型統一為「達標且連續兩個月不升／不降」，不寫「連續下降」—穩態降到 2% 之後就沒得降，gate 從此過不了。
+營運篇 G2 的原條件是三條：retry rate 低於 15%、escape rate 持平、champions 體系自轉。本篇加四條，全部標「我的建議值（不是業界標準）」。門檻的句型統一為「達標且連續兩個月不升／不降」，不寫「連續下降」—穩態降到 2% 之後就沒得降，gate 從此過不了。小樣本再提醒一次：golden set 少於 30 個 case 時，pass^5 的點估計不是門檻—要嘛連同 Wilson 區間一起報，要嘛等到「連續兩個月 + 最少 30 個 case」才拿它當 gate；這跟第三節的粒度警告是同一條規則。
 
 | 新條件 | 門檻 | 為什麼 |
 |---|---|---|
-| pass^5 on golden set | ≥ 60%，連續兩個月（golden set 少於 30 個 case 時只報趨勢） | 一次成功不是可靠 |
+| pass^5 on golden set | ≥ 60%，連續兩個月，且 golden set 最少 30 個 case；少於 30 個時只報趨勢或附 Wilson 區間，不當門檻 | 一次成功不是可靠 |
 | constraint violation rate（功能測試通過的 PR 中違反 constraint tests 的比例） | < 10% 且連續兩個月不升，或已連續兩個月低於 5% | SWE-Gate 的 34% 是起點，不是常態 |
 | agent 改動行的 mutation score | ≥ 70%，連續兩個月 | 測試篇 |
 | oversight budget | 人工深讀比例 ≤ 依第四節簡化模型、以你的 T 與 c 算出的 r，且連續兩個月不升 | 預算是算出來的，不是抄來的 |
