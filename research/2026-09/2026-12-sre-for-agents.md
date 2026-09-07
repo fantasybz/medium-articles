@@ -26,7 +26,7 @@
 3. **追責的基礎設施是空的。** 2608.23610（2026-08-21）檢查 47 個平台（20 個 CI/CD、27 個 model-serving / agent），**0 個**預設輸出「行為組態」（論文稱 behavioural tuple；組成動筆前依全文確認—本系列 attestation block 用的 model snapshot + harness version + skills digest + config digest 四個欄位是自己的設計，不是論文的定義）的 content-addressed 身分；2608.15678（2026-08-16）比對七家 provider 的 18 份條款：一家禁止指派者核准 agent 的 PR，另一家的 agent 卻能在風險門檻下自動核准並 dismiss review，而 approval artifact 承載的責任比條款假設的少—這一點 10 月 Review 篇已經拿來當主證據，12 月只接不重講。
 4. **觀測工具剛好成熟到可以落地。** Agent Flight Recorder（2609.01931，2026-09-01）把防竄改事件帳本壓到每事件 48 µs、每 10 萬事件 2.30 美元；結構化 live trace（2609.01466，同日）讓觀察者 token 少 14–15 倍、準確率從 0.48 升到 0.85–0.87；AgentLogs（2608.29204，2026-08-29）公開 GitHub Copilot cloud agent 的 307,416 個 task、64.3M 筆日誌，是目前能拿來練 dashboard 的最大一份公開 agent 遙測資料集（摘要裡的規模）。OTel 的 GenAI semantic conventions 在 KubeCon + CloudNativeCon Japan 2026 由 Alolita S.（OTel Governance Committee；**全名與講題原文動筆前依大會議程確認**，摘要裡只有「Alolita S.」）以 keynote 談 observing agentic systems（LinkedIn 35 反應）。
 5. **Kubernetes 也在為這種 workload 改版。** v1.37 Garhwal（2026-08-26）帶來 HPA scale-to-zero（beta）、pod certificates 與 cluster trust bundles、declarative validation—剛好是 bursty、per-run identity 的 agent sandbox 需要的三件事。KubeCon NA 在 11 月，12 月正好接。（這三件事只在可靠篇 §7 展開，總論 §十 不重列。）
-6. **這題在中文、在 harness 這一層，現在沒人在講。** X digest 掃過 291 個追蹤帳號、355 則頂級貼文，agent observability 標準是「完全沒出現」的主題；台灣社群唯一相鄰的訊號是莊硯光在 Backend 台灣的 Grafana + Claude Code AIOps bot（39 反應 / 17 分享）—但那是 **agent 做 SRE**，不是 **SRE for agents**，總論要把這個倒轉講清楚。Google 的 agents 白皮書已經把這門學問叫「Agent Ops」，是命名上的對手，總論要正面點名。
+6. **這題在中文、在 harness 這一層，現在沒人在講。** X digest 掃過 291 個追蹤帳號、355 則頂級貼文，agent observability 標準是「完全沒出現」的主題；台灣社群唯一相鄰的訊號是一位 Backend 台灣作者在 Backend 台灣的 Grafana + Claude Code AIOps bot（39 反應 / 17 分享）—但那是 **agent 做 SRE**，不是 **SRE for agents**，總論要把這個倒轉講清楚。Google 的 agents 白皮書已經把這門學問叫「Agent Ops」，是命名上的對手，總論要正面點名。
 
 ### 與已發布三部曲的關係
 
@@ -96,7 +96,7 @@
 
 #### 一、12 月，每個 platform lead 都會被問的三個問題
 
-- 開場用倒轉：莊硯光在 Backend 台灣的貼文（Grafana + openab + Claude Code 打造第一線 AIOps 機器人，「寫程式從來不是生產環境工程的瓶頸，除錯才是」，39 反應 / 17 分享）—在這次掃過的台灣社群資料裡，是唯一一則 SRE × agent 的貼文，也是 Backend 台灣近期分享數前段的技術文。但它是 **agent 做 SRE**。這篇要問的是反過來的那題：**誰對 agent 做 SRE？** 當那個 bot 半夜合併了一個錯的 PR，誰接電話、trace 在哪、誰簽的名？
+- 開場用倒轉：一位 Backend 台灣作者在 Backend 台灣的貼文（Grafana + openab + Claude Code 打造第一線 AIOps 機器人，「寫程式從來不是生產環境工程的瓶頸，除錯才是」，39 反應 / 17 分享）—在這次掃過的台灣社群資料裡，是唯一一則 SRE × agent 的貼文，也是 Backend 台灣近期分享數前段的技術文。但它是 **agent 做 SRE**。這篇要問的是反過來的那題：**誰對 agent 做 SRE？** 當那個 bot 半夜合併了一個錯的 PR，誰接電話、trace 在哪、誰簽的名？
 - 三個問題：agent 上個月花了多少（cost per successful task 是趨勢還是傳聞）、做壞了幾次（revert 是靠 incident 開單才知道，還是 SLO 燒掉就知道）、誰批准了那個 PR（五分鐘內答得出來嗎—9 月總論 §六 立的 flag）。
 - 先講結論的粗體一句：**Agent 的結案報告不是證據，trace 才是。**
 - 為什麼一個 Kubestronaut 來寫 agent：一段。作者 OTCA / PCA 已過、CNPE 的「Observability and Operations」佔 20%；Golden 若在 11 月完成就寫「上週拿到」，若沒有就寫「還差最後一張」—兩個版本都預備（Notion 旗標 3）。「我的 Golden Kubestronaut 之路」另排 11 月當 interlude，不跟 12 月撞（Notion 旗標 2；若與 CNPE 結果撞期，順延到 2027-01）。
@@ -169,7 +169,7 @@
 
 #### 九、出事的時候：on-call、flight recorder 與「誰批准了這個 PR」（概念，runbook 留給應變篇）
 
-- **兩種 on-call 的邊界**：agent 當第一線（莊硯光的 bot、@learnk8s 07-30 設計的 SRE agent 讀 alert / log / runbook 提出安全動作）可以做 read-only 診斷與提案；remediation 要 approval；**永遠不能核准自己的 PR**。邊界的主要依據是技術篇 tool 三級（dangerous 第一年不開）與 CCA-F 的「independent review instance 比 self-review 可靠」；模型在 action boundary 偏保守只當旁證（應變篇 I1，數字只在那裡出現）。
+- **兩種 on-call 的邊界**：agent 當第一線（一位 Backend 台灣作者的 bot、@learnk8s 07-30 設計的 SRE agent 讀 alert / log / runbook 提出安全動作）可以做 read-only 診斷與提案；remediation 要 approval；**永遠不能核准自己的 PR**。邊界的主要依據是技術篇 tool 三級（dangerous 第一年不開）與 CCA-F 的「independent review instance 比 self-review 可靠」；模型在 action boundary 偏保守只當旁證（應變篇 I1，數字只在那裡出現）。
 - **什麼情況才值得叫醒人**：coding workflow 半夜沒有使用者，所以預設動作是自動凍結 / rollback + ticket，下一個工作時段有人接手；只有疑似 injection（撤 identity 與交資安需要人）與 agent 握有 production remediation 權限的 workflow 才 page。營運篇的 20 美元 kill switch 本來就是自動的，12 月不是把它升級成 page，是把它接上 burn-rate alert 與 runbook。
 - **Agent 自己出事的四種形狀**，一句話各點名：runaway loop（kill switch 觸發後的 runbook）、疑似 injection 的異常 tool call（四種裡唯一預設 page 的）、harness 升級後 SLO 燒掉（rollback）、vendor outage / 額度（據 X 上的報告，Grok Memphis outage 09-03 就是這一類；本系列只說「從 budget 排除、另開 vendor SLI」，其餘指向 backlog 的席位經濟主題）。決策樹在應變篇 I2。
 - **Flight recorder 已經很便宜**：一句—每事件 48 µs、每 10 萬事件 2.30 美元（2609.01931）；其餘數字（512 B、100% 偵測、forensic precision 1.0 vs 0.013–0.077）留給應變篇 §3。
@@ -507,7 +507,7 @@ flowchart TB
 37. （已移除）Grok Memphis outage 2026-09-03—X digest 只有一行、沒有連結；找到原始貼文再列，找不到就正文寫「據 X 上的報告」、References 不列
 
 **社群與作者自己的材料**
-38. 莊硯光 — 「用 Grafana、openab 與 Claude Code 打造第一線 AIOps 機器人」（Backend 台灣；動筆前取得引用同意與連結）
+38. 一位 Backend 台灣作者 — 「用 Grafana、openab 與 Claude Code 打造第一線 AIOps 機器人」（Backend 台灣；動筆前取得引用同意與連結）
 39. Alolita S.（OTel GC）— KubeCon + CloudNativeCon Japan 2026 keynote：GenAI semantic conventions for observing agentic systems（LinkedIn；**全名、講題原文、錄影 / 投影片連結動筆前依大會議程確認**）
 40. OpenTelemetry — GenAI semantic conventions：`invoke_agent` / `execute_tool` span 與 `gen_ai.*` attributes（https://opentelemetry.io/docs/specs/semconv/gen-ai/；查閱的版本、stability 與日期動筆前確認並寫進上稿 References）
 41. Google — Introduction to Agents 白皮書（5-Day AI Agents Intensive Day 1；Agent Ops 一詞的出處；URL 用 Kaggle 5-Day Agents Intensive 的頁面，動筆前填）
@@ -1087,13 +1087,13 @@ flowchart TB
 
 **TL;DR 草稿**
 
-> **TL;DR** — 系列最後一篇，寫給會接到 agent alert 的人—多半在上班時間，少數在半夜。前兩篇讓你看得到、定得了目標；這篇處理出事。先切開兩種 on-call：agent 當第一線（莊硯光那種 AIOps bot）可以做到哪裡、絕對不能做什麼；以及為 agent 本身設 on-call—runaway loop、疑似 injection、harness 升級後 SLO 燒掉、vendor 斷線四種形狀各一份 runbook，訊號是可靠篇的 burn rate，**預設動作是自動凍結 + ticket，只有兩種情況才 page**。接著是證據：防竄改的 flight recorder 已經便宜到每事件 48 µs、每 10 萬事件 2.30 美元，沒有理由不裝。最後是追責—「誰批准了這個 PR」在 47 個平台上預設都答不出來（條款分歧、artifact 撐不住那一半 10 月 Review 篇講過），於是大家只能事後用行為指紋猜；答案是把 approval 變成 trace 裡的 span、把 model + harness + config 的 hash 寫進 PR，再用一個 CI 讀得懂的 status check 讓「approver ≠ assigner ≠ agent」可執行—而且 CI 對的是 trace 上由 harness 在 agent 之前寫下的值，不是 agent 能改的 PR body。資安面的 context 提權只留一段，指向 2027 的爆炸半徑主題。
+> **TL;DR** — 系列最後一篇，寫給會接到 agent alert 的人—多半在上班時間，少數在半夜。前兩篇讓你看得到、定得了目標；這篇處理出事。先切開兩種 on-call：agent 當第一線（一位 Backend 台灣作者那種 AIOps bot）可以做到哪裡、絕對不能做什麼；以及為 agent 本身設 on-call—runaway loop、疑似 injection、harness 升級後 SLO 燒掉、vendor 斷線四種形狀各一份 runbook，訊號是可靠篇的 burn rate，**預設動作是自動凍結 + ticket，只有兩種情況才 page**。接著是證據：防竄改的 flight recorder 已經便宜到每事件 48 µs、每 10 萬事件 2.30 美元，沒有理由不裝。最後是追責—「誰批准了這個 PR」在 47 個平台上預設都答不出來（條款分歧、artifact 撐不住那一半 10 月 Review 篇講過），於是大家只能事後用行為指紋猜；答案是把 approval 變成 trace 裡的 span、把 model + harness + config 的 hash 寫進 PR，再用一個 CI 讀得懂的 status check 讓「approver ≠ assigner ≠ agent」可執行—而且 CI 對的是 trace 上由 harness 在 agent 之前寫下的值，不是 agent 能改的 PR body。資安面的 context 提權只留一段，指向 2027 的爆炸半徑主題。
 
 **章節**
 
 1. **兩種 on-call：agent 當第一線，與為 agent 設 on-call**
    - 開場（書錨候選，讀完剩下 20% 再定；橋接要寫成一段論證，不能只有一句）：Kent Beck《The Beauty of Maintenance》的主張是維護不是寫程式的殘餘，是主要的工作—系統大部分的生命在寫完之後。agent 的 production 生命也是：一條 golden workflow 上線之後，runbook、postmortem、rollback、re-approve 才是 harness 的主要工作，寫 prompt 只是它出生的那一刻。所以「agent 出事怎麼辦」不是附錄，是 harness 的日常—這篇就是那個日常。若讀完發現書的重點不在這裡，改把它放到 §7 結語當收束。
-   - 莊硯光的 bot（Backend 台灣 39 / 17）與 @learnk8s 07-30 的 SRE agent 設計（讀 alert、log、runbook，提出安全動作）：**agent 做 SRE**。它是有價值的，但它自己也是一個需要 SRE 的 workload—這篇是後者。
+   - 一位 Backend 台灣作者的 bot（Backend 台灣 39 / 17）與 @learnk8s 07-30 的 SRE agent 設計（讀 alert、log、runbook，提出安全動作）：**agent 做 SRE**。它是有價值的，但它自己也是一個需要 SRE 的 workload—這篇是後者。
    - **表格 I1（PNG）agent 當第一線的邊界**：read-only 診斷 ✔、提出 remediation ✔、執行 remediation → 需 `human.approval`（kind=remediation，計入可靠篇的 intervention ratio）、核准自己的 PR ✘、碰 production DB ✘、關 alert ✘。**主要依據**：技術篇 tool 三級（dangerous 第一年不開）與 CCA-F 筆記「independent review instance 比 self-review 可靠」。**第二依據（旁證）**：SteerBench-Work（2608.12654，106 個 incident-anchored 情境，領域非 coding agent / 非 SRE，僅當旁證；全文待讀，若證實是 IT incident 情境再升回主證據）顯示模型在 action boundary 錯誤擋下 28.1%、錯誤放行 1.0%—方向上偏保守，適合 triage 不適合自主修。這是全系列唯一出現這兩個數字的地方。
    - 反模式 7 在此。
 
@@ -1364,7 +1364,7 @@ flowchart TB
 5. arXiv — [Self-Improving Coding Agents Through Accumulated Behavioral Rules](https://arxiv.org/abs/2607.13091)
 6. Kent Beck — [The Beauty of Maintenance](出版頁 URL，動筆前填；若改放 §7 收束，仍列)
 
-**來源對照（應變與追責篇；寫作用）**：2609.01931、2609.04017、2608.14074、2609.02127、2608.23610、2608.15678（只引「10 月已講」）、2606.14054、2608.00966、2608.23550、2608.12654（旁證，標領域）、2608.25920、2609.00072、2608.21101、2607.13091；2608.27299、2609.01222、2608.28502（只在資安一段）；@learnk8s 07-30、@perplexity_ai 07-29、@akshay_pachaar 08-08、@unclebobmartin 08-29；Grok Memphis outage 09-03（形狀四的例子—找到原始貼文才列，否則正文寫「據 X 上的報告」）；莊硯光（Backend 台灣）；Kent Beck《The Beauty of Maintenance》（Notion 讀書筆記 80%）；作者 CCA-F 筆記；營運篇 §二、§三；組織篇 §四；技術篇 §三；10 月 Review 篇。
+**來源對照（應變與追責篇；寫作用）**：2609.01931、2609.04017、2608.14074、2609.02127、2608.23610、2608.15678（只引「10 月已講」）、2606.14054、2608.00966、2608.23550、2608.12654（旁證，標領域）、2608.25920、2609.00072、2608.21101、2607.13091；2608.27299、2609.01222、2608.28502（只在資安一段）；@learnk8s 07-30、@perplexity_ai 07-29、@akshay_pachaar 08-08、@unclebobmartin 08-29；Grok Memphis outage 09-03（形狀四的例子—找到原始貼文才列，否則正文寫「據 X 上的報告」）；一位 Backend 台灣作者（Backend 台灣）；Kent Beck《The Beauty of Maintenance》（Notion 讀書筆記 80%）；作者 CCA-F 筆記；營運篇 §二、§三；組織篇 §四；技術篇 §三；10 月 Review 篇。
 
 ### 總論與三篇之間的不重疊檢查
 
@@ -1400,7 +1400,7 @@ flowchart TB
 6. **Burn-rate 數字驗算**：本系列 window 是 28 天，倍率用 13.4 / 5.6 / 0.93（1h 燒 2%：0.02 × 28 × 24 = 13.4；6h 燒 5%：0.05 × 28 × 24 ÷ 6 = 5.6；3d 燒 10%：0.1 × 28 ÷ 3 = 0.93），run availability 5% 與 tool-call error 3% 兩個 budget 各算一次，觀測篇 §6 與可靠篇 §4 / §5、應變篇形狀三用同一組並註明「28 天視窗換算」；若最後決定改 30 天視窗，四處一起改回 14.4 / 6 / 1。
 7. **Databricks 與 a16z 的數字找一手來源**：$1.2M/yr、7 個 MCP bug、5× / 14× 目前都是 X 貼文；找 Databricks 官方 blog 與 a16z 原文，沒有就標「據 X 貼文」。Grok Memphis outage 09-03：找到原始貼文才列 References；找不到就正文寫「據 X 上的報告」、References 不列。觀測篇 cardinality 那句：在 X digest 的 K8s 營運貼文群裡找出作者與連結；找不到就改引 2608.23992 或寫成筆者自己的紀律，不掛 handle。
 8. **Google 白皮書的 Agent Ops 原文**：重讀《Introduction to Agents》（5-Day Intensive Day 1）該段，抄下原句與頁碼，總論第二節要正面引用再對比；上稿 References 用 Kaggle 頁面的 URL。
-9. **引用同意**：莊硯光（Backend 台灣 AIOps bot 貼文—要連結與同意，並確認 openab 是什麼）；KubeCon Japan keynote 的引用方式。不引用 Claude Taiwan 的席位抱怨（**selection 修正 3**）。
+9. **引用同意**：一位 Backend 台灣作者（Backend 台灣 AIOps bot 貼文—要連結與同意，並確認 openab 是什麼）；KubeCon Japan keynote 的引用方式。不引用 Claude Taiwan 的席位抱怨（**selection 修正 3**）。
 10. **Kubernetes v1.37 功能狀態**：從官方 release notes 確認 HPA scale-to-zero（beta）、pod certificates / cluster trust bundles 的 stage、declarative validation 的範圍；KubeCon NA 2026（11 月）有沒有 agent workload / sandbox 的 session 可以引。只進可靠篇 §7。
 11. **重讀自己 2025 的兩篇**：列出《淺談 CNCF 生態下的生成式 AI Observability》已講過的工具與指標、《觀測的修復之道》已點名的反模式—12 月的反模式表不能重複，span 模型要明確標出「2025 已有」的那一種；9 月總論 §十二 已用過「這個名字會消失」的預測修辭，12 月不再用。
 12. **10、11 月實際發布的數字與用語**：動筆時確認 10 月可靠度篇的 pass^k、oversight budget、G2 擴充四條與 Review 篇的 2608.15678 段落怎麼寫、11 月變異篇的門檻怎麼寫；可靠篇 R1 的 release gate 欄與 §5 的 G2 小表要引自己的文章而不是引 arXiv，總論 §五「見 10 月」要能連到正確段落。
@@ -1416,7 +1416,7 @@ flowchart TB
 - **英文版 TL;DR 首句考慮用備用一**：*Nearly every SRE practice transfers to agents; the SLI does not, because the agent fills in its own SLI.*
 - **關鍵詞翻法固定**：結案報告 → *completion claim*（不用 closing report）；傳聞 → *hearsay*；追責 → *accountability*（標題已定）；授權擴張 → *expanding autonomy*；儀表 → *instrumentation*；事件帳本 → *event ledger*；行為組態 → *behavioural tuple*（沿用 2608.23610 的用語）；快訊號 / 落後 budget → *fast signal / lagging budget*；claimed / verified outcome 照英文原詞；intervention ratio、approval minutes、burn rate 不翻；rollback 兩版共用。
 - **英文讀者對 SRE book 很熟**：可以直接引 error budget、SLO、burn-rate alerting 的章節名，少解釋；反過來要多解釋的是 harness layer（連回 9 月 EN 版的定義）與 10、11 月的接口。「probe 的位置要重做」對英文 SRE 讀者要明講 black-box probe 那一章，否則他們會覺得你不知道。
-- **台灣社群引用要加脈絡**：莊硯光的貼文要說明「a Taiwanese backend community post on a Grafana + Claude Code AIOps bot」；Backend 台灣、DevOps Taiwan 加一句是什麼；Claude Taiwan 不出現；Ramp 3/4 PR（@linear 08-31）可當英文版 §三「有規模」的脈絡句。
+- **台灣社群引用要加脈絡**：一位 Backend 台灣作者的貼文要說明「a Taiwanese backend community post on a Grafana + Claude Code AIOps bot」；Backend 台灣、DevOps Taiwan 加一句是什麼；Claude Taiwan 不出現；Ramp 3/4 PR（@linear 08-31）可當英文版 §三「有規模」的脈絡句。
 - **命名對手段落**：英文讀者更可能已經用 "Agent Ops" / "AgentOps" 這個詞（也是一家公司的名字）—英文版要多一句「AgentOps the product is not what I mean」。
 - **Kubestronaut / CNPE 一句話交代**：英文讀者不一定知道 Golden Kubestronaut 是什麼，加一句「the CNCF track of 15+ certifications」。
 - **OTel 名詞照規格原文**，不翻；`invoke_agent` / `execute_tool` / `gen_ai.*` 與 `org.*` / `human.approval` 的三類區分在英文版更要寫清楚，因為 LinkedIn 的讀者裡有規格作者；`human.approval` 不加 org 前綴的理由要在英文版明說。PromQL、YAML 片段兩版共用。
@@ -1440,7 +1440,7 @@ flowchart TB
 
 **發布順序**（社群 digest：粉絲團分享的週才是 views 超過 impressions 的週）：
 1. 總論發布當天：粉絲團貼文 + LinkedIn（英文版隔天）。
-2. 隔天：DevOps Taiwan（觀測 / SLO 角度）與 Backend 台灣（回應莊硯光那篇的角度—先私訊）。
+2. 隔天：DevOps Taiwan（觀測 / SLO 角度）與 Backend 台灣（回應一位 Backend 台灣作者那篇的角度—先私訊）。
 3. 觀測篇發布時：Grafana & Friends Taipei 相關貼文 / CNCJ 或 CNCF Taiwan 的社群；LinkedIn 在英文版上線時再發一次 tag OTel GenAI SIG。
 4. 應變篇發布時：Backend 台灣（該群對事故分析文的分享數最高：台新 184 / 23、Zeabur 103 / 19）。
 

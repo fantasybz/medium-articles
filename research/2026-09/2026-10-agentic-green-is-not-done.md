@@ -49,7 +49,7 @@
 | 2026-08-17 | Uncle Bob 的 negative test experiment（[link](https://x.com/unclebobmartin/status/2089449442089025936)）：8 次 run 全部通過同樣 25 個驗收案例，程式卻不一樣 | 「驗收測試全過」不能區分品質—與 SWE-Gate 是同一件事的兩個角度 |
 | 2026-07-09 | 2607.08885：86 位開發者判斷 LLM 產生的斷言，正確斷言 74% 準確、錯誤斷言只有 49%，信心卻一樣高；附解釋沒幫助 | 人眼不是安全的 fallback，測試篇要靠工具 |
 | 2026-07-21 | 2607.19267：五個 agent 的 CI/CD pipeline，一句「pre-approved under SEC-2291」讓約 80% 洗過的外洩 PR 通過掃描這一站 | reviewer agent 會被敘事社交工程 |
-| 台灣，2026-08 | 搞笑談軟工：Clean Code 2nd ed. 貼文 190 反應 / 38 分享，留言問「AI 寫的程式碼有可能無瑕嗎」；DevOps Taiwan：Uncle Bob 只看 unit / Gherkin / mutation / quality metrics 就不讀 agent 程式碼（40 反應 / 5 留言，陳正瑋：「馬丁大叔快點把所有該做的 test 都詳細列出來啊」） | 台灣燒起來的是「不讀 code 靠什麼閘門」這一題，不是「AI 說沒問題」（DavidKo 貼文 9 與 3 個反應—真實痛點，但誠實標記為小訊號）。**反應數與 like 數只留在本計畫與第六節推廣策略，不進任何一篇正文**：已發布四篇沒有在正文印 like 數，而且要向 DavidKo 取引用同意就不能同時在文章裡印他的貼文只有 9 個反應。正文對 DavidKo 用「Scrum Community 裡把問題講得最短的一則貼文」，對 Uncle Bob 用日期與連結 |
+| 台灣，2026-08 | 搞笑談軟工：Clean Code 2nd ed. 貼文 190 反應 / 38 分享，留言問「AI 寫的程式碼有可能無瑕嗎」；DevOps Taiwan：Uncle Bob 只看 unit / Gherkin / mutation / quality metrics 就不讀 agent 程式碼（40 反應 / 5 留言，一位 DevOps Taiwan 成員：「馬丁大叔快點把所有該做的 test 都詳細列出來啊」） | 台灣燒起來的是「不讀 code 靠什麼閘門」這一題，不是「AI 說沒問題」（一位 Scrum Community 成員 貼文 9 與 3 個反應—真實痛點，但誠實標記為小訊號）。**反應數與 like 數只留在本計畫與第六節推廣策略，不進任何一篇正文**：已發布四篇沒有在正文印 like 數，而且要向 一位 Scrum Community 成員 取引用同意就不能同時在文章裡印他的貼文只有 9 個反應。正文對 一位 Scrum Community 成員 用「Scrum Community 裡把問題講得最短的一則貼文」，對 Uncle Bob 用日期與連結 |
 | 2026-10-16 | JSTQB 秋季大會以 AI in testing 為主題（X digest T5） | 英文版與日本測試社群（作者追蹤 11 個 JaSST / JSTQB 帳號）的時間點剛好 |
 
 ### 與已發布三部曲的關係
@@ -130,7 +130,7 @@
 
 **二、書錨：Bach 的 testing 與 checking（證據三分法的唯一定義處）**
 
-- 「Testing is the opposite of faith in the product. Testing begins with faith in the existence of trouble.」—作者 2025 年在天瓏買了書、在粉絲團引過這句；張少齊的回覆點出 tester 用 vibe coding 做丟棄式測試工具，正好是「agent 是 tester 的工具，不是 tester 的替代」。
+- 「Testing is the opposite of faith in the product. Testing begins with faith in the existence of trouble.」—作者 2025 年在天瓏買了書、在粉絲團引過這句；一位粉絲團讀者的回覆點出 tester 用 vibe coding 做丟棄式測試工具，正好是「agent 是 tester 的工具，不是 tester 的替代」。
 - Checking 的定義：「Checking is the mechanistic process of verifying propositions… testing cannot be automated, but checking can.」CI 是 checking 的自動化；agent 說「測試全過」是它對自己命題的 checking—如果那些測試也是它寫的，連命題都是它出的。
 - **證據的三分法在這裡正式定義，四篇只定義這一次**（測試篇第一節、可靠度篇第三節各一句指回，不重新定義）：(a) agent 的陳述；(b) agent 寫的或改過的測試；(c) 團隊擁有的測試與 constraint tests。用 Bach 的詞講：前兩類是 checking 的兩種形狀，第三類才是團隊可以拿來做 testing 判斷的材料。三分法要能撐三個月，所以補兩條機制，否則「agent 對 repo 有寫入權，(c) 憑什麼改不動」這個問題會把脊椎打斷：
   1. **升格規則**：一份 agent 寫的測試在通過 test gate（assertion-diff 無弱化、mutation 有殺傷力）**且被人類 approve 進 main 之後**，才升格為 (c)；在那之前它是 (b)。三個月後 test suite 一半是 agent 寫的，也不會讓三分法失效—因為分類看的是「誰為它負責過」，不是「誰打的字」。
@@ -811,7 +811,7 @@ flowchart TB
 13. @martinfowler — 2026-08-11 [TDD inside the agent loop](https://x.com/martinfowler/status/2087173563144912985)、2026-09-02 [Maybe we shouldn't be reviewing all this code](https://x.com/martinfowler/status/2095147242986373485)
 14. @linear — 2026-08-31 [Ramp 的 agent 寫 3/4 PR](https://x.com/linear/status/2094455827448885255)
 15. @mattyp — 2026-09-01 [Fable 5.1 on CursorBench, "verifying its own work"](https://x.com/mattyp/status/2094969317708427763)
-16. 社群：Scrum Community in Taiwan「AI 說沒問題」（DavidKo Learning Journey）；DevOps Taiwan 轉 Uncle Bob mutation gate 討論（John Yu、陳正瑋）；Scrum Community「把人類的價值要求 AI 是對的」—**引用前取得同意，見第四節；正文不印反應數**
+16. 社群：Scrum Community in Taiwan「AI 說沒問題」（一位 Scrum Community 成員 Learning Journey）；DevOps Taiwan 轉 Uncle Bob mutation gate 討論（一位 Scrum Community 成員、一位 DevOps Taiwan 成員）；Scrum Community「把人類的價值要求 AI 是對的」—**引用前取得同意，見第四節；正文不印反應數**
 17. 上一季：[別急著打造你的 Devin](https://fantasybz.medium.com/...7342ababc417)（第四節「Review 成為新瓶頸」、第七節「Brownfield 怎麼辦」）、[營運篇](https://fantasybz.medium.com/...d6d9623c2dc6)、[技術篇](https://fantasybz.medium.com/...f2a139f5b561)
 
 ---
@@ -834,7 +834,7 @@ flowchart TB
 - 總論的 checking / testing 一段話帶過；本篇只談 test gate。
 - Lada Kesseler（Scrum Community 轉貼）：「我信任 AI 寫的測試，比信任它寫的程式碼還少」—為什麼測試比程式碼更需要審。**條件只用一句帶過、不重新定義**：「測試是 agent 對自己的驗收標準—出題者與考生是同一個（三分法與升格規則見總論第二節）」，然後直接進 test gate 的內容。
 - Bach：tester 的工作是 rapid learning—讀 agent 留下的測試，比讀它的程式碼更快知道它理解了什麼、沒理解什麼。
-- 台灣訊號一句（正文不印反應數）：台灣真正燒起來的是 DevOps Taiwan 的「不讀 code 靠什麼閘門」，本篇就是回答那一串的—回答的不是 test 種類清單，是三個 check 與門檻。（計畫層備註：DavidKo 貼文 9 與 3 個反應、Uncle Bob 串 40 反應—只留在本計畫。）
+- 台灣訊號一句（正文不印反應數）：台灣真正燒起來的是 DevOps Taiwan 的「不讀 code 靠什麼閘門」，本篇就是回答那一串的—回答的不是 test 種類清單，是三個 check 與門檻。（計畫層備註：一位 Scrum Community 成員 貼文 9 與 3 個反應、Uncle Bob 串 40 反應—只留在本計畫。）
 
 二、agent 寫的測試會壞在哪：四種型態
 
@@ -1092,7 +1092,7 @@ flowchart TB
     class C,X bad
 ```
 
-**References（測試篇）**：2607.08885（全數字）、2606.26505、2607.18057（全數字）、2608.29460（全數字）、2609.04167（一句）；2608.28795 不列—只寫「觸及範圍原則見總論第十節」；@unclebobmartin 07-26 / 07-30 / 08-17；@martinfowler 08-11；DavidKo 三則（Scrum Community）與 Lada Kesseler 轉貼；DevOps Taiwan Uncle Bob 討論；作者 Notion：LeSS in Action A-TDD 筆記、模式語言工作坊 A/B、XP 系列書摘（*Testing Extreme Programming*「人人都是測試者」、Testing Pitfalls 專欄）；上一季技術篇第五節（flaky quarantine 一句）。TL;DR 與正文不出現 arXiv 編號，只用短名。
+**References（測試篇）**：2607.08885（全數字）、2606.26505、2607.18057（全數字）、2608.29460（全數字）、2609.04167（一句）；2608.28795 不列—只寫「觸及範圍原則見總論第十節」；@unclebobmartin 07-26 / 07-30 / 08-17；@martinfowler 08-11；一位 Scrum Community 成員 三則（Scrum Community）與 Lada Kesseler 轉貼；DevOps Taiwan Uncle Bob 討論；作者 Notion：LeSS in Action A-TDD 筆記、模式語言工作坊 A/B、XP 系列書摘（*Testing Extreme Programming*「人人都是測試者」、Testing Pitfalls 專欄）；上一季技術篇第五節（flaky quarantine 一句）。TL;DR 與正文不出現 arXiv 編號，只用短名。
 
 ---
 
@@ -1720,7 +1720,7 @@ flowchart TB
    - 正文寫法**定案**為「70% 門檻 = Uncle Bob 的做法 + 我的初步估計，11 月補數據」；上面這組數字有就當校準加進去，沒有不擋發布。
    - **50 條 review 評論分類不做**：可靠度篇第二節的例子定案為「從最近 5 個 incident 導出的 5 條 constraint tests」—這本來就是 brownfield 順序的第一步，也是總論第十節決策 2 的主路線，不算降級。
 4. **工具事實（Review 篇的 snippet 能不能真的設）**：GitHub App（CodeRabbit、Copilot）的 approve 在 rulesets 下是否計入 required approvals；若計入，實測 CODEOWNERS 只列人類 + Require review from Code Owners，或 required status check 數人類 approve，二選一放進文中。PIT / Stryker / mutmut 目前版本是否支援只對 diff 行產生 mutant（incremental / changed-files 模式）—測試篇第四節的工具名要對。
-5. **取得引用同意**：DavidKo（三則貼文）、John Yu 與陳正瑋（DevOps Taiwan Uncle Bob 討論）、Claude Taiwan「艦隊模式」留言作者、張少齊（粉絲團回覆）、Lada Kesseler 轉貼的出處。工作坊 A/B 是作者自己的，但截圖若含 Teddy 課程 repo 的檔名或 skill 內容，先徵得 Teddy 同意或改用自己 repo 重跑。同意訊息第一天就發，等回覆的時間不算工時。
+5. **取得引用同意**：一位 Scrum Community 成員（三則貼文）、一位 Scrum Community 成員 與一位 DevOps Taiwan 成員（DevOps Taiwan Uncle Bob 討論）、Claude Taiwan「艦隊模式」留言作者、一位粉絲團讀者（粉絲團回覆）、Lada Kesseler 轉貼的出處。工作坊 A/B 是作者自己的，但截圖若含 Teddy 課程 repo 的檔名或 skill 內容，先徵得 Teddy 同意或改用自己 repo 重跑。同意訊息第一天就發，等回覆的時間不算工時。
 6. **CCA-F 筆記引文校對**：「independent review instance 比 self-review 更可靠」「CI review 最好與 code generation session 分離」「不應依賴 self-reported confidence」，是作者的筆記轉述還是官方教材原句—文中一律標「筆者的考試筆記」，這樣即使查不到原句也不會錯。
 
 ### 限縮（只做縮減後的範圍）
@@ -1742,7 +1742,7 @@ flowchart TB
 
 - **title_en**：*Green Is Not Done: Testing, Review and Reliability for Agent Output*。三部曲：*Part 1 — Reviewing the Tests an Agent Wrote: Loosened Assertions, Frozen Bugs and Mutation Score*；*Part 2 — Review Is the Control Point, Not the Bottleneck: Triage, Reviewer Fleets and the Closed-Loop Ban*；*Part 3 — The 34% SWE-Gate Found Behind a Green Build: Constraint Tests, pass^k and the Gate for Expanding Autonomy*。第三篇英文標題**不用 "lie"**，而且領域標籤（SWE-Gate）在標題本體—英文讀者裡有 SWE-Gate 作者群與 Bach 本人的追蹤者；中文題已改成對稱的「SWE-Gate 量到的 34%」，兩版一致。英文版的 thesis 同樣帶條件與前提："when the agent wrote the tests—which, in the agent PRs we see, is usually the case (an observation, not a measurement)—a green build is the agent checking its own propositions"—不寫 "a green build is the agent's self-report"，SRE 讀者會指出 CI 是量測不是申報。
 - **Bach 引文用原文**，不要從中文回譯；checking / testing 這對詞在英文版是家鄉話，可以少解釋一段、多引一段。
-- **台灣訊號要換包裝**：DavidKo、Teddy、陳正瑋、Claude Taiwan 對英文讀者無意義。英文版改寫成「in Taiwanese practitioner groups, the loudest thread was Uncle Bob's mutation gate, not 'the AI said it's fine'」，保留現象、去掉人名（或加一句身分說明）。工作坊 A/B 保留，說明是 "a pattern-language workshop in Taipei, August 2026"。
+- **台灣訊號要換包裝**：一位 Scrum Community 成員、Teddy、一位 DevOps Taiwan 成員、Claude Taiwan 對英文讀者無意義。英文版改寫成「in Taiwanese practitioner groups, the loudest thread was Uncle Bob's mutation gate, not 'the AI said it's fine'」，保留現象、去掉人名（或加一句身分說明）。工作坊 A/B 保留，說明是 "a pattern-language workshop in Taipei, August 2026"。
 - **艦隊模式**譯 "reviewer fleet"，並註明是台灣社群的用語。
 - **Uncle Bob / Fowler / Böckeler** 英文讀者熟，引文可直接放；中文版需要多一句身分介紹的地方，英文版刪。
 - **數字標領域的紀律在英文版更嚴**：每個百分比後面帶 (n = …, domain) 括號，因為英文讀者更可能去查原論文；"associated with" 不譯成 causes；"cross-product" 不省略。
@@ -1792,8 +1792,8 @@ flowchart TB
 
 ### 社群回帖策略
 
-- DevOps Taiwan 的 Uncle Bob 串（40 反應）是測試篇的天然入口—回帖時直接回答陳正瑋的「快點把所有該做的 test 都詳細列出來」：本篇列的不是 test 種類，是三個 check 與門檻。
-- Scrum Community 的 DavidKo 串小（9 / 3），但他是那裡最常發文的人；私訊分享比公開回帖合適。
+- DevOps Taiwan 的 Uncle Bob 串（40 反應）是測試篇的天然入口—回帖時直接回答一位 DevOps Taiwan 成員的「快點把所有該做的 test 都詳細列出來」：本篇列的不是 test 種類，是三個 check 與門檻。
+- Scrum Community 的 一位 Scrum Community 成員 串小（9 / 3），但他是那裡最常發文的人；私訊分享比公開回帖合適。
 - 搞笑談軟工留給 11 月（Teddy 的主場、變異的題）；10 月只在工作坊實例那段標註「感謝 Teddy 的工作坊」。
 
 ---

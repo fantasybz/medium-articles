@@ -48,7 +48,7 @@
 
 1. **2026-08 下旬（Notion 頁面 created → last_edited 為 08-22 → 08-24；實際兩天日期向 Teddy 確認後再寫）**：Teddy Chen 的「馴服 AI 寫出可維護的系統：模式語言驅動開發工作坊」，筆者是學號 1 號。工作坊的 Context vs Form、SDD 三階梯、Four-Form Patterns、雙迴圈實作地圖，是本主題的機制骨架（`notion_digest.md` §2）。
 2. **搞笑談軟工，2026 夏（日期待補）**：Teddy 的可重現性判準—「輸入相同的規格，不需要人為介入，既可重複產生幾乎相同的程式實作嗎？如果可以，我認為你的 Context Engineering / Loop Engineering 就算成功了」—298 反應 / 17 留言 / 74 分享，是筆者追蹤的 17 個 FB 社團裡分享數最高的技術訊號；同群學生量了 regeneration 的 LOC 變異（貼文 57 反應 / 3 留言 / 11 分享；**他們實際量到的數字與量法待補，見第 3 節—補不到就只寫「有人量過」**），留言問「更強的 model（Fable 5）是否需要更少約束」。四篇已發布文章完全沒回答這個問題（`community_digest.md` §1.1）。
-3. **DDDesign Taiwan**：Kim Kao 用多 agent 從 legacy codebase 抽 bounded context，每次抽出的數量不同；鮑承佑的回覆「每次『骰』會有不一樣的結果」（16 / 3）。同一個現象、另一個社群、另一種 artefact—而且是**沒有任何契約寫得出來的那種變異**（見總論 §六「壞變異」的第二層）。
+3. **DDDesign Taiwan**：Kim Kao 用多 agent 從 legacy codebase 抽 bounded context，每次抽出的數量不同；一位 DDDesign Taiwan 成員的回覆「每次『骰』會有不一樣的結果」（16 / 3）。同一個現象、另一個社群、另一種 artefact—而且是**沒有任何契約寫得出來的那種變異**（見總論 §六「壞變異」的第二層）。
 4. **2026-08-17**：Uncle Bob 公開 negative test experiment repo—Hunt the Wumpus、四種測試紀律、8 次 run，**每次都通過同樣 25 條 acceptance test，但程式不是同一個程式**（`x_digest.md` T5 原句「yet the programs were not the same」—是「不全相同」，不是「兩兩皆不同」）。本主題只用這一個事實；「量產出、不教流程」的讀法是 10 月測試篇的（見下方來源歸屬表）。英文版以它開場。
 5. **2026-08-25**：arXiv 2608.26197 *Harness Engineering for Predictable Agentic Systems*—宣稱結構化 planning 約束讓 reproducibility 達 1.000（4 格裡 3 格），代價是 model-dependent latency。**它是否固定 sampling、是否為 coding 任務，一行摘要沒說**（arxiv.md 無星號，abstract 未讀）；讀全文前全系列只寫「loop 側的約束能把 run-to-run 變異壓到接近零」，不寫「同一 sampling」。若全文顯示 1.000 來自 decoding 決定性（temperature / seed），此篇改列為反模式 4 的反例而不是證據（第 3 節第 2 點）。
 6. **2026-08-26**：arXiv 2608.25399 *Can your AI agent be cheaper?*—2,700 runs，完整 spec 縮成 bare user story 讓 token +29.7%。**同一篇說「run-to-run variance unchanged」；arxiv.md 把它歸在 unit economics 叢集、摘要全在講 token spend，讀完全文前預設它量的是 token 花費的離散度**（第 3 節第 2 點）。它證明的是 spec 厚度動成本軸；輸出結構的變異沒人直接量過。
@@ -128,7 +128,7 @@
 ### 章節（11 節；決策工件在第六節，約全文 45% 處）
 
 **一、Teddy 的問題：你的 harness 過關了嗎**
-- 開場直接引 Teddy 的原句（298 / 74 分享）與 Kim Kao 的 bounded context「每次數量不同」；不引 DavidKo 轉貼與 2025 講題。
+- 開場直接引 Teddy 的原句（298 / 74 分享）與 Kim Kao 的 bounded context「每次數量不同」；不引 一位 Scrum Community 成員 轉貼與 2025 講題。
 - 讀者正在問的三個問題：AGENTS.md 到底有沒有用？要不要買 spec 工具？為什麼同一個 ticket 兩位工程師用 agent 跑出來差這麼多？—三題共用同一個答案：你沒有量變異。
 - 先講結論（粗體一行）：**變異源自 sampling；已證明會放大或衰減它的機制全在 loop。spec 厚度已被證明動的是成本，能不能動變異，文獻沒量過—本系列的 A0 組量了，數字在第五節與第三篇。量它，然後把它當 harness 的驗收指標。**（動筆時依 A0 結果決定最後一句要不要加「不在 spec 裡」；A0 沒跑成就照這句寫，不加。）
 - 預告：本文的決策工件是「固定 spec 跑 N 次」的變異門檻，接進營運篇 G2；三部曲分別回答 spec 長什麼樣、spec 怎麼變成契約、以及筆者自己的十次實驗。
@@ -614,7 +614,7 @@ flowchart TB
 一、需求是 What、規格是 How—BDD 是溝通，不是工具（只留三件新東西）
 - 一段 recap 總論 §三的名詞：需求 / 規格 / 契約，與 Teddy 的 What / How 對照；本篇寫的是「規格」這一層。Dan North、3C、四色卡對這群讀者是 2010 年代常識，不重講；只留三件新東西：
 - **新東西一—Teddy 的 What / How 對照**：需求 = Problem Domain on Real World、規格 = Solution Domain on Machine Runtime（Michael Jackson Problem Frames）。
-- **新東西二—3C 裡 Confirmation 是 agent 讀的那一段**：Card 與 Conversation 仍是人的；Confirmation（example）是 agent 能讀、能驗收的部分。Dan North 的「BDD 的本質是溝通，不是寫 Feature 檔」經 DavidKo 轉貼（Scrum Community，8 反應）—標「轉引」，不寫成原文引用。
+- **新東西二—3C 裡 Confirmation 是 agent 讀的那一段**：Card 與 Conversation 仍是人的；Confirmation（example）是 agent 能讀、能驗收的部分。Dan North 的「BDD 的本質是溝通，不是寫 Feature 檔」經 一位 Scrum Community 成員 轉貼（Scrum Community，8 反應）—標「轉引」，不寫成原文引用。
 - **新東西三—紅卡只能由人回答**：Example Mapping 的四色卡（經 Blazej Drobniuch 的 Autodesk 案例轉引—他把 Example Mapping 錄音餵給 Claude Code 起草 Gherkin，觀察是「沒人會對 AI 的初稿執著，團隊終於願意放手討論」，Scrum Community in Taiwan 轉貼，8 反應 / 2 分享，只當例子不當證據）：黃 story、藍 rule、綠 example 都能餵 agent，紅卡（問題）只能由人回答。初稿便宜，討論才是產出。
 - 反模式 3「Gherkin 工廠」：規格數量不是品質；四十條 Gherkin 裡有幾條是 red card 變出來的，才是品質。社群那句「AI 幫你寫了四十條 Gherkin，然後呢—它不知道三年前為某大客戶開的例外規則」（Scrum Community，7 反應，作者待查）當一句話的例子；2605.18461 的結論正是「spec 品質與制度知識是綁定限制，不是 model 能力」。
 - 筆者的第一手材料一句：2025 學習預算裡的「規格驅動開發實戰」課；LeSS in Action 的 A-TDD / SBE 訓練壓成一行—「設計 example 的重要性：避免負面導向的 assertion」—其餘連到 10 月測試篇。
@@ -841,7 +841,7 @@ flowchart LR
 
 **P1-T2 圖說**：spec 人審 checklist：五個問題。
 
-**References**（只列 digest 內有的來源；Dan North 與 Matt Wynne 的原文不在五份摘要裡，經轉貼引用並標「轉引」）：Dan North「BDD 的本質是溝通」（DavidKo 轉貼，Scrum Community in Taiwan，轉引）；Example Mapping（Blazej Drobniuch 的 Autodesk 案例貼文，Scrum Community in Taiwan 轉貼，URL 待補，只當案例不當需求證據）；「四十條 Gherkin」「story 切更小」「RD 兩小時做完」三則社群貼文（作者與 URL 待查，只當一句話例子）；2608.25399；2608.16618；2609.03028；2608.20195；2607.09900；2605.18461；2608.30572；Teddy 工作坊（需求 vs 規格、Context vs Form）；LeSS in Action: Developer Practices 課程筆記（Terry Yin / 91 / Joey Chen，2022-04，一行，其餘連 10 月測試篇）。
+**References**（只列 digest 內有的來源；Dan North 與 Matt Wynne 的原文不在五份摘要裡，經轉貼引用並標「轉引」）：Dan North「BDD 的本質是溝通」（一位 Scrum Community 成員 轉貼，Scrum Community in Taiwan，轉引）；Example Mapping（Blazej Drobniuch 的 Autodesk 案例貼文，Scrum Community in Taiwan 轉貼，URL 待補，只當案例不當需求證據）；「四十條 Gherkin」「story 切更小」「RD 兩小時做完」三則社群貼文（作者與 URL 待查，只當一句話例子）；2608.25399；2608.16618；2609.03028；2608.20195；2607.09900；2605.18461；2608.30572；Teddy 工作坊（需求 vs 規格、Context vs Form）；LeSS in Action: Developer Practices 課程筆記（Terry Yin / 91 / Joey Chen，2022-04，一行，其餘連 10 月測試篇）。
 
 ---
 
@@ -1480,7 +1480,7 @@ flowchart LR
 1. **10 月第一週開跑實驗，硬性里程碑**：**10/06 spec 凍結（含人類校準帶兩份實作開工、相似度工具在兩份實作上跑通—跑不通就啟用 difflib fallback 並記錄）→ 10/13 A 組 N=10 完成 → 10/20 B 組完成 → 10/27 C 組完成（skills 自己重做）→ 10/29 A0 組完成 → 10/31 迷你第四組完成（A / C 在前一代 model 各 N=5）**。最小可行設計 = 1 個代表性 task × 4 組 × N=10 = 40 runs + 迷你第四組 10 runs = 50 runs + 人類校準帶 2 份實作；總論所有表格（T1、T3、§九預算、§十 90 天）以「一個代表性 task」為基準寫，T1 的實測格在 11/03 前填好，不留待填格。加分項只有第二、三個 task（bug fix / refactor）；**任一里程碑延誤：先砍加分 task，再砍迷你第四組（變異篇 §七 fallback 生效、TL;DR 那句改成「下一季補」），A0 與人類校準帶不砍**—少了 A0，總論的副標站不住；少了校準帶，T3 的結構相似度列沒有門檻。10 月同時有四篇發布與 CNPE 第二次考試，排程按此；工作量的其他減法見下方第 15 點。預算先用營運篇的成本模型估：50 次 run × 單次中位成本，實測值填進總論 §九。
 2. **把七篇核心論文讀完全文，不只 abstract，並在 10/06 前完成相似度校準**：2608.25399（**「run-to-run variance unchanged」量的是 token 變異還是輸出變異—arxiv.md 把它歸在 unit economics 叢集、摘要全在講 token spend，預設當成本變異；讀完全文若確認是輸出變異，才把總論 §五、T1、規格篇 §三 的寫法從「文獻未直接量」改成「文獻量過、不動」**）、2608.26197（「3 of 4 cells」是哪四格、什麼 model、structured planning 具體是什麼、latency 代價多少；**確認 1.000 是否來自 decoding 決定性—temperature / seed—若是，此篇改列為反模式 4 的反例而不是證據，總論 §四 (1) 與 P3-T3 同步改**；是否為 coding 任務）、2608.21208、2608.17177、2606.27045、2608.25202、2609.03028。摘要裡多數只有 API 一行。相似度校準：用人類校準帶的兩份實作算一次 AST tree-edit similarity，確認尺度與工具（語言相依），總論 T3 才有校準帶可寫；校準不成就照 fallback 用 difflib ratio。
 3. **取得 Teddy 的同意，並確認四件事**：引用 FB 貼文原句（並取 URL、日期、當日反應數—日期定了才決定 TL;DR 的季節用詞）、工作坊學員手冊的名詞（SDD 三階梯、Context vs Form、Four-Form Patterns、需求 vs 規格）、「引工作坊不引課程 code」的界線（六條「推不出來的知識」的識別字能不能寫）；**工作坊實際兩天的日期**（Notion 的 08-22 → 08-24 是頁面 created → last_edited）；SDD 論文 "Spec-Driven Development: From Code to Contract in the Age of AI" 的正確出處；**學生量 regeneration LOC 變異那則貼文（57 / 3 / 11）實際量到的數字與量法**—拿到才引數字，否則總論只寫「有人量過」。
-4. **取得 Kim Kao 的同意**引用 bounded context 貼文與鮑承佑的留言；取 URL。
+4. **取得 Kim Kao 的同意**引用 bounded context 貼文與一位 DDDesign Taiwan 成員的留言；取 URL。
 5. **讀 Uncle Bob 08-17 的 experiment repo**：確認「8 runs、四種紀律、25 條 acceptance、程式不同」的細節，看他有沒有量結構差異（有的話是現成的對照組）；與 10 月計畫協調—10 月用讀法，11 月只用事實。
 6. **重讀《雜訊》**：noise audit 章、level / pattern / occasion noise 的定義章、decision hygiene 章；抓繁中版頁碼；確認「人類只要做出判斷，就會有雜訊」的完整引句與出處頁；**核對 F2 的對映（法官 = harness 組態、一次判決 = run）與原書三分法一致**。
 7. **補歷史類比的來源**：flaky test 的業界指標與年代（flake rate、quarantine）、Reproducible Builds（Debian）一句；沒有可靠來源就只講敘事不放數字。
@@ -1488,7 +1488,7 @@ flowchart LR
 9. **找盲審的 reviewer**：一位（最好兩三位）不是筆者、不知道 arm 標籤的同事，願意審 30 個 PR 並記分鐘數與「打開幾個檔案才懂」；**reviewer 需先知道會有學習效應、同意記錄審閱順序**，前 3 份是 warm-up；沒有人就用筆者自己盲審（打亂順序、隱藏 branch 名）並在文中標明限制。
 10. **名詞用法先過一遍工作坊同學**：需求 / 規格 / 契約 的定義（總論 §三）與契約篇 §一 的標題「只做規格 → 契約，不做 why」發給兩三位同學看，確認不會被讀成「跟 Teddy 打架」。
 11. **等 10 月三篇定稿再寫契約篇 §三與變異篇 §二**：constraint tests 的解說與工作坊 A/B 的用法必須跟 10 月一致，避免兩個月講兩套；同步核對第 0 節「來源歸屬」表與 10、12 月計畫檔。
-12. **Dan North / Matt Wynne**：確認原文是否在 digest 內；不在就引轉貼（DavidKo 轉貼、Blazej Drobniuch 案例）並標「轉引」，不列 digest 外的 URL；規格篇引的三則 Scrum Community 小貼文（四十條 Gherkin、story 切更小、RD 兩小時）查作者與 URL，只當一句話例子。
+12. **Dan North / Matt Wynne**：確認原文是否在 digest 內；不在就引轉貼（一位 Scrum Community 成員 轉貼、Blazej Drobniuch 案例）並標「轉引」，不列 digest 外的 URL；規格篇引的三則 Scrum Community 小貼文（四十條 Gherkin、story 切更小、RD 兩小時）查作者與 URL，只當一句話例子。
 13. **BC-Bench 2608.20851 與 DEPBENCH 2608.30300**：前者讀摘要確認 DSL 與 model 組合，確認總論 §四那一句反證的邊界（「領域越窄、model 越不熟，Form 的權重越大」）；後者已讀摘要，標為組態間。
 14. **2607.25141 讀全文**：確認「一致地漏掉」的量測方式（幾次 run、幾個 model），總論 §七「穩定地錯」的例子才站得住；沒讀到前只寫「一致地漏；變異未量」。
 15. **10 月工作量的減法（已在大綱落實，動筆時遵守）**：總論 §八 只剩一表三段；`spec-lint` 與 `drift-gate.yml` 是節錄的 pseudo-config，只有 `run.sh` / `similarity.py` 必須真的跑；相似度工具有 difflib fallback；英文版只有總論與變異篇跟 +1 天，規格篇 / 契約篇英文版可晚一週；圖從 28 張減到 25 張（F5、F11、P2-4、P2-T2 刪，P2-3 拆二）。

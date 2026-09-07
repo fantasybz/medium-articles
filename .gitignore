@@ -4,3 +4,10 @@ __pycache__/
 # never commit an exported session or a build payload
 *cookies*.json
 *payload*.json
+
+# research loop (this repo is public): raw scrapes hold other people's posts verbatim,
+# and two of the four digests are personal — the author's Notion, and private-group posts quoted verbatim.
+# Both stay on this machine only; x_digest.md, arxiv.md, style_brief.md, selection.md, backlog.md and the outlines are committed.
+.context/
+research/*/notion_digest.md
+research/*/community_digest.md

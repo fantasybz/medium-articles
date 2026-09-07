@@ -47,7 +47,7 @@
 
 **title_zh**：知識流失與維護債：吞吐量免費之後，組織付的帳
 
-**pitch**：原候選「速度免費之後：規格、團隊與人」被駁倒—規格篇被 2026-11 吃掉，人篇的證據撐不住（21x 是 vLLM／SGLang 在 LLM 熱潮中的專案成長，論文只證明 bot 沒寫那些 PR；2609.03456 是單一公司 N=21 的質性研究）。重建成團隊層的組織篇續集，軸是「知識流失與維護債」，只用硬數據：每 +10pp 免審合併多約 6% 修正性維護（2607.09902）；agent 導入後的架構「改善」是分母效應—smell 絕對數不變、LOC +12.8%（2606.13298）；開發者評他人的 AI code 較難維護（2607.05677）；沒有 committed config 的 agent-first repo 認知複雜度成長兩倍（+53% vs +27%）、73.8% 設定檔 commit 後不再碰（2608.25241）。台灣訊號：DDDTW「用 AI 寫程式越來越順，但過了幾個月打開那段程式，卻有點想不起來它為什麼長這樣」（66 反應，該社團最高）、Kent Beck「AI 時代累積不了的信任」（DevOps Taiwan 91 反應／22 分享）、陳正瑋的 LeSS local optimization「一個人的速度上去了，整個組織對系統的共同理解卻在流失」（52/6/8）。作者第一手材料：`Fb temp`（2026-09-02）那篇軟體腐化草稿，以及 LeSS in Action 講師的回覆；系統思考道場 (13) 兩句：「R1 加班上癮迴路／R2 走捷徑上癮迴路都會產生更多 Legacy Code」、「沒有保存產生這些程式的背景知識、Context」；Meadows／Senge／呂毅 CLP 讀到 60–100%；Kent Beck《The Beauty of Maintenance》80%；Goldratt《絕不是靠運氣》筆記。書錨候選：Beck 或 Meadows；骨架用 CLD（causal loop diagram）或 TOC 的瓶頸遷移。三部曲雛形：維護債篇（no-review merge 的維護債＋分母效應；決策工件是 team-level 的 review 容量政策）→ 決策記憶篇（ADR 進 repo、agent 可讀的 ADR、2026-11 總論 what／how／why 地圖的完整版；ontology-grounded project memory 0.98–1.00 vs vector 6–27%，2608.13662）→ 團隊篇（吞吐量免費之後 Scrum／LeSS 在保護什麼：story 切更小、哪些 ceremony 是共同理解的儀式、FDE 是職位還是症狀）。
+**pitch**：原候選「速度免費之後：規格、團隊與人」被駁倒—規格篇被 2026-11 吃掉，人篇的證據撐不住（21x 是 vLLM／SGLang 在 LLM 熱潮中的專案成長，論文只證明 bot 沒寫那些 PR；2609.03456 是單一公司 N=21 的質性研究）。重建成團隊層的組織篇續集，軸是「知識流失與維護債」，只用硬數據：每 +10pp 免審合併多約 6% 修正性維護（2607.09902）；agent 導入後的架構「改善」是分母效應—smell 絕對數不變、LOC +12.8%（2606.13298）；開發者評他人的 AI code 較難維護（2607.05677）；沒有 committed config 的 agent-first repo 認知複雜度成長兩倍（+53% vs +27%）、73.8% 設定檔 commit 後不再碰（2608.25241）。台灣訊號：DDDTW「用 AI 寫程式越來越順，但過了幾個月打開那段程式，卻有點想不起來它為什麼長這樣」（66 反應，該社團最高）、Kent Beck「AI 時代累積不了的信任」（DevOps Taiwan 91 反應／22 分享）、一位 DevOps Taiwan 成員的 LeSS local optimization「一個人的速度上去了，整個組織對系統的共同理解卻在流失」（52/6/8）。作者第一手材料：`Fb temp`（2026-09-02）那篇軟體腐化草稿，以及 LeSS in Action 講師的回覆；系統思考道場 (13) 兩句：「R1 加班上癮迴路／R2 走捷徑上癮迴路都會產生更多 Legacy Code」、「沒有保存產生這些程式的背景知識、Context」；Meadows／Senge／呂毅 CLP 讀到 60–100%；Kent Beck《The Beauty of Maintenance》80%；Goldratt《絕不是靠運氣》筆記。書錨候選：Beck 或 Meadows；骨架用 CLD（causal loop diagram）或 TOC 的瓶頸遷移。三部曲雛形：維護債篇（no-review merge 的維護債＋分母效應；決策工件是 team-level 的 review 容量政策）→ 決策記憶篇（ADR 進 repo、agent 可讀的 ADR、2026-11 總論 what／how／why 地圖的完整版；ontology-grounded project memory 0.98–1.00 vs vector 6–27%，2608.13662）→ 團隊篇（吞吐量免費之後 Scrum／LeSS 在保護什麼：story 切更小、哪些 ceremony 是共同理解的儀式、FDE 是職位還是症狀）。
 
 **為什麼沒進前三**：原題駁倒；人篇（burnout、中階主管、2027 headcount）是作者最沒有操作經驗的領域，headcount 敘事在 2027-01 也已過季；規格篇讓給 2026-11。
 
@@ -204,7 +204,7 @@
 
 **Facebook 社團（保留在 `FB_GROUPS`；括號內是該社團的有效指標）**
 
-14. Backend 台灣：分享數 ≥ 15 的事故／資安解剖 → 第 1 條。搞笑談軟工：Teddy 的 pattern language、LOC 變異、去技能化、18k 字論文 → 2026-11 回響、第 7、9 條。DDDesign Taiwan：Kim Kao、DDD Taiwan 年會、DDD + agent 討論 → 第 7 條。DevOps Taiwan：陳正瑋、棕地／FDE meetup 後續、莊硯光 → 第 2、3 條。Scrum Community in Taiwan 與 Agile 內湖：DavidKo 測試貼文的反應是否從個位數升高 → 2026-10 回響；FDE → 第 2 條。Twinkle AI：MCP Hub、vLLM 台北 meetup、主權模型 → 第 3、6 條。Claude Taiwan 只當第 6 條的症狀計數器，不當主證據；GCP & K8s、OpenClaw ×2、Antigravity 連續兩個月只有雜訊，從 `FB_GROUPS` 拿掉。
+14. Backend 台灣：分享數 ≥ 15 的事故／資安解剖 → 第 1 條。搞笑談軟工：Teddy 的 pattern language、LOC 變異、去技能化、18k 字論文 → 2026-11 回響、第 7、9 條。DDDesign Taiwan：Kim Kao、DDD Taiwan 年會、DDD + agent 討論 → 第 7 條。DevOps Taiwan：一位 DevOps Taiwan 成員、棕地／FDE meetup 後續、一位 Backend 台灣作者 → 第 2、3 條。Scrum Community in Taiwan 與 Agile 內湖：一位 Scrum Community 成員 測試貼文的反應是否從個位數升高 → 2026-10 回響；FDE → 第 2 條。Twinkle AI：MCP Hub、vLLM 台北 meetup、主權模型 → 第 3、6 條。Claude Taiwan 只當第 6 條的症狀計數器，不當主證據；GCP & K8s、OpenClaw ×2、Antigravity 連續兩個月只有雜訊，從 `FB_GROUPS` 拿掉。
 
 **會議與日期**
 

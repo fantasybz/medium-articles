@@ -36,7 +36,7 @@
 1. 標題級數字要標領域：「34%」寫成「在 SWE-Gate 的量測裡」，不寫「所有 agent PR」；pass^k 的數字來源多半不是 coding agent，降為「同一模式在 code 以外也出現」。
 2. 總論要有一本書當錨—書評型長文完讀率最高（建築 51%、XP 46%），方法清單型（雙層護欄）完讀最低。錨定 James Bach *Taking Testing Seriously*（作者已買、已在粉絲團引用）。
 3. 修正對自己數據的誤讀：與不確定性共舞是 619 views / 98 reads（16%），不是 619 reads。
-4. 台灣訊號要誠實：DavidKo「AI 說沒問題」「它把斷言改掉了」是 9 與 3 個反應，是真實痛點但不是燒起來的話題；燒起來的是 Uncle Bob 的 mutation test 閘門（40 反應）與 Clean Code 2nd ed.（190 反應 / 38 分享）。
+4. 台灣訊號要誠實：一位 Scrum Community 成員「AI 說沒問題」「它把斷言改掉了」是 9 與 3 個反應，是真實痛點但不是燒起來的話題；燒起來的是 Uncle Bob 的 mutation test 閘門（40 反應）與 Clean Code 2nd ed.（190 反應 / 38 分享）。
 5. 動筆前把引用的 19 篇 arXiv 全部讀完 abstract（反方指出其中 11 篇在 digest 裡只有 API 一行摘要）。
 6. 發布計畫寫進粉絲團分享：2025 年 views 超過 presentations 的週，都是粉絲團有分享的週。
 
@@ -65,7 +65,7 @@
 2. 換題：「Spec is the new source」與 Sean Grove 的「specs are the new code」撞名、「clean loop not clean code」是別人的留言；標題以變異為錨。
 3. 契約篇拆開：只留 spec → 可執行契約；ADR 與決策記憶縮成第三篇一節或總論的 what / how / why（spec / AGENTS.md / ADR：owner、壽命、enforcement）地圖。
 4. **10 月就要開始跑實驗**，否則 11 月只能引別人的一行摘要—在 Teddy 剛開完工作坊的主場上，沒有第一手數據就是學生作文。
-5. 社群訊號只用 Teddy 與 Kim Kao；DavidKo 的轉貼（7–13 反應）與 2025 年的水球潘講題不當主證據。
+5. 社群訊號只用 Teddy 與 Kim Kao；一位 Scrum Community 成員 的轉貼（7–13 反應）與 2025 年的水球潘講題不當主證據。
 
 ---
 
@@ -90,7 +90,7 @@
 
 1. 可靠篇砍到一個工件（agent SLO spec），把多 vendor failover、額度、被 ban、hybrid local 全部讓給 backlog 的席位經濟主題，只留一句。
 2. K8s sandbox 容量問題壓成一節並標規模，或留給未來的「agent runtime as platform product」。
-3. 需求訊號誠實化：不借用 Claude Taiwan 的席位抱怨；本主題自己的訊號是 OTel GenAI semantic conventions（LinkedIn 儲存）、Alolita 的 KubeCon Japan keynote、莊硯光的 Grafana + Claude Code AIOps bot（17 分享，注意那是 agent 做 SRE，不是 SRE for agents）。
+3. 需求訊號誠實化：不借用 Claude Taiwan 的席位抱怨；本主題自己的訊號是 OTel GenAI semantic conventions（LinkedIn 儲存）、Alolita 的 KubeCon Japan keynote、一位 Backend 台灣作者的 Grafana + Claude Code AIOps bot（17 分享，注意那是 agent 做 SRE，不是 SRE for agents）。
 4. 排 12 月，讓 10、11 月的交接（pass^k、oversight budget、變異門檻）具體化之後再寫 SLO。
 
 ---
@@ -154,4 +154,4 @@
 **backlog 追加**
 - 平台工程 / IDP as a product（作者整年在讀，12 月只給一節）；系統思考與 CLD（Meadows、Senge、呂毅道場）可當重建「速度免費之後」的脊椎；去技能化獨立成文；DDD / Event Sourcing 作為 agent 產出的設計維度；agent 的探索式測試；被否決的席位經濟主題裡的 inference infra 那一半。
 
-**安全提醒（不進文章）**：Notion 的《Appier O'Reilly Learning》頁面含明文帳密與一組 API key，建議移出 Notion。摘要裡沒有轉錄。
+**安全提醒（不進文章）**：Notion 裡有一頁含明文帳密與一組 API key，建議移出 Notion 並輪替；摘要裡沒有轉錄，頁名也不記在 repo。
