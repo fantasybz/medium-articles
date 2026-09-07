@@ -20,7 +20,7 @@
  "tables": [
   {
    "file": "table-01.png",
-   "markdown": "| 研究 | n 與領域 | 一句結論 | 在本篇的用途 |\n|---|---|---|---|\n| 因果理論（灰色文獻） | 38,709 篇文獻、3,100 篇編碼 | review 是決定 agent 淨效果正負的控制點 | 第一節的定位 |\n| From Human-Centric to Agentic Code Review | 1.02M PR、207 專案、三世代 | 更快，沒更好 | 不以速度當 KPI |\n| Post-merge fate of agentic code | 182 個 repo，縱向 | 免審合併率 +10pp ↔ 維護負擔約 +6%（相關） | 免審合併率進月報 |\n| CodeRabbit review 評論研究 | 31,073 對評論、10,191 PR、239 repo | 56.3% 的評論被拒 | 評論要短、要帶 suggestion |\n| Secrets in agent PRs | 4,022 個 agent PR | 外洩的 secret 67.6% 是人放的、81.1% merge 前沒抓到 | secret 交給掃描器 |\n| AI-to-AI Code Reviews | 248,641 個有 AI review 的 AI PR | 跨產品 AI 審 AI 佔 1.6%、兩季成長 100 倍（總論第九節引全） | 第五節閉環禁令 |\n| 五個 agent 的評論採納研究 | 五個 review agent | inline suggestion 是採納的最強預測因子 | 評論的形狀 |\n"
+   "markdown": "| 研究 | n 與領域 | 一句結論 | 在本篇的用途 |\n|---|---|---|---|\n| 因果理論（灰色文獻） | 38,709 篇文獻、3,100 篇編碼 | review 是決定 agent 淨效果正負的控制點 | 第一節的定位 |\n| From Human-Centric to Agentic Code Review | 1.02M PR、207 專案、三世代 | 更快，沒更好 | 不以速度當 KPI |\n| Post-merge fate of agentic code | 182 個 repo，縱向 | 免審合併率 +10pp ↔ 維護負擔約 +6%（相關） | 免審合併率進月報 |\n| CodeRabbit review 評論研究 | 31,073 對評論、10,191 PR、239 repo | 56.3% 的評論被拒 | 評論要短、要帶 suggestion |\n| Trust but Verify（agent PR 的 security debt） | 4,022 個 agent PR | 外洩的 secret 67.6% 是人放的、81.1% merge 前沒抓到 | secret 交給掃描器 |\n| AI-to-AI Code Reviews | 248,641 個有 AI review 的 AI PR | 跨產品的 AI 審 AI 佔 agent PR 的比例仍小，但兩季成長超過 100 倍（數字在總論第九節引全） | 第五節閉環禁令 |\n| 五個 agent 的評論採納研究 | 五個 review agent | inline suggestion 是採納的最強預測因子 | 評論的形狀 |\n"
   },
   {
    "file": "table-02.png",
@@ -28,7 +28,7 @@
   },
   {
    "file": "table-03.png",
-   "markdown": "| 型態 | 判定 | 條件 |\n|---|---|---|\n| 不同 vendor、隔離 session、人讀報告 approve、抽樣深讀 | 允許 | 這是艦隊的預設型態 |\n| 同 vendor、不同 session | 有條件 | 只能 comment；approve 不進訊號欄 |\n| 同 model family、同 session 或共享 context | 禁止 | 閉環的第一種形狀 |\n| reviewer 的 accept 回饋成 generator 的訓練或 prompt | 禁止 | rubber-stamp regime |\n| 一次審 N 個 PR 的視窗 | 禁止 | 偵測掉到約三分之一；每 PR 審 |\n| reviewer 看得到前一輪分數 | 禁止 | 設計原則，不當量化保證 |\n"
+   "markdown": "| 型態 | 判定 | 條件 |\n|---|---|---|\n| 不同 vendor、隔離 session、人讀報告 approve、抽樣深讀 | 允許 | 這是艦隊的預設型態 |\n| 同 vendor、不同 session | 有條件 | 只能 comment；approve 不進訊號欄 |\n| 同 model family、同 session 或共享 context | 禁止 | 閉環的第一種形狀 |\n| reviewer 的 accept 回饋成 generator 的訓練或 prompt | 禁止 | 訓練版有實證的 rubber-stamp regime；prompt 版是筆者的延伸 |\n| 一次審 N 個 PR 的視窗 | 禁止 | 偵測掉到約三分之一；每 PR 審 |\n| reviewer 看得到前一輪分數 | 禁止 | 設計原則，不當量化保證 |\n"
   }
  ]
 }
