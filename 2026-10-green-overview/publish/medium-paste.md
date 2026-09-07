@@ -92,7 +92,7 @@ Bach 對 *checking* 的定義：「Checking is the mechanistic process of verify
 
 ## 四、測試史已經演過一次
 
-上一季的歷史脊椎是 DevOps 2014–2016；這一季換成測試史。
+上一季的歷史主軸是 DevOps 2014–2016；這一季換成測試史。
 
 📌【在此插入圖 diagram-03.png】
 

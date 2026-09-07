@@ -156,7 +156,7 @@ The conclusion is not "agents can't be trusted." It is that **what you measure t
 
 ## 4. Testing history has already run this experiment
 
-Last season's historical spine was DevOps 2014–2016; this season it is the history of testing.
+Last season's historical through-line was DevOps 2014–2016; this season it is the history of testing.
 
 ```mermaid
 ---

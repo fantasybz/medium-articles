@@ -15,5 +15,5 @@
 
 ## Status (2026-09-07)
 
-- [ ] scheduled (Medium allows two publish-or-schedule actions per rolling 24 h)
+- [x] scheduled 2026-09-07 18:31 for 2026-10-15 09:00 GMT+8
 - Series links: earlier Parts and the Chinese edition (`b01055139451`) are linked via medium.com/p/<id>; later Parts stay "(coming soon)" and are patched after each publish
