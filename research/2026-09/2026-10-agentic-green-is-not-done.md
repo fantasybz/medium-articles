@@ -39,7 +39,7 @@
 | 日期 | 訊號 | 對本主題的意義 |
 |---|---|---|
 | 2026-09-03 | SWE-Gate（arXiv 2609.04167）：303 個修補任務、75 個 Python repo，功能測試通過的 644 個修補中 221 個（34%）違反 reviewer 實際加過的約束 | 「綠燈不是驗收」有了直接對應 review 約束的 in-domain 量化證據，而且論文附了 constraint tests 的做法（SWE-NFI 2607.27409 早一個月量到「功能 70.0% 但非功能規則不及」，所以不寫「第一次」） |
-| 2026-09-02 | READY（2609.02095，**任務領域待讀全文確認；若非 code，標為「code 以外的旁證，概念用、數字不移植」**）：兩個 agent 自主準確率 72.8% vs 72.5%（差 0.3pp），達到 76% 可靠度目標所需人工複核分別為 39.2% 與 29.6%（差近 10pp；摘要的順序把 72.8% 對到 39.2%，準確率較高者反而要更多複核，配對以全文為準） | 「準確率」與「需要多少人看」是兩個數字—oversight budget 這個概念有了定量出處 |
+| 2026-09-02 | READY（2609.02095，**已確認（2026-09-07 讀摘要）：案例是臨床稽核工作流、16 個 agent 系統、750 個 case，非 code；正文標「code 以外的旁證，概念用、數字不移植」；72.8% 對 39.2% 的配對來自摘要的 respectively**）：兩個 agent 自主準確率 72.8% vs 72.5%（差 0.3pp），達到 76% 可靠度目標所需人工複核分別為 39.2% 與 29.6%（差近 10pp；摘要的順序把 72.8% 對到 39.2%，準確率較高者反而要更多複核，配對以全文為準） | 「準確率」與「需要多少人看」是兩個數字—oversight budget 這個概念有了定量出處 |
 | 2026-09-01 | Claude Fable 5.1 發布，Cursor 的評語是 "especially skilled at verifying its own work"（@mattyp 09-01） | vendor 開始把「agent 自己驗證」當賣點；正好是本系列要拆的東西 |
 | 2026-09-02 | Martin Fowler 轉 Rachel 的文章 "Maybe we shouldn't be reviewing all this code"（@martinfowler 09-02，[link](https://x.com/martinfowler/status/2095147242986373485)） | review 的問題被重新定義為「拿 review 解決錯的問題」，不是「讀太慢」 |
 | 2026-08-31 | Ramp 的 coding agent 寫了每四個 PR 裡的三個（@linear 08-31） | review 容量成為約束的具體數字 |
@@ -209,8 +209,8 @@
 
 - 定義（全系列固定，不再搖擺）：**pass@1 = 每個 case 單次嘗試的成功率（跑 k 次取平均）；pass^k = k 次全部成功的 case 比例；兩者都先 per case 算、再對 golden set 取 aggregate。** 「至少一次成功」是 pass@k，本系列不用它。兩者可以差近 20pp（code 以外的旁證，數字在可靠度篇第三節引全）；code 領域請用自己的 golden set 量（營運篇第二節的 20–50 個 golden case，跑 k = 5–10）。
 - 圖 F9：單一 case 跑 5 次的定義圖（定義段之後）。
-- READY（Reliable Enterprise Agent Deployment，2609.02095；**任務領域待讀全文確認，若非 code，正文標「code 以外的旁證，概念用、數字不移植」**）：兩個系統自主準確率 72.8% vs 72.5%（差 0.3pp），達到 76% 可靠度目標所需人工複核分別為 39.2% 與 29.6%（差近 10pp；72.8% 對應的是哪一個複核比例以全文為準，第四節「不可省」第 2 項列了這兩個確認點）。「準確率排名」與「你要付多少人力」不是同一個排名。這是總論唯一引全數字的 READY 段；可靠度篇第四節只重述結論、只用 76% 當算例。
-- 圖 F10：READY 兩欄（READY 段之後；若讀完確認非 code，圖說加「（非 code 旁證）」）。
+- READY（Reliable Enterprise Agent Deployment，2609.02095；**已確認非 code（臨床稽核工作流、16 個 agent 系統、750 個 case），正文標「code 以外的旁證，概念用、數字不移植」；72.8% ↔ 39.2% 配對已由摘要確認**）：兩個系統自主準確率 72.8% vs 72.5%（差 0.3pp），達到 76% 可靠度目標所需人工複核分別為 39.2% 與 29.6%（差近 10pp；72.8% 對應的是哪一個複核比例以全文為準，第四節「不可省」第 2 項列了這兩個確認點）。「準確率排名」與「你要付多少人力」不是同一個排名。這是總論唯一引全數字的 READY 段；可靠度篇第四節只重述結論、只用 76% 當算例。
+- 圖 F10：READY 兩欄（READY 段之後；已確認非 code，圖前導句標「非 code 旁證」）。
 - 給 leadership 的三個數字（取代單一的「通過率」）：
 
 | 數字 | 回答 | 不能拿來做什麼 |
@@ -308,7 +308,7 @@ F8「閉環 vs 開環」已刪：總論十二節的正文沒有任何一節引�
 | F6 | Review 是控制點 | review 是決定 agent 是加分還是負債的控制點，免審合併率是要管的指標 | agent PR → review gate（human）→ 加分／負債兩條鏈 → 免審合併率進月報。負債鏈第二節點只寫「外洩 secret 多半在 merge 前沒被抓到」；全數字在 Review 篇第二節：真實外洩的 secret 有 67.6% 是人放的、81.1% 在 merge 前沒被抓到（兩個各自的比例，不是巢狀，2607.12428） | TB，7 節點，約 0.9 |
 | F7 | 這個 PR 誰要讀 | blast radius 與可驗證程度決定誰讀什麼，人只在兩格讀 | 頂端「agent 開的 PR」→ 兩層判斷 → 四個出口 = Review 篇分流矩陣的四格（人讀 intent 與報告／人讀 diff 並回收約束／機器全審 + 人抽樣／先補 check） | TB，8 節點，底層 4 個，約 0.65–0.7 |
 | F9 | pass@1 vs pass^k（定義圖） | 單一 case，5 次 run 1 次紅：該 case pass@1 = 80%、pass^5 = 0；golden set 的數字是所有 case 的平均 | 一個 case → 5 個 run 拆 3 + 2 兩列（subgraph 內 direction LR）→ 兩個結果節點 | TB，8 節點，約 0.8 |
-| F10 | oversight budget（READY） | 準確率只差 0.3pp 的兩個系統，人工複核需求差近 10pp（READY；若確認非 code 加「非 code 旁證」） | 兩欄各自成鏈：準確率 → 目標 76% → 複核比例；目標節點各畫一個，配對才看得出來 | LR 兩 subgraph，6 節點，約 0.6 |
+| F10 | oversight budget（READY） | 準確率只差 0.3pp 的兩個系統，人工複核需求差近 10pp（READY；非 code 旁證，已確認） | 兩欄各自成鏈：準確率 → 目標 76% → 複核比例；目標節點各畫一個，配對才看得出來 | LR 兩 subgraph，6 節點，約 0.6 |
 | F11 | 八個反模式 | 八個反模式各歸一道閘，也各歸一篇 | 根 + 三個 subgraph（test / review / reliability）+ 8 葉 `~~~` 直排、全 bad 色 | TB，9 節點，3 欄，約 0.55–0.6 |
 | F12 | 90 天藍圖 | 三個月、三個退出條件，最後一步是一次要公開理由的 G2 決策 | M1 → M2 → M3 → G2；每個月份節點右側掛退出條件節點 | TB，7 節點，2 欄 4 列，約 0.75 |
 
@@ -645,7 +645,7 @@ flowchart TB
     class P5 buy
 ```
 
-**F10 oversight budget（READY）**—圖說：準確率只差 0.3pp 的兩個系統，人工複核需求差近 10pp（READY）；若讀完全文確認非 code，圖說加「（非 code 旁證）」。（LR 兩 subgraph、6 節點、目標節點各畫一個讓配對可見、預估 0.6；A1 對 A3 的配對以全文為準，第四節有確認點）
+**F10 oversight budget（READY）**—圖說：準確率只差 0.3pp 的兩個系統，人工複核需求差近 10pp（READY）；已確認非 code（臨床稽核工作流），圖前導句標「非 code 旁證」。（LR 兩 subgraph、6 節點、目標節點各畫一個讓配對可見、預估 0.6；A1 對 A3 的配對已由摘要的 respectively 確認）
 
 ```mermaid
 ---
@@ -801,7 +801,7 @@ flowchart TB
 3. arXiv 2607.18057 — Test Coverage Analysis of Agentic Pull Requests（2026-07-20）〔第三節〕
 4. arXiv 2607.08885 — Programmers Are Poor and Overconfident Judges of LLM-Generated Assertions（2026-07-09）〔第三節一句；全數字在測試篇〕
 5. arXiv 2608.29460 — Can escalation channels redirect reward hacking toward defect disclosure?（2026-08-29）〔第六節一句；全數字在測試篇〕
-6. arXiv 2609.02095 — READY or Not: Reliable Enterprise Agent Deployment（2026-09-02）〔第八節，全數字；領域以全文為準〕
+6. arXiv 2609.02095 — READY or Not: Reliable Enterprise Agent Deployment（2026-09-02）〔第八節，全數字；非 code 旁證（臨床稽核），已確認〕
 7. arXiv 2607.13196 — From Human-Centric to Agentic Code Review（2026-07-14）〔第七節〕
 8. arXiv 2607.09902 — Do These Violent Delights Have Violent Ends? Post-merge fate of agentic code（2026-07-10）〔第七節，關聯〕
 9. arXiv 2608.21311 — AI-to-AI Code Reviews of GitHub Pull Requests（2026-08-21）〔第九節閉環 review 一句，跨產品〕
