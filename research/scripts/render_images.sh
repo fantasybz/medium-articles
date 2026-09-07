@@ -6,16 +6,28 @@
 #
 # 先跑 article_to_paste.py 產生 figures.json。圖走 mermaid_check.sh（含 MERMAID.md 的合規判定，
 # FAIL 就不會寫進 images/），表格用同一套字型與 700px 欄寬的 HTML 算繪、2x 截圖。
-# browse 是單一 daemon，所以一張一張跑。
+# 開始算繪前先把上一輪的 diagram-*.png / table-*.png 清掉：FAIL 的圖沒有新檔，舊檔留著會像 PASS。
+# 圖與表任何一個 FAIL 都以非零離開。browse 是單一 daemon，所以一張一張跑。
 set -uo pipefail
 DIR="${1:?usage: render_images.sh <article-dir> [en]}"; LANG_="${2:-}"
-ROOT="$(git rev-parse --show-toplevel)"; HERE="$(cd "$(dirname "$0")" && pwd)"
-PUB="$ROOT/$DIR/publish${LANG_:+/$LANG_}"; IMG="$PUB/images"; mkdir -p "$IMG"
-B="$HOME/.claude/skills/gstack/browse/dist/browse"
-W="$ROOT/.context/render/$DIR${LANG_:+-$LANG_}"; rm -rf "$W"; mkdir -p "$W"
-[ -f "$PUB/figures.json" ] || { echo "no $PUB/figures.json — run article_to_paste.py first" >&2; exit 64; }
+HERE="$(cd "$(dirname "$0")" && pwd)"
+. "$HERE/_common.sh"        # ROOT、EX_*、BROWSE、prepare_headless_viewport
 
-python3 - "$PUB/figures.json" "$W" "$ROOT/MERMAID.md" <<'EOF'
+# 兩個參數都會進 rm -rf 與 mkdir 的路徑，先驗完再碰檔案系統。
+# DIR 是 repo 根目錄下的文章資料夾名（不是路徑）；LANG_ 是 publish/ 下的語言包名（同 medium_draft.sh 的規則）。
+case "$DIR" in
+  ''|.|..|*/*) echo "article-dir must be a directory name under the repo root, got '$DIR'" >&2; exit "$EX_USAGE" ;;
+esac
+case "$LANG_" in
+  *[!a-zA-Z0-9_-]*) echo "invalid lang '$LANG_': letters, digits, - and _ only" >&2; exit "$EX_USAGE" ;;
+esac
+[ -d "$ROOT/$DIR" ] || { echo "no such article dir: $ROOT/$DIR" >&2; exit "$EX_USAGE"; }
+PUB="$ROOT/$DIR/publish${LANG_:+/$LANG_}"; IMG="$PUB/images"
+[ -f "$PUB/figures.json" ] || { echo "no $PUB/figures.json — run article_to_paste.py first" >&2; exit "$EX_USAGE"; }
+refuse_if_collecting
+W="$ROOT/.context/render/$DIR${LANG_:+-$LANG_}"; rm -rf "$W"; mkdir -p "$W" "$IMG"
+
+python3 - "$PUB/figures.json" "$W" "$ROOT/MERMAID.md" <<'EOF' || { echo "could not prepare the render inputs from $PUB/figures.json" >&2; exit 1; }
 import json, sys, html, re
 spec, w = json.load(open(sys.argv[1])), sys.argv[2]
 # a block without the MERMAID.md frontmatter (older articles, or a hand-written figure) gets the standard config
@@ -47,6 +59,9 @@ th{{background:#f3f4f6;font-weight:600}} .nw{{white-space:nowrap}} code{{font-fa
 print(len(spec["figures"]), "figures,", len(spec["tables"]), "tables prepared")
 EOF
 
+# 輸入都備妥了才清舊檔：figures.json 壞掉時不該連上一輪的成品一起沒了
+rm -f "$IMG"/diagram-*.png "$IMG"/table-*.png
+
 fail=0
 for m in "$W"/diagram-*.mmd; do
   [ -e "$m" ] || break
@@ -54,16 +69,21 @@ for m in "$W"/diagram-*.mmd; do
   if out="$("$HERE/mermaid_check.sh" "$m" "$W/$n" 2>&1)"; then cp "$W/$n.png" "$IMG/$n.png"; echo "  $n: $(echo "$out" | head -1 | sed 's/.*png  //')"
   else echo "  $n: FAIL"; echo "$out" | sed 's/^/     /'; fail=$((fail+1)); fi
 done
-if "$B" status 2>/dev/null | grep -q "Mode: headed"; then "$B" disconnect >/dev/null 2>&1 || true; fi
-CUR=$("$B" js "window.innerWidth+'@'+window.devicePixelRatio" 2>/dev/null || echo "")
-if [ "$CUR" != "1400@2" ]; then "$B" viewport 1400x1400 --scale 2 >/dev/null 2>&1 || true; "$B" js "new Promise(r=>setTimeout(r,1500)).then(()=>'ok')" >/dev/null 2>&1 || true; fi
+
+prepare_headless_viewport   # 沒有圖時 mermaid_check.sh 沒跑過，viewport 還沒設；有跑過就是空操作
 for h in "$W"/table-*.html; do
   [ -e "$h" ] || break
   n="$(basename "$h" .html)"
-  "$B" load-html "$h" >/dev/null 2>&1
-  "$B" js "new Promise(r=>setTimeout(r,800)).then(()=>'ok')" >/dev/null 2>&1
-  wpx=$("$B" js "Math.round(document.querySelector('#wrap').getBoundingClientRect().width)" 2>/dev/null)
-  "$B" screenshot "$IMG/$n.png" --selector '#wrap' >/dev/null 2>&1 && echo "  $n: ${wpx}px wide"
+  if ! "$BROWSE" load-html "$h" >/dev/null 2>&1; then
+    echo "  $n: FAIL (load-html)"; fail=$((fail+1)); continue
+  fi
+  "$BROWSE" js "new Promise(r=>setTimeout(r,800)).then(()=>'ok')" >/dev/null 2>&1 || true
+  wpx=$("$BROWSE" js "Math.round(document.querySelector('#wrap').getBoundingClientRect().width)" 2>/dev/null) || wpx="?"
+  if "$BROWSE" screenshot "$IMG/$n.png" --selector '#wrap' >/dev/null 2>&1 && [ -s "$IMG/$n.png" ]; then
+    echo "  $n: ${wpx}px wide"
+  else
+    echo "  $n: FAIL (screenshot)"; rm -f "$IMG/$n.png"; fail=$((fail+1))
+  fi
 done
-echo "== images in $IMG: $(ls "$IMG" | wc -l | tr -d ' ')  (figure FAILs: $fail)"
+echo "== images in $IMG: $(ls "$IMG" | wc -l | tr -d ' ')  (FAILs: $fail)"
 [ "$fail" = "0" ]
