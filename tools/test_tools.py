@@ -244,6 +244,13 @@ class TestVerifyDraft(unittest.TestCase):
         # Between words the en dash is the author's own character: keep it.
         self.assertNotEqual(verify_draft.normalise("a\u2013b", False), "a-b")
 
+    def test_medium_superscript_digits_fold_back_to_the_caret(self):
+        # Medium renders pass^5 as pass⁵ and pass^20 as pass²⁰ (pass^k stays);
+        # the 可靠度篇 draft reported five false mismatches on that alone.
+        source = verify_draft.normalise("<p>pass^5 與 pass^20，pass^k 不變</p>", True)
+        editor = verify_draft.normalise("pass\u2075 與 pass\u00b2\u2070，pass^k 不變", False)
+        self.assertEqual(source, editor)
+
     def test_medium_typography_is_normalised_away(self):
         # Medium wraps em dashes in hair spaces; that is not lost content.
         source = verify_draft.normalise("<p>a——b</p>", True)

@@ -65,6 +65,10 @@ EM_DASH_RUN = re.compile(r"[ \t]*%s[ \t]*" % EM_DASH)
 # side. Only between digits, so an en dash the author typed between words is
 # still compared as-is.
 EN_DASH_BETWEEN_DIGITS = re.compile(r"(?<=\d)\u2013(?=\d)")
+# And a caret followed by digits becomes superscript digits (pass^5 -> pass⁵,
+# pass^20 -> pass²⁰; pass^k is left alone). Fold the superscripts back.
+SUPERSCRIPT_DIGITS = re.compile("[\u2070\u00b9\u00b2\u00b3\u2074-\u2079]+")
+SUPERSCRIPT_TO_DIGIT = str.maketrans("\u2070\u00b9\u00b2\u00b3\u2074\u2075\u2076\u2077\u2078\u2079", "0123456789")
 
 
 def graf_sequence(payload):
@@ -128,6 +132,7 @@ def normalise(text, from_html, in_code=False):
     text = text.replace("\u201c", '"').replace("\u201d", '"')
     text = EM_DASH_RUN.sub(EM_DASH, text)
     text = EN_DASH_BETWEEN_DIGITS.sub("-", text)
+    text = SUPERSCRIPT_DIGITS.sub(lambda m: "^" + m.group(0).translate(SUPERSCRIPT_TO_DIGIT), text)
     # Collapse runs of spaces, but never delete them: welded-together words are
     # a real content loss and must not compare equal.
     text = re.sub(r"[ \t]+", " ", text)
