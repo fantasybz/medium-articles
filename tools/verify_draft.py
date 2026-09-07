@@ -60,6 +60,11 @@ NBSP = "\u00a0"
 EM_DASH = "\u2014"
 # Collapse whatever Medium put around an em dash back to the bare dash.
 EM_DASH_RUN = re.compile(r"[ \t]*%s[ \t]*" % EM_DASH)
+# Medium also turns the hyphen between two digits into an en dash (2026-07-10
+# comes back as 2026–07–10). Typography, not content: fold it on the editor
+# side. Only between digits, so an en dash the author typed between words is
+# still compared as-is.
+EN_DASH_BETWEEN_DIGITS = re.compile(r"(?<=\d)\u2013(?=\d)")
 
 
 def graf_sequence(payload):
@@ -122,6 +127,7 @@ def normalise(text, from_html, in_code=False):
     # mismatches on nothing but quote shape.
     text = text.replace("\u201c", '"').replace("\u201d", '"')
     text = EM_DASH_RUN.sub(EM_DASH, text)
+    text = EN_DASH_BETWEEN_DIGITS.sub("-", text)
     # Collapse runs of spaces, but never delete them: welded-together words are
     # a real content loss and must not compare equal.
     text = re.sub(r"[ \t]+", " ", text)

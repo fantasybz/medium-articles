@@ -179,6 +179,27 @@ class TestSlotLine(unittest.TestCase):
                 md2medium.slot_line("圖", bad)
 
 
+class TestAutocorrectGuard(unittest.TestCase):
+    # Medium turns (c) into © on paste; the October 總論 lost its third
+    # evidence label that way before verify_draft noticed.
+    def test_c_r_tm_in_prose_are_flagged_with_their_line(self):
+        lines = ["intro", "the (c) label", "and (R) here", "fine (a) and (b)", "a (TM) mark"]
+        self.assertEqual([k for k, _ in md2medium.autocorrect_lines(lines)], [2, 3, 5])
+
+    def test_inside_a_code_fence_they_are_left_alone(self):
+        lines = ["```python", "print('(c)')", "```", "after"]
+        self.assertEqual(md2medium.autocorrect_lines(lines), [])
+
+    def test_convert_refuses_a_paste_with_a_c_label(self):
+        with self.assertRaises(SystemExit) as cm:
+            md2medium.convert("# T\n\nonly (c) counts\n")
+        self.assertIn("autocorrect", str(cm.exception))
+
+    def test_full_width_and_bracketless_labels_pass(self):
+        payload = md2medium.convert("# T\n\n（c） and c) are fine\n")
+        self.assertIn("（c） and c) are fine", payload["html"])
+
+
 class TestVerifyDraft(unittest.TestCase):
     payload = {
         "title": "T",
@@ -212,6 +233,16 @@ class TestVerifyDraft(unittest.TestCase):
 
     def test_title_leads(self):
         self.assertEqual(self.blocks()[0], "T")
+
+    def test_medium_en_dash_in_dates_is_folded_back_to_a_hyphen(self):
+        # Medium rewrites 2026-07-10 as 2026–07–10 (U+2013 between digits); the
+        # October References carry dates outside the link text, so the first
+        # draft reported 15 false mismatches on nothing but that dash.
+        source = verify_draft.normalise("<p>arXiv（2026-07-10）</p>", True)
+        editor = verify_draft.normalise("arXiv（2026\u201307\u201310）", False)
+        self.assertEqual(source, editor)
+        # Between words the en dash is the author's own character: keep it.
+        self.assertNotEqual(verify_draft.normalise("a\u2013b", False), "a-b")
 
     def test_medium_typography_is_normalised_away(self):
         # Medium wraps em dashes in hair spaces; that is not lost content.

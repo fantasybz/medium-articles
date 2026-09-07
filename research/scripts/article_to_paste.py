@@ -189,6 +189,10 @@ def main():
         sys.exit("double em dash (——) in prose on %d line(s); Medium renders it as `— —`. "
                  "Use a single — (md2medium.py refuses it too):\n%s"
                  % (len(bad), "\n".join("  line %d: %s" % (k, l.strip()[:78]) for k, l in bad[:10])))
+    bad = md2medium.autocorrect_lines(source.split("\n"))
+    if bad:
+        sys.exit("(c), (r) or (tm) in prose on %d line(s); Medium autocorrects them into ©/®/™ — use （c） or c):\n%s"
+                 % (len(bad), "\n".join("  line %d: %s" % (k, l.strip()[:78]) for k, l in bad[:10])))
 
     text, figures, tables = convert(source)
     os.makedirs(os.path.join(out_dir, "images"), exist_ok=True)
