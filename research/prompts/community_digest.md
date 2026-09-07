@@ -1,6 +1,6 @@
 # 社群 digest agent 的 prompt（Facebook + LinkedIn + Medium stats）
 
-輸入是 `collect.sh facebook linkedin medium` 的產出。產出 `.context/research/YYYY-MM/community_digest.md`。
+輸入是 `collect.sh facebook linkedin medium` 的產出。產出 `research/YYYY-MM/community_digest.md`（只留本機、不 commit，見 research/README.md「資料來源」）。
 
 ```
 You are a research analyst. Today is {TODAY}. Work in {RAW}/. The user is Kochi Chuang

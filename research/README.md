@@ -71,20 +71,21 @@ flowchart LR
 research/
 ├── README.md                 # 本檔：迴圈怎麼轉
 ├── scripts/
+│   ├── _common.sh            # 給其他腳本 source、不直接執行：ROOT、EX_* 離開碼、browse 的路徑、collect.sh 的鎖、headless 算繪前的 viewport 準備
 │   ├── collect.sh            # 收集階段的驅動腳本（由 2026-09-05 跑通的指令整理而成）
 │   ├── extract_*.js          # 各平台的 DOM 擷取；selector 會壞，壞了先修這裡
 │   ├── merge.py              # 把新抓的一批 JSON 併進累積檔：`--key link|handle` 選去重欄位，`--tag SOURCE` 標來源
-│   ├── codex_review.sh       # 用 Codex（xhigh）二審一份大綱或 selection.md（`KIND=outline|selection`），原話存 codex-review-<slug>.md
+│   ├── codex_review.sh       # 用 Codex（xhigh）二審一份大綱或 selection.md（`KIND=outline|selection`），原話存 codex-review-<slug>.md；四份 digest 都要在 research/<month>/ 下才跑，缺一份 exit 64
 │   ├── codex_jsonl.py        # codex exec --json 的串流解析（拆出來是因為 bash 單引號裡塞 python 會壞）
 │   ├── mermaid_check.sh      # 用 browse 算繪一張 Mermaid 圖並依 MERMAID.md 判 PASS／FAIL（寬、高／寬、節點數）
 │   ├── mermaid_check_all.sh  # 抽出一份 .md 裡所有 mermaid 區塊逐張檢查，列成一張表
 │   ├── sync_figures.py       # 用 <slug>.figures.md 的已驗證版本覆蓋大綱內嵌的 mermaid（依圖 id）；有對不上或重複的區塊就不寫，除非 --force
 │   ├── article_to_paste.py   # article.md → publish/medium-paste.md（mermaid → 📌圖、表格 → 📌表，其餘一字不差）+ figures.json
 │   ├── render_images.sh      # 依 figures.json 算繪 diagram-NN.png（走 mermaid_check）與 table-NN.png（HTML 截圖）
-│   ├── test_research_scripts.py   # 純 Python 部分的離線測試（stdlib unittest）：article_to_paste（含每篇已 commit 的 paste == convert(article)）、sync_figures、codex_jsonl、merge、notion_cookies 的守衛
+│   ├── test_research_scripts.py   # 離線測試（stdlib unittest）：article_to_paste（含每篇已 commit 的 paste == convert(article)）、sync_figures、codex_jsonl、merge、notion_cookies 的守衛，以及 codex_review.sh 的前置檢查（用假的 codex）
 │   ├── notion_cookies.py     # Notion 桌面版 cookie 解密（Keychain 授權一次）
 │   └── notion_search.js / notion_chunk.js   # Notion 內部 API：最近頁面清單、單頁文字
-├── prompts/                  # 四個 digest agent 的 prompt，每月照抄改日期
+├── prompts/                  # 四個 digest agent 的 prompt（每月照抄改日期），加上 zh-tw 檢查 agent 的 zhtw_pass.md
 ├── workflows/                # Workflow 工具的腳本；root／month／today／published 都從 args 進，不寫死
 │   ├── plan-next-three-themes.js   # 提案 → 合併 → 評審/反駁 → 選題 → 大綱/批評/修訂 → backlog
 │   ├── review-outlines.js          # 第二輪：每份大綱 4 個視角批評（證據稽核／VP 讀者／編輯／圖表設計）→ 修訂 → 驗證（≤ 2 輪）→ 補 Mermaid 圖檔
@@ -105,6 +106,8 @@ research/
 
 .context/research/YYYY-MM/    # collect.sh 的原始 JSON（整個 .context/ gitignored）
 .context/mermaid/             # mermaid_check.sh 的算繪暫存
+.context/render/<dir>[-<lang>]/   # render_images.sh 的算繪暫存
+.context/collect.lock         # collect.sh 跑的期間持有；mermaid_check.sh 與 render_images.sh 看到它就退出 75，等它跑完再來
 ```
 
 ## 分析階段
@@ -222,6 +225,7 @@ presentations 的那幾週，都是粉絲團有分享的週。這些數字放在
 - [ ] 這些腳本目前放 `research/scripts/`，不在 `tools/`。能離線測的純 Python 部分（`article_to_paste.py`、
       `sync_figures.py`、`codex_jsonl.py`、`merge.py`，以及 `notion_cookies.py` 的參數與 Keychain 守衛）
       已由 `research/scripts/test_research_scripts.py` 蓋住，規矩同 `tools/`（見根目錄 CLAUDE.md）；
-      `extract_*.js`、`collect.sh`、`mermaid_check*.sh`、`render_images.sh`、`codex_review.sh` 依賴外部 DOM、
-      瀏覽器或 Codex session，沒有離線測試，靠執行時自檢。等 selector 穩定再決定要不要把純 Python 那批搬進 `tools/`。
+      `codex_review.sh` 的前置檢查（缺 digest 就 exit 64、四份齊全才叫 codex 並寫出 review）也在裡面，用假的 `codex` 測；
+      `extract_*.js`、`collect.sh`、`mermaid_check*.sh`、`render_images.sh` 依賴外部 DOM、瀏覽器或 Keychain，
+      沒有離線測試，靠執行時自檢。等 selector 穩定再決定要不要把純 Python 那批搬進 `tools/`。
 - [ ] 每月更新 `style_brief.md` 的 reception 段與 `backlog.md` 的權重。

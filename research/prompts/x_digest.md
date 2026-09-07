@@ -1,6 +1,6 @@
 # X digest agent 的 prompt
 
-輸入是 `collect.sh x` 抓出來的四個 JSON。產出 `.context/research/YYYY-MM/x_digest.md`。
+輸入是 `collect.sh x` 抓出來的四個 JSON。產出 `research/YYYY-MM/x_digest.md`（會 commit）。
 
 ```
 You are a research analyst. Today is {TODAY}. In {RAW}/ there are JSON files scraped from the

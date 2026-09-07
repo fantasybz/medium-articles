@@ -121,7 +121,9 @@ flowchart LR
 
 ## 五、算繪與檢查
 
-用 repo 裡的腳本，不必安裝 mermaid-cli（它借 gstack browse 的 headless Chromium，從 jsdelivr 載 mermaid 11）：
+用 repo 裡的腳本，不必安裝 mermaid-cli（它借 gstack browse 的 headless Chromium，從 jsdelivr 載 mermaid；
+版本釘在腳本的 `MERMAID_VERSION`，目前 11.17.2。版面尺寸來自 mermaid 的排版演算法，PASS／FAIL 會跟著版本漂，
+升版要把全部的圖重跑一遍，不要只改數字）：
 
 ```bash
 research/scripts/mermaid_check.sh fig.mmd            # 印出 viewBox 尺寸、高／寬、節點數，PASS／FAIL；並在 fig.mmd 旁寫出 fig.png（2x）與 fig.svg
@@ -135,5 +137,5 @@ research/scripts/mermaid_check.sh fig.mmd out/fig    # 同上，只是 PNG／SVG
 如果改用 mermaid-cli，字型要用 `--configFile`（`{"themeVariables":{"fontFamily":"..."}}`）給，
 理由同第三節：frontmatter 的 fontFamily 會被忽略。
 
-不合規的圖不進 `publish/images/`。這條放在最前面擋，比上線後用 `medium_patch.py` 換圖便宜得多
+不合規的圖不進 `publish/images/`：`research/scripts/render_images.sh` 每張圖都走同一個檢查，FAIL 的不寫檔。這條放在最前面擋，比上線後用 `medium_patch.py` 換圖便宜得多
 （換圖要兩步、還要等上傳完成，見 [PUBLISHING.md](PUBLISHING.md)）。

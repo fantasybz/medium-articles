@@ -1,6 +1,6 @@
 # arXiv 掃描 agent 的 prompt（每月改日期後照抄）
 
-交給一個 general-purpose agent 在背景跑；不需要瀏覽器。產出 `.context/research/YYYY-MM/arxiv.md`。
+交給一個 general-purpose agent 在背景跑；不需要瀏覽器。產出 `research/YYYY-MM/arxiv.md`（會 commit）。
 
 ```
 You are a research agent. Today is {TODAY}. Do a thorough sweep of arXiv for recent papers

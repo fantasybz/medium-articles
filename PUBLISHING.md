@@ -8,6 +8,9 @@ Medium 草稿：標題、內文、所有插圖，並在結束前逐塊比對確�
 逐塊比對文字、清點連結數（innerText 看不到 `<a>`，掉連結的貼上讀起來一模一樣）、
 以及比對每張圖落在第幾個 graf（只數張數的話，圖跑到別的章節照樣「全部相符」）。
 
+`publish/medium-paste.md`、`figures.json` 與 `publish/images/` 本身由 `research/scripts/article_to_paste.py`
+與 `render_images.sh` 從 `article.md` 產生，指令見 [README.md](README.md) 的 Publishing。
+
 ```bash
 ./tools/medium_draft.sh 2026-09-agentic-engineering-platform        # publish/
 ./tools/medium_draft.sh 2026-09-agentic-engineering-platform en     # publish/en/
@@ -87,7 +90,9 @@ cookie 值貼進 repo。**
 ## 圖片是怎麼進去的
 
 `medium-paste.md` 裡的 `📌【在此插入圖 diagram-01.png】` 會先變成一段
-`IMGSLOT-diagram-01.png-ENDSLOT` 的佔位段落，隨內文一起貼進去。之後每張圖：
+`IMGSLOT-diagram-01.png-ENDSLOT` 的佔位段落，隨內文一起貼進去。這一行（表格是
+`📌【在此插入表 table-01.png】`）由 `research/scripts/article_to_paste.py` 產生，寫的時候走
+`md2medium.slot_line()`，所以只可能是 `md2medium.py` 讀得回來的形式。之後每張圖：
 
 1. 找到對應的佔位段落，把游標放上去，貼上 PNG。
 2. 等上傳完成——沒傳完之前 `<img>` 的 src 還是 blob URL，

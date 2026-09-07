@@ -1,6 +1,6 @@
 # Notion digest agent 的 prompt
 
-輸入是 `collect.sh notion` 的產出（`notion_pages.json` 最近編輯的 100 頁清單、`notion_pages_content.json` 指定頁面的文字、`notion_db_pages.json` 資料庫頁面的算繪文字）。產出 `.context/research/YYYY-MM/notion_digest.md`。
+輸入是 `collect.sh notion` 的產出（`notion_pages.json` 最近編輯的 100 頁清單、`notion_pages_content.json` 指定頁面的文字、`notion_db_pages.json` 資料庫頁面的算繪文字）。產出 `research/YYYY-MM/notion_digest.md`（只留本機、不 commit，見 research/README.md「資料來源」）。
 
 ```
 You are a research analyst. Today is {TODAY}. Work in {RAW}/. The user is Kochi Chuang (Medium
