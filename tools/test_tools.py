@@ -22,6 +22,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -144,6 +145,38 @@ class TestConvert(unittest.TestCase):
         out = self.convert("# T\n\nlead in:\n📌【在此插入圖 d.png】\n")
         self.assertIn("<p>lead in:</p>", out["html"])
         self.assertEqual(out["images"], ["d.png"])
+
+
+class TestSlotLine(unittest.TestCase):
+    """slot_line writes what SLOT_RE reads; article_to_paste.py relies on it."""
+
+    def test_both_kinds_round_trip_through_the_slot_pattern(self):
+        for kind, name in (("圖", "diagram-01.png"), ("表", "table-12.png")):
+            line = md2medium.slot_line(kind, name)
+            m = md2medium.SLOT_RE.match(line)
+            self.assertIsNotNone(m, line)
+            self.assertEqual(m.group(1), name)
+            self.assertIn(kind, line)
+
+    def test_the_converter_treats_the_written_line_as_a_figure(self):
+        # Not just the regex: the whole pipeline has to see an image slot, not
+        # a paragraph of body text.
+        body = "\n\n".join(["# T", md2medium.slot_line("圖", "diagram-01.png"),
+                            md2medium.slot_line("表", "table-01.png")])
+        out = md2medium.convert(body + "\n")
+        self.assertEqual(out["images"], ["diagram-01.png", "table-01.png"])
+        self.assertNotIn("📌", out["html"])
+
+    def test_an_unknown_kind_is_refused(self):
+        with self.assertRaises(ValueError):
+            md2medium.slot_line("image", "diagram-01.png")
+
+    def test_a_name_the_pattern_would_reject_is_refused_at_write_time(self):
+        # Emitting it would put a 📌 line in the paste that convert() later
+        # dies on; better to fail where the name is chosen.
+        for bad in ("diagram 01.png", "diagram-01.jpg", "圖.png", ""):
+            with self.assertRaises(ValueError, msg=bad):
+                md2medium.slot_line("圖", bad)
 
 
 class TestVerifyDraft(unittest.TestCase):
@@ -552,6 +585,61 @@ class TestDecrypt(unittest.TestCase):
         got = chrome_cookies.decrypt(self.encrypt(b"1:sid-value"),
                                      "ff" * 16, self.HEXIV)
         self.assertIsNone(got, "a bad key must fail loudly, got %r" % got)
+
+
+class TestDeriveKey(unittest.TestCase):
+    """The PBKDF2 stretch, pinned to what the tool produced before it was a function.
+
+    research/scripts/notion_cookies.py used to carry its own copy of this; a
+    drift in either would decrypt every cookie to noise and export nothing.
+    """
+
+    def test_fixed_password_gives_the_values_the_tool_always_produced(self):
+        # pbkdf2_hmac("sha1", b"secret", b"saltysalt", 1003, 16), computed once
+        # from the pre-refactor code and hardcoded so the test cannot just
+        # re-derive the same mistake.
+        self.assertEqual(chrome_cookies.derive_key(b"secret"),
+                         ("1a7404704ee35b4506624ed49171a534",
+                          "20202020202020202020202020202020"))
+
+    def test_the_hex_pair_is_what_openssl_accepts(self):
+        if not shutil.which("openssl"):
+            self.skipTest("openssl unavailable")
+        hexkey, hexiv = chrome_cookies.derive_key(b"correct horse battery staple")
+        enc = subprocess.run(
+            ["openssl", "enc", "-aes-128-cbc", "-K", hexkey, "-iv", hexiv],
+            input=b"1:sid-value", capture_output=True)
+        self.assertEqual(enc.returncode, 0, enc.stderr)
+        self.assertEqual(chrome_cookies.decrypt(b"v10" + enc.stdout, hexkey, hexiv),
+                         "1:sid-value")
+
+
+class TestSafeStorageKey(unittest.TestCase):
+    """The keychain lookup, with `security` faked so no prompt can appear."""
+
+    def lookup(self, stdout="pw\n", returncode=0, *args):
+        fake = subprocess.CompletedProcess(args=[], returncode=returncode,
+                                           stdout=stdout, stderr="denied")
+        with mock.patch.object(chrome_cookies.subprocess, "run", return_value=fake) as run:
+            key = chrome_cookies.safe_storage_key(*args)
+        return key, run.call_args[0][0]
+
+    def test_defaults_to_chromes_item(self):
+        key, argv = self.lookup()
+        self.assertEqual(key, b"pw")
+        self.assertEqual(argv, ["security", "find-generic-password", "-w",
+                                "-s", "Chrome Safe Storage", "-a", "Chrome"])
+
+    def test_another_app_names_its_own_item(self):
+        _, argv = self.lookup("pw\n", 0, "Notion Safe Storage", "Notion Key")
+        self.assertEqual(argv[3:], ["-s", "Notion Safe Storage", "-a", "Notion Key"])
+
+    def test_a_refusal_or_empty_secret_exits_naming_the_item(self):
+        for stdout, rc in (("", 1), ("\n", 0)):
+            with self.assertRaises(SystemExit) as cm:
+                self.lookup(stdout, rc, "Notion Safe Storage", "Notion Key")
+            self.assertIn("Notion Safe Storage", str(cm.exception))
+            self.assertIn("denied", str(cm.exception))
 
 
 class TestProfiles(unittest.TestCase):

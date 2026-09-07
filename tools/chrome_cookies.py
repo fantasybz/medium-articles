@@ -39,21 +39,39 @@ WEBKIT_EPOCH_OFFSET_S = 11644473600
 MICROS_PER_S = 1000000
 
 
-def safe_storage_key():
-    """The AES password Chrome stashes in the login keychain.
+# Keychain item Chrome keeps its cookie password under: (service, account).
+# Every Chromium-based app uses the same scheme under its own item name; the
+# Notion desktop app is "Notion Safe Storage" / "Notion Key".
+CHROME_SAFE_STORAGE = ("Chrome Safe Storage", "Chrome")
+
+
+def safe_storage_key(service=CHROME_SAFE_STORAGE[0], account=CHROME_SAFE_STORAGE[1]):
+    """The AES password a Chromium app stashes in the login keychain.
 
     Reading it may pop a keychain prompt the first time; approve it once and the
     grant sticks.
     """
     out = subprocess.run(
-        ["security", "find-generic-password", "-w",
-         "-s", "Chrome Safe Storage", "-a", "Chrome"],
+        ["security", "find-generic-password", "-w", "-s", service, "-a", account],
         capture_output=True, text=True,
     )
     if out.returncode != 0 or not out.stdout.strip():
-        sys.exit("could not read 'Chrome Safe Storage' from the keychain: "
-                 + out.stderr.strip())
+        sys.exit("could not read '%s' from the keychain: %s"
+                 % (service, out.stderr.strip()))
     return out.stdout.strip().encode()
+
+
+def derive_key(password):
+    """Stretch the keychain password into the (hexkey, hexiv) decrypt() takes.
+
+    Chromium on macOS: PBKDF2-HMAC-SHA1 over the salt "saltysalt", 1003
+    rounds, a 16-byte key, and an IV of sixteen spaces. Hex because that is
+    the form openssl's -K and -iv accept.
+    """
+    hexkey = binascii.hexlify(hashlib.pbkdf2_hmac(
+        "sha1", password, b"saltysalt", PBKDF2_ITERATIONS, AES_KEY_BYTES)).decode()
+    hexiv = binascii.hexlify(b" " * AES_BLOCK_BYTES).decode()
+    return hexkey, hexiv
 
 
 def decrypt(blob, hexkey, hexiv, host=None):
@@ -202,10 +220,7 @@ def main():
                     help="also include cookies scoped to subdomains")
     args = ap.parse_args()
 
-    key = safe_storage_key()
-    hexkey = binascii.hexlify(hashlib.pbkdf2_hmac(
-        "sha1", key, b"saltysalt", PBKDF2_ITERATIONS, AES_KEY_BYTES)).decode()
-    hexiv = binascii.hexlify(b" " * AES_BLOCK_BYTES).decode()
+    hexkey, hexiv = derive_key(safe_storage_key())
 
     available = profiles()
     if not available:

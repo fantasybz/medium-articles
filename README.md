@@ -10,6 +10,10 @@ Medium articles by [@fantasybz](https://medium.com/@fantasybz) — long-form pos
 | 2026-09 | [三部曲（一）組織篇：誰來做？Platform + Federation 的組織設計實務](2026-09-agentic-org-design/article.md) | [EN](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987) | [已發布](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%80-%E8%AA%B0%E4%BE%86%E5%81%9A-platform-federation-%E7%9A%84%E7%B5%84%E7%B9%94%E8%A8%AD%E8%A8%88%E5%AF%A6%E5%8B%99-9d9353ef7f3a) | [PUBLISHED.md](2026-09-agentic-org-design/publish/PUBLISHED.md) |
 | 2026-10 | [三部曲（二）技術篇：Harness 藍圖—把系統變成 agent 讀得懂的地方](2026-10-agentic-harness-blueprint/article.md) | [EN](https://fantasybz.medium.com/agentic-engineering-part-2-the-harness-blueprint-making-your-system-legible-to-agents-3facc281f633) | [已發布](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%BA%8C-harness-%E8%97%8D%E5%9C%96-%E6%8A%8A%E7%B3%BB%E7%B5%B1%E8%AE%8A%E6%88%90-agent-%E8%AE%80%E5%BE%97%E6%87%82%E7%9A%84%E5%9C%B0%E6%96%B9-f2a139f5b561) | [PUBLISHED.md](2026-10-agentic-harness-blueprint/publish/PUBLISHED.md) |
 | 2026-11 | [三部曲（三）營運篇：Eval、單位經濟與規模化—把 agent 當產品營運](2026-11-agentic-eval-economics/article.md) | [EN](https://fantasybz.medium.com/agentic-engineering-part-3-evals-unit-economics-and-scaling-running-agents-like-a-product-1cb1855a2046) | [已發布](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%89-eval-%E5%96%AE%E4%BD%8D%E7%B6%93%E6%BF%9F%E8%88%87%E8%A6%8F%E6%A8%A1%E5%8C%96-%E6%8A%8A-agent-%E7%95%B6%E7%94%A2%E5%93%81%E7%87%9F%E9%81%8B-d6d9623c2dc6) | [PUBLISHED.md](2026-11-agentic-eval-economics/publish/PUBLISHED.md) |
+| 2026-10 | [綠燈不是驗收：agent 時代的測試、Review 與可靠度—從 James Bach 的《Taking Testing Seriously》讀起](2026-10-green-overview/article.md)（第二個系列的總論） | — | 草稿：初稿已完成，待批評／修訂與英文版；進度見 [research/README.md](research/README.md) 的待辦 | — |
+| 2026-10 | [綠燈不是驗收（一）測試篇：怎麼審一份 agent 寫的測試—斷言鬆綁、凍結 bug 與 mutation score](2026-10-green-testing/article.md) | — | 草稿（同上） | — |
+| 2026-10 | [綠燈不是驗收（二）Review 篇：Review 是控制點，不是瓶頸—分流、reviewer agent 艦隊與閉環禁令](2026-10-green-review/article.md) | — | 草稿（同上） | — |
+| 2026-10 | [綠燈不是驗收（三）可靠度篇：SWE-Gate 量到的 34%—constraint tests、pass^k 與授權擴張的閘門](2026-10-green-reliability/article.md) | — | 草稿（同上） | — |
 
 ## Structure
 
@@ -20,7 +24,8 @@ YYYY-MM-slug/
 ├── article.md          # 中文版本體（GitHub 原生渲染 Mermaid）
 ├── article.en.md       # 英文版本體
 └── publish/            # Medium 發布包
-    ├── medium-paste.md # 中文貼上版（含發布指南與插圖標記）
+    ├── medium-paste.md # 中文貼上版（含發布指南與插圖標記），由 article_to_paste.py 從 article.md 產生
+    ├── figures.json    # 哪個 mermaid 區塊／表格變成哪張 PNG；同一支腳本寫出，render_images.sh 讀它
     ├── images/         # 中文版的 Mermaid 圖與表格 PNG
     ├── PUBLISHED.md    # 發布後補：網址、tag、封面圖、核對結果
     └── en/             # 英文發布包（結構同上，圖表為英文版）
@@ -29,14 +34,25 @@ YYYY-MM-slug/
         └── PUBLISHED.md
 ```
 
+## Research loop
+
+下個月寫什麼，由 [research/](research/README.md) 的每月迴圈決定：收集 X / Facebook /
+LinkedIn / Medium stats / arXiv / Notion 的訊號 → 四份 digest（哪幾份進 git、哪幾份只留本機，見
+research/README.md 的「資料來源」）→ workflow 提案、評審、選題 →
+每個主題一份「總論 + 三部曲」大綱，落選的進 backlog。第一圈的產出在
+[research/2026-09/](research/2026-09/)。
+
 ## Publishing
 
-`publish/medium-paste.md` 可以自己手貼，也可以跑：
+發布包從 `article.md` 產生，草稿再從發布包建出：
 
 ```bash
-./tools/medium_draft.sh YYYY-MM-slug        # 中文包 publish/
-./tools/medium_draft.sh YYYY-MM-slug en     # 英文包 publish/en/（內文與圖片一起換）
+python3 research/scripts/article_to_paste.py YYYY-MM-slug   # article.md → publish/medium-paste.md + figures.json（英文版加 --lang en）
+research/scripts/render_images.sh YYYY-MM-slug              # figures.json → publish/images/*.png（英文版加 en）
+./tools/medium_draft.sh YYYY-MM-slug                        # 中文包 publish/
+./tools/medium_draft.sh YYYY-MM-slug en                     # 英文包 publish/en/（內文與圖片一起換）
 ```
 
-它會建好一份完整草稿並比對內容，停在發布前一步。細節與踩過的坑見
+`medium-paste.md` 也可以自己手貼。`medium_draft.sh` 會建好一份完整草稿並比對內容，停在發布前一步；
+`render_images.sh` 只寫入通過 [MERMAID.md](MERMAID.md) 檢查的圖。細節與踩過的坑見
 [PUBLISHING.md](PUBLISHING.md)。
