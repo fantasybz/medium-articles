@@ -257,4 +257,4 @@ Harness 蓋好之後，下一個問題是：你怎麼知道它有沒有用、值
 
 ---
 
-*本文發表於 [Medium @fantasybz](https://medium.com/@fantasybz)。若你正在為組織蓋 agent harness，歡迎交流。*
+*本文發表於 [Medium @fantasybz](https://medium.com/@fantasybz)。英文版：[English edition](https://fantasybz.medium.com/agentic-engineering-part-2-the-harness-blueprint-making-your-system-legible-to-agents-3facc281f633)。若你正在為組織蓋 agent harness，歡迎交流。*
