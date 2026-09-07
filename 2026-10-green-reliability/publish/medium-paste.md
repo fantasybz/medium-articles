@@ -28,7 +28,7 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 
 > **TL;DR** — 三部曲最終篇，講 reliability gate：授權要不要擴張，看什麼數字。SWE-Gate 在 75 個 Python repo、303 個修補任務上量到：功能測試通過的 644 個修補裡有 221 個（34%）違反 reviewer 實際加過的約束—每三個綠燈修補就有一個違反了 reviewer 在乎的約束。本篇只講三個數字。**constraint pass rate**：把 review 約束寫成可執行的 constraint tests（review 評論 → 規則 → 檢查），讓「reviewer 在乎的事」變成 CI 的一部分。**pass^k**：可靠度不是能力—pass@1 是每個 case 單次嘗試的成功率，pass^k 是 k 次全過的 case 比例，分開報。**oversight budget**：兩個準確率差 0.3 個百分點的系統，可能差近 10 個百分點的人工複核需求（READY），所以「要付多少人看」是從你的可靠度目標反推出來的預算，不是「盡量多看」—本篇給一個簡化模型讓你自己算。三個數字進 leadership 月報，並接回營運篇的 G2 gate：授權擴張看 pass^k、constraint pass rate、escape rate，不看 pass@1。
 
-> 系列導覽：總論（即將發布） → 一、測試篇（即將發布） → 二、Review 篇（即將發布） → **三、可靠度篇（本篇）**
+> 系列導覽：[總論](https://medium.com/p/582f24223eea) → [一、測試篇](https://medium.com/p/b01055139451) → [二、Review 篇](https://medium.com/p/ccbf0cbe2691) → **三、可靠度篇（本篇）**
 
 ---
 
@@ -228,9 +228,9 @@ G2 原條件加四條新條件，任一條不過就是不擴張。
 
 ### 系列文章
 
-1. 總論：綠燈不是驗收—agent 時代的測試、Review 與可靠度（即將發布）
-2. 一、測試篇：怎麼審一份 agent 寫的測試—斷言鬆綁、凍結 bug 與 mutation score（即將發布）
-3. 二、Review 篇：Review 是控制點，不是瓶頸—分流、reviewer agent 艦隊與閉環禁令（即將發布）
+1. [總論：綠燈不是驗收—agent 時代的測試、Review 與可靠度](https://medium.com/p/582f24223eea)
+2. [一、測試篇：怎麼審一份 agent 寫的測試—斷言鬆綁、凍結 bug 與 mutation score](https://medium.com/p/b01055139451)
+3. [二、Review 篇：Review 是控制點，不是瓶頸—分流、reviewer agent 艦隊與閉環禁令](https://medium.com/p/ccbf0cbe2691)
 4. **三、可靠度篇（本篇）**
 
 ---
@@ -248,7 +248,7 @@ G2 原條件加四條新條件，任一條不過就是不擴張。
 9. READY — [arXiv 2609.02095](https://arxiv.org/abs/2609.02095)（2026-09）〔第四節；全數字見總論第八節〕
 10. trajectory-judge — [arXiv 2609.00038](https://arxiv.org/abs/2609.00038)（2026-08）〔第五節；400 條軌跡；領域見原文〕
 11. LLM-as-a-Judge Is Not an Oracle — [arXiv 2609.02246](https://arxiv.org/abs/2609.02246)（2026-09）〔第五節〕
-12. 筆者筆記：Claude Certified Architect – Foundations 考試筆記（stop_reason、stratified sampling）
+12. 筆者筆記：Claude Certified Architect — Foundations 考試筆記（stop_reason、stratified sampling）
 13. 上一季：[營運篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%89-eval-%E5%96%AE%E4%BD%8D%E7%B6%93%E6%BF%9F%E8%88%87%E8%A6%8F%E6%A8%A1%E5%8C%96-%E6%8A%8A-agent-%E7%95%B6%E7%94%A2%E5%93%81%E7%87%9F%E9%81%8B-d6d9623c2dc6)第二、五節（judge 三陷阱、G2 gate）
 
 ---

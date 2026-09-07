@@ -34,11 +34,11 @@ Bach's definition of *checking*: "Checking is the mechanistic process of verifyi
 
 **The three kinds of evidence**, used throughout the three deep dives:
 
-- (a) **The agent's statements**: "done," "all tests pass," "LGTM."
-- (b) **Tests the agent wrote or modified**: green only proves it passed the questions it set for itself.
-- (c) **Team-owned tests and constraint tests**: a measurement of the environment the agent cannot alter.
+- a) **The agent's statements**: "done," "all tests pass," "LGTM."
+- b) **Tests the agent wrote or modified**: green only proves it passed the questions it set for itself.
+- c) **Team-owned tests and constraint tests**: a measurement of the environment the agent cannot alter.
 
-Only (c) counts as evidence; the difference between (a) and (b) is only that (b) has CI pressing enter for it. One objection: the agent has write access to the repo, so what makes (c) something it cannot alter? Two mechanisms. **The promotion rule**: a test the agent wrote passes the test gate (no weakened assertions, real mutation kill power) **and is approved into main by a human** — only then does it move from (b) to (c); the classification looks at who has taken responsibility for it, not who typed it. **Cannot alter**: CODEOWNERS for `tests/constraints/` and the golden set directory lists humans only, and any weakening of a (c) test blocks outright; the implementation is in the reliability piece.
+Only c) counts as evidence; the difference between a) and b) is only that b) has CI pressing enter for it. One objection: the agent has write access to the repo, so what makes c) something it cannot alter? Two mechanisms. **The promotion rule**: a test the agent wrote passes the test gate (no weakened assertions, real mutation kill power) **and is approved into main by a human** — only then does it move from b) to c); the classification looks at who has taken responsibility for it, not who typed it. **Cannot alter**: CODEOWNERS for `tests/constraints/` and the golden set directory lists humans only, and any weakening of a c) test blocks outright; the implementation is in the reliability piece.
 
 The vocabulary gets fixed here too: mutation score, constraint tests and pass^k are all **better checks**; testing — looking with the belief that there must be trouble — remains human work.
 
@@ -726,4 +726,4 @@ The initial concept and chapter structure are the author's; the prose was drafte
 
 ---
 
-*Originally published in Chinese: 中文版 (coming soon). Also on [Medium @fantasybz](https://medium.com/@fantasybz) — if you're designing the verification layer for agent output in your organization, I'd like to hear from you.*
+*Originally published in Chinese: [中文版](https://medium.com/p/582f24223eea). Also on [Medium @fantasybz](https://medium.com/@fantasybz) — if you're designing the verification layer for agent output in your organization, I'd like to hear from you.*

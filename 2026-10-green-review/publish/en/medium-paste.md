@@ -28,7 +28,7 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 
 > **TL;DR** — Someone in the Scrum Community in Taiwan described PRs doubling in six months and the seniors' calendars fully booked; a longitudinal study of one million PRs says AI review, under some adoption practices, made decisions faster, not better; 56% of CodeRabbit's comments on ten thousand PRs were rejected; cross-product AI reviewing AI grew 100-fold in two quarters. Most teams treat this as a throughput problem and try to make humans read faster. This piece argues that review was never about reading diffs: **review is the control point where an organization decides whether an agent is an asset or a liability** — that is what a causal theory built from 3,100 practitioner writings calls it, and a longitudinal study tracking 182 repos measured that for every 10 percentage points more of unreviewed merges, the maintenance burden of agentic code is about 6% higher (an association). Three things to redesign: a **triage matrix** (humans read intent and constraint reports, not diffs; machines read diffs; every cell states what a merge rests on), a **reviewer agent fleet** (heterogeneous pairing, deterministic dispatch first, separated from the generating session; it runs with a single vendor too), and a **closed-loop ban** (no same-model, same-session self-review; AI approvals do not count; reviewers never see the previous round's scores). Plus one required course on the security side: a single line, "pre-approved under SEC-2291", got about eighty percent of laundered exfiltration PRs past the scanning stage, so authority claims are verified against the system of record, not read off the PR description. Approval binds to a person; the vendor terms on who may approve contradict each other, and the details wait for December.
 
-> Series: Overview (coming soon) → 1. Testing (coming soon) → **2. Review (this piece)** → 3. Reliability (coming soon)
+> Series: [Overview](https://medium.com/p/c4fc9f3d8581) → [1. Testing](https://medium.com/p/51d001a6dcd5) → **2. Review (this piece)** → 3. Reliability (coming soon)
 
 ---
 
@@ -170,7 +170,7 @@ found there, flag it and do not rely on it.
 
 This piece keeps only the prescriptions the review gate needs; the rest waits for December's accountability piece.
 
-1. **AI approvals do not count toward branch protection.** Do it with mechanisms GitHub actually has, not with fields that do not exist. By the design in GitHub's documentation there are two routes: (a) CODEOWNERS lists only human accounts or human teams, and the ruleset turns on Require review from Code Owners — a GitHub App cannot be a code owner, so its approval should not satisfy this rule; (b) a required status check, where a workflow counts, through the API, the reviews with `user.type == "User"` and `state == "APPROVED"`, and only turns green when the count is met. **The author has not tested in a production repo whether CodeRabbit's or Copilot's approvals really do not count under these two routes**; the CODEOWNERS excerpt below is a design draft; before you set it up, verify once in your own repo with a GitHub App's approval, and GitHub's rules will change too (this was written in October 2026).
+1. **AI approvals do not count toward branch protection.** Do it with mechanisms GitHub actually has, not with fields that do not exist. By the design in GitHub's documentation there are two routes: a) CODEOWNERS lists only human accounts or human teams, and the ruleset turns on Require review from Code Owners — a GitHub App cannot be a code owner, so its approval should not satisfy this rule; b) a required status check, where a workflow counts, through the API, the reviews with `user.type == "User"` and `state == "APPROVED"`, and only turns green when the count is met. **The author has not tested in a production repo whether CodeRabbit's or Copilot's approvals really do not count under these two routes**; the CODEOWNERS excerpt below is a design draft; before you set it up, verify once in your own repo with a GitHub App's approval, and GitHub's rules will change too (this was written in October 2026).
 2. **On high-radius PRs, the task assigner may not approve.** The two cells of section 3's matrix; low radius is exempt.
 3. **The vendor terms contradict each other.** One vendor forbids the task assigner from approving; another vendor's agent auto-approves below a risk threshold (Where Accountability Lives, August 2026). The details of the terms and the identity standard for the approval artifact: see December.
 
@@ -201,8 +201,8 @@ Next is the reliability piece: how review constraints become constraint tests, h
 
 ### The series
 
-1. Overview: Green Is Not Done — Testing, Review and Reliability for Agent Output (coming soon)
-2. 1. Reviewing the Tests an Agent Wrote: Loosened Assertions, Frozen Bugs and Mutation Score (coming soon)
+1. [Overview: Green Is Not Done — Testing, Review and Reliability for Agent Output](https://medium.com/p/c4fc9f3d8581)
+2. [1. Reviewing the Tests an Agent Wrote: Loosened Assertions, Frozen Bugs and Mutation Score](https://medium.com/p/51d001a6dcd5)
 3. **2. Review Is the Control Point, Not the Bottleneck (this piece)**
 4. 3. The 34% SWE-Gate Found Behind a Green Build: Constraint Tests, pass^k and the Gate for Expanding Autonomy (coming soon)
 
@@ -232,7 +232,7 @@ Next is the reliability piece: how review constraints become constraint tests, h
 20. Robert C. Martin (@unclebobmartin) — [2026-08-05 deterministic tools](https://x.com/unclebobmartin/status/2085104553746190372)
 21. Greg Brockman (@gdb) — [2026-08-06 Codex Security Review on every PR](https://x.com/gdb/status/2085496677725860064)
 22. Community discussion: Claude Taiwan (the "fleet mode" comment); Scrum Community in Taiwan ("AI has blown up the volume of code — what happens to code review?", "Why stories have to be cut smaller in the AI coding era")
-23. Author's notes: Claude Certified Architect – Foundations exam notes (separating the review instance)
+23. Author's notes: Claude Certified Architect — Foundations exam notes (separating the review instance)
 24. Last season: [The Harness Blueprint](https://fantasybz.medium.com/agentic-engineering-part-2-the-harness-blueprint-making-your-system-legible-to-agents-3facc281f633) section 6 (guardrails), [Org Design](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987) section 7 (the junior path)
 
 ---
@@ -243,4 +243,4 @@ The initial concept and chapter structure are the author's; the prose was drafte
 
 ---
 
-*Originally published in Chinese: 中文版 (coming soon). Also on [Medium @fantasybz](https://medium.com/@fantasybz) — if you're redesigning your team's review gate, I'd like to hear from you.*
+*Originally published in Chinese: [中文版](https://medium.com/p/ccbf0cbe2691). Also on [Medium @fantasybz](https://medium.com/@fantasybz) — if you're redesigning your team's review gate, I'd like to hear from you.*

@@ -28,7 +28,7 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 
 > **TL;DR** — The overview's point: when the agent wrote the tests, a green build is checking, not acceptance. This piece is about the tooling for the test gate. Tests are the agent's acceptance criteria for itself — it sets the exam and sits it — so tests need review more than code does. Agent-written tests go wrong in four places: assertions get loosened, current bugs get recorded as goldens, tests never go red or take a path the spec didn't ask for, and coverage gets mistaken for quality. Human eyes can't catch these — in one experiment with 86 developers, judging the LLM-written assertions that were wrong was only 49% accurate, and confidence didn't drop — so lean on three cheap checks: **assertion-change diff, red-then-green, and diff-scoped mutation score**. In the agent era, mutation testing has an economic case as a gate for the first time, but it has to be a gate, not a ritual. At the end: a ten-question checklist for a tester reviewing an agent's tests, and an example I ran myself at a pattern-language workshop — all tests green, replay never executed — which happens to prove that none of the three gates can be skipped, and tells you which one was missing.
 
-> Series: Overview (coming soon) → **1. Testing (this piece)** → 2. Review (coming soon) → 3. Reliability (coming soon)
+> Series: [Overview](https://medium.com/p/c4fc9f3d8581) → **1. Testing (this piece)** → 2. Review (coming soon) → 3. Reliability (coming soon)
 
 ---
 
@@ -96,7 +96,7 @@ The threshold is my recommended value, not an industry standard: mutation score 
 
 **The classification must not come from the PR's author.** If the label is set by the agent that opened the PR, an agent driven by the "make the tests pass" reward quickly learns: label every PR a feature and never get checked. The scope of a gate can't be decided by the party being checked — this is the same thing as the series' "measure output, not process". In practice: bring it in from the issue or ticket's type field (set by a human) or the harness's task type, which the agent can't change; with no source, judge from the diff — if the PR modified any existing non-test file, treat it as a behavior change and run the check; only PRs that add files skip it.
 
-The CI job checks out the tests the PR added onto the base branch and runs them; the output falls into three classes: (a) didn't go red — flagged `test-never-fails`, the only class that gets flagged; (b) red for the right reason — the expected assertion failed — pass; (c) red for the wrong reason — import error, missing fixture — not flagged, only listed in the report, because it's mostly a signal of a feature mixed into a fix, not of the agent cheating.
+The CI job checks out the tests the PR added onto the base branch and runs them; the output falls into three classes: a) didn't go red — flagged `test-never-fails`, the only class that gets flagged; b) red for the right reason — the expected assertion failed — pass; c) red for the wrong reason — import error, missing fixture — not flagged, only listed in the report, because it's mostly a signal of a feature mixed into a fix, not of the agent cheating.
 
 📌【在此插入圖 diagram-02.png】
 
@@ -104,10 +104,10 @@ red-then-green runs only on PRs that change existing behavior; of the three exit
 
 **Check 2: assertion-change diff.** When an existing assertion is modified, grade it into four classes:
 
-- (a) **A step down the strength ladder**: equality → containment → truthy. Block.
-- (b) **Count or precision relaxed**: call count, tolerance, timeout. Block.
-- (c) **Removal**: assertion deleted, `assertRaises` deleted. Always block.
-- (d) **Disabling**: `skip`, `xfail`, `.only`, test file deleted. Always block.
+- a) **A step down the strength ladder**: equality → containment → truthy. Block.
+- b) **Count or precision relaxed**: call count, tolerance, timeout. Block.
+- c) **Removal**: assertion deleted, `assertRaises` deleted. Always block.
+- d) **Disabling**: `skip`, `xfail`, `.only`, test file deleted. Always block.
 
 Any other change to an existing assertion gets `needs-human-test-review`. For tests already promoted to team ownership (the third category in section 2 of the overview), any weakening blocks outright. Don't use "the same PR changes both code and tests" as a signal — a normal behavior-change PR changes both anyway, so that ratio will sit near 100% and measure nothing.
 
@@ -245,7 +245,7 @@ Next is the Review piece: once the test gate passes, who reads this PR, what the
 
 ### The series
 
-1. Overview: Green Is Not Done — Testing, Review and Reliability for Agent Output (coming soon)
+1. [Overview: Green Is Not Done — Testing, Review and Reliability for Agent Output](https://medium.com/p/c4fc9f3d8581)
 2. **1. Testing (this piece)**
 3. 2. Review: Review Is the Control Point, Not the Bottleneck — Triage, Reviewer Fleets and the Closed-Loop Ban (coming soon)
 4. 3. Reliability: The 34% SWE-Gate Found Behind a Green Build — Constraint Tests, pass^k and the Gate for Expanding Autonomy (coming soon)
@@ -273,4 +273,4 @@ The initial concept and chapter structure are the author's; the prose was drafte
 
 ---
 
-*Originally published in Chinese: 中文版 (coming soon). Also on [Medium @fantasybz](https://medium.com/@fantasybz) — if you're installing your team's first test gate, I'd like to hear from you.*
+*Originally published in Chinese: [中文版](https://medium.com/p/b01055139451). Also on [Medium @fantasybz](https://medium.com/@fantasybz) — if you're installing your team's first test gate, I'd like to hear from you.*

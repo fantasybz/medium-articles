@@ -28,7 +28,7 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 
 > **TL;DR** — 總論說：當測試是 agent 寫的，綠燈是 checking，不是驗收。這一篇講 test gate 的工具。測試是 agent 對自己的驗收標準—它同時是出題者與考生—所以測試比程式碼更需要審。agent 寫的測試會壞在四個地方：斷言被鬆綁、現狀 bug 被錄成 golden、測試永不紅或走的不是規格要的路徑、覆蓋率被當成品質。人眼抓不住這些—一項 86 位開發者的實驗裡，判斷 LLM 寫的錯誤斷言只有 49% 準確，信心卻沒降—所以要靠三個便宜的 check：**assertion-change diff、red-then-green、diff-scoped mutation score**。mutation testing 在 agent 時代第一次有經濟上的理由當閘門，但要當閘門，不當儀式。文末附 tester 審一份 agent 測試的十題 checklist，以及我在模式語言工作坊親手跑出來的「測試全綠、replay 從未執行」實例—那個例子剛好證明三道閘缺一不可，而且告訴你缺的是哪一道。
 
-> 系列導覽：總論（即將發布） → **一、測試篇（本篇）** → 二、Review 篇（即將發布） → 三、可靠度篇（即將發布）
+> 系列導覽：[總論](https://medium.com/p/582f24223eea) → **一、測試篇（本篇）** → 二、Review 篇（即將發布） → 三、可靠度篇（即將發布）
 
 ---
 
@@ -96,7 +96,7 @@ Brownfield 的現實：40 分鐘的測試套件上，diff-scoped mutation 仍然
 
 **分類的來源必須不是 PR 的作者。** label 若由開 PR 的 agent 打，被「讓測試過」的 reward 驅動的 agent 很快會學到：所有 PR 標成 feature，就不會被檢查。閘門的適用範圍不能由受檢者決定—這跟系列的「量產出、不量過程」是同一件事。做法：從 issue 或 ticket 的 type 欄（人設的）或 harness 的 task type 帶進來，agent 不可改；沒有來源時用 diff 判斷—只要 PR 修改了任何既有的非測試檔案，就視為 behaviour change 跑檢查；只新增檔案的才跳過。
 
-CI job 把 PR 新增的測試 checkout 到 base branch 上跑，輸出分三類：(a) 沒紅—標記 `test-never-fails`，這是唯一會標記的一類；(b) 因為對的理由紅—預期的斷言失敗—通過；(c) 因為錯的理由紅—import error、fixture 不存在—不標記，只列在報告裡，因為它多半是 feature 混進 fix 的訊號，不是 agent 作弊。
+CI job 把 PR 新增的測試 checkout 到 base branch 上跑，輸出分三類：（a） 沒紅—標記 `test-never-fails`，這是唯一會標記的一類；（b） 因為對的理由紅—預期的斷言失敗—通過；（c） 因為錯的理由紅—import error、fixture 不存在—不標記，只列在報告裡，因為它多半是 feature 混進 fix 的訊號，不是 agent 作弊。
 
 📌【在此插入圖 diagram-02.png】
 
@@ -104,10 +104,10 @@ red-then-green 只對修改既有行為的 PR 開，三個出口只有「沒紅�
 
 **Check 2：assertion-change diff。** 既有斷言被改動時，依四類分級：
 
-- (a) **強度階梯下降**：equality → containment → truthy。阻擋。
-- (b) **數量或精度放寬**：call count、tolerance、timeout。阻擋。
-- (c) **移除**：斷言刪除、`assertRaises` 刪除。一律阻擋。
-- (d) **停用**：`skip`、`xfail`、`.only`、刪除測試檔。一律阻擋。
+- （a） **強度階梯下降**：equality → containment → truthy。阻擋。
+- （b） **數量或精度放寬**：call count、tolerance、timeout。阻擋。
+- （c） **移除**：斷言刪除、`assertRaises` 刪除。一律阻擋。
+- （d） **停用**：`skip`、`xfail`、`.only`、刪除測試檔。一律阻擋。
 
 其餘既有斷言的變更標 `needs-human-test-review`。對已經升格為團隊擁有（總論第二節的第三類）的測試，任何弱化直接阻擋。不用「同一個 PR 同時改 code 與測試」當訊號—正常的行為變更 PR 本來就會兩者都改，那個比例會接近 100%，量不出東西。
 
@@ -245,7 +245,7 @@ Test Coverage of Agentic PRs 量了 4,882 個 agent PR：repo 原有的測試碰
 
 ### 系列文章
 
-1. 總論：綠燈不是驗收—agent 時代的測試、Review 與可靠度（即將發布）
+1. [總論：綠燈不是驗收—agent 時代的測試、Review 與可靠度](https://medium.com/p/582f24223eea)
 2. **一、測試篇（本篇）**
 3. 二、Review 篇：Review 是控制點，不是瓶頸—分流、reviewer agent 艦隊與閉環禁令（即將發布）
 4. 三、可靠度篇：SWE-Gate 量到的 34%—constraint tests、pass^k 與授權擴張的閘門（即將發布）

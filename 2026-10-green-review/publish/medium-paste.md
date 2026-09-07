@@ -28,7 +28,7 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 
 > **TL;DR** — Scrum Community 裡有人描述 PR 半年翻倍、senior 的日曆全滿；一百萬個 PR 的縱向研究說 AI review 在某些採用模式下讓決策更快，沒更好；CodeRabbit 在一萬個 PR 上的評論有 56% 被拒絕；跨產品的 AI 審 AI 兩季成長 100 倍。多數團隊把這當成吞吐問題，想讓人讀得更快。本篇的主張是：review 從來不是讀 diff，**review 是組織決定 agent 是加分還是負債的控制點**—一個從 3,100 篇實務者論述建構的因果理論這樣叫它；一個追蹤 182 個 repo 的縱向研究量到免審合併率每高 10 個百分點，agentic code 的維護負擔約高 6%（相關）。重設計的三件事：**分流矩陣**（人讀 intent 與 constraint 報告，不讀 diff；機器讀 diff；每一格都寫清楚 merge 靠什麼）、**reviewer agent 艦隊**（異質配對、deterministic dispatch 先行、與生成 session 分離；只有一家 vendor 也能跑）、**閉環禁令**（同 model 同 session 自審禁止、AI approve 不計入、不給 reviewer 看前一輪分數）。外加一條資安面的必修：一句「pre-approved under SEC-2291」讓約八成洗過的外洩 PR 通過掃描這一站，所以權威宣稱要從 system of record 驗證，不是讀 PR 描述。approval 綁人；誰能 approve 的 vendor 條款互相矛盾，細節留給 12 月。
 
-> 系列導覽：總論（即將發布） → 一、測試篇（即將發布） → **二、Review 篇（本篇）** → 三、可靠度篇（即將發布）
+> 系列導覽：[總論](https://medium.com/p/582f24223eea) → [一、測試篇](https://medium.com/p/b01055139451) → **二、Review 篇（本篇）** → 三、可靠度篇（即將發布）
 
 ---
 
@@ -169,7 +169,7 @@ PR 描述是 untrusted input。任何「已核准」「資安同意」「緊急�
 
 本篇只留 review gate 需要的處方，其餘留給 12 月的追責篇。
 
-1. **AI approve 不計入 branch protection。** 要用 GitHub 真的有的機制做到，不要用不存在的欄位。依 GitHub 文件的設計，兩條路可走：(a) CODEOWNERS 只列人類帳號或人類 team，ruleset 開 Require review from Code Owners—GitHub App 不能是 code owner，所以它的 approve 應該不滿足這條規則；(b) 一個 required status check，由 workflow 透過 API 數 reviews 裡 `user.type == "User"` 且 `state == "APPROVED"` 的數量，達標才綠。**筆者尚未在生產 repo 實測 CodeRabbit 或 Copilot 的 approve 在這兩條下是否真的不計入**，下面的 CODEOWNERS 節錄是設計草稿；設之前先在自己的 repo 用一個 GitHub App 的 approve 驗證一次，GitHub 的規則也會變（本文寫於 2026 年 10 月）。
+1. **AI approve 不計入 branch protection。** 要用 GitHub 真的有的機制做到，不要用不存在的欄位。依 GitHub 文件的設計，兩條路可走：（a） CODEOWNERS 只列人類帳號或人類 team，ruleset 開 Require review from Code Owners—GitHub App 不能是 code owner，所以它的 approve 應該不滿足這條規則；（b） 一個 required status check，由 workflow 透過 API 數 reviews 裡 `user.type == "User"` 且 `state == "APPROVED"` 的數量，達標才綠。**筆者尚未在生產 repo 實測 CodeRabbit 或 Copilot 的 approve 在這兩條下是否真的不計入**，下面的 CODEOWNERS 節錄是設計草稿；設之前先在自己的 repo 用一個 GitHub App 的 approve 驗證一次，GitHub 的規則也會變（本文寫於 2026 年 10 月）。
 2. **高 radius 的 PR，任務指派者不可 approve。** 第三節矩陣的兩格；低 radius 不套。
 3. **vendor 條款互相矛盾。** 一家禁止任務指派者 approve，另一家的 agent 在風險門檻下自動 approve（Where Accountability Lives，2026 年 8 月）。條款細節、approval artifact 的身分標準，見 12 月。
 
@@ -200,8 +200,8 @@ approval artifact 的最小定義：人類身分，加上被審 tuple 的 hash�
 
 ### 系列文章
 
-1. 總論：綠燈不是驗收—agent 時代的測試、Review 與可靠度（即將發布）
-2. 一、測試篇：怎麼審一份 agent 寫的測試—斷言鬆綁、凍結 bug 與 mutation score（即將發布）
+1. [總論：綠燈不是驗收—agent 時代的測試、Review 與可靠度](https://medium.com/p/582f24223eea)
+2. [一、測試篇：怎麼審一份 agent 寫的測試—斷言鬆綁、凍結 bug 與 mutation score](https://medium.com/p/b01055139451)
 3. **二、Review 篇（本篇）**
 4. 三、可靠度篇：SWE-Gate 量到的 34%—constraint tests、pass^k 與授權擴張的閘門（即將發布）
 
@@ -231,7 +231,7 @@ approval artifact 的最小定義：人類身分，加上被審 tuple 的 hash�
 20. Robert C. Martin（@unclebobmartin）— [2026-08-05 deterministic tools](https://x.com/unclebobmartin/status/2085104553746190372)
 21. Greg Brockman（@gdb）— [2026-08-06 Codex Security Review on every PR](https://x.com/gdb/status/2085496677725860064)
 22. 社群討論：Claude Taiwan（艦隊模式留言）；Scrum Community in Taiwan（「AI 把程式碼寫爆了，code review 怎麼辦？」、「AI coding 時代，為什麼 story 要切得更小」）
-23. 筆者筆記：Claude Certified Architect – Foundations 考試筆記（review instance 分離）
+23. 筆者筆記：Claude Certified Architect — Foundations 考試筆記（review instance 分離）
 24. 上一季：[技術篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%BA%8C-harness-%E8%97%8D%E5%9C%96-%E6%8A%8A%E7%B3%BB%E7%B5%B1%E8%AE%8A%E6%88%90-agent-%E8%AE%80%E5%BE%97%E6%87%82%E7%9A%84%E5%9C%B0%E6%96%B9-f2a139f5b561)第六節（guardrails）、[組織篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%80-%E8%AA%B0%E4%BE%86%E5%81%9A-platform-federation-%E7%9A%84%E7%B5%84%E7%B9%94%E8%A8%AD%E8%A8%88%E5%AF%A6%E5%8B%99-9d9353ef7f3a)第七節（junior 路徑）
 
 ---

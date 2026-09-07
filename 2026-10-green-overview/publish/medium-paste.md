@@ -60,11 +60,11 @@ Bach 對 *checking* 的定義：「Checking is the mechanistic process of verify
 
 **證據的三分法**，後三篇沿用：
 
-- (a) **agent 的陳述**：「已完成」「測試全過」「LGTM」。
-- (b) **agent 寫的或改過的測試**：綠了，只證明它通過了自己出的題。
-- (c) **團隊擁有的測試與 constraint tests**：環境的量測，agent 改不動。
+- （a） **agent 的陳述**：「已完成」「測試全過」「LGTM」。
+- （b） **agent 寫的或改過的測試**：綠了，只證明它通過了自己出的題。
+- （c） **團隊擁有的測試與 constraint tests**：環境的量測，agent 改不動。
 
-只有 (c) 算證據；(a) 與 (b) 的差別，只在 (b) 有 CI 幫它按 enter。一個反問：agent 對 repo 有寫入權，(c) 憑什麼改不動？兩條機制。**升格規則**：agent 寫的測試通過 test gate（斷言沒有弱化、mutation 有殺傷力）**而且被人類 approve 進 main**，才從 (b) 升格為 (c)—分類看「誰為它負責過」，不是「誰打的字」。**改不動**：`tests/constraints/` 與 golden set 目錄的 CODEOWNERS 只列人類，(c) 類測試的任何弱化直接阻擋；實作在可靠度篇。
+只有 （c） 算證據；（a） 與 （b） 的差別，只在 （b） 有 CI 幫它按 enter。一個反問：agent 對 repo 有寫入權，（c） 憑什麼改不動？兩條機制。**升格規則**：agent 寫的測試通過 test gate（斷言沒有弱化、mutation 有殺傷力）**而且被人類 approve 進 main**，才從 （b） 升格為 （c）—分類看「誰為它負責過」，不是「誰打的字」。**改不動**：`tests/constraints/` 與 golden set 目錄的 CODEOWNERS 只列人類，（c） 類測試的任何弱化直接阻擋；實作在可靠度篇。
 
 用語也在這裡定調：mutation score、constraint tests、pass^k 都是**更好的 check**；testing—帶著「一定有問題」的信念去看—還是人的工作。
 
