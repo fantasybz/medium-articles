@@ -199,21 +199,8 @@ presentations 的那幾週，都是粉絲團有分享的週。這些數字放在
 - [x] 2026-10 第二輪完成（2026-09-06 14:40）：4 視角 41 major 全數修訂、驗證通過；22 張 Mermaid 圖經 `mermaid_check_all.sh` 全部 PASS（5 張由筆者重畫）。11、12 月依序進行。
 - [x] 2026-11 第二輪完成（2026-09-06 22:40）：3 視角 + 圖表視角共 70 條意見，`finish-outline.js` 驗證／修訂後補圖檔；16 張 Mermaid 全部 PASS，大綱內嵌版已同步。
 - [x] 2026-12 第二輪完成（2026-09-06 23:15）：4 視角 27 major，修訂 51 條、驗證通過（3 個殘留由筆者手修）；14 張 Mermaid 全部 PASS，大綱內嵌版已同步。
-- [ ] **10 月四篇初稿都已寫好、機械檢查全過（2026-09-07 00:10）**，等 02:00 額度重置後跑批評／修訂：
-
-      | 篇 | 目錄 | 中文字（正文） | 圖／表 | 目標字數 |
-      |---|---|---|---|---|
-      | 總論 | `2026-10-green-overview` | 7,168 | 10／9 | 3,500–4,500 |
-      | 一、測試篇 | `2026-10-green-testing` | 3,820 | 4／4 | 1,900–2,600 |
-      | 二、Review 篇 | `2026-10-green-review` | 3,925 | 4／3 | 1,900–2,600 |
-      | 三、可靠度篇 | `2026-10-green-reliability` | 2,850 | 4／3 | 1,900–2,600 |
-
-      四篇的圖全部 `mermaid_check` PASS、`article_to_paste.py` 與 `render_images.sh` 都跑過、`tools/test_tools.py` OK、`——` 為 0；
-      三部曲已先跑過一輪 zh-tw（只採納 場景→情境、是一個→是、可執行行→可執行的行；通過→透過、數據→資料、實例→實體、依賴→相依性 都是誤判，未套）。
-      批評／修訂（每篇一個 run，總論先；`prev` 帶前面各篇的目錄）：
-      `Workflow({scriptPath: "research/workflows/write-article.js", args: {root, month: "2026-09", outline: "research/2026-09/2026-10-agentic-green-is-not-done.md", figures: "research/2026-09/2026-10-agentic-green-is-not-done.figures.md", piece: "總論", dir: "2026-10-green-overview", skipDraft: true, today: "2026-09-07", published: PUBLISHED}})`（`PUBLISHED` 同「分析階段」末段的四個目錄），
-      再依序 `piece: "一、測試篇", dir: "2026-10-green-testing", prev: ["2026-10-green-overview"]`、`piece: "二、Review 篇", dir: "2026-10-green-review", prev: [總論, 測試篇]`、`piece: "三、可靠度篇", dir: "2026-10-green-reliability", prev: [前三篇]`。
-      每篇修訂後重跑 `article_to_paste.py`、`render_images.sh`、`tools/test_tools.py`，**最後**再跑一次 zh-tw（修訂會改動正文）；然後寫英文版（`article.en.md`，`--lang en`）。三份大綱的 zh-tw agent 也還沒跑完（三次都撞上限）。
+- [x] **10 月四篇初稿已寫好並以 PR #5 併入 main（2026-09-07 09:20）**：總論 7,168 中文字、測試篇 3,820、Review 篇 3,925、可靠度篇 2,850（目標 3,500–4,500 / 1,900–2,600），圖全部 PASS、paste 與 PNG 已產、兩套測試 OK。
+- [ ] **批評／修訂進行中（2026-09-07 09:22 起，分支 `october-green-critique`）**：一個 Workflow 依序對四篇跑 `write-article.js`（`skipDraft: true`，`prev` 帶前面各篇），run id `wf_45b0f082-43c`。每篇修訂後要重跑 `article_to_paste.py`、`render_images.sh`、兩套測試，**最後**再跑一次 zh-tw；然後寫英文版（`article.en.md`，`--lang en`）；發布前先做「作者親手做的兩件事」（GitHub approve 機制實測、Teddy 同意）。
 - [ ] **Codex 二審尚未跑**：2026-09-05 22:36 撞到 Codex 用量上限（重置時間 2026-09-07 10:25）。重置後三份大綱各跑一次 `research/scripts/codex_review.sh <outline.md>`；`selection.md` 也跑一次 `research/scripts/codex_review.sh research/2026-09/selection.md`（檔名以 `selection` 開頭會自動換成審選題的框架；`KIND=outline|selection` 可強制指定）。依意見修訂，再跑一次 zh-tw 檢查。
 - [ ] LinkedIn 動態牆的 selector（目前靠「Feed post」切文字，只抓到 8 篇）。
 - [ ] `collect.sh` 還沒以單一腳本從頭跑過一次；第一次請逐段看。

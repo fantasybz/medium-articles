@@ -44,39 +44,35 @@
  "tables": [
   {
    "file": "table-01.png",
-   "markdown": "| 層 | 主張 | 錨點（in-domain） | 更多證據在哪 |\n|---|---|---|---|\n| 功能測試過 ≠ 約束滿足 | 綠燈只檢查了 reviewer 在乎的事的一部分 | SWE-Gate，一個把功能測試與 reviewer 約束分開量的基準：644 個通過功能測試的修補，221 個（34%）違反從真實 PR 評論導出的約束（75 個 Python repo、303 個修補任務，2026 年 9 月） | 可靠度篇第一節 |\n| 有測試 ≠ 測到 | agent 改的程式碼有多少被測試碰到 | Test Coverage of Agentic PRs，量 agent PR 的測試覆蓋：4,882 個 agent PR，repo 原有的測試只碰到 agent 改動行的 61.5%（Java）與 27.0%（Python）（2026 年 7 月） | 測試篇第六節 |\n| 一次成功 ≠ 可靠 | pass@1 與 pass^k 是兩個數字 | 用你自己的 golden set 跑 k 次（定義在第八節，演算法在可靠度篇第三節） | 可靠度篇第三節 |\n"
+   "markdown": "| 層 | 主張 | 錨點（in-domain） | 更多證據 |\n|---|---|---|---|\n| 功能測試過 ≠ 約束滿足 | 綠燈只檢查了 reviewer 在乎的一部分 | SWE-Gate：644 個通過功能測試的修補，221 個（34%）違反從真實 PR 評論導出的約束（75 個 Python repo、303 個任務，2026 年 9 月） | 可靠度篇 |\n| 有測試 ≠ 測到 | agent 改的程式碼有多少被測試碰到 | Test Coverage of Agentic PRs：4,882 個 agent PR，repo 原有測試只碰到 agent 改動行的 61.5%（Java）與 27.0%（Python）（2026 年 7 月） | 測試篇 |\n| 一次成功 ≠ 可靠 | pass@1 與 pass^k 是兩個數字 | 用你自己的 golden set 跑 k 次（定義在第八節） | 可靠度篇 |\n"
   },
   {
    "file": "table-02.png",
-   "markdown": "| 測試史 / CD 史 | 2026 年的 agent 驗證層 |\n|---|---|\n| 1990 年代，「測試通過」等於可以出貨 | 「CI 綠燈」等於可以 merge |\n| Bach / Bolton 把 *checking* 從 *testing* 切出來（2009 年起） | CI 綠燈是 checking；agent 對自己寫的測試說「全過」也是 checking；驗收是 testing |\n| 覆蓋率變成 KPI 之後被 game—Goodhart 的測試版 | 覆蓋率門檻被 agent 用 exclude pattern 與 trivial test 繞過 |\n| Mutation testing 1970 年代就提出，等了四十年運算才夠便宜 | agent 讓「寫很多測試」變免費，mutation testing 第一次有經濟上的理由當閘門 |\n| Humble & Farley 的 deployment pipeline：commit stage 綠了不等於 release，後面還有 acceptance、capacity、manual 各 stage | 驗證層的三道閘：test gate → review gate → reliability gate，每道閘量不同的東西 |\n| Fagan inspection（1976）→ 輕量 code review → Google 式 readability | 人讀 intent 與 constraint、機器讀 diff 的分流；approval artifact 綁人 |\n| SRE 的 error budget：可靠度是預算，不是目標 | oversight budget：人工複核比例是預算，由可靠度目標反推 |\n| 《XP Installed》的題詞：XP 是第一個將焦點放在驗證上的流行開發流程，但肯定不會是最後一個 | Agentic Engineering 是下一個 |\n"
+   "markdown": "| 你想要的 | 指示型做法（不當閘門） | 量測型做法（當閘門） |\n|---|---|---|\n| 測試有效 | AGENTS.md：「請用 TDD」 | mutation score ≥ 門檻（只算 agent 改動的行） |\n| 不改壞既有測試 | 「不要修改既有斷言」 | CI 檢查：既有斷言被弱化 → 阻擋；bug fix PR 另跑 red-then-green |\n| 遵守 reviewer 的約束 | 「請遵守團隊規範」 | constraint tests（review 評論 → 規則 → 可執行檢查） |\n| 誠實回報 | 「如果測試有問題請告訴我」 | 結構化的 escalation tool（`report_broken_test`） |\n| 可靠 | 「請仔細檢查」 | pass^k 在 golden set 上 ≥ 門檻 |\n"
   },
   {
    "file": "table-03.png",
-   "markdown": "| 你想要的 | 指示型做法（不當閘門） | 量測型做法（當閘門） |\n|---|---|---|\n| 測試有效 | AGENTS.md：「請用 TDD」 | mutation score ≥ 門檻（只算 agent 改動的行） |\n| 不改壞既有測試 | 「不要修改既有斷言」 | CI 檢查：既有斷言被弱化（強度下降、數量或精度放寬、刪除、停用）→ 阻擋；**只對修改既有行為的 PR**（bug fix、behaviour change）跑 red-then-green—新測試對修補前的 code 必須因為對的理由紅；feature PR 的新測試交給 mutation |\n| 遵守 reviewer 的約束 | 「請遵守團隊規範」 | constraint tests（review 評論 → 規則 → 可執行檢查） |\n| 誠實回報 | 「如果測試有問題請告訴我」 | 結構化的 escalation tool（`report_broken_test`；論文與數字在測試篇第五節） |\n| 可靠 | 「請仔細檢查」 | pass^k 在 golden set 上 ≥ 門檻 |\n"
+   "markdown": "| 閘 | 問題 | 量什麼 | Owner | 深掘 |\n|---|---|---|---|---|\n| Test gate | 這份測試能抓到 bug 嗎？ | mutation score、assertion-change diff、red-then-green | QA / test lead + platform | 測試篇 |\n| Review gate | 這個 PR 值得誰讀、讀什麼？ | 分流矩陣、reviewer 異質性、approval artifact | EM + senior | Review 篇 |\n| Reliability gate | 這種任務可以放多少授權？ | constraint pass rate、pass^k、oversight budget | platform + VP | 可靠度篇 |\n"
   },
   {
    "file": "table-04.png",
-   "markdown": "| 閘 | 問題 | 量什麼 | Owner | 深掘 |\n|---|---|---|---|---|\n| Test gate | 這份測試能抓到 bug 嗎？ | mutation score、assertion-change diff、red-then-green | QA / test lead + platform | 測試篇 |\n| Review gate | 這個 PR 值得誰讀、讀什麼？ | 分流矩陣、reviewer 異質性、approval artifact | EM + senior | Review 篇 |\n| Reliability gate | 這種任務可以放多少授權？ | constraint pass rate、pass^k、oversight budget、escape rate | platform + VP | 可靠度篇 |\n"
-  },
-  {
-   "file": "table-05.png",
    "markdown": "| 數字 | 回答 | 不能拿來做什麼 |\n|---|---|---|\n| pass@1（golden set） | 能力有沒有進步 | 決定授權 |\n| pass^k（golden set，k = 5–10） | 這類任務可以放多自主 | 跟別家的 benchmark 比 |\n| constraint pass rate（SWE-Gate 式） | 綠燈之外還違反了什麼 | 取代 review |\n"
   },
   {
+   "file": "table-05.png",
+   "markdown": "| # | 反模式 | 你會在哪裡看到它 |\n|---|---|---|\n| 1 | **綠燈即驗收** | 「CI 過了、覆蓋率 90%，可以上」 |\n| 2 | **TDD 儀式** | AGENTS.md 寫「請先寫測試」，看到 TDD 形狀的 commit 就放心 |\n| 3 | **斷言鬆綁修復** | 修 failing test 時把 `assertEqual` 改成 `assertIn`、加 `@skip`、刪 `assertRaises` |\n| 4 | **凍結 bug 的 golden** | 把現狀輸出錄成 snapshot / golden file，bug 從此被測試保護 |\n| 5 | **覆蓋率當品質** | 以覆蓋率門檻放行 agent PR；exclude pattern、空斷言都能把數字做出來 |\n| 6 | **閉環 review** | 同一個 model、同一個 session 審自己的 PR；或 AI approve 就算過 |\n| 7 | **讀 diff 的人** | senior 逐行讀 agent diff，PR 排隊，最後 rubber stamp |\n| 8 | **只報 pass@1** | 對 leadership 報「eval 通過率 85%」並據此擴大授權 |\n"
+  },
+  {
    "file": "table-06.png",
-   "markdown": "| # | 反模式 | 你會在哪裡看到它 | 為什麼會發生 | 哪一篇處理 |\n|---|---|---|---|---|\n| 1 | **綠燈即驗收** | 「CI 過了、覆蓋率 90%，可以上」 | 把 checking 當 testing；測試是 agent 寫的，綠燈只證明它通過了自己出的題 | 總論、可靠度篇 |\n| 2 | **TDD 儀式** | AGENTS.md 寫「請先寫測試再寫實作」，看到 TDD 形狀的 commit 就放心 | 把人類的做事習慣硬套在 agent 上，而不是量它留下的東西 | 總論、測試篇 |\n| 3 | **斷言鬆綁修復** | 叫 agent 修 failing test，它把 `assertEqual` 改成 `assertIn`、加 `@skip`、刪掉 `assertRaises` | 對 agent 來說「讓測試過」與「修對 bug」是同一個 reward | 測試篇 |\n| 4 | **凍結 bug 的 golden** | agent 把現狀輸出錄成 snapshot / golden file，bug 從此被測試保護 | 錄現狀最便宜；沒有人問「這個期望值從哪裡來」 | 測試篇 |\n| 5 | **覆蓋率當品質** | 以覆蓋率門檻放行 agent PR | 覆蓋率是一條可以被改掉的斷言—exclude pattern、空斷言、trivial test 都算 | 測試篇 |\n| 6 | **閉環 review** | 同一個 model、同一個 session 審自己的 PR；或 AI approve 就算過 | 便宜、快、看起來有 review；自我把關會退化成 rubber stamp | Review 篇 |\n| 7 | **讀 diff 的人** | senior 把日曆填滿逐行讀 agent diff，PR 排隊，最後 rubber stamp | 把 review 當吞吐問題（修正見第七節） | Review 篇 |\n| 8 | **只報 pass@1** | 對 leadership 報「eval 通過率 85%」並據此擴大授權 | 一次成功不是可靠度；能力與可靠度是兩個數字 | 可靠度篇 |\n"
+   "markdown": "| 規模 | 驗證層怎麼裝 | 誰擁有 |\n|---|---|---|\n| 50 人（5–10 個 repo） | 只裝 constraint tests + assertion-change diff；mutation 不開—沒人看報告 | platform 兼任；沒有 QA lead 就是最資深的 reviewer |\n| 200 人（30–50 個 repo） | 四道 check 進 paved road 的 CI template；新 repo 預設開，舊 repo 依 brownfield 順序開；reviewer fleet 一份設定檔集中定義 | QA lead 擁有 test gate；EM 擁有 review gate 的分流矩陣 |\n| 1,000 人 | test gate 由 platform 當產品營運（版本、SLA、dashboard）；reviewer fleet 集中管理、各 BU 選配；oversight 抽樣比例各 BU 自算 | platform 產品 owner + 各 BU 的 QA lead |\n"
   },
   {
    "file": "table-07.png",
-   "markdown": "| 規模 | 驗證層怎麼裝 | 誰擁有 |\n|---|---|---|\n| 50 人（5–10 個 repo） | 只裝 constraint tests + assertion-change diff；mutation 不開—受影響子集算不出來，也沒人看報告 | platform 兼任；沒有 QA lead 就由最資深的 reviewer 擁有 |\n| 200 人（30–50 個 repo） | 四道 check 進 paved road 的 CI template；新 repo 預設開，舊 repo 依 brownfield 順序逐一開；reviewer fleet 用一份設定檔集中定義 | 一位 QA lead 擁有 test gate；EM 擁有 review gate 的分流矩陣 |\n| 1,000 人 | test gate 由 platform 當產品營運（版本、SLA、dashboard）；reviewer fleet 集中管理、各 BU 只選配；oversight 抽樣比例由各 BU 依自己的 golden set 自算 | platform 產品 owner + 各 BU 的 QA lead |\n"
+   "markdown": "| 順序 | 閘 | 為什麼先 | 前提 |\n|---|---|---|---|\n| 1 | **constraint tests** | 不需要既有測試；原料從團隊規範與 incident postmortem 出發（見上第 2 項） | 零 |\n| 2 | **assertion-change diff** | 純 diff 分析，零執行成本，40 分鐘的套件不用跑 | 零 |\n| 3 | **red-then-green（bug fix PR）** | 只對受影響的測試子集跑—改到哪個 module 就跑哪個 module 的測試 | 能算受影響子集：test selection 或目錄對應 |\n| 4 | **diff-scoped mutation** | 最貴，最後裝 | 受影響子集 10 分鐘內跑完 |\n"
   },
   {
    "file": "table-08.png",
-   "markdown": "| 順序 | 閘 | 為什麼先 | 前提 |\n|---|---|---|---|\n| 1 | **constraint tests** | 不需要既有測試；原料從團隊規範（wiki、CODEOWNERS 的分層規則）與**最近 5 個 incident 的 postmortem**出發，不等 review 歷史累積 | 零 |\n| 2 | **assertion-change diff** | 純 diff 分析，零執行成本，40 分鐘的套件也不用跑 | 零 |\n| 3 | **red-then-green** | 只對受影響的測試子集跑（改到哪個 module 就跑哪個 module 的測試），而且只對修改既有行為的 PR | 能算受影響子集—build tool 的 test selection，或簡單的目錄對應 |\n| 4 | **diff-scoped mutation** | 最貴；只在受影響子集能在 10 分鐘內跑完的 repo 上開 | 受影響子集 < 10 分鐘 |\n"
-  },
-  {
-   "file": "table-09.png",
-   "markdown": "| 階段 | 目標 | 退出條件 |\n|---|---|---|\n| **第 1 個月** | 量 baseline：agent PR 的 escape rate、review minutes / PR、既有斷言被弱化的 PR 比例、snapshot 或 golden file 更新與 code 變更同 PR 且未附理由的比例、既有測試覆蓋 agent 改動行的比例、**PR 中新增或修改的測試檔由 agent 寫的比例**（這一欄量的是本系列的前提本身）；一個 pilot repo 裝 assertion-change diff 與 diff-scoped mutation；red-then-green 只對修改既有行為的 PR 開；抽 50 條被打回的 review 評論分類（brownfield repo 沒有評論歷史就從最近 5 個 incident 出發） | 四個新數字有 baseline；mutation 報告出現在 PR 上（先不阻擋） |\n| **第 2 個月** | 前 10 條 constraint tests 進 CI；reviewer agent 換成異質 instance；PR template 加 intent 與 constraint 欄；**AI approve 不計入 required approvals**（第十節第 3 項的機制）；agent 拿到 escalation tool | 至少一次 constraint test 擋下綠燈 PR；斷言弱化比例下降 |\n| **第 3 個月** | golden set 跑 k = 5 算 pass^k；用新的 G2 條件做一次授權去留決策；把三個數字放進 leadership 月報 | 月報上有 pass@1 / pass^k / constraint pass rate 三欄，**而且有人據這三欄做過一次授權去留決策並公開理由**—擴張或不擴張都算，關鍵是理由裡引用了哪一欄 |\n| **第 4–6 個月** | 以 repo 為單位重複：先推 agent PR 佔比最高的 repo，依第十節的 brownfield 順序逐一開；200 人以上把四道 check 進 paved road 的 CI template，新 repo 預設開 | 每個月至少一個新 repo 走完第 1–2 個月的步驟；免審合併率進月報 |\n"
+   "markdown": "| 階段 | 目標 | 退出條件 |\n|---|---|---|\n| **第 1 個月** | 量六個 baseline（見上）；pilot repo 裝 assertion-change diff 與 diff-scoped mutation，red-then-green 只開 bug fix PR；抽 50 條 review 評論分類（第十節第 2 項） | 四個新數字有 baseline；mutation 報告出現在 PR 上（先不阻擋） |\n| **第 2 個月** | 前 10 條 constraint tests 進 CI；reviewer agent 換成異質 instance；PR template 加 intent 與 constraint 欄；**AI approve 不計入 required approvals**；agent 拿到 escalation tool | 至少一次 constraint test 擋下綠燈 PR；斷言弱化比例下降 |\n| **第 3 個月** | golden set 跑 k = 5 算 pass^k；用新的 G2 條件做一次授權去留決策；三個數字進 leadership 月報 | 月報有 pass@1 / pass^k / constraint pass rate 三欄，**且有人據此做過一次授權去留決策並公開理由**—擴張或不擴張都算 |\n| **第 4–6 個月** | 以 repo 為單位重複：先推 agent PR 佔比最高的 repo，依 brownfield 順序開；200 人以上把四道 check 進 paved road 的 CI template | 每月至少一個新 repo 走完第 1–2 個月；免審合併率進月報 |\n"
   }
  ]
 }
