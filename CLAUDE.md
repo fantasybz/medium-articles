@@ -7,6 +7,7 @@ the layout and [PUBLISHING.md](PUBLISHING.md) for how a post gets to Medium.
 
 ```bash
 python3 tools/test_tools.py
+python3 -m unittest research/scripts/test_research_scripts.py
 ```
 
 Stdlib `unittest`, no dependencies, no network, no browser. Covers the parts of
@@ -32,7 +33,20 @@ When adding a guard to the driver, capture the output first
 never fire: browse writes failures to stderr with empty stdout, and a failing
 left side makes the `if` false rather than true.
 
-Expectations for changes in `tools/`:
+The second command covers `research/scripts/` the same way: stdlib `unittest`,
+no network, no browser. It tests the pure-Python scripts — the
+`article_to_paste.py` conversion, including a corpus check that every committed
+`medium-paste.md` is exactly `convert()` of its article and that each
+`figures.json` still matches; `sync_figures.py`'s id matching; the
+`codex_jsonl.py` parser whose exit codes `codex_review.sh` branches on;
+`merge.py`; and the argument and Keychain guards of `notion_cookies.py`. The
+extractors, `collect.sh`, `mermaid_check*.sh`, `render_images.sh` and
+`codex_review.sh` need a browser, a Codex session or the macOS Keychain, so
+they are not in it; like `medium_draft.sh`, they check their own output at run
+time.
+
+Expectations for changes in `tools/`, and for any `research/scripts/` code that
+runs offline (the pure Python the second suite imports):
 
 - New function gets a test. Bug fix gets a regression test that fails without
   the fix (the subdomain cookie filter and the duplicate `const` in a snippet

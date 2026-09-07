@@ -124,13 +124,13 @@ flowchart LR
 用 repo 裡的腳本，不必安裝 mermaid-cli（它借 gstack browse 的 headless Chromium，從 jsdelivr 載 mermaid 11）：
 
 ```bash
-research/scripts/mermaid_check.sh fig.mmd            # 印出 viewBox 尺寸、高／寬、節點數，PASS／FAIL
-research/scripts/mermaid_check.sh fig.mmd out/fig    # 同時輸出 out/fig.png（2x）與 out/fig.svg
+research/scripts/mermaid_check.sh fig.mmd            # 印出 viewBox 尺寸、高／寬、節點數，PASS／FAIL；並在 fig.mmd 旁寫出 fig.png（2x）與 fig.svg
+research/scripts/mermaid_check.sh fig.mmd out/fig    # 同上，只是 PNG／SVG 改寫到 out/fig.png 與 out/fig.svg
 ```
 
 它檢查的就是第一節的數字：寬 500–900、高／寬 0.5–1.5、節點 ≤ 12，並且要求檔案以 frontmatter `config` 開頭。
 量的是 svg 的 `viewBox`，不是畫面上的寬度（mermaid 會用 `max-width` 把 svg 縮進容器，那個數字不可信）。
-一次只能跑一張（browse 是單一 daemon），要批次就用 for 迴圈。
+一次只能跑一張（browse 是單一 daemon）；一份 markdown 裡的所有 mermaid 區塊用 `research/scripts/mermaid_check_all.sh <file.md>` 逐張跑，結果列成一張表，FAIL 的行帶原因。
 
 如果改用 mermaid-cli，字型要用 `--configFile`（`{"themeVariables":{"fontFamily":"..."}}`）給，
 理由同第三節：frontmatter 的 fontFamily 會被忽略。
