@@ -1,0 +1,34 @@
+{
+ "figures": [
+  {
+   "file": "diagram-01.png",
+   "mermaid": "---\nconfig:\n  theme: base\n  themeVariables:\n    fontSize: 16px\n    primaryColor: \"#f8f9fa\"\n    primaryTextColor: \"#1f2933\"\n    primaryBorderColor: \"#6b7280\"\n    lineColor: \"#6b7280\"\n    secondaryColor: \"#f8f9fa\"\n    tertiaryColor: \"#ffffff\"\n    clusterBkg: \"#ffffff\"\n    clusterBorder: \"#9ca3af\"\n    edgeLabelBackground: \"#ffffff\"\n  flowchart:\n    nodeSpacing: 36\n    rankSpacing: 44\n    padding: 12\n    htmlLabels: true\n    subGraphTitleMargin:\n      top: 8\n      bottom: 12\n    curve: basis\n---\nflowchart TB\n    classDef own fill:#d4edda,stroke:#2e7d32,color:#1f2933\n    classDef buy fill:#fff3cd,stroke:#b8860b,color:#1f2933\n    classDef bad fill:#ffe0e0,stroke:#c0392b,color:#1f2933\n    classDef human fill:#e3f2fd,stroke:#1565c0,color:#1f2933\n    A[\"review 評論<br/>「用 clients.http()，<br/>不要直接 new HttpClient」\"] --> B[\"規則檔 rules.md<br/>來源 PR、日期、對應測試檔<br/>變更需人類 approve\"]\n    E[\"CI 顯示半年沒觸發的規則<br/>review 是否已過期，刪或留\"] -.->|過期回路| B\n    B --> C[\"constraint test<br/>AST 掃描 agent 改動的檔案<br/>目錄在 CODEOWNERS 只列人類\"]\n    C --> D[\"CI：功能測試之外<br/>多一欄 constraint pass rate\"]\n    class A human\n    class C,D own\n    class E buy\n"
+  },
+  {
+   "file": "diagram-02.png",
+   "mermaid": "---\nconfig:\n  theme: base\n  themeVariables:\n    fontSize: 16px\n    primaryColor: \"#f8f9fa\"\n    primaryTextColor: \"#1f2933\"\n    primaryBorderColor: \"#6b7280\"\n    lineColor: \"#6b7280\"\n    secondaryColor: \"#f8f9fa\"\n    tertiaryColor: \"#ffffff\"\n    clusterBkg: \"#ffffff\"\n    clusterBorder: \"#9ca3af\"\n    edgeLabelBackground: \"#ffffff\"\n  flowchart:\n    nodeSpacing: 36\n    rankSpacing: 44\n    padding: 12\n    htmlLabels: true\n    subGraphTitleMargin:\n      top: 8\n      bottom: 12\n    curve: basis\n---\nflowchart TB\n    classDef own fill:#d4edda,stroke:#2e7d32,color:#1f2933\n    classDef buy fill:#fff3cd,stroke:#b8860b,color:#1f2933\n    classDef bad fill:#ffe0e0,stroke:#c0392b,color:#1f2933\n    classDef human fill:#e3f2fd,stroke:#1565c0,color:#1f2933\n    G[\"golden set：3 個 case<br/>各跑 k = 5<br/>先 per case 算，再取平均\"]\n    G --> A[\"case A<br/>5 次全過<br/>pass@1 = 100%，pass^5 = 1\"]\n    G --> B[\"case B<br/>4 過 1 紅<br/>pass@1 = 80%，pass^5 = 0\"]\n    G --> Cc[\"case C<br/>5 次全過<br/>pass@1 = 100%，pass^5 = 1\"]\n    A & B & Cc --> P1[\"golden set pass@1<br/>= (100 + 80 + 100) / 3 = 93%\"]\n    A & B & Cc --> P5[\"golden set pass^5<br/>= 2 / 3 = 67%\"]\n    P1 & P5 --> D[\"授權擴張看 pass^5<br/>不看 pass@1<br/>G2 條件見第五節\"]\n    class B bad\n    class A,Cc own\n    class P5,D buy\n"
+  },
+  {
+   "file": "diagram-03.png",
+   "mermaid": "---\nconfig:\n  theme: base\n  themeVariables:\n    fontSize: 16px\n    primaryColor: \"#f8f9fa\"\n    primaryTextColor: \"#1f2933\"\n    primaryBorderColor: \"#6b7280\"\n    lineColor: \"#6b7280\"\n    secondaryColor: \"#f8f9fa\"\n    tertiaryColor: \"#ffffff\"\n    clusterBkg: \"#ffffff\"\n    clusterBorder: \"#9ca3af\"\n    edgeLabelBackground: \"#ffffff\"\n  flowchart:\n    nodeSpacing: 36\n    rankSpacing: 44\n    padding: 12\n    htmlLabels: true\n    subGraphTitleMargin:\n      top: 8\n      bottom: 12\n    curve: basis\n---\nflowchart TB\n    classDef own fill:#d4edda,stroke:#2e7d32,color:#1f2933\n    classDef buy fill:#fff3cd,stroke:#b8860b,color:#1f2933\n    classDef bad fill:#ffe0e0,stroke:#c0392b,color:#1f2933\n    classDef human fill:#e3f2fd,stroke:#1565c0,color:#1f2933\n    I1[\"p：該分層的 pass@1<br/>golden set，分層算\"] --> F[\"r ≥ (T − p) / ((1 − p) · c)<br/>我的簡化模型<br/>不是 READY 的方法\"]\n    I2[\"T：可靠度目標<br/>依 blast radius 分層\"] --> F\n    I3[\"c：人工複核抓錯率<br/>人眼判斷斷言 49%–74%<br/>是 c 的量級\"] --> F\n    F --> O[\"oversight budget<br/>r 是預算，不是「盡量多看」<br/>p 0.9、T 0.95、c 0.6 → r 0.83\"]\n    O --> S[\"分層隨機抽樣做深讀<br/>依任務類型／repo／agent 版本<br/>避免 aggregate 掩蓋弱項\"]\n    class I1,I2,I3 human\n    class F,O own\n    class S buy\n"
+  },
+  {
+   "file": "diagram-04.png",
+   "mermaid": "---\nconfig:\n  theme: base\n  themeVariables:\n    fontSize: 16px\n    primaryColor: \"#f8f9fa\"\n    primaryTextColor: \"#1f2933\"\n    primaryBorderColor: \"#6b7280\"\n    lineColor: \"#6b7280\"\n    secondaryColor: \"#f8f9fa\"\n    tertiaryColor: \"#ffffff\"\n    clusterBkg: \"#ffffff\"\n    clusterBorder: \"#9ca3af\"\n    edgeLabelBackground: \"#ffffff\"\n  flowchart:\n    nodeSpacing: 36\n    rankSpacing: 44\n    padding: 12\n    htmlLabels: true\n    subGraphTitleMargin:\n      top: 8\n      bottom: 12\n    curve: basis\n---\nflowchart TB\n    classDef own fill:#d4edda,stroke:#2e7d32,color:#1f2933\n    classDef buy fill:#fff3cd,stroke:#b8860b,color:#1f2933\n    classDef bad fill:#ffe0e0,stroke:#c0392b,color:#1f2933\n    classDef human fill:#e3f2fd,stroke:#1565c0,color:#1f2933\n    subgraph cur[\"營運篇 G2 原條件\"]\n        direction TB\n        O1[\"retry rate #lt; 15%\"] ~~~ O2[\"escape rate 持平\"] ~~~ O3[\"champions 體系自轉\"]\n    end\n    subgraph add[\"本篇新增四條：我的建議值\"]\n        direction TB\n        N1[\"pass^5 on golden set ≥ 60%<br/>連續兩個月\"] ~~~ N2[\"constraint violation rate<br/>#lt; 10%，且連續兩個月不升\"]\n        N2 ~~~ N3[\"agent 改動行<br/>mutation score ≥ 70%\"] ~~~ N4[\"深讀比例 ≤ 簡化模型的 r<br/>且連續兩個月不升\"]\n    end\n    cur --> G{{\"G2：授權擴張？\"}}\n    add --> G\n    G -->|全過| Y[\"擴張到下一批 team\"]\n    G -->|任一條不過| K[\"不擴張：先修 harness<br/>或補 constraint tests\"]\n    class N1,N2,N3,N4 own\n    class G buy\n    class K human\n"
+  }
+ ],
+ "tables": [
+  {
+   "file": "table-01.png",
+   "markdown": "| 類別 | 例子 | 檢查方式 |\n|---|---|---|\n| 依賴 | 不得新增套件 | lockfile diff |\n| API 表面 | 不得新增 public 符號 | AST 比對 export |\n| 重用 | 必須用既有的 helper 或 retry wrapper | AST 掃描直接建構 |\n| 效能 | 不得在 loop 裡打 DB | AST 或 lint 規則 |\n| 可觀測 | log 格式、error code | schema 檢查 |\n| 安全 | 不得寫入 env、不得關 TLS 驗證 | AST 與 secret scan |\n| 架構規則 | 層依賴方向；aggregate 必須繼承 EventSourcedAggregate | import graph、繼承檢查 |\n"
+  },
+  {
+   "file": "table-02.png",
+   "markdown": "| 欄 | 定義 | 從哪裡算 |\n|---|---|---|\n| pass@1 | 每個 case 單次嘗試的成功率，k 次平均後再對 golden set 平均 | 第三類證據 |\n| pass^5 | 5 次全過的 case 比例 | 第三類證據 |\n| constraint pass rate | 功能測試通過的 PR 中，constraint tests 全過的比例 | tests/constraints/ |\n"
+  },
+  {
+   "file": "table-03.png",
+   "markdown": "| 新條件 | 門檻 | 為什麼 |\n|---|---|---|\n| pass^5 on golden set | ≥ 60%，連續兩個月（golden set 少於 30 個 case 時只報趨勢） | 一次成功不是可靠 |\n| constraint violation rate（功能測試通過的 PR 中違反 constraint tests 的比例） | < 10% 且連續兩個月不升，或已連續兩個月低於 5% | SWE-Gate 的 34% 是起點，不是常態 |\n| agent 改動行的 mutation score | ≥ 70%，連續兩個月 | 測試篇 |\n| oversight budget | 人工深讀比例 ≤ 依第四節簡化模型、以你的 T 與 c 算出的 r，且連續兩個月不升 | 預算是算出來的，不是抄來的 |\n"
+  }
+ ]
+}
