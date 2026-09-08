@@ -50,7 +50,7 @@ readonly KEYPRESS_GAP_S=1        # the two Backspaces must not coalesce
 # A timeout that fires while the write is still in flight is worse than none —
 # it reports a failure for a post that is about to be fine, and the operator's
 # instinct is to re-run, which rewrites the post again.
-readonly SAVE_TIMEOUT_S=180       # 18-figure refill observed past 45s
+readonly SAVE_TIMEOUT_S=600       # a 14-figure refill was still writing at 180
 readonly RELOAD_SETTLE_S=40      # a reloaded editor rehydrates its figures
 readonly RECONNECT_GAP_S=3       # let the daemon go before asking for a page
 readonly RELOAD_STABLE_READS=2   # identical samples before a reload counts as done
@@ -771,15 +771,13 @@ case "$marked" in
   *'"marked":true'*) ;;
   *) echo "FAILED: the mark did not take: $marked" >&2; exit "$EX_TEMPFAIL" ;;
 esac
-# Drop the browser session and open the URL fresh. `reload` is what this
-# should be, but Medium's beforeunload swallows it: the command returns and the
-# document is still the one that was already there, mark and all. Detaching
-# first means the page is opened by a browser that was never on it. The login
-# survives -- browse keeps the imported cookies across a disconnect, which is
-# what makes this cheap enough to do on every run.
-B disconnect >/dev/null 2>&1 || true
-sleep "$RECONNECT_GAP_S"
-B goto "$RELOAD_URL" >/dev/null 2>&1 || true   # status proves nothing; the mark does
+# A second tab, not a reload and not a reconnect. Both of those act on the tab
+# holding the editor, and that tab may still be writing: `disconnect` tore one
+# down mid-save and left a 14-figure post at 60 grafs and 3 figures, which is
+# the damage this whole step exists to detect rather than cause. A new tab
+# fetches the post from the server and leaves the original alone, so a timeout
+# here is merely inconclusive instead of destructive.
+B newtab "$RELOAD_URL" >/dev/null 2>&1 || true   # status proves nothing; the mark does
 fresh=0
 for _ in $(seq 1 "$RELOAD_SETTLE_S"); do
   sleep 1

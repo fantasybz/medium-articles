@@ -2499,6 +2499,7 @@ if [ -f "$FAKE_BROWSE_RULES/$key" ]; then
 fi
 case "$key" in
   disconnect|goto|cookie-import|press|reload) echo "" ;;
+  newtab) echo "Opened tab 2 -> $2" ;;
   eval:mark.js) echo '{"marked":true}' ;;
   # A fresh document by default; a test that wants the no-reload case says so.
   eval:stale.js) echo '{"stale":false}' ;;
@@ -3141,11 +3142,11 @@ class TestMediumStoredIt(Driven, unittest.TestCase):
         d = self.refill()
         self.assertIn("leaving it alone to finish writing", d.out.stdout)
         graces = [i for i, c in enumerate(d.calls) if c.startswith("eval saved.js")]
-        drops = [i for i, c in enumerate(d.calls) if c == "disconnect"]
-        self.assertTrue(graces and drops, d.calls)
+        opens = [i for i, c in enumerate(d.calls) if c.startswith("newtab ")]
+        self.assertTrue(graces and opens, d.calls)
         # The last look at the indicator is after the grace period, so it has
-        # to come after every other save read and before the detach.
-        self.assertLess(graces[-1], drops[-1], d.calls)
+        # to come after every other save read and before the re-fetch.
+        self.assertLess(graces[-1], opens[-1], d.calls)
 
     def test_a_post_that_goes_unsaved_during_the_grace_period_fails(self):
         # Something else changed it, or the save the indicator claimed was not
@@ -3173,25 +3174,27 @@ class TestMediumStoredIt(Driven, unittest.TestCase):
         self.assertEqual(d.out.returncode, 0, d.out.stderr + d.out.stdout)
         self.assertIn("post ready", d.out.stdout)
 
-    def test_it_detaches_before_reopening_the_page(self):
-        # `reload` returns without doing anything: Medium's beforeunload eats
-        # it and the document -- mark and all -- is still the one that was
-        # there. Observed on /p/ccbf0cbe2691. Opening the URL from a browser
-        # that was never on the page is what actually reloads it.
+    def test_it_refetches_in_a_second_tab_and_never_tears_the_first_one_down(self):
+        # `reload` does nothing (Medium's beforeunload eats it) and
+        # `disconnect` does too much: it killed a tab that was still writing
+        # and left a 14-figure post at 60 grafs. A second tab reads the server
+        # copy without touching the one that may still be saving.
         d = self.refill()
         marks = [i for i, c in enumerate(d.calls) if c == "eval mark.js"]
-        drops = [i for i, c in enumerate(d.calls) if c == "disconnect"]
-        self.assertTrue(any(m < dc for m in marks for dc in drops),
-                        "nothing detached after the mark: %s" % d.calls)
+        opens = [i for i, c in enumerate(d.calls) if c.startswith("newtab ")]
+        self.assertTrue(any(m < o for m in marks for o in opens),
+                        "nothing re-fetched after the mark: %s" % d.calls)
+        self.assertNotIn("disconnect", d.calls[marks[0]:],
+                         "the editor tab was torn down after the mark: %s" % d.calls)
 
-    def test_the_mark_is_set_before_the_page_is_reopened_not_after(self):
+    def test_the_mark_is_set_before_the_refetch_not_after(self):
         # Marking the fresh document instead of the old one would make the
         # staleness check unfailable.
         d = self.refill()
         marks = [i for i, c in enumerate(d.calls) if c == "eval mark.js"]
-        drops = [i for i, c in enumerate(d.calls) if c == "disconnect"]
-        self.assertTrue(marks and drops, d.calls)
-        self.assertLess(marks[0], drops[-1], d.calls)
+        opens = [i for i, c in enumerate(d.calls) if c.startswith("newtab ")]
+        self.assertTrue(marks and opens, d.calls)
+        self.assertLess(marks[0], opens[-1], d.calls)
 
     def test_the_reload_lands_between_the_two_reads(self):
         # Where the reload sits is the whole point. Both rounds run the same
@@ -3202,9 +3205,9 @@ class TestMediumStoredIt(Driven, unittest.TestCase):
         self.assertEqual(d.out.returncode, 0, d.out.stderr + d.out.stdout)
         dumps = [i for i, c in enumerate(d.calls) if c == "eval dump.js"]
         self.assertEqual(len(dumps), 2, d.calls)
-        drops = [i for i, c in enumerate(d.calls) if c == "disconnect"]
-        self.assertTrue(any(dumps[0] < r < dumps[1] for r in drops),
-                        "the page was never reopened between the two reads: %s" % d.calls)
+        opens = [i for i, c in enumerate(d.calls) if c.startswith("newtab ")]
+        self.assertTrue(any(dumps[0] < r < dumps[1] for r in opens),
+                        "the post was never re-fetched between the two reads: %s" % d.calls)
 
 
 class TestCodeBlocksAreNotTypographyFolded(unittest.TestCase):
