@@ -63,3 +63,11 @@ Post ID 不變。`--reuse-figures` 直接沿用這篇已發布版本上的圖（
 **還沒上線。** 這篇已發布，改動只存在「已發布版本背後的草稿」裡，讀者看到的
 仍是舊版。要讓潤稿生效，必須在編輯器按 **Save and publish**
 （`postPublishedType=repub`：網址不變、不會重寄訂閱信）。
+
+### 已發布（2026-09-08）
+
+在編輯器按下 **Save and publish**，潤稿正式上線。網址與 Post ID 不變
+（`postPublishedType=repub`，不會重寄訂閱信）。
+
+發布前後各驗一次：草稿 101 個 graf、7 張圖、無殘留 placeholder；
+發布後線上頁面 7 張圖、無殘留、內文長度 19216 字元。
