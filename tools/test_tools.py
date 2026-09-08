@@ -3081,6 +3081,16 @@ class TestMediumStoredIt(Driven, unittest.TestCase):
         edits = [g for g in self.gotos(d) if GOOD_ID in g]
         self.assertGreaterEqual(len(edits), 2, self.gotos(d))
 
+    def test_it_leaves_the_page_before_reopening_it(self):
+        # Going straight back to the URL already in the address bar answers
+        # net::ERR_ABORTED, and the page never reloads -- so the re-read would
+        # be the same DOM again. Observed on /p/ccbf0cbe2691.
+        d = self.refill()
+        gotos = self.gotos(d)
+        last_edit = max(i for i, g in enumerate(gotos) if GOOD_ID in g)
+        self.assertIn("about:blank", gotos[last_edit - 1],
+                      "nothing navigated away before the re-read: %s" % gotos)
+
 
 class TestCodeBlocksAreNotTypographyFolded(unittest.TestCase):
     """Medium applies no typography inside a <pre>, so folding there can only hide.

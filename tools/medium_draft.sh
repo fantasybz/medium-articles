@@ -710,7 +710,15 @@ fi
 
 step "re-reading it from Medium"
 RELOAD_URL="$(B url)"
-B goto "$RELOAD_URL" >/dev/null
+# Leave the page before coming back to it. `goto` to the URL already in the
+# address bar answers net::ERR_ABORTED rather than reloading, and an abort here
+# is the worst possible outcome: the checks below would read the same live DOM
+# they exist to be a second opinion on, and agree with it every time. That is
+# the vacuous pass this whole step was added to prevent.
+B goto about:blank >/dev/null || {
+  echo "FAILED: could not navigate away to force a reload" >&2; exit "$EX_TEMPFAIL"; }
+B goto "$RELOAD_URL" >/dev/null || {
+  echo "FAILED: could not reopen $RELOAD_URL to re-read it" >&2; exit "$EX_TEMPFAIL"; }
 settled=0
 reloaded=""
 for _ in $(seq 1 "$RELOAD_SETTLE_S"); do
