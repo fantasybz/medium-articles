@@ -493,6 +493,39 @@ else
   esac
 fi
 
+# The figure substitution has to happen before the body goes in: rewriting the
+# payload afterwards leaves the post holding the placeholders the old payload
+# carried, which is what the first attempt at this did.
+TOTAL_IMAGES_PRE=$(python3 -c "import json,sys; print(len(json.load(open(sys.argv[1]))['images']))" "$WORK/payload.json")
+REUSED_FIGURES_RESOLVED=0
+if [ "$REUSE_FIGURES" -eq 1 ]; then
+  # Point the slots at the figures Medium is already serving for this post
+  # instead of deleting and re-uploading them. Re-uploading is what broke every
+  # refill of a published post: the save never finished and what got stored was
+  # whatever the image loop had reached. Read off the *published* page, not the
+  # editor -- a draft that a failed run already emptied has no figures to copy.
+  step "reading the figures Medium already has"
+  python3 "$TOOLS/medium_js.py" figures > "$WORK/figures.js"
+  B newtab "https://medium.com/p/$POST_ID" >/dev/null 2>&1 || true
+  sleep "$PUBLISHED_LOAD_S"
+  figures_seen=$(B eval "$WORK/figures.js") || {
+    echo "FAILED: could not read the published post's figures" >&2; exit "$EX_TEMPFAIL"; }
+  printf '%s' "$figures_seen" > "$WORK/figures.json"
+  echo "$figures_seen" | head -c 200; echo
+  # cdnfill refuses a count mismatch, so a published page that has not finished
+  # rendering cannot half-fill the article and leave the rest as IMGSLOT text.
+  python3 "$TOOLS/medium_js.py" cdnfill "$WORK/payload.json" "$WORK/figures.json" \
+    > "$WORK/payload-cdn.json" || {
+    echo "FAILED: the published post's figures do not match this pack" >&2
+    echo "  nothing has been written to the post" >&2
+    exit "$EX_UNAVAILABLE"; }
+  REUSED_FIGURES_RESOLVED="$TOTAL_IMAGES_PRE"
+  mv "$WORK/payload-cdn.json" "$WORK/payload.json"
+  # Back to the editor tab for the paste.
+  B newtab "https://medium.com/p/$POST_ID/edit" >/dev/null 2>&1 || true
+  sleep "$PUBLISHED_LOAD_S"
+fi
+
 step "pasting the body"
 if [ -n "$POST_ID" ]; then
   # refill, not body: on an existing post the old body has to go, figures
@@ -557,38 +590,7 @@ eval "$selectors"
 python3 "$TOOLS/medium_js.py" state > "$WORK/state.js"
 python3 -c "import json,sys; print('\n'.join(json.load(open(sys.argv[1]))['images']))" \
   "$WORK/payload.json" > "$WORK/images.txt"
-# Counted before the reuse branch empties the list: that is the number of
-# figures the finished post must carry either way.
-TOTAL_IMAGES_PRE=$(grep -c . "$WORK/images.txt" || true)
-REUSED_FIGURES=0
-if [ "$REUSE_FIGURES" -eq 1 ]; then
-  # Point the slots at the figures Medium is already serving for this post
-  # instead of deleting and re-uploading them. Re-uploading is what broke every
-  # refill of a published post: the save never finished and what got stored was
-  # whatever the image loop had reached. Read off the *published* page, not the
-  # editor -- a draft that a failed run already emptied has no figures to copy.
-  step "reading the figures Medium already has"
-  python3 "$TOOLS/medium_js.py" figures > "$WORK/figures.js"
-  B newtab "https://medium.com/p/$POST_ID" >/dev/null 2>&1 || true
-  sleep "$PUBLISHED_LOAD_S"
-  figures_seen=$(B eval "$WORK/figures.js") || {
-    echo "FAILED: could not read the published post's figures" >&2; exit "$EX_TEMPFAIL"; }
-  printf '%s' "$figures_seen" > "$WORK/figures.json"
-  echo "$figures_seen" | head -c 200; echo
-  # cdnfill refuses a count mismatch, so a published page that has not finished
-  # rendering cannot half-fill the article and leave the rest as IMGSLOT text.
-  python3 "$TOOLS/medium_js.py" cdnfill "$WORK/payload.json" "$WORK/figures.json" \
-    > "$WORK/payload-cdn.json" || {
-    echo "FAILED: the published post's figures do not match this pack" >&2
-    echo "  nothing has been written to the post" >&2
-    exit "$EX_UNAVAILABLE"; }
-  REUSED_FIGURES="$TOTAL_IMAGES_PRE"
-  mv "$WORK/payload-cdn.json" "$WORK/payload.json"
-  : > "$WORK/images.txt"
-  # Back to the editor tab for the paste.
-  B newtab "https://medium.com/p/$POST_ID/edit" >/dev/null 2>&1 || true
-  sleep "$PUBLISHED_LOAD_S"
-fi
+REUSED_FIGURES="$REUSED_FIGURES_RESOLVED"
 # `|| true`: grep -c prints 0 and exits 1 on an article with no figures, and
 # under `set -e` the assignment alone would end the run right here - after the
 # body has been replaced, with no message at all.

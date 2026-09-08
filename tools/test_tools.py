@@ -3069,6 +3069,52 @@ SAVE_CONFLICT = ('{"message":"Saving failed because someone is also editing.",'
                  '"saved":false,"failed":true}')
 
 
+class TestReuseFigures(Driven, unittest.TestCase):
+    """--reuse-figures, and the ordering mistake it shipped with once.
+
+    The substitution has to land before the body paste. Wired in after it, the
+    body went in still carrying IMGSLOT placeholders and the run then waited
+    for figures that were never going to appear.
+    """
+
+    def test_the_figures_are_read_before_the_body_is_pasted(self):
+        d = self.drive("--post", GOOD_ID, "--reuse-figures",
+                       paste=PASTE_WITH_FIGURE, images=["a.png"], rules={
+            "eval:figures.js": '{"srcs":["https://miro.medium.com/1*aa.png"]}',
+            "eval:body.js": '{"err":"no body grafs"}'})
+        order = [c for c in d.calls if c in ("eval figures.js", "eval body.js")]
+        self.assertEqual(order[:2], ["eval figures.js", "eval body.js"], d.calls)
+
+    def test_the_pasted_body_carries_the_cdn_url_and_no_placeholder(self):
+        d = self.drive("--post", GOOD_ID, "--reuse-figures",
+                       paste=PASTE_WITH_FIGURE, images=["a.png"], rules={
+            "eval:figures.js": '{"srcs":["https://miro.medium.com/1*aa.png"]}',
+            "eval:body.js": '{"err":"no body grafs"}'})
+        with open(os.path.join(d.evaled, "body.js"), encoding="utf-8") as fh:
+            body = fh.read()
+        self.assertIn("https://miro.medium.com/1*aa.png", body)
+        self.assertNotIn("IMGSLOT-a.png-ENDSLOT", body)
+
+    def test_a_published_post_short_of_figures_stops_before_anything_is_written(self):
+        # The mangled drafts are short of figures; so is a page that has not
+        # finished rendering. Either way, filling some slots and leaving the
+        # rest as IMGSLOT text is the damage this exists to avoid.
+        d = self.drive("--post", GOOD_ID, "--reuse-figures",
+                       paste=PASTE_WITH_FIGURE, images=["a.png"], rules={
+            "eval:figures.js": '{"srcs":[]}'})
+        self.assertNotEqual(d.out.returncode, 0)
+        self.assertIn("do not match this pack", d.out.stderr)
+        self.assertNotIn("eval body.js", d.calls)
+
+    def test_without_the_flag_nothing_changes(self):
+        d = self.drive("--post", GOOD_ID, paste=PASTE_WITH_FIGURE, images=["a.png"],
+                       rules={"eval:body.js": '{"err":"no body grafs"}'})
+        self.assertNotIn("eval figures.js", d.calls)
+        with open(os.path.join(d.evaled, "body.js"), encoding="utf-8") as fh:
+            body = fh.read()
+        self.assertIn("IMGSLOT-a.png-ENDSLOT", body)
+
+
 class TestMediumStoredIt(Driven, unittest.TestCase):
     """The reload pass. Every one of these shipped broken once.
 
