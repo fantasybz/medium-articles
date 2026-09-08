@@ -51,7 +51,10 @@ readonly KEYPRESS_GAP_S=1        # the two Backspaces must not coalesce
 # it reports a failure for a post that is about to be fine, and the operator's
 # instinct is to re-run, which rewrites the post again.
 readonly SAVE_TIMEOUT_S=600       # a 14-figure refill was still writing at 180
-readonly RELOAD_SETTLE_S=40      # a reloaded editor rehydrates its figures
+# A reloaded editor rehydrates its figures, and every one of them counts as
+# pending until its src is a CDN URL. 40 was enough for 7 figures and not for
+# 14: the run timed out on a post that was complete and merely still drawing.
+readonly RELOAD_SETTLE_S=120     # 14 figures need well past 40
 readonly RECONNECT_GAP_S=3       # let the daemon go before asking for a page
 readonly PUBLISHED_LOAD_S=14     # a published page renders its figures
 readonly RELOAD_STABLE_READS=2   # identical samples before a reload counts as done
