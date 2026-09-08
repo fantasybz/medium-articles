@@ -53,6 +53,7 @@ readonly KEYPRESS_GAP_S=1        # the two Backspaces must not coalesce
 readonly SAVE_TIMEOUT_S=180       # 18-figure refill observed past 45s
 readonly RELOAD_SETTLE_S=40      # a reloaded editor rehydrates its figures
 readonly RECONNECT_GAP_S=3       # let the daemon go before asking for a page
+readonly RELOAD_STABLE_READS=2   # identical samples before a reload counts as done
 # A new story renders instantly; an existing post has to fetch and lay out
 # 149 grafs and 14 figures first, and asking it what it is too early looks
 # exactly like "no editor here". The same budget covers the other two waits on
@@ -756,18 +757,36 @@ if [ "$fresh" -eq 0 ]; then
   echo "  everything below would have re-read the same document, so nothing was checked" >&2
   exit "$EX_TEMPFAIL"
 fi
+# Wait for the rehydration to finish, and do NOT wait on "pending":0 to decide
+# it: an editor that has not drawn a single figure yet has nothing pending, so
+# that condition is true immediately and the re-read then runs against a page
+# holding 14 of its 185 blocks -- which is exactly what happened, and it read
+# as a catastrophic content mismatch rather than as "too early". Two identical
+# readings in a row is the honest signal, and it is the same one the load after
+# the body paste already uses.
 settled=0
 reloaded=""
+previous=""
+stable=0
 for _ in $(seq 1 "$RELOAD_SETTLE_S"); do
   sleep 1
   reloaded=$(B eval "$WORK/state.js") || continue
   case "$reloaded" in
-    *'"err"'*) continue ;;
-    *'"pending":0'*) settled=1; break ;;
+    *'"err"'*) previous=""; stable=0; continue ;;
   esac
+  if [ "$reloaded" = "$previous" ]; then
+    stable=$((stable + 1))
+    # Two matching samples a second apart, and nothing still uploading.
+    case "$reloaded" in
+      *'"pending":0'*) [ "$stable" -ge "$RELOAD_STABLE_READS" ] && { settled=1; break ; } ;;
+    esac
+  else
+    stable=0
+  fi
+  previous="$reloaded"
 done
 if [ "$settled" -eq 0 ]; then
-  echo "FAILED: the reloaded $WHAT never settled (last: ${reloaded:-none})" >&2
+  echo "FAILED: the reloaded $WHAT never stopped changing (last: ${reloaded:-none})" >&2
   exit "$EX_TEMPFAIL"
 fi
 

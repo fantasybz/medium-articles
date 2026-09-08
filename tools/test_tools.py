@@ -3076,6 +3076,47 @@ class TestMediumStoredIt(Driven, unittest.TestCase):
         self.assertNotEqual(d.out.returncode, 0)
         self.assertIn("Medium stored placeholder text", d.out.stderr)
 
+    def test_a_half_hydrated_reload_is_waited_out_not_compared(self):
+        # "pending":0 is true of an editor that has not drawn a figure yet, so
+        # settling on it alone re-read a page holding 14 of its 185 blocks and
+        # called it a content mismatch. Two identical samples is the signal.
+        # Here the counts climb and then hold; the run must reach the end.
+        d = self.drive("--post", GOOD_ID, paste=PASTE_WITH_FIGURE, images=["a.png"],
+                       rules={
+            "eval:body.js": REFILL_OK,
+            "eval:state.js": [state(figures=0, slots=1),
+                              state(figures=1, slots=1),
+                              state(figures=1, slots=0),
+                              state(figures=1, slots=0),   # the in-editor gate
+                              state(figures=0, slots=0),   # still hydrating
+                              state(figures=1, slots=0),   # ...
+                              state(figures=1, slots=0)],  # twice the same: done
+            "eval:image.js": '{"name":"a.png","bytes":8}',
+            "eval:slot.js": '{"selected":"IMGSLOT-a.png-ENDSLOT"}',
+            "eval:dump.js": self.editor(["T", "body"], ["H3", "P", "FIGURE"])})
+        self.assertEqual(d.out.returncode, 0, d.out.stderr + d.out.stdout)
+        self.assertIn("post ready", d.out.stdout)
+
+    def test_a_reload_that_never_stops_changing_fails(self):
+        d = self.drive("--post", GOOD_ID, paste=PASTE_WITH_FIGURE, images=["a.png"],
+                       rules={
+            "eval:body.js": REFILL_OK,
+            "eval:state.js": [state(figures=0, slots=1),
+                              state(figures=1, slots=1),
+                              state(figures=1, slots=0),
+                              state(figures=1, slots=0),
+                              # Never twice the same, for longer than the
+                              # settle window: the last canned line repeats, so
+                              # a short list would come to rest on it and prove
+                              # the opposite of what this test is for.
+                              ] + [state(figures=i % 2, slots=0)
+                                   for i in range(120)],
+            "eval:image.js": '{"name":"a.png","bytes":8}',
+            "eval:slot.js": '{"selected":"IMGSLOT-a.png-ENDSLOT"}',
+            "eval:dump.js": self.editor(["T", "body"], ["H3", "P", "FIGURE"])})
+        self.assertNotEqual(d.out.returncode, 0)
+        self.assertIn("never stopped changing", d.out.stderr)
+
     def test_a_page_that_never_reloaded_is_caught_by_its_mark(self):
         # The failure this replaces an exit-status check with. `reload` can
         # report a timeout and still have reloaded, and it can report nothing
