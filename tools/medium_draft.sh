@@ -53,6 +53,7 @@ readonly KEYPRESS_GAP_S=1        # the two Backspaces must not coalesce
 readonly SAVE_TIMEOUT_S=600       # a 14-figure refill was still writing at 180
 readonly RELOAD_SETTLE_S=40      # a reloaded editor rehydrates its figures
 readonly RECONNECT_GAP_S=3       # let the daemon go before asking for a page
+readonly PUBLISHED_LOAD_S=14     # a published page renders its figures
 readonly RELOAD_STABLE_READS=2   # identical samples before a reload counts as done
 readonly SAVE_QUIET_READS=6      # consecutive "Saved" reads before believing it
 readonly SAVE_GRACE_S=45         # hands off after that, before anything reloads
@@ -104,6 +105,7 @@ POSITIONALS=0    # how many were given, not how many are non-empty: see below
 LANG_PACK=""
 POST_ID=""
 RETITLE=0
+REUSE_FIGURES=0
 # Options are parsed anywhere in the line rather than positionally: the id is
 # copied out of the table in PUBLISHING.md and pasted onto the end of a command
 # that already reads `<article> en`.
@@ -120,6 +122,9 @@ while [ "$#" -gt 0 ]; do
       shift ;;
     --retitle)
       RETITLE=1
+      shift ;;
+    --reuse-figures)
+      REUSE_FIGURES=1
       shift ;;
     -*)
       echo "unknown option: $1" >&2; usage; exit "$EX_USAGE" ;;
@@ -552,11 +557,46 @@ eval "$selectors"
 python3 "$TOOLS/medium_js.py" state > "$WORK/state.js"
 python3 -c "import json,sys; print('\n'.join(json.load(open(sys.argv[1]))['images']))" \
   "$WORK/payload.json" > "$WORK/images.txt"
+# Counted before the reuse branch empties the list: that is the number of
+# figures the finished post must carry either way.
+TOTAL_IMAGES_PRE=$(grep -c . "$WORK/images.txt" || true)
+REUSED_FIGURES=0
+if [ "$REUSE_FIGURES" -eq 1 ]; then
+  # Point the slots at the figures Medium is already serving for this post
+  # instead of deleting and re-uploading them. Re-uploading is what broke every
+  # refill of a published post: the save never finished and what got stored was
+  # whatever the image loop had reached. Read off the *published* page, not the
+  # editor -- a draft that a failed run already emptied has no figures to copy.
+  step "reading the figures Medium already has"
+  python3 "$TOOLS/medium_js.py" figures > "$WORK/figures.js"
+  B newtab "https://medium.com/p/$POST_ID" >/dev/null 2>&1 || true
+  sleep "$PUBLISHED_LOAD_S"
+  figures_seen=$(B eval "$WORK/figures.js") || {
+    echo "FAILED: could not read the published post's figures" >&2; exit "$EX_TEMPFAIL"; }
+  printf '%s' "$figures_seen" > "$WORK/figures.json"
+  echo "$figures_seen" | head -c 200; echo
+  # cdnfill refuses a count mismatch, so a published page that has not finished
+  # rendering cannot half-fill the article and leave the rest as IMGSLOT text.
+  python3 "$TOOLS/medium_js.py" cdnfill "$WORK/payload.json" "$WORK/figures.json" \
+    > "$WORK/payload-cdn.json" || {
+    echo "FAILED: the published post's figures do not match this pack" >&2
+    echo "  nothing has been written to the post" >&2
+    exit "$EX_UNAVAILABLE"; }
+  REUSED_FIGURES="$TOTAL_IMAGES_PRE"
+  mv "$WORK/payload-cdn.json" "$WORK/payload.json"
+  : > "$WORK/images.txt"
+  # Back to the editor tab for the paste.
+  B newtab "https://medium.com/p/$POST_ID/edit" >/dev/null 2>&1 || true
+  sleep "$PUBLISHED_LOAD_S"
+fi
 # `|| true`: grep -c prints 0 and exits 1 on an article with no figures, and
 # under `set -e` the assignment alone would end the run right here - after the
 # body has been replaced, with no message at all.
 TOTAL_IMAGES=$(grep -c . "$WORK/images.txt" || true)
-EXPECTED_FIGURES=0
+# In reuse mode the upload list is empty by design, but the finished post still
+# has to carry every figure: the final gate counts what is on the page, not what
+# was uploaded.
+EXPECTED_FIGURES="$REUSED_FIGURES"
 
 # Wait for the editor to settle, by asking rather than by sleeping. Both
 # numbers are assertions, not diagnostics:
@@ -578,13 +618,13 @@ settled=0
 for _ in $(seq 1 "$EDITOR_LOAD_TIMEOUT_S"); do
   state=$(B eval "$WORK/state.js") || state=""
   case "$state" in
-    *'"figures":0,'*'"slots":'"$TOTAL_IMAGES"'}'*) settled=1; break ;;
+    *'"figures":'"$REUSED_FIGURES"','*'"slots":'"$TOTAL_IMAGES"'}'*) settled=1; break ;;
   esac
   sleep 1
 done
 if [ "$settled" -eq 0 ]; then
   echo "FAILED: the editor did not settle in ${EDITOR_LOAD_TIMEOUT_S}s after the paste" >&2
-  echo "  wanted 0 figures and $TOTAL_IMAGES placeholders, browse returned: ${state:-<nothing>}" >&2
+  echo "  wanted $REUSED_FIGURES figures and $TOTAL_IMAGES placeholders, browse returned: ${state:-<nothing>}" >&2
   exit "$EX_UNAVAILABLE"
 fi
 echo "$state"

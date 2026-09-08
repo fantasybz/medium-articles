@@ -910,6 +910,73 @@ console.log(JSON.stringify(%s));
         self.assertEqual(list(json.loads(got)), ["figures", "imgs", "pending", "slots"])
 
 
+class TestPayloadWithCdnFigures(unittest.TestCase):
+    """Reuse the figures Medium already hosts instead of uploading them again.
+
+    Re-uploading is what broke every refill of a published post: deleting and
+    re-adding the figures left saves that never finished, and the stored
+    document was whatever the image loop had reached. The same article pasted
+    with `<img>` aimed at the post's existing CDN URLs saved in seconds and
+    came back complete from a fresh tab.
+    """
+
+    def payload(self, names):
+        html = "<p>lead</p>\n" + "\n".join(
+            "<p>IMGSLOT-%s-ENDSLOT</p>" % n for n in names) + "\n<p>tail</p>"
+        return {"title": "T", "html": html, "images": list(names)}
+
+    def test_each_slot_becomes_the_figure_in_the_same_position(self):
+        out = medium_js.payload_with_cdn_figures(
+            self.payload(["a.png", "b.png"]), ["https://cdn/1.png", "https://cdn/2.png"])
+        self.assertEqual(
+            out["html"],
+            '<p>lead</p>\n<figure><img src="https://cdn/1.png"></figure>\n'
+            '<figure><img src="https://cdn/2.png"></figure>\n<p>tail</p>')
+
+    def test_the_upload_list_is_emptied_so_the_driver_skips_the_image_loop(self):
+        out = medium_js.payload_with_cdn_figures(
+            self.payload(["a.png"]), ["https://cdn/1.png"])
+        self.assertEqual(out["images"], [])
+
+    def test_the_original_payload_is_not_mutated(self):
+        original = self.payload(["a.png"])
+        medium_js.payload_with_cdn_figures(original, ["https://cdn/1.png"])
+        self.assertEqual(original["images"], ["a.png"])
+        self.assertIn("IMGSLOT-a.png-ENDSLOT", original["html"])
+
+    def test_too_few_figures_on_the_post_is_an_error_not_a_partial_fill(self):
+        # The mangled drafts have lost figures. Filling the slots it can and
+        # leaving the rest as IMGSLOT text is exactly the damage to avoid.
+        with self.assertRaises(ValueError) as caught:
+            medium_js.payload_with_cdn_figures(
+                self.payload(["a.png", "b.png"]), ["https://cdn/1.png"])
+        self.assertIn("1 figures", str(caught.exception))
+
+    def test_too_many_figures_is_an_error_too(self):
+        with self.assertRaises(ValueError):
+            medium_js.payload_with_cdn_figures(
+                self.payload(["a.png"]), ["https://cdn/1.png", "https://cdn/2.png"])
+
+    def test_a_slot_the_payload_never_had_is_an_error(self):
+        broken = self.payload(["a.png"])
+        broken["images"] = ["missing.png"]
+        with self.assertRaises(ValueError) as caught:
+            medium_js.payload_with_cdn_figures(broken, ["https://cdn/1.png"])
+        self.assertIn("exactly one slot", str(caught.exception))
+
+    @unittest.skipUnless(shutil.which("node"), "node unavailable")
+    def test_the_figures_snippet_reads_srcs_in_document_order(self):
+        got = node_eval(self, """
+const fig = src => ({ querySelector: () => ({ src }) });
+const document = { querySelectorAll: () => [
+  fig('https://cdn/1.png?w=700'), fig('https://cdn/2.png'),
+] };
+console.log(%s);
+""" % medium_js.figures_js().strip())
+        # The query string is Medium's own resize hint, not part of the image.
+        self.assertEqual(got["srcs"], ["https://cdn/1.png", "https://cdn/2.png"])
+
+
 class TestSavedSnippet(unittest.TestCase):
     """`saved` — the only thing that knows whether Medium kept the write.
 

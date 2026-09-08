@@ -400,6 +400,52 @@ def saved_js():
 """
 
 
+def figures_js():
+    """The figure image URLs on this page, in document order."""
+    return """(() => {
+  const figs = [...document.querySelectorAll('figure')];
+  return JSON.stringify({
+    srcs: figs.map(f => {
+      const i = f.querySelector('img');
+      return i ? (i.src || '').split('?')[0] : '';
+    }).filter(Boolean)
+  });
+})()
+"""
+
+
+def payload_with_cdn_figures(payload, srcs):
+    """Point the payload's figure slots at images Medium already hosts.
+
+    Re-uploading is what breaks a refill of a published post. Deleting and
+    re-adding 7 figures left saves that never finished and stored documents
+    truncated partway through the image loop; the same article pasted with
+    `<img>` tags aimed at the URLs already on Medium's CDN saved in under ten
+    seconds and came back from a fresh tab complete.
+
+    The figures are the post's own, read off its published page, so this is not
+    a shortcut around uploading new artwork -- it only applies when the images
+    on Medium are the ones the pack would have uploaded anyway. The caller has
+    to establish that; here the check is arithmetic, and a mismatch raises
+    rather than silently filling some slots and leaving others as text.
+    """
+    images = payload["images"]
+    if len(srcs) != len(images):
+        raise ValueError("post has %d figures, the pack has %d images"
+                         % (len(srcs), len(images)))
+    html = payload["html"]
+    for name, src in zip(images, srcs):
+        marker = "<p>%s</p>" % (SLOT_MARK % name)
+        if html.count(marker) != 1:
+            raise ValueError("expected exactly one slot for %s, found %d"
+                             % (name, html.count(marker)))
+        html = html.replace(marker, '<figure><img src="%s"></figure>' % src)
+    if SLOT_MARK.split("%s")[0] in html:
+        raise ValueError("a placeholder survived the substitution")
+    # No uploads left to do, and the driver's image loop reads this list.
+    return dict(payload, html=html, images=[])
+
+
 def mark_js(token):
     """Leave a token on `window` that only a real page load can clear.
 
@@ -456,7 +502,7 @@ def main():
     if len(sys.argv) < 2:
         sys.exit(__doc__)
     kind = sys.argv[1]
-    if kind not in ("selectors", "state", "dump", "saved") and len(sys.argv) < 3:
+    if kind not in ("selectors", "state", "dump", "saved", "figures") and len(sys.argv) < 3:
         sys.exit("%s needs an argument\n\n%s" % (kind, __doc__))
     if kind == "title":
         print(title_js(json.load(open(sys.argv[2], encoding="utf-8"))))
@@ -480,6 +526,13 @@ def main():
         print(mark_js(sys.argv[2]))
     elif kind == "stale":
         print(stale_js(sys.argv[2]))
+    elif kind == "figures":
+        print(figures_js())
+    elif kind == "cdnfill":
+        # payload.json + the {"srcs": [...]} a `figures` run returned
+        base = json.load(open(sys.argv[2], encoding="utf-8"))
+        srcs = json.load(open(sys.argv[3], encoding="utf-8"))["srcs"]
+        json.dump(payload_with_cdn_figures(base, srcs), sys.stdout, ensure_ascii=False)
     elif kind == "selectors":
         # So medium_draft.sh does not repeat these literals.
         # Not EDITOR: that is the standard text-editor variable.
