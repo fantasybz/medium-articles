@@ -1,0 +1,34 @@
+{
+ "figures": [
+  {
+   "file": "diagram-01.png",
+   "mermaid": "flowchart LR\n    SRC1[\"Incidents /<br/>post-mortems\"] --> X[\"Eval extraction<br/>(agent-assisted)\"]\n    SRC2[\"PR history<br/>(rejected and clean-passing)\"] --> X\n    SRC3[\"Hand-picked<br/>golden tasks\"] --> X\n    X --> DS[\"Eval dataset<br/>(versioned, in the same repo as code)\"]\n    DS --> RUN[\"Scheduled runs<br/>(harness change / model upgrade / weekly)\"]\n    RUN --> SCORE[\"Scoring<br/>(automated + monthly human sample)\"]\n    SCORE --> DEC[\"Decisions: switch models? fix the harness? widen permissions?\"]\n    DEC -.->|new failures feed back| DS\n    style DS fill:#d4edda,stroke:#2e7d32\n"
+  },
+  {
+   "file": "diagram-02.png",
+   "mermaid": "flowchart TD\n    NS[\"Effective Engineering Leverage\"] --> A[\"Delegation<br/>share of tasks successfully delegated\"]\n    NS --> B[\"Completion<br/>end-to-end completion rate\"]\n    NS --> C[\"Attention<br/>human time per task\"]\n    NS --> D[\"Quality<br/>production correctness\"]\n    A --> A1[\"Task-type coverage\"]\n    B --> B1[\"Retry rate\"]\n    B --> B2[\"Autonomous completion rate\"]\n    C --> C1[\"Review minutes per PR\"]\n    C --> C2[\"Waiting and context switching\"]\n    D --> D1[\"Escape rate\"]\n    D --> D2[\"Revert rate\"]\n    style NS fill:#d4edda,stroke:#2e7d32\n"
+  },
+  {
+   "file": "diagram-03.png",
+   "mermaid": "flowchart LR\n    P[\"Pilot (90 days)\"] --> G1{\"G1\"} --> E1[\"25% of teams\"] --> G2{\"G2\"} --> E2[\"All teams + write tools\"] --> G3{\"G3\"} --> E3[\"Deeper autonomy\"]\n    G1 -.->|failed| F1[\"Go back and fix<br/>the harness or the org\"]\n    G2 -.->|failed| F1\n    G3 -.->|failed| F1\n    style F1 fill:#ffe0e0,stroke:#c0392b\n"
+  }
+ ],
+ "tables": [
+  {
+   "file": "table-01.png",
+   "markdown": "| Tier | Count | When it runs | The question it answers |\n|---|---|---|---|\n| **Smoke** | 5–10 | Every harness change | Did we break the basics? |\n| **Golden** | 20–50 | Weekly, plus every model upgrade | Did core capability regress? |\n| **Frontier** | 10–20 | Monthly | Where is the capability boundary now? Should we widen permissions? |\n"
+  },
+  {
+   "file": "table-02.png",
+   "markdown": "| Task type | Recommended tier | Why |\n|---|---|---|\n| Planning, architectural judgment | Strongest model | Highest cost of error; get it right once |\n| Bulk code generation | Mid-tier model | Tests catch problems; volume is high |\n| Eval runs, lint-class work | Cheap model | High frequency, low risk |\n| Review, security judgment | Strongest model | Don't economize on the last line of defense |\n"
+  },
+  {
+   "file": "table-03.png",
+   "markdown": "| Metric | How it gets gamed | Counter |\n|---|---|---|\n| % tasks delegated | Splitting big tasks to inflate the count | Pair it with task-type coverage; measure breadth, not volume |\n| Review minutes per PR | Rubber-stamping approvals | Always read it alongside escape and revert rate |\n| Completion rate | Delegating only easy tasks | Frontier evals track whether the capability boundary is moving |\n| Escape rate | Not filing incidents when things break | Tie the incident definition to SLOs, not to human judgment |\n"
+  },
+  {
+   "file": "table-04.png",
+   "markdown": "| Gate | Conditions to pass | Unlocks |\n|---|---|---|\n| **G1: pilot complete** | Two teams using it steadily; evals in place; measurable improvement against baseline | Expand to 25% of teams |\n| **G2: scale validated** | Retry rate under 15%; escape rate flat; the champion system runs itself | All teams, plus write-tier tools |\n| **G3: deeper autonomy** | Frontier evals consistently stable; six months of audit with no serious incidents | Allowlisted dangerous tools, multi-step autonomous runs |\n"
+  }
+ ]
+}

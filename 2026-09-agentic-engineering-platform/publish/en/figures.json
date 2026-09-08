@@ -1,0 +1,62 @@
+{
+ "figures": [
+  {
+   "file": "diagram-01.png",
+   "mermaid": "flowchart LR\n    A[\"AI Autocomplete\"] --> B[\"Chat Assistant\"]\n    B --> C[\"Coding Agent\"]\n    C --> D[\"Autonomous Agent\"]\n    D --> E[\"Multi-agent<br/>Engineering System\"]\n    style D fill:#fff3cd,stroke:#b8860b\n    style E fill:#ffe0e0,stroke:#c0392b\n"
+  },
+  {
+   "file": "diagram-02.png",
+   "mermaid": "timeline\n    title DevOps and Agentic Engineering, side by side\n    section DevOps era\n        2009 : DevOps movement takes hold\n        2013 : Docker\n        2014 : Kubernetes\n        2016 : SRE goes mainstream\n        2020 : Platform Engineering\n    section Agentic era\n        2024 : Copilot-style assistance\n        2025 : Coding agents mature\n        2026 : Harness and MCP standardization (now)\n        2027 : Agent platformization\n        2029 : Agent-native engineering\n"
+  },
+  {
+   "file": "diagram-03.png",
+   "mermaid": "flowchart TB\n    subgraph ANTI[\"Anti-pattern: a central agent team (an AI-powered outsourcing department)\"]\n        TA[\"Team A\"] -->|ticket| AGT[\"Agent Team\"]\n        TB2[\"Team B\"] -->|ticket| AGT\n        TC[\"Team C\"] -->|ticket| AGT\n        AGT -->|code| TA\n        AGT -->|code| TB2\n        AGT -->|code| TC\n    end\n    style AGT fill:#ffe0e0,stroke:#c0392b\n"
+  },
+  {
+   "file": "diagram-04.png",
+   "mermaid": "flowchart TB\n    PT[\"Agentic Platform Team\"] -->|paved roads| A[\"Team A\"]\n    PT -->|paved roads| B[\"Team B\"]\n    PT -->|paved roads| C[\"Team C\"]\n    CH[\"Embedded Agent Champions\"] -.->|feedback and practices| PT\n    A -.-> CH\n    B -.-> CH\n    C -.-> CH\n    A -->|self-service| RT[\"Agent Runtimes<br/>(Codex / Claude / Copilot)\"]\n    B -->|self-service| RT\n    C -->|self-service| RT\n    style PT fill:#d4edda,stroke:#2e7d32\n"
+  },
+  {
+   "file": "diagram-05.png",
+   "mermaid": "mindmap\n  root((Harness))\n    Context\n      AGENTS.md\n      Architecture docs\n      Domain knowledge\n    Tools\n      MCP\n      CLI\n      GitHub\n      Jira\n      Internal APIs\n    Environment\n      Sandbox\n      Worktree\n      Container\n      Ephemeral stack\n    Feedback\n      Tests\n      Logs\n      Metrics\n      Traces\n      Browser\n    Guardrails\n      Policy\n      Architecture rules\n      Security\n    Evals\n      Correctness\n      Reliability\n      Cost\n      Autonomy\n"
+  },
+  {
+   "file": "diagram-06.png",
+   "mermaid": "flowchart TB\n    TEAMS[\"Engineering Teams\"] --> PLATFORM\n    subgraph PLATFORM[\"Agentic Engineering Platform (the harness layer you should own)\"]\n        direction LR\n        P1[\"Policy / Identity\"]\n        P2[\"Context / AGENTS.md\"]\n        P3[\"MCP / Tool Registry\"]\n        P4[\"Environment Templates\"]\n        P5[\"Evals\"]\n        P6[\"Observability\"]\n        P7[\"Cost / Model Routing\"]\n        P8[\"Workflow / Guardrails\"]\n    end\n    PLATFORM --> CODEX[\"Codex\"]\n    PLATFORM --> CLAUDE[\"Claude Code\"]\n    PLATFORM --> COPILOT[\"Copilot\"]\n    CODEX --> ENV[\"Ephemeral Dev Environment\"]\n    CLAUDE --> ENV\n    COPILOT --> ENV\n    ENV --> GH[\"GitHub\"]\n    ENV --> CI[\"CI/CD\"]\n    ENV --> MCP[\"MCP\"]\n    MCP --> INT[\"Jira / Logs / DB / Observability / Internal APIs\"]\n    style PLATFORM fill:#d4edda,stroke:#2e7d32\n"
+  },
+  {
+   "file": "diagram-07.png",
+   "mermaid": "flowchart TB\n    BR[\"Bug report\"] --> AL\n    AL[\"<b>The agent's automated loop</b>\n    reproduce → inspect logs / traces → modify code\n    → run tests → run the app → verify UI\"]\n    AL -->|tests pass| AR[\"Agent review\"]\n    AR --> CI[\"PR → CI\"]\n    CI -->|red, back to the loop| AL\n    CI -->|green| MG[\"Merge\"]\n    HUMAN[\"<b>What stays human</b>\n    Intent · Architecture · Constraints · Taste · Risk · Prioritization · Acceptance\"]\n    HUMAN -.->|governs| BR\n    HUMAN -.->|governs| MG\n    style HUMAN fill:#e3f2fd,stroke:#1565c0,stroke-width:2px\n    style AL fill:#f4f7f5,stroke:#2e5e46,stroke-width:2px\n"
+  },
+  {
+   "file": "diagram-08.png",
+   "mermaid": "flowchart TB\n    BUY[\"<b>Buy / adopt</b>\n    • Codex / Claude Code / Copilot / Antigravity\n    • Base agent loop\n    • Generic planning / memory\n    • Generic code search\n    • Generic sandbox technology\"]\n    BUILD[\"<b>Build / own</b>\n    • Company context\n    • MCP gateway\n    • Identity / permissions\n    • Repo conventions / architecture constraints\n    • Internal tools\n    • Eval dataset\n    • Observability / cost controls\n    • Workflow integration\"]\n    BUY -->|compose| BUILD\n    style BUY fill:#fff3cd,stroke:#b8860b,stroke-width:2px\n    style BUILD fill:#d4edda,stroke:#2e7d32,stroke-width:2px\n"
+  }
+ ],
+ "tables": [
+  {
+   "file": "table-01.png",
+   "markdown": "| Ecosystem | Current focus | The signal that actually matters |\n|---|---|---|\n| **OpenAI Codex** | Harness engineering, long autonomous runs, agents reviewing agents, Symphony orchestration | **The repo and environment themselves become part of the agent runtime** |\n| **Anthropic Claude Code** | Long-running harnesses, planner / generator / evaluator, multi-agent, sandboxing, Managed Agents | **The model decouples from the execution environment** |\n| **GitHub Copilot** | Cloud agent, custom agents, sub-agents, MCP, agent definitions living in the repo | GitHub is turning into an **agent control plane** |\n| **Google** | Jules → Antigravity, multi-agent backend, agent-first IDE | **The IDE flips from a human's tool into an agent's control surface, with humans stepping back to review and steer** |\n| **Cursor** | Cloud agents, VM isolation, background tasks, automations | Local IDE → **remote engineering workers** |\n| **Devin and peers** | Autonomous software engineer, agent fleets | Approaching an abstraction over engineering headcount |\n| **Open ecosystem** | MCP, AGENTS.md, goose, AAIF | An interoperability layer forming, much like the early CNCF era |\n"
+  },
+  {
+   "file": "table-02.png",
+   "markdown": "| DevOps / Cloud Native | Agentic Engineering |\n|---|---|\n| Shell scripts | Prompts |\n| Jenkins job | Agent workflow |\n| CI runner | Agent sandbox |\n| Dockerfile | Agent environment definition |\n| Kubernetes | Agent orchestration |\n| Helm / templates | Agent skills / workflows |\n| Service mesh | MCP / agent gateway |\n| SRE observability | Agent observability and traces |\n| CI quality gates | Agent evals |\n| IDP / Backstage | Agentic Engineering Platform |\n| \"You build it, you run it\" | **\"You specify it, agents build it, you own it\"** |\n"
+  },
+  {
+   "file": "table-03.png",
+   "markdown": "| Agentic Platform Team owns | Product Engineering Team owns |\n|---|---|\n| Agent runtime integration | Business requirements |\n| Vendor abstraction | Acceptance criteria |\n| MCP gateway | Domain MCP tools |\n| Identity and secrets | Domain permissions |\n| Sandbox | Domain environment |\n| Agent observability | Domain dashboards |\n| Eval framework | Eval cases |\n| Cost and quota | Usage |\n| AGENTS.md template | The repo's own AGENTS.md |\n| Golden workflows | Domain workflows |\n| Security guardrails | Production ownership |\n"
+  },
+  {
+   "file": "table-04.png",
+   "markdown": "| Engineering headcount | Recommendation |\n|---:|---|\n| < 30 | No team. 1–2 champions |\n| 30–100 | Still no dedicated headcount: 2 champions (20% each) plus a sponsor. Only when champions are overloaded do you open a 2–4 person enablement pod |\n| 100–500 | **A permanent 4–8 person Agentic Platform Team** |\n| > 500 | Agent platform, evals, and security as specialties (8–12 people and up) |\n"
+  },
+  {
+   "file": "table-05.png",
+   "markdown": "| Metric | What it tells you |\n|---|---|\n| Time to merge | Whether the delivery cycle actually shortened |\n| Human review minutes per PR | Whether human attention was actually saved |\n| Agent retry rate | The quality of your harness and context |\n| Eval pass rate | Reliability of the output |\n| Production escape rate | The last line of defense on correctness |\n| Cost per successful task | Unit economics |\n| Autonomous completion rate | Real progress on autonomy |\n"
+  },
+  {
+   "file": "table-06.png",
+   "markdown": "| Phase | Goal | Exit criteria |\n|---|---|---|\n| **Month 1** | Pick 2 pilot teams and their champions; measure the baseline (time to merge, review minutes per PR); finish runtime selection with sandbox and permissions ready | Someone on each pilot team is genuinely using agents every day |\n| **Month 2** | Ship the first golden workflow (start with the bug-fix flow); land the AGENTS.md template in pilot repos; build the first 10–20 eval cases | Completed agent work can be checked against evals rather than gut feel |\n| **Month 3** | Review pilot results against the baseline; make the keep/expand call; open self-service to the next wave of teams | A go/no-go backed by measurement instead of vibes |\n"
+  }
+ ]
+}

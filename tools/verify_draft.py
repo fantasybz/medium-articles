@@ -38,8 +38,21 @@ comparison skips figures entirely, so an image landing in the wrong section
 still reports "all blocks match". Getting each image next to its own paragraph
 is the whole point of the placeholder dance, so the positions are compared.
 
+Section dividers are counted for a third variant of the same reason. A `<hr>`
+is not a graf, so neither the text pass nor the placement pass can see one: an
+article with a divider too many or too few compared equal on every check here.
+That was harmless while the only way in was a paste into an empty new story,
+which builds every section from the payload. `medium_draft.sh --post` is not
+that: its range runs from the first body graf to the last, across the 11 to 17
+`<section>` wrappers Medium makes out of these articles' 10 to 16 dividers,
+and both ends of that range are partially selected containers. An empty
+section or an orphan divider left behind at either end is invisible to
+everything else in this file.
+
 The editor side can be either a bare JSON array of graf texts, or an object
-{"texts": [...], "tags": [...], "links": N} to enable the extra checks.
+{"texts": [...], "tags": [...], "links": N, "dividers": N} to enable the extra
+checks. Each of the three extras is skipped, with a note, when the editor
+payload does not carry its count.
 """
 
 import html
@@ -60,6 +73,15 @@ NBSP = "\u00a0"
 EM_DASH = "\u2014"
 # Collapse whatever Medium put around an em dash back to the bare dash.
 EM_DASH_RUN = re.compile(r"[ \t]*%s[ \t]*" % EM_DASH)
+# Medium also turns the hyphen between two digits into an en dash (2026-07-10
+# comes back as 2026–07–10). Typography, not content: fold it on the editor
+# side. Only between digits, so an en dash the author typed between words is
+# still compared as-is.
+EN_DASH_BETWEEN_DIGITS = re.compile(r"(?<=\d)\u2013(?=\d)")
+# And a caret followed by digits becomes superscript digits (pass^5 -> pass⁵,
+# pass^20 -> pass²⁰; pass^k is left alone). Fold the superscripts back.
+SUPERSCRIPT_DIGITS = re.compile("[\u2070\u00b9\u00b2\u00b3\u2074-\u2079]+")
+SUPERSCRIPT_TO_DIGIT = str.maketrans("\u2070\u00b9\u00b2\u00b3\u2074\u2075\u2076\u2077\u2078\u2079", "0123456789")
 
 
 def graf_sequence(payload):
@@ -93,6 +115,15 @@ def expected_figure_positions(payload):
     return [i for i, b in enumerate(graf_sequence(payload)) if SLOT_P.match(b)]
 
 
+def expected_dividers(payload):
+    """How many section breaks the payload asks for.
+
+    Read from the same lines graf_sequence() drops on the way past, so the two
+    cannot disagree about what a divider is.
+    """
+    return sum(1 for line in payload["html"].split("\n") if line == "<hr>")
+
+
 def normalise(text, from_html, in_code=False):
     """Fold the rewrites Medium applies, so only real differences remain.
 
@@ -122,6 +153,8 @@ def normalise(text, from_html, in_code=False):
     # mismatches on nothing but quote shape.
     text = text.replace("\u201c", '"').replace("\u201d", '"')
     text = EM_DASH_RUN.sub(EM_DASH, text)
+    text = EN_DASH_BETWEEN_DIGITS.sub("-", text)
+    text = SUPERSCRIPT_DIGITS.sub(lambda m: "^" + m.group(0).translate(SUPERSCRIPT_TO_DIGIT), text)
     # Collapse runs of spaces, but never delete them: welded-together words are
     # a real content loss and must not compare equal.
     text = re.sub(r"[ \t]+", " ", text)
@@ -206,6 +239,23 @@ def main():
     elif want_figs:
         print("figures: %d expected — editor payload carried no tag list, "
               "placement not checked" % len(want_figs))
+
+    # Neither pass above can see a divider: it is not a graf and carries no
+    # text. A refill's range crosses every section in the article, so a section
+    # left empty or a divider left orphaned at either end of it would otherwise
+    # ship with every other check reporting a match.
+    want_hrs = expected_dividers(payload)
+    if "dividers" in editor:
+        got_hrs = editor["dividers"]
+        if got_hrs != want_hrs:
+            print("\ndividers: expected %d section breaks, editor has %d"
+                  % (want_hrs, got_hrs))
+            problems += 1
+        else:
+            print("dividers: %d, all accounted for" % want_hrs)
+    elif want_hrs:
+        print("dividers: %d expected — editor payload carried no count, "
+              "not checked" % want_hrs)
 
     if problems:
         print("\n%d problem(s): %d block mismatch(es)" % (problems, bad))

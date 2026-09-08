@@ -26,10 +26,17 @@ a repo-content scan keeps every `article*.md` in lockstep with the
 `medium-paste.md` it generates, on both the link list and the count of
 unpublished markers.
 
-Everything past that pre-flight is deliberately not unit tested — it needs a
-real logged-in Medium session. `tools/medium_draft.sh` covers itself instead: it
-diffs the finished draft against the converted payload block by block, counts
-links, checks each figure's position, and exits non-zero on any mismatch.
+The driver's *decisions* are tested past the pre-flight too: a fake `browse`
+first on `PATH` feeds canned replies, so the `--post <id>` resync mode is
+exercised end to end — the offline check that the id matches the pack's own
+`PUBLISHED.md`, the editor-URL shape, the settle poll, the assertion that the
+range really did take the old figures with it, the image loop, and the final
+gate. Every one of those guards has a mutation check behind it: delete the
+guard and a named test goes red. What stays untested is Medium's own DOM
+beyond that — it needs a real logged-in session. `tools/medium_draft.sh` covers
+that part itself: it diffs the finished draft against the converted payload
+block by block, counts links and dividers, checks each figure's position, and
+exits non-zero on any mismatch.
 
 When adding a guard to the driver, capture the output first
 (`out=$(B eval ...) || exit 1`) and test it. `if B eval ... | grep -q ...` can

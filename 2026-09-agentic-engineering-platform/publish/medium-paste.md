@@ -4,9 +4,8 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 自動化：`./tools/medium_draft.sh <article-dir>` 會建好草稿並比對內容，停在發布前一步。
 細節見 repo 根目錄的 PUBLISHING.md。以下是手動流程與發布後必做的收尾。
 
-【系列狀態】中文四篇已於 2026-09-03 全部上線並完全互連；狀態一律以各篇
-publish/PUBLISHED.md 為準。四篇不可能「一起發布」：Medium 限制同一作者 24 小時內
-最多發布或排程 2 篇，見 PUBLISHING.md 的〈發文數量上限〉。
+【系列狀態】以各篇 publish/PUBLISHED.md 為準。Medium 限制同一作者 24 小時內最多發布或排程 2 篇，
+見 PUBLISHING.md 的〈發文數量上限〉。
 
 【手動流程】
 1. 開新 story：https://medium.com/new-story
@@ -47,9 +46,13 @@ publish/PUBLISHED.md 為準。四篇不可能「一起發布」：Medium 限制�
 
 以下從市場現況、DevOps 的歷史教訓、組織設計、Buy vs Build 的判斷，一路推到具體的決策建議與前 90 天的行動藍圖。
 
+之所以照這個順序，是因為如果沒有先確認產業走到哪裡，也沒有先看 DevOps 當年踩過什麼坑，後面談的組織設計與 Buy vs Build 就只是憑感覺選邊，很容易變成另一套跟風的 AI initiative。
+
 ---
 
 ## 二、2026 年，市場實際走到哪裡了
+
+先用一張粗略的成熟度圖定位。這張圖的軸不是模型有多強，是人把多少工作交出去。
 
 整個產業已經明顯從左邊往右邊移動，而且重心正在壓到最後兩個階段：
 
@@ -57,7 +60,7 @@ publish/PUBLISHED.md 為準。四篇不可能「一起發布」：Medium 限制�
 
 先用兩組調查數字定錨。Google 的 2025 DORA report（近 5,000 名受訪者）顯示，**90% 的工程師已在工作中使用 AI**，每天中位數投入 2 小時—但對 AI 產出抱持高度信任的只有約 24%。Stack Overflow 的調查則顯示，AI agent 的使用率一年內從 31% 跳升到 59%，同時有 87% 的開發者擔心 agent 產出的正確性。兩組數字合起來讀，訊息很清楚：**採用早已不是瓶頸，信任與驗證才是**—這正是後面 harness 與 eval 兩章要解的問題。
 
-各家生態的重點與真正重要的訊號如下：
+這張表不是要比誰會贏。各家生態的重點與真正重要的訊號如下：
 
 📌【在此插入表 table-01.png】
 
@@ -83,15 +86,19 @@ Cursor 也在解相同問題：每個 [Cloud Agent](https://cursor.com/blog/clou
 
 ### 最大的訊號：標準化開始收斂
 
-2025 年 12 月，Linux Foundation 成立 [Agentic AI Foundation（AAIF）](https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation)，納入 **MCP、AGENTS.md、goose**；截至 2026 年 8 月，AAIF 已有 247 個 member organizations。這代表業界開始把「model ↔ tools ↔ repository context」這些介面標準化，而不是讓每一家 agent 都有自己的封閉 integration—非常像當年 CNCF 生態開始收斂的時刻。
+2025 年 12 月，Linux Foundation 成立 [Agentic AI Foundation（AAIF）](https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation)，納入 **MCP、AGENTS.md、goose**；截至 2026 年 8 月，AAIF 已有 247 個 member organizations。這代表業界開始把「model ↔ tools ↔ repository context」這些介面標準化，而不是讓每一家 agent 都有自己的封閉 integration。這非常像當年 CNCF 生態開始收斂的時刻。
 
 ---
 
 ## 三、DevOps 的歷史，其實已經演過一次
 
-兩個時代幾乎可以逐項對應：
+先講清楚這個對照的用途。我不是說 Agentic Engineering 會照抄 DevOps 的每一步，而是想借 DevOps / Cloud Native 的演化經驗，幫我們辨認今天哪些東西只是新名詞，哪些其實是舊問題換了新的執行者。
+
+用這個角度看，兩個時代幾乎可以逐項對應：
 
 📌【在此插入表 table-02.png】
+
+這張表最該看的是最後一列。前面幾列是元件與實踐的逐項對應，最後一列變的卻不是元件，而是責任模型：交付的動作外包給 agent，責任還是留在原本的人身上。
 
 把兩條時間軸疊起來看：
 
@@ -109,9 +116,11 @@ Cursor 也在解相同問題：每個 [Cloud Agent](https://cursor.com/blog/clou
 
 ## 四、不要成立這種 Team
 
+先看最常被點名的錯誤解法。組織的第一個動作常常是成立一個中央 Agent Team，讓各 team 把需求丟過去：
+
 📌【在此插入圖 diagram-03.png】
 
-這種設計必然失敗，原因有二：
+問題不在於這個中央團隊不夠聰明，而是這個位置本身就站不住。這種設計必然失敗，原因有二：
 
 1. 它只是把等待 Ops 的 ticket queue，換成等待 Agent Team 的 ticket queue。
 2. Agent Team 永遠不可能比 domain team 更懂 business context—而 context 恰好是 agent 產出品質的決定因素。
@@ -120,15 +129,17 @@ Cursor 也在解相同問題：每個 [Cloud Agent](https://cursor.com/blog/clou
 
 - **自己造 runtime**：投入 6–12 個月自建內部版 Claude Code 或 Devin。vendor 的下一個 release 就會讓它過時—你是在跟整個產業的資本支出對賭，而且賭輸的機率接近 100%。
 - **AGENTS.md 文件墳場**：轟轟烈烈地要求每個 repo 都寫 AGENTS.md，但沒有人負責維護、沒有 eval 驗證它是否真的改善 agent 產出。半年後它就跟公司 wiki 一樣過時。context 是需要 ownership 的 living artifact，不是寫一次就封存的文件。
-- **Review 成為新瓶頸**：agent 產出 PR 的速度是人類的十倍，review 流程卻完全沒變。結果不是交付變快，而是 review queue 爆炸、reviewer 疲乏、rubber-stamp 放行—品質問題只是往後移到 production。這也是為什麼 agent review agent 與 eval，必須跟產出能力同步投資。
+- **Review 成為新瓶頸**：agent 產出 PR 的速度是人類的十倍，review 流程卻完全沒變。結果不是交付變快，而是 review queue 爆炸、reviewer 疲乏、最後 rubber-stamp 放行。品質問題沒有消失，只是往後移到 production。這也是為什麼 agent review agent 與 eval，必須跟產出能力同步投資。
 
 ---
 
 ## 五、應該成立這種 Team
 
-正確的模式是 **Platform + Federation**：中央 Platform Team 鋪路，domain team 自助上路，再加上 embedded champions 串接兩者。
+正確的模式是 **Platform + Federation**：中央 Platform Team 鋪 paved roads（安全、環境、工具與 eval 預先接好，走預設路徑就是安全的），domain team 自助上路，再加上 embedded champions（散在各 team、平常仍然做產品的工程師）串接兩者：
 
 📌【在此插入圖 diagram-04.png】
+
+這套模式最容易吵起來的地方是 ownership。我的切分原則是：跨 repo、跨 team、牽涉安全與基礎設施一致性的東西歸 Agentic Platform Team，會決定產品正確性與 domain 判斷的東西留在 Product Engineering Team 手上。
 
 Ownership 的切分如下：
 
@@ -140,6 +151,8 @@ Ownership 的切分如下：
 
 這是兩件完全不同的事。
 
+harness 解的是 agent 能不能安全、穩定、可觀測地工作。agent-legible software 解的是另一個問題：你的系統本身有沒有足夠清楚的測試、文件、logs、traces 與規則，讓 agent 做得對。前者是鋪 paved road，後者是讓路上有路標。
+
 至於規模，我的建議值（不是業界標準）：
 
 📌【在此插入表 table-04.png】
@@ -148,11 +161,15 @@ Ownership 的切分如下：
 
 還有一個常被跳過的問題：**champion 怎麼選、人怎麼轉型**。好的 agent champion 不是「最會寫 prompt 的人」，而是原本就擅長經營 developer experience 的人—會寫測試、會整理文件、對 CI/CD 與 tooling 有 sense 的工程師。因為 harness engineering 本質上就是 DX engineering 的延伸，對象從人換成了 agent 而已。
 
-至於 junior engineer，我的看法與流行的悲觀論相反：agent 時代最稀缺的能力—拆解問題、定義驗收條件、判斷產出品質—恰好要靠大量 review agent 的產出來練成。組織應該刻意把「review agent 的 PR」設計成 junior 的訓練路徑，而不是把這件事全部留給 senior，然後困惑為什麼三年後沒有人能接班。
+至於 junior engineer，我的看法與流行的悲觀論相反。agent 時代最稀缺的能力，其實就是拆解問題、定義驗收條件、判斷產出品質，而這三件事恰好要靠大量 review agent 的產出來練成。所以，組織應該刻意把「review agent 的 PR」設計成 junior 的訓練路徑，而不是把這件事全部留給 senior，然後困惑為什麼三年後沒有人能接班。
 
 ---
 
 ## 六、Harness 不是 Prompt
+
+組織設計講到這裡，會自然落到一個技術問題：Platform Team 到底要蓋什麼？如果蓋出來的只是幾份 prompt 範本，前面那套分工就沒有東西可以承載。
+
+這裡的 harness，不是多寫幾段 prompt，也不是自己重做一個 agent。更精準的說法是，它是企業把 context、tools、environment、feedback、guardrails 與 evals 接起來的那一層，讓 agent 能在你的工程系統裡真的把工作做完，而不只是生成程式碼。
 
 企業自己的 harness，我會這樣定義：
 
@@ -162,7 +179,7 @@ Ownership 的切分如下：
 
 ### AGENTS.md：寫對與寫錯的差別
 
-「Context」那一支值得給一個具體的樣子。好的 AGENTS.md 不是專案簡介，而是寫給 agent 的 operating manual—它存在的目的不是介紹，是預防：
+「Context」那一支值得給一個具體的樣子。好的 AGENTS.md 不是專案簡介，而是寫給 agent 的 operating manual。它存在的目的不是介紹，是預防：
 
 ```text
 # 寫錯了：描述現況
@@ -187,7 +204,7 @@ Ownership 的切分如下：
 
 上圖的 Policy / Identity 與 Guardrails 值得單獨強調，因為當你拿這套架構去說服 CISO 時，被問的一定是這一塊：
 
-- **Identity 與最小權限**：每個 agent run 都應該有自己的 identity 與 scoped credentials—只拿得到這個 task 需要的 repo、secrets 與 API，而不是共用一組人類的 token。出事的時候，「哪個 agent、哪次 run、用什麼權限做的」必須能在五分鐘內回答。
+- **Identity 與最小權限**：每個 agent run 都應該有自己的 identity 與 scoped credentials。也就是說，它只拿得到這個 task 需要的 repo、secrets 與 API，而不是共用一組人類的 token。出事的時候，「哪個 agent、哪次 run、用什麼權限做的」必須能在五分鐘內回答。
 - **Prompt injection 是真實的攻擊面**：agent 會讀 issue、PR comment、外部網頁與 log，這些全是不可信輸入。tool 權限分級與 sandbox 的 egress policy 是底線，不是加分項。
 - **Audit trail**：每個 agent 的每個 tool call 都要可追溯。等到 compliance 來問「這段程式碼當初是誰決定這樣寫的」才開始補，就太遲了。
 
@@ -199,11 +216,15 @@ OpenAI 那篇 Harness Engineering 文章裡，我認為最重要的東西甚至�
 
 > **Make the system legible to agents.**
 
+這裡的 legible 不是「寫更多文件給 agent 讀」。它的意思是：人類在 debug 與 review 時會翻的那些線索，agent 也要能自己翻。
+
 把 logs、metrics、traces、browser、DOM、screenshots、tests、architecture、dependency rules、CI、PR feedback，全部變成 agent 可以直接 query / operate / validate 的東西。做到之後，整條交付流程長這樣：
 
 📌【在此插入圖 diagram-07.png】
 
-人類只剩下 intent、architecture、constraints、taste、risk、prioritization、acceptance。**這就是我認為 Agentic Engineering 真正的定義。**
+人類只剩下 intent、architecture、constraints、taste、risk、prioritization、acceptance。
+
+人的重心整個往上游移動了：不再把主要時間花在每一行實作上，而是負責定義方向、限制與驗收標準。**這就是我認為 Agentic Engineering 真正的定義。**
 
 ### Brownfield 怎麼辦
 
@@ -219,7 +240,7 @@ OpenAI 那篇 Harness Engineering 文章裡，我認為最重要的東西甚至�
 
 ## 八、哪些該 Buy，哪些該 Build
 
-這可能是整題最關鍵的判斷：
+這可能是整題最關鍵的判斷。下面這張圖分成上下兩格，上面那一格是市場會替你持續升級的東西，下面那一格是只有你自己會做、也只有你自己需要的東西：
 
 📌【在此插入圖 diagram-08.png】
 
@@ -267,6 +288,8 @@ human attention saved
 production correctness
 ```
 
+North Star 只能回答方向對不對，還不夠拿來管日常營運。真正落到週會或月會上時，需要的是一組比較樸素的指標，能同時看見速度、人類注意力、產出品質與成本有沒有一起變好。
+
 再搭配一組營運指標：
 
 📌【在此插入表 table-05.png】
@@ -290,7 +313,7 @@ production correctness
 
 三個提醒：
 
-1. **Pilot 選「痛但不致命」的情境**—internal tools、測試補強、bug backlog，不要選 mission-critical path。
+1. **Pilot 選「痛但不致命」的情境**：internal tools、測試補強、bug backlog，不要選 mission-critical path。
 2. **Baseline 沒量就開跑，三個月後你將無法證明任何事**。這是最常見、代價也最高的失誤。
 3. **平台 team 的第一個客戶是 pilot team，不是全公司**。太早追求 coverage，是 platform team 死掉最常見的方式。
 
@@ -298,7 +321,7 @@ production correctness
 
 ## 十二、結語
 
-現在確實到了該投資 Agentic Engineering 的時間，但投資標的不應該是「自己的 agent」，而是：
+走到這裡，我把整篇的判斷收成一件事。現在確實到了該投資 Agentic Engineering 的時間，但投資標的不應該是「自己的 agent」，而是：
 
 > **讓任何 agent 都能在你的 Engineering System 裡工作得很好。**
 

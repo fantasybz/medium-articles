@@ -1,0 +1,34 @@
+{
+ "figures": [
+  {
+   "file": "diagram-01.png",
+   "mermaid": "flowchart TB\n    AG[\"Agent Runtime (Codex / Claude Code / Copilot)\"]\n    subgraph L1[\"Context layer\"]\n        A1[\"AGENTS.md (org / repo / dir tiers)\"]\n        A2[\"Architecture docs as code\"]\n    end\n    subgraph L2[\"Tools layer\"]\n        B1[\"MCP Gateway\"]\n        B2[\"Tool registry and permission tiers\"]\n    end\n    subgraph L3[\"Environment layer\"]\n        C1[\"Ephemeral sandbox\"]\n        C2[\"Warm cache\"]\n    end\n    subgraph L4[\"Feedback layer\"]\n        D1[\"Tests / Logs / Traces\"]\n        D2[\"Browser and screenshot verification\"]\n    end\n    subgraph L5[\"Guardrails layer\"]\n        E1[\"Identity per run\"]\n        E2[\"Egress policy and audit\"]\n    end\n    AG --> L1 & L2 & L3\n    L3 --> L4\n    L4 -->|verification results| AG\n    L5 -.->|cuts across every layer| AG\n    style L5 fill:#fff3cd,stroke:#b8860b\n"
+  },
+  {
+   "file": "diagram-02.png",
+   "mermaid": "flowchart LR\n    AG[\"Agent Runtime\"] -->|MCP| GW[\"MCP Gateway\"]\n    GW --> REG[\"Tool registry<br/>(tiers: read / write / dangerous)\"]\n    GW --> AUTH[\"Identity broker<br/>(per-run scoped token)\"]\n    GW --> AUD[\"Audit log<br/>(every tool call)\"]\n    GW --> INT[\"Internal MCP servers<br/>Jira / Logs / DB / Internal APIs\"]\n    style GW fill:#d4edda,stroke:#2e7d32\n"
+  },
+  {
+   "file": "diagram-03.png",
+   "mermaid": "flowchart LR\n    S1[\"Phase 1 (1–2 months)<br/>Verifiable\"] --> S2[\"Phase 2 (2–3 months)<br/>Observable\"] --> S3[\"Phase 3 (ongoing)<br/>Constrained\"]\n    S1 -.- T1[\"Characterization tests<br/>lock in current behavior\"]\n    S2 -.- T2[\"Structured logs, trace IDs<br/>error message renovation\"]\n    S3 -.- T3[\"Architecture rules in CI<br/>AGENTS.md filled in\"]\n    style S1 fill:#d4edda,stroke:#2e7d32\n"
+  }
+ ],
+ "tables": [
+  {
+   "file": "table-01.png",
+   "markdown": "| Tier | Location | Contents | Owner | Update cadence |\n|---|---|---|---|---|\n| **Org** | Platform repo, distributed to each repo | Language and framework standards, security red lines, shared tool commands | Platform team | Quarterly |\n| **Repo** | Root of each repo | Build and test commands, architectural boundaries, conventions | Domain team (champion drives) | Monthly |\n| **Directory** (optional) | Special subdirectories | Module-specific rules | Code owner | As changes land |\n"
+  },
+  {
+   "file": "table-02.png",
+   "markdown": "| Tier | Examples | Policy |\n|---|---|---|\n| **read** | Query logs, read issues, search code | Open by default |\n| **write** | Open a PR, post a comment, file a ticket | Must be registered with an owner |\n| **dangerous** | DB writes, deploys, sending external email | Human approval — or simply closed for the first year |\n"
+  },
+  {
+   "file": "table-03.png",
+   "markdown": "| Option | Isolation | Startup | Fits |\n|---|---|---|---|\n| **Container** (devcontainer-style) | Medium | Fast (seconds) | The starting point for most situations |\n| **MicroVM** (Firecracker-style) | High | Medium | Multi-tenant, running untrusted code |\n| **Local worktree** | Low | Fastest | Assisted development with a human present; unsuitable for autonomous runs |\n"
+  },
+  {
+   "file": "table-04.png",
+   "markdown": "| Question | Passing bar |\n|---|---|\n| Can the agent run \"only the affected tests\" in one command? | `make test FILTER=<path>` exists and is fast |\n| Do test failure messages locate the cause? | Assertion messages include expected and actual |\n| Are logs structured? | JSON or logfmt, carrying a request ID |\n| Can a production error be reproduced locally? | A trace ID is enough to reproduce locally |\n| Can UI changes be verified automatically? | Headless browser plus screenshots are wired up |\n| Are flaky tests quarantined and tracked? | Quarantine marker plus a fix SLA |\n"
+  }
+ ]
+}

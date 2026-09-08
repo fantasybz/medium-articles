@@ -1,0 +1,34 @@
+{
+ "figures": [
+  {
+   "file": "diagram-01.png",
+   "mermaid": "flowchart LR\n    subgraph PT[\"Agentic Platform Team（4–8 人）\"]\n        P1[\"Runtime 整合與升級\"]\n        P2[\"MCP gateway 與權限\"]\n        P3[\"Eval framework\"]\n        P4[\"成本與觀測\"]\n    end\n    subgraph CH[\"Embedded Champions（每 team 1 位、20% 時間）\"]\n        C1[\"把 paved road 帶進 team\"]\n        C2[\"把痛點帶回 platform\"]\n    end\n    subgraph DT[\"Domain Teams\"]\n        D1[\"AGENTS.md 與 domain context\"]\n        D2[\"Eval cases\"]\n        D3[\"產出的最終品質\"]\n    end\n    PT -->|paved roads / 工具 / 訓練| CH\n    CH -->|回饋 / 需求 / 最佳實務| PT\n    CH -.->|嵌入| DT\n    style PT fill:#d4edda,stroke:#2e7d32\n"
+  },
+  {
+   "file": "diagram-02.png",
+   "mermaid": "flowchart TB\n    VP[\"VP Engineering\"] --> PL[\"Platform Lead（1）\"]\n    VP --> G[\"Champions Guild<br/>（8–10 位、各 20% 時間）\"]\n    PL --> IE[\"Infra / Sandbox（1–2）\"]\n    PL --> DX[\"DX / Context 工程（1）\"]\n    PL --> EV[\"Eval / 觀測（1）\"]\n    PL --> SEC[\"Security（0.5，向資安 team 借）\"]\n    style PL fill:#d4edda,stroke:#2e7d32\n"
+  },
+  {
+   "file": "diagram-03.png",
+   "mermaid": "flowchart TD\n    Q1{\"已有 internal developer<br/>platform（IDP）team？\"} -->|沒有| N1[\"新成立 Agentic Platform Pod<br/>它日後就是你的 platform team\"]\n    Q1 -->|有| Q2{\"他們有餘裕接新 mission？\"}\n    Q2 -->|有| A1[\"Agentic 併入 IDP mission<br/>補 2–3 個 headcount\"]\n    Q2 -->|沒有| A2[\"先開獨立 pod<br/>12–18 個月後併回\"]\n    A2 --> M[\"合併條件：runtime 穩定、<br/>治理進 CI、champions 自轉\"]\n    style A1 fill:#d4edda,stroke:#2e7d32\n"
+  }
+ ],
+ "tables": [
+  {
+   "file": "table-01.png",
+   "markdown": "| 事項 | Platform Team | Champion | Domain Team |\n|---|---|---|---|\n| Runtime 選型與升級 | **R / A** | C | I |\n| Sandbox 與權限基礎設施 | **R / A** | C | I |\n| AGENTS.md template 與規範 | **A** | R（推動） | **R**（內容） |\n| Domain MCP tools | C | C | **R / A** |\n| Eval framework | **R / A** | C | I |\n| Eval cases（domain） | C | R（推動） | **R / A** |\n| 成本與 quota 政策 | **R / A** | I | C |\n| 產出品質與 production ownership | I | I | **R / A** |\n"
+  },
+  {
+   "file": "table-02.png",
+   "markdown": "| 規模 | 專職 | Champions | 治理手段 | 下一步升級訊號 |\n|---:|---|---|---|---|\n| ~50 人 | 0 | 2 位（20%） | checklist + vendor 預設 | champions 過載 |\n| ~200 人 | 4–6 | 每 team 1 位 | gateway + policy as code | eval 與成本需要專人 |\n| ~1,000 人 | 8–12（三 squad） | guild 制度化 | 完整 platform + council | 吸收進 IDP，名字消失 |\n"
+  },
+  {
+   "file": "table-03.png",
+   "markdown": "| 找這種人 | 避開這種人 |\n|---|---|\n| 已經在日常用 agent 且有實際產出 | 只想研究新工具、不想碰別人 repo |\n| 寫過 team 的 onboarding 文件或測試基礎設施 | 把 champion 當升遷跳板、不教人 |\n| 願意花時間帶人、能把抱怨轉成需求 | 對「非確定性系統」沒有耐性 |\n"
+  },
+  {
+   "file": "table-04.png",
+   "markdown": "| Bucket | 內容 | 行為 |\n|---|---|---|\n| **Run** | Token、vendor 訂閱、sandbox 運算 | 隨 adoption 線性成長，需要 quota 管理 |\n| **Build** | Platform team 人事 | 固定，4–6 人起 |\n| **Enable** | Champions 的 20% 時間、訓練、guild | 隱形成本，不編列就會被日常工作吃掉 |\n"
+  }
+ ]
+}

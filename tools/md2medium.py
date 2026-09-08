@@ -67,6 +67,8 @@ FENCE_CLOSE = re.compile(r"^```\s*$")
 # renders there exactly as written, and `——` is the correct CJK dash. Flagging
 # it would force the sample code to use punctuation the sample is not teaching.
 DOUBLE_DASH = re.compile("\u2014{2,}")
+# Medium autocorrects these three sequences into ©, ® and ™ on paste.
+AUTOCORRECT = re.compile(r"\((?:c|r|tm)\)", re.I)
 
 
 def inline(text):
@@ -96,12 +98,8 @@ def inline(text):
     )
 
 
-def double_dash_lines(lines):
-    """The 1-based lines carrying a `——`, ignoring anything inside a fence.
-
-    Shared with the test that sweeps every article in the repo, so the guard
-    and the gate cannot disagree about which lines count.
-    """
+def _flagged_lines(lines, pattern):
+    """The 1-based lines matching `pattern`, ignoring anything inside a fence."""
     bad, in_code = [], False
     for k, line in enumerate(lines):
         fence = line.strip()
@@ -111,9 +109,30 @@ def double_dash_lines(lines):
         if FENCE_OPEN.match(fence):
             in_code = True
             continue
-        if DOUBLE_DASH.search(line):
+        if pattern.search(line):
             bad.append((k + 1, line))
     return bad
+
+
+def double_dash_lines(lines):
+    """The 1-based lines carrying a `——`, ignoring anything inside a fence.
+
+    Shared with the test that sweeps every article in the repo, so the guard
+    and the gate cannot disagree about which lines count.
+    """
+    return _flagged_lines(lines, DOUBLE_DASH)
+
+
+def autocorrect_lines(lines):
+    """The 1-based lines carrying `(c)`, `(r)` or `(tm)` outside a fence.
+
+    Medium's editor rewrites those into ©, ® and ™ as you paste, so a
+    three-way label like (a)/(b)/(c) comes back as (a)/(b)/©. The first
+    October draft lost its third label that way; verify_draft caught it, but
+    only after the whole draft had been built. Fence contents are exempt
+    because Medium leaves <pre> alone.
+    """
+    return _flagged_lines(lines, AUTOCORRECT)
 
 
 def convert(markdown):
@@ -133,6 +152,12 @@ def convert(markdown):
     if bad:
         sys.exit("double em dash (——) found on %d line(s); Medium renders it "
                  "as `— —`. Use a single —:\n%s"
+                 % (len(bad), "\n".join("  line %d: %s" % (k + offset, l.strip()[:78])
+                                        for k, l in bad[:10])))
+    bad = autocorrect_lines(lines)
+    if bad:
+        sys.exit("(c), (r) or (tm) found on %d line(s); Medium autocorrects them "
+                 "into ©, ® and ™. Use （c） or c) instead:\n%s"
                  % (len(bad), "\n".join("  line %d: %s" % (k + offset, l.strip()[:78])
                                         for k, l in bad[:10])))
 

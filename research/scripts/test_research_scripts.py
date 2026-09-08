@@ -302,6 +302,18 @@ class TestArticleToPasteCLI(unittest.TestCase):
         self.assertIn("no such article", out.stderr)
         self.assertFalse(os.path.exists(os.path.join(art, "publish")))
 
+    def test_a_c_label_in_prose_is_refused_before_anything_is_written(self):
+        # Medium autocorrects (c) into ©; the guard lives in md2medium and this
+        # CLI refuses the same way it refuses a double em dash.
+        art = self.article_dir("# T\n\n(a) fine, (b) fine, (c) not fine\n")
+        out = run_script("article_to_paste", art)
+        self.assertNotEqual(out.returncode, 0)
+        self.assertIn("autocorrect", out.stderr)
+        self.assertFalse(os.path.exists(os.path.join(art, "publish")))
+        art = self.article_dir("# T\n\n（c） and c) are fine\n\n```\n(c) in code\n```\n")
+        out = run_script("article_to_paste", art)
+        self.assertEqual(out.returncode, 0, out.stderr)
+
     def test_double_em_dash_is_refused_in_prose_but_allowed_inside_code(self):
         # md2medium.py refuses it too; failing here saves a browser run. Same
         # fence-aware scan as md2medium, so the two cannot disagree.
