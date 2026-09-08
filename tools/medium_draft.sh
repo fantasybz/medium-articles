@@ -45,6 +45,8 @@ set -euo pipefail
 readonly UPLOAD_TIMEOUT_S=40     # largest image observed took ~8s to land
 readonly EDITOR_SETTLE_S=3       # after the body paste, before polling grafs
 readonly KEYPRESS_GAP_S=1        # the two Backspaces must not coalesce
+readonly SAVE_TIMEOUT_S=45       # autosave after an 18-figure refill, seen ~5s
+readonly RELOAD_SETTLE_S=40      # a reloaded editor rehydrates its figures
 # A new story renders instantly; an existing post has to fetch and lay out
 # 149 grafs and 14 figures first, and asking it what it is too early looks
 # exactly like "no editor here". The same budget covers the other two waits on
@@ -669,6 +671,71 @@ esac
 case "$FINAL" in
   *'"slots":0}'*) ;;
   *) echo "FAILED: placeholder text left in the $WHAT" >&2; exit "$EX_UNAVAILABLE" ;;
+esac
+
+# Everything above proves what the browser is holding. It does not prove what
+# Medium stored, and those came apart badly: a batch that moved straight on to
+# the next post as soon as these checks passed left 13 of 16 posts with figures
+# missing and IMGSLOT text still in the saved copy -- every one of which had
+# printed "all blocks match" first. Medium autosaves asynchronously, and
+# navigating away mid-write truncates it. So wait for its own indicator to say
+# the write finished, then throw the page away and check what comes back.
+step "waiting for Medium to store it"
+python3 "$TOOLS/medium_js.py" saved > "$WORK/saved.js"
+stored=0
+save_state=""
+for _ in $(seq 1 "$SAVE_TIMEOUT_S"); do
+  save_state=$(B eval "$WORK/saved.js") || {
+    echo "FAILED: browse could not read the save indicator" >&2; exit "$EX_TEMPFAIL"; }
+  case "$save_state" in
+    # Verbatim: "Saving failed because someone is also editing" is the one that
+    # bit, and it needs the operator to close the other editor, not a retry.
+    *failed*) echo "FAILED: Medium says $save_state" >&2; exit "$EX_UNAVAILABLE" ;;
+    *'"message":"Saved"'*) stored=1; break ;;
+  esac
+  sleep 1
+done
+if [ "$stored" -eq 0 ]; then
+  echo "FAILED: Medium never reported the $WHAT saved (last: $save_state)" >&2
+  exit "$EX_TEMPFAIL"
+fi
+
+step "re-reading it from Medium"
+RELOAD_URL="$(B url)"
+B goto "$RELOAD_URL" >/dev/null
+settled=0
+reloaded=""
+for _ in $(seq 1 "$RELOAD_SETTLE_S"); do
+  sleep 1
+  reloaded=$(B eval "$WORK/state.js") || continue
+  case "$reloaded" in
+    *'"err"'*) continue ;;
+    *'"pending":0'*) settled=1; break ;;
+  esac
+done
+if [ "$settled" -eq 0 ]; then
+  echo "FAILED: the reloaded $WHAT never settled (last: ${reloaded:-none})" >&2
+  exit "$EX_TEMPFAIL"
+fi
+
+reloaded_dump=$(B eval "$WORK/dump.js") || {
+  echo "FAILED: browse could not read the reloaded $WHAT" >&2; exit "$EX_TEMPFAIL"; }
+case "$reloaded_dump" in
+  *'"err"'*) echo "FAILED: no editor after the reload" >&2; exit "$EX_UNAVAILABLE" ;;
+esac
+printf '%s' "$reloaded_dump" > "$WORK/reloaded.json"
+python3 "$TOOLS/verify_draft.py" "$WORK/payload.json" "$WORK/reloaded.json"
+echo "$reloaded"
+case "$reloaded" in
+  *'"figures":'"$EXPECTED_FIGURES"','*) ;;
+  *) echo "FAILED: Medium stored a $WHAT with the wrong figure count" >&2
+     echo "  expected $EXPECTED_FIGURES; the editor agreed before the reload," >&2
+     echo "  so the save is what lost them" >&2
+     exit "$EX_UNAVAILABLE" ;;
+esac
+case "$reloaded" in
+  *'"slots":0}'*) ;;
+  *) echo "FAILED: Medium stored placeholder text in the $WHAT" >&2; exit "$EX_UNAVAILABLE" ;;
 esac
 
 step "$WHAT ready"

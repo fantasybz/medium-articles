@@ -364,6 +364,29 @@ def state_js():
 """ % (EDITOR, json.dumps(SLOT_MARK.split("%s")[0]))
 
 
+def saved_js():
+    """What Medium's own metabar says about the save.
+
+    Everything else in this file reads the DOM the browser is holding. That is
+    not the same as what Medium stored: autosave is asynchronous, and a run
+    that navigated away as soon as its in-editor checks passed lost the tail of
+    it -- posts that had just been verified as complete came back from a reload
+    with figures missing and IMGSLOT text still in them. `.js-metabarMessage`
+    is the editor's own indicator, and it is the only thing on the page that
+    knows whether the write finished.
+
+    Returned raw rather than as a boolean: "Saving failed because someone is
+    also editing" has to reach the operator verbatim, because the fix for it
+    (close the other editor) is not something the driver can do.
+    """
+    return """(() => {
+  const el = document.querySelector('.js-metabarMessage');
+  if (!el) return JSON.stringify({ err: 'no save indicator on this page' });
+  return JSON.stringify({ message: (el.textContent || '').trim() });
+})()
+"""
+
+
 def dump_js():
     """The editor's side of the block-by-block comparison, for verify_draft.py.
 
@@ -397,7 +420,7 @@ def main():
     if len(sys.argv) < 2:
         sys.exit(__doc__)
     kind = sys.argv[1]
-    if kind not in ("selectors", "state", "dump") and len(sys.argv) < 3:
+    if kind not in ("selectors", "state", "dump", "saved") and len(sys.argv) < 3:
         sys.exit("%s needs an argument\n\n%s" % (kind, __doc__))
     if kind == "title":
         print(title_js(json.load(open(sys.argv[2], encoding="utf-8"))))
@@ -415,6 +438,8 @@ def main():
         print(state_js())
     elif kind == "dump":
         print(dump_js())
+    elif kind == "saved":
+        print(saved_js())
     elif kind == "selectors":
         # So medium_draft.sh does not repeat these literals.
         # Not EDITOR: that is the standard text-editor variable.

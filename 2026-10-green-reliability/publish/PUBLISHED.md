@@ -27,3 +27,15 @@
 | 內文區塊（與轉換後 payload 逐塊比對） | 建草稿時零差異 |
 | 插圖 | 見 `publish/figures.json` |
 | 死連結 / 殘留「（即將發布）」/ 裂開的破折號 | 上線後檢查 |
+
+## 口吻潤稿重灌（2026-09-08）
+
+以 `./tools/medium_draft.sh 2026-10-green-reliability --post 3c64a9622777` 就地重灌。
+Post ID 不變。驗證：148 個文字區塊逐塊相符、19 個連結全在、7 張圖各在自己的槽位、
+10 條分隔線、`figuresLeft: 0`、無殘留 placeholder。
+
+**實測：排程沒有掉。** 重灌後 Stories → Scheduled 仍列 Oct 27, 1:00 AM（UTC，
+即 09:00 GMT+8），與原排程相同。這是本 repo 第一次驗證「編輯排程草稿會保留排程」。
+
+待人工確認：封面圖。所有 figure 都是刪掉重傳的，Medium 可能改用第一張圖
+（table-01）當預覽圖，需要進設定確認仍是當初挑的那張 diagram。

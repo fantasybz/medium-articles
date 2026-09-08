@@ -2525,7 +2525,11 @@ class Driven(DriverFixture):
         os.makedirs(evaled)
         canned = os.path.join(root, "rules")
         os.makedirs(canned)
-        for key, reply in (rules or {}).items():
+        # Medium's save indicator answers "Saved" unless a test says otherwise:
+        # every run reaches it, and restating it in each happy-path case would
+        # only bury the cases that are actually about the save.
+        rules = dict({"eval:saved.js": '{"message":"Saved"}'}, **(rules or {}))
+        for key, reply in rules.items():
             # A list is a reply per call, in order; the last one repeats.
             lines = reply if isinstance(reply, list) else [reply]
             with open(os.path.join(canned, key), "w", encoding="utf-8") as fh:
@@ -2926,6 +2930,80 @@ class TestMediumDraftFinishes(Driven, unittest.TestCase):
             "eval:dump.js": self.editor(["T", "body"], ["H3", "P", "FIGURE"])})
         self.assertNotEqual(d.out.returncode, 0)
         self.assertIn("placeholder text left in the post", d.out.stderr)
+
+
+class TestMediumStoredIt(Driven, unittest.TestCase):
+    """The reload pass. Every one of these shipped broken once.
+
+    The in-editor checks passed on 16 posts in a row and 13 of them came back
+    from a reload with figures missing and IMGSLOT text in the stored copy.
+    Medium autosaves asynchronously; the batch navigated to the next post as
+    soon as "all blocks match" printed, and the write never finished. Nothing
+    before this class could see that, because everything before it reads the
+    DOM the browser is holding rather than what the server kept.
+    """
+
+    def refill(self, **rules):
+        base = {"eval:body.js": REFILL_OK,
+                "eval:state.js": state(figures=0, slots=0),
+                "eval:dump.js": self.editor(["T", "body"], ["H3", "P"])}
+        base.update(rules)
+        return self.drive("--post", GOOD_ID, paste="# T\n\nbody\n", rules=base)
+
+    def test_a_save_that_never_finishes_is_not_reported_as_ready(self):
+        d = self.refill(**{"eval:saved.js": '{"message":"Saving"}'})
+        self.assertNotEqual(d.out.returncode, 0)
+        self.assertIn("never reported the post saved", d.out.stderr)
+        self.assertNotIn("post ready", d.out.stdout)
+
+    def test_a_concurrent_editor_is_reported_verbatim_and_stops_the_run(self):
+        # The message that actually appeared. The fix is to close the other
+        # editor, which the driver cannot do, so it must not swallow it.
+        medium = "Saving failed because someone is also editing. Reload to see their changes."
+        d = self.refill(**{"eval:saved.js": '{"message":"%s"}' % medium})
+        self.assertNotEqual(d.out.returncode, 0)
+        self.assertIn("also editing", d.out.stderr)
+
+    def test_figures_lost_in_the_save_fail_after_the_reload(self):
+        # The exact shape of the incident: the editor agrees, the reload does
+        # not. Two figures short of the one this article asks for.
+        d = self.drive("--post", GOOD_ID, paste=PASTE_WITH_FIGURE, images=["a.png"],
+                       rules={
+            "eval:body.js": REFILL_OK,
+            "eval:state.js": [state(figures=0, slots=1),
+                              state(figures=1, slots=1),
+                              state(figures=1, slots=0),
+                              state(figures=1, slots=0),   # the in-editor gate
+                              state(figures=0, slots=0)],  # what came back
+            "eval:image.js": '{"name":"a.png","bytes":8}',
+            "eval:slot.js": '{"selected":"IMGSLOT-a.png-ENDSLOT"}',
+            "eval:dump.js": self.editor(["T", "body"], ["H3", "P", "FIGURE"])})
+        self.assertNotEqual(d.out.returncode, 0)
+        self.assertIn("Medium stored a post with the wrong figure count", d.out.stderr)
+        self.assertIn("the save is what lost them", d.out.stderr)
+
+    def test_placeholders_that_survived_the_save_fail_after_the_reload(self):
+        d = self.drive("--post", GOOD_ID, paste=PASTE_WITH_FIGURE, images=["a.png"],
+                       rules={
+            "eval:body.js": REFILL_OK,
+            "eval:state.js": [state(figures=0, slots=1),
+                              state(figures=1, slots=1),
+                              state(figures=1, slots=0),
+                              state(figures=1, slots=0),
+                              state(figures=1, slots=1)],   # IMGSLOT text stored
+            "eval:image.js": '{"name":"a.png","bytes":8}',
+            "eval:slot.js": '{"selected":"IMGSLOT-a.png-ENDSLOT"}',
+            "eval:dump.js": self.editor(["T", "body"], ["H3", "P", "FIGURE"])})
+        self.assertNotEqual(d.out.returncode, 0)
+        self.assertIn("Medium stored placeholder text", d.out.stderr)
+
+    def test_the_page_is_actually_reloaded_before_it_is_believed(self):
+        # Without the goto this whole class is theatre: the same live DOM would
+        # answer the second round of checks and agree with itself every time.
+        d = self.refill()
+        self.assertEqual(d.out.returncode, 0, d.out.stderr + d.out.stdout)
+        edits = [g for g in self.gotos(d) if GOOD_ID in g]
+        self.assertGreaterEqual(len(edits), 2, self.gotos(d))
 
 
 class TestCodeBlocksAreNotTypographyFolded(unittest.TestCase):
