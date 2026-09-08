@@ -45,7 +45,12 @@ set -euo pipefail
 readonly UPLOAD_TIMEOUT_S=40     # largest image observed took ~8s to land
 readonly EDITOR_SETTLE_S=3       # after the body paste, before polling grafs
 readonly KEYPRESS_GAP_S=1        # the two Backspaces must not coalesce
-readonly SAVE_TIMEOUT_S=45       # autosave after an 18-figure refill, seen ~5s
+# 45s was not enough: an 18-figure refill sat on "Saving…" past it, the run
+# bailed with EX_TEMPFAIL, and the save then finished by itself moments later.
+# A timeout that fires while the write is still in flight is worse than none —
+# it reports a failure for a post that is about to be fine, and the operator's
+# instinct is to re-run, which rewrites the post again.
+readonly SAVE_TIMEOUT_S=180       # 18-figure refill observed past 45s
 readonly RELOAD_SETTLE_S=40      # a reloaded editor rehydrates its figures
 # A new story renders instantly; an existing post has to fetch and lay out
 # 149 grafs and 14 figures first, and asking it what it is too early looks
@@ -692,6 +697,10 @@ for _ in $(seq 1 "$SAVE_TIMEOUT_S"); do
     # bit, and it needs the operator to close the other editor, not a retry.
     *failed*) echo "FAILED: Medium says $save_state" >&2; exit "$EX_UNAVAILABLE" ;;
     *'"message":"Saved"'*) stored=1; break ;;
+    # "Saving…" (with a horizontal ellipsis) is the in-flight state: keep
+    # polling. Anything else unrecognised is reported by the timeout below
+    # rather than guessed at.
+    *Saving*) ;;
   esac
   sleep 1
 done
