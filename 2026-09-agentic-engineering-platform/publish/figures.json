@@ -1,0 +1,62 @@
+{
+ "figures": [
+  {
+   "file": "diagram-01.png",
+   "mermaid": "flowchart LR\n    A[\"AI Autocomplete\"] --> B[\"Chat Assistant\"]\n    B --> C[\"Coding Agent\"]\n    C --> D[\"Autonomous Agent\"]\n    D --> E[\"Multi-agent<br/>Engineering System\"]\n    style D fill:#fff3cd,stroke:#b8860b\n    style E fill:#ffe0e0,stroke:#c0392b\n"
+  },
+  {
+   "file": "diagram-02.png",
+   "mermaid": "timeline\n    title DevOps 與 Agentic Engineering 的平行時間軸\n    section DevOps 時代\n        2009 : DevOps 運動興起\n        2013 : Docker\n        2014 : Kubernetes\n        2016 : SRE 普及\n        2020 : Platform Engineering\n    section Agentic 時代\n        2024 : Copilot 式輔助\n        2025 : Coding Agents 成熟\n        2026 : Harness 與 MCP 標準化（現在）\n        2027 : Agent Platform 化\n        2029 : Agent-native Engineering\n"
+  },
+  {
+   "file": "diagram-03.png",
+   "mermaid": "flowchart TB\n    subgraph ANTI[\"反模式：中央 Agent Team（AI-powered outsourcing department）\"]\n        TA[\"Team A\"] -->|ticket| AGT[\"Agent Team\"]\n        TB2[\"Team B\"] -->|ticket| AGT\n        TC[\"Team C\"] -->|ticket| AGT\n        AGT -->|code| TA\n        AGT -->|code| TB2\n        AGT -->|code| TC\n    end\n    style AGT fill:#ffe0e0,stroke:#c0392b\n"
+  },
+  {
+   "file": "diagram-04.png",
+   "mermaid": "flowchart TB\n    PT[\"Agentic Platform Team\"] -->|paved roads| A[\"Team A\"]\n    PT -->|paved roads| B[\"Team B\"]\n    PT -->|paved roads| C[\"Team C\"]\n    CH[\"Embedded Agent Champions\"] -.->|回饋與最佳實務| PT\n    A -.-> CH\n    B -.-> CH\n    C -.-> CH\n    A -->|self-service| RT[\"Agent Runtimes<br/>(Codex / Claude / Copilot)\"]\n    B -->|self-service| RT\n    C -->|self-service| RT\n    style PT fill:#d4edda,stroke:#2e7d32\n"
+  },
+  {
+   "file": "diagram-05.png",
+   "mermaid": "mindmap\n  root((Harness))\n    Context\n      AGENTS.md\n      Architecture docs\n      Domain knowledge\n    Tools\n      MCP\n      CLI\n      GitHub\n      Jira\n      Internal APIs\n    Environment\n      Sandbox\n      Worktree\n      Container\n      Ephemeral stack\n    Feedback\n      Tests\n      Logs\n      Metrics\n      Traces\n      Browser\n    Guardrails\n      Policy\n      Architecture rules\n      Security\n    Evals\n      Correctness\n      Reliability\n      Cost\n      Autonomy\n"
+  },
+  {
+   "file": "diagram-06.png",
+   "mermaid": "flowchart TB\n    TEAMS[\"Engineering Teams\"] --> PLATFORM\n    subgraph PLATFORM[\"Agentic Engineering Platform（公司應該擁有的 harness layer）\"]\n        direction LR\n        P1[\"Policy / Identity\"]\n        P2[\"Context / AGENTS.md\"]\n        P3[\"MCP / Tool Registry\"]\n        P4[\"Environment Templates\"]\n        P5[\"Evals\"]\n        P6[\"Observability\"]\n        P7[\"Cost / Model Routing\"]\n        P8[\"Workflow / Guardrails\"]\n    end\n    PLATFORM --> CODEX[\"Codex\"]\n    PLATFORM --> CLAUDE[\"Claude Code\"]\n    PLATFORM --> COPILOT[\"Copilot\"]\n    CODEX --> ENV[\"Ephemeral Dev Environment\"]\n    CLAUDE --> ENV\n    COPILOT --> ENV\n    ENV --> GH[\"GitHub\"]\n    ENV --> CI[\"CI/CD\"]\n    ENV --> MCP[\"MCP\"]\n    MCP --> INT[\"Jira / Logs / DB / Observability / Internal APIs\"]\n    style PLATFORM fill:#d4edda,stroke:#2e7d32\n"
+  },
+  {
+   "file": "diagram-07.png",
+   "mermaid": "flowchart TB\n    BR[\"Bug report\"] --> AL\n    AL[\"<b>Agent 自動執行的迴圈</b>\n    重現問題 → 查 logs / traces → 修改程式碼\n    → 跑測試 → 跑 app → 驗證 UI\"]\n    AL -->|測試通過| AR[\"Agent review\"]\n    AR --> CI[\"PR → CI\"]\n    CI -->|red 退回迴圈| AL\n    CI -->|green| MG[\"Merge\"]\n    HUMAN[\"<b>人類保留的工作</b>\n    Intent ・ Architecture ・ Constraints ・ Taste ・ Risk ・ Prioritization ・ Acceptance\"]\n    HUMAN -.->|governs| BR\n    HUMAN -.->|governs| MG\n    style HUMAN fill:#e3f2fd,stroke:#1565c0,stroke-width:2px\n    style AL fill:#f4f7f5,stroke:#2e5e46,stroke-width:2px\n"
+  },
+  {
+   "file": "diagram-08.png",
+   "mermaid": "flowchart TB\n    BUY[\"<b>Buy / Adopt（買或採用）</b>\n    • Codex / Claude Code / Copilot / Antigravity\n    • Base agent loop\n    • Generic planning / memory\n    • Generic code search\n    • Generic sandbox technology\"]\n    BUILD[\"<b>Build / Own（自建並擁有）</b>\n    • Company context\n    • MCP gateway\n    • Identity / permissions\n    • Repo conventions / architecture constraints\n    • Internal tools\n    • Eval dataset\n    • Observability / cost controls\n    • Workflow integration\"]\n    BUY -->|組合| BUILD\n    style BUY fill:#fff3cd,stroke:#b8860b,stroke-width:2px\n    style BUILD fill:#d4edda,stroke:#2e7d32,stroke-width:2px\n"
+  }
+ ],
+ "tables": [
+  {
+   "file": "table-01.png",
+   "markdown": "| 生態 | 目前重點 | 我認為真正重要的訊號 |\n|---|---|---|\n| **OpenAI Codex** | Harness Engineering、長時間 autonomous runs、agent review agent、Symphony orchestration | **Repo / environment 本身變成 agent runtime 的一部分** |\n| **Anthropic Claude Code** | Long-running harness、planner / generator / evaluator、multi-agent、sandbox、Managed Agents | **Model 與 execution environment 解耦** |\n| **GitHub Copilot** | Cloud agent、custom agents、sub-agent、MCP、repo 內的 Agents 定義 | GitHub 正在變成 **Agent Control Plane** |\n| **Google** | Jules → Antigravity、multi-agent backend、agent-first IDE | **IDE 從「人的工具」翻轉成 agent 的 control surface，人退到 review 與 steer** |\n| **Cursor** | Cloud Agents、VM isolation、background tasks、automations | Local IDE → **remote engineering workers** |\n| **Devin 與同類產品** | Autonomous software engineer、agent fleets | 接近「工程人力 abstraction」 |\n| **Open ecosystem** | MCP、AGENTS.md、goose、AAIF | 開始形成類似 CNCF 時代的 interoperability layer |\n"
+  },
+  {
+   "file": "table-02.png",
+   "markdown": "| DevOps / Cloud Native | Agentic Engineering |\n|---|---|\n| Shell scripts | Prompt |\n| Jenkins job | Agent workflow |\n| CI runner | Agent sandbox |\n| Dockerfile | Agent environment definition |\n| Kubernetes | Agent orchestration |\n| Helm / templates | Agent skills / workflows |\n| Service mesh | MCP / agent gateway |\n| SRE observability | Agent observability / traces |\n| CI quality gates | Agent evals |\n| IDP / Backstage | Agentic Engineering Platform |\n| \"You build it, you run it\" | **\"You specify it, agents build it, you own it\"** |\n"
+  },
+  {
+   "file": "table-03.png",
+   "markdown": "| Agentic Platform Team 負責 | Product Engineering Team 負責 |\n|---|---|\n| Agent runtime integration | Business requirements |\n| Vendor abstraction | Acceptance criteria |\n| MCP gateway | Domain MCP tools |\n| Identity / secrets | Domain permissions |\n| Sandbox | Domain environment |\n| Agent observability | Domain dashboards |\n| Eval framework | Eval cases |\n| Cost / quota | Usage |\n| AGENTS.md template | Repo 的 AGENTS.md |\n| Golden workflows | Domain workflow |\n| Security guardrails | Production ownership |\n"
+  },
+  {
+   "file": "table-04.png",
+   "markdown": "| Engineering 規模 | 建議 |\n|---:|---|\n| < 30 人 | 不成立 Team；1–2 位 champions |\n| 30–100 人 | 仍不編專職：2 位 champions（各 20%）+ 1 位 sponsor；champions 過載才開 2–4 人的 Enablement Pod |\n| 100–500 人 | **4–8 人的 permanent Agentic Platform Team** |\n| > 500 人 | Agent Platform + Eval + Security 專業分工（8–12 人起跳） |\n"
+  },
+  {
+   "file": "table-05.png",
+   "markdown": "| 指標 | 意義 |\n|---|---|\n| Time to Merge | 交付週期是否真的縮短 |\n| Human Review Minutes / PR | 人類注意力是否真的被節省 |\n| Agent Retry Rate | Harness 與 context 的品質 |\n| Eval Pass Rate | 產出可靠度 |\n| Production Escape Rate | 正確性的最終防線 |\n| Cost / Successful Task | 單位經濟 |\n| Autonomous Completion Rate | 自主程度的實際進展 |\n"
+  },
+  {
+   "file": "table-06.png",
+   "markdown": "| 階段 | 目標 | 退出條件 |\n|---|---|---|\n| **第 1 個月** | 選定 2 個 pilot teams 與 champions；量出 baseline（Time to Merge、review minutes / PR）；runtime 選型完成，sandbox 與權限就緒 | pilot team 每天都有人真的在用 agent |\n| **第 2 個月** | 第一條 golden workflow 上線（建議從 bug-fix flow 開始）；AGENTS.md template 進 pilot repos；建立前 10–20 個 eval case | agent 完成的任務有 eval 可驗，不再靠感覺 |\n| **第 3 個月** | 對照 baseline 檢視 pilot 的成效指標；做去留與擴大決策；開放 self-service 給下一批 teams | 有量化證據支撐的 go / no-go，而不是 vibes |\n"
+  }
+ ]
+}

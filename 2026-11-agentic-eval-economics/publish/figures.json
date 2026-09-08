@@ -1,0 +1,34 @@
+{
+ "figures": [
+  {
+   "file": "diagram-01.png",
+   "mermaid": "flowchart LR\n    SRC1[\"Incidents /<br/>post-mortems\"] --> X[\"Eval 抽取<br/>（agent 輔助整理）\"]\n    SRC2[\"PR history<br/>（被打回的、一次過關的）\"] --> X\n    SRC3[\"手工挑選<br/>golden tasks\"] --> X\n    X --> DS[\"Eval dataset<br/>（版本控管，與 code 同 repo）\"]\n    DS --> RUN[\"定期執行<br/>（harness 改動 / model 升級 / 每週）\"]\n    RUN --> SCORE[\"評分<br/>（自動 + 每月人工抽查）\"]\n    SCORE --> DEC[\"決策：換 model？修 harness？擴大授權？\"]\n    DEC -.->|新失敗案例回填| DS\n    style DS fill:#d4edda,stroke:#2e7d32\n"
+  },
+  {
+   "file": "diagram-02.png",
+   "mermaid": "flowchart TD\n    NS[\"Effective Engineering Leverage\"] --> A[\"Delegation<br/>成功委派的任務比例\"]\n    NS --> B[\"Completion<br/>End-to-end 完成率\"]\n    NS --> C[\"Attention<br/>人類投入時間 / 任務\"]\n    NS --> D[\"Quality<br/>Production 正確性\"]\n    A --> A1[\"任務類型覆蓋率\"]\n    B --> B1[\"Retry rate\"]\n    B --> B2[\"Autonomous completion rate\"]\n    C --> C1[\"Review minutes / PR\"]\n    C --> C2[\"等待與 context switch\"]\n    D --> D1[\"Escape rate\"]\n    D --> D2[\"Revert rate\"]\n    style NS fill:#d4edda,stroke:#2e7d32\n"
+  },
+  {
+   "file": "diagram-03.png",
+   "mermaid": "flowchart LR\n    P[\"Pilot（90 天）\"] --> G1{\"G1\"} --> E1[\"25% teams\"] --> G2{\"G2\"} --> E2[\"全員 + write tools\"] --> G3{\"G3\"} --> E3[\"深度授權\"]\n    G1 -.->|未過| F1[\"回頭修 harness / 組織\"]\n    G2 -.->|未過| F1\n    G3 -.->|未過| F1\n    style F1 fill:#ffe0e0,stroke:#c0392b\n"
+  }
+ ],
+ "tables": [
+  {
+   "file": "table-01.png",
+   "markdown": "| 級別 | 數量 | 執行時機 | 回答的問題 |\n|---|---|---|---|\n| **Smoke** | 5–10 | 每次 harness 改動 | 有沒有把基本盤弄壞？ |\n| **Golden** | 20–50 | 每週 + 每次 model 升級 | 核心能力有沒有回歸？ |\n| **Frontier** | 10–20 | 每月 | 能力邊界推進到哪？該不該擴大授權？ |\n"
+  },
+  {
+   "file": "table-02.png",
+   "markdown": "| 任務類型 | 建議層級 | 理由 |\n|---|---|---|\n| Planning、架構判斷 | 最強 model | 錯誤成本最高，一次做對 |\n| 大量 code 生成 | 中階 model | 有 tests 兜底，量大 |\n| Eval 執行、lint 類 | 便宜 model | 高頻、低風險 |\n| Review、安全判斷 | 最強 model | 最後防線不省錢 |\n"
+  },
+  {
+   "file": "table-03.png",
+   "markdown": "| 指標 | 會被怎麼 game | 對策 |\n|---|---|---|\n| % tasks delegated | 把大任務拆小灌件數 | 搭配「任務類型覆蓋率」，看廣度不看件數 |\n| Review minutes / PR | Rubber stamp 快速放行 | 與 escape / revert rate 成對讀 |\n| Completion rate | 只委派簡單任務 | Frontier evals 追蹤能力邊界有沒有前進 |\n| Escape rate | 出事不開 incident | Incident 定義綁 SLO，不綁人的判斷 |\n"
+  },
+  {
+   "file": "table-04.png",
+   "markdown": "| Gate | 過關條件 | 解鎖 |\n|---|---|---|\n| **G1：Pilot 結業** | 2 個 teams 穩定使用；eval 就緒；對照 baseline 有感改善 | 擴大到 25% teams |\n| **G2：規模驗證** | Retry rate < 15%；escape rate 持平；champions 體系自轉 | 全部 teams + 開放 write 級 tools |\n| **G3：深度授權** | Frontier evals 連續穩定；audit 半年無重大事件 | Dangerous tools 白名單、多步 autonomous run |\n"
+  }
+ ]
+}

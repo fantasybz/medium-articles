@@ -20,9 +20,13 @@ This piece is my complete answer. The conclusion first:
 
 What follows walks from the state of the market, through the lessons DevOps already taught us, into org design, the buy-vs-build call, and finally a concrete 90-day plan.
 
+That order is deliberate. If you haven't established where the industry actually is, and haven't looked at the holes DevOps fell into on the way, then the org design and the buy-vs-build call are just picking a side on instinct, and you're one step away from another AI initiative that exists because everyone else has one.
+
 ---
 
 ## 2. Where the market actually is in 2026
+
+Start by locating yourself on a rough maturity ladder. The axis here isn't how capable the models are; it's how much of the work people are willing to hand over.
 
 The whole industry has visibly shifted rightward, and the center of gravity is now pressing on the last two stages:
 
@@ -38,7 +42,7 @@ flowchart LR
 
 Two surveys are worth anchoring on. Google's 2025 DORA report (nearly 5,000 respondents) found that **90% of engineers now use AI at work**, with a median of two hours a day spent on it — yet only about 24% report high trust in what it produces. Stack Overflow's data shows AI agent usage jumping from 31% to 59% in a single year, while 87% of developers worry about the correctness of agent output. Read together, the message is unambiguous: **adoption stopped being the bottleneck a while ago. Trust and verification are the bottleneck now** — which is exactly what the harness and eval sections below are about.
 
-Here's what each ecosystem is pushing on, and the signal I think actually matters:
+The table below isn't a scoreboard of who wins. Here's what each ecosystem is pushing on, and the signal I think actually matters:
 
 | Ecosystem | Current focus | The signal that actually matters |
 |---|---|---|
@@ -72,13 +76,15 @@ Cursor is solving the same problem from another angle. Every [cloud agent](https
 
 ### The biggest signal: standards are converging
 
-In December 2025 the Linux Foundation formed the [Agentic AI Foundation (AAIF)](https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation), bringing **MCP, AGENTS.md, and goose** under one roof; as of August 2026 it counts 247 member organizations. The industry is standardizing the interfaces between model, tools, and repository context, instead of every agent vendor shipping its own closed integrations — very much the moment the CNCF ecosystem started to converge.
+In December 2025 the Linux Foundation formed the [Agentic AI Foundation (AAIF)](https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation), bringing **MCP, AGENTS.md, and goose** under one roof; as of August 2026 it counts 247 member organizations. The industry is standardizing the interfaces between model, tools, and repository context, instead of every agent vendor shipping its own closed integrations. This looks very much like the moment the CNCF ecosystem started to converge.
 
 ---
 
 ## 3. DevOps already ran this experiment
 
-The two eras map onto each other almost item for item:
+First, what this comparison is for. I'm not claiming Agentic Engineering will repeat DevOps step by step. I want to borrow what DevOps and Cloud Native went through, so we can tell which parts of today are only new names and which are old problems handed to a new kind of worker.
+
+Seen that way, the two eras map onto each other almost item for item:
 
 | DevOps / Cloud Native | Agentic Engineering |
 |---|---|
@@ -93,6 +99,8 @@ The two eras map onto each other almost item for item:
 | CI quality gates | Agent evals |
 | IDP / Backstage | Agentic Engineering Platform |
 | "You build it, you run it" | **"You specify it, agents build it, you own it"** |
+
+The row worth staring at is the last one. Everything above it lines up component against component and practice against practice. What the last row changes isn't a component at all, it's the responsibility model. The act of delivering gets handed to agents, while the responsibility stays with the same people.
 
 Lay the two timelines on top of each other:
 
@@ -125,6 +133,8 @@ Plenty of companies stood up standalone DevOps teams early on, only to convert "
 
 ## 4. Don't build this team
 
+Start with the wrong answer that gets reached for most often. The organization's first move is usually to stand up a central agent team and let every other team throw its requests over the wall:
+
 ```mermaid
 flowchart TB
     subgraph ANTI["Anti-pattern: a central agent team (an AI-powered outsourcing department)"]
@@ -138,7 +148,7 @@ flowchart TB
     style AGT fill:#ffe0e0,stroke:#c0392b
 ```
 
-This design fails for two reasons:
+It's not that the central team lacks the smarts. The position itself doesn't hold. This design fails for two reasons:
 
 1. It swaps a queue waiting on Ops for a queue waiting on the agent team. Same bottleneck, new name.
 2. A central agent team will never understand business context better than the domain team — and context is precisely what determines the quality of what an agent produces.
@@ -147,13 +157,13 @@ Beyond the central agent team, three failure modes show up just as often and get
 
 - **Building your own runtime.** Six to twelve months spent on an in-house Claude Code or Devin. The vendor's next release makes it obsolete. You are betting against the capital expenditure of an entire industry, and the odds of losing are close to certain.
 - **The AGENTS.md graveyard.** A big push requiring every repo to have an AGENTS.md, with nobody owning maintenance and no evals confirming it actually improves agent output. Six months later it's as stale as the company wiki. Context is a living artifact that needs an owner, not a document you write once and archive.
-- **Review becomes the new bottleneck.** Agents produce PRs ten times faster while the review process stays exactly the same. The result isn't faster delivery — it's an exploding review queue, reviewer fatigue, and rubber-stamped approvals that push the quality problem downstream into production. This is why agent-reviewing-agent and evals have to be funded in step with generation capacity.
+- **Review becomes the new bottleneck.** Agents produce PRs ten times faster while the review process stays exactly the same. The result isn't faster delivery. It's an exploding review queue, reviewer fatigue, and eventually rubber-stamped approvals. The quality problem hasn't gone anywhere; it has moved downstream into production. This is why agent-reviewing-agent and evals have to be funded in step with generation capacity.
 
 ---
 
 ## 5. Build this team instead
 
-The right shape is **platform plus federation**: a central platform team paves roads, domain teams drive themselves onto them, and embedded champions connect the two.
+The right shape is **platform plus federation**: a central platform team paves roads, domain teams drive themselves onto them, and embedded champions connect the two. By a paved road I mean that security, environments, tooling, and evals are wired up in advance, so the default path is also the safe one; the champions are engineers scattered across the product teams who still build product day to day:
 
 ```mermaid
 flowchart TB
@@ -169,6 +179,8 @@ flowchart TB
     C -->|self-service| RT
     style PT fill:#d4edda,stroke:#2e7d32
 ```
+
+The part of this model that starts the most arguments is ownership. My rule for splitting it: anything that crosses repos, crosses teams, or touches security and infrastructure consistency belongs to the Agentic Platform Team, and anything that decides product correctness or takes domain judgment stays with the Product Engineering Team.
 
 Ownership splits like this:
 
@@ -192,6 +204,8 @@ The single most important idea in that table:
 
 Those are two entirely different jobs.
 
+The harness answers whether an agent can work safely, reliably, and observably. Agent-legible software answers a different question: whether your own system carries tests, documentation, logs, traces, and rules clear enough for the agent to get the work right. The first is paving the road. The second is putting up the signs along it.
+
 On sizing — these are my numbers, not an industry standard:
 
 | Engineering headcount | Recommendation |
@@ -205,11 +219,15 @@ Even past 500 engineers, I would not put a central team in charge of "making age
 
 One question that gets skipped: **how you pick champions, and how people transition.** A good agent champion is not "the person best at prompting." It's whoever was already good at developer experience — the engineer who writes tests, keeps documentation honest, and has taste in CI/CD and tooling. Harness engineering is DX engineering with the audience swapped from humans to agents.
 
-As for junior engineers, my view runs against the fashionable pessimism. The scarcest skills of the agent era — decomposing problems, defining acceptance criteria, judging output quality — are built precisely by reviewing large volumes of agent output. Organizations should deliberately design "review the agent's PRs" into the junior training path, rather than reserving it for seniors and then wondering, three years later, why nobody is ready to step up.
+As for junior engineers, my view runs against the fashionable pessimism. The scarcest skills of the agent era are decomposing problems, defining acceptance criteria, and judging output quality, and all three are built precisely by reviewing large volumes of agent output. So organizations should deliberately design "review the agent's PRs" into the junior training path, rather than reserving it for seniors and then wondering, three years later, why nobody is ready to step up.
 
 ---
 
 ## 6. A harness is not a prompt
+
+Follow the org design far enough and it lands on a technical question: what is the platform team actually supposed to build? If the answer turns out to be a handful of prompt templates, the division of labor above has nothing to stand on.
+
+The harness here is not a few more paragraphs of prompt, and it isn't rebuilding an agent of your own from scratch. More precisely, it's the layer where a company wires together context, tools, environment, feedback, guardrails, and evals, so an agent can actually finish work inside your engineering system instead of only producing code.
 
 Here's how I define the harness a company builds for itself:
 
@@ -252,7 +270,7 @@ mindmap
 
 ### AGENTS.md: what good and bad look like
 
-The "context" branch deserves something concrete. A good AGENTS.md is not a project overview — it's an operating manual written for an agent. Its purpose isn't to introduce; it's to prevent:
+The "context" branch deserves something concrete. A good AGENTS.md is not a project overview. It's an operating manual written for an agent. Its purpose isn't to introduce, it's to prevent:
 
 ```text
 # Wrong: describing the current state
@@ -302,7 +320,7 @@ Note carefully: **owning that middle layer is not the same as writing your own C
 
 The policy, identity, and guardrails boxes deserve their own callout, because they are exactly what you'll be asked about the moment you take this architecture to a CISO:
 
-- **Identity and least privilege.** Every agent run should have its own identity and scoped credentials — access to the repos, secrets, and APIs this task needs, and nothing more. Never a shared human token. When something goes wrong, "which agent, which run, acting with what permissions" has to be answerable in five minutes.
+- **Identity and least privilege.** Every agent run should have its own identity and scoped credentials. That is, it gets the repos, secrets, and APIs this task needs and nothing more, not a shared human token. When something goes wrong, "which agent, which run, acting with what permissions" has to be answerable in five minutes.
 - **Prompt injection is a real attack surface.** Agents read issues, PR comments, external web pages, and logs — all untrusted input. Tiered tool permissions and sandbox egress policy are table stakes, not extra credit.
 - **Audit trail.** Every tool call by every agent must be traceable. Starting to build this when compliance asks "who decided this code should work this way" is starting far too late.
 
@@ -313,6 +331,8 @@ The policy, identity, and guardrails boxes deserve their own callout, because th
 In OpenAI's harness engineering piece, the most important thing isn't Codex. It's one sentence:
 
 > **Make the system legible to agents.**
+
+Legible here does not mean writing more documentation for the agent to read. It means that the clues a human digs through while debugging or reviewing have to be clues the agent can dig through on its own.
 
 Turn logs, metrics, traces, browser state, DOM, screenshots, tests, architecture, dependency rules, CI, and PR feedback into things an agent can query, operate, and verify directly. Once you have, the delivery pipeline looks like this:
 
@@ -334,7 +354,9 @@ flowchart TB
     style AL fill:#f4f7f5,stroke:#2e5e46,stroke-width:2px
 ```
 
-What's left for humans is intent, architecture, constraints, taste, risk, prioritization, and acceptance. **That, to me, is the actual definition of Agentic Engineering.**
+What's left for humans is intent, architecture, constraints, taste, risk, prioritization, and acceptance.
+
+The center of gravity for people moves upstream. You stop spending most of your time on each line of the implementation, and take responsibility instead for setting the direction, the constraints, and the bar for what counts as done. **That, to me, is the actual definition of Agentic Engineering.**
 
 ### What about brownfield?
 
@@ -350,7 +372,7 @@ The counterintuitive part: this ordering is identical to what you'd invest in to
 
 ## 8. What to buy and what to build
 
-This may be the most consequential judgment in the whole piece:
+This may be the most consequential judgment in the whole piece. The diagram below splits into two boxes. The top one holds everything the market will keep upgrading on your behalf; the bottom one holds everything that only you will build, because only you need it:
 
 ```mermaid
 flowchart TB
@@ -418,6 +440,8 @@ human attention saved
 production correctness
 ```
 
+A North Star can only tell you whether the direction is right, which isn't enough to run the operation day to day. What a weekly or monthly review needs is something plainer: numbers that show whether speed, human attention, output quality, and cost are all improving together.
+
 Paired with a set of operating metrics:
 
 | Metric | What it tells you |
@@ -453,7 +477,7 @@ If you decide to do this, here's how I'd sequence the first 90 days:
 
 Three warnings:
 
-1. **Pick pilots that are painful but not fatal** — internal tools, test coverage, bug backlog. Not the mission-critical path.
+1. **Pick pilots that are painful but not fatal**: internal tools, test coverage, bug backlog. Not the mission-critical path.
 2. **Start without a baseline and you will be unable to prove anything three months later.** This is the most common and most expensive mistake.
 3. **The platform team's first customer is the pilot team, not the whole company.** Chasing coverage too early is the most common way a platform team dies.
 
@@ -461,7 +485,7 @@ Three warnings:
 
 ## 12. Closing
 
-It is genuinely the right moment to invest in Agentic Engineering. But the thing to invest in isn't "our own agent." It's this:
+Having walked through all of that, I'll reduce the whole argument to one thing. It is genuinely the right moment to invest in Agentic Engineering. But the thing to invest in isn't "our own agent." It's this:
 
 > **Make any agent work well inside your engineering system.**
 

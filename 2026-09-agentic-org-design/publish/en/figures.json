@@ -1,0 +1,34 @@
+{
+ "figures": [
+  {
+   "file": "diagram-01.png",
+   "mermaid": "flowchart LR\n    subgraph PT[\"Agentic Platform Team (4–8 people)\"]\n        P1[\"Runtime integration and upgrades\"]\n        P2[\"MCP gateway and permissions\"]\n        P3[\"Eval framework\"]\n        P4[\"Cost and observability\"]\n    end\n    subgraph CH[\"Embedded Champions (1 per team, 20% time)\"]\n        C1[\"Bring paved roads into the team\"]\n        C2[\"Bring pain points back to platform\"]\n    end\n    subgraph DT[\"Domain Teams\"]\n        D1[\"AGENTS.md and domain context\"]\n        D2[\"Eval cases\"]\n        D3[\"Final quality of output\"]\n    end\n    PT -->|paved roads / tooling / training| CH\n    CH -->|feedback / requests / practices| PT\n    CH -.->|embedded in| DT\n    style PT fill:#d4edda,stroke:#2e7d32\n"
+  },
+  {
+   "file": "diagram-02.png",
+   "mermaid": "flowchart TB\n    VP[\"VP Engineering\"] --> PL[\"Platform Lead (1)\"]\n    VP --> G[\"Champions Guild<br/>(8–10 people, 20% time each)\"]\n    PL --> IE[\"Infra / Sandbox (1–2)\"]\n    PL --> DX[\"DX / Context engineering (1)\"]\n    PL --> EV[\"Eval / Observability (1)\"]\n    PL --> SEC[\"Security (0.5, borrowed from the security team)\"]\n    style PL fill:#d4edda,stroke:#2e7d32\n"
+  },
+  {
+   "file": "diagram-03.png",
+   "mermaid": "flowchart TD\n    Q1{\"Do you have an internal developer<br/>platform (IDP) team?\"} -->|No| N1[\"Start an Agentic Platform Pod<br/>it becomes your platform team later\"]\n    Q1 -->|Yes| Q2{\"Do they have capacity<br/>for a new mission?\"}\n    Q2 -->|Yes| A1[\"Fold agentic into the IDP mission<br/>add 2–3 headcount\"]\n    Q2 -->|No| A2[\"Start a separate pod<br/>merge back in 12–18 months\"]\n    A2 --> M[\"Merge conditions: runtime stable,<br/>governance in CI, champions self-sustaining\"]\n    style A1 fill:#d4edda,stroke:#2e7d32\n"
+  }
+ ],
+ "tables": [
+  {
+   "file": "table-01.png",
+   "markdown": "| Item | Platform Team | Champion | Domain Team |\n|---|---|---|---|\n| Runtime selection and upgrades | **R / A** | C | I |\n| Sandbox and permission infrastructure | **R / A** | C | I |\n| AGENTS.md template and standards | **A** | R (drives) | **R** (content) |\n| Domain MCP tools | C | C | **R / A** |\n| Eval framework | **R / A** | C | I |\n| Eval cases (domain) | C | R (drives) | **R / A** |\n| Cost and quota policy | **R / A** | I | C |\n| Output quality and production ownership | I | I | **R / A** |\n"
+  },
+  {
+   "file": "table-02.png",
+   "markdown": "| Size | Dedicated | Champions | Governance | Next upgrade signal |\n|---:|---|---|---|---|\n| ~50 | 0 | 2 (20% time) | Checklist plus vendor defaults | Champions overloaded |\n| ~200 | 4–6 | 1 per team | Gateway plus policy as code | Evals and cost need dedicated people |\n| ~1,000 | 8–12 (three squads) | Formalized guild | Full platform plus council | Absorbed into the IDP; the name disappears |\n"
+  },
+  {
+   "file": "table-03.png",
+   "markdown": "| Look for this | Avoid this |\n|---|---|\n| Already uses agents daily with real output to show | Wants to evaluate new tools, doesn't want to touch anyone else's repo |\n| Has written the team's onboarding docs or test infrastructure | Treats champion as a promotion stepping stone, doesn't teach |\n| Willing to spend time coaching; turns complaints into requirements | No patience for non-deterministic systems |\n"
+  },
+  {
+   "file": "table-04.png",
+   "markdown": "| Bucket | Contents | Behavior |\n|---|---|---|\n| **Run** | Tokens, vendor subscriptions, sandbox compute | Grows linearly with adoption; needs quota management |\n| **Build** | Platform team headcount | Fixed; 4–6 people to start |\n| **Enable** | Champions' 20% time, training, the guild | An invisible cost — if you don't budget it, day-to-day work eats it |\n"
+  }
+ ]
+}
