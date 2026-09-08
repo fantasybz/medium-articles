@@ -3033,8 +3033,23 @@ class TestMediumStoredIt(Driven, unittest.TestCase):
     def test_a_save_that_never_finishes_is_not_reported_as_ready(self):
         d = self.refill(**{"eval:saved.js": SAVING})
         self.assertNotEqual(d.out.returncode, 0)
-        self.assertIn("never reported the post saved", d.out.stderr)
+        self.assertIn("never held the post at saved", d.out.stderr)
         self.assertNotIn("post ready", d.out.stdout)
+
+    def test_a_saved_that_flips_back_to_saving_is_not_believed(self):
+        # The one that stored a half-finished post. Medium flags the body paste
+        # as saved while the image insertions after it are still queued, so the
+        # first "Saved" is stale: it flips back to "Saving…" moments later. A
+        # run that took the first sighting disconnected mid-write.
+        d = self.refill(**{"eval:saved.js": [SAVED_DRAFT, SAVED_DRAFT, SAVING,
+                                             SAVED_DRAFT] + [SAVED_DRAFT] * 8})
+        self.assertEqual(d.out.returncode, 0, d.out.stderr + d.out.stdout)
+        self.assertIn("post ready", d.out.stdout)
+
+    def test_a_save_indicator_that_keeps_flickering_never_counts_as_saved(self):
+        d = self.refill(**{"eval:saved.js": [SAVED_DRAFT, SAVING] * 120})
+        self.assertNotEqual(d.out.returncode, 0)
+        self.assertIn("never held the post at saved", d.out.stderr)
 
     def test_a_concurrent_editor_is_reported_verbatim_and_stops_the_run(self):
         # The message that actually appeared. The fix is to close the other

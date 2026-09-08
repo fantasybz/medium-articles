@@ -54,6 +54,7 @@ readonly SAVE_TIMEOUT_S=180       # 18-figure refill observed past 45s
 readonly RELOAD_SETTLE_S=40      # a reloaded editor rehydrates its figures
 readonly RECONNECT_GAP_S=3       # let the daemon go before asking for a page
 readonly RELOAD_STABLE_READS=2   # identical samples before a reload counts as done
+readonly SAVE_QUIET_READS=6      # consecutive "Saved" reads before believing it
 # A new story renders instantly; an existing post has to fetch and lay out
 # 149 grafs and 14 figures first, and asking it what it is too early looks
 # exactly like "no editor here". The same budget covers the other two waits on
@@ -689,8 +690,17 @@ esac
 # the write finished, then throw the page away and check what comes back.
 step "waiting for Medium to store it"
 python3 "$TOOLS/medium_js.py" saved > "$WORK/saved.js"
+# The first "Saved" is not the one to trust. Medium flags the big body paste as
+# saved while the image insertions that came after it are still queued, so a
+# run that stopped at the first sighting disconnected mid-write and stored a
+# revision from partway through the image loop -- 154 blocks of 178, with
+# IMGSLOT text where three figures should be, on a post whose editor had just
+# reported 7 figures and 0 placeholders. Requiring the indicator to hold at
+# "Saved" for several consecutive reads gives Medium the chance to notice the
+# later edits and flip back to "Saving…", which resets the count.
 stored=0
 save_state=""
+quiet=0
 for _ in $(seq 1 "$SAVE_TIMEOUT_S"); do
   save_state=$(B eval "$WORK/saved.js") || {
     echo "FAILED: browse could not read the save indicator" >&2; exit "$EX_TEMPFAIL"; }
@@ -701,12 +711,15 @@ for _ in $(seq 1 "$SAVE_TIMEOUT_S"); do
     # medium_js.py classifies this, because the raw text is not one word: a
     # draft's metabar reads "DraftSaved" and a published post's reads "Saved".
     # Globbing for the literal "Saved" here matched only the published half.
-    *'"saved":true'*) stored=1; break ;;
+    *'"saved":true'*)
+      quiet=$((quiet + 1))
+      [ "$quiet" -ge "$SAVE_QUIET_READS" ] && { stored=1; break; } ;;
+    *) quiet=0 ;;
   esac
   sleep 1
 done
 if [ "$stored" -eq 0 ]; then
-  echo "FAILED: Medium never reported the $WHAT saved (last: $save_state)" >&2
+  echo "FAILED: Medium never held the $WHAT at saved (last: $save_state)" >&2
   exit "$EX_TEMPFAIL"
 fi
 
