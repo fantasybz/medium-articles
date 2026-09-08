@@ -63,7 +63,13 @@ import sys
 # Medium's code blocks carry a language-picker label in innerText.
 LANG_LABEL = re.compile(r"\nAuto \([^)]*\)$")
 TAGS = re.compile(r"</?(p|h\d|blockquote|pre|code|strong|em|a|li|ul|ol)\b[^>]*>")
-SLOT_P = re.compile(r"^<p>IMGSLOT-.*-ENDSLOT</p>$")
+# A figure reaches the payload one of two ways: as a placeholder the driver
+# will replace with an upload, or -- with --reuse-figures -- already written as
+# a <figure> pointing at an image Medium is serving for this post. Both occupy
+# one graf slot and carry no text, so both have to count here. Recognising only
+# the placeholder made the reuse mode's figure-placement check expect no
+# figures at all, and then report the correct ones as a mismatch.
+SLOT_P = re.compile(r"^(?:<p>IMGSLOT-.*-ENDSLOT</p>|<figure>.*</figure>)$")
 ANCHOR = re.compile(r"<a\b[^>]*>")
 
 THIN_SPACE = "\u2009"

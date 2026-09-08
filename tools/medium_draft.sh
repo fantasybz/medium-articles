@@ -45,6 +45,21 @@ set -euo pipefail
 readonly UPLOAD_TIMEOUT_S=40     # largest image observed took ~8s to land
 readonly EDITOR_SETTLE_S=3       # after the body paste, before polling grafs
 readonly KEYPRESS_GAP_S=1        # the two Backspaces must not coalesce
+# 45s was not enough: an 18-figure refill sat on "Saving…" past it, the run
+# bailed with EX_TEMPFAIL, and the save then finished by itself moments later.
+# A timeout that fires while the write is still in flight is worse than none —
+# it reports a failure for a post that is about to be fine, and the operator's
+# instinct is to re-run, which rewrites the post again.
+readonly SAVE_TIMEOUT_S=600       # a 14-figure refill was still writing at 180
+# A reloaded editor rehydrates its figures, and every one of them counts as
+# pending until its src is a CDN URL. 40 was enough for 7 figures and not for
+# 14: the run timed out on a post that was complete and merely still drawing.
+readonly RELOAD_SETTLE_S=120     # 14 figures need well past 40
+readonly RECONNECT_GAP_S=3       # let the daemon go before asking for a page
+readonly PUBLISHED_LOAD_S=14     # a published page renders its figures
+readonly RELOAD_STABLE_READS=2   # identical samples before a reload counts as done
+readonly SAVE_QUIET_READS=6      # consecutive "Saved" reads before believing it
+readonly SAVE_GRACE_S=45         # hands off after that, before anything reloads
 # A new story renders instantly; an existing post has to fetch and lay out
 # 149 grafs and 14 figures first, and asking it what it is too early looks
 # exactly like "no editor here". The same budget covers the other two waits on
@@ -93,6 +108,7 @@ POSITIONALS=0    # how many were given, not how many are non-empty: see below
 LANG_PACK=""
 POST_ID=""
 RETITLE=0
+REUSE_FIGURES=0
 # Options are parsed anywhere in the line rather than positionally: the id is
 # copied out of the table in PUBLISHING.md and pasted onto the end of a command
 # that already reads `<article> en`.
@@ -109,6 +125,9 @@ while [ "$#" -gt 0 ]; do
       shift ;;
     --retitle)
       RETITLE=1
+      shift ;;
+    --reuse-figures)
+      REUSE_FIGURES=1
       shift ;;
     -*)
       echo "unknown option: $1" >&2; usage; exit "$EX_USAGE" ;;
@@ -477,6 +496,39 @@ else
   esac
 fi
 
+# The figure substitution has to happen before the body goes in: rewriting the
+# payload afterwards leaves the post holding the placeholders the old payload
+# carried, which is what the first attempt at this did.
+TOTAL_IMAGES_PRE=$(python3 -c "import json,sys; print(len(json.load(open(sys.argv[1]))['images']))" "$WORK/payload.json")
+REUSED_FIGURES_RESOLVED=0
+if [ "$REUSE_FIGURES" -eq 1 ]; then
+  # Point the slots at the figures Medium is already serving for this post
+  # instead of deleting and re-uploading them. Re-uploading is what broke every
+  # refill of a published post: the save never finished and what got stored was
+  # whatever the image loop had reached. Read off the *published* page, not the
+  # editor -- a draft that a failed run already emptied has no figures to copy.
+  step "reading the figures Medium already has"
+  python3 "$TOOLS/medium_js.py" figures > "$WORK/figures.js"
+  B newtab "https://medium.com/p/$POST_ID" >/dev/null 2>&1 || true
+  sleep "$PUBLISHED_LOAD_S"
+  figures_seen=$(B eval "$WORK/figures.js") || {
+    echo "FAILED: could not read the published post's figures" >&2; exit "$EX_TEMPFAIL"; }
+  printf '%s' "$figures_seen" > "$WORK/figures.json"
+  echo "$figures_seen" | head -c 200; echo
+  # cdnfill refuses a count mismatch, so a published page that has not finished
+  # rendering cannot half-fill the article and leave the rest as IMGSLOT text.
+  python3 "$TOOLS/medium_js.py" cdnfill "$WORK/payload.json" "$WORK/figures.json" \
+    > "$WORK/payload-cdn.json" || {
+    echo "FAILED: the published post's figures do not match this pack" >&2
+    echo "  nothing has been written to the post" >&2
+    exit "$EX_UNAVAILABLE"; }
+  REUSED_FIGURES_RESOLVED="$TOTAL_IMAGES_PRE"
+  mv "$WORK/payload-cdn.json" "$WORK/payload.json"
+  # Back to the editor tab for the paste.
+  B newtab "https://medium.com/p/$POST_ID/edit" >/dev/null 2>&1 || true
+  sleep "$PUBLISHED_LOAD_S"
+fi
+
 step "pasting the body"
 if [ -n "$POST_ID" ]; then
   # refill, not body: on an existing post the old body has to go, figures
@@ -519,9 +571,13 @@ if [ -n "$POST_ID" ]; then
   # not one of them went. Everything below counts figures up from zero, so a
   # survivor turns the first upload wait into a 40s timeout blaming the
   # network for a selection that did not do what this run assumed.
+  # With --reuse-figures the pasted HTML carries the figures itself, so the
+  # right answer is "as many as the pack has" rather than none. Comparing
+  # against 0 in that mode failed a paste that had just done exactly what it
+  # was asked to.
   case "$body_result" in
-    *'"figuresLeft":0,'*) ;;
-    *) echo "FAILED: the refill left old figures behind" >&2
+    *'"figuresLeft":'"$REUSED_FIGURES_RESOLVED"','*) ;;
+    *) echo "FAILED: the refill did not leave $REUSED_FIGURES_RESOLVED figures behind" >&2
        echo "  the paste did not take them with the old prose, which every" >&2
        echo "  figure count below assumes; stopping before anything is uploaded" >&2
        exit "$EX_UNAVAILABLE" ;;
@@ -541,11 +597,15 @@ eval "$selectors"
 python3 "$TOOLS/medium_js.py" state > "$WORK/state.js"
 python3 -c "import json,sys; print('\n'.join(json.load(open(sys.argv[1]))['images']))" \
   "$WORK/payload.json" > "$WORK/images.txt"
+REUSED_FIGURES="$REUSED_FIGURES_RESOLVED"
 # `|| true`: grep -c prints 0 and exits 1 on an article with no figures, and
 # under `set -e` the assignment alone would end the run right here - after the
 # body has been replaced, with no message at all.
 TOTAL_IMAGES=$(grep -c . "$WORK/images.txt" || true)
-EXPECTED_FIGURES=0
+# In reuse mode the upload list is empty by design, but the finished post still
+# has to carry every figure: the final gate counts what is on the page, not what
+# was uploaded.
+EXPECTED_FIGURES="$REUSED_FIGURES"
 
 # Wait for the editor to settle, by asking rather than by sleeping. Both
 # numbers are assertions, not diagnostics:
@@ -567,13 +627,13 @@ settled=0
 for _ in $(seq 1 "$EDITOR_LOAD_TIMEOUT_S"); do
   state=$(B eval "$WORK/state.js") || state=""
   case "$state" in
-    *'"figures":0,'*'"slots":'"$TOTAL_IMAGES"'}'*) settled=1; break ;;
+    *'"figures":'"$REUSED_FIGURES"','*'"slots":'"$TOTAL_IMAGES"'}'*) settled=1; break ;;
   esac
   sleep 1
 done
 if [ "$settled" -eq 0 ]; then
   echo "FAILED: the editor did not settle in ${EDITOR_LOAD_TIMEOUT_S}s after the paste" >&2
-  echo "  wanted 0 figures and $TOTAL_IMAGES placeholders, browse returned: ${state:-<nothing>}" >&2
+  echo "  wanted $REUSED_FIGURES figures and $TOTAL_IMAGES placeholders, browse returned: ${state:-<nothing>}" >&2
   exit "$EX_UNAVAILABLE"
 fi
 echo "$state"
@@ -669,6 +729,174 @@ esac
 case "$FINAL" in
   *'"slots":0}'*) ;;
   *) echo "FAILED: placeholder text left in the $WHAT" >&2; exit "$EX_UNAVAILABLE" ;;
+esac
+
+# Everything above proves what the browser is holding. It does not prove what
+# Medium stored, and those came apart badly: a batch that moved straight on to
+# the next post as soon as these checks passed left 13 of 16 posts with figures
+# missing and IMGSLOT text still in the saved copy -- every one of which had
+# printed "all blocks match" first. Medium autosaves asynchronously, and
+# navigating away mid-write truncates it. So wait for its own indicator to say
+# the write finished, then throw the page away and check what comes back.
+step "waiting for Medium to store it"
+python3 "$TOOLS/medium_js.py" saved > "$WORK/saved.js"
+# The first "Saved" is not the one to trust. Medium flags the big body paste as
+# saved while the image insertions that came after it are still queued, so a
+# run that stopped at the first sighting disconnected mid-write and stored a
+# revision from partway through the image loop -- 154 blocks of 178, with
+# IMGSLOT text where three figures should be, on a post whose editor had just
+# reported 7 figures and 0 placeholders. Requiring the indicator to hold at
+# "Saved" for several consecutive reads gives Medium the chance to notice the
+# later edits and flip back to "Saving…", which resets the count.
+stored=0
+save_state=""
+quiet=0
+for _ in $(seq 1 "$SAVE_TIMEOUT_S"); do
+  save_state=$(B eval "$WORK/saved.js") || {
+    echo "FAILED: browse could not read the save indicator" >&2; exit "$EX_TEMPFAIL"; }
+  case "$save_state" in
+    # Verbatim: "Saving failed because someone is also editing" is the one that
+    # bit, and it needs the operator to close the other editor, not a retry.
+    *'"failed":true'*) echo "FAILED: Medium says $save_state" >&2; exit "$EX_UNAVAILABLE" ;;
+    # medium_js.py classifies this, because the raw text is not one word: a
+    # draft's metabar reads "DraftSaved" and a published post's reads "Saved".
+    # Globbing for the literal "Saved" here matched only the published half.
+    *'"saved":true'*)
+      quiet=$((quiet + 1))
+      [ "$quiet" -ge "$SAVE_QUIET_READS" ] && { stored=1; break; } ;;
+    *) quiet=0 ;;
+  esac
+  sleep 1
+done
+if [ "$stored" -eq 0 ]; then
+  echo "FAILED: Medium never held the $WHAT at saved (last: $save_state)" >&2
+  exit "$EX_TEMPFAIL"
+fi
+
+# Then leave it completely alone for a while. The indicator is not a commit
+# record: a post whose editor reported 7 figures and 0 placeholders, and whose
+# metabar held at "Saved" for six consecutive reads, still came back from a
+# reload as 98 grafs with 4 IMGSLOT markers in it -- the state from partway
+# through the image loop. Whatever Medium is doing after it says "Saved", it is
+# not finished, and disconnecting the browser then truncates it. Polling harder
+# does not help; the only thing that does is not touching the page.
+#
+# It is deliberately a plain wait and not another poll: every signal available
+# here has already been observed to say "done" while it was not, so another
+# reading of the same indicators would just be a fifth way of being told the
+# same lie.
+step "leaving it alone to finish writing"
+sleep "$SAVE_GRACE_S"
+save_state=$(B eval "$WORK/saved.js") || {
+  echo "FAILED: browse could not re-read the save indicator" >&2; exit "$EX_TEMPFAIL"; }
+case "$save_state" in
+  *'"saved":true'*) ;;
+  *) echo "FAILED: the $WHAT went unsaved again during the grace period: $save_state" >&2
+     exit "$EX_TEMPFAIL" ;;
+esac
+
+step "re-reading it from Medium"
+# Mark the document first, then prove the mark is gone. Every indirect way of
+# establishing that the page reloaded has failed on the real editor: `goto` to
+# the current URL answers net::ERR_ABORTED, `goto about:blank` hits Medium's
+# beforeunload, and `reload` overruns browse's own 15s timeout on a page this
+# size while sometimes reloading anyway. So the reload's exit status is not
+# evidence in either direction and is deliberately ignored; the mark is.
+#
+# This matters more than it looks: a re-read that quietly ran against the same
+# document would agree with the first read every time, and the whole step would
+# report success while checking nothing.
+# Captured before the mark, while the browser is still on the page: after the
+# disconnect below there is nothing to ask.
+RELOAD_URL="$(B url)"
+[ -n "$RELOAD_URL" ] || { echo "FAILED: could not read the $WHAT URL to reopen it" >&2
+                          exit "$EX_TEMPFAIL"; }
+RELOAD_MARK="refill-$$"
+python3 "$TOOLS/medium_js.py" mark "$RELOAD_MARK" > "$WORK/mark.js"
+python3 "$TOOLS/medium_js.py" stale "$RELOAD_MARK" > "$WORK/stale.js"
+marked=$(B eval "$WORK/mark.js") || {
+  echo "FAILED: could not mark the page before reloading it" >&2; exit "$EX_TEMPFAIL"; }
+case "$marked" in
+  *'"marked":true'*) ;;
+  *) echo "FAILED: the mark did not take: $marked" >&2; exit "$EX_TEMPFAIL" ;;
+esac
+# A second tab, not a reload and not a reconnect. Both of those act on the tab
+# holding the editor, and that tab may still be writing: `disconnect` tore one
+# down mid-save and left a 14-figure post at 60 grafs and 3 figures, which is
+# the damage this whole step exists to detect rather than cause. A new tab
+# fetches the post from the server and leaves the original alone, so a timeout
+# here is merely inconclusive instead of destructive.
+B newtab "$RELOAD_URL" >/dev/null 2>&1 || true   # status proves nothing; the mark does
+fresh=0
+for _ in $(seq 1 "$RELOAD_SETTLE_S"); do
+  sleep 1
+  stale=$(B eval "$WORK/stale.js") || continue
+  case "$stale" in
+    *'"stale":false'*) fresh=1; break ;;
+  esac
+done
+if [ "$fresh" -eq 0 ]; then
+  echo "FAILED: the $WHAT never reloaded -- it still carries $RELOAD_MARK" >&2
+  echo "  everything below would have re-read the same document, so nothing was checked" >&2
+  exit "$EX_TEMPFAIL"
+fi
+# Wait for the rehydration to finish, and do NOT wait on "pending":0 to decide
+# it: an editor that has not drawn a single figure yet has nothing pending, so
+# that condition is true immediately and the re-read then runs against a page
+# holding 14 of its 185 blocks -- which is exactly what happened, and it read
+# as a catastrophic content mismatch rather than as "too early". Two identical
+# readings in a row is the honest signal, and it is the same one the load after
+# the body paste already uses.
+settled=0
+reloaded=""
+previous=""
+stable=0
+for _ in $(seq 1 "$RELOAD_SETTLE_S"); do
+  sleep 1
+  reloaded=$(B eval "$WORK/state.js") || continue
+  case "$reloaded" in
+    *'"err"'*) previous=""; stable=0; continue ;;
+  esac
+  if [ "$reloaded" = "$previous" ]; then
+    stable=$((stable + 1))
+    # Two matching samples a second apart. Deliberately NOT "and nothing
+    # pending": `pending` counts images whose src is not yet a CDN URL, which
+    # is what an upload in flight looks like -- and also what Medium's lazy
+    # loading looks like on a page nobody has scrolled. On a freshly opened
+    # tab all 14 figures of a large post read as pending indefinitely, and the
+    # run failed a post that was complete and stored. Reusing the upload
+    # signal to answer a different question is the same mistake as reading the
+    # DOM to learn what Medium saved; what is stored is settled by the figure
+    # count, the placeholder count and the block-by-block comparison below.
+    [ "$stable" -ge "$RELOAD_STABLE_READS" ] && { settled=1; break; }
+  else
+    stable=0
+  fi
+  previous="$reloaded"
+done
+if [ "$settled" -eq 0 ]; then
+  echo "FAILED: the reloaded $WHAT never stopped changing (last: ${reloaded:-none})" >&2
+  exit "$EX_TEMPFAIL"
+fi
+
+reloaded_dump=$(B eval "$WORK/dump.js") || {
+  echo "FAILED: browse could not read the reloaded $WHAT" >&2; exit "$EX_TEMPFAIL"; }
+case "$reloaded_dump" in
+  *'"err"'*) echo "FAILED: no editor after the reload" >&2; exit "$EX_UNAVAILABLE" ;;
+esac
+printf '%s' "$reloaded_dump" > "$WORK/reloaded.json"
+python3 "$TOOLS/verify_draft.py" "$WORK/payload.json" "$WORK/reloaded.json"
+echo "$reloaded"
+case "$reloaded" in
+  *'"figures":'"$EXPECTED_FIGURES"','*) ;;
+  *) echo "FAILED: Medium stored a $WHAT with the wrong figure count" >&2
+     echo "  expected $EXPECTED_FIGURES; the editor agreed before the reload," >&2
+     echo "  so the save is what lost them" >&2
+     exit "$EX_UNAVAILABLE" ;;
+esac
+case "$reloaded" in
+  *'"slots":0}'*) ;;
+  *) echo "FAILED: Medium stored placeholder text in the $WHAT" >&2; exit "$EX_UNAVAILABLE" ;;
 esac
 
 step "$WHAT ready"

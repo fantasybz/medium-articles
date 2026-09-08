@@ -910,6 +910,127 @@ console.log(JSON.stringify(%s));
         self.assertEqual(list(json.loads(got)), ["figures", "imgs", "pending", "slots"])
 
 
+class TestPayloadWithCdnFigures(unittest.TestCase):
+    """Reuse the figures Medium already hosts instead of uploading them again.
+
+    Re-uploading is what broke every refill of a published post: deleting and
+    re-adding the figures left saves that never finished, and the stored
+    document was whatever the image loop had reached. The same article pasted
+    with `<img>` aimed at the post's existing CDN URLs saved in seconds and
+    came back complete from a fresh tab.
+    """
+
+    def payload(self, names):
+        html = "<p>lead</p>\n" + "\n".join(
+            "<p>IMGSLOT-%s-ENDSLOT</p>" % n for n in names) + "\n<p>tail</p>"
+        return {"title": "T", "html": html, "images": list(names)}
+
+    def test_each_slot_becomes_the_figure_in_the_same_position(self):
+        out = medium_js.payload_with_cdn_figures(
+            self.payload(["a.png", "b.png"]), ["https://cdn/1.png", "https://cdn/2.png"])
+        self.assertEqual(
+            out["html"],
+            '<p>lead</p>\n<figure><img src="https://cdn/1.png"></figure>\n'
+            '<figure><img src="https://cdn/2.png"></figure>\n<p>tail</p>')
+
+    def test_the_upload_list_is_emptied_so_the_driver_skips_the_image_loop(self):
+        out = medium_js.payload_with_cdn_figures(
+            self.payload(["a.png"]), ["https://cdn/1.png"])
+        self.assertEqual(out["images"], [])
+
+    def test_the_original_payload_is_not_mutated(self):
+        original = self.payload(["a.png"])
+        medium_js.payload_with_cdn_figures(original, ["https://cdn/1.png"])
+        self.assertEqual(original["images"], ["a.png"])
+        self.assertIn("IMGSLOT-a.png-ENDSLOT", original["html"])
+
+    def test_too_few_figures_on_the_post_is_an_error_not_a_partial_fill(self):
+        # The mangled drafts have lost figures. Filling the slots it can and
+        # leaving the rest as IMGSLOT text is exactly the damage to avoid.
+        with self.assertRaises(ValueError) as caught:
+            medium_js.payload_with_cdn_figures(
+                self.payload(["a.png", "b.png"]), ["https://cdn/1.png"])
+        self.assertIn("1 figures", str(caught.exception))
+
+    def test_too_many_figures_is_an_error_too(self):
+        with self.assertRaises(ValueError):
+            medium_js.payload_with_cdn_figures(
+                self.payload(["a.png"]), ["https://cdn/1.png", "https://cdn/2.png"])
+
+    def test_a_slot_the_payload_never_had_is_an_error(self):
+        broken = self.payload(["a.png"])
+        broken["images"] = ["missing.png"]
+        with self.assertRaises(ValueError) as caught:
+            medium_js.payload_with_cdn_figures(broken, ["https://cdn/1.png"])
+        self.assertIn("exactly one slot", str(caught.exception))
+
+    @unittest.skipUnless(shutil.which("node"), "node unavailable")
+    def test_the_figures_snippet_reads_srcs_in_document_order(self):
+        got = node_eval(self, """
+const fig = src => ({ querySelector: () => ({ src }) });
+const document = { querySelectorAll: () => [
+  fig('https://cdn/1.png?w=700'), fig('https://cdn/2.png'),
+] };
+console.log(%s);
+""" % medium_js.figures_js().strip())
+        # The query string is Medium's own resize hint, not part of the image.
+        self.assertEqual(got["srcs"], ["https://cdn/1.png", "https://cdn/2.png"])
+
+
+class TestSavedSnippet(unittest.TestCase):
+    """`saved` — the only thing that knows whether Medium kept the write.
+
+    The drive tests feed this snippet's *reply* from a canned file, so they pin
+    what the shell does with each shape and nothing about how the shape is
+    decided. That gap is not hypothetical: the first version compared the raw
+    text to "Saved", which no draft ever says, and the drive tests went on
+    passing because they never ran it.
+    """
+
+    def verdict(self, message):
+        # node_eval already parses what the snippet printed; the snippet
+        # returns JSON text, so one decode is all there is.
+        js = ("const document = { querySelector: () => ({ textContent: %s }) };\n"
+              "console.log(%s);" % (json.dumps(message), medium_js.saved_js().strip()))
+        return node_eval(self, js)
+
+    @unittest.skipUnless(shutil.which("node"), "node unavailable")
+    def test_a_draft_says_DraftSaved_and_that_is_saved(self):
+        # The metabar puts the "Draft" label and the status in one element, so
+        # textContent runs them together. Eight scheduled posts were reported
+        # as failures over this.
+        v = self.verdict("DraftSaved")
+        self.assertTrue(v["saved"])
+        self.assertFalse(v["failed"])
+
+    @unittest.skipUnless(shutil.which("node"), "node unavailable")
+    def test_a_published_post_says_Saved(self):
+        v = self.verdict("Saved")
+        self.assertTrue(v["saved"])
+        self.assertFalse(v["failed"])
+
+    @unittest.skipUnless(shutil.which("node"), "node unavailable")
+    def test_saving_in_flight_is_not_saved(self):
+        # A horizontal ellipsis, not three dots.
+        v = self.verdict("Saving\u2026")
+        self.assertFalse(v["saved"])
+        self.assertFalse(v["failed"])
+
+    @unittest.skipUnless(shutil.which("node"), "node unavailable")
+    def test_a_concurrent_editor_is_failed_and_not_saved(self):
+        v = self.verdict("Saving failed because someone is also editing. "
+                         "Reload to see their changes.")
+        self.assertFalse(v["saved"])
+        self.assertTrue(v["failed"])
+        self.assertIn("also editing", v["message"])
+
+    @unittest.skipUnless(shutil.which("node"), "node unavailable")
+    def test_a_missing_indicator_is_an_error_not_an_unsaved_verdict(self):
+        js = ("const document = { querySelector: () => null };\n"
+              "console.log(%s);" % medium_js.saved_js().strip())
+        self.assertIn("err", node_eval(self, js))
+
+
 class TestDumpSnippet(unittest.TestCase):
     """`dump` — what verify_draft.py compares the payload against."""
 
@@ -2444,7 +2565,11 @@ if [ -f "$FAKE_BROWSE_RULES/$key" ]; then
   exit 0
 fi
 case "$key" in
-  disconnect|goto|cookie-import|press) echo "" ;;
+  disconnect|goto|cookie-import|press|reload) echo "" ;;
+  newtab) echo "Opened tab 2 -> $2" ;;
+  eval:mark.js) echo '{"marked":true}' ;;
+  # A fresh document by default; a test that wants the no-reload case says so.
+  eval:stale.js) echo '{"stale":false}' ;;
   text) echo "Drafts" ;;
   url) sed -n 's/^goto //p' "$FAKE_BROWSE_LOG" | tail -1 ;;
   # The URL comes back from the page the driver was sent to, not from a
@@ -2525,7 +2650,14 @@ class Driven(DriverFixture):
         os.makedirs(evaled)
         canned = os.path.join(root, "rules")
         os.makedirs(canned)
-        for key, reply in (rules or {}).items():
+        # Medium's save indicator answers "Saved" unless a test says otherwise:
+        # every run reaches it, and restating it in each happy-path case would
+        # only bury the cases that are actually about the save.
+        # A *draft* reads "DraftSaved", a published post reads "Saved". The
+        # default is the draft form on purpose: it is the one the literal-match
+        # bug got wrong, so the happy paths exercise it.
+        rules = dict({"eval:saved.js": SAVED_DRAFT}, **(rules or {}))
+        for key, reply in rules.items():
             # A list is a reply per call, in order; the last one repeats.
             lines = reply if isinstance(reply, list) else [reply]
             with open(os.path.join(canned, key), "w", encoding="utf-8") as fh:
@@ -2775,7 +2907,10 @@ class TestMediumDraftPostDrive(Driven, unittest.TestCase):
             "eval:body.js": '{"replaced":149,"figuresBefore":14,"figuresLeft":1,'
                             '"title":"T","titleOk":true}'})
         self.assertEqual(d.out.returncode, EX_UNAVAILABLE, d.out.stderr)
-        self.assertIn("the refill left old figures behind", d.out.stderr)
+        # Without --reuse-figures the expected count is 0, and the message
+        # names it: the same check reads "did not leave 7 figures behind" when
+        # the paste was supposed to bring its own.
+        self.assertIn("did not leave 0 figures behind", d.out.stderr)
         self.assertNotIn("eval image.js", d.calls)
         self.assertEqual([c for c in d.calls if c.startswith("press")], [], d.calls)
 
@@ -2926,6 +3061,324 @@ class TestMediumDraftFinishes(Driven, unittest.TestCase):
             "eval:dump.js": self.editor(["T", "body"], ["H3", "P", "FIGURE"])})
         self.assertNotEqual(d.out.returncode, 0)
         self.assertIn("placeholder text left in the post", d.out.stderr)
+
+
+# The four shapes Medium's metabar takes, as observed. "DraftSaved" is the
+# concatenation of the "Draft" label and the status inside one element.
+SAVED_DRAFT = '{"message":"DraftSaved","saved":true,"failed":false}'
+SAVED_PUBLISHED = '{"message":"Saved","saved":true,"failed":false}'
+SAVING = '{"message":"Saving\u2026","saved":false,"failed":false}'
+SAVE_CONFLICT = ('{"message":"Saving failed because someone is also editing.",'
+                 '"saved":false,"failed":true}')
+
+
+class TestReuseFigures(Driven, unittest.TestCase):
+    """--reuse-figures, and the ordering mistake it shipped with once.
+
+    The substitution has to land before the body paste. Wired in after it, the
+    body went in still carrying IMGSLOT placeholders and the run then waited
+    for figures that were never going to appear.
+    """
+
+    def test_the_figures_are_read_before_the_body_is_pasted(self):
+        d = self.drive("--post", GOOD_ID, "--reuse-figures",
+                       paste=PASTE_WITH_FIGURE, images=["a.png"], rules={
+            "eval:figures.js": '{"srcs":["https://miro.medium.com/1*aa.png"]}',
+            "eval:body.js": '{"err":"no body grafs"}'})
+        order = [c for c in d.calls if c in ("eval figures.js", "eval body.js")]
+        self.assertEqual(order[:2], ["eval figures.js", "eval body.js"], d.calls)
+
+    def test_the_pasted_body_carries_the_cdn_url_and_no_placeholder(self):
+        d = self.drive("--post", GOOD_ID, "--reuse-figures",
+                       paste=PASTE_WITH_FIGURE, images=["a.png"], rules={
+            "eval:figures.js": '{"srcs":["https://miro.medium.com/1*aa.png"]}',
+            "eval:body.js": '{"err":"no body grafs"}'})
+        with open(os.path.join(d.evaled, "body.js"), encoding="utf-8") as fh:
+            body = fh.read()
+        self.assertIn("https://miro.medium.com/1*aa.png", body)
+        self.assertNotIn("IMGSLOT-a.png-ENDSLOT", body)
+
+    def test_a_published_post_short_of_figures_stops_before_anything_is_written(self):
+        # The mangled drafts are short of figures; so is a page that has not
+        # finished rendering. Either way, filling some slots and leaving the
+        # rest as IMGSLOT text is the damage this exists to avoid.
+        d = self.drive("--post", GOOD_ID, "--reuse-figures",
+                       paste=PASTE_WITH_FIGURE, images=["a.png"], rules={
+            "eval:figures.js": '{"srcs":[]}'})
+        self.assertNotEqual(d.out.returncode, 0)
+        self.assertIn("do not match this pack", d.out.stderr)
+        self.assertNotIn("eval body.js", d.calls)
+
+    def test_the_pasted_figures_are_expected_to_survive_the_paste(self):
+        # Without --reuse-figures the range must leave no figure behind. With
+        # it the paste brings its own, so demanding zero fails a paste that did
+        # exactly what it was told.
+        d = self.drive("--post", GOOD_ID, "--reuse-figures",
+                       paste=PASTE_WITH_FIGURE, images=["a.png"], rules={
+            "eval:figures.js": '{"srcs":["https://miro.medium.com/1*aa.png"]}',
+            "eval:body.js": ('{"replaced":9,"figuresBefore":1,"figuresLeft":1,'
+                             '"title":"T","titleOk":true}'),
+            "eval:state.js": state(figures=1, slots=0),
+            "eval:dump.js": self.editor(["T", "body"], ["H3", "P", "FIGURE"])})
+        self.assertEqual(d.out.returncode, 0, d.out.stderr + d.out.stdout)
+
+    def test_a_reuse_paste_that_lost_a_figure_still_fails(self):
+        d = self.drive("--post", GOOD_ID, "--reuse-figures",
+                       paste=PASTE_WITH_FIGURE, images=["a.png"], rules={
+            "eval:figures.js": '{"srcs":["https://miro.medium.com/1*aa.png"]}',
+            "eval:body.js": ('{"replaced":9,"figuresBefore":1,"figuresLeft":0,'
+                             '"title":"T","titleOk":true}')})
+        self.assertNotEqual(d.out.returncode, 0)
+        self.assertIn("did not leave 1 figures behind", d.out.stderr)
+
+    def test_a_prewritten_figure_holds_a_graf_slot_like_a_placeholder(self):
+        # Both forms occupy one graf and carry no text. Counting only the
+        # placeholder made the reuse mode expect no figures and then call the
+        # right ones a mismatch.
+        payload = {"title": "T",
+                   "html": "<p>a</p>\n<figure><img src=\"https://cdn/1.png\"></figure>\n<p>b</p>"}
+        # Index 2 because graf_sequence counts the title as graf 0. The point
+        # is that both forms land on the same index and neither adds a text
+        # block: an <img> the reader sees is not something to diff prose against.
+        self.assertEqual(verify_draft.expected_figure_positions(payload), [2])
+        self.assertEqual(verify_draft.expected_blocks(payload),
+                         ["T", "<p>a</p>", "<p>b</p>"])
+
+    def test_the_placeholder_form_still_counts(self):
+        payload = {"title": "T",
+                   "html": "<p>a</p>\n<p>IMGSLOT-x.png-ENDSLOT</p>\n<p>b</p>"}
+        self.assertEqual(verify_draft.expected_figure_positions(payload), [2])
+
+    def test_without_the_flag_nothing_changes(self):
+        d = self.drive("--post", GOOD_ID, paste=PASTE_WITH_FIGURE, images=["a.png"],
+                       rules={"eval:body.js": '{"err":"no body grafs"}'})
+        self.assertNotIn("eval figures.js", d.calls)
+        with open(os.path.join(d.evaled, "body.js"), encoding="utf-8") as fh:
+            body = fh.read()
+        self.assertIn("IMGSLOT-a.png-ENDSLOT", body)
+
+
+class TestMediumStoredIt(Driven, unittest.TestCase):
+    """The reload pass. Every one of these shipped broken once.
+
+    The in-editor checks passed on 16 posts in a row and 13 of them came back
+    from a reload with figures missing and IMGSLOT text in the stored copy.
+    Medium autosaves asynchronously; the batch navigated to the next post as
+    soon as "all blocks match" printed, and the write never finished. Nothing
+    before this class could see that, because everything before it reads the
+    DOM the browser is holding rather than what the server kept.
+    """
+
+    def refill(self, **rules):
+        base = {"eval:body.js": REFILL_OK,
+                "eval:state.js": state(figures=0, slots=0),
+                "eval:dump.js": self.editor(["T", "body"], ["H3", "P"])}
+        base.update(rules)
+        return self.drive("--post", GOOD_ID, paste="# T\n\nbody\n", rules=base)
+
+    def test_a_published_post_and_a_draft_both_count_as_saved(self):
+        # The bug this pins: the driver globbed for the literal "Saved", which
+        # a draft's metabar never says -- it says "DraftSaved". Eight scheduled
+        # posts polled to the timeout and reported failure after saving fine,
+        # and the operator's response to that was to run them again.
+        for shape in (SAVED_DRAFT, SAVED_PUBLISHED):
+            with self.subTest(shape=shape):
+                d = self.refill(**{"eval:saved.js": shape})
+                self.assertEqual(d.out.returncode, 0, d.out.stderr + d.out.stdout)
+                self.assertIn("post ready", d.out.stdout)
+
+    def test_a_save_that_never_finishes_is_not_reported_as_ready(self):
+        d = self.refill(**{"eval:saved.js": SAVING})
+        self.assertNotEqual(d.out.returncode, 0)
+        self.assertIn("never held the post at saved", d.out.stderr)
+        self.assertNotIn("post ready", d.out.stdout)
+
+    def test_a_saved_that_flips_back_to_saving_is_not_believed(self):
+        # The one that stored a half-finished post. Medium flags the body paste
+        # as saved while the image insertions after it are still queued, so the
+        # first "Saved" is stale: it flips back to "Saving…" moments later. A
+        # run that took the first sighting disconnected mid-write.
+        d = self.refill(**{"eval:saved.js": [SAVED_DRAFT, SAVED_DRAFT, SAVING,
+                                             SAVED_DRAFT] + [SAVED_DRAFT] * 8})
+        self.assertEqual(d.out.returncode, 0, d.out.stderr + d.out.stdout)
+        self.assertIn("post ready", d.out.stdout)
+
+    def test_a_save_indicator_that_keeps_flickering_never_counts_as_saved(self):
+        d = self.refill(**{"eval:saved.js": [SAVED_DRAFT, SAVING] * 120})
+        self.assertNotEqual(d.out.returncode, 0)
+        self.assertIn("never held the post at saved", d.out.stderr)
+
+    def test_a_concurrent_editor_is_reported_verbatim_and_stops_the_run(self):
+        # The message that actually appeared. The fix is to close the other
+        # editor, which the driver cannot do, so it must not swallow it.
+        d = self.refill(**{"eval:saved.js": SAVE_CONFLICT})
+        self.assertNotEqual(d.out.returncode, 0)
+        self.assertIn("also editing", d.out.stderr)
+
+    def test_figures_lost_in_the_save_fail_after_the_reload(self):
+        # The exact shape of the incident: the editor agrees, the reload does
+        # not. Two figures short of the one this article asks for.
+        d = self.drive("--post", GOOD_ID, paste=PASTE_WITH_FIGURE, images=["a.png"],
+                       rules={
+            "eval:body.js": REFILL_OK,
+            "eval:state.js": [state(figures=0, slots=1),
+                              state(figures=1, slots=1),
+                              state(figures=1, slots=0),
+                              state(figures=1, slots=0),   # the in-editor gate
+                              state(figures=0, slots=0)],  # what came back
+            "eval:image.js": '{"name":"a.png","bytes":8}',
+            "eval:slot.js": '{"selected":"IMGSLOT-a.png-ENDSLOT"}',
+            "eval:dump.js": self.editor(["T", "body"], ["H3", "P", "FIGURE"])})
+        self.assertNotEqual(d.out.returncode, 0)
+        self.assertIn("Medium stored a post with the wrong figure count", d.out.stderr)
+        self.assertIn("the save is what lost them", d.out.stderr)
+
+    def test_placeholders_that_survived_the_save_fail_after_the_reload(self):
+        d = self.drive("--post", GOOD_ID, paste=PASTE_WITH_FIGURE, images=["a.png"],
+                       rules={
+            "eval:body.js": REFILL_OK,
+            "eval:state.js": [state(figures=0, slots=1),
+                              state(figures=1, slots=1),
+                              state(figures=1, slots=0),
+                              state(figures=1, slots=0),
+                              state(figures=1, slots=1)],   # IMGSLOT text stored
+            "eval:image.js": '{"name":"a.png","bytes":8}',
+            "eval:slot.js": '{"selected":"IMGSLOT-a.png-ENDSLOT"}',
+            "eval:dump.js": self.editor(["T", "body"], ["H3", "P", "FIGURE"])})
+        self.assertNotEqual(d.out.returncode, 0)
+        self.assertIn("Medium stored placeholder text", d.out.stderr)
+
+    def test_a_half_hydrated_reload_is_waited_out_not_compared(self):
+        # "pending":0 is true of an editor that has not drawn a figure yet, so
+        # settling on it alone re-read a page holding 14 of its 185 blocks and
+        # called it a content mismatch. Two identical samples is the signal.
+        # Here the counts climb and then hold; the run must reach the end.
+        d = self.drive("--post", GOOD_ID, paste=PASTE_WITH_FIGURE, images=["a.png"],
+                       rules={
+            "eval:body.js": REFILL_OK,
+            "eval:state.js": [state(figures=0, slots=1),
+                              state(figures=1, slots=1),
+                              state(figures=1, slots=0),
+                              state(figures=1, slots=0),   # the in-editor gate
+                              state(figures=0, slots=0),   # still hydrating
+                              state(figures=1, slots=0),   # ...
+                              state(figures=1, slots=0)],  # twice the same: done
+            "eval:image.js": '{"name":"a.png","bytes":8}',
+            "eval:slot.js": '{"selected":"IMGSLOT-a.png-ENDSLOT"}',
+            "eval:dump.js": self.editor(["T", "body"], ["H3", "P", "FIGURE"])})
+        self.assertEqual(d.out.returncode, 0, d.out.stderr + d.out.stdout)
+        self.assertIn("post ready", d.out.stdout)
+
+    def test_lazy_loaded_images_do_not_block_the_reload_check(self):
+        # `pending` means "upload in flight" during the image loop and "Medium
+        # has not swapped in the CDN url yet" on a page nobody scrolled. A
+        # 14-figure post read as 14 pending forever and failed while stored
+        # perfectly. The figure and placeholder counts are what settle it.
+        d = self.drive("--post", GOOD_ID, "--reuse-figures",
+                       paste=PASTE_WITH_FIGURE, images=["a.png"], rules={
+            "eval:figures.js": '{"srcs":["https://miro.medium.com/1*aa.png"]}',
+            "eval:body.js": ('{"replaced":9,"figuresBefore":1,"figuresLeft":1,'
+                             '"title":"T","titleOk":true}'),
+            "eval:state.js": ['{"figures":1,"imgs":1,"pending":1,"slots":0}'] * 12,
+            "eval:dump.js": self.editor(["T", "body"], ["H3", "P", "FIGURE"])})
+        self.assertEqual(d.out.returncode, 0, d.out.stderr + d.out.stdout)
+        self.assertIn("post ready", d.out.stdout)
+
+    def test_a_reload_that_never_stops_changing_fails(self):
+        d = self.drive("--post", GOOD_ID, paste=PASTE_WITH_FIGURE, images=["a.png"],
+                       rules={
+            "eval:body.js": REFILL_OK,
+            "eval:state.js": [state(figures=0, slots=1),
+                              state(figures=1, slots=1),
+                              state(figures=1, slots=0),
+                              state(figures=1, slots=0),
+                              # Never twice the same, for longer than the
+                              # settle window: the last canned line repeats, so
+                              # a short list would come to rest on it and prove
+                              # the opposite of what this test is for.
+                              ] + [state(figures=i % 2, slots=0)
+                                   for i in range(120)],
+            "eval:image.js": '{"name":"a.png","bytes":8}',
+            "eval:slot.js": '{"selected":"IMGSLOT-a.png-ENDSLOT"}',
+            "eval:dump.js": self.editor(["T", "body"], ["H3", "P", "FIGURE"])})
+        self.assertNotEqual(d.out.returncode, 0)
+        self.assertIn("never stopped changing", d.out.stderr)
+
+    def test_it_waits_hands_off_after_the_save_before_reloading(self):
+        # The indicator is not a commit record. A post whose editor reported 7
+        # figures and 0 placeholders, and whose metabar held at "Saved" for six
+        # reads, still came back from a reload as 98 grafs with 4 IMGSLOT
+        # markers -- the state from partway through the image loop. Nothing may
+        # touch the page between the save and the reload except the wait.
+        d = self.refill()
+        self.assertIn("leaving it alone to finish writing", d.out.stdout)
+        graces = [i for i, c in enumerate(d.calls) if c.startswith("eval saved.js")]
+        opens = [i for i, c in enumerate(d.calls) if c.startswith("newtab ")]
+        self.assertTrue(graces and opens, d.calls)
+        # The last look at the indicator is after the grace period, so it has
+        # to come after every other save read and before the re-fetch.
+        self.assertLess(graces[-1], opens[-1], d.calls)
+
+    def test_a_post_that_goes_unsaved_during_the_grace_period_fails(self):
+        # Something else changed it, or the save the indicator claimed was not
+        # the whole document. Either way it must not be reloaded and blessed.
+        d = self.refill(**{"eval:saved.js": [SAVED_DRAFT] * 6 + [SAVING]})
+        self.assertNotEqual(d.out.returncode, 0)
+        self.assertIn("went unsaved again during the grace period", d.out.stderr)
+
+    def test_a_page_that_never_reloaded_is_caught_by_its_mark(self):
+        # The failure this replaces an exit-status check with. `reload` can
+        # report a timeout and still have reloaded, and it can report nothing
+        # useful and not have. Only the mark distinguishes them, and a document
+        # that still carries it is the same one the first read saw.
+        d = self.refill(**{"eval:stale.js": '{"stale":true}'})
+        self.assertNotEqual(d.out.returncode, 0)
+        self.assertIn("never reloaded", d.out.stderr)
+        self.assertIn("nothing was checked", d.out.stderr)
+
+    def test_the_reopen_status_is_not_what_decides_it(self):
+        # browse times out on an editor this size while the page loads anyway.
+        # If that status were the gate, every large post would fail.
+        # Only the reopen fails: the three gotos before it (medium.com, the
+        # drafts list, the post) have to succeed for the run to get this far.
+        d = self.refill(**{"goto": ["", "", "", "!fail"]})
+        self.assertEqual(d.out.returncode, 0, d.out.stderr + d.out.stdout)
+        self.assertIn("post ready", d.out.stdout)
+
+    def test_it_refetches_in_a_second_tab_and_never_tears_the_first_one_down(self):
+        # `reload` does nothing (Medium's beforeunload eats it) and
+        # `disconnect` does too much: it killed a tab that was still writing
+        # and left a 14-figure post at 60 grafs. A second tab reads the server
+        # copy without touching the one that may still be saving.
+        d = self.refill()
+        marks = [i for i, c in enumerate(d.calls) if c == "eval mark.js"]
+        opens = [i for i, c in enumerate(d.calls) if c.startswith("newtab ")]
+        self.assertTrue(any(m < o for m in marks for o in opens),
+                        "nothing re-fetched after the mark: %s" % d.calls)
+        self.assertNotIn("disconnect", d.calls[marks[0]:],
+                         "the editor tab was torn down after the mark: %s" % d.calls)
+
+    def test_the_mark_is_set_before_the_refetch_not_after(self):
+        # Marking the fresh document instead of the old one would make the
+        # staleness check unfailable.
+        d = self.refill()
+        marks = [i for i, c in enumerate(d.calls) if c == "eval mark.js"]
+        opens = [i for i, c in enumerate(d.calls) if c.startswith("newtab ")]
+        self.assertTrue(marks and opens, d.calls)
+        self.assertLess(marks[0], opens[-1], d.calls)
+
+    def test_the_reload_lands_between_the_two_reads(self):
+        # Where the reload sits is the whole point. Both rounds run the same
+        # dump snippet; if the reload came after the second one -- or never --
+        # that second round would be the same live DOM the first one read, and
+        # would agree with it whatever Medium had actually stored.
+        d = self.refill()
+        self.assertEqual(d.out.returncode, 0, d.out.stderr + d.out.stdout)
+        dumps = [i for i, c in enumerate(d.calls) if c == "eval dump.js"]
+        self.assertEqual(len(dumps), 2, d.calls)
+        opens = [i for i, c in enumerate(d.calls) if c.startswith("newtab ")]
+        self.assertTrue(any(dumps[0] < r < dumps[1] for r in opens),
+                        "the post was never re-fetched between the two reads: %s" % d.calls)
 
 
 class TestCodeBlocksAreNotTypographyFolded(unittest.TestCase):

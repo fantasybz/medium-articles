@@ -83,3 +83,17 @@ Topics 原本填 `Agentic AI`，Medium 正規化成 `Agentic Ai`。
 只有 `diagram-06` 的差異肉眼看得到；另外三張在 700px 下畫出來幾乎一模一樣。
 
 要不要一併補齊是獨立決定：視覺差異很小，而每次編輯已發布文章都有風險。
+
+## 口吻潤稿重灌（2026-09-08）
+
+以 `./tools/medium_draft.sh 2026-09-agentic-engineering-platform --post 7342ababc417 --reuse-figures` 就地重灌，
+Post ID 不變。`--reuse-figures` 直接沿用這篇已發布版本上的圖（貼 CDN 網址），
+完全不重新上傳——重新上傳會讓存檔寫不完，是這一輪最初把草稿弄壞的原因。
+封面圖與 topics 因此都不受影響。
+
+重載後從伺服器讀回來驗證通過：142 個文字區塊逐塊相符、25 個連結全在、
+14 張圖各在自己的槽位、無殘留 placeholder。
+
+**還沒上線。** 這篇已發布，改動只存在「已發布版本背後的草稿」裡，讀者看到的
+仍是舊版。要讓潤稿生效，必須在編輯器按 **Save and publish**
+（`postPublishedType=repub`：網址不變、不會重寄訂閱信）。

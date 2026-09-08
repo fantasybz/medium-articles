@@ -364,6 +364,111 @@ def state_js():
 """ % (EDITOR, json.dumps(SLOT_MARK.split("%s")[0]))
 
 
+def saved_js():
+    """What Medium's own metabar says about the save.
+
+    Everything else in this file reads the DOM the browser is holding. That is
+    not the same as what Medium stored: autosave is asynchronous, and a run
+    that navigated away as soon as its in-editor checks passed lost the tail of
+    it -- posts that had just been verified as complete came back from a reload
+    with figures missing and IMGSLOT text still in them. `.js-metabarMessage`
+    is the editor's own indicator, and it is the only thing on the page that
+    knows whether the write finished.
+
+    The message is returned raw as well as classified: "Saving failed because
+    someone is also editing" has to reach the operator verbatim, because the
+    fix for it (close the other editor) is not something the driver can do.
+
+    Classifying here rather than by glob in the shell, because the raw text is
+    not one word. A draft's metabar reads "DraftSaved" -- the "Draft" label and
+    the status live in the same element, and textContent runs them together --
+    while a published post's reads "Saved". Matching the literal "Saved" looked
+    right and silently never matched a draft: eight scheduled posts polled to
+    the timeout and reported failure after saving perfectly well.
+    """
+    return """(() => {
+  const el = document.querySelector('.js-metabarMessage');
+  if (!el) return JSON.stringify({ err: 'no save indicator on this page' });
+  const message = (el.textContent || '').trim();
+  return JSON.stringify({
+    message,
+    // "Saved" and "DraftSaved"; not "Saving…", not "Saving failed ...".
+    saved: /Saved$/.test(message) && !/Saving/.test(message),
+    failed: /failed/i.test(message)
+  });
+})()
+"""
+
+
+def figures_js():
+    """The figure image URLs on this page, in document order."""
+    return """(() => {
+  const figs = [...document.querySelectorAll('figure')];
+  return JSON.stringify({
+    srcs: figs.map(f => {
+      const i = f.querySelector('img');
+      return i ? (i.src || '').split('?')[0] : '';
+    }).filter(Boolean)
+  });
+})()
+"""
+
+
+def payload_with_cdn_figures(payload, srcs):
+    """Point the payload's figure slots at images Medium already hosts.
+
+    Re-uploading is what breaks a refill of a published post. Deleting and
+    re-adding 7 figures left saves that never finished and stored documents
+    truncated partway through the image loop; the same article pasted with
+    `<img>` tags aimed at the URLs already on Medium's CDN saved in under ten
+    seconds and came back from a fresh tab complete.
+
+    The figures are the post's own, read off its published page, so this is not
+    a shortcut around uploading new artwork -- it only applies when the images
+    on Medium are the ones the pack would have uploaded anyway. The caller has
+    to establish that; here the check is arithmetic, and a mismatch raises
+    rather than silently filling some slots and leaving others as text.
+    """
+    images = payload["images"]
+    if len(srcs) != len(images):
+        raise ValueError("post has %d figures, the pack has %d images"
+                         % (len(srcs), len(images)))
+    html = payload["html"]
+    for name, src in zip(images, srcs):
+        marker = "<p>%s</p>" % (SLOT_MARK % name)
+        if html.count(marker) != 1:
+            raise ValueError("expected exactly one slot for %s, found %d"
+                             % (name, html.count(marker)))
+        html = html.replace(marker, '<figure><img src="%s"></figure>' % src)
+    if SLOT_MARK.split("%s")[0] in html:
+        raise ValueError("a placeholder survived the substitution")
+    # No uploads left to do, and the driver's image loop reads this list.
+    return dict(payload, html=html, images=[])
+
+
+def mark_js(token):
+    """Leave a token on `window` that only a real page load can clear.
+
+    The re-read is only worth anything if the page actually reloaded, and every
+    indirect way of establishing that has now failed on the real thing: `goto`
+    to the current URL answers net::ERR_ABORTED, `goto about:blank` hits
+    Medium's beforeunload, and `reload` overruns browse's 15s timeout on an
+    editor this size while still, sometimes, reloading. Trusting the command's
+    exit status would mean a timeout is read as "did not reload" when it did,
+    and -- far worse -- a silent no-op read as "reloaded" when it did not,
+    which puts the same DOM in front of both reads and passes vacuously.
+
+    A token on `window` settles it directly: a document that survived carries
+    it, a freshly parsed one cannot.
+    """
+    return "(() => { window.__mediumRefill = %s; return JSON.stringify({ marked: true }); })()\n" % json.dumps(token)
+
+
+def stale_js(token):
+    """Whether the page still carries the mark, i.e. never reloaded."""
+    return "(() => JSON.stringify({ stale: window.__mediumRefill === %s }))()\n" % json.dumps(token)
+
+
 def dump_js():
     """The editor's side of the block-by-block comparison, for verify_draft.py.
 
@@ -397,7 +502,7 @@ def main():
     if len(sys.argv) < 2:
         sys.exit(__doc__)
     kind = sys.argv[1]
-    if kind not in ("selectors", "state", "dump") and len(sys.argv) < 3:
+    if kind not in ("selectors", "state", "dump", "saved", "figures") and len(sys.argv) < 3:
         sys.exit("%s needs an argument\n\n%s" % (kind, __doc__))
     if kind == "title":
         print(title_js(json.load(open(sys.argv[2], encoding="utf-8"))))
@@ -415,6 +520,19 @@ def main():
         print(state_js())
     elif kind == "dump":
         print(dump_js())
+    elif kind == "saved":
+        print(saved_js())
+    elif kind == "mark":
+        print(mark_js(sys.argv[2]))
+    elif kind == "stale":
+        print(stale_js(sys.argv[2]))
+    elif kind == "figures":
+        print(figures_js())
+    elif kind == "cdnfill":
+        # payload.json + the {"srcs": [...]} a `figures` run returned
+        base = json.load(open(sys.argv[2], encoding="utf-8"))
+        srcs = json.load(open(sys.argv[3], encoding="utf-8"))["srcs"]
+        json.dump(payload_with_cdn_figures(base, srcs), sys.stdout, ensure_ascii=False)
     elif kind == "selectors":
         # So medium_draft.sh does not repeat these literals.
         # Not EDITOR: that is the standard text-editor variable.
