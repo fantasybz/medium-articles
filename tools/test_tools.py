@@ -3269,6 +3269,21 @@ class TestMediumStoredIt(Driven, unittest.TestCase):
         self.assertEqual(d.out.returncode, 0, d.out.stderr + d.out.stdout)
         self.assertIn("post ready", d.out.stdout)
 
+    def test_lazy_loaded_images_do_not_block_the_reload_check(self):
+        # `pending` means "upload in flight" during the image loop and "Medium
+        # has not swapped in the CDN url yet" on a page nobody scrolled. A
+        # 14-figure post read as 14 pending forever and failed while stored
+        # perfectly. The figure and placeholder counts are what settle it.
+        d = self.drive("--post", GOOD_ID, "--reuse-figures",
+                       paste=PASTE_WITH_FIGURE, images=["a.png"], rules={
+            "eval:figures.js": '{"srcs":["https://miro.medium.com/1*aa.png"]}',
+            "eval:body.js": ('{"replaced":9,"figuresBefore":1,"figuresLeft":1,'
+                             '"title":"T","titleOk":true}'),
+            "eval:state.js": ['{"figures":1,"imgs":1,"pending":1,"slots":0}'] * 12,
+            "eval:dump.js": self.editor(["T", "body"], ["H3", "P", "FIGURE"])})
+        self.assertEqual(d.out.returncode, 0, d.out.stderr + d.out.stdout)
+        self.assertIn("post ready", d.out.stdout)
+
     def test_a_reload_that_never_stops_changing_fails(self):
         d = self.drive("--post", GOOD_ID, paste=PASTE_WITH_FIGURE, images=["a.png"],
                        rules={

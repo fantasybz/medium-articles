@@ -859,10 +859,16 @@ for _ in $(seq 1 "$RELOAD_SETTLE_S"); do
   esac
   if [ "$reloaded" = "$previous" ]; then
     stable=$((stable + 1))
-    # Two matching samples a second apart, and nothing still uploading.
-    case "$reloaded" in
-      *'"pending":0'*) [ "$stable" -ge "$RELOAD_STABLE_READS" ] && { settled=1; break ; } ;;
-    esac
+    # Two matching samples a second apart. Deliberately NOT "and nothing
+    # pending": `pending` counts images whose src is not yet a CDN URL, which
+    # is what an upload in flight looks like -- and also what Medium's lazy
+    # loading looks like on a page nobody has scrolled. On a freshly opened
+    # tab all 14 figures of a large post read as pending indefinitely, and the
+    # run failed a post that was complete and stored. Reusing the upload
+    # signal to answer a different question is the same mistake as reading the
+    # DOM to learn what Medium saved; what is stored is settled by the figure
+    # count, the placeholder count and the block-by-block comparison below.
+    [ "$stable" -ge "$RELOAD_STABLE_READS" ] && { settled=1; break; }
   else
     stable=0
   fi
