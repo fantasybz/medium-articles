@@ -2499,6 +2499,9 @@ if [ -f "$FAKE_BROWSE_RULES/$key" ]; then
 fi
 case "$key" in
   disconnect|goto|cookie-import|press|reload) echo "" ;;
+  eval:mark.js) echo '{"marked":true}' ;;
+  # A fresh document by default; a test that wants the no-reload case says so.
+  eval:stale.js) echo '{"stale":false}' ;;
   text) echo "Drafts" ;;
   url) sed -n 's/^goto //p' "$FAKE_BROWSE_LOG" | tail -1 ;;
   # The URL comes back from the page the driver was sent to, not from a
@@ -3072,6 +3075,32 @@ class TestMediumStoredIt(Driven, unittest.TestCase):
             "eval:dump.js": self.editor(["T", "body"], ["H3", "P", "FIGURE"])})
         self.assertNotEqual(d.out.returncode, 0)
         self.assertIn("Medium stored placeholder text", d.out.stderr)
+
+    def test_a_page_that_never_reloaded_is_caught_by_its_mark(self):
+        # The failure this replaces an exit-status check with. `reload` can
+        # report a timeout and still have reloaded, and it can report nothing
+        # useful and not have. Only the mark distinguishes them, and a document
+        # that still carries it is the same one the first read saw.
+        d = self.refill(**{"eval:stale.js": '{"stale":true}'})
+        self.assertNotEqual(d.out.returncode, 0)
+        self.assertIn("never reloaded", d.out.stderr)
+        self.assertIn("nothing was checked", d.out.stderr)
+
+    def test_the_reload_status_is_not_what_decides_it(self):
+        # browse times out on an editor this size while the reload goes
+        # through. If that status were the gate, every large post would fail.
+        d = self.refill(**{"reload": "!fail"})
+        self.assertEqual(d.out.returncode, 0, d.out.stderr + d.out.stdout)
+        self.assertIn("post ready", d.out.stdout)
+
+    def test_the_mark_is_set_before_the_reload_not_after(self):
+        # Marking after the reload would stamp the fresh document and the
+        # staleness check could never fail.
+        d = self.refill()
+        marks = [i for i, c in enumerate(d.calls) if c == "eval mark.js"]
+        reloads = [i for i, c in enumerate(d.calls) if c == "reload"]
+        self.assertTrue(marks and reloads, d.calls)
+        self.assertLess(marks[0], reloads[0], d.calls)
 
     def test_the_reload_lands_between_the_two_reads(self):
         # Where the reload sits is the whole point. Both rounds run the same

@@ -709,15 +709,39 @@ if [ "$stored" -eq 0 ]; then
 fi
 
 step "re-reading it from Medium"
-# `reload`, not `goto`. Navigating to the URL already in the address bar
-# answers net::ERR_ABORTED and the page never reloads -- and so does
-# `goto about:blank` from inside Medium's editor, which registers a
-# beforeunload handler. An abort here is the worst possible outcome: the checks
-# below would read the same live DOM they exist to be a second opinion on and
-# agree with it every time, which is the vacuous pass this step was added to
-# prevent. `reload` goes through the browser's own reload path instead.
-B reload >/dev/null || {
-  echo "FAILED: could not reload the $WHAT to re-read it" >&2; exit "$EX_TEMPFAIL"; }
+# Mark the document first, then prove the mark is gone. Every indirect way of
+# establishing that the page reloaded has failed on the real editor: `goto` to
+# the current URL answers net::ERR_ABORTED, `goto about:blank` hits Medium's
+# beforeunload, and `reload` overruns browse's own 15s timeout on a page this
+# size while sometimes reloading anyway. So the reload's exit status is not
+# evidence in either direction and is deliberately ignored; the mark is.
+#
+# This matters more than it looks: a re-read that quietly ran against the same
+# document would agree with the first read every time, and the whole step would
+# report success while checking nothing.
+RELOAD_MARK="refill-$$"
+python3 "$TOOLS/medium_js.py" mark "$RELOAD_MARK" > "$WORK/mark.js"
+python3 "$TOOLS/medium_js.py" stale "$RELOAD_MARK" > "$WORK/stale.js"
+marked=$(B eval "$WORK/mark.js") || {
+  echo "FAILED: could not mark the page before reloading it" >&2; exit "$EX_TEMPFAIL"; }
+case "$marked" in
+  *'"marked":true'*) ;;
+  *) echo "FAILED: the mark did not take: $marked" >&2; exit "$EX_TEMPFAIL" ;;
+esac
+B reload >/dev/null 2>&1 || true   # see above: its status proves nothing
+fresh=0
+for _ in $(seq 1 "$RELOAD_SETTLE_S"); do
+  sleep 1
+  stale=$(B eval "$WORK/stale.js") || continue
+  case "$stale" in
+    *'"stale":false'*) fresh=1; break ;;
+  esac
+done
+if [ "$fresh" -eq 0 ]; then
+  echo "FAILED: the $WHAT never reloaded -- it still carries $RELOAD_MARK" >&2
+  echo "  everything below would have re-read the same document, so nothing was checked" >&2
+  exit "$EX_TEMPFAIL"
+fi
 settled=0
 reloaded=""
 for _ in $(seq 1 "$RELOAD_SETTLE_S"); do

@@ -400,6 +400,29 @@ def saved_js():
 """
 
 
+def mark_js(token):
+    """Leave a token on `window` that only a real page load can clear.
+
+    The re-read is only worth anything if the page actually reloaded, and every
+    indirect way of establishing that has now failed on the real thing: `goto`
+    to the current URL answers net::ERR_ABORTED, `goto about:blank` hits
+    Medium's beforeunload, and `reload` overruns browse's 15s timeout on an
+    editor this size while still, sometimes, reloading. Trusting the command's
+    exit status would mean a timeout is read as "did not reload" when it did,
+    and -- far worse -- a silent no-op read as "reloaded" when it did not,
+    which puts the same DOM in front of both reads and passes vacuously.
+
+    A token on `window` settles it directly: a document that survived carries
+    it, a freshly parsed one cannot.
+    """
+    return "(() => { window.__mediumRefill = %s; return JSON.stringify({ marked: true }); })()\n" % json.dumps(token)
+
+
+def stale_js(token):
+    """Whether the page still carries the mark, i.e. never reloaded."""
+    return "(() => JSON.stringify({ stale: window.__mediumRefill === %s }))()\n" % json.dumps(token)
+
+
 def dump_js():
     """The editor's side of the block-by-block comparison, for verify_draft.py.
 
@@ -453,6 +476,10 @@ def main():
         print(dump_js())
     elif kind == "saved":
         print(saved_js())
+    elif kind == "mark":
+        print(mark_js(sys.argv[2]))
+    elif kind == "stale":
+        print(stale_js(sys.argv[2]))
     elif kind == "selectors":
         # So medium_draft.sh does not repeat these literals.
         # Not EDITOR: that is the standard text-editor variable.
