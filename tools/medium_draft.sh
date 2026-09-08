@@ -649,7 +649,13 @@ step "verifying against the converted payload"
 # so neither the block diff nor the figure-placement check can see one, and a
 # refill's range crosses every section wrapper in the article. verify_draft.py
 # compares the count against the payload's.
-B js "(()=>{const g=[...document.querySelectorAll('$EDITOR_SEL .graf')];return JSON.stringify({texts:g.filter(x=>x.tagName!=='FIGURE').map(x=>x.innerText),tags:g.map(x=>x.tagName),links:document.querySelectorAll('$EDITOR_SEL a').length,dividers:document.querySelectorAll('$EDITOR_SEL hr').length})})()" > "$WORK/editor.json"
+python3 "$TOOLS/medium_js.py" dump > "$WORK/dump.js"
+editor_dump=$(B eval "$WORK/dump.js") || {
+  echo "could not read the editor back" >&2; exit "$EX_TEMPFAIL"; }
+case "$editor_dump" in
+  *'"err"'*) echo "the editor was gone when the verification read it" >&2; exit 1 ;;
+esac
+printf '%s' "$editor_dump" > "$WORK/editor.json"
 python3 "$TOOLS/verify_draft.py" "$WORK/payload.json" "$WORK/editor.json"
 
 # Assert, do not just print: this reads like a gate, so it has to behave as one.

@@ -364,11 +364,40 @@ def state_js():
 """ % (EDITOR, json.dumps(SLOT_MARK.split("%s")[0]))
 
 
+def dump_js():
+    """The editor's side of the block-by-block comparison, for verify_draft.py.
+
+    This used to be a one-liner inlined in medium_draft.sh, which is how its
+    divider count came to be wrong. Medium opens *every* section with a
+    structural `<div class="section-divider"><hr></div>`, the first section
+    included, so `querySelectorAll('hr')` returns one more than the number of
+    breaks the article actually asks for: an 11-section post has 11 `<hr>` and
+    10 breaks. Comparing that raw count against the payload's `<hr>` lines made
+    a correct post fail by exactly one, every time.
+
+    Counting sections and subtracting one says what is meant, and does not
+    depend on how Medium marks the divider up. `Math.max(0, ...)` because an
+    editor holding no section at all should report no breaks rather than -1.
+    """
+    return """(() => {
+  const editor = document.querySelector('%s');
+  if (!editor) return JSON.stringify({ err: 'no Medium editor on this page' });
+  const g = [...editor.querySelectorAll('.graf')];
+  return JSON.stringify({
+    texts: g.filter(x => x.tagName !== 'FIGURE').map(x => x.innerText),
+    tags: g.map(x => x.tagName),
+    links: editor.querySelectorAll('a').length,
+    dividers: Math.max(0, editor.querySelectorAll('section').length - 1)
+  });
+})()
+""" % EDITOR
+
+
 def main():
     if len(sys.argv) < 2:
         sys.exit(__doc__)
     kind = sys.argv[1]
-    if kind not in ("selectors", "state") and len(sys.argv) < 3:
+    if kind not in ("selectors", "state", "dump") and len(sys.argv) < 3:
         sys.exit("%s needs an argument\n\n%s" % (kind, __doc__))
     if kind == "title":
         print(title_js(json.load(open(sys.argv[2], encoding="utf-8"))))
@@ -384,6 +413,8 @@ def main():
         print(slot_js(sys.argv[2]))
     elif kind == "state":
         print(state_js())
+    elif kind == "dump":
+        print(dump_js())
     elif kind == "selectors":
         # So medium_draft.sh does not repeat these literals.
         # Not EDITOR: that is the standard text-editor variable.

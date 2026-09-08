@@ -910,6 +910,68 @@ console.log(JSON.stringify(%s));
         self.assertEqual(list(json.loads(got)), ["figures", "imgs", "pending", "slots"])
 
 
+class TestDumpSnippet(unittest.TestCase):
+    """`dump` — what verify_draft.py compares the payload against."""
+
+    def js(self):
+        return medium_js.dump_js()
+
+    def test_it_counts_breaks_as_sections_minus_one(self):
+        # The regression this class exists for. Medium opens every section with
+        # a structural <div class="section-divider"><hr></div>, the first one
+        # included, so a post with 10 breaks has 11 sections AND 11 <hr>.
+        # Counting <hr> made a correct 10-divider post report 11 and fail the
+        # verification by exactly one -- observed on the real editor for
+        # /p/3c64a9622777, whose 148 blocks, 19 links and 7 figures all matched.
+        self.assertNotIn("'hr'", self.js())
+        self.assertNotIn('"hr"', self.js())
+        self.assertIn("querySelectorAll('section').length - 1", self.js())
+
+    @unittest.skipUnless(shutil.which("node"), "node unavailable")
+    def test_eleven_sections_are_ten_dividers(self):
+        got = json.loads(node_eval(self, """
+const graf = (tag, innerText) => ({ tagName: tag, innerText });
+const grafs = [graf('H3', 'title'), graf('P', 'body'), graf('FIGURE', '')];
+const editor = {
+  querySelectorAll(sel) {
+    if (sel === '.graf') return grafs;
+    // 11 sections, and the 11 structural <hr> that come with them.
+    if (sel === 'section') return new Array(11);
+    if (sel === 'hr') return new Array(11);
+    if (sel === 'a') return new Array(19);
+    return [];
+  },
+};
+const document = { querySelector: () => editor };
+console.log(JSON.stringify(%s));
+""" % self.js().strip()))
+        self.assertEqual(got["dividers"], 10)
+        self.assertEqual(got["links"], 19)
+        # FIGURE grafs carry no text and must not enter the block comparison,
+        # but they still count as grafs for the placement check.
+        self.assertEqual(got["texts"], ["title", "body"])
+        self.assertEqual(got["tags"], ["H3", "P", "FIGURE"])
+
+    @unittest.skipUnless(shutil.which("node"), "node unavailable")
+    def test_an_empty_editor_reports_no_breaks_rather_than_minus_one(self):
+        got = json.loads(node_eval(self, """
+const editor = { querySelectorAll: () => [] };
+const document = { querySelector: () => editor };
+console.log(JSON.stringify(%s));
+""" % self.js().strip()))
+        self.assertEqual(got["dividers"], 0)
+
+    @unittest.skipUnless(shutil.which("node"), "node unavailable")
+    def test_a_missing_editor_is_an_error_not_a_zero_count(self):
+        # Reporting {dividers: 0, texts: []} for a page with no editor would
+        # let the driver "verify" a post it never opened.
+        got = node_eval(self, """
+const document = { querySelector: () => null };
+console.log(JSON.stringify(%s));
+""" % self.js().strip())
+        self.assertIn("err", got)
+
+
 def title_fold_rules():
     r"""The `.replace()` rules in medium_js.TITLE_FOLD, in order, as written.
 
@@ -2497,7 +2559,12 @@ class Driven(DriverFixture):
             return int(re.search(r"EDITOR_LOAD_TIMEOUT_S=(\d+)", fh.read()).group(1))
 
     def editor(self, texts, tags, links=0, dividers=0):
-        """What the graf dump would report for a draft that came out right."""
+        """What `medium_js.py dump` would report for a draft that came out right.
+
+        `dividers` is the number of section *breaks*, not the `<hr>` count:
+        Medium emits one structural `<hr>` per section including the first, so
+        the snippet reports `sections - 1`. See TestDumpSnippet.
+        """
         return json.dumps({"texts": texts, "tags": tags,
                            "links": links, "dividers": dividers})
 
@@ -2781,7 +2848,7 @@ class TestMediumDraftFinishes(Driven, unittest.TestCase):
         d = self.drive("--post", GOOD_ID, rules={
             "eval:body.js": REFILL_OK,
             "eval:state.js": state(figures=0, slots=0),
-            "js": self.editor(["T", "body"], ["H3", "P"])})
+            "eval:dump.js": self.editor(["T", "body"], ["H3", "P"])})
         self.assertEqual(d.out.returncode, 0, d.out.stderr + d.out.stdout)
         self.assertIn("all blocks match", d.out.stdout)
         self.assertIn("post ready", d.out.stdout)
@@ -2799,7 +2866,7 @@ class TestMediumDraftFinishes(Driven, unittest.TestCase):
                               state(figures=1, slots=0)],     # placeholder gone
             "eval:image.js": '{"name":"a.png","bytes":8}',
             "eval:slot.js": '{"selected":"IMGSLOT-a.png-ENDSLOT"}',
-            "js": self.editor(["T", "body"], ["H3", "P", "FIGURE"])})
+            "eval:dump.js": self.editor(["T", "body"], ["H3", "P", "FIGURE"])})
         self.assertEqual(d.out.returncode, 0, d.out.stderr + d.out.stdout)
         self.assertEqual(d.calls.count("eval image.js"), 1, d.calls)
         self.assertEqual(d.calls.count("press Backspace"), 2, d.calls)
@@ -2812,7 +2879,7 @@ class TestMediumDraftFinishes(Driven, unittest.TestCase):
         d = self.drive(rules={
             "eval:body.js": '{"replaced":2}',
             "eval:state.js": state(figures=0, slots=0),
-            "js": self.editor(["T", "body"], ["H3", "P"])})
+            "eval:dump.js": self.editor(["T", "body"], ["H3", "P"])})
         self.assertEqual(d.out.returncode, 0, d.out.stderr + d.out.stdout)
         self.assertIn("draft ready", d.out.stdout)
         self.assertIn("Publish dialog", d.out.stdout)
@@ -2826,7 +2893,7 @@ class TestMediumDraftFinishes(Driven, unittest.TestCase):
         d = self.drive("--post", GOOD_ID, rules={
             "eval:body.js": REFILL_OK,
             "eval:state.js": state(figures=0, slots=0),
-            "js": self.editor(["T", "body"], ["H3", "P"], dividers=1)})
+            "eval:dump.js": self.editor(["T", "body"], ["H3", "P"], dividers=1)})
         self.assertNotEqual(d.out.returncode, 0)
         self.assertIn("dividers: expected 0 section breaks, editor has 1", d.out.stdout)
         # And what state that leaves the post in, including the fact that a
@@ -2842,7 +2909,7 @@ class TestMediumDraftFinishes(Driven, unittest.TestCase):
         d = self.drive("--post", GOOD_ID, paste=paste, rules={
             "eval:body.js": REFILL_OK,
             "eval:state.js": state(figures=0, slots=0),
-            "js": self.editor(["T", "body", "more"], ["H3", "P", "P"], dividers=1)})
+            "eval:dump.js": self.editor(["T", "body", "more"], ["H3", "P", "P"], dividers=1)})
         self.assertEqual(d.out.returncode, 0, d.out.stderr + d.out.stdout)
         self.assertIn("dividers: 1, all accounted for", d.out.stdout)
 
@@ -2856,7 +2923,7 @@ class TestMediumDraftFinishes(Driven, unittest.TestCase):
                               state(figures=1, slots=1)],   # one crept back in
             "eval:image.js": '{"name":"a.png","bytes":8}',
             "eval:slot.js": '{"selected":"IMGSLOT-a.png-ENDSLOT"}',
-            "js": self.editor(["T", "body"], ["H3", "P", "FIGURE"])})
+            "eval:dump.js": self.editor(["T", "body"], ["H3", "P", "FIGURE"])})
         self.assertNotEqual(d.out.returncode, 0)
         self.assertIn("placeholder text left in the post", d.out.stderr)
 
