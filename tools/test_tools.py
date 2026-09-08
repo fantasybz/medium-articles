@@ -2498,7 +2498,7 @@ if [ -f "$FAKE_BROWSE_RULES/$key" ]; then
   exit 0
 fi
 case "$key" in
-  disconnect|goto|cookie-import|press) echo "" ;;
+  disconnect|goto|cookie-import|press|reload) echo "" ;;
   text) echo "Drafts" ;;
   url) sed -n 's/^goto //p' "$FAKE_BROWSE_LOG" | tail -1 ;;
   # The URL comes back from the page the driver was sent to, not from a
@@ -3073,23 +3073,29 @@ class TestMediumStoredIt(Driven, unittest.TestCase):
         self.assertNotEqual(d.out.returncode, 0)
         self.assertIn("Medium stored placeholder text", d.out.stderr)
 
-    def test_the_page_is_actually_reloaded_before_it_is_believed(self):
-        # Without the goto this whole class is theatre: the same live DOM would
-        # answer the second round of checks and agree with itself every time.
+    def test_the_reload_lands_between_the_two_reads(self):
+        # Where the reload sits is the whole point. Both rounds run the same
+        # dump snippet; if the reload came after the second one -- or never --
+        # that second round would be the same live DOM the first one read, and
+        # would agree with it whatever Medium had actually stored.
         d = self.refill()
         self.assertEqual(d.out.returncode, 0, d.out.stderr + d.out.stdout)
-        edits = [g for g in self.gotos(d) if GOOD_ID in g]
-        self.assertGreaterEqual(len(edits), 2, self.gotos(d))
+        dumps = [i for i, c in enumerate(d.calls) if c == "eval dump.js"]
+        self.assertEqual(len(dumps), 2, d.calls)
+        reloads = [i for i, c in enumerate(d.calls) if c == "reload"]
+        self.assertTrue(any(dumps[0] < r < dumps[1] for r in reloads),
+                        "no reload between the two reads: %s" % d.calls)
 
-    def test_it_leaves_the_page_before_reopening_it(self):
-        # Going straight back to the URL already in the address bar answers
-        # net::ERR_ABORTED, and the page never reloads -- so the re-read would
-        # be the same DOM again. Observed on /p/ccbf0cbe2691.
+    def test_it_reloads_rather_than_navigating_to_the_same_url(self):
+        # Both dodges fail on the real thing: `goto` to the URL already in the
+        # address bar answers net::ERR_ABORTED, and so does `goto about:blank`
+        # out of Medium's editor (beforeunload). Either way the page does not
+        # reload and the re-read is the same DOM again. Observed on
+        # /p/ccbf0cbe2691. `reload` is the browser's own path.
         d = self.refill()
-        gotos = self.gotos(d)
-        last_edit = max(i for i, g in enumerate(gotos) if GOOD_ID in g)
-        self.assertIn("about:blank", gotos[last_edit - 1],
-                      "nothing navigated away before the re-read: %s" % gotos)
+        self.assertIn("reload", d.calls,
+                      "the re-read never reloaded the page: %s" % d.calls)
+        self.assertNotIn("goto about:blank", d.calls)
 
 
 class TestCodeBlocksAreNotTypographyFolded(unittest.TestCase):
