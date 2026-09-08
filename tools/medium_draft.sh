@@ -52,6 +52,7 @@ readonly KEYPRESS_GAP_S=1        # the two Backspaces must not coalesce
 # instinct is to re-run, which rewrites the post again.
 readonly SAVE_TIMEOUT_S=180       # 18-figure refill observed past 45s
 readonly RELOAD_SETTLE_S=40      # a reloaded editor rehydrates its figures
+readonly RECONNECT_GAP_S=3       # let the daemon go before asking for a page
 # A new story renders instantly; an existing post has to fetch and lay out
 # 149 grafs and 14 figures first, and asking it what it is too early looks
 # exactly like "no editor here". The same budget covers the other two waits on
@@ -719,6 +720,11 @@ step "re-reading it from Medium"
 # This matters more than it looks: a re-read that quietly ran against the same
 # document would agree with the first read every time, and the whole step would
 # report success while checking nothing.
+# Captured before the mark, while the browser is still on the page: after the
+# disconnect below there is nothing to ask.
+RELOAD_URL="$(B url)"
+[ -n "$RELOAD_URL" ] || { echo "FAILED: could not read the $WHAT URL to reopen it" >&2
+                          exit "$EX_TEMPFAIL"; }
 RELOAD_MARK="refill-$$"
 python3 "$TOOLS/medium_js.py" mark "$RELOAD_MARK" > "$WORK/mark.js"
 python3 "$TOOLS/medium_js.py" stale "$RELOAD_MARK" > "$WORK/stale.js"
@@ -728,7 +734,15 @@ case "$marked" in
   *'"marked":true'*) ;;
   *) echo "FAILED: the mark did not take: $marked" >&2; exit "$EX_TEMPFAIL" ;;
 esac
-B reload >/dev/null 2>&1 || true   # see above: its status proves nothing
+# Drop the browser session and open the URL fresh. `reload` is what this
+# should be, but Medium's beforeunload swallows it: the command returns and the
+# document is still the one that was already there, mark and all. Detaching
+# first means the page is opened by a browser that was never on it. The login
+# survives -- browse keeps the imported cookies across a disconnect, which is
+# what makes this cheap enough to do on every run.
+B disconnect >/dev/null 2>&1 || true
+sleep "$RECONNECT_GAP_S"
+B goto "$RELOAD_URL" >/dev/null 2>&1 || true   # status proves nothing; the mark does
 fresh=0
 for _ in $(seq 1 "$RELOAD_SETTLE_S"); do
   sleep 1

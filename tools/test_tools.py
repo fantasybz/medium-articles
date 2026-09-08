@@ -3086,21 +3086,34 @@ class TestMediumStoredIt(Driven, unittest.TestCase):
         self.assertIn("never reloaded", d.out.stderr)
         self.assertIn("nothing was checked", d.out.stderr)
 
-    def test_the_reload_status_is_not_what_decides_it(self):
-        # browse times out on an editor this size while the reload goes
-        # through. If that status were the gate, every large post would fail.
-        d = self.refill(**{"reload": "!fail"})
+    def test_the_reopen_status_is_not_what_decides_it(self):
+        # browse times out on an editor this size while the page loads anyway.
+        # If that status were the gate, every large post would fail.
+        # Only the reopen fails: the three gotos before it (medium.com, the
+        # drafts list, the post) have to succeed for the run to get this far.
+        d = self.refill(**{"goto": ["", "", "", "!fail"]})
         self.assertEqual(d.out.returncode, 0, d.out.stderr + d.out.stdout)
         self.assertIn("post ready", d.out.stdout)
 
-    def test_the_mark_is_set_before_the_reload_not_after(self):
-        # Marking after the reload would stamp the fresh document and the
-        # staleness check could never fail.
+    def test_it_detaches_before_reopening_the_page(self):
+        # `reload` returns without doing anything: Medium's beforeunload eats
+        # it and the document -- mark and all -- is still the one that was
+        # there. Observed on /p/ccbf0cbe2691. Opening the URL from a browser
+        # that was never on the page is what actually reloads it.
         d = self.refill()
         marks = [i for i, c in enumerate(d.calls) if c == "eval mark.js"]
-        reloads = [i for i, c in enumerate(d.calls) if c == "reload"]
-        self.assertTrue(marks and reloads, d.calls)
-        self.assertLess(marks[0], reloads[0], d.calls)
+        drops = [i for i, c in enumerate(d.calls) if c == "disconnect"]
+        self.assertTrue(any(m < dc for m in marks for dc in drops),
+                        "nothing detached after the mark: %s" % d.calls)
+
+    def test_the_mark_is_set_before_the_page_is_reopened_not_after(self):
+        # Marking the fresh document instead of the old one would make the
+        # staleness check unfailable.
+        d = self.refill()
+        marks = [i for i, c in enumerate(d.calls) if c == "eval mark.js"]
+        drops = [i for i, c in enumerate(d.calls) if c == "disconnect"]
+        self.assertTrue(marks and drops, d.calls)
+        self.assertLess(marks[0], drops[-1], d.calls)
 
     def test_the_reload_lands_between_the_two_reads(self):
         # Where the reload sits is the whole point. Both rounds run the same
@@ -3111,20 +3124,9 @@ class TestMediumStoredIt(Driven, unittest.TestCase):
         self.assertEqual(d.out.returncode, 0, d.out.stderr + d.out.stdout)
         dumps = [i for i, c in enumerate(d.calls) if c == "eval dump.js"]
         self.assertEqual(len(dumps), 2, d.calls)
-        reloads = [i for i, c in enumerate(d.calls) if c == "reload"]
-        self.assertTrue(any(dumps[0] < r < dumps[1] for r in reloads),
-                        "no reload between the two reads: %s" % d.calls)
-
-    def test_it_reloads_rather_than_navigating_to_the_same_url(self):
-        # Both dodges fail on the real thing: `goto` to the URL already in the
-        # address bar answers net::ERR_ABORTED, and so does `goto about:blank`
-        # out of Medium's editor (beforeunload). Either way the page does not
-        # reload and the re-read is the same DOM again. Observed on
-        # /p/ccbf0cbe2691. `reload` is the browser's own path.
-        d = self.refill()
-        self.assertIn("reload", d.calls,
-                      "the re-read never reloaded the page: %s" % d.calls)
-        self.assertNotIn("goto about:blank", d.calls)
+        drops = [i for i, c in enumerate(d.calls) if c == "disconnect"]
+        self.assertTrue(any(dumps[0] < r < dumps[1] for r in drops),
+                        "the page was never reopened between the two reads: %s" % d.calls)
 
 
 class TestCodeBlocksAreNotTypographyFolded(unittest.TestCase):
