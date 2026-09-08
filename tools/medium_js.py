@@ -375,14 +375,27 @@ def saved_js():
     is the editor's own indicator, and it is the only thing on the page that
     knows whether the write finished.
 
-    Returned raw rather than as a boolean: "Saving failed because someone is
-    also editing" has to reach the operator verbatim, because the fix for it
-    (close the other editor) is not something the driver can do.
+    The message is returned raw as well as classified: "Saving failed because
+    someone is also editing" has to reach the operator verbatim, because the
+    fix for it (close the other editor) is not something the driver can do.
+
+    Classifying here rather than by glob in the shell, because the raw text is
+    not one word. A draft's metabar reads "DraftSaved" -- the "Draft" label and
+    the status live in the same element, and textContent runs them together --
+    while a published post's reads "Saved". Matching the literal "Saved" looked
+    right and silently never matched a draft: eight scheduled posts polled to
+    the timeout and reported failure after saving perfectly well.
     """
     return """(() => {
   const el = document.querySelector('.js-metabarMessage');
   if (!el) return JSON.stringify({ err: 'no save indicator on this page' });
-  return JSON.stringify({ message: (el.textContent || '').trim() });
+  const message = (el.textContent || '').trim();
+  return JSON.stringify({
+    message,
+    // "Saved" and "DraftSaved"; not "Saving…", not "Saving failed ...".
+    saved: /Saved$/.test(message) && !/Saving/.test(message),
+    failed: /failed/i.test(message)
+  });
 })()
 """
 

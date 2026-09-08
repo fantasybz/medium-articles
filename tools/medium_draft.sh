@@ -695,12 +695,11 @@ for _ in $(seq 1 "$SAVE_TIMEOUT_S"); do
   case "$save_state" in
     # Verbatim: "Saving failed because someone is also editing" is the one that
     # bit, and it needs the operator to close the other editor, not a retry.
-    *failed*) echo "FAILED: Medium says $save_state" >&2; exit "$EX_UNAVAILABLE" ;;
-    *'"message":"Saved"'*) stored=1; break ;;
-    # "Saving…" (with a horizontal ellipsis) is the in-flight state: keep
-    # polling. Anything else unrecognised is reported by the timeout below
-    # rather than guessed at.
-    *Saving*) ;;
+    *'"failed":true'*) echo "FAILED: Medium says $save_state" >&2; exit "$EX_UNAVAILABLE" ;;
+    # medium_js.py classifies this, because the raw text is not one word: a
+    # draft's metabar reads "DraftSaved" and a published post's reads "Saved".
+    # Globbing for the literal "Saved" here matched only the published half.
+    *'"saved":true'*) stored=1; break ;;
   esac
   sleep 1
 done

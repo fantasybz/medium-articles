@@ -910,6 +910,60 @@ console.log(JSON.stringify(%s));
         self.assertEqual(list(json.loads(got)), ["figures", "imgs", "pending", "slots"])
 
 
+class TestSavedSnippet(unittest.TestCase):
+    """`saved` — the only thing that knows whether Medium kept the write.
+
+    The drive tests feed this snippet's *reply* from a canned file, so they pin
+    what the shell does with each shape and nothing about how the shape is
+    decided. That gap is not hypothetical: the first version compared the raw
+    text to "Saved", which no draft ever says, and the drive tests went on
+    passing because they never ran it.
+    """
+
+    def verdict(self, message):
+        # node_eval already parses what the snippet printed; the snippet
+        # returns JSON text, so one decode is all there is.
+        js = ("const document = { querySelector: () => ({ textContent: %s }) };\n"
+              "console.log(%s);" % (json.dumps(message), medium_js.saved_js().strip()))
+        return node_eval(self, js)
+
+    @unittest.skipUnless(shutil.which("node"), "node unavailable")
+    def test_a_draft_says_DraftSaved_and_that_is_saved(self):
+        # The metabar puts the "Draft" label and the status in one element, so
+        # textContent runs them together. Eight scheduled posts were reported
+        # as failures over this.
+        v = self.verdict("DraftSaved")
+        self.assertTrue(v["saved"])
+        self.assertFalse(v["failed"])
+
+    @unittest.skipUnless(shutil.which("node"), "node unavailable")
+    def test_a_published_post_says_Saved(self):
+        v = self.verdict("Saved")
+        self.assertTrue(v["saved"])
+        self.assertFalse(v["failed"])
+
+    @unittest.skipUnless(shutil.which("node"), "node unavailable")
+    def test_saving_in_flight_is_not_saved(self):
+        # A horizontal ellipsis, not three dots.
+        v = self.verdict("Saving\u2026")
+        self.assertFalse(v["saved"])
+        self.assertFalse(v["failed"])
+
+    @unittest.skipUnless(shutil.which("node"), "node unavailable")
+    def test_a_concurrent_editor_is_failed_and_not_saved(self):
+        v = self.verdict("Saving failed because someone is also editing. "
+                         "Reload to see their changes.")
+        self.assertFalse(v["saved"])
+        self.assertTrue(v["failed"])
+        self.assertIn("also editing", v["message"])
+
+    @unittest.skipUnless(shutil.which("node"), "node unavailable")
+    def test_a_missing_indicator_is_an_error_not_an_unsaved_verdict(self):
+        js = ("const document = { querySelector: () => null };\n"
+              "console.log(%s);" % medium_js.saved_js().strip())
+        self.assertIn("err", node_eval(self, js))
+
+
 class TestDumpSnippet(unittest.TestCase):
     """`dump` — what verify_draft.py compares the payload against."""
 
@@ -2528,7 +2582,10 @@ class Driven(DriverFixture):
         # Medium's save indicator answers "Saved" unless a test says otherwise:
         # every run reaches it, and restating it in each happy-path case would
         # only bury the cases that are actually about the save.
-        rules = dict({"eval:saved.js": '{"message":"Saved"}'}, **(rules or {}))
+        # A *draft* reads "DraftSaved", a published post reads "Saved". The
+        # default is the draft form on purpose: it is the one the literal-match
+        # bug got wrong, so the happy paths exercise it.
+        rules = dict({"eval:saved.js": SAVED_DRAFT}, **(rules or {}))
         for key, reply in rules.items():
             # A list is a reply per call, in order; the last one repeats.
             lines = reply if isinstance(reply, list) else [reply]
@@ -2932,6 +2989,15 @@ class TestMediumDraftFinishes(Driven, unittest.TestCase):
         self.assertIn("placeholder text left in the post", d.out.stderr)
 
 
+# The four shapes Medium's metabar takes, as observed. "DraftSaved" is the
+# concatenation of the "Draft" label and the status inside one element.
+SAVED_DRAFT = '{"message":"DraftSaved","saved":true,"failed":false}'
+SAVED_PUBLISHED = '{"message":"Saved","saved":true,"failed":false}'
+SAVING = '{"message":"Saving\u2026","saved":false,"failed":false}'
+SAVE_CONFLICT = ('{"message":"Saving failed because someone is also editing.",'
+                 '"saved":false,"failed":true}')
+
+
 class TestMediumStoredIt(Driven, unittest.TestCase):
     """The reload pass. Every one of these shipped broken once.
 
@@ -2950,8 +3016,19 @@ class TestMediumStoredIt(Driven, unittest.TestCase):
         base.update(rules)
         return self.drive("--post", GOOD_ID, paste="# T\n\nbody\n", rules=base)
 
+    def test_a_published_post_and_a_draft_both_count_as_saved(self):
+        # The bug this pins: the driver globbed for the literal "Saved", which
+        # a draft's metabar never says -- it says "DraftSaved". Eight scheduled
+        # posts polled to the timeout and reported failure after saving fine,
+        # and the operator's response to that was to run them again.
+        for shape in (SAVED_DRAFT, SAVED_PUBLISHED):
+            with self.subTest(shape=shape):
+                d = self.refill(**{"eval:saved.js": shape})
+                self.assertEqual(d.out.returncode, 0, d.out.stderr + d.out.stdout)
+                self.assertIn("post ready", d.out.stdout)
+
     def test_a_save_that_never_finishes_is_not_reported_as_ready(self):
-        d = self.refill(**{"eval:saved.js": '{"message":"Saving"}'})
+        d = self.refill(**{"eval:saved.js": SAVING})
         self.assertNotEqual(d.out.returncode, 0)
         self.assertIn("never reported the post saved", d.out.stderr)
         self.assertNotIn("post ready", d.out.stdout)
@@ -2959,8 +3036,7 @@ class TestMediumStoredIt(Driven, unittest.TestCase):
     def test_a_concurrent_editor_is_reported_verbatim_and_stops_the_run(self):
         # The message that actually appeared. The fix is to close the other
         # editor, which the driver cannot do, so it must not swallow it.
-        medium = "Saving failed because someone is also editing. Reload to see their changes."
-        d = self.refill(**{"eval:saved.js": '{"message":"%s"}' % medium})
+        d = self.refill(**{"eval:saved.js": SAVE_CONFLICT})
         self.assertNotEqual(d.out.returncode, 0)
         self.assertIn("also editing", d.out.stderr)
 
