@@ -61,10 +61,10 @@ Medium 的 API 早就形同廢棄，所以只能開瀏覽器。中間踩過的�
 |---|---|
 | `md2medium.py` | `medium-paste.md` → `{title, html, images}` 的 JSON |
 | `chrome_cookies.py` | 從 macOS Chrome 解密匯出某網域的 cookie |
-| `medium_js.py` | 產生餵給 `browse eval` 的瀏覽器片段（標題／內文／圖片／placeholder）；另有 `selectors` 子指令，吐出給 shell `eval` 的選擇器變數 |
+| `medium_js.py` | 產生餵給 `browse eval` 的瀏覽器片段（標題／內文／圖片／placeholder）；`identify` 認出編輯器裡是哪一篇、`refill` 用新內文蓋掉整篇舊內文、`state` 一次回報圖數與剩餘 placeholder；另有 `selectors` 子指令，吐出給 shell `eval` 的選擇器變數 |
 | `verify_draft.py` | 把編輯器裡的實際內容跟轉換後的 payload 逐塊比對，清點連結數，並比對每張圖落在第幾個 graf |
 | `medium_patch.py` | 改**已發布**的文章：找到某幾個 graf、整段換掉、逐處換字串、換圖、刪圖 |
-| `medium_draft.sh` | 把上面全部串起來；第二個參數選 `publish/<lang>/` 語言包，並在開瀏覽器前擋掉解析到 repo 外的路徑 |
+| `medium_draft.sh` | 把上面全部串起來；第二個參數選 `publish/<lang>/` 語言包，並在開瀏覽器前擋掉解析到 repo 外的路徑。加 `--post <id>` 則是**就地重灌既有文章**（Post ID 不變），走的是同一條插圖與驗證流程 |
 | `test_tools.py` | 這些腳本的單元測試：`python3 tools/test_tools.py` |
 
 先確認抓得到登入中的 session：
@@ -110,8 +110,9 @@ cookie 值貼進 repo。**
 
 ## 改已發布的文章
 
-`medium_draft.sh` 只會建新草稿。文章上線之後要改，只能進 Medium 編輯器，
-但同一套合成 paste 也能做得很精準——選一段 graf，把新的 HTML 貼上去蓋掉：
+文章上線之後要改，只能進 Medium 編輯器，但同一套合成 paste 也能做得很精準。
+改動**零星**時（錯字、補連結、換一張圖），用 `medium_patch.py` 選一段 graf，
+把新的 HTML 貼上去蓋掉：
 
 ```bash
 W=$(mktemp -d)                                                     # 別用固定的 /tmp 檔名
@@ -215,6 +216,42 @@ python3 tools/medium_patch.py drop "1*舊圖的CDN檔名"
 存檔按的是 **Save and publish**。它算更新、不算新發布，
 所以不會吃掉下面〈發文數量上限〉的配額。
 
+### 整篇重灌：`medium_draft.sh --post <id>`
+
+改動**散布全篇**時（例如一輪口吻潤稿：74 段變 149 段、二十幾處分散改動、還有純插入），
+逐段 `replace` 是錯的工具——錨點要對二三十次，`medium_patch.py` 又沒有 insert 動詞。
+這種情況用：
+
+```bash
+./tools/medium_draft.sh 2026-10-green-reliability --post 3c64a9622777
+./tools/medium_draft.sh 2026-10-green-reliability en --post 4b6d147bff0d
+```
+
+它開 `https://medium.com/p/<id>/edit`，用一個 Range 把標題以下的整個內文
+（含既有的 figure）一次蓋成新的，然後走**跟建新草稿完全相同**的插圖與驗證流程：
+逐張上傳輪詢、逐張確認 placeholder 真的被選中、`verify_draft.py` 逐塊比對、
+最後斷言圖數與 leftoverSlots。**Post ID 不變**，所以系列導覽的短網址不會斷。
+
+動手之前它會擋三關：
+
+1. **id 必須與該語言包自己的 `PUBLISHED.md` 記載相符**（比對 `^**Post ID** \`<id>\`` 那一行）。
+   這一關在**開瀏覽器之前**跑，是唯一 `--retitle` 推翻不了的。ledger 沒記就直接拒絕，
+   沒有 `--force`。所以新的一篇要能重灌，得先在 ledger 補上那一行。
+2. **網址形狀**要真的是 `https://medium.com/p/<id>/edit`，而且用輪詢等它到位；
+   被導去 read view 或登入頁都會各自報錯。
+3. **編輯器要載完**：連續兩次讀到相同的 graf／figure 數才放行，還在長就不貼。
+
+貼完之後 `figuresLeft` 必須是 0 —— 這道斷言就是在驗「Range 真的把舊圖一起吃掉了」
+這個前提。不是 0 就停在插圖之前，不會上傳任何東西。
+
+**中途失敗會留下半殘狀態**：內文已經換掉、圖還沒補完。腳本的 `EXIT` trap 會印出
+這件事、排程稿與已發布文章各自的後果、以及可直接貼上的重跑指令。
+但**掛在最後那道逐塊驗證時，重跑不是解法**——那代表 payload 與編輯器對不起來，
+要先查清楚。
+
+它一樣**不會**替你按發布。排程草稿維持排程；已發布的文章要自己按
+**Save and publish**（`postPublishedType=repub`，網址不變、不會重寄訂閱信）。
+
 ## 發文數量上限
 
 Medium 限制同一作者 **24 小時內最多發布或排程 2 篇**。撞到時 Publish 對話框會出現：
@@ -255,8 +292,9 @@ Medium 限制同一作者 **24 小時內最多發布或排程 2 篇**。撞到�
 系列文章互相連結，但每篇的網址要發布後才存在，而 Medium 一天只讓你發兩篇
 （見上面〈發文數量上限〉）。所以順序是固定的，照著做就不會留下死連結：
 
-1. **發下一篇**。只按該草稿的 Publish，**不要重跑 `medium_draft.sh`**——
-   重建會換掉 Post ID 與網址，已發布的那篇還會再寄一次訂閱信。
+1. **發下一篇**。只按該草稿的 Publish，**不要重跑不帶 `--post` 的 `medium_draft.sh`**——
+   那會建一篇新的，換掉 Post ID 與網址，已發布的那篇還會再寄一次訂閱信。
+   （要就地重灌同一篇請用 `--post <id>`，見〈整篇重灌〉。）
    topics 與封面圖在建草稿時就設好了，不用再動。
 2. **記下它的真實網址**。
 3. **回頭補連結**。用 `medium_patch.py` 把其他各篇裡對應的
