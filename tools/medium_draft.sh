@@ -55,6 +55,7 @@ readonly RELOAD_SETTLE_S=40      # a reloaded editor rehydrates its figures
 readonly RECONNECT_GAP_S=3       # let the daemon go before asking for a page
 readonly RELOAD_STABLE_READS=2   # identical samples before a reload counts as done
 readonly SAVE_QUIET_READS=6      # consecutive "Saved" reads before believing it
+readonly SAVE_GRACE_S=45         # hands off after that, before anything reloads
 # A new story renders instantly; an existing post has to fetch and lay out
 # 149 grafs and 14 figures first, and asking it what it is too early looks
 # exactly like "no editor here". The same budget covers the other two waits on
@@ -722,6 +723,28 @@ if [ "$stored" -eq 0 ]; then
   echo "FAILED: Medium never held the $WHAT at saved (last: $save_state)" >&2
   exit "$EX_TEMPFAIL"
 fi
+
+# Then leave it completely alone for a while. The indicator is not a commit
+# record: a post whose editor reported 7 figures and 0 placeholders, and whose
+# metabar held at "Saved" for six consecutive reads, still came back from a
+# reload as 98 grafs with 4 IMGSLOT markers in it -- the state from partway
+# through the image loop. Whatever Medium is doing after it says "Saved", it is
+# not finished, and disconnecting the browser then truncates it. Polling harder
+# does not help; the only thing that does is not touching the page.
+#
+# It is deliberately a plain wait and not another poll: every signal available
+# here has already been observed to say "done" while it was not, so another
+# reading of the same indicators would just be a fifth way of being told the
+# same lie.
+step "leaving it alone to finish writing"
+sleep "$SAVE_GRACE_S"
+save_state=$(B eval "$WORK/saved.js") || {
+  echo "FAILED: browse could not re-read the save indicator" >&2; exit "$EX_TEMPFAIL"; }
+case "$save_state" in
+  *'"saved":true'*) ;;
+  *) echo "FAILED: the $WHAT went unsaved again during the grace period: $save_state" >&2
+     exit "$EX_TEMPFAIL" ;;
+esac
 
 step "re-reading it from Medium"
 # Mark the document first, then prove the mark is gone. Every indirect way of

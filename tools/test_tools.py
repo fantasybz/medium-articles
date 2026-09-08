@@ -3132,6 +3132,28 @@ class TestMediumStoredIt(Driven, unittest.TestCase):
         self.assertNotEqual(d.out.returncode, 0)
         self.assertIn("never stopped changing", d.out.stderr)
 
+    def test_it_waits_hands_off_after_the_save_before_reloading(self):
+        # The indicator is not a commit record. A post whose editor reported 7
+        # figures and 0 placeholders, and whose metabar held at "Saved" for six
+        # reads, still came back from a reload as 98 grafs with 4 IMGSLOT
+        # markers -- the state from partway through the image loop. Nothing may
+        # touch the page between the save and the reload except the wait.
+        d = self.refill()
+        self.assertIn("leaving it alone to finish writing", d.out.stdout)
+        graces = [i for i, c in enumerate(d.calls) if c.startswith("eval saved.js")]
+        drops = [i for i, c in enumerate(d.calls) if c == "disconnect"]
+        self.assertTrue(graces and drops, d.calls)
+        # The last look at the indicator is after the grace period, so it has
+        # to come after every other save read and before the detach.
+        self.assertLess(graces[-1], drops[-1], d.calls)
+
+    def test_a_post_that_goes_unsaved_during_the_grace_period_fails(self):
+        # Something else changed it, or the save the indicator claimed was not
+        # the whole document. Either way it must not be reloaded and blessed.
+        d = self.refill(**{"eval:saved.js": [SAVED_DRAFT] * 6 + [SAVING]})
+        self.assertNotEqual(d.out.returncode, 0)
+        self.assertIn("went unsaved again during the grace period", d.out.stderr)
+
     def test_a_page_that_never_reloaded_is_caught_by_its_mark(self):
         # The failure this replaces an exit-status check with. `reload` can
         # report a timeout and still have reloaded, and it can report nothing
