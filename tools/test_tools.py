@@ -2907,7 +2907,10 @@ class TestMediumDraftPostDrive(Driven, unittest.TestCase):
             "eval:body.js": '{"replaced":149,"figuresBefore":14,"figuresLeft":1,'
                             '"title":"T","titleOk":true}'})
         self.assertEqual(d.out.returncode, EX_UNAVAILABLE, d.out.stderr)
-        self.assertIn("the refill left old figures behind", d.out.stderr)
+        # Without --reuse-figures the expected count is 0, and the message
+        # names it: the same check reads "did not leave 7 figures behind" when
+        # the paste was supposed to bring its own.
+        self.assertIn("did not leave 0 figures behind", d.out.stderr)
         self.assertNotIn("eval image.js", d.calls)
         self.assertEqual([c for c in d.calls if c.startswith("press")], [], d.calls)
 
@@ -3105,6 +3108,46 @@ class TestReuseFigures(Driven, unittest.TestCase):
         self.assertNotEqual(d.out.returncode, 0)
         self.assertIn("do not match this pack", d.out.stderr)
         self.assertNotIn("eval body.js", d.calls)
+
+    def test_the_pasted_figures_are_expected_to_survive_the_paste(self):
+        # Without --reuse-figures the range must leave no figure behind. With
+        # it the paste brings its own, so demanding zero fails a paste that did
+        # exactly what it was told.
+        d = self.drive("--post", GOOD_ID, "--reuse-figures",
+                       paste=PASTE_WITH_FIGURE, images=["a.png"], rules={
+            "eval:figures.js": '{"srcs":["https://miro.medium.com/1*aa.png"]}',
+            "eval:body.js": ('{"replaced":9,"figuresBefore":1,"figuresLeft":1,'
+                             '"title":"T","titleOk":true}'),
+            "eval:state.js": state(figures=1, slots=0),
+            "eval:dump.js": self.editor(["T", "body"], ["H3", "P", "FIGURE"])})
+        self.assertEqual(d.out.returncode, 0, d.out.stderr + d.out.stdout)
+
+    def test_a_reuse_paste_that_lost_a_figure_still_fails(self):
+        d = self.drive("--post", GOOD_ID, "--reuse-figures",
+                       paste=PASTE_WITH_FIGURE, images=["a.png"], rules={
+            "eval:figures.js": '{"srcs":["https://miro.medium.com/1*aa.png"]}',
+            "eval:body.js": ('{"replaced":9,"figuresBefore":1,"figuresLeft":0,'
+                             '"title":"T","titleOk":true}')})
+        self.assertNotEqual(d.out.returncode, 0)
+        self.assertIn("did not leave 1 figures behind", d.out.stderr)
+
+    def test_a_prewritten_figure_holds_a_graf_slot_like_a_placeholder(self):
+        # Both forms occupy one graf and carry no text. Counting only the
+        # placeholder made the reuse mode expect no figures and then call the
+        # right ones a mismatch.
+        payload = {"title": "T",
+                   "html": "<p>a</p>\n<figure><img src=\"https://cdn/1.png\"></figure>\n<p>b</p>"}
+        # Index 2 because graf_sequence counts the title as graf 0. The point
+        # is that both forms land on the same index and neither adds a text
+        # block: an <img> the reader sees is not something to diff prose against.
+        self.assertEqual(verify_draft.expected_figure_positions(payload), [2])
+        self.assertEqual(verify_draft.expected_blocks(payload),
+                         ["T", "<p>a</p>", "<p>b</p>"])
+
+    def test_the_placeholder_form_still_counts(self):
+        payload = {"title": "T",
+                   "html": "<p>a</p>\n<p>IMGSLOT-x.png-ENDSLOT</p>\n<p>b</p>"}
+        self.assertEqual(verify_draft.expected_figure_positions(payload), [2])
 
     def test_without_the_flag_nothing_changes(self):
         d = self.drive("--post", GOOD_ID, paste=PASTE_WITH_FIGURE, images=["a.png"],

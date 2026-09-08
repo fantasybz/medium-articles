@@ -568,9 +568,13 @@ if [ -n "$POST_ID" ]; then
   # not one of them went. Everything below counts figures up from zero, so a
   # survivor turns the first upload wait into a 40s timeout blaming the
   # network for a selection that did not do what this run assumed.
+  # With --reuse-figures the pasted HTML carries the figures itself, so the
+  # right answer is "as many as the pack has" rather than none. Comparing
+  # against 0 in that mode failed a paste that had just done exactly what it
+  # was asked to.
   case "$body_result" in
-    *'"figuresLeft":0,'*) ;;
-    *) echo "FAILED: the refill left old figures behind" >&2
+    *'"figuresLeft":'"$REUSED_FIGURES_RESOLVED"','*) ;;
+    *) echo "FAILED: the refill did not leave $REUSED_FIGURES_RESOLVED figures behind" >&2
        echo "  the paste did not take them with the old prose, which every" >&2
        echo "  figure count below assumes; stopping before anything is uploaded" >&2
        exit "$EX_UNAVAILABLE" ;;
