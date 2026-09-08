@@ -49,3 +49,17 @@ EN Part 3 於 2026-09-05 09:40 上線後，本篇裡指向它的 2 處也換成�
 「(coming soon)」歸零。英文四篇的系列連結至此全部收乾淨。
 
 最新內容以 `article.en.md` 為準；`publish/en/medium-paste.md` 由它產生。
+
+## 口吻潤稿重灌（2026-09-08）
+
+以 `./tools/medium_draft.sh 2026-10-agentic-harness-blueprint en --post 3facc281f633 --reuse-figures` 就地重灌，
+Post ID 不變。`--reuse-figures` 直接沿用這篇已發布版本上的圖（貼 CDN 網址），
+完全不重新上傳——重新上傳會讓存檔寫不完，是這一輪最初把草稿弄壞的原因。
+封面圖與 topics 因此都不受影響。
+
+重載後從伺服器讀回來驗證通過：94 個文字區塊逐塊相符、11 個連結全在、
+7 張圖各在自己的槽位、無殘留 placeholder。
+
+**還沒上線。** 這篇已發布，改動只存在「已發布版本背後的草稿」裡，讀者看到的
+仍是舊版。要讓潤稿生效，必須在編輯器按 **Save and publish**
+（`postPublishedType=repub`：網址不變、不會重寄訂閱信）。

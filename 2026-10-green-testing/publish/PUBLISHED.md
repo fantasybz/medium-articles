@@ -27,3 +27,13 @@
 | 內文區塊（與轉換後 payload 逐塊比對） | 建草稿時零差異 |
 | 插圖 | 見 `publish/figures.json` |
 | 死連結 / 殘留「（即將發布）」/ 裂開的破折號 | 上線後檢查 |
+
+## 口吻潤稿重灌（2026-09-08）
+
+以 `./tools/medium_draft.sh 2026-10-green-testing --post b01055139451` 就地重灌，Post ID 不變。
+重載後從伺服器讀回來驗證通過：175 個文字區塊逐塊相符、19 個連結全在、
+8 張圖各在自己的槽位、無殘留 placeholder。
+
+**排程未受影響**：重灌後 Stories → Scheduled 仍列 Oct 13, 1:00 AM (UTC)，與原排程相同。
+
+待人工確認：封面圖（所有 figure 都重傳過，Medium 可能改用第一張當預覽圖）。
