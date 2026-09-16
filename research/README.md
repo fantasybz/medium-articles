@@ -46,6 +46,8 @@ flowchart LR
 
 節奏是建議值。發布配額是硬限制，其餘都可以壓縮。
 
+**期中加圈**（2026-09-15 第一次：AGNTCon + MCPCon Japan 與《AI Agents in Depth》）：月中作者去了一場會議、或讀完一本要當書錨的書，不等下個月 1 日，直接加一圈。`collect.sh all` 照跑，digest 寫到 `research/<下個月>/`；會議材料抓到 `.context/research/<slug>-conf/`（sched 議程含作者打勾的場次、附件投影片用 pdftotext／pptx／keynote-parser／OCR 轉文字、keynote 直播字幕、主辦方部落格）→ 一天一份逐場筆記 `notes_<day>.md`（全部場次都寫，作者參加的標 ✅）→ `prompts/conference_digest.md` 整合成 `conference_digest.md`（會 commit：只引公開材料）→ 書摘 `book_<slug>.md`（會 commit）→ 用這些重切下下個月的大綱、把可插的證據補進當月還沒發布的文章（只加句子與 References，不改作者的字；改完要用 `tools/medium_draft.sh <dir> --post <id>` 重灌草稿）→ 更新 backlog 與 style brief。期中加圈不重新選題，`selection.md` 只記錄改了什麼。每個產出檔都要過一個 skeptic agent 對原始來源抽查再用：session 撞額度會讓 agent 寫到一半停下，檔尾乾淨不代表完整，要拿獨立的清單（場次 id、章節、查詢字串）對覆蓋率。
+
 ## 資料來源
 
 | 來源 | 登入方式 | 抓什麼 | 腳本 | 已知問題 |
@@ -55,7 +57,7 @@ flowchart LR
 | LinkedIn | `linkedin.com --subdomains`（`li_at` 掛在 `.www.linkedin.com`） | 動態牆、已儲存貼文 | `collect.sh linkedin`、`extract_li2.js` | 動態牆 2026-09 只抓到 8 篇（用「Feed post」切文字），selector 待修；已儲存貼文的價值比較高 |
 | Medium | `medium.com`（Default profile，同 `medium_draft.sh`） | `me/stats` 全表（presentations / views / reads）、個人頁文章清單 | `collect.sh medium`、`extract_medium.js` | 這是回饋迴圈的輸入；Cloudflare 擋 headless，一律 `--headed` |
 | arXiv | 不用登入 | `export.arxiv.org/api/query` 各主題各 50 筆，再讀 abstract；批次查詢會被 429，改用 arxiv.org 搜尋頁補 | agent（`prompts/arxiv.md`） | 提交日與公告日可能差一個多月，表裡要註明 |
-| Notion | 桌面版 app 的 cookie（Electron 同款加密），`research/scripts/notion_cookies.py notion.com`；第一次讀 Keychain 要人按「允許」（2026-09-05 10:47 已授權） | 工作區的側欄、最近編輯的 100 頁（內部 `/api/v3/search`）、指定頁面的算繪文字 | `collect.sh notion`、`notion_search.js`、`notion_chunk.js` | `token_v2` 掛在 `app.notion.com`，browse 只收「網域是目前頁面字尾」的 cookie，所以要分兩批：站在 `www.notion.com` 匯入 `.notion.com` 那批，再站在 `app.notion.com` 匯入 `app.notion.com` 那批；`msgstore-*.app.notion.com` 的 AWSALB cookie 丟掉。內部 API 沒有版本保證 |
+| Notion | 桌面版 app 的 cookie（Electron 同款加密），`research/scripts/notion_cookies.py notion.com`；第一次讀 Keychain 要人按「允許」（2026-09-05 10:47 已授權） | 工作區的側欄、最近編輯的 100 頁（內部 `/api/v3/search`）、指定頁面的算繪文字 | `collect.sh notion`、`notion_search.js`、`notion_chunk.js` | `token_v2` 掛在 `app.notion.com`，browse 只收「網域是目前頁面字尾」的 cookie，所以要分兩批：站在 `www.notion.com` 匯入 `.notion.com` 那批，再站在 `app.notion.com` 匯入 `app.notion.com` 那批；`msgstore-*.app.notion.com` 的 AWSALB cookie 丟掉。內部 API 沒有版本保證；`browse eval`（gstack 2026-09 版）在 .js 不是以運算式開頭、或註解含撇號時會印出空字串且 exit 0（2026-09-15 踩到，`collect.sh` 的 Notion 步驟現在會擋、`test_research_scripts.py` 的 `TestBrowseEvalFiles` 檢查所有 `*.js`） |
 
 所有 cookie 都只存在 `mktemp -d`（0700）裡，匯入完就刪；`.gitignore` 也擋了 `*cookies*.json`。
 
@@ -75,17 +77,17 @@ research/
 │   ├── collect.sh            # 收集階段的驅動腳本（由 2026-09-05 跑通的指令整理而成）
 │   ├── extract_*.js          # 各平台的 DOM 擷取；selector 會壞，壞了先修這裡
 │   ├── merge.py              # 把新抓的一批 JSON 併進累積檔：`--key link|handle` 選去重欄位，`--tag SOURCE` 標來源
-│   ├── codex_review.sh       # 用 Codex（xhigh）二審一份大綱或 selection.md（`KIND=outline|selection`），原話存 codex-review-<slug>.md；四份 digest 都要在 research/<month>/ 下才跑，缺一份 exit 64
+│   ├── codex_review.sh       # 用 Codex（xhigh）二審一份大綱或 selection.md（`KIND=outline|selection`），原話存 codex-review-<slug>.md；四份 digest 都要在 research/<month>/ 下才跑，缺一份 exit 64；期中加圈多出來的對照檔用 `EXTRA_DIGESTS="conference_digest.md book_ai_agent_book.md"` 帶進去，同樣缺一份 exit 64
 │   ├── codex_jsonl.py        # codex exec --json 的串流解析（拆出來是因為 bash 單引號裡塞 python 會壞）
 │   ├── mermaid_check.sh      # 用 browse 算繪一張 Mermaid 圖並依 MERMAID.md 判 PASS／FAIL（寬、高／寬、節點數）
 │   ├── mermaid_check_all.sh  # 抽出一份 .md 裡所有 mermaid 區塊逐張檢查，列成一張表
 │   ├── sync_figures.py       # 用 <slug>.figures.md 的已驗證版本覆蓋大綱內嵌的 mermaid（依圖 id）；有對不上或重複的區塊就不寫，除非 --force
 │   ├── article_to_paste.py   # article.md → publish/medium-paste.md（mermaid → 📌圖、表格 → 📌表，其餘一字不差）+ figures.json
 │   ├── render_images.sh      # 依 figures.json 算繪 diagram-NN.png（走 mermaid_check）與 table-NN.png（HTML 截圖）
-│   ├── test_research_scripts.py   # 離線測試（stdlib unittest）：article_to_paste（含每篇已 commit 的 paste == convert(article)）、sync_figures、codex_jsonl、merge、notion_cookies 的守衛，以及 codex_review.sh 的前置檢查（用假的 codex）
+│   ├── test_research_scripts.py   # 離線測試（stdlib unittest）：article_to_paste（含每篇已 commit 的 paste == convert(article)）、sync_figures、codex_jsonl、merge、notion_cookies 的守衛、每個 *.js 都能過 browse eval（TestBrowseEvalFiles），以及 codex_review.sh 的前置檢查（用假的 codex，含 EXTRA_DIGESTS）
 │   ├── notion_cookies.py     # Notion 桌面版 cookie 解密（Keychain 授權一次）
 │   └── notion_search.js / notion_chunk.js   # Notion 內部 API：最近頁面清單、單頁文字
-├── prompts/                  # 四個 digest agent 的 prompt（每月照抄改日期），加上 zh-tw 檢查 agent 的 zhtw_pass.md
+├── prompts/                  # 四個 digest agent 的 prompt（每月照抄改日期）、期中加圈用的 conference_digest.md（會議逐場筆記 → 整合 digest），加上 zh-tw 檢查 agent 的 zhtw_pass.md
 ├── workflows/                # Workflow 工具的腳本；root／month／today／published 都從 args 進，不寫死
 │   ├── plan-next-three-themes.js   # 提案 → 合併 → 評審/反駁 → 選題 → 大綱/批評/修訂 → backlog
 │   ├── review-outlines.js          # 第二輪：每份大綱 4 個視角批評（證據稽核／VP 讀者／編輯／圖表設計）→ 修訂 → 驗證（≤ 2 輪）→ 補 Mermaid 圖檔
@@ -102,7 +104,9 @@ research/
     ├── 2026-12-<slug>.md
     ├── 2026-1x-<slug>.figures.md   # 每張圖的 Mermaid 原始碼（依 MERMAID.md），mermaid_check.sh 逐張驗過
     ├── codex-review-*.md     # Codex 二審的原話
-    └── backlog.md            # 落選主題 + 訊號監看清單
+    ├── backlog.md            # 落選主題 + 訊號監看清單
+    ├── conference_digest.md / book_<slug>.md   # 期中加圈才有：會議整合 digest、書摘（兩份都 commit）
+    └── workflows/            # 期中加圈才有：這一圈實際跑的 Workflow 腳本，留作紀錄與下次的範本（root／today 從 args 進，prompt 內容綁定這一圈的材料）
 
 .context/research/YYYY-MM/    # collect.sh 的原始 JSON（整個 .context/ gitignored）
 .context/mermaid/             # mermaid_check.sh 的算繪暫存
@@ -125,9 +129,9 @@ research/
 - 每個候選：2 位不同視角的評審（讀者 VP、資深編輯）打 5 個分項 + 1 位反方（預設要駁倒）
 - 選題 agent 看全部分數與反駁，挑 3 個並排到 10／11／12 月，落選的全部進 backlog
 - 每個主題：大綱 → 批評（對 style brief、對已發布文章、對 digest 逐一查引用）→ 修訂
-- 大綱寫完後再跑一次 `workflows/review-outlines.js`（args：root、month、today、published、files；可選 `lenses: ["evidence","diagram"]` 只跑部分視角、`skipFigures: true` 跳過圖檔階段、`preIssues: {"<basename>.md": [issue, …]}` 把上一次中斷的 run 存下來的批評併進來，該視角就不必重跑。**一次只放一份大綱**：2026-09-06 實測 12 個 critic 同時讀 100K 字元大綱加 digest 會在幾分鐘內撞到 session 上限，只有證據稽核視角需要讀 digest）：每份大綱四個視角獨立批評—證據稽核（逐一對 digest 查引用與數字）、VP 讀者（會不會讀完並轉發）、編輯（格式、重疊、一個月寫得完嗎）、圖表設計（每張圖都要有符合 [MERMAID.md](../MERMAID.md) 的 Mermaid 原始碼，700px 下可讀）—合併 blocker/major 後修訂、再驗證，最多兩輪，最後才補 `.figures.md`。
+- 大綱寫完後再跑一次 `workflows/review-outlines.js`（args：root、month、today、published、files；可選 `lenses: ["evidence","diagram"]` 只跑部分視角、`skipFigures: true` 跳過圖檔階段、`preIssues: {"<basename>.md": [issue, …]}` 把上一次 run 中斷前存下來的批評，直接併進來，該視角就不必重跑。**一次只放一份大綱**：2026-09-06 實測 12 個 critic 同時讀 100K 字元大綱加 digest 會在幾分鐘內撞到 session 上限，只有證據稽核視角需要讀 digest）：每份大綱四個視角獨立批評—證據稽核（逐一對 digest 查引用與數字）、VP 讀者（會不會讀完並轉發）、編輯（格式、重疊、一個月寫得完嗎）、圖表設計（每張圖都要有符合 [MERMAID.md](../MERMAID.md) 的 Mermaid 原始碼，700px 下可讀）—合併 blocker/major 後修訂、再驗證，最多兩輪，最後才補 `.figures.md`。
 - workflow 之外再加兩道關卡（2026-09-05 決定）：
-  1. **Codex 二審**：`research/scripts/codex_review.sh <outline.md>`，用 OpenAI Codex（`~/.codex/config.toml` 的 model，reasoning `xhigh`）審每份大綱。理由是大綱由 Claude 寫、Claude 批評、Claude 修訂，同一個模型審自己有盲點；Codex 在 repo 根目錄 read-only 跑，會自己讀 digest 與 selection.md 查引用。原話存成 `codex-review-<slug>.md`，再由 Claude 修訂大綱。
+  1. **Codex 二審**：`research/scripts/codex_review.sh <outline.md>`，用 OpenAI Codex（`~/.codex/config.toml` 的 model，reasoning `xhigh`）審每份大綱。理由是大綱由 Claude 寫、Claude 批評、Claude 修訂，同一個模型審自己有盲點；Codex 在 repo 根目錄 read-only 跑，會自己讀 digest 與 selection.md 查引用。原話存成 `codex-review-<slug>.md`，再由 Claude 修訂大綱。期中加圈時大綱會引到標準四份以外的 digest（會議、書摘），要用 `EXTRA_DIGESTS="conference_digest.md book_ai_agent_book.md"` 帶進去，`review-outlines.js` / `finish-outline.js` 對應的參數是 `extraSources`；漏了 Codex 讀不到來源，會把那些數字全判成捏造。
   2. **zh-tw 檢查**：所有要給人讀的中文檔（大綱、backlog、selection.md、本 README、之後的 article.md 與 medium-paste.md）最後都過 `mcp__zhtw-mcp__zhtw`（content_type markdown、fix_mode lexical_safe、translationese_domain technical、fix_output search_replace），**逐條看它提議的替換再套，不要整檔覆蓋**：2026-09-06 實測它會把「未通過」改成「未透過」、「縮進容器」改成「縮排容器」、「原始碼」改成「原始程式碼」，三個都是誤判。真正有用的是翻譯腔警告（定語堆疊、被動語態），照著拆句即可。這是最後一步，任何修改之後都要再跑。**大檔（> 30K 字元）交給一個 agent 做**：MCP 工具只吃 `text` 參數，主迴圈自己貼會把整份大綱當輸出 token 重打一遍；agent 依標題切成 ≤ 30K 的段、逐段呼叫、逐條判斷再套回原檔（prompt 見 `prompts/zhtw_pass.md`）。
 
 重跑：把 `research/YYYY-MM/` 的四份 digest 與 `style_brief.md` 準備好（原始 JSON 在 `.context/research/YYYY-MM/`，workflow 不讀它），
@@ -146,7 +150,7 @@ Workflow({scriptPath: "research/workflows/finish-outline.js", args: {root, month
 
 ## 讓它越轉越準：回饋與成長機制
 
-這一節是迴圈跟「只做一次的研究」的差別。
+這一節談迴圈跟「只做一次的研究」差在哪裡。
 
 **1. 成效回填 backlog。** 每月底抓 Medium stats，算每篇的 reads/views（完讀率）與 claps。
 把「表現好的主題族」的權重寫回 `backlog.md`，下個月的選題 agent 會讀到。已知的基準：
