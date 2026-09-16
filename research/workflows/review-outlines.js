@@ -13,7 +13,8 @@ export const meta = {
 //         files: ['research/YYYY-MM/2026-10-....md', ...]            (one outline per run: 12 critics on a 100K-char outline hit the session limit),
 //         lenses?: ['evidence', 'reader', 'diagram', 'editor']       (default: all four),
 //         skipFigures?: bool                                          (skip the .figures.md stage),
-//         preIssues?: { '<basename>.md': [ {severity, where, problem, fix}, ... ] }  (critiques saved from an interrupted run, merged in so that lens need not rerun) }
+//         preIssues?: { '<basename>.md': [ {severity, where, problem, fix}, ... ] }  (critiques saved from an interrupted run, merged in so that lens need not rerun),
+//         extraSources?: ['research/YYYY-MM/conference_digest.md', ...]  (digests beyond the standard four that the outline may cite — a mid-month cycle adds them; the evidence lens and the revise agent read these too) }
 // Workflow scripts have no Date and cannot import modules: `today` comes in as an arg, and the CONTEXT skeleton, MERMAID_RULES
 // and the three schemas below are the CANONICAL copy that finish-outline.js and write-article.js duplicate — change them here first.
 const ROOT = args.root
@@ -22,6 +23,7 @@ const FILES = args.files.map(f => (f.startsWith('/') ? f : `${ROOT}/${f}`))
 if (!args.today) throw new Error('args.today (YYYY-MM-DD) is required: workflow scripts have no Date')
 if (!Array.isArray(args.published) || !args.published.length) throw new Error('args.published (array of published article dirs) is required; see research/README.md for the current list')
 const PUBLISHED = args.published.map(d => `${ROOT}/${d}/article.md`)
+const EXTRA = (args.extraSources || []).map(p => ', ' + (p.startsWith('/') ? p : `${ROOT}/${p}`)).join('')
 
 // The MERMAID.md numbers, written once and interpolated into every prompt below so the diagram lens, the revise step and
 // the figures step cannot drift from each other. Same numbers research/scripts/mermaid_check.sh enforces.
@@ -32,7 +34,7 @@ Today is ${args.today}. The author (@fantasybz, Kochi Chuang) publishes one THEM
 Reference files (Read them; long files can be read in chunks):
 - ${DIR}/style_brief.md   (format and voice the outline must follow)
 - ${DIR}/selection.md     (why this theme was chosen, the judges' objections, the adjustments it must honour, and the Notion 補充 section with first-hand material and corrections)
-- ${DIR}/arxiv.md, ${DIR}/x_digest.md, ${DIR}/community_digest.md, ${DIR}/notion_digest.md  (the ONLY allowed sources for numbers and citations; ONLY the evidence-auditor lens and the revise agent read these in full — other lenses must NOT read them, to keep token use down)
+- ${DIR}/arxiv.md, ${DIR}/x_digest.md, ${DIR}/community_digest.md, ${DIR}/notion_digest.md${EXTRA}  (the ONLY allowed sources for numbers and citations; ONLY the evidence-auditor lens and the revise agent read these in full — other lenses must NOT read them, to keep token use down)
 - ${ROOT}/MERMAID.md  (the Mermaid diagram standard every figure must follow)
 - Published articles that must not be repeated: ${PUBLISHED.join(', ')}
 Standard: the highest. This plan will be handed to the author to write four long-form pieces from; every claim must be traceable, every section must carry real content, and the Traditional Chinese must read like a Taiwanese engineer wrote it (single "—" dash only, never "——").

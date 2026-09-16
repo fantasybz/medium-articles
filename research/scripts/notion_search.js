@@ -1,5 +1,5 @@
 (async () => {
-  /* List the most recently edited pages in the user's main Notion workspace via the internal search API. | Optional: window.__NOTION_SPACE_ID / window.__NOTION_QUERY set beforehand with `browse js`. */
+  /* Recently edited pages via the internal search API. Optional: set window.__NOTION_SPACE_ID / window.__NOTION_QUERY first with browse js. No apostrophes in comments here, and the file must start with the expression: browse eval prints nothing otherwise. */
   const flat = t => Array.isArray(t) ? t.map(x => Array.isArray(x) ? x[0] : '').join('') : '';
   const post = (path, body) => fetch(path, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json());
   let spaceId = window.__NOTION_SPACE_ID;

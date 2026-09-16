@@ -679,12 +679,14 @@ class TestCodexReviewPreflight(unittest.TestCase):
         os.makedirs(fake_bin)
         sentinel = os.path.join(root.name, "codex-was-called")
         fake = os.path.join(fake_bin, "codex")
-        write(fake, "#!/bin/sh\ntouch %s\ncat <<'EOF'\n%sEOF\n" % (shlex.quote(sentinel), self.JSONL_OK))
+        # the fake also keeps the prompt it was handed (`codex exec "$PROMPT" …`, so argv[2]), so a test can assert what Codex was told
+        write(fake, "#!/bin/sh\ntouch %s\nprintf '%%s' \"$2\" > %s\ncat <<'EOF'\n%sEOF\n"
+              % (shlex.quote(sentinel), shlex.quote(sentinel + ".prompt"), self.JSONL_OK))
         os.chmod(fake, 0o755)
         return root.name, month, sentinel, fake_bin
 
-    def review(self, root, fake_bin, target="research/2026-01/outline.md"):
-        env = {**os.environ, "PATH": fake_bin + os.pathsep + os.environ.get("PATH", ""), "HOME": root}
+    def review(self, root, fake_bin, target="research/2026-01/outline.md", **env_extra):
+        env = {**os.environ, "PATH": fake_bin + os.pathsep + os.environ.get("PATH", ""), "HOME": root, **env_extra}
         return subprocess.run(["bash", self.SCRIPT, target], cwd=root, env=env,
                               capture_output=True, text=True, encoding="utf-8")
 
@@ -711,6 +713,34 @@ class TestCodexReviewPreflight(unittest.TestCase):
         self.assertIn("# Codex review — outline", review)
         self.assertIn("審查 ok\n", review)
         self.assertIn("<!-- tokens: in 1 out 2 -->", review)
+
+    # EXTRA_DIGESTS: a mid-month cycle (2026-09-15, the conference) adds digests the four standard
+    # names do not cover; an outline that cites them is judged invented unless Codex is told to read them.
+    def test_extra_digests_are_checked_for_like_the_standard_four(self):
+        root, month, sentinel, fake_bin = self.repo(digests=self.DIGESTS)
+        out = self.review(root, fake_bin, EXTRA_DIGESTS="conference_digest.md book_ai_agent_book.md")
+        self.assertEqual(out.returncode, 64, out.stderr)
+        self.assertIn("research/2026-01/conference_digest.md", out.stderr)
+        self.assertIn("research/2026-01/book_ai_agent_book.md", out.stderr)
+        self.assertNotIn("research/2026-01/arxiv.md", out.stderr)
+        self.assertFalse(os.path.exists(sentinel))
+
+    def test_extra_digests_present_are_named_in_the_prompt(self):
+        root, month, sentinel, fake_bin = self.repo(digests=self.DIGESTS + ("conference_digest.md",))
+        out = self.review(root, fake_bin, EXTRA_DIGESTS="conference_digest.md")
+        self.assertEqual(out.returncode, 0, out.stderr)
+        prompt = read(sentinel + ".prompt")
+        self.assertIn("research/2026-01/conference_digest.md", prompt)
+        self.assertIn("research/2026-01/notion_digest.md", prompt)
+
+    def test_without_extra_digests_the_prompt_lists_exactly_the_four(self):
+        root, month, sentinel, fake_bin = self.repo(digests=self.DIGESTS)
+        out = self.review(root, fake_bin)
+        self.assertEqual(out.returncode, 0, out.stderr)
+        prompt = read(sentinel + ".prompt")
+        self.assertNotIn("conference_digest.md", prompt)
+        for name in self.DIGESTS:
+            self.assertIn("research/2026-01/" + name, prompt)
 
 
 # ---------------------------------------------------------------- merge.py
@@ -865,6 +895,41 @@ class TestMergeCLI(unittest.TestCase):
 
 
 # ---------------------------------------------------------------- notion_cookies.py
+
+class TestBrowseEvalFiles(unittest.TestCase):
+    """Every research/scripts/*.js is fed to `browse eval <file>`. The gstack browse build
+    of 2026-09 prints nothing (exit 0) when the file does not start with the expression
+    or when a comment contains an apostrophe; collect.sh only noticed through a json.load
+    traceback on 2026-09-15 (notion_search.js said "the user's main Notion workspace").
+    Keep the files eval-clean so the failure cannot come back silently."""
+
+    FILES = sorted(glob.glob(os.path.join(HERE, "*.js")))
+
+    @staticmethod
+    def comments(src):
+        return re.findall(r"/\*.*?\*/", src, re.S) + re.findall(r"(?m)^\s*//.*$", src)
+
+    def test_there_are_eval_files(self):
+        self.assertGreaterEqual(len(self.FILES), 8)
+
+    def test_first_line_is_the_expression(self):
+        for path in self.FILES:
+            first = next(line for line in read(path).splitlines() if line.strip())
+            self.assertTrue(first.lstrip().startswith("("),
+                            "%s: must start with the expression, not %r" % (os.path.basename(path), first))
+
+    def test_no_apostrophe_in_comments(self):
+        for path in self.FILES:
+            for comment in self.comments(read(path)):
+                self.assertNotIn("'", comment,
+                                 "%s: apostrophe inside a comment: %r" % (os.path.basename(path), comment[:70]))
+
+    def test_catches_the_2026_09_15_regression(self):
+        # the comment that broke the Notion step, and a file that opens with a comment
+        self.assertTrue(any("'" in c for c in self.comments("(async () => {\n  /* the user's main workspace */\n})()")))
+        first = next(line for line in "/* header */\n(async () => 1)()".splitlines() if line.strip())
+        self.assertFalse(first.startswith("("))
+
 
 class TestNotionCookies(unittest.TestCase):
     def test_usage_error_exits_before_the_keychain_is_touched(self):

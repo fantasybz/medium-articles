@@ -13,7 +13,8 @@ export const meta = {
 //         file: 'research/YYYY-MM/<slug>.md',
 //         issues?: [ {severity, where, problem, fix}, ... ]          (inline), and/or
 //         issuesFile?: '<path>.json'                                 ({ "<basename>": [issue, ...] }, read by the agents themselves),
-//         skipFigures?: bool }
+//         skipFigures?: bool,
+//         extraSources?: ['research/YYYY-MM/conference_digest.md', ...]  (digests beyond the standard four, same as review-outlines.js) }
 // CONTEXT skeleton, MERMAID_RULES, FILE_SCHEMA and VERIFY_SCHEMA are copies of review-outlines.js (the canonical copy;
 // workflow scripts cannot import modules) — change them there first.
 const ROOT = args.root
@@ -23,6 +24,7 @@ const figPath = f.replace(/\.md$/, '.figures.md')
 if (!args.today) throw new Error('args.today (YYYY-MM-DD) is required: workflow scripts have no Date')
 if (!Array.isArray(args.published) || !args.published.length) throw new Error('args.published (array of published article dirs) is required; see research/README.md for the current list')
 const PUBLISHED = args.published.map(d => `${ROOT}/${d}/article.md`)
+const EXTRA = (args.extraSources || []).map(p => ', ' + (p.startsWith('/') ? p : `${ROOT}/${p}`)).join('')
 const issuesAll = args.issues || []
 let issues = issuesAll.filter(i => i.severity === 'blocker' || i.severity === 'major')
 const minors = issuesAll.filter(i => i.severity === 'minor')
@@ -34,7 +36,7 @@ const CONTEXT = `
 Today is ${args.today}. The author (@fantasybz, Kochi Chuang) publishes one THEME per month on Medium: one 總論 + 三部曲, in Traditional Chinese (Taiwan usage, English technical terms kept), plus an English edition. Audience: Engineering VPs / EMs / Staff engineers in Taiwan.
 Reference files:
 - ${DIR}/style_brief.md, ${DIR}/selection.md (judges' objections and the adjustments the theme must honour, incl. the Notion 補充)
-- ${DIR}/arxiv.md, ${DIR}/x_digest.md, ${DIR}/community_digest.md, ${DIR}/notion_digest.md (the ONLY allowed sources for numbers; read the parts you need)
+- ${DIR}/arxiv.md, ${DIR}/x_digest.md, ${DIR}/community_digest.md, ${DIR}/notion_digest.md${EXTRA} (the ONLY allowed sources for numbers; read the parts you need)
 - ${ROOT}/MERMAID.md (the Mermaid standard every figure must follow)
 - Published articles not to be repeated: ${PUBLISHED.join(', ')}
 Standard: the highest. Single "—" dash only, never "——".

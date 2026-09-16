@@ -227,6 +227,9 @@ EOF
   step "Notion: 最近編輯的 100 頁（內部 /api/v3/search）"
   B goto https://app.notion.com/ >/dev/null 2>&1; sleep_js 8000
   B eval "$HERE/notion_search.js" > "$OUT/notion_pages.json"
+  # browse eval（gstack 2026-09 版）在檔案不是以運算式開頭、或註解裡有撇號時會印出空字串、exit 0；
+  # 在這裡擋下來，不要等 json.load 的 traceback（2026-09-15 踩到）。規則寫在 test_research_scripts.py 的 TestBrowseEvalFiles。
+  [ -s "$OUT/notion_pages.json" ] || { echo "notion_search.js returned nothing: browse eval prints an empty result when the file does not start with the expression or a comment holds an apostrophe (research/README.md, 資料來源 › Notion)" >&2; exit 1; }
   python3 -c "import json,sys; d=json.load(open(sys.argv[1])); print('  spaceId', d['spaceId'], 'pages', len(d['pages']))" "$OUT/notion_pages.json"
   step "Notion: 前 $NOTION_PAGES 頁的內文（loadPageChunk）"
   local id
