@@ -64,6 +64,8 @@ Bach 說 tester 的核心能力是 rapid learning。在 agent 時代這句話有
 
 agent 寫的測試不是隨機地壞，它壞的方式有固定的形狀。把常見的收攏起來是四種型態：斷言被鬆綁、現狀 bug 被錄成 golden、測試永不紅、覆蓋率被當成品質。
 
+這四種型態不是只有我這樣分。李博杰是《深入理解 AI Agent：設計原理與工程實踐》的作者。他在談 agent 評估的第七章把 coding agent 的失敗分成九類，其中一類叫 hack 驗證環境：改斷言、加 skip、mock 掉被測邏輯，以及聲稱「測試已通過」但軌跡裡根本沒有那道指令。前三項在上面那四種裡都找得到位置，第四項不在：那是連測試都沒跑，只有一句宣稱。
+
 這四種壞法在 CI 上長得一模一樣，都是綠的。這裡只給 check 的名字，實作留到第五節：
 
 📌【在此插入表 table-01.png】
@@ -224,6 +226,8 @@ feature PR 的新測試沒有 red-then-green 可以用，最後就是靠它接�
 三個 job 平行跑，輸出報告給人讀，第一個月不阻擋。
 
 第一個月不阻擋是刻意的。那一個月要做的是校準噪音、確認分類來源沒有錯、讓人對報告的格式建立信任。等大家知道哪些訊號真的代表風險，再把最確定的那幾項升成阻擋。
+
+那一個月要驗的還有檢查器自己。Quartic.ai 在 AGNTCon Japan 講過他們讓 agent 升級 production Kubernetes 的經驗：第一版的驗證只檢查每一跳之後的第一個節點，control plane 上到 1.31、worker 還留在 1.30，那一跳照樣被標成成功。一道只抽樣一部分邊界的檢查，量到的不是升級成功，是它自己抽到的那個節點。
 
 這是全系列唯一一組「指示 vs 量測」的 Before / After。Uncle Bob 的說法是你沒辦法叫 agent 寫乾淨，只能量它乾不乾淨，再叫它改（[2026-07-29](https://x.com/unclebobmartin/status/2082497764223492161)）。
 
@@ -438,6 +442,8 @@ constraint test 那一條的內容會長這樣：aggregate 必須繼承 `EventSo
 8. 社群討論：Scrum Community in Taiwan（Lada Kesseler 的轉貼、「AI 說沒問題」）；DevOps Taiwan（Uncle Bob 的 mutation gate 討論串）
 9. 筆者筆記：LeSS in Action 的 A-TDD 課程筆記；模式語言驅動開發工作坊（2026-08）的 A/B 實作紀錄〔第七節〕；《Testing Extreme Programming》書摘〔第八節〕
 10. 上一季：[技術篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%BA%8C-harness-%E8%97%8D%E5%9C%96-%E6%8A%8A%E7%B3%BB%E7%B5%B1%E8%AE%8A%E6%88%90-agent-%E8%AE%80%E5%BE%97%E6%87%82%E7%9A%84%E5%9C%B0%E6%96%B9-f2a139f5b561)第五節（flaky quarantine）
+11. 李博杰《深入理解 AI Agent：設計原理與工程實踐》v2.0 — [第七章〈Agent 的評估〉](https://bojieli.github.io/ai-agent-book/book-en/chapter7/)（2026-09-06，§7.5.2 失敗歸因的 Coding Agent 錯誤分類表）〔第二節〕
+12. Quartic.ai — [Letting an Agent Upgrade Production Kubernetes — Without Getting Paged at 3 AM](https://sched.co/2QlD9)（AGNTCon + MCPCon Japan 2026，2026-09-10；[講者投影片](https://hosted-files.sched.co/agntconmcpconjapan26/d9/AGNTCon-MCPCon-Japan-2026_Abhijeet_Sanskar_final.pdf) slide 29）〔第五節〕
 
 ---
 

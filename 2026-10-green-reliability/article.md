@@ -396,6 +396,8 @@ oversight:                  # 依簡化模型，分層算
 
 表裡最值得看的是最後一列。前三條的門檻可以照抄，最後這一條抄不了：它的門檻是你自己用第四節那條式子算出來的 r，每個團隊都不一樣。
 
+四條有一個共同的限制：都要等 PR 或月報才算得出來。PagerDuty 在 2026 年 9 月的 AGNTCon Japan 列了五個 agent 指標，其中 Red Line Rate 不必等月報：它量的是 agent 建議或執行的動作被權限檢查、blocklist 或安全檢查擋下的比例，權限層直接就會產生，不需要 golden set。這一條在我這裡現在是觀察值，不是門檻，因為這道閘只收有兩個月基線的數字。
+
 寫進政策檔之後長這樣，每一條都對得上表裡的一列：
 
 ```yaml
@@ -552,6 +554,7 @@ flowchart TB
 11. LLM-as-a-Judge Is Not an Oracle — [arXiv 2609.02246](https://arxiv.org/abs/2609.02246)（2026-09）〔第五節〕
 12. 筆者筆記：Claude Certified Architect — Foundations 考試筆記（stop_reason、stratified sampling）
 13. 上一季：[營運篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%89-eval-%E5%96%AE%E4%BD%8D%E7%B6%93%E6%BF%9F%E8%88%87%E8%A6%8F%E6%A8%A1%E5%8C%96-%E6%8A%8A-agent-%E7%95%B6%E7%94%A2%E5%93%81%E7%87%9F%E9%81%8B-d6d9623c2dc6)第二、五節（judge 三陷阱、G2 gate）
+14. PagerDuty — [From Clicks To Context: Building an Open-Source Evaluation Pipeline for AI Agents](https://sched.co/2QlEA)（AGNTCon + MCPCon Japan 2026，2026-09-11）〔第五節；[講者投影片](https://hosted-files.sched.co/agntconmcpconjapan26/57/From%20Clicks%20to%20Context_%20Building%20an%20Open-Source%20Evaluation%20Pipeline%20for%20AI%20Agents%20_%20Ine%CC%82s%20Bolan%CC%83os.pdf) 第 21 頁；H.I.R.E. 的 Red Line Rate〕
 
 ---
 

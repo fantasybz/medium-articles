@@ -64,6 +64,8 @@ This piece is my answer to that thread. The answer isn't a list of test types; i
 
 Agent-written tests don't go wrong at random. The ways they go wrong have a fixed shape, and pulling the common ones together gives four patterns: assertions get loosened, a current bug gets recorded as a golden, tests never go red, and coverage gets mistaken for quality.
 
+The four aren't only my reading. Bojie Li is the author of *AI Agents in Depth: Design Principles and Engineering Practice*. His chapter 7, on evaluating agents, sorts coding-agent failures into nine classes, and one of them is hacking the verification environment: editing assertions, adding skips, mocking out the logic under test, and claiming "the tests passed" when the trajectory holds no such command. The first three all have a place among the four above; the fourth doesn't, because no test ran at all — there was only the claim.
+
 On CI all four look identical, because all four are green. The table names the check for each; how each is built waits for the reference implementation.
 
 📌【在此插入表 table-01.png】
@@ -224,6 +226,8 @@ Three jobs fan out from the same PR and come back as one report:
 Three jobs run in parallel and produce a report for humans to read; for the first month, nothing blocks.
 
 Not blocking for the first month is deliberate. That month is for calibrating the noise, confirming the classification source isn't wrong, and letting people build trust in the format of the report. Once everyone knows which signals really mean risk, promote the most certain of them to blocking.
+
+That month is also for checking the checker. At AGNTCon Japan, Quartic.ai described letting an agent run a production Kubernetes upgrade: their first verifier looked only at the first node after each hop, so the control planes reached 1.31, the workers stayed on 1.30, and the hop was still marked successful. A check that samples part of the boundary measures the sample, not the upgrade.
 
 This is the series' only "instruction vs. measurement" Before / After. Uncle Bob's version is that you can't tell an agent to write clean code; you can only measure whether it did and then tell it to fix it ([2026-07-29](https://x.com/unclebobmartin/status/2082497764223492161)).
 
@@ -438,6 +442,8 @@ Next is the Review piece: once the test gate passes, who reads this PR, what the
 8. Community discussions: Scrum Community in Taiwan (the Lada Kesseler reshare; "the AI said it's fine"); DevOps Taiwan (the Uncle Bob mutation-gate thread)
 9. Author's notes: A-TDD course notes from LeSS in Action; the A/B implementation log from the pattern-language-driven development workshop (2026-08) (section 7); reading notes on *Testing Extreme Programming* (section 8)
 10. Last season: [Part 2, The Harness Blueprint](https://fantasybz.medium.com/agentic-engineering-part-2-the-harness-blueprint-making-your-system-legible-to-agents-3facc281f633), section 5 (flaky quarantine)
+11. Bojie Li, *AI Agents in Depth: Design Principles and Engineering Practice* v2.0 — [Chapter 7, Evaluating Agents](https://bojieli.github.io/ai-agent-book/book-en/chapter7/) (2026-09-06; §7.5.2, the coding-agent failure-attribution table). Section 2.
+12. Quartic.ai — [Letting an Agent Upgrade Production Kubernetes — Without Getting Paged at 3 AM](https://sched.co/2QlD9) (AGNTCon + MCPCon Japan 2026, 2026-09-10; [slides](https://hosted-files.sched.co/agntconmcpconjapan26/d9/AGNTCon-MCPCon-Japan-2026_Abhijeet_Sanskar_final.pdf), slide 29). Section 5.
 
 ---
 

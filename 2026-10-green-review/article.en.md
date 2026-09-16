@@ -163,6 +163,8 @@ Only two of the four cells have a human reading, and only one of them reads the 
 
 The four cells are less a classification than a moving map: the PRs in the two cells on the right should keep moving left, and the way to move them is to add checks, not people.
 
+This moving map has a deadline. At AGNTCon in Tokyo, in a talk called "Intent as Code", Masaya Nakamura of Studist, a Japanese SaaS company, listed per-call approval as a failure mode and tagged it OWASP ASI09. The paper he cites on slide 16 is titled "Habituation at the Gate: Rising Approval and Declining Scrutiny in Human Review of AI Agent Code", and the title is the finding. I have not read the paper itself — I am citing it second-hand off the slide. The cell where humans read the diff does not stay the way you left it. It loosens on its own.
+
 ---
 
 ## 4. The reviewer agent fleet: heterogeneous pairing and one config file
@@ -566,6 +568,7 @@ pass^k measures what share of a set of tasks pass on every one of k attempts; G2
 22. Community discussion: Claude Taiwan (the "fleet mode" comment); Scrum Community in Taiwan ("AI has blown up the volume of code — what happens to code review?", "Why stories have to be cut smaller in the AI coding era")
 23. Author's notes: Claude Certified Architect — Foundations exam notes (separating the review instance)
 24. Last season: [The Harness Blueprint](https://fantasybz.medium.com/agentic-engineering-part-2-the-harness-blueprint-making-your-system-legible-to-agents-3facc281f633) section 6 (guardrails), [Org Design](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987) section 7 (the junior path)
+25. Studist, Masaya Nakamura — [Intent as Code: Why Existing Permissions Aren't Enough for AI](https://sched.co/2QlDX) (AGNTCon + MCPCon Japan 2026, Tokyo, 2026-09-10; [slides](https://hosted-files.sched.co/agntconmcpconjapan26/ab/Intent-as-Code%20%2813%29.pdf) slide 16, which cites H. Yu et al., [arXiv 2606.22721](https://arxiv.org/abs/2606.22721)) [section 3; cited second-hand off the slide]
 
 ---
 

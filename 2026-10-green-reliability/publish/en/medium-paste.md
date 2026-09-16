@@ -290,6 +290,8 @@ The four new conditions are below, and the rightmost column is what each of them
 
 The row worth looking at is the last one. The thresholds in the first three you can copy; that one you cannot. Its threshold is the r you computed yourself with the formula in the previous section, and it comes out different for every team.
 
+All four share one limit: none of them exists until there is a PR or a monthly report. At AGNTCon Japan in September 2026, PagerDuty put up five agent metrics, and one of them does not wait for the report: Red Line Rate. It measures the share of actions the agent suggests or executes that a permission check, a blocklist or a security check rejects, it needs no golden set, and the permission layer emits it directly. For now it is an observation to me, not a threshold — this gate only takes numbers with two months behind them.
+
 Written into the policy file it looks like this, with every entry matching a row in that table:
 
 ```yaml
@@ -400,6 +402,7 @@ That is the end of the trilogy. It started from one question: when the tests wer
 11. LLM-as-a-Judge Is Not an Oracle — [arXiv 2609.02246](https://arxiv.org/abs/2609.02246) (2026-09) — section 5
 12. Author's notes: Claude Certified Architect — Foundations exam notes (stop_reason, stratified sampling)
 13. Last season's operations piece: [Agentic Engineering, Part 3 — Evals, Unit Economics, and Scaling](https://fantasybz.medium.com/agentic-engineering-part-3-evals-unit-economics-and-scaling-running-agents-like-a-product-1cb1855a2046), sections 2 and 5 (the three judge traps, the G2 gate)
+14. PagerDuty — [From Clicks To Context: Building an Open-Source Evaluation Pipeline for AI Agents](https://sched.co/2QlEA) (AGNTCon + MCPCon Japan 2026, 2026-09-11) — section 5; [slides](https://hosted-files.sched.co/agntconmcpconjapan26/57/From%20Clicks%20to%20Context_%20Building%20an%20Open-Source%20Evaluation%20Pipeline%20for%20AI%20Agents%20_%20Ine%CC%82s%20Bolan%CC%83os.pdf) p. 21; the Red Line Rate of H.I.R.E.
 
 ---
 
