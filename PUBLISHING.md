@@ -244,9 +244,29 @@ python3 tools/medium_patch.py drop "1*舊圖的CDN檔名"
 貼完之後 `figuresLeft` 必須是 0 —— 這道斷言就是在驗「Range 真的把舊圖一起吃掉了」
 這個前提。不是 0 就停在插圖之前，不會上傳任何東西。
 
-**排程會留著**（2026-09-08 實測）：對一篇已排程的草稿跑 `--post` 之後，
+**排程會留著**（2026-09-08 實測，2026-09-16 複驗）：對一篇已排程的草稿跑 `--post` 之後，
 Stories → Scheduled 裡它仍在原本的時段（可靠度篇中文版 `3c64a9622777`
-重灌後仍是 Oct 27 09:00 GMT+8）。所以重灌不需要重新排程。
+重灌後仍是 Oct 27 09:00 GMT+8；9/16 一次重灌六篇，八篇的時段與 Post ID 全部不變）。
+所以重灌不需要重新排程。**Topics 也會留著**（9/16 實測，五個都在）。
+
+**封面圖不會留著**（2026-09-16 實測，5/5）：重灌把每張圖刪掉重傳，Medium 之後把預覽圖
+重設成**內文第一張 figure**——十月四篇的第一張都是 `table-01.png`，所以重灌完的封面
+一律是表格截圖，縮成卡片後讀不出字。沒被重灌的兩篇封面沒動。要還原：
+
+1. **重灌之前**先記下現在的封面：Stories → Scheduled 卡片上 `img` 的 CDN 檔名
+   （`miro.medium.com/v2/…/1*<hash>.png`）。重灌後 CDN 仍然照舊 hash 出圖，
+   `curl …/resize:fit:600/1*<hash>.png` 抓回來量高度，就能跟語言包 `images/` 裡的 PNG
+   對出是哪一張（縮圖是正方形裁切，要用抓回來的原圖比，不能用縮圖比）。
+2. 重灌後開編輯器 → **Review scheduled story**（進 `/p/<id>/submission`）→
+   **Change preview image**。這不是作業系統的檔案視窗，是**頁內的縮圖選擇器**，列出內文
+   全部的圖（沒有 `<input type=file>`，不用上傳）。點對的那張 → **Done**。
+3. **按 Done 就存了**，不需要按 `Schedule to publish`，也不要碰 `Cancel scheduling`。
+   回 Stories → Scheduled 看卡片縮圖的檔名換了，就是存了。
+4. 沒改動的圖重傳後 hash 不變（Medium 以內容定址），所以要還原的那張常常就是原本那個
+   hash，直接在選擇器裡比對 `src` 即可。
+
+中文三篇 ledger 原本寫「封面是 `diagram-01.png`」，9/16 用上面的方法對過，實際是
+測試篇 `diagram-03`、Review 篇 `diagram-02`、可靠度篇 `diagram-02`；已更正。
 
 **中途失敗會留下半殘狀態**：內文已經換掉、圖還沒補完。腳本的 `EXIT` trap 會印出
 這件事、排程稿與已發布文章各自的後果、以及可直接貼上的重跑指令。

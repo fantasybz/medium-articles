@@ -917,14 +917,18 @@ happened yet, and the two kinds of post are not in the same danger:
      publish". Medium files that as postPublishedType=repub - same URL, no
      second mail to subscribers (measured; see publish/en/PUBLISHED.md).
   3. Scheduled: the opposite. Nobody has to press anything for this to go out,
-     so whatever is stored now is what publishes on the slot. Not verified by
-     this tool: whether editing a scheduled post keeps its schedule. Open
-     Stories -> Scheduled, confirm this one is still queued for the same time,
+     so whatever is stored now is what publishes on the slot. The schedule
+     itself survives a refill (measured 2026-09-08 and again 2026-09-16 on
+     eight posts), and so do the topics. Still open Stories -> Scheduled once
      and write what you saw into publish/PUBLISHED.md.
-  4. Preview image: every figure here was deleted and re-uploaded, so open the
-     settings and check the cover is still the diagram you picked. Topics are
-     believed to survive a refill; that has not been measured either, and the
-     same settings panel shows them.
+  4. Preview image: it does NOT survive. Every figure was deleted and
+     re-uploaded, and Medium then resets the cover to the FIRST figure in the
+     body (measured 2026-09-16, five of five). If your first figure is a table
+     screenshot, that is now your cover. Restore it without touching the
+     schedule: editor -> "Review scheduled story" -> "Change preview image"
+     (an in-page picker of the body's figures, no file dialog) -> click the
+     diagram -> "Done". Done saves it; do not press "Schedule to publish".
+     See PUBLISHING.md, section 整篇重灌, for how to tell the thumbnails apart.
 NEXT
 else
   cat <<'NEXT'

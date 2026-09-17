@@ -10,7 +10,7 @@
 | 項目 | 值 |
 |---|---|
 | Topics | Software Testing、Code Review、AI、Software Engineering、Engineering Management |
-| 封面圖 | Medium 預設第一張 figure（`diagram-01.png`，是圖不是表格，未改） |
+| 封面圖 | `diagram-02.png`（2026-09-16 用 CDN 原圖的高寬比對出來的；本欄原本寫 `diagram-01.png`，是記錯。內文第一張其實是 `table-01.png`，所以這個封面是人挑過的，不是 Medium 預設） |
 | Notify subscribers | 是（預設） |
 | 發布位置 | 個人 profile，未投稿 publication |
 
@@ -39,3 +39,17 @@ Post ID 不變。驗證：148 個文字區塊逐塊相符、19 個連結全在�
 
 待人工確認：封面圖。所有 figure 都是刪掉重傳的，Medium 可能改用第一張圖
 （table-01）當預覽圖，需要進設定確認仍是當初挑的那張 diagram。
+
+
+## 東京會議證據插入後重灌（2026-09-16）
+
+以 `./tools/medium_draft.sh 2026-10-green-reliability --post 3c64a9622777` 就地重灌，Post ID 不變。內容變更：§五 加 PagerDuty 的 Red Line Rate（`2QlEA` deck p. 21）；References 加一條。
+`verify_draft.py` 閘門通過（exit 0）：文字區塊逐塊相符、連結全在、4 圖 3 表各在自己的槽位、無殘留 placeholder。
+
+**排程未受影響**：重灌後 Stories → Scheduled 仍列 Oct 27, 1:00 AM (UTC)；八篇的時段與 Post ID 全部不變。
+**Topics 未受影響**（同批另一篇實際打開設定面板看過，五個都在）。
+
+**封面圖被重設，已還原。** 重灌後 Medium 把預覽圖重設成內文第一張 figure（`table-01.png`，表格截圖）；
+重灌前先記下的封面是 `diagram-02.png`（CDN `1*dt6CGm73bHy5WRyvsd7ppQ.png`），用編輯器 → Review scheduled story →
+Change preview image 的頁內選擇器點回同一張 → Done。回 Stories → Scheduled 核對卡片縮圖，
+檔名與重灌前相同。做法見 PUBLISHING.md〈整篇重灌〉。

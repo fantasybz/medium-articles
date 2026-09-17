@@ -27,3 +27,17 @@
 **排程未受影響**：重灌後 Stories → Scheduled 仍列 Oct 22, 1:00 AM (UTC)，與原排程相同。
 
 待人工確認：封面圖（所有 figure 都重傳過，Medium 可能改用第一張當預覽圖）。
+
+
+## 東京會議證據插入後重灌（2026-09-16）
+
+以 `./tools/medium_draft.sh 2026-10-green-review en --post 4d36d0f2f9c1` 就地重灌，Post ID 不變。內容變更：same insertion as the zh edition, plus one Reference。
+`verify_draft.py` 閘門通過（exit 0）：文字區塊逐塊相符、連結全在、4 圖 3 表各在自己的槽位、無殘留 placeholder。
+
+**排程未受影響**：重灌後 Stories → Scheduled 仍列 Oct 22, 1:00 AM (UTC)；八篇的時段與 Post ID 全部不變。
+**Topics 未受影響**（同批另一篇實際打開設定面板看過，五個都在）。
+
+**封面圖被重設，已還原。** 重灌後 Medium 把預覽圖重設成內文第一張 figure（`table-01.png`，表格截圖）；
+重灌前先記下的封面是 `diagram-02.png`（CDN `1*7E7igGi0v150j59JclJy9g.png`），用編輯器 → Review scheduled story →
+Change preview image 的頁內選擇器點回同一張 → Done。回 Stories → Scheduled 核對卡片縮圖，
+檔名與重灌前相同。做法見 PUBLISHING.md〈整篇重灌〉。
