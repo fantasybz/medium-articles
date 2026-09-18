@@ -13,7 +13,8 @@ export const meta = {
 //         outline: 'research/YYYY-MM/<slug>.md', figures: 'research/YYYY-MM/<slug>.figures.md',
 //         piece: '總論' | '一、測試篇' | ..., dir: '2026-10-green-overview', prev: [ 'dir-of-earlier-piece', ... ],
 //         series: { titles: [..4 titles in order..], published_links: { '<title>': url } },
-//         skipDraft?: bool   (the draft already exists at <dir>/article.md, e.g. written in the main loop; run only critique → revise → verify) }
+//         skipDraft?: bool   (the draft already exists at <dir>/article.md, e.g. written in the main loop; run only critique → revise → verify),
+//         extraSources?: ['research/YYYY-MM/conference_digest.md', ...]  (digests beyond the standard four, same as review-outlines.js) }
 // CONTEXT skeleton, ISSUES_SCHEMA, FILE_SCHEMA and VERIFY_SCHEMA are copies of review-outlines.js (the canonical copy;
 // workflow scripts cannot import modules) — change them there first.
 const ROOT = args.root
@@ -25,17 +26,18 @@ const PREV = (args.prev || []).map(d => `${ROOT}/${d}/article.md`)
 if (!args.today) throw new Error('args.today (YYYY-MM-DD) is required: workflow scripts have no Date')
 if (!Array.isArray(args.published) || !args.published.length) throw new Error('args.published (array of published article dirs) is required; see research/README.md for the current list')
 const PUBLISHED = args.published.map(d => `${ROOT}/${d}/article.md`)
+const EXTRA = (args.extraSources || []).map(p => ', ' + (p.startsWith('/') ? p : `${ROOT}/${p}`)).join('')
 
 const CONTEXT = `
-Today is ${args.today}. You are writing for @fantasybz (Kochi Chuang): long-form Traditional-Chinese (Taiwan usage; English technical terms untranslated) Medium articles for Engineering VPs / EMs / Staff engineers in Taiwan. Voice, structure and tail conventions are in ${DIR}/style_brief.md — follow them exactly (TL;DR blockquote, 系列導覽 line, ## 一、二、… sections, 結語 with a quotable blockquote, ### 系列文章 → ### References → ### AI 協作說明 → italic signature line; single "—" only, never "——").
-Sources you may cite: ONLY ${DIR}/arxiv.md, ${DIR}/x_digest.md, ${DIR}/community_digest.md, ${DIR}/notion_digest.md and the plan itself. Never invent a number, a paper or a quote.
+Today is ${args.today}. You are writing for @fantasybz (Kochi Chuang): long-form Traditional-Chinese (Taiwan usage; English technical terms untranslated) Medium articles for Engineering VPs / EMs / Staff engineers / platform, SRE and QA leads in Taiwan. Voice, structure and tail conventions are in ${DIR}/style_brief.md — follow them exactly (TL;DR blockquote, 系列導覽 line, ## 一、二、… sections, 結語 with a quotable blockquote, ### 系列文章 → ### References → ### AI 協作說明 → italic signature line; single "—" only, never "——").
+Sources you may cite: ONLY ${DIR}/arxiv.md, ${DIR}/x_digest.md, ${DIR}/community_digest.md, ${DIR}/notion_digest.md${EXTRA} and the plan itself. Never invent a number, a paper or a quote.
 The published pieces (voice reference; do not repeat their content): ${PUBLISHED.join(', ')}.
 Figures: every figure is a \`\`\`mermaid block placed inline where the plan puts it, taken VERBATIM from ${FIGURES} (id-matched; do not redraw; keep the frontmatter config). Tables are markdown tables (they become PNGs at publish time). Code/config snippets go in fenced blocks (the "——" rule does not apply inside code).
 Series links: pieces not yet published are referenced as plain text 「（即將發布）」 (no relative paths); already published pieces use their Medium URLs: ${JSON.stringify(args.series || {})}.
 `
 
 const DRAFT_SCHEMA = { type: 'object', required: ['path', 'chars', 'figures', 'summary'], properties: { path: { type: 'string' }, chars: { type: 'number' }, figures: { type: 'number' }, summary: { type: 'string' } } }
-const ISSUES_SCHEMA = { type: 'object', required: ['issues', 'overall', 'verdict'], properties: { issues: { type: 'array', items: { type: 'object', required: ['severity', 'where', 'problem', 'fix'], properties: { severity: { type: 'string' }, where: { type: 'string' }, problem: { type: 'string' }, fix: { type: 'string' } } } }, overall: { type: 'string' }, verdict: { type: 'string' } } }
+const ISSUES_SCHEMA = { type: 'object', required: ['issues', 'overall', 'verdict'], properties: { issues: { type: 'array', items: { type: 'object', required: ['severity', 'where', 'problem', 'fix'], properties: { severity: { type: 'string', description: 'blocker | major | minor' }, where: { type: 'string', description: 'exact heading / table row / sentence' }, problem: { type: 'string' }, fix: { type: 'string', description: 'concrete replacement text or action' } } } }, overall: { type: 'string' }, verdict: { type: 'string', description: 'ready | needs-revision | rewrite' } } }
 const FILE_SCHEMA = { type: 'object', required: ['path', 'summary', 'applied', 'skipped'], properties: { path: { type: 'string' }, summary: { type: 'string' }, applied: { type: 'number' }, skipped: { type: 'array', items: { type: 'string' } } } }
 const VERIFY_SCHEMA = { type: 'object', required: ['pass', 'remaining', 'new_problems'], properties: { pass: { type: 'boolean' }, remaining: { type: 'array', items: { type: 'string' } }, new_problems: { type: 'array', items: { type: 'string' } } } }
 
@@ -48,7 +50,7 @@ if (!draft) throw new Error('draft failed')
 log(`draft: ${draft.chars} chars, ${draft.figures} figures`)
 
 const LENSES = [
-  { key: 'evidence', prompt: `LENS: Evidence auditor. Check every number, paper, post, quote and cross-reference in ${TARGET} against the four digests and the plan ${OUTLINE}. Flag anything invented, misquoted, out of domain, or stronger than the source (blocker/major). Also flag arithmetic in worked examples and any figure whose Mermaid source differs from ${FIGURES}.` },
+  { key: 'evidence', prompt: `LENS: Evidence auditor. Check every number, paper, post, quote and cross-reference in ${TARGET} against the digests listed above and the plan ${OUTLINE}. Flag anything invented, misquoted, out of domain, or stronger than the source (blocker/major). Also flag arithmetic in worked examples and any figure whose Mermaid source differs from ${FIGURES}.` },
   { key: 'reader', prompt: `LENS: The reader. (Read only the article, the plan's 主題總覽 and style_brief.md.) You are an Engineering VP at a 300-person Taiwanese software company who has read the author's published pieces. Would you finish it and forward it? Where does it drag, repeat, or lecture? Is the thesis argued or asserted? Which decision artefacts are real? Flag padding, hedging, and any paragraph that says nothing a VP can act on.` },
   { key: 'editor', prompt: `LENS: Senior tech editor. (Read the article, style_brief.md, the plan, and the published articles.) Check the format skeleton exactly (TL;DR / 系列導覽 / numbered sections / 結語 quotable / 系列文章 / References / AI 協作說明 / signature), single "—", Traditional Chinese Taiwan usage (flag mainland terms and translationese), reading time vs target (count CJK characters outside code blocks with python; 總論 target 3,500–4,500, the published 總論 has 3,629; say exactly which paragraphs to cut or demote to the deep dives if over), overlap with the published pieces and with sibling pieces of this theme, figure placement and captions, tables' width (≤ 5 columns for Medium), and that every link in the text is either a real URL or the plain-text 「（即將發布）」 marker.` },
 ]

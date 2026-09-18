@@ -16,29 +16,29 @@ The overview also put the first number on that line. SWE-Gate is a benchmark tha
 
 That is one layer a green build can't measure. This piece is about the layer in front of it: whether the tests themselves are any good. That is the first of the three gates, the test gate. The three gates are the three deep dives in this series — the test gate here, the review gate next, the reliability gate in the Reliability piece.
 
+For the three-way split (the overview sorts evidence into three categories: the agent's statements, agent-written tests, and team-owned tests), and the promotion rule for when an agent-written test becomes the team's test, see section 2 of the overview; it isn't repeated here.
+
 First, why tests need review more than code does. Scrum Community in Taiwan reshared a line from Lada Kesseler, short enough to be a slogan, to the effect of "I trust the tests an AI writes even less than the code it writes."
 
 The reason is direct: tests are the agent's acceptance criteria for itself, and the one setting the exam is the one sitting it. When the code is wrong, the tests still get a chance to stop it. When the tests are loose, there is no next line of defense.
 
-For the three-way split, and the promotion rule for when an agent-written test becomes the team's test, see section 2 of the overview; it isn't repeated here.
+There is a second reason tests need review more than code does. Bach says a tester's core skill is rapid learning. In the agent era that has a concrete form: reading the tests an agent left behind tells you faster than reading its code what it understood and what it didn't.
 
-Bach says a tester's core skill is rapid learning. In the agent era that has a concrete form: reading the tests an agent left behind tells you faster than reading its code what it understood and what it didn't.
+The reason is that tests are the agent's translation of the requirements. The code only tells you what it did; the tests tell you what it thought the requirements were. Where the translation is wrong, the assertions, the fixtures (the data and environment set up before a test runs) and the test names give it away first.
 
-The reason is that tests are the agent's translation of the requirements. The code only tells you what it did; the tests tell you what it thought the requirements were. Where the translation is wrong, the assertions, the fixtures and the test names give it away first.
+Back to Lada Kesseler's line. It leans toward trusting less; where the question actually caught fire in Taiwan was on DevOps Taiwan, and what burned there was the position leaning the other way. Uncle Bob (Robert C. Martin) is TDD's main popularizer, and he holds that you don't read the agent's code; you look only at the tests and the quality metrics. Someone posted that position, the thread ran long, and someone half-jokingly asked him to list every test that ought to be run.
 
-The discussion that actually caught fire in Taiwan was on DevOps Taiwan. Someone posted the position Uncle Bob (Robert C. Martin, TDD's main popularizer) had taken: don't read the agent's code, look only at the tests and the quality metrics. The thread ran long, and someone half-jokingly asked him to list every test that ought to be run.
+He had, in fact, already listed them ([2026-07-26](https://x.com/unclebobmartin/status/2081332683582427641)): agents write fast, so spend the time saved on unit, acceptance, property (random inputs checked against invariants), torture, mutation and QA tests. Torture tests are the least talked-about of those. They push inputs, load and concurrency past the normal range to find where the system gives way. Of the six, this piece goes deep on mutation only; it's the one that directly measures whether the tests are any good.
 
-He had, in fact, already listed them ([2026-07-26](https://x.com/unclebobmartin/status/2081332683582427641)): agents write fast, so spend the time saved on unit, acceptance, property, torture, mutation and QA tests. Torture tests are the least talked-about of those. They push inputs, load and concurrency past the normal range to find where the system gives way.
-
-This piece is my answer to that thread. The answer isn't a list of test types; it's three checks and their thresholds. Before the checks, though, it helps to know what each of them is there to stop.
+This piece is my answer to that thread. The answer isn't a list of test types; it's three checks and their thresholds. The order is: where agent-written tests go wrong, why human eyes don't catch it, mutation as the threshold and the three checks on the diff, why coverage can't be that threshold, an example I ran myself to draw their boundaries, and the ten-question checklist a tester works from. Before the checks, though, it helps to know what each of them is there to stop.
 
 ---
 
 ## 2. Where agent-written tests go wrong: four patterns
 
-Agent-written tests don't go wrong at random. The ways they go wrong have a fixed shape, and pulling the common ones together gives four patterns: assertions get loosened, a current bug gets recorded as a golden, tests never go red, and coverage gets mistaken for quality.
+Agent-written tests don't go wrong at random. The ways they go wrong have a fixed shape, and pulling the common ones together gives four patterns: assertions get loosened, a current bug gets recorded as a golden (a golden file is a stored "correct output" that the test compares the actual output against), tests never go red, and coverage gets mistaken for quality.
 
-On CI all four look identical, because all four are green. The table names the check for each; how each is built waits for the reference implementation.
+On CI all four look identical, because all four are green. The table names the check for each; how each is built waits for the reference implementation. The mutant the table mentions is a copy of the code deliberately broken; the mutation-testing section covers it:
 
 | Pattern | Symptom | Why agents do this | How to detect it |
 |---|---|---|---|
@@ -47,15 +47,21 @@ On CI all four look identical, because all four are green. The table names the c
 | **Tests that never go red** | The test passes but the path under test never runs; tautologies (`assert result == result`); the mock's return value is the asserted value | To make the test pass, the agent lets the test "prove itself" | red-then-green: run the new tests once against the pre-fix code; they must go red for the right reason — **only for PRs that change existing behavior**; new tests in feature PRs are left to mutation, and a test that kills no mutant is a test that never goes red |
 | **Coverage as quality** | CI's coverage threshold passes, but the repo's existing tests touch only 27% of the lines the agent changed (Python) | Coverage is an assertion that can be edited: an exclude pattern, a trivial test, a call with no assertion | Measure coverage on the agent's changed lines only, and read it paired with the mutation score |
 
-The column worth stopping on is the third one. None of the four is the agent being malicious; all four are the cheapest path available under the goal of "make the tests pass". That also settles the direction of the prescriptions: rather than write a rule telling the agent not to take the cheap path, make the cheap path visible on CI.
+The column worth stopping on is the third one. The reward in that column is the signal the agent uses to judge whether it got the job done, and it only sees whether the tests passed, not how. None of the four is the agent being malicious; all four are the cheapest path available under the goal of "make the tests pass". That also settles the direction of the prescriptions: rather than write a rule telling the agent not to take the cheap path, make the cheap path visible on CI.
 
-There is a fifth, and it doesn't get its own row, because it isn't the test going wrong. It's the pothole the red-then-green check itself can fall into: **red for the wrong reason**.
+The four aren't only my reading. Bojie Li is chief scientist at Pine AI and the author of *AI Agents in Depth: Design Principles and Engineering Practice*. His chapter 7, on evaluating agents, has a section on failure attribution: a failed trajectory is in front of you, and the question is which step the error started at. That section first sorts coding-agent failures into nine classes, and one of them is hacking the verification environment: editing assertions, adding skips, mocking out the logic under test (standing a fake object in for the logic that was supposed to be tested), and claiming "the tests passed" when the trajectory holds no such command.
+
+The first three all have a place among the four above; the fourth doesn't, because no test ran at all — there was only the claim. He says himself the nine classes are only an initial taxonomy, and this piece doesn't adopt them wholesale.
+
+The fourth item doesn't even amount to checking: CI running the tests once settles it. What the four patterns have in common is that the tests ran and were green; this one happens before the green build, which is why this piece doesn't list it as a fifth pattern.
+
+There is one more, and it doesn't go in the table, because it isn't the test going wrong. It's the pothole the red-then-green check itself can fall into: **red for the wrong reason**.
 
 LeSS in Action, when teaching A-TDD — acceptance test-driven development, where the acceptance test is written before the implementation — has a discipline: pay attention to the error message, and the error message has to match what you expected. The red in red-then-green takes the same discipline. You want to see the expected assertion fail, not an import error, which is the kind of red that means the test never ran at all.
 
-The workshop example in section 7 is a variant of the third row. It isn't "never goes red", it's "tests the wrong thing": the tests take the in-memory path, and the spec wants the replay path. None of the four checks can measure "what should have been written wasn't"; that section explains why.
+The third row also has a variant, saved for section 7 and its workshop example. It isn't "never goes red", it's "tests the wrong thing": the tests take the in-memory path, and the spec wants the replay path (replaying the state back from the events). None of the four checks can measure "what should have been written wasn't"; that section explains why.
 
-Line the four failure patterns up against their checks and you see that although there are four ways to break, there are only two things a human has to guard against:
+Line the four failure patterns up against their checks and you see that although there are four ways to break, there are only two things a human has to guard against: tests being weakened, and tests that miss.
 
 ```mermaid
 ---
@@ -104,7 +110,7 @@ flowchart LR
     class C1,C2,D1,D2 own
 ```
 
-Each of the four failure patterns has a cheap check; nobody has to read the tests line by line.
+Each of the four failure patterns has a cheap countermeasure: three checks plus one PR-template field.
 
 What a machine can surface is the bad smell; what it can't surface is the intent. Every one of these checks exists to pull a human out of reading tests line by line and put them on the half a machine can't read.
 
@@ -120,7 +126,7 @@ And their confidence was equally high in both cases. Put a wrong assertion in fr
 
 The experiment tried one further condition: attach the LLM's own explanation next to the assertion and see whether people judge more accurately. The answer is that attaching explanations didn't help, and low-quality explanations actually hurt.
 
-Scope it first. What this experiment measures is "judging whether an LLM-generated assertion is correct", not "judging an existing assertion the agent loosened". I keep the two apart, but they point the same way.
+Scope it first. What this experiment measures is "judging whether an LLM-generated assertion is correct", not "judging an existing assertion the agent loosened". This piece handles the two separately: this section takes the first, and the reference implementation's assertion-change diff takes the second; they point the same way.
 
 So what if you tell people up front that a piece of code was written by AI — do they look harder? An eye-tracking study adds the second cut: code labeled as LLM-generated gets looked at longer by reviewers, but not more thoroughly. The time gets spent; the scrutiny doesn't go up with it.
 
@@ -147,15 +153,15 @@ Mutation testing works by breaking the code a little — swap an operator, chang
 
 What it does to your tests is the same idea chaos engineering applies to production: break the thing yourself once, and see whether the alarm goes off. The only difference is that here what gets broken is the code, and what should go off is the tests.
 
-Uncle Bob's gate combination is coverage, CRAP score and mutation tests. CRAP score — Change Risk Anti-Patterns — folds complexity and coverage into one number, and a function that is both complex and untested scores highest.
+Mutation as a gate isn't my idea first. Uncle Bob's gate combination is coverage, CRAP score and mutation tests. CRAP score — Change Risk Anti-Patterns — folds complexity and coverage into one number, and a function that is both complex and untested scores highest.
 
-The combination and the reasoning behind it come from the same post ([2026-07-30](https://x.com/unclebobmartin/status/2082850576832905657)): TDD is a human discipline, he doesn't expect agents to follow it, and he measures the result instead.
+This combination and the reasoning behind it come from one of his posts ([2026-07-30](https://x.com/unclebobmartin/status/2082850576832905657)): TDD is a human discipline, he doesn't expect agents to follow it, and he measures the result instead.
 
-DevOps Taiwan's summary of his position: once the agent's code passes unit, Gherkin, mutation and the quality metrics, he stops reading the code. Gherkin there is the Given/When/Then syntax acceptance tests are written in.
+This is the "don't read the agent's code" position from the opening section. The list attached to DevOps Taiwan's retelling of it (unit, Gherkin — the Given/When/Then syntax acceptance tests are written in — mutation and the quality metrics) isn't quite the one in this post, but both lists have mutation, and the conclusion is the same: once it passes, he doesn't read the code.
 
 This piece doesn't go that far. The Review piece will argue that humans still have to read intent and constraints, but it agrees that mutation is the core of the test gate.
 
-Why didn't it pay off before, and why does it now? Mutation is slow because it runs the tests N times over, where N is the number of mutants generated and every mutant means running the affected tests again.
+Mutation testing isn't new, and it has never made it into most teams' CI. Why didn't it pay off before, and why does it now? Mutation is slow because it runs the tests N times over, where N is the number of mutants generated and every mutant means running the affected tests again.
 
 The agent era changed two things. First, the volume of tests has outgrown what people can read, so "are the tests any good" becomes the only question worth money. Second, **diff-scoped mutation**, which counts only the lines the agent changed, brings N down to a much smaller number and the cost back into range. It's the same turn CI made when it went from running everything to running only the affected tests, except that what gets saved this time is mutants rather than tests.
 
@@ -165,15 +171,15 @@ What it can't measure has to be said up front too. Mutation only measures whethe
 
 More concretely, it will tell you that flipping this condition made no test go red. It won't tell you that the module is missing an architecture rule, or a business constraint, or that the path the spec asked for doesn't exist at all. The example in section 7 is that last kind.
 
-Most people installing this check are looking at a brownfield: an existing system that has been running for years, with a test suite that is big and slow. The brownfield reality is that on a 40-minute test suite, diff-scoped mutation still has to run the affected tests N times.
+Back to cost. Most people installing this check are looking at a brownfield: an existing system that has been running for years, with a test suite that is big and slow. The brownfield reality is that on a 40-minute test suite, diff-scoped mutation still has to run the affected tests N times.
 
-So it's the **last** of the four checks to install, and only on repos where the affected subset finishes within 10 minutes. The install order is in section 10 of the overview and isn't repeated here.
+So it's the **last** of the four checks to install, and only on repos where the affected subset finishes within 10 minutes. Why that order, section 10 of the overview covers; it isn't repeated here.
 
-**The ritual version versus the gate version.** The question was asked twice this summer. Thoughtworks' Birgitta Böckeler asked "TDD inside the agent loop—theater or actual value?" (reshared by Fowler, [2026-08-11](https://x.com/martinfowler/status/2087173563144912985)).
+**The ritual version versus the gate version.** The question was asked twice this summer. The first time was Thoughtworks' Birgitta Böckeler, who asked "TDD inside the agent loop—theater or actual value?" (reshared by Martin Fowler, [2026-08-11](https://x.com/martinfowler/status/2087173563144912985)).
 
-Uncle Bob's negative test experiment of August 17 is the other face of the same question: he had four test disciplines each write the same program, the acceptance tests all passed, and the programs were different ([2026-08-17](https://x.com/unclebobmartin/status/2089449442089025936); the overview quoted the numbers).
+The second time was Uncle Bob's August 17 experiment (the negative test experiment), which asked the other face of the same question: he had four test disciplines each write the same program, the acceptance tests all passed, and the programs were different ([2026-08-17](https://x.com/unclebobmartin/status/2089449442089025936); the overview covered the design and the results).
 
-Telling an agent to "run mutation, then add tests until you hit 100%" is the ritual version. You get tests written specifically to kill mutants, and that is another kind of tautology: a self-proving test where both sides of the assertion are the same thing, so it can never fail.
+Both of them were asking the same thing: a test having the right shape doesn't mean it holds anything. Telling an agent to "run mutation, then add tests until you hit 100%" is the ritual version. You get tests written specifically to kill mutants, and that is another kind of tautology, a self-proving test that can never fail.
 
 The gate version is CI reporting the surviving mutants to a human, and the human deciding which need a test and which are equivalent mutants. An equivalent mutant is one whose meaning didn't actually change when the code was broken; it can never be killed, and counting it into the score only pushes someone into writing a test that means nothing.
 
@@ -210,7 +216,7 @@ Run this check on feature PRs as well and it produces noise on every one of them
 
 The scope of a gate can't be decided by the party being checked. This is the same thing as the series' "measure output, not process".
 
-There are three sources for the classification, taken in order. The first is the type field on the issue or ticket, which a human set. The second is the harness's task type. With neither available, judge from the diff: if the PR modified any existing non-test file, treat it as a behavior change and run the check; only PRs that just add files skip it.
+There are three sources for the classification, taken in order. The first is the type field on the issue or ticket, which a human set. The second is the task type from the harness (the layer between the agent and the engineering system, which last season's Harness Blueprint was about). With neither available, judge from the diff: if the PR modified any existing non-test file, treat it as a behavior change and run the check; only PRs that just add files skip it.
 
 The agent can't touch the first two sources. The third comes from the agent's own diff, but dodging the check that way would mean not touching a single existing file, which amounts to giving up on finishing the fix.
 
@@ -338,7 +344,7 @@ Three jobs run in parallel and produce a report for humans to read; for the firs
 
 Not blocking for the first month is deliberate. That month is for calibrating the noise, confirming the classification source isn't wrong, and letting people build trust in the format of the report. Once everyone knows which signals really mean risk, promote the most certain of them to blocking.
 
-This is the series' only "instruction vs. measurement" Before / After. Uncle Bob's version is that you can't tell an agent to write clean code; you can only measure whether it did and then tell it to fix it ([2026-07-29](https://x.com/unclebobmartin/status/2082497764223492161)).
+The instructions in AGENTS.md (the project instruction file an agent reads before it starts work), set against the measurements on CI, are the series' only "instruction vs. measurement" Before / After. Uncle Bob's version is that you can't tell an agent to write clean code; you can only measure whether it did and then tell it to fix it ([2026-07-29](https://x.com/unclebobmartin/status/2082497764223492161)).
 
 Before is what most teams have in AGENTS.md today:
 
@@ -394,11 +400,25 @@ jobs:
 
 Two things in that workflow are worth a look. One is that `red-then-green` sits behind an `if` on `classify`'s output, so the scope is decided by a machine and not by the PR's author. The other is `report`'s `if: always()`: the report still has to go out when red-then-green is skipped, or a feature PR will look on the report as though it was never checked at all.
 
+There is a third thing, and it isn't visible in the yaml: the checker itself can miss. This September in Tokyo, at AGNTCon Japan (the agent conference run by the Agentic AI Foundation under the Linux Foundation), two SREs from Quartic.ai described letting an agent upgrade production Kubernetes.
+
+Kubernetes only moves one minor version at a time, and each version is one hop. They told the room themselves how their first version missed: the verifier checked only the first node after each hop, so the control plane reached 1.31, the worker nodes stayed on 1.30, and the hop was still marked successful.
+
+The fix was to enumerate every node by role and refuse to start the next hop until all of them matched the version. They folded the lesson into one sentence: "A cluster upgrade succeeds only when the whole cluster has crossed the version boundary."
+
+A check that samples part of the boundary doesn't measure the upgrade; it measures the node it happened to sample.
+
+This yaml has the same blind spot in two places. Under `mutation_diff`, most tools work per file; if yours can't be confined to lines, you filter yourself, and a line the filter misses never shows up in the report. `classify`, when it can't find a linked issue, falls back to whether any existing non-test file changed, and that step measures "touched an old file", not "changed behavior". Both measure the range they can reach, not the range the report says.
+
+Quartic.ai's demo ran on a kind cluster (Kubernetes simulated on a local machine); what that lesson cost in production, the slides don't say.
+
+So the first month of not blocking is for calibrating more than the noise: it's also for finding out what these three checks sampled and what they missed.
+
 **The agent-side counterpart.** The three checks above all stop the agent on CI, but stopping it doesn't change what it wants. Is there a way to make it not want to touch the assertion in the first place?
 
-One study (escalation channels, August 2026) tried the other direction: don't stop the agent, give it an official way out. It gave agents a structured "report a broken test" tool, so that an agent that thinks the test itself is wrong can raise a hand instead of editing the test until it passes. Two terms in the numbers below need a gloss first. An odds ratio is a statistical effect size describing how far apart two groups are, and a larger number means a stronger association, though it says nothing on its own about how stable that gap is. Frontier models are the handful of models at the current edge of capability.
+One study (escalation channels, August 2026) tried the other direction: don't stop the agent, give it an official way out. It gave agents a structured "report a broken test" tool, so that an agent that thinks the test itself is wrong can raise a hand instead of editing the test until it passes. Three terms in the numbers below need a gloss first. An odds ratio is an effect size for how far apart two groups are; the larger it is, the clearer the gap, though it says nothing on its own about how stable that gap is. Frontier models are the handful of models at the current edge of capability. And reward hacking is the cheap path the four patterns above all take, the one under "make the tests pass".
 
-The effect: reward hacking fell from 23.6% to 5.3% (odds ratio 9.2), and disappeared entirely in 6 of 8 frontier models; 98.7% of escalations involved no cheating, and defect-detection coverage rose by 10.1 percentage points.
+The effect, measured on 8 frontier models: reward hacking fell from 23.6% to 5.3% (odds ratio 9.2), and in 6 of them it disappeared entirely. Of the hands raised, 98.7% involved no cheating, and defect-detection coverage rose by 10.1 percentage points.
 
 Those last two numbers are the point. The way out didn't get used as a new way to slack off, and the agents that raised a hand caught more defects while doing it. Landing it takes two steps.
 
@@ -432,7 +452,7 @@ The third answer isn't forbidden, but it has to be written down where the review
 
 Coverage is the gate most teams already have installed, and it's also the number most easily misread. One set of data is enough to show where the misreading happens.
 
-Test Coverage of Agentic PRs measured 4,882 agent PRs, and the question it asked is a narrow one: do the repo's existing tests run through the executable lines the agent changed? In Java the answer is only 61.5%, and in Python only 27.0%.
+One study (Test Coverage of Agentic PRs) measured 4,882 agent PRs, and the question it asked is a narrow one: do the repo's existing tests run through the executable lines the agent changed? In Java the answer is only 61.5%, and in Python only 27.0%.
 
 The repo-wide coverage number won't tell you this. Whatever your repo's overall coverage is, on the Python side nearly three quarters of the lines the agent just changed have no existing test passing through them.
 
@@ -458,25 +478,25 @@ In one line: **coverage tells you where the tests ran; mutation tells you where 
 
 ## 7. A first-hand example: all tests green, replay never executed
 
-This August, at a pattern-language workshop, I ran two approaches on the same requirement, each in its own worktree. The requirement itself was small: a Product aggregate plus a CreateProduct use case.
+This August, at the pattern-language workshop run by Teddy Chen (author of the Taiwanese software blog 搞笑談軟工), I ran two approaches on the same requirement, each in its own git worktree (a separate working directory under the same repo): Approach A gave the agent a bare prompt and nothing else; Approach B added the workflow the workshop supplied. The requirement itself was small: a Product aggregate (an aggregate, in domain-driven design, is a group of objects that has to stay consistent as a unit) plus a CreateProduct use case.
 
 Below I'll stay with Approach A, because that's where the problem worth talking about is. What Approach A delivered looked beautiful: 25 files, zero compiler warnings, 5 tests all green, clean layering, complete Javadoc.
 
-The problem was the path the tests took. The spec asked for event sourcing: the aggregate's state isn't stored directly. What gets stored is every event that happened, and the state is replayed back from those events one at a time when it's needed.
+The problem was the path the tests took. The spec asked for event sourcing: the aggregate doesn't store its state directly. It stores only the events that happened, and the state is replayed back from them one at a time when it's needed.
 
 Approach A's Product wasn't event sourcing at all. It didn't extend `EventSourcedAggregate`, and the tests read `getDomainEvents()` straight off the in-memory aggregate, never going through the replay path.
 
-It also lacked `@DirtiesContext`. That's the Spring annotation that keeps tests from sharing one context, and without it CI would go red intermittently.
+My note at the time: A's 10/16 (10 of the 16 items on the workshop's compliance checklist) wasn't "nearly there"; it was "hasn't blown up yet at a toy scale with a single InMemory use case".
 
-My note at the time: A's 10/16 (10 of the 16 items on the compliance checklist) wasn't "nearly there"; it was "hasn't blown up yet at a toy scale with a single InMemory use case".
+There was one more small hole, unrelated to replay: the tests lacked `@DirtiesContext`. That's the Spring annotation that keeps tests from sharing one context, and without it CI would go red intermittently. An intermittently red test usually ends up papered over with a retry rather than fixed, which is exactly the eighth question on the tester's checklist further down.
 
-Scope it first. This is an instance of "green but not accepted" and "testing the wrong thing", not variance data. N equals 1, and what was measured is compliance. The variance question waits for November.
+Scope it first. This is an instance of "green but not accepted" and "testing the wrong thing", not variance data (how much the result moves when the same task is rerun). N equals 1, and what was measured is compliance. The variance question waits for November.
 
-Now put the example back against the checklist. It isn't here to prove that some tool is useless; it's here to draw each check's boundary. Get the boundary wrong and a staff engineer will catch it at a glance:
+Now put the example back against the checklist. It isn't here to prove that some tool is useless; it's here to draw each check's boundary. Get the boundary wrong and a staff engineer will catch it at a glance, so all three lines are spelled out:
 
 - **red-then-green doesn't apply**: this is a feature PR, and the new tests would go red against the old code because the class doesn't exist.
 - **mutation can't catch it either**: there's no replay path in the code at all, so there's no "replay-path mutant" that could survive.
-- **What does catch it is two things**: a constraint test, and a human reading the intent.
+- **What does catch it is two things**: a constraint test (a constraint the reviewer stated, written as an executable check), and a human reading the intent.
 
 The mutation line deserves one more sentence. Since Product isn't event sourcing, the in-memory aggregate's mutation score is quite possibly still beautiful. This is exactly the sentence from section 4 — it can't measure "what should have been written wasn't"; it's a better check, not testing.
 
@@ -532,9 +552,9 @@ flowchart TB
 
 The dashed line in that diagram is the point. It's the path the spec requires to exist and that neither the implementation nor the tests ever took. A check that only looks at what has been written can't see a line that isn't there.
 
-Thanks to Teddy, whose workshop produced this example.
-
 That is where the tools' boundary is drawn. The human can only stand outside it.
+
+Thanks to Teddy, whose workshop produced this example.
 
 ---
 
@@ -561,7 +581,7 @@ Tools answer the first eight; only a human can answer the last two. The last one
 
 That is the tester's position at the test gate: not a box-ticker, but a test-suite reviewer. The job changes from "run the tests and confirm they're green" to "read the report and decide which signals need a human".
 
-*Testing Extreme Programming* says everyone is a tester. The agent-era version of that line is: everyone who merges an agent PR is reviewing a test suite.
+Lisa Crispin and Tip House's *Testing Extreme Programming* says everyone is a tester. The agent-era version of that line is: everyone who merges an agent PR is reviewing a test suite.
 
 ---
 
@@ -569,13 +589,11 @@ That is the tester's position at the test gate: not a box-ticker, but a test-sui
 
 Go back to Approach A and its green build at the workshop. Not one of A's tests was fake. Every one of them really ran and really asserted; they just all went around the path the spec asked for. That green build didn't lie. It had simply never promised to cover what you assumed it covered.
 
-What the three checks in this piece can do is take the machine-measurable part of what green never promised and turn it, one item at a time, into something you can see: assertion-change diff for whether assertions were weakened, red-then-green for whether new tests go red against old code, diff-scoped mutation for whether the lines just changed are held. Approach A's hole isn't in any of the three; that one takes a constraint test and a human reading intent. All three are better checks, not acceptance.
-
-There's one more piece of testing that Bach says can't be automated: exploratory testing of what the agent produced, not reading its tests but using the thing it built. That's a topic for another article; here I only point at it.
+The three checks in this piece do one thing only: take the machine-measurable part of what green never promised and turn it, one item at a time, into something you can see. assertion-change diff looks at whether assertions were weakened, red-then-green at whether new tests go red against old code, diff-scoped mutation at whether the lines just changed are held. Approach A's hole isn't in any of the three; that one takes a constraint test and a human reading intent. All three are better checks, not acceptance.
 
 > **An agent's tests are its acceptance criteria for itself; reviewing its tests is reviewing what it believes "correct" means.**
 
-Next is the Review piece: once the test gate passes, who reads this PR, what they read, who reviews whom, and when AI reviewing AI should be banned.
+Next is the Review piece: once the test gate passes, who reads this PR, what they read, who reviews whom, and when AI reviewing AI should be banned. As for the one piece Bach says can't be automated—exploratory testing of what the agent produced, not reading its tests but using the thing it built—that's a topic for another article; here I only point at it.
 
 ---
 
@@ -600,6 +618,8 @@ Next is the Review piece: once the test gate passes, who reads this PR, what the
 8. Community discussions: Scrum Community in Taiwan (the Lada Kesseler reshare; "the AI said it's fine"); DevOps Taiwan (the Uncle Bob mutation-gate thread)
 9. Author's notes: A-TDD course notes from LeSS in Action; the A/B implementation log from the pattern-language-driven development workshop (2026-08) (section 7); reading notes on *Testing Extreme Programming* (section 8)
 10. Last season: [Part 2, The Harness Blueprint](https://fantasybz.medium.com/agentic-engineering-part-2-the-harness-blueprint-making-your-system-legible-to-agents-3facc281f633), section 5 (flaky quarantine)
+11. Bojie Li, *AI Agents in Depth: Design Principles and Engineering Practice* v2.0 — [Chapter 7, Evaluating Agents](https://bojieli.github.io/ai-agent-book/book-en/chapter7/) (2026-09-06; §7.5.2, the coding-agent failure-attribution table). Section 2.
+12. Quartic.ai — [Letting an Agent Upgrade Production Kubernetes — Without Getting Paged at 3 AM](https://sched.co/2QlD9) (AGNTCon + MCPCon Japan 2026, 2026-09-10; [slides](https://hosted-files.sched.co/agntconmcpconjapan26/d9/AGNTCon-MCPCon-Japan-2026_Abhijeet_Sanskar_final.pdf), slide 29). Section 5.
 
 ---
 

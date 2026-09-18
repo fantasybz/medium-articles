@@ -5,6 +5,8 @@
 #   research/scripts/codex_review.sh research/2026-09/selection.md                  # 檔名是 selection* 就用選題的框架
 #   EFFORT=high research/scripts/codex_review.sh <outline.md>                     # 預設 xhigh
 #   KIND=selection research/scripts/codex_review.sh <file.md>                     # 強制指定框架：outline | selection
+#   EXTRA_DIGESTS="conference_digest.md book_ai_agent_book.md" research/scripts/codex_review.sh <outline.md>
+#                                                                                 # 同目錄下額外的對照檔，也必須存在
 #
 # 產出寫到檔案旁邊：research/<month>/codex-review-<slug>.md（Codex 的原話，不摘要），
 # 之後由 Claude 依審查意見修訂，再跑 zh-tw 檢查。檔案必須在 repo 裡（解析 symlink 後比對前綴），
@@ -64,8 +66,10 @@ case "$KIND" in
 esac
 
 # 提示詞裡的 digest 清單和這裡的檢查用同一份，加一份 digest 兩邊不會走散。bash 3.2 + set -u 下空陣列
-# 展開會炸，所以用字串接。
-DIGESTS="arxiv.md x_digest.md community_digest.md notion_digest.md"
+# 展開會炸，所以用字串接。EXTRA_DIGESTS 是同一個月份目錄下額外的對照檔（空白分隔的檔名），給期中加圈用：
+# 2026-09-15 的會議加圈多了 conference_digest.md 與 book_ai_agent_book.md，大綱引了它們的數字，Codex 沒讀到
+# 就會全判成捏造。同樣缺一份就 exit 64。
+DIGESTS="arxiv.md x_digest.md community_digest.md notion_digest.md${EXTRA_DIGESTS:+ $EXTRA_DIGESTS}"
 DIGEST_LIST=""; MISSING=""
 for f in $DIGESTS; do
   DIGEST_LIST="${DIGEST_LIST:+$DIGEST_LIST, }$DIR/$f"

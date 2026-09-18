@@ -37,6 +37,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import chrome_cookies
 import md2medium
+import js_lex
 import medium_js
 import medium_patch
 import verify_draft
@@ -572,6 +573,14 @@ class TestSnippets(unittest.TestCase):
             "slot": medium_js.slot_js("a.png"),
             "image": medium_js.image_js(d.name, "a.png"),
             "state": medium_js.state_js(),
+            # The five medium_draft.sh also feeds to `browse eval`; the sibling
+            # const-collision test already says "every snippet has to be checked,
+            # not most", and these five were the "most".
+            "saved": medium_js.saved_js(),
+            "figures": medium_js.figures_js(),
+            "mark": medium_js.mark_js("T"),
+            "stale": medium_js.stale_js("T"),
+            "dump": medium_js.dump_js(),
         }
 
     def test_no_duplicate_const_declarations(self):
@@ -590,6 +599,21 @@ class TestSnippets(unittest.TestCase):
         for label, js in self.all_snippets().items():
             self.assertTrue(js.strip().startswith("(() =>"), label)
             self.assertTrue(js.strip().endswith(")()"), label)
+
+    def test_no_apostrophe_in_a_comment(self):
+        # Same invariant research/scripts/*.js is held to: the 2026-09 gstack browse
+        # build prints nothing and exits 0 when a comment in the evaluated expression
+        # holds an apostrophe, so the failure arrives as an empty result, not an error.
+        # These snippets go through the same `browse eval`, and nothing checked them.
+        for label, js in self.all_snippets().items():
+            for comment in js_lex.comments(js):
+                self.assertNotIn("'", comment,
+                                 "%s: apostrophe inside a comment: %r" % (label, comment[:70]))
+
+    def test_the_comment_scanner_sees_what_the_old_regex_missed(self):
+        self.assertEqual(js_lex.comments("const n = 1;  // don't\n"), ["// don't"])
+        self.assertEqual(js_lex.comments('const u = "https://x/y";\n'), [])
+        self.assertEqual(js_lex.comments("h => /\\/a\\/|[^/]+\\/b\\//.test(h)\n"), [])
 
     def test_payload_is_embedded_as_valid_json(self):
         js = medium_js.body_js({"title": "T", "html": '<p>"quoted" & <b>x</b></p>'})
@@ -1664,16 +1688,35 @@ class TestPatchFragment(unittest.TestCase):
 
 class TestPatchSnippets(unittest.TestCase):
     def snippets(self):
+        d = tempfile.TemporaryDirectory()
+        self.addCleanup(d.cleanup)
+        png = os.path.join(d.name, "a.png")
+        with open(png, "wb") as fh:
+            fh.write(b"\x89PNG\r\n\x1a\n")
         return {
             "find": medium_patch.find_js("anchor"),
+            # PUBLISHING.md runs this one against an already-published article
+            # and it base64-uploads to a public CDN: the last generator that was
+            # outside every invariant here.
+            "image": medium_patch.image_js("anchor", png),
             "replace": medium_patch.replace_js("a", "b", "<p>x</p>"),
             "dry": medium_patch.replace_js("a", "b", "<p>x</p>", dry=True),
+            "drop": medium_patch.drop_js("anchor"),
+            "subst": medium_patch.subst_js("old", "new"),
         }
 
     def test_every_snippet_is_a_self_invoking_expression(self):
         for label, js in self.snippets().items():
             self.assertTrue(js.strip().startswith("(() =>"), label)
             self.assertTrue(js.strip().endswith(")()"), label)
+
+    def test_no_apostrophe_in_a_comment(self):
+        # These reach `browse eval` too; an apostrophe in a comment makes it print
+        # nothing and exit 0, which reads exactly like "the anchor was not found".
+        for label, js in self.snippets().items():
+            for comment in js_lex.comments(js):
+                self.assertNotIn("'", comment,
+                                 "%s: apostrophe inside a comment: %r" % (label, comment[:70]))
 
     def test_no_duplicate_const_declarations(self):
         # The shared NORMALISE/PICK blocks and the callers all declare names;

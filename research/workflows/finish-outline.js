@@ -13,7 +13,8 @@ export const meta = {
 //         file: 'research/YYYY-MM/<slug>.md',
 //         issues?: [ {severity, where, problem, fix}, ... ]          (inline), and/or
 //         issuesFile?: '<path>.json'                                 ({ "<basename>": [issue, ...] }, read by the agents themselves),
-//         skipFigures?: bool }
+//         skipFigures?: bool,
+//         extraSources?: ['research/YYYY-MM/conference_digest.md', ...]  (digests beyond the standard four, same as review-outlines.js) }
 // CONTEXT skeleton, MERMAID_RULES, FILE_SCHEMA and VERIFY_SCHEMA are copies of review-outlines.js (the canonical copy;
 // workflow scripts cannot import modules) — change them there first.
 const ROOT = args.root
@@ -23,6 +24,7 @@ const figPath = f.replace(/\.md$/, '.figures.md')
 if (!args.today) throw new Error('args.today (YYYY-MM-DD) is required: workflow scripts have no Date')
 if (!Array.isArray(args.published) || !args.published.length) throw new Error('args.published (array of published article dirs) is required; see research/README.md for the current list')
 const PUBLISHED = args.published.map(d => `${ROOT}/${d}/article.md`)
+const EXTRA = (args.extraSources || []).map(p => ', ' + (p.startsWith('/') ? p : `${ROOT}/${p}`)).join('')
 const issuesAll = args.issues || []
 let issues = issuesAll.filter(i => i.severity === 'blocker' || i.severity === 'major')
 const minors = issuesAll.filter(i => i.severity === 'minor')
@@ -31,10 +33,10 @@ const ISSUES_REF = args.issuesFile ? `Read the issues from ${args.issuesFile} (J
 const MERMAID_RULES = `the YAML frontmatter config block at the top (theme base, the themeVariables colours, flowchart spacing, subGraphTitleMargin; NO fontFamily) — never %%{init}%%; classDef own/buy/bad/human applied with class, no per-node style lines; layout width 500–900 CSS px and aspect (height/width) 0.5–1.5; ≤ 12 nodes; ≤ 3 lines × 14 CJK chars per node using <br/>; edge labels ≤ 6 chars; TB for > 5 nodes, ≤ 4 nodes per rank; fontSize 16px; no emoji; when subgraphs use direction TB, wire subgraph to subgraph (an inner node connected to the outside breaks direction TB); the two-column pattern (LR with two direction-TB subgraphs) for short linear flows`
 
 const CONTEXT = `
-Today is ${args.today}. The author (@fantasybz, Kochi Chuang) publishes one THEME per month on Medium: one 總論 + 三部曲, in Traditional Chinese (Taiwan usage, English technical terms kept), plus an English edition. Audience: Engineering VPs / EMs / Staff engineers in Taiwan.
+Today is ${args.today}. The author (@fantasybz, Kochi Chuang) publishes one THEME per month on Medium: one 總論 + 三部曲, in Traditional Chinese (Taiwan usage, English technical terms kept), plus an English edition. Audience: Engineering VPs / EMs / Staff engineers / platform, SRE and QA leads in Taiwan.
 Reference files:
 - ${DIR}/style_brief.md, ${DIR}/selection.md (judges' objections and the adjustments the theme must honour, incl. the Notion 補充)
-- ${DIR}/arxiv.md, ${DIR}/x_digest.md, ${DIR}/community_digest.md, ${DIR}/notion_digest.md (the ONLY allowed sources for numbers; read the parts you need)
+- ${DIR}/arxiv.md, ${DIR}/x_digest.md, ${DIR}/community_digest.md, ${DIR}/notion_digest.md${EXTRA} (the ONLY allowed sources for numbers; read the parts you need)
 - ${ROOT}/MERMAID.md (the Mermaid standard every figure must follow)
 - Published articles not to be repeated: ${PUBLISHED.join(', ')}
 Standard: the highest. Single "—" dash only, never "——".

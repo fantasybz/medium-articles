@@ -34,11 +34,11 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 
 ## 1. The question every engineering VP is asking: after "the AI said it's fine," what should I trust?
 
-Before we get to gates, think back over the last six months of running coding agents for real. Most teams are stuck in roughly the same place.
+Before we get to the acceptance gates, think back over the last six months of running coding agents for real. Most teams are stuck in roughly the same place.
 
 Three scenarios follow. Not every repo has seen all of them, but most teams have lived through at least one.
 
-The first one shows up in an ordinary status check. You ask an engineer whether this PR was tested, and the answer is "the AI said it's fine." A post in the Scrum Community in Taiwan group was about exactly this. The person answering isn't lazy. They genuinely do not know what else there is to look at besides trusting what the agent said.
+The first one shows up in an ordinary status check. You ask an engineer whether this PR was tested, and the answer is "the AI said it's fine." A post in the Scrum Community in Taiwan Facebook group was about exactly this. The person answering isn't lazy. They genuinely do not know what else there is to look at besides trusting what the agent said.
 
 The second one shows up while fixing a bug. You ask an agent to fix a failing test, and it does; CI goes green too. Then you look at the diff: `assertEqual` became `assertIn`, `== 3` became `>= 1`. The test is green; the bug is still there. What it fixed was not the code. It was the assertion that had been complaining.
 
@@ -46,31 +46,29 @@ The third one shows up afterwards. Production breaks, you go back to the PR, and
 
 The three share exactly one thing: **the only evidence came from the agent itself**. The tests it wrote, the things it said, the approve it gave are all its checking of questions it set for itself, and the organization took them as acceptance.
 
-The premise first, because the eleven sections after this one all rest on it.
+The eleven sections after this one all rest on the same premise: most of the tests are agent-written. The premise first, spelled out.
 
-A green CI build is by itself a measurement of the environment, not a statement by the agent. There is exactly one situation in which it turns into self-report: the tests were written or modified by the agent itself. Then examiner and examinee are the same.
+A green CI build is by itself a measurement of the environment, not a statement by the agent. There is exactly one situation in which it degrades into self-report: the tests were written or modified by the agent itself. Then examiner and examinee are the same.
 
-There is a hole here I cannot fill. None of the research I have read measured what share of agent PRs contain agent-written tests, so "**most of the tests are agent-written**" is a premise in this series, not a fact. Repos where the condition doesn't hold are out of scope. To find out whether you are inside the premise, the number to look for is the share of new or modified test files the agent wrote: measure it in month 1.
+There is a hole here I cannot fill. None of the research I have read measured this: of the PRs agents open, what share contain agent-written tests. So "**most of the tests are agent-written**" is a premise in this series, not a fact. Repos where the condition doesn't hold are out of scope. To find out whether you are inside the premise, the number to look for is the share of new or modified test files the agent wrote: measure it in month 1.
 
-Here is the answer to all three scenarios compressed into one sentence, written deliberately in a shape you can disagree with. Disagreeing is fine; you can still take it back and hold it against your own branch protection settings, review policy and agent workflow.
+Here is the answer to all three scenarios compressed into one sentence, written deliberately in a shape you can disagree with. Disagreeing is fine; you can still take it back and hold it against your own branch protection (GitHub's setting for what a PR must satisfy before it may merge), review policy and agent workflow.
 
-Two of the terms in it deserve a plain-language gloss first. Constraint tests turn something a reviewer once said into a check that CI runs. A mutation report is the result of deliberately breaking the code and seeing whether the tests go red. Each of the two gets a section of its own later:
+Four of the terms in it deserve a plain-language gloss first. Payment is not a term of art, it's an example — it stands for the kind of change that reaches far when it goes wrong, and auth and schema belong with it. Constraint tests turn something a reviewer once said into a check that CI runs. A mutation report is the result of deliberately breaking the code and seeing whether the tests go red. Intent is the part of the PR description that says what is being changed and why. AGENTS.md is the project file that lives in the repo and is written for agents to read. Constraint tests and the mutation report each get a section of their own later:
 
 > **Green is checking. Acceptance is testing.** So on a PR that touches payment, once constraint tests and a mutation report are in place, a human no longer reads the diff line by line — they read the intent, the constraint report and the mutation report, and only the hunks flagged red; until then, every comment a human leaves while reading the diff gets recycled into a constraint test. An AI approve does not count toward branch protection, whichever vendor it comes from. Writing TDD into AGENTS.md is fine; using the shape of TDD as a gate is not.
 
-The vocabulary in all three claims is borrowed from one person. The next section lays that language out first, so the ten sections after it have shared terms to work with.
+The vocabulary in all three claims is borrowed from one person: James Bach. The next section says who he is, then lays that language out, so the ten sections after it have shared terms to work with. From there the route runs like this: first the data and the history of testing, to show why a green build cannot measure it; then the three gates, one at a time; and finally the anti-patterns, my decision list and the action blueprint.
 
 ---
 
 ## 2. The book anchor: Bach's testing and checking
 
-Who he is, first, because all three gates take their names from his definitions. James Bach is the author of context-driven testing and of the Rapid Software Testing (RST) methodology, and the work of his career has been to keep "testing" separate from "ticking boxes off a list."
+Who he is, first, because all three gates take their names from his definitions. James Bach is the author of context-driven testing (deciding how to test from the situation rather than following a fixed procedure) and of the Rapid Software Testing methodology, and this section's book anchor is his *Taking Testing Seriously*. The work of his career has been to keep "testing" separate from "ticking boxes off a list."
 
-The limitation first: I have not finished the book; the quotations come from the chapter that defines testing and checking, and from one interview.
+There is a line in the book that I quoted on my own Facebook page: "Testing is the opposite of faith in the product. Testing begins with faith in the existence of trouble." The weight of it is in the second half. Testing does not start from believing the product is fine. It starts from believing that trouble is waiting somewhere.
 
-There is a line in his *Taking Testing Seriously* that I quoted on my Facebook page: "Testing is the opposite of faith in the product. Testing begins with faith in the existence of trouble." The weight of it is in the second half. Testing does not start from believing the product is fine. It starts from believing that trouble is waiting somewhere.
-
-A reader replied that testers now use vibe coding to build throwaway test tools. Throwaway means written and then discarded, built only to answer the one question in front of you. That is exactly this series' position: the agent is the tester's tool, not the tester's replacement.
+One limitation to add: I have not finished the book; the quotations come from the chapter that defines testing and checking, and from one interview.
 
 So what is checking? Bach's definition reads: "Checking is the mechanistic process of verifying propositions… testing cannot be automated, but checking can."
 
@@ -90,11 +88,13 @@ A natural objection comes up here. The agent has write access to the repo, so wh
 
 **The promotion rule**: a test the agent wrote passes the test gate (no weakened assertions, real mutation kill power) **and is approved into main by a human** — only then does it move from b) to c). The classification looks at who has taken responsibility for it, not who typed it.
 
-Mutation here means what it meant in the opening section: the code is deliberately broken, the tests stay green, and that tells you the changed line was not held down by any assertion. It measures not where the tests ran, but what the tests hold.
-
 **Cannot alter**: CODEOWNERS for `tests/constraints/` and the golden set directory lists humans only, and any weakening of a c) test blocks outright. A golden set is a fixed set of representative tasks you run the same agent against over and over; CODEOWNERS is GitHub's file for "who is responsible for reviewing these files." Point both of those at humans and the agent can no longer approve its own changes to them. The implementation is in the reliability piece.
 
-The vocabulary gets fixed here too. Mutation score, constraint tests and pass^k each get a section of their own later, and all three are **better checks**, not substitutes for testing. Testing is looking at the system with the belief that there must be trouble in it, and that remains human work.
+The mutation in the promotion rule means what it meant in the opening section: the code is deliberately broken, the tests stay green, and that tells you the changed line was not held down by any assertion. Mutation score is the share of those deliberate breaks the tests caught. It measures not where the tests ran, but what the tests hold.
+
+The vocabulary gets fixed here too. Mutation score, constraint tests and pass^k (the share that passes all k runs) each get a section of their own later, and all three are **better checks**, not substitutes for testing. Testing is looking at the system with the belief that there must be trouble in it, and that remains human work.
+
+People on the ground are already doing this. Under the Facebook post where I quoted that line, a reader replied that testers now use vibe coding (having the agent write it, looking only at the result and never at the code) to build throwaway test tools. Throwaway means written and then discarded, built only to answer the one question in front of you. That is exactly this series' position: the agent is the tester's tool, not the tester's replacement.
 
 Laying checking and testing out in two columns makes the line clearer than prose does. The left column is what a machine can do; the right column is what only a person can do:
 
@@ -126,7 +126,7 @@ Human eyes are not the safety net either, which is where I had assumed a fallbac
 
 Put another way, a wrong assertion placed in front of a person has roughly a coin flip's chance of being taken as correct, and that person will not feel any need to look again. Section 7 uses this number when it asks what deserves a human's reading.
 
-One first-hand case on top. It is much smaller than the studies above, but it happened in my own hands. The exercise at a pattern-language workshop came out like this: 5 tests all green, and the event-sourcing replay path never executed.
+One first-hand case on top. It is much smaller than the studies above, but it happened in my own hands. This summer, at the pattern-language-driven development workshop run by Teddy Chen (the instructor at Teddysoft), I asked an agent for a very small requirement. What it handed back came out like this: 5 tests all green, and the event-sourcing replay path never executed.
 
 Event sourcing stores every state change as an event and replays them when the state is needed. Replay is that path, and it is where this design most often goes wrong. All tests green says only that nothing went wrong along the few paths they walked. About the path nobody walked, the green build said not one word. Details are in the testing piece.
 
@@ -146,9 +146,9 @@ The reason for the switch is this: every gate agents are now forcing on us was a
 
 Two points in that figure are worth going into.
 
-The first is at the end of the timeline on the left. Humble and Farley (the two authors of *Continuous Delivery*) said long ago that a green commit stage is not a release. The agent era did not overturn that; it merely reinvents the later stages as three gates.
+The first is in the timeline on the left. That line starts with Fagan inspection, the formal review where a group of people sits down and reads the code line by line; it ends with the deployment pipeline of Humble and Farley (the two authors of *Continuous Delivery*), which said long ago that a green commit stage is not a release. The agent era did not overturn that; it merely reinvents the later stages as three gates.
 
-The second is on the right. The economic case that mutation testing waited forty years for, agents supplied. Once "writing tests" is free, "do the tests do anything" becomes the only question still worth money.
+The second is on the right. Mutation testing is expensive because it runs the whole suite thousands of times over; the economic case it waited forty years for, agents supplied. Once "writing tests" is free, "do the tests do anything" becomes the only question still worth money.
 
 In one line: **history taught us nothing new; it just mailed the bill for the stages we skipped.**
 
@@ -158,15 +158,15 @@ The first item on that bill is what the next section handles. If the tests can b
 
 ## 5. Don't teach the agent how to test; measure what it leaves behind
 
-Uncle Bob (Robert C. Martin) is about the last person in this industry you would expect to give up on TDD, given that he is its main promoter. That is what makes it worth reading how he settled his position on X this summer: TDD is a human discipline and he does not expect agents to follow it (July 30). He also said you can't tell an agent to "stay clean," you can only measure how clean it is and then tell it to fix that (July 29).
+Start with the last person in this industry you would expect to give up on TDD: Uncle Bob (Robert C. Martin), its main promoter. He settled his position on X this summer, which is what makes it worth reading. On July 29 he said you can't tell an agent to "stay clean," you can only measure how clean it is and then tell it to fix that. The next day (July 30) he put it more bluntly: TDD is a human discipline and he does not expect agents to follow it.
 
 When TDD's own promoter hands the agent's discipline problem over to measurement, that is where this section's title starts.
 
-Another angle comes from Birgitta Böckeler, who leads AI-assisted software delivery at Thoughtworks. Böckeler (reposted by Fowler on August 11) framed "TDD inside the agent loop — theater or actual value?" as an empirical question: is that a ritual performed for an audience, or does it do something real?
+Another angle comes from Birgitta Böckeler, who leads AI-assisted software delivery at Thoughtworks. Böckeler framed "TDD inside the agent loop — theater or actual value?" as an empirical question: is that a ritual performed for an audience, or does it do something real? The piece was reposted on August 11 by her Thoughtworks colleague Martin Fowler, the author of *Refactoring*.
 
-This piece's answer is the last of the three claims from the opening section. The ritual's value is not zero — it changes the agent's exploration path — so writing "please use TDD" in AGENTS.md is fine. AGENTS.md is the project file that lives in the repo and is written for agents to read. But **the shape of TDD cannot be the gate**; the gate measures output only, not what the process looked like.
+This piece's answer is the last of the three claims from the opening section. The ritual's value is not zero — it changes the agent's exploration path — so writing "please use TDD" in AGENTS.md (the project file that lives in the repo and is written for agents to read) is fine. But **the shape of TDD cannot be the gate**; the gate measures output only, not what the process looked like.
 
-Uncle Bob ran a small experiment on August 17: 8 runs, four test disciplines, with and without a CRAP threshold, one round each — this piece calls it the negative test experiment, after that post. CRAP is Change Risk Anti-Patterns, a risk score that combines cyclomatic complexity with coverage; the higher it goes, the more that code is both complicated and untested.
+Uncle Bob ran a small experiment on August 17; this piece calls it the negative test experiment, after that post. The design is simple: the same problem, four different test disciplines, each with and without a CRAP threshold, to see whether the programs that come out look the same — 8 runs in all. CRAP is Change Risk Anti-Patterns, a risk score that combines cyclomatic complexity (how many branches the code has) with coverage; the higher it goes, the more that code is both complicated and untested.
 
 The result: **all passed the same 25 acceptance cases, and the programs that came out were different**. Acceptance tests all green cannot tell quality apart — SWE-Gate, personal edition. One side is a large-scale statistic, the other is one person's hand-run experiment on his own machine, and the conclusion is the same.
 
@@ -176,9 +176,7 @@ The table below puts the instruction approach and the measurement approach side 
 
 📌【在此插入表 table-02.png】
 
-A prompt can influence how an agent behaves, but only a check leaves the organization something usable at the moment the agent gets it wrong, cuts a corner, or misunderstands.
-
-Every cell in the right column is a check, not a prompt.
+Every cell in the right column is a check, not a prompt. A prompt can influence how an agent behaves, but only a check leaves the organization something usable at the moment the agent gets it wrong, cuts a corner, or misunderstands.
 
 The parts of the three gates have all appeared by now, scattered. The next section puts them into one figure and settles the order at the same time.
 
@@ -196,11 +194,11 @@ One question, one measurement and one owner per gate:
 
 📌【在此插入表 table-03.png】
 
-One part in that table is shared by all three gates: constraint tests. Take a hypothetical. A reviewer once left "don't open a new HTTP client every time here" on some PR, and that sentence gets written up as a rule CI runs on every PR. It has just turned from a comment into a check.
+One part in that table is shared by all three gates: constraint tests. The other terms get defined in the section that uses them; this one comes first. Take a hypothetical. A reviewer once left "don't open a new HTTP client every time here" on some PR, and that sentence gets written up as a rule CI runs on every PR. It has just turned from a comment into a check.
 
-Constraint tests are installed and maintained by the test gate's owner, and the reliability gate only consumes their constraint pass rate.
+Constraint tests are installed and maintained by the test gate's owner, and the reliability gate only consumes the constraint pass rate computed from them (of the PRs that passed the functional tests, the share that also pass every constraint test).
 
-The design philosophy behind all three gates is one sentence: **designing the environment beats writing rules**.
+All three gates share one line of design philosophy: **designing the environment beats writing rules**.
 
 One study put a number on that sentence. It gave the agent a formal way out — a channel for saying "this test is itself broken" — and the agent's rate of reward hacking dropped to roughly a quarter. Reward hacking here means going off to make the test pass instead of fixing the bug (escalation channels, August 2026; the baseline, the full numbers and that tool's schema are in the testing piece).
 
@@ -212,23 +210,27 @@ Of the three gates, the test gate and the reliability gate can both be handed to
 
 ## 7. Review is the control point, not the bottleneck
 
-On September 2 Martin Fowler reposted "Maybe we shouldn't be reviewing all this code": the problem isn't that AI broke code review, it's that we've been using review to solve the wrong problem. This piece's version: **redesigning review is not about making humans read faster; it is about deciding what deserves a human's reading.** The "review becomes the new bottleneck" point in [last season's overview](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9), section 4, needs a correction: the bottleneck is a symptom; the disease is putting humans at the wrong gate, reading the wrong thing.
+On September 2 Martin Fowler reposted an article, "Maybe we shouldn't be reviewing all this code," which puts the question more directly than I have: the problem isn't that AI broke code review, it's that we've been using review to solve the wrong problem.
+
+This piece's version: **redesigning review is not about making humans read faster; it is about deciding what deserves a human's reading.**
+
+The "review becomes the new bottleneck" point in [last season's overview](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9), section 4, is one I have to correct myself: the bottleneck is a symptom; the disease is putting humans at the wrong gate, reading the wrong thing.
 
 This section uses two numbers, one about scale and one about association.
 
-Scale first. A longitudinal study across three generations and a million PRs (From Human-Centric to Agentic Code Review, July 2026) found that agent-initiated and multi-agent review made decisions faster **under some adoption patterns**, but not better. That "under some adoption patterns" qualifier is the paper's own, not mine.
+Scale first. A study that followed its subjects over time, across three generations (from human review to agent review) and a million PRs (From Human-Centric to Agentic Code Review, July 2026), found that agent-initiated and multi-agent review made decisions faster **under some adoption patterns**, but not better. That "under some adoption patterns" qualifier is the paper's own, not mine.
 
-Association next. Another longitudinal study tracking 182 repos (Post-merge fate of agentic code, July 2026) found that agentic code needs significantly more corrective maintenance. The association it reports runs like this: every 10 percentage points more in unreviewed-merge rate goes with roughly 6% more maintenance burden.
+Association next. Another study tracking 182 repos (Post-merge fate of agentic code, July 2026) found that agentic code needs significantly more after-the-fact bug-fixing maintenance. The association it reports runs like this: every 10 percentage points more in unreviewed-merge rate (the share of merges with no human approve at all) goes with roughly 6% more maintenance burden.
 
-That number has to be read carefully. The original wording is "is associated with," correlation not causation, so it cannot carry a claim like "skip review and things will rot." But it is enough to make the unreviewed-merge rate a metric that belongs in the monthly report. Unreviewed here includes merges with only an AI approve — that is what claim 2's "does not count" means.
+That number has to be read carefully. The original wording is "is associated with," correlation not causation, so it cannot carry a claim like "skip review and things will rot." But it is enough to make the unreviewed-merge rate a metric that belongs in the monthly report. Unreviewed here includes merges with only an AI approve — that is what the opening section's claim 2 means by "does not count."
 
-Another July 2026 study also found that most real leaked secrets were not caught before merge. That number is in the review piece.
+The maintenance burden above is the first debt of letting review go; another July 2026 study (Trust but Verify) measures the second: most real leaked secrets were not caught before merge. That number is in the review piece.
 
 Draw the upside and the debt as one figure, and the diamond in the middle is the control point this section's title is about:
 
 📌【在此插入圖 diagram-05.png】
 
-The difference between the two paths on the right is not how conscientiously the review was done. It is whether the review's output got recycled. On the path that holds, comments become constraint tests; on the path that lets go, the debt gets paid off slowly, after merge.
+The difference between the two paths on the right is not how conscientiously the review was done. It is whether the review's output got recycled. On the path that holds, comments become constraint tests, and that is where the upside comes from; on the path that lets go, both debts sit, and the bill gets paid off slowly, after merge.
 
 So why isn't a human reading the payment diff line by line the safety net? I have two reasons.
 
@@ -236,9 +238,9 @@ The first is section 3's 49%. Put a wrong assertion in front of people and only 
 
 The second is compounding. A comment a human leaves while reading a diff reviews this one PR, and it is over once that PR merges. The same comment recycled into a constraint test checks every PR that follows.
 
-So in the cells where blast radius is high, what a human catches reading the diff gets recycled into constraint tests. Blast radius is how far a change reaches when it goes wrong: auth, payment, schema and infra are high, internal tooling is low.
+So on PRs where blast radius is high, what a human catches reading the diff gets recycled into constraint tests. Blast radius is how far a change reaches when it goes wrong: auth, payment, schema and infra are high, internal tooling is low.
 
-The day constraint tests and the mutation report are in place, the human switches to reading intent and reports, and only the hunks flagged red. A hunk is one of the blocks a diff is cut into, and the ones flagged red are where the machine thinks a person is needed. The sampling rule for regulated systems is in the review piece.
+The day constraint tests and the mutation report are in place, the human switches to reading intent and reports, and only the hunks flagged red. A hunk is one block of change cut out of a diff; the ones flagged red are where the machine thinks a person is needed. For regulated systems — finance, healthcare — the sampling rule is in the review piece.
 
 The triage figure below has four exits, and humans read in only two of them:
 
@@ -246,7 +248,7 @@ The triage figure below has four exits, and humans read in only two of them:
 
 The exit to take away is the one at the bottom right: for a PR with low blast radius and no constraint tests or mutation report, the answer is not "find someone to read it," it is to add the checks first. Putting people where there is no evidence only buys a more expensive rubber stamp.
 
-The four exits are the four cells of the review piece's triage matrix. The full table, the reviewer fleet, the closed-loop ban and the approval artifact are all in that piece.
+The four exits are the four cells of the review piece's triage matrix. The full table is in that piece, and so are the reviewer fleet (layers of reviewers each looking at one part), the closed-loop ban and the approval artifact.
 
 Review decides who reads what. The next section changes the question: how much autonomy can this kind of task actually be given?
 
@@ -258,41 +260,43 @@ Reliability is not capability, and that is this section's whole position. How st
 
 - **pass@1**: the per-attempt success rate of each case, estimated from k reruns.
 - **pass^k**: the share of cases that succeed on all k runs.
-- Both are computed per case first, then aggregated over the golden set. "Succeeds at least once" is pass@k; this series does not use it.
+- Both are computed case by case first, then averaged over the whole golden set. "Succeeds at least once" is pass@k; this series does not use it.
 
-Walking the two definitions through a single case makes them clearer. Suppose the same golden case runs a few times in a row and one of those runs goes red:
+Walking the two definitions through a single case makes them clearer. Suppose the same case from the golden set runs a few times in a row and one of those runs goes red:
 
 📌【在此插入圖 diagram-07.png】
 
 The gap between the two boxes on the right is what to take from the figure: same case, same set of runs, and the two numbers reach completely different conclusions. One red is enough for "right every time" to be false.
 
-The two can differ a lot. Run the operations piece's 20–50 golden cases at k = 5 to 10 and measure your own. Don't extrapolate your own autonomy from somebody else's benchmark; let your own system lay its variance out in front of you first.
+How far apart they are is for you to measure: run the 20–50 cases of last season's operations-piece golden set at k = 5 to 10 and see. Don't extrapolate your own autonomy from somebody else's benchmark; let your own system lay its variance out in front of you first.
 
 The third number is human effort. Here I borrow **a corroborating case outside code** — the concept transfers, the numbers do not.
 
 READY is a qualification framework for enterprise agent deployment (September 2026). It asks, before an agent system is cleared to run, how many people it takes to reach the reliability you want. Its case is a clinical audit workflow, 16 agent systems, 750 cases. The domain is not code.
 
-Two of those systems had autonomous accuracy of 72.8% and 72.5%, only 0.3 percentage points apart. With the reliability target set at the same 76% for both, their human review shares came out at 39.2% and 29.6% — the more accurate one needed more human eyes.
+Two of those systems had autonomous accuracy only 0.3 percentage points apart (72.8% against 72.5%). With the reliability target set at the same 76% for both, their human review shares came out nearly 10 percentage points apart (39.2% against 29.6%) — the more accurate one needed more human eyes.
 
 **A ranking by accuracy is not a ranking by human effort.**
 
 My reading is this. What sets the human effort is not how often the system is right, it is how recognizable its errors are when it is wrong. A system whose errors cluster and are easy to spot lets people watch just that area; a system whose errors scatter, each one looking as confident as the next, leaves people no choice but to check more of them. That is my explanation working backwards from the result; the paper does not put it that way.
 
-The human review share is derived backwards from the reliability target; this series calls it the oversight budget — the headcount you have to budget for in advance in order to reach the reliability you promised. The algorithm is in the reliability piece:
+The human review share is derived backwards from the reliability target; this series calls it the oversight budget — the headcount you have to budget for in advance in order to reach the reliability you promised. The algorithm is in the reliability piece. Put the two systems side by side:
 
 📌【在此插入圖 diagram-08.png】
 
 The two systems in the figure start out almost identical and end up far apart, and the only thing they share in between is that reliability target. An autonomy decision cannot be made on an accuracy number alone, and this figure is the reason.
 
-So in the leadership monthly report, three numbers replace the single "pass rate":
+The leadership monthly report works the same way: the single "pass rate" gives way to three numbers — the two golden-set numbers from above, plus section six's constraint pass rate:
 
 📌【在此插入表 table-04.png】
 
 The column that matters most in that table is the last one. "What it must not be used for" is not filler; it blocks the three most common misuses — deciding autonomy on a capability number, comparing your own numbers against someone else's benchmark, and treating a constraint pass rate as a reason to skip review.
 
-These three numbers connect back to the operations piece's G2: autonomy expansion looks at pass^k and escape rate, not pass@1; whether capability is improving and whether you can let go were always two different questions. Escape rate is the share of defects that slip past these gates and are only found in production afterwards.
+These three numbers connect back to last season's operations-piece gate that decides whether autonomy gets opened wider (G2): autonomy expansion looks at pass^k and escape rate, not pass@1; escape rate is the share of defects that slip past these gates and are only found in production afterwards.
 
-G2 is last season's operations-piece gate for "should autonomy be opened wider," and the conditions it came with then were still qualitative. This season adds four measurable ones — pass^k, constraint violation rate, mutation score floor and oversight budget — and the full table is in the reliability piece.
+The conditions G2 came with then were still qualitative. This season adds four measurable ones — pass^k, the inverse of constraint pass rate (constraint violation rate), a mutation score floor and oversight budget — and the full table is in the reliability piece.
+
+Whether capability is improving and whether you can let go were always two different questions.
 
 The question, the measurement and the owner for each of the three gates are now in place. The next section walks it backwards: what you see on the ground when none of this is installed.
 
@@ -310,11 +314,11 @@ One figure assigns each of the eight to the gate it belongs to:
 
 The assignment itself is the takeaway: not one of the eight is "the agent's problem." Every one of them maps to a gate that hasn't been installed yet.
 
-Closed-loop review comes with a scale number first. Cross-product AI-reviews-AI — a reviewer from a different vendor reviewing agent PRs — is only about 1.6% of the total, but grew more than 100x from Q1 to Q3 2025 (AI-to-AI Code Reviews, 248,641 PRs, August 2026).
+Of the eight, in Taiwanese communities I see "coverage as quality" and "closed-loop review" most often — 5 and 6 in the table; an observation, not a statistic. The reasons are practical in both cases: coverage is the threshold easiest to bolt onto existing CI, with the number already there and no process to change, and seat-based subscriptions make "review yourself on the same subscription" the cheapest option.
 
-Note what that number measures: the different-vendor case, which is the open loop and was always allowed. What should worry you is how large the same-model, same-session loop is. The paper did not measure it; you will have to measure it yourself.
+How large closed-loop review is, not one study I have read has measured; what can be measured is its opposite. An August 2026 study (AI-to-AI Code Reviews) looked at 248,641 PRs. Cross-product AI-reviews-AI — a reviewer from a different vendor reviewing agent PRs — is only about 1.6% of the total, but between Q1 and Q3 2025 grew more than 100x.
 
-Of the eight, in Taiwanese communities I see 5 and 6 most often — an observation, not a statistic. Those two are "coverage as quality" and "closed-loop review," and the reasons are practical in both cases: coverage is the threshold easiest to bolt onto existing CI, with the number already there and no process to change, and seat-based subscriptions make "review yourself on the same subscription" the cheapest option.
+Different-vendor is the open loop, and was always allowed. What should worry you is how large the same-model, same-session loop is. The paper did not measure it; you will have to measure it yourself.
 
 Once the symptoms are recognizable, what's left is the decision. In the next section I put myself in the engineering VP's or QA lead's seat and write down what I would and would not approve.
 
@@ -328,26 +332,28 @@ The previous nine sections turn into a decision list here. The three lines below
 > "Use AI review to clear the review backlog; an AI approve is enough to merge."
 > "On the strength of an 85% eval pass rate, open write tools to every team in Q4."
 
-All three are blocked for the same reason: each of them wants an unmeasured number or process to stand in for a gate that isn't installed yet.
+The write tools in the third line are the tool permissions that let an agent change a system by itself. All three are blocked for the same reason: each of them wants an unmeasured number or process to stand in for a gate that isn't installed yet.
 
 I **would** approve four things:
 
 1. **Turn review comments into constraint tests first.** Pull 50 review comments from the agent PRs sent back in the last 90 days, classify them, pick out the executable ones, and write the first 10 constraint tests. For a repo with no comment history, derive the first 5 from the last 5 incident postmortems instead. This is the main route, not a fallback, because every "this must never happen again" was a constraint to begin with.
 2. **Install a mutation gate on one pilot repo**, counting only the lines the agent changed. There are two conditions for turning it on: 200+ engineers or a QA lead who will read the report, and the affected test subset finishing within 10 minutes — at 50 people, don't turn it on, and the reason is in the table below. The threshold is **my suggested value (not an industry standard)**: mutation score ≥ 70%. Below the threshold, the PR goes back to the agent for more tests, not to a human to read. The rollout order is report only for a month, then block.
-3. **The reviewer agent must be an instance from a different vendor, or at least a different session**, and an AI approve never counts toward required approvals. Required approvals is GitHub's setting for how many approves a PR needs before it can merge. A merge with only an AI approve counts as unreviewed in section 7's unreviewed-merge rate. GitHub offers two candidate mechanisms: CODEOWNERS listing humans only plus Require review from Code Owners, or a required status check that counts human approves. I have not tested either on a production repo, so I will validate first with a GitHub App's approve on my own repo, to see whether either route holds up. A design draft is in the review piece.
-4. **The approval artifact binds a human identity to the hash of what was reviewed.** An approval artifact records who pressed approve on exactly what content; change the content and the record is void. On high-blast-radius PRs, whoever assigned the task cannot approve. Vendor terms contradict one another on "who may approve an agent's PR" (Where Accountability Lives, August 2026); the details go to December's accountability piece.
+3. **The reviewer agent must be an instance from a different vendor, or at least a different session** (switch to another vendor's model, or at least open a separate conversation to do the review), and an AI approve never counts toward required approvals. Required approvals is GitHub's setting for how many approves a PR needs before it can merge. A merge with only an AI approve counts as unreviewed in section 7's unreviewed-merge rate. GitHub offers two candidate mechanisms. One is CODEOWNERS listing humans only, plus Require review from Code Owners; the other is a required status check that counts human approves. I have not tested either on a production repo, so I will validate first with a GitHub App's approve on my own repo, to see whether either route holds up. A design draft is in the review piece.
+4. **The approval artifact binds a human identity to the hash of what was reviewed.** An approval artifact records who pressed approve on exactly what content; change the content and the record is void. On high-blast-radius PRs, whoever assigned the task cannot approve. There is a second reason to bind it to a person. Vendor terms contradict one another on "who may approve an agent's PR" (Where Accountability Lives, August 2026); the details go to December's accountability piece.
 
-**How to think about the verification budget.** A study of 1,116 web apps, 6 models and 8 tool configurations (The reach of a verification tool decides its value, August 2026) gave me one principle: a verification tool's value is set by its reach — a boot probe that only checks whether the app starts, at about 35% of a shell's token cost, removed almost all startup failures; a full shell costs 2.35x. So buy the check with the widest reach first (constraint tests, assertion-change diff), then the ones that have to execute tests (red-then-green, mutation), and only last the expensive ones (k reruns, step-rubric judges).
+**How to think about the verification budget.** An August 2026 study (The reach of a verification tool decides its value) gave me one principle: a verification tool's value is set by its reach. Its sample is 1,116 web apps, 6 models and 8 tool configurations. The clearest illustration is the boot probe, a check that only asks whether the app starts: at about 35% of a full shell's token cost, it removed almost all startup failures; a full shell costs 2.35x.
 
-**The ratio is my provisional heuristic, to be calibrated by the pilot** — that paper supports the principle, not the ratio: for every $1 of agent tokens plus generation-side CI (the denominator: the machine cost of what the agent produces), budget $0.30 to $0.50 of verification-side compute (the numerator: the machine cost of verifying it). **Human review time is not in this ratio**; it goes through the reliability piece's oversight budget, and the two are reported to the CFO separately.
+So the buying order runs like this: the checks with the widest reach first, then the ones that have to execute tests, and the expensive ones last. Widest reach is constraint tests and the assertion-change diff, the latter being section five's table cell that blocks when an existing assertion is weakened. The ones that execute tests are red-then-green and mutation; red-then-green is the rule that a PR changing existing behavior has to show the test red first and green only after the change. The expensive ones are k reruns and the step-rubric judge, an LLM grader that scores step by step.
 
-**Installing at 50 / 200 / 1,000 engineers.** G2 is about expanding autonomy, not about rolling a gate from one repo to forty:
+The budget ratio runs like this: for every $1 the agent spends producing, budget $0.30 to $0.50 to verify it. The denominator is agent tokens plus generation-side CI, the machine cost of what the agent produces; the numerator is verification-side compute, the machine cost of verifying it. **The ratio is my provisional heuristic, to be calibrated by the pilot** — that paper supports the principle, not the ratio. **Human review time is not in this ratio**; it goes through the reliability piece's oversight budget, and the two are reported to the CFO separately.
+
+**Installing at 50 / 200 / 1,000 engineers.** This is about rolling a gate from one repo to forty; the autonomy expansion G2 talks about is a different thing:
 
 📌【在此插入表 table-06.png】
 
-Ownership is the column to look at here. The set of checks only shrinks at the smallest scale, but who owns the gate changes on every row: at a scale where nobody would read the report, mutation stays off.
+What is worth looking at in that table is the gap between the middle column and the right one: the set of checks only shrinks at the smallest scale, but who owns the gate changes on every row. The shrink has exactly one reason: at a scale where nobody would read the report, mutation stays off. The paved road in the table is the path the platform has laid in advance and that works by default.
 
-**Brownfield: which gate first.** The reality for most teams in Taiwan is a 15-year-old legacy monolith: a 40-minute test suite, 30% coverage, no review-comment history to mine. Below is the installation order for the verification layer; each step depends only on the precondition in its own row. It does not replace the legibility order from last season's overview, section 7 (characterization tests → logs / traces → architecture rules); a repo with no tests at all adds characterization tests first, as step 0:
+**Brownfield: which gate first.** The reality for most teams in Taiwan is a 15-year-old legacy monolith: a 40-minute test suite, 30% coverage, no review-comment history to mine. Below is the installation order for the verification layer; each step depends only on the precondition in its own row. It does not replace the legibility order from last season's overview, section 7 — the path to a system agents can read: characterization tests → logs / traces → architecture rules. A repo with no tests at all adds characterization tests first (recording today's behavior as tests, exactly as it is), as step 0:
 
 📌【在此插入表 table-07.png】
 
@@ -364,7 +370,7 @@ The starting point first. Once the gates are in, someone will ask whether things
 There are six to measure. The first two were already being measured last season: escape rate, defined in section eight, and review minutes per PR, the average human review minutes each PR consumes. The other four are new this season:
 
 - The share of PRs that weaken an existing assertion
-- The share of snapshot or golden-file updates with no stated reason
+- The share of snapshot or golden-file updates with no stated reason (a golden file records the current output as the expected answer; it is not the same thing as the golden set)
 - The share of agent-changed lines that existing tests cover
 - The share of new or modified test files written by the agent
 
@@ -395,7 +401,11 @@ Whether three months is enough has less to do with how good the tools are than w
 
 Back to the three scenarios from the opening section. With all three gates installed, how do they end?
 
-The next time the engineer is asked whether the PR was tested, there are a few more things to point at: whether the constraint report passed, where the mutation report went red, which cell of the triage matrix this PR landed in. The PR that turned `assertEqual` into `assertIn` gets caught by the assertion-change diff before merge — equality swapped for containment is a drop in strength, and it blocks outright. The tests are still green; the PR still doesn't get through. As for the one that broke production and turned out to have only a reviewer agent's approve, the "who looked at this change" field in the postmortem will have a name in it, because an AI approve never counted in the first place.
+The next time the engineer is asked whether the PR was tested, there are a few more things to point at: whether the constraint report passed, where the mutation report went red, which cell of the triage matrix this PR landed in.
+
+The PR that turned `assertEqual` into `assertIn` gets caught by the assertion-change diff before merge — equality swapped for containment is a drop in strength, and it blocks outright. The tests are still green; the PR still doesn't get through.
+
+As for the one that broke production and turned out to have only a reviewer agent's approve, the "who looked at this change" field in the postmortem will have a name in it, because an AI approve never counted in the first place.
 
 Not one of the three came from the agent getting better. All they did was move the source of evidence out of the agent's own hands and into measurements the organization owns.
 
@@ -407,7 +417,7 @@ One last prediction with a date on it, so that it can be checked and so that it 
 
 The hard part of that sentence is not the first half, it's the second. Measuring what it left behind is an engineering problem: you can write the check and get it into CI. Putting humans where they should be reading is an organizational problem, and it starts with someone admitting that reviewer time is finite and being willing to decide which places go unread.
 
-November's theme, "the same spec, run ten times," pushes pass^k one step further, into the harness's variance. How many of the runs come out the same is mostly treated today as a question about the model. What I want to talk about is how much of it the harness decides.
+One piece per gate, starting with the testing piece. Further out, November's theme, "the same spec, run ten times," pushes pass^k one step further, into the variance of the harness (the layer last season's technical piece covered: the tools and process around the agent). How many of the runs come out the same is mostly treated today as a question about the model. What I want to talk about is how much of it the harness decides.
 
 ---
 

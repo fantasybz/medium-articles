@@ -12,19 +12,25 @@
 
 這個安排能成立，前提是寫的速度和讀的速度差不多。agent 進來之後，這個前提沒了。
 
-Martin Fowler（Thoughtworks 首席科學家，《Refactoring》的作者）在 9 月初轉了一篇文章，標題是「Maybe we shouldn't be reviewing all this code」。
+這一篇要回答的，是台灣社群裡已經有人問出口的那句話：「AI 把程式碼寫爆了，code review 怎麼辦？」
+
+不只台灣在問。這幾週有四個來源，其中三個在台灣以外：
+
+Martin Fowler（Thoughtworks 首席科學家，《Refactoring》的作者）在 9 月初轉了一篇文章，標題是「Maybe we shouldn't be reviewing all this code」。把重構寫成書的人，現在轉的是該不該全審。
 
 專案管理工具公司 Linear 同一週提到，金融科技公司 Ramp 的 coding agent 寫了每四個 PR 裡的三個。在那家公司，人寫的 PR 已經是少數。
 
-Scrum Community 有一則貼文問「AI 把程式碼寫爆了，code review 怎麼辦？」，描述的情境是 PR 半年翻倍、senior 的日曆全滿。那是一則貼文描述的情境，不是量測，但它講的是多數團隊正在經歷的事。
+Scrum Community（台灣的 Scrum 社群，Facebook 社團）有一則貼文，開頭那一句就出自它。情境是 PR 半年翻倍、senior 的日曆全滿。那是一則貼文描述的情境，不是量測，但它講的是多數團隊正在經歷的事。
 
-DeepLearning.AI 的課程文案把它寫成一句話：AI 寫的程式碼，已經多到任何團隊都無法用手審完。
+DeepLearning.AI 是 Andrew Ng 創辦的線上課程平台，它的課程文案把這件事寫成一句話：AI 寫的程式碼，已經多到任何團隊都無法用手審完。
 
 四個來源講的是同一件事：可以用來讀 diff 的人類時數是固定的，agent 產出的 diff 不是。
 
-總論第七節已經修正了上一季「Review 成為新瓶頸」的說法。原本那句話只講到表面：瓶頸是症狀，病因是把人放在錯的閘門上讀錯的東西。
+把這件事叫「瓶頸」，總論第七節已經修正過。上一季寫「Review 成為新瓶頸」，那句話只講到表面：瓶頸是症狀，病因是把人放在錯的閘門上讀錯的東西。
 
-本篇只講 review gate 的設計。立場不是「少 review」，也不是「快 review」，是**重新分配誰讀什麼**。
+本篇只講 review gate 的設計。先講結論：
+
+> 立場不是「少 review」，也不是「快 review」，是**重新分配誰讀什麼**。
 
 以下的走法是這樣：先用五組真實 PR 資料把問題定位，再給要重設計的三件事，也就是分流矩陣、reviewer agent 艦隊與閉環禁令，最後補上資安與 approval 這兩條收邊。
 
@@ -34,15 +40,13 @@ DeepLearning.AI 的課程文案把它寫成一句話：AI 寫的程式碼，已�
 
 後面三節的每一條設計，都應該有一筆真實 PR 資料撐著，不是靠直覺。
 
-這一節是全系列唯一把真實 PR 資料引全的地方。取捨很簡單：每個數字後面緊接它推出的那一條處方。推不出處方的數字，只進最後的總表，免得這一節變成 benchmark 展示。
+這一節是全系列唯一把真實 PR 資料引全的地方。取捨很簡單：每個數字後面緊接它推出的那一條處方。推不出處方的數字，只進最後的總表，免得這一節變成 benchmark 展示。順序是從「為什麼 review 是控制點」，一路推到「人該把時間花在哪」：
 
-五組數字如下，順序是從「為什麼 review 是控制點」，一路推到「人該把時間花在哪」：
-
-1. **控制點的出處。** 先看第一個錨點，它回答的是「這件事該用工具解，還是該用組織解」。一項研究從 38,709 篇灰色文獻（業界部落格、技術報告、社群討論這類沒有經過同儕審查的材料）中編碼了 3,100 篇，建構出 26 個構念與 67 條關係，最後長成一套因果理論（2026 年 7 月）。它把 review 定位成決定 agent 淨效果正負的控制點：團隊的專業與流程結構決定方向。這裡的控制點不是某個工具上的按鈕，是組織可以施力、而且施力方向會決定結果正負的那個位置。它的性質也要先講清楚：它是理論框架，不是量測到的因果效應。→ 處方：review gate 的設計是組織決策，不是工具選型。本篇後面每一節都是「流程結構」的一部分。
-2. **更快，沒更好。** 本節引到的資料裡，規模最大的一筆給的答案最不舒服。它橫跨 1.02M 個 PR、207 個專案、三個世代（From Human-Centric to Agentic Code Review，2026 年 7 月），結論是：agent 發起與多 agent review 在某些採用模式下讓決策更快，但效率的提升沒有轉成 review 品質。這個結果很值得停一下。它不是說 AI review 沒用，是說「快」跟「好」在這批資料裡沒有一起出現，所以拿快去證明好，證不出來。→ 處方：不以 review 速度當 KPI。月報上的 review minutes / PR 只當成本欄，不當品質欄。
-3. **免審合併率。** 不 review 的代價，有人量過了。一項追蹤 182 個 repo 的縱向研究（Post-merge fate of agentic code，2026 年 7 月）發現，整體維護率相近，但 agentic code 需要顯著更多的矯正性維護，也引入更多 security weakness。它還量到一組對照：免審合併率每高 10 個百分點，agentic 維護負擔約高 6%—相關，非因果。免審合併率指的是沒有經過人類 approve 就進主線的比例，只有 AI approve 的合併算在裡面。→ 處方：免審合併率進月報，當成要管的指標。至少先量。
-4. **評論被拒絕。** review 產出的東西本身，有多少真的被採用？CodeRabbit 在 239 個 repo、10,191 個 PR 上留下 31,073 對 review 與回饋（2026 年 7 月），結果是：36.4% 被接受、7.3% 引發討論、56.3% 被拒絕。拒絕的原因是 false positive、重複、超出範圍、intent 錯位。這四個原因有一個共同點：它們大多不必真的讀懂這段程式碼在做什麼。同一份研究還有一個旁證，一個輕量 model 能以 76% 的 F1 預測哪些評論會被拒（這個分數同時看抓得準與抓得全，越高代表誤判與漏判都少）。另一項針對五個 agent 評論的研究指出，inline code suggestion 是評論被採納的最強預測因子，長評論最容易被忽略。→ 處方：評論要短、要帶 inline suggestion、要能被 deterministic 規則先過濾掉會被拒的那一半。
-5. **Secret。** 最後一筆最反直覺，它講的是人在 review 裡最愛做、但最不該做的那件事。一項研究看了 4,022 個 agent PR（2026 年 7 月），把真實外洩的 secret 逐一歸戶：其中有 67.6% 是人放的，81.1% 的外洩在 merge 前沒被抓到。這是兩個各自的比例，不是巢狀。另外有 38.9% 的 PR 含 security smell，那是另一個數字。人眼在這件事上的命中率，低到不值得排班。→ 處方：抓 secret 交給掃描器，人不要在這裡花時間。而且 review 漏的不只是 agent 的錯。
+1. **控制點的出處。** 先看第一個錨點，它回答的是「這件事該用工具解，還是該用組織解」。一項 2026 年 7 月的因果理論研究，把 review 定位成決定 agent 淨效果正負的控制點：團隊的專業與流程結構決定方向。它的基底是 38,709 篇灰色文獻（業界部落格、技術報告、社群討論這類沒有經過同儕審查的材料），從中編碼了 3,100 篇，建構出 26 個構念（研究裡定義出來的概念單位）與 67 條關係。這裡的控制點不是某個工具上的按鈕，是組織可以施力、而且施力方向會決定結果正負的那個位置。它的性質也要先講清楚：它是理論框架，不是量測到的因果效應。→ 處方：review gate 的設計是組織決策，不是工具選型。本篇後面每一節都是「流程結構」的一部分。
+2. **更快，沒更好。** 本節引到的資料裡，規模最大的一筆給的答案最不舒服。這筆資料叫 From Human-Centric to Agentic Code Review（2026 年 7 月），橫跨 1.02M 個 PR、207 個專案、GenAI 的三個世代，從人主導的 review 一路到 agent 主導的 review。它的結論是：agent 發起與多 agent review 在某些採用模式下讓決策更快，但效率的提升沒有轉成 review 品質。這個結果很值得停一下。它不是說 AI review 沒用，是說「快」跟「好」在這批資料裡沒有一起出現，所以拿快去證明好，證不出來。→ 處方：不以 review 速度當 KPI。月報上的 review minutes / PR 只當成本欄，不當品質欄。
+3. **免審合併率。** 不 review 的代價，有人量過了。免審合併率指的是沒有經過人類 approve 就進主線的比例，只有 AI approve 的合併算在裡面。一項 2026 年 7 月的縱向研究（Post-merge fate of agentic code）追蹤了 182 個 repo，發現整體維護率相近，但 agent 寫的程式碼不一樣：修 bug 型的維護顯著更多，也引入更多 security weakness（安全弱點）。它還量到一組對照：免審合併率每高 10 個百分點，agentic 維護負擔約高 6%—相關，非因果。→ 處方：免審合併率進月報，當成要管的指標。至少先量。
+4. **評論被拒絕。** review 產出的東西本身，有多少真的被採用？AI code review 服務 CodeRabbit 在 239 個 repo、10,191 個 PR 上留下 31,073 對 review 與回饋（2026 年 7 月），結果是：36.4% 被接受、7.3% 引發討論、56.3% 被拒絕。拒絕的原因是 false positive（誤報）、重複、超出範圍，以及看錯這個 PR 想做什麼（intent 錯位）。這四個原因有一個共同點：它們大多不必真的讀懂這段程式碼在做什麼。同一份研究還有一個旁證，一個輕量 model 能以 76% 的 F1 預測哪些評論會被拒（這個分數同時看抓得準與抓得全，越高代表誤判與漏判都少）。被拒的那一半認得出來。被採納的那一半長什麼樣，另一項針對五個 agent 評論的研究給了答案：inline code suggestion（評論裡直接附上可一鍵套用的改法）是最強預測因子，長評論最容易被忽略。→ 處方：評論要短、要帶 inline suggestion。會被拒的那一半，先用每次跑結果都一樣的 deterministic 規則過濾掉。
+5. **Secret。** 最後一筆最反直覺，它講的是人在 review 裡最愛做、但最不該做的那件事。一項研究看了 4,022 個 agent PR（2026 年 7 月），把真實外洩的 secret（API key、密碼、token 這類憑證）逐一歸戶。外洩的 secret 裡，67.6% 是人放的；同一批外洩裡，81.1% 在 merge 前沒被抓到。這是兩個各自的比例，不是巢狀：算的都是同一批外洩，不是其中一個包在另一個裡面。另外有 38.9% 的 PR 含 security smell（看起來可疑、還不一定是漏洞的寫法），那是另一個數字。並排看，人眼在這件事上的命中率，低到不值得排班。而且外洩的 secret 有三分之二是人自己放的，review 漏掉的不只是 agent 的錯。→ 處方：抓 secret 交給掃描器，人不要在這裡花時間。
 
 七筆來源整理成一張表。前五筆就是上面那五條，後兩筆沒有各自的處方，最後一欄寫的是它們各自被用在哪裡：
 
@@ -72,13 +76,11 @@ DeepLearning.AI 的課程文案把它寫成一句話：AI 寫的程式碼，已�
 
 在分格之前，要先把底線寫清楚：**每一次 merge 仍然帶一個人類 approve，綁人。**
 
-這句話裡有兩個承重的詞。oversight budget 是你願意花在深讀上的人力上限，它決定的是「其中多少比例要再做深讀」，不是「哪些 PR 不用人 approve」。approval artifact 則是每次 approve 留下的那筆紀錄，第七節會給它最小定義。
+下面那張表和它後面幾段會用到四個詞，先交代。oversight budget 是你願意花在深讀上的人力上限，它決定的是「其中多少比例要再做深讀」，不是「哪些 PR 不用人 approve」。approval artifact 則是每次 approve 留下的那筆紀錄，第七節會給它最小定義。hunk 是 diff 裡的一段變更；brownfield 是既有 repo，安裝順序在總論第十節。
 
 AI 的 approve 是 approval artifact 裡的一個訊號欄，供人類 approve 者與抽樣參考，永不計入 required approvals。required approvals 是 GitHub branch protection 上「這個 PR 要湊到幾個 approve 才能 merge」的那個設定。
 
-總論第一節結尾那三句主張是連在一起寫成一段的，本篇會一直用到中間那一句：AI 的 approve 不計入 branch protection，不管哪一家。
-
-這樣總論主張 2 的「不計入」才有東西可以不計入，而「機器全審、人抽樣」那一格沒被抽到的 PR，才有明確的 merge 路徑。
+這條「不計入」不管哪一家 vendor 都一樣。總論第一節結尾有三句主張，中間那一句（主張 2）就是它：AI 的 approve 不計入 branch protection，不管哪一家。本篇會一直用到這一句。
 
 兩條軸交叉得到四格，分工如下。最右邊的「例外」欄不是補充說明，是合規現場真正會卡住的地方：
 
@@ -89,17 +91,21 @@ AI 的 approve 是 approval artifact 裡的一個訊號欄，供人類 approve �
 | **低 radius、可驗證** | 異質 reviewer agent 全審；人做「讀報告 approve」—看 intent 欄、constraint 報告、活著的 mutant，約一分鐘 | 每個 PR 都有人類讀報告 approve；oversight budget（可靠度篇第四節）決定其中多少比例由**非指派者**再做深讀 | **可以**讀報告 approve；深讀抽樣由非指派者做 | 沒被抽到的 PR 也不是「AI approve 即 merge」，是「人一分鐘讀報告 approve」 |
 | **低 radius、不可驗證** | 先補 check，再談 review；不用人力補工具的缺 | 人類 approve 前要求 PR 先補齊缺的 check，補齊後移到上一格；不安排人力讀 diff | 同上一格 | 這一格應該隨 brownfield 安裝順序清空 |
 
+訊號欄和人類 approve 分開，有兩個結果。總論那條「不計入」才有東西可以不計入。「異質 reviewer agent 全審、人抽樣深讀」那一格（低 radius、可驗證）沒被抽到的 PR，也才有明確的 merge 路徑。
+
 表格第二列有一句話值得單獨拿出來看：「每條評論進規則檔」。它聽起來像多做一份文件，實際上有實證。
 
 一項研究做在一個由 35 個以上服務組成的平台上（2026 年 7 月），把每一條被接受的 review 評論變成 version-controlled 的規則，再加上一份 pre-submit checklist。規則從 5 條長到 18 條，被規則化的錯誤類別 0% 復發，review 的力氣轉到設計層。
 
 這就是總論主張 1 那句「讀 diff 的每一條評論都要回收成 constraint test」的出處。一條評論只修好一個 PR，一條規則修好之後的每一個 PR。
 
+表格第二列的例外欄寫著「在那之前」，那也是總論的話：那一格就是這段過渡。
+
 矩陣的第四欄寫著任務指派者「不可 approve」，但它只出現在高 radius 的兩格。這個不對稱是刻意的。
 
-本篇預設的組織規模是一家 300 人的公司：有平台團隊，但沒有多到可以讓每個 PR 都排得到第二位 reviewer。在這個規模裡，把任務派給 agent 的人就是 ticket owner，也是最懂 intent 的天然 reviewer。
+理由在組織規模：本篇預設的是一家 300 人的公司，有平台團隊，但沒有多到可以讓每個 PR 都排得到第二位 reviewer。在這個規模裡，把任務派給 agent 的人就是 ticket owner，也是最懂 intent 的天然 reviewer。
 
-若他在每一格都不能 approve，每個 agent PR 都要第二個工程師介入。那正是本篇要化解的東西。VP 的第一個問題會是「這會不會讓我的 review 量翻倍」。
+若他在每一格都不能 approve，每個 agent PR 都要第二個工程師介入。VP 的第一個問題會是「這會不會讓我的 review 量翻倍」。那正是本篇要化解的東西。
 
 所以低 radius 讓指派者讀報告 approve，深讀由非指派者抽樣。高 radius 才採較嚴的做法。
 
@@ -163,13 +169,21 @@ flowchart TB
 
 這四格不是靜態的分類，是一張搬家地圖：右邊兩格的 PR 應該一路往左邊搬，搬的方式是補 check，不是加人。
 
+這張搬家地圖有期限。九月十日，東京有一場 agent 領域的技術會議 AGNTCon，日本 SaaS 廠商 Studist 的 Masaya Nakamura 在上面講了「Intent as Code」。他待的是平台團隊，握著多個產品的基礎設施權限，工作就是替 agent 把該擋的動作擋在執行之前。
+
+閘門是他們自己蓋的，上台講的卻是閘門前那個人撐不住。投影片上有一行寫的是「疲れや慣れによって、確認を省略してしまうリスク」（因為疲勞或習慣而省掉確認的風險）。按同意按到後來，人按的不再是判斷，是反射。
+
+他把逐次核准—agent 每做一個動作就要人按一次同意—列成一種失效模式，對應 OWASP 替 agent 應用整理的十大風險，排在第九項（ASI09）。依據是第 16 張投影片引的一篇論文，標題是「Habituation at the Gate: Rising Approval and Declining Scrutiny in Human Review of AI Agent Code」。標題本身就是結論：核准率上升、審查密度下降。我沒讀原文，那筆引用是從那張投影片轉來的。
+
+我認為逐次核准與人讀 diff 是同一種設計：都是一個人坐在閘門前，每一次都要按同意。人讀 diff 這一格不會維持原狀，它會自己鬆掉。右邊兩格要在那之前搬完。接手的是機器，所以先把機器那兩格做實。
+
 ---
 
 ## 四、reviewer agent 艦隊：異質配對與一份設定檔
 
 矩陣把「機器讀 diff」寫進了兩格，接下來要說的是那台機器長什麼樣子。
 
-這件事台灣已經有人在做。Claude Taiwan 有一則留言描述自家的「艦隊模式」：兩個審查 agent 分別負責證實與證偽，一個架構 agent 防過度設計，一個總監工。
+這件事台灣已經有人在做。Claude Taiwan（台灣的 Claude 使用者社群，Facebook 社團）有一則留言描述自家的「艦隊模式」：兩個審查 agent 分別負責證實與證偽，一個架構 agent 防過度設計，一個總監工。
 
 這則留言有意思的地方不是名字取得帥，是它已經把 review 從「一個 reviewer 看全部」，拆成幾個角度各看一段。社群早就在自己組 reviewer 艦隊，缺的是禁令與責任設計。
 
@@ -177,7 +191,7 @@ flowchart TB
 
 **原則一：異質。** 艦隊的價值不在數量，在視角不同。
 
-一項研究讓 Claude 與 Codex 透過檔案協作，產生 375 份 review 工件（2026 年 6 月）。異質配對記錄到的缺陷是 69.8%，同質配對是 53.1%。這兩個數字之間唯一換掉的變因，是配對異不異質。
+一項研究讓 Anthropic 的 Claude 與 OpenAI 的 Codex 透過檔案協作，產生 375 份 review 工件（2026 年 6 月）。異質配對記錄到的缺陷是 69.8%，同質配對是 53.1%。這兩個數字之間唯一換掉的變因，是配對異不異質。
 
 另有一項 116 題的實驗室量測發現，配對的方向不對稱，誰審誰有差。但那是 2026 年 7 月的量測，很可能隨 model 版本翻轉（筆者的判斷）：Claude Fable 5.1 與 GPT-6 Astra 都在本篇動筆前一個月發布，不要拿它決定買哪家。
 
@@ -185,21 +199,21 @@ flowchart TB
 
 **原則二：deterministic 先行。** 艦隊的順序比艦隊的成員重要—先跑哪一層，決定了另外幾層要花多少錢、能不能重跑。
 
-OpenCodeReview（2026 年 8 月）用規則導向的 dispatch 加 grounded file review，在 200 個真實 PR 上把 SEM-F1 提高最多 2.17 倍（25.10% 對 11.57%），token 少 5 到 15 倍。這個分數量的是 reviewer 講出來的問題，跟真正的問題在語意上對得上多少。
+一項叫 OpenCodeReview 的研究（2026 年 8 月）用規則導向的 dispatch 加 grounded file review，在 200 個真實 PR 上把 SEM-F1 提高最多 2.17 倍（25.10% 對 11.57%），token 少 5 到 15 倍。這個分數量的是 reviewer 講出來的問題，跟真正的問題在語意上對得上多少。
 
 它用的兩個手法都不神祕。dispatch 是先用規則決定「這個 PR 要交給誰審、審哪些檔案」，grounded file review 是要求 reviewer 的每一句話都指回具體的檔案位置。
 
 Uncle Bob（Robert C. Martin，《Clean Code》的作者、TDD 長期倡議者）在 8 月 5 日給的原則說得更短：deterministic 的事交給 deterministic 工具。
 
-vendor 也在把 security review 做成每個 PR 都跑的一層。OpenAI 總裁 Greg Brockman 8 月 6 日提到 Codex Security Review on every PR。
+vendor 也在把 security review 做成每個 PR 都跑的一層。OpenAI 總裁 Greg Brockman 8 月 6 日提到 Codex Security Review on every PR。重點不在產品名，在位置：每個 PR 都跑，不是挑著跑。
 
 艦隊的第一層是 lint、constraint tests、secret scan，不是 LLM。
 
-**原則三：與生成分離。** 這是我準備 Claude Certified Architect 考試時的筆記：independent review instance 勝過 self-review，CI review 與 code generation 的 session 要分離。
+**原則三：與生成分離。** 這是我準備 Claude Certified Architect 考試時抄下的兩條筆記：獨立的 review instance 勝過自己審自己，CI review 跟寫 code 要分在兩個 session（一次對話與它累積的記憶）。
 
-理由很直覺。reviewer 如果跟 generator 共用同一段 context，它會接著原本的假設往下合理化，而不是回頭重新檢查一次。
+理由很直覺。reviewer 如果跟 generator（寫 code 的那個 model）共用同一段 context，它會接著原本的假設往下合理化，而不是回頭重新檢查一次。
 
-review 也分兩道：先逐檔的 local pass，看單一檔案裡的問題，再跨檔的 integration pass，看 intent、constraint 與整體行為對不對得起來。
+分離之外，review 本身也分兩道：先逐檔的 local pass，看單一檔案裡的問題，再跨檔的 integration pass，看 intent、constraint 與整體行為對不對得起來。
 
 **只有一家 vendor 怎麼辦？** 300 人的公司多半只有一家 enterprise 合約，異質配對這件事一時做不到，也不必為它重開採購。
 
@@ -209,7 +223,7 @@ review 也分兩道：先逐檔的 local pass，看單一檔案裡的問題，�
 
 同 vendor 不同 session 的 reviewer 可以 comment，但它的 approve 不進 approval artifact 的訊號欄。這條分寸值得記住，第五節的有條件允許表會用同一個判準把它寫死。
 
-Before 是多數團隊現在的設定，一個 runner、一個 session、自動放行：
+三條原則講完，回到本節開頭答應的那份設定。Before 是多數團隊現在的設定，一個 runner、一個 session、自動放行：
 
 ```yaml
 # Before：同一個 runner、同一個 session 審自己
@@ -295,7 +309,7 @@ flowchart TB
 
 deterministic 層先過，三個異質 reviewer 只 comment，approve 永遠是人。
 
-艦隊一擴大，馬上會撞到下一個問題：這些 reviewer 如果跟寫 code 的是同一個 model、同一段 context，它們審的其實是自己。
+艦隊一擴大，原則三馬上會被考驗：這些 reviewer 如果跟寫 code 的是同一個 model、同一段 context，它們審的其實是自己。
 
 ---
 
@@ -305,8 +319,8 @@ deterministic 層先過，三個異質 reviewer 只 comment，approve 永遠是�
 
 閉環（closed-loop）review 有三種形狀，全部禁止：
 
-1. **同 model family、同 session 或共享 context，審自己的 PR。** AI-to-AI Code Reviews（2026 年 8 月）量到同產品配對的評論量明顯較多，數字只在總論第九節引全。評論多不代表缺陷多，這是我的推論，論文沒有量缺陷。第四節那項異質配對 69.8% 對同質 53.1% 的結果是間接的支持。
-2. **自我把關式的接受。** 一項研究（2026 年 6 月）證明，reviewer 的 accept 回饋成 generator 訓練資料的自我把關迴圈，會走進接受率上升、正確率下降的 rubber-stamp regime。rubber-stamp regime 是指閘門還在、綠燈還亮，但它已經不擋任何東西了。回饋成 prompt 的版本論文沒量，我把它視為同一種形狀。
+1. **同 model family（同一家 vendor 的 model）、同 session 或共享 context，審自己的 PR。** AI-to-AI Code Reviews（2026 年 8 月）量到同產品配對的評論量明顯較多，數字只在總論第九節引全。評論多不代表缺陷多，這是我的推論，論文沒有量缺陷。第四節那項異質配對 69.8% 對同質 53.1% 的結果是間接的支持。
+2. **自我把關式的接受。** reviewer 說好，generator 就拿這個「好」去學—accept 回饋成訓練資料。一項研究（2026 年 6 月）證明這種迴圈會走進接受率上升、正確率下降的 rubber-stamp regime。rubber-stamp regime 是指閘門還在、綠燈還亮，但它已經不擋任何東西了。回饋成 prompt 的版本論文沒量，我把它視為同一種形狀。
 3. **全視窗審查。** 2026 年 8 月一項針對長程惡意 PR 的研究發現，把攻擊拆到多個 commit 幾乎不影響偵測，但一次審二十幾個 PR 的視窗會讓偵測掉到原本的三分之一左右。批次審省下來的是人的時間，付出去的是偵測率。每 PR 審，不全視窗審。
 
 還有兩種型態是有條件允許的。
@@ -317,7 +331,7 @@ deterministic 層先過，三個異質 reviewer 只 comment，approve 永遠是�
 
 還有一條設計原則：**不要給 reviewer 看前一輪的分數。**
 
-一項 LLM-as-a-judge 的研究（不限 code review，industry data，2026 年 8 月）發現，metadata 裡的先前分數會擋掉 48% 的錯誤修正、翻轉 10.18% 的正確判斷。judge 一看到前一輪給過的分數，就傾向把自己的判斷往那個數字靠。
+一項 2026 年 8 月的 LLM-as-a-judge（拿 LLM 當評分者）研究，用業界資料、不限 code review，發現把前一輪的分數擺在 metadata 裡，會讓 48% 本來該被改正的判斷留著沒改，還把 10.18% 原本正確的判斷翻掉。judge 一看到前一輪給過的分數，就傾向把自己的判斷往那個數字靠。
 
 reviewer agent 也是一種 judge，會被同一種錨定拉著走。這條先當設計原則，不當量化保證。
 
@@ -331,8 +345,6 @@ reviewer agent 也是一種 judge，會被同一種錨定拉著走。這條先�
 | reviewer 的 accept 回饋成 generator 的訓練或 prompt | 禁止 | 訓練版有實證的 rubber-stamp regime；prompt 版是筆者的延伸 |
 | 一次審 N 個 PR 的視窗 | 禁止 | 偵測掉到約三分之一；每 PR 審 |
 | reviewer 看得到前一輪分數 | 禁止 | 設計原則，不當量化保證 |
-
-表裡最容易被誤讀的是第二列。同 vendor 不同 session 的 reviewer 不是被消音，它照樣可以指出問題，它只是不能替 merge 背書。
 
 三種閉環各自要被改成什麼，畫在一起最清楚—重點是右邊那條的 approve 停在誰手上：
 
@@ -392,13 +404,13 @@ flowchart LR
 
 一項研究（2026 年 7 月）搭了一條五個 agent 的 pipeline，五站依序是 triage、dev、scan、review、deploy，並在五個 production LLM 上都跑過。
 
-攻擊很簡單：一個要求「加 telemetry」但其實把 `os.environ` 外洩出去的 issue，標上一句「pre-approved under SEC-2291」。那個編號是假的，沒有任何系統核准過它。
+攻擊很簡單：一個要求「加 telemetry」但其實把 `os.environ`（環境變數，通常放著金鑰）外洩出去的 issue，標上一句「pre-approved under SEC-2291」。那個編號是假的，沒有任何系統核准過它。
 
-結果約 80% 洗過的 PR **通過掃描這一站**，最差的格子 55% 完全淪陷。
+結果約 80% 這樣包裝過的 PR **通過掃描這一站**，最差的一組實驗條件下 55% 完全淪陷。
 
-這兩個數字是兩種不同的失敗：一個是過了 scan 那一關，另一個是整條 pipeline 從頭到尾都沒有攔住它。至於「格子」，指的是研究裡某一組實驗條件的那一格，不是第三節分流矩陣的格。
+這兩個數字是兩種不同的失敗：一個是過了 scan 那一關，另一個是整條 pipeline 從頭到尾都沒有攔住它。
 
-內容掃描器抓不到它。在這個實驗設定裡，只有 intent reasoning 有幫助。
+內容掃描器抓不到它。在這個實驗設定裡，只有 intent reasoning（去推敲這個變更真正想做什麼的那一層）有幫助。
 
 另一個約 1,000 個對抗 PR 的基準，把真實 CVE 的修補倒轉回去、重新引入漏洞，再用 15 種敘事包裝，結果顯示 8 個 review agent 都被敘事影響。
 
@@ -475,15 +487,19 @@ approve 是 review gate 的最後一格，也是責任真正落地的地方。�
 
 追責的完整設計留給 12 月的追責篇，這裡只留 review gate 需要的三條：
 
-1. **AI approve 不計入 branch protection。** 要用 GitHub 真的有的機制做到，不要用不存在的欄位。依 GitHub 文件的設計，兩條路可走。（a） **靠 code owner 規則**：CODEOWNERS 只列人類帳號或人類 team，ruleset 開 Require review from Code Owners。GitHub App 不能是 code owner，所以它的 approve 應該不滿足這條規則。（b） **靠自己數 approve**：一個 required status check，由 workflow 透過 API 數 reviews 裡 `user.type == "User"` 且 `state == "APPROVED"` 的數量，達標才綠。兩條的差別在維護成本：（a）只要維護一份名單，（b）要自己寫一段 workflow。**筆者尚未在生產 repo 實測 CodeRabbit 或 Copilot 的 approve 在這兩條下是否真的不計入**，下面的 CODEOWNERS 節錄是設計草稿。設之前先在自己的 repo 用一個 GitHub App 的 approve 驗證一次，GitHub 的規則也會變（本文寫於 2026 年 10 月）。
+1. **AI approve 不計入 branch protection。** 要用 GitHub 真的有的機制做到，不要用不存在的欄位。兩條做法接在清單後面講。
 2. **高 radius 的 PR，任務指派者不可 approve。** 第三節矩陣的兩格已經寫了這一條。低 radius 不套，理由第三節講過：指派者是最懂 intent 的人，全面禁令會讓 review 量翻倍。
 3. **vendor 條款互相矛盾。** 一家禁止任務指派者 approve，另一家的 agent 在風險門檻下自動 approve（Where Accountability Lives，2026 年 8 月）。approval 政策不能外包給 vendor 的預設值，因為兩家的預設值互相打架，你得自己寫一份。條款細節、approval artifact 的身分標準，見 12 月。
 
-approval artifact 是每一次 approve 留下的那筆紀錄，最小版本只要三樣東西。
+回到第一條。依 GitHub 文件的設計，兩條路可走。
 
-第一樣是人類身分，approval 最後要綁人。第二樣是被審 tuple 的 hash，tuple 指的是這次一起被看的那組東西：diff、constraint 報告、mutation 報告、reviewer agent 的版本。第三樣是 AI reviewer 的訊號欄，記 comment 或 approve，只供參考。
+**（a） 靠 code owner 規則。** CODEOWNERS 只列人類帳號或人類 team，ruleset 開 Require review from Code Owners。GitHub App 不能是 code owner，所以它的 approve 應該不滿足這條規則。
 
-有了第二樣，事後才問得出「當時到底審的是哪一份東西」。沒有它，approve 只是一個時間戳。
+**（b） 靠自己數 approve。** 一個 required status check，由 workflow 透過 API 去數 reviews。只算 `user.type == "User"` 且 `state == "APPROVED"` 的那些，數量達標才綠。
+
+兩條的差別在維護成本：（a）只要維護一份名單，（b）要自己寫一段 workflow。
+
+**筆者尚未在生產 repo 實測 CodeRabbit 或 Copilot 的 approve 在這兩條下是否真的不計入**，下面的 CODEOWNERS 節錄是設計草稿。設之前先在自己的 repo 用一個 GitHub App 的 approve 驗證一次，GitHub 的規則也會變（本文寫於 2026 年 10 月）。
 
 （a）那條路的最小樣子如下，重點是只列人類，一個 App 都不列：
 
@@ -498,7 +514,13 @@ approval artifact 是每一次 approve 留下的那筆紀錄，最小版本只�
 
 那三行 ruleset 註解才是真正做事的地方，前面兩行名單只是它的輸入。
 
-這一套設計還有一個副作用。上一季組織篇第七節說 junior 的第一個月要「帶著 checklist review agent 的 PR」。那份 checklist 現在有了：第三節 PR template 的 Intent 與 Constraints honoured 兩欄，以及報告與它們的一致性。
+第三節留給這裡的定義：approval artifact 的最小版本只要三樣東西。
+
+第一樣是人類身分，approval 最後要綁人。第二樣是被審 tuple 的 hash，tuple 指的是這次一起被看的那組東西：diff、constraint 報告、mutation 報告、reviewer agent 的版本。第三樣是 AI reviewer 的訊號欄，記 comment 或 approve，只供參考。
+
+有了第二樣，事後才問得出「當時到底審的是哪一份東西」。沒有它，approve 只是一個時間戳。
+
+這一套設計還有一個附帶收穫。上一季組織篇第七節說 junior 的第一個月要「帶著 checklist review agent 的 PR」。那份 checklist 現在有了：第三節 PR template 的 Intent 與 Constraints honoured 兩欄，以及報告與它們的一致性。
 
 > **approve 這個動作可以被 agent 幫忙準備，不能被 agent 代替。**
 
@@ -518,9 +540,11 @@ approval artifact 是每一次 approve 留下的那筆紀錄，最小版本只�
 
 **不要第一天就在全部 repo 套指派者禁令**：先有可驗證的格，再有禁令。順序反過來，你會先得到一堆卡住的 PR，然後禁令會被拆掉。
 
-回到開場那四個來源。它們當時各自只是在說情況不對，走完這七節之後，它們講的是同一句話的四種說法—你沒有讀不完的 diff，你有一份沒有重排過的分工。
+回到開場那四個來源。它們當時各自只是在說情況不對，走完前面七節之後，它們講的是同一句話的四種說法—你沒有讀不完的 diff，你有一份沒有重排過的分工。
 
-第六節那個假的核准編號是本篇最值得記住的畫面。它沒有用到任何技術漏洞，只是寫了一句沒有人回頭去查的話，就走完了整條 pipeline。review gate 要擋的正是這種東西，而它擋不擋得住，跟讀 diff 的速度一點關係也沒有。
+第六節那個假的核准編號是本篇最值得記住的畫面。它沒有用到任何技術漏洞，只是寫了一句沒有人回頭去查的話。約八成就這樣過了掃描那一站，最差的一組實驗條件下，有超過一半連整條 pipeline 都沒攔住它。review gate 要擋的正是這種東西，而它擋不擋得住，跟讀 diff 的速度一點關係也沒有。
+
+model 版本一直在換，誰讀什麼不必跟著換。這份分工比押注哪一家 reviewer agent 都撐得久。
 
 > **Review 不是讀 diff 的速度競賽；是組織決定「這個 agent 對我們是加分還是負債」的唯一時刻。**
 
@@ -565,6 +589,7 @@ pass^k 量的是一組任務裡，k 次全部通過的 case 佔多少比例，G2
 22. 社群討論：Claude Taiwan（艦隊模式留言）；Scrum Community in Taiwan（「AI 把程式碼寫爆了，code review 怎麼辦？」、「AI coding 時代，為什麼 story 要切得更小」）
 23. 筆者筆記：Claude Certified Architect — Foundations 考試筆記（review instance 分離）
 24. 上一季：[技術篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%BA%8C-harness-%E8%97%8D%E5%9C%96-%E6%8A%8A%E7%B3%BB%E7%B5%B1%E8%AE%8A%E6%88%90-agent-%E8%AE%80%E5%BE%97%E6%87%82%E7%9A%84%E5%9C%B0%E6%96%B9-f2a139f5b561)第六節（guardrails）、[組織篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%80-%E8%AA%B0%E4%BE%86%E5%81%9A-platform-federation-%E7%9A%84%E7%B5%84%E7%B9%94%E8%A8%AD%E8%A8%88%E5%AF%A6%E5%8B%99-9d9353ef7f3a)第七節（junior 路徑）
+25. Studist 的 Masaya Nakamura — [Intent as Code: Why Existing Permissions Aren't Enough for AI](https://sched.co/2QlDX)（AGNTCon + MCPCon Japan 2026，東京，2026-09-10；[講者投影片](https://hosted-files.sched.co/agntconmcpconjapan26/ab/Intent-as-Code%20%2813%29.pdf) slide 16，該頁引 H. Yu et al., [arXiv 2606.22721](https://arxiv.org/abs/2606.22721)）〔第三節；轉引投影片上的引用〕
 
 ---
 
