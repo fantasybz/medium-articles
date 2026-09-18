@@ -51,3 +51,25 @@
 重灌前先記下的封面是 `diagram-02.png`（CDN `1*ya_IXqhbThh24Rh5vXfYwg.png`），用編輯器 → Review scheduled story →
 Change preview image 的頁內選擇器點回同一張 → Done。回 Stories → Scheduled 核對卡片縮圖，
 檔名與重灌前相同。做法見 PUBLISHING.md〈整篇重灌〉。
+
+## 通順度潤稿重灌（2026-09-18）
+
+以 `./tools/medium_draft.sh 2026-10-green-review --post ccbf0cbe2691` 就地重灌，Post ID 不變。
+內容變更：術語首見補白話、段落接縫、開場路線圖句與結語收束、AGNTCon／書的插入段改寫成
+「場景鋪陳 + 證據與收攏」並搬位；作者另裁示四處（書的限制句移位、READY 數字降括號、
+感謝 Teddy 那行移到節尾紀律句之後、約束（constraint）與意圖（intent）首見配對）。
+`verify_draft.py` 閘門通過（exit 0）。
+
+**排程未受影響**：重灌後 Stories → Scheduled 仍列 Oct 20, 1:00 AM (UTC)。八篇的時段與 Post ID 全部不變（第三次量到）。
+**Topics 未受影響**（Review 篇 zh 的面板實際看過，五個都在）。
+**封面圖被重設，已還原**：八篇八張全部被 Medium 換成內文第一張 figure；重灌前先把八張封面的
+CDN hash 記進 `.context/cover-check/baseline-2026-09-18.json`（與 2026-09-16 那份逐項相同，
+表示上一輪的還原守住了），還原後回 Stories → Scheduled 核對，八篇的卡片縮圖都回到 `1*ya_IXqhbThh24Rh5vXfYwg.png`。
+
+這一輪學到的：頁內選擇器**仍然列著原始那張的 hash**，所以還原可以用 hash 精準配對，
+不必像 2026-09-16 那樣靠算繪高度猜；縮圖本身被裁成 248×248，長寬比不能當判準，
+要比就回 CDN 取原圖尺寸。
+
+這一篇的封面還原比其他七篇多花一輪：編輯器面板第一次打開時預覽區整個沒有圖也沒有
+「Change preview image」，hover、加寬視窗、直接開 submission URL 都叫不出來；重新載入
+編輯器、等久一點再點「Review scheduled story」就正常了。是算繪時序，不是設定問題。
