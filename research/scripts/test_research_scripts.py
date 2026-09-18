@@ -39,6 +39,14 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", ".."))
 
 
+def load_tool(name):
+    """tools/ is not a package either; notion_cookies already reaches into it."""
+    spec = importlib.util.spec_from_file_location(name, os.path.join(REPO, "tools", name + ".py"))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
 def load(name):
     spec = importlib.util.spec_from_file_location(name, os.path.join(HERE, name + ".py"))
     mod = importlib.util.module_from_spec(spec)
@@ -46,6 +54,7 @@ def load(name):
     return mod
 
 
+js_lex = load_tool("js_lex")
 article_to_paste = load("article_to_paste")
 sync_figures = load("sync_figures")
 notion_cookies = load("notion_cookies")
@@ -905,9 +914,7 @@ class TestBrowseEvalFiles(unittest.TestCase):
 
     FILES = sorted(glob.glob(os.path.join(HERE, "*.js")))
 
-    @staticmethod
-    def comments(src):
-        return re.findall(r"/\*.*?\*/", src, re.S) + re.findall(r"(?m)^\s*//.*$", src)
+    comments = staticmethod(js_lex.comments)
 
     def test_there_are_eval_files(self):
         self.assertGreaterEqual(len(self.FILES), 8)
@@ -929,6 +936,206 @@ class TestBrowseEvalFiles(unittest.TestCase):
         self.assertTrue(any("'" in c for c in self.comments("(async () => {\n  /* the user's main workspace */\n})()")))
         first = next(line for line in "/* header */\n(async () => 1)()".splitlines() if line.strip())
         self.assertFalse(first.startswith("("))
+
+    def test_a_trailing_comment_is_a_comment_too(self):
+        # The regex this guard used to be (`^\s*//`) saw only comments that start a
+        # line. `browse eval` does not care where the apostrophe sits.
+        found = self.comments("const n = 1;  // don't drop this\n")
+        self.assertEqual(found, ["// don't drop this"])
+        self.assertTrue(any("'" in c for c in found))
+
+    def test_a_url_in_a_string_is_not_a_comment(self):
+        # The cheap fix (findall of `//.*$`) would flag every https:// in the file
+        # and the guard would be turned off within a week.
+        self.assertEqual(self.comments('const u = "https://example.com/a";\n'), [])
+        self.assertEqual(self.comments("const u = 'it\\'s';\n"), [])
+
+    def test_division_is_not_a_regex(self):
+        # Both shapes returned [] — "this file has no comments" — so the guard
+        # passed a line whose trailing comment it never saw.
+        self.assertEqual(self.comments("const h = i++ / 2;  // don't\n"), ["// don't"])
+        self.assertEqual(self.comments('const h = "10" / 2;  // don\'t\n'), ["// don't"])
+
+    def test_a_regex_after_a_keyword_is_not_division(self):
+        # `return /'/.test(s)` read as division opens a phantom string on the
+        # apostrophe and swallows the rest of the file — silently.
+        self.assertEqual(self.comments("function g(s) { return /'/.test(s) }  // note\n"), ["// note"])
+        self.assertEqual(self.comments("const f = h => { return /\\/a\\//.test(h) }  // don't\n"), ["// don't"])
+
+    def test_an_unterminated_regex_raises_rather_than_reporting_no_comments(self):
+        with self.assertRaises(ValueError):
+            self.comments("const r = (/abc\n")
+
+    def test_a_regex_literal_is_not_a_comment(self):
+        # extract_fb2.js:10 really contains this shape; without the regex branch the
+        # widened guard fails on the repo's own files and gets reverted.
+        self.assertEqual(self.comments("const p = links.find(h => /\\/posts\\/|[^/]+\\/posts\\//.test(h)) || '';\n"), [])
+        self.assertEqual(self.comments("t.replace(/\\s+/g, ' ');  // then trim\n"), ["// then trim"])
+        self.assertEqual(self.comments("const half = total / 2; // halved\n"), ["// halved"])
+
+
+class TestWorkflowCanonicalCopies(unittest.TestCase):
+    """review-outlines.js calls itself "the CANONICAL copy that finish-outline.js and
+    write-article.js duplicate". Workflow scripts cannot import modules, so the only
+    thing keeping the three in step is that sentence — and on 2026-09-18 it did not:
+    the mid-cycle `extraSources` option reached the first two and not the third, so
+    the writer would have been told the AGNTCon and book digests were not citable
+    while the December plan cited them. Cheap static check, no JS runtime needed."""
+
+    FILES = ("review-outlines.js", "finish-outline.js", "write-article.js")
+
+    def source(self, name):
+        return read(os.path.join(REPO, "research", "workflows", name))
+
+    def test_all_three_accept_extra_sources(self):
+        for name in self.FILES:
+            src = self.source(name)
+            self.assertIn("args.extraSources", src,
+                          "%s: does not read args.extraSources" % name)
+            self.assertIn("${EXTRA}", src,
+                          "%s: reads extraSources but never puts it in the source list" % name)
+
+    def test_no_prompt_hardcodes_the_number_of_digests(self):
+        # write-article.js told its evidence auditor to check "against the four
+        # digests" on the very run whose source list had just grown to five.
+        for name in self.FILES:
+            self.assertNotIn("four digests", self.source(name),
+                             "%s: hardcodes the digest count; extraSources makes it wrong" % name)
+
+    def test_the_mermaid_rules_are_identical_wherever_they_are_declared(self):
+        # ~700 characters duplicated because Workflow scripts cannot import.
+        # review-outlines.js:28 claims it is "written once ... so they cannot
+        # drift" — true inside one file, unguarded across them.
+        found = [line.strip() for name in self.FILES
+                 for line in self.source(name).splitlines()
+                 if line.startswith("const MERMAID_RULES = ")]
+        self.assertGreaterEqual(len(found), 2, "expected MERMAID_RULES in more than one copy: %s" % len(found))
+        self.assertEqual(len(set(found)), 1, "MERMAID_RULES drifted between the copies")
+
+    def test_every_issues_schema_names_the_severity_vocabulary(self):
+        # write-article.js filters on `severity === 'blocker' || 'major'`; without
+        # the enum in the schema a critic answering "Major" has every issue
+        # silently dropped and the revise loop logs 0 blocker/major.
+        for name in self.FILES:
+            src = self.source(name)
+            if "ISSUES_SCHEMA" not in src:
+                continue
+            self.assertIn("blocker | major | minor", src,
+                          "%s: ISSUES_SCHEMA does not name the severity vocabulary" % name)
+
+    def test_the_audience_clause_is_identical_everywhere_it_appears(self):
+        # Not just self.FILES: plan-next-three-themes.js carries the same clause and
+        # is the one that writes the outline the other three then review and expand.
+        found = set()
+        for path in glob.glob(os.path.join(REPO, "research", "workflows", "*.js")):
+            m = re.search(r"Engineering VPs[^)]*?in Taiwan", read(path))
+            if m:
+                found.add(m.group(0))
+        # Count as well as dedupe: a file whose clause was reworded past the pattern
+        # contributes nothing and a set stays size 1 — the hole this test's sibling
+        # was hardened against, reintroduced here.
+        declares = [path for path in glob.glob(os.path.join(REPO, "research", "workflows", "*.js"))
+                    if "You are writing for @fantasybz" in read(path)]
+        self.assertEqual(len(found), len(declares),
+                         "%d workflow(s) address the author's readers but only %d carry the "
+                         "audience clause" % (len(declares), len(found)))
+        self.assertEqual(len(found), 1, "the CONTEXT audience clause drifted: %s" % sorted(found))
+
+    def test_the_extra_sources_line_is_identical_in_all_three(self):
+        # Same expression, not merely present: a copy that resolves relative paths
+        # differently would cite a file the other two cannot see.
+        found = []
+        for name in self.FILES:
+            for line in self.source(name).splitlines():
+                if line.startswith("const EXTRA ="):
+                    found.append(line.strip())
+        # Count as well as dedupe: a file that matches ZERO lines contributes
+        # nothing to a set, so `len(set(...)) == 1` passed while a copy had
+        # quietly dropped the absolute-path branch entirely.
+        self.assertEqual(len(found), len(self.FILES), "not every copy declares `const EXTRA`: %s" % found)
+        self.assertEqual(len(set(found)), 1, "the three copies of `const EXTRA` differ: %s" % sorted(set(found)))
+
+
+class TestCommittedResearchKeepsGroupsAnonymous(unittest.TestCase):
+    """research/README.md: 「名字、逐字引文與反應數只留在本機的 community_digest.md…
+    這個 repo 是公開的」. On 2026-09-18 the October backlog.md was found on the public
+    PR carrying seven private-group passages with verbatim member comments and their
+    reaction / comment / share counts. The rule was written down and still broken,
+    so it gets a check instead of a reminder.
+
+    WHAT IS MECHANISED, honestly: one of the rule's three clauses, in one notation.
+    A 反應／讚／留言／分享 count, or a 「（N/N）」 pair, inside a paragraph that names one
+    of the private groups. Next to LinkedIn, X or Medium the same count is a public
+    record the rule allows, and a 「≥ 100 反應」 in an upgrade condition is a
+    threshold, not a citation — hence the group anchor and the span-local ≥ escape.
+
+    NOT mechanised, and still on the human: 逐字引文 with no count attached, 名字, a
+    count in a paragraph that does not name its group, and the article surface
+    (article*.md / publish/**) which this scan does not read at all. The README's
+    consent step is the control there, not this test.
+    """
+
+    COUNTS = re.compile(r"\d+\s*(?:反應|讚|留言|分享)|（\d+\s*[/／]\s*\d+")
+    # The private Facebook groups the monthly loop reads. A reaction count next to
+    # one of these names is a member's post; the same count next to LinkedIn, X or
+    # Medium is a public record, which the same rule explicitly allows.
+    GROUPS = ("Backend 台灣", "Scrum Community", "DevOps Taiwan", "DDDesign Taiwan",
+              "Claude Taiwan", "Agile 內湖", "搞笑談軟工", "Twinkle AI")
+    # research/2026-09/ went to main before this check existed; those files carry the
+    # same shape and are already public. Cleaning them is a separate decision (it
+    # means touching merged history), so they are a visible ratchet, not a silent pass.
+    # A frozen list, not a live prefix: `startswith("research/2026-09/")` exempts
+    # anything added there later — how an allowlist quietly becomes a bypass.
+    PRE_RULE = frozenset((
+        "research/2026-09/2026-10-agentic-green-is-not-done.md",
+        "research/2026-09/2026-11-same-spec-ten-runs.md",
+        "research/2026-09/2026-12-sre-for-agents.md",
+        "research/2026-09/backlog.md",
+        "research/2026-09/selection.md",
+    ))
+
+    def committed_research_markdown(self):
+        out = subprocess.run(["git", "ls-files", "research/*/*.md"],
+                             cwd=REPO, capture_output=True, text=True)
+        return [p for p in out.stdout.split() if p not in self.PRE_RULE]
+
+    def test_the_pre_rule_allowlist_is_five_named_files_that_still_exist(self):
+        # Every other research/2026-09/ file IS scanned; only these five carry the
+        # pre-rule debt. Pinning them by exact path means a new September file, or a
+        # rename, cannot slip into the exemption.
+        self.assertEqual(len(self.PRE_RULE), 5)
+        for rel in sorted(self.PRE_RULE):
+            self.assertTrue(os.path.exists(os.path.join(REPO, rel)),
+                            "%s is allowlisted but gone; drop it from PRE_RULE" % rel)
+
+    def test_no_engagement_counts_for_private_group_posts(self):
+        offenders = []
+        for rel in self.committed_research_markdown():
+            for n, line in enumerate(read(os.path.join(REPO, rel)).splitlines(), 1):
+                # Anchor on the whole bullet (these files are one line per paragraph)
+                # and apply the threshold exemption to the matched SPAN, not the line:
+                # a 「≥ 15 分享」 monitoring rule was excusing a real citation that
+                # happened to share the paragraph. No 「作者」 escape either — 「常貼作者」
+                # (a frequent poster) contains it and let a count straight through.
+                if not any(g in line for g in self.GROUPS):
+                    continue
+                for m in self.COUNTS.finditer(line):
+                    if re.search(r"[\u2265\u2264]\s*$", line[max(0, m.start() - 8):m.start()]):
+                        continue
+                    offenders.append("%s:%d %s" % (rel, n, line[max(0, m.start() - 50):m.end() + 12]))
+        self.assertEqual(offenders, [], "committed research markdown carries private-group "
+                                        "engagement counts:\n" + "\n".join(offenders))
+
+    def test_the_local_only_digests_are_never_committed(self):
+        out = subprocess.run(["git", "ls-files"], cwd=REPO, capture_output=True, text=True)
+        tracked = out.stdout.split()
+        for name in ("community_digest.md", "notion_digest.md"):
+            # research/prompts/<name> is the template that GENERATES the digest and
+            # is meant to be committed; only research/<month>/<name> is the data.
+            leaked = [p for p in tracked
+                      if p.endswith("/" + name) and not p.startswith("research/prompts/")]
+            self.assertEqual(leaked, [],
+                             "%s is local-only and must never be committed" % name)
 
 
 class TestNotionCookies(unittest.TestCase):
