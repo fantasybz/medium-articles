@@ -83,7 +83,7 @@
 1. **總論發布當天**：粉絲團貼文 + LinkedIn（英文版隔天）。
 2. **隔天**：DevOps Taiwan（觀測 / SLO 角度）與 Backend 台灣（回應一位 Backend 台灣作者那篇的角度—**先私訊**，引用同意還沒拿到，見 §9）。
 3. **觀測篇發布時**：Grafana & Friends Taipei 相關貼文 / CNCJ 或 CNCF Taiwan 的社群；LinkedIn 在英文版上線時再發一次，tag OTel GenAI SIG。
-4. **應變篇發布時**：Backend 台灣（該群對事故分析文的分享數最高：台新 184 / 23、Zeabur 103 / 19）。
+4. **應變篇發布時**：Backend 台灣（該群對事故分析文的分享數最高，兩則指標貼文見 `community_digest.md`）。
 
 ---
 

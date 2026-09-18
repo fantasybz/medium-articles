@@ -84,8 +84,8 @@
 - **東京：Skills over MCP 快定案，但 progressive disclosure 沒解。** Skills over MCP 已被接受為 SEP、「so close to final」，progressive disclosure 明講**未解**，並將成立 file-systems WG（`2QlLo` [00:37:00–00:44:22]）。反面材料來自一場影子 AI 的談話：「The risk is intent encoded in static text」（`2QlED` p.4）—這句話幾乎就是本條的標題。
 - **Memory 的寫入路徑，會場上直接對立。** 一個專案預設「no LLM call by default」、用詞彙去重，並在自己的講者備註寫「This is not a calibrated probability or a semantic deduplication guarantee」（`2QlDp` slides 15、24–25）；另一個把 LLM 放進寫入路徑去「Reconcile — Decide to integrate, overwrite, or delete existing facts」（`2QlEe`）。**書採第三個、也是最嚴的立場**：§3.3.3「生产环境不应让任何一个模型绕过审核，直接改主分支或线上向量库」，改成一套 PR 流程，紀錄必須回答「从哪条证据而来、谁在什么时候批准」；§9.3.2 再加「LLM 总结只是…转换，并不是把输入变得无害的净化过程」。三方對立是一節現成的骨架。
 - **AAIF 的 Gilbert 在 Friday keynote 自己點名沒有 memory WG**（`2QsV2` [00:07:15]），而基金會的 sandbox 貼文說這些專案「sitting today, unfunded and ungoverned」。**這件事不另開條目**：memory 的「治理」歸本條，memory 的「基礎設施／儲存產品」歸第 3 條，界線寫在第 3 條裡。
-- **台灣第一次有可引用的第一手實作。** Claude Taiwan 一串 55 則留言的多 agent 協作實驗，最高票回覆是「compact 前要求先寫 handoff」；另一串的共識是「手動，差不多 70～75% 請 claude 先記錄目前專案進度與待辦事項，然後再壓縮 context」；還有一套 dotfiles 把原生記憶「全部砍除，只保留自己的線上 DB 記憶系統」（`community_digest.md` §1.5）。
-- **准入閘不用自己發明，vendor 出了一個。** Claude Code v2.1.269 的官方 `plugin eval`：同一個 prompt 跑有／無 plugin 兩臂、預設三次、「assert 混合 LLM as a judge…三票中至少兩票通過才算過」（§1.6，25 反應／4 分享，「好像沒什麼人在討論」）。**配對、重複、多數決**—這就是本條交付物的縮小版，也是 11 月 pass^k 的一個微型範例。
+- **台灣第一次有可引用的第一手實作。** Claude Taiwan 有一串多 agent 協作實驗，討論最集中的做法是在 compact 之前先寫一份 handoff；另一串的共識是手動在七成上下先讓 agent 記下進度與待辦，再壓縮 context；也有人的 dotfiles 停用原生記憶，只留自己的線上 DB（`community_digest.md` §1.5 有逐字與出處）。
+- **准入閘不用自己發明，vendor 出了一個。** Claude Code v2.1.269 的官方 `plugin eval`：同一個 prompt 跑有／無 plugin 兩臂、預設三次、「assert 混合 LLM as a judge…三票中至少兩票通過才算過」（`community_digest.md` §1.6，digest 記為社團裡討論度不高）。**配對、重複、多數決**—這就是本條交付物的縮小版，也是 11 月 pass^k 的一個微型範例。
 
 **為什麼還沒進提案池**：2026-09 的反方意見（原 thesis 講過頭、第三部是三個弱關聯題的拼盤、Compaction Cliff 會過時、台灣直接訊號只有兩則）有三條被本圈削弱—方法論有了（2609.13321）、台灣第一手實作有了（§1.5／§1.6）、skills 這塊的份量明顯撐得起一個月。剩下兩條沒動：compaction 仍然綁在特定版本，而 2608.23067 vs 2608.20614 的矛盾仍未裁決。
 
@@ -131,8 +131,8 @@
 - **但組織側出現了本窗口最好的一句框架。** 2609.04630：**執行可以彈性擴張，驗收權威不行**—一個 Human-Agent Cell 產得出證據，卻拿不到驗收權威。這句話比 2026-09 的任何一則台灣貼文更適合當維護債篇的第一節標題。
 - **開源的版本叫「stewardship community」。** 2609.12236：一小群核心保留實作權威，因為審查成本已經不值得為外部 patch 付；於是 AI 取代的是**實作勞動**，而被削弱的是**開源自我更新的方式**。這正好是「吞吐量免費之後付什麼帳」的另一種帳本。
 - **開發者真正在吵的是什麼，有了 25,227 筆的答案。** 2609.04680 在 VS Code 社群從 43,806 筆候選 issue 篩到 25,227 筆，發現討論被 **agent 管理、設定、可靠度、認證與帳務**主導，而 hallucination 與授權條款（licensing）「rarely surface」。這是對「調查法問卷」的糾正，也順便替第 6 條的重切背書。
-- **台灣這邊，軼事變強了。** Backend 台灣一位常貼作者的「夢境」貼文（217 反應／12 留言／15 分享，本圈該社團最高）講 AI 寫的 code 進了共用 library，留言區補上一個具體反例：沒訂閱走到 `answerFree` 時它又 call 回 `answer`、把 `subscribed=True`—「測試會過，但迭代上去時…應該很災難」。另一則留言：「接力修到的 code 多的是這種 if 大堆疊…27 吋螢幕還要 page down 個六次七次八九次」。**這不是事故報告，但它是本條需要的那個開場軼事**，而且 `community_digest.md` §5 機會 6 已經給了格式：把「不可讀的 agent code 被合併」當成一次事故來寫 timeline、contributing factors 與 action items，而不是當成風格抱怨。
-- **情緒暫存器也到位了。** §1.4：一位 DevOps Taiwan 管理員轉貼的「套殼…被打碎」（32 反應）、Agile 內湖 Sprint 45《與我的 AI 焦慮共處》（12/3/7）、「工程師的能力正在流失」（53/6/9）、Backend 台灣的兩串 127/12 與 103/12、Claude Taiwan 的「AI 真的跟鬼一樣」（109/10/22）。digest 的判讀很直接：**本圈這批讀者在讀焦慮，不在讀 harness**。
+- **台灣這邊，軼事變強了。** Backend 台灣一位常貼作者的貼文講 AI 寫的 code 進了共用 library，是本圈該社團回應最多的一則；留言區補上一個具體反例：沒訂閱走到 `answerFree` 時它又 call 回 `answer`、把 `subscribed=True`，測試照過，但疊代上去可能會很災難。另一則留言講的是接手維護時碰到的巨型 if 堆疊，長到大螢幕要翻很多頁。**這不是事故報告，但它是本條需要的那個開場軼事**，而且 `community_digest.md` §5 機會 6 已經給了格式：把「不可讀的 agent code 被合併」當成一次事故來寫 timeline、contributing factors 與 action items，而不是當成風格抱怨。
+- **情緒暫存器也到位了。** `community_digest.md` §1.4 收了六串：一位 DevOps Taiwan 管理員轉貼的「套殼」論戰、一場以 AI 焦慮為題的 Agile 社群活動、一串講工程師能力流失的貼文、Backend 台灣的兩串，以及 Claude Taiwan 一串講 agent 行為難以預期的。逐字與反應數留在本機 digest。digest 的判讀很直接：**本圈這批讀者在讀焦慮，不在讀 harness**。
 - **東京替它命名。** 「intent debt」是從舞台上講出來的（`2QlDU` 摘要），機制是：agent 起草規格時會用一個有自信的猜測把空缺填掉。另一場給了反例—「The docs were complete. Agents still got it wrong.」（`2Qn4a` slide 42）—文件齊全不等於決策被保存，這正是決策記憶篇的論點。
 - **`Fb temp` 仍未貼粉絲團。** `notion_digest.md` §6 顯示該頁 09-08 只增加了 AGNTCon 行程段落。升級條件之一未動。
 
@@ -176,7 +176,7 @@
 
 **為什麼升級**：2026-09 判它「證據多為實驗室 benchmark、與 model 版本強耦合，半年後可能翻轉」。2609.01873 的機制—**證據根數決定後驗覆蓋率**—是統計性質，不是模型性質；2609.02264 的「收斂到六種圖」也不隨版本翻轉。決策工件也跟著換：不是拓樸選型表，是**一張「這個艦隊有幾個獨立的證據根」的檢查表**，加上 token 帳。
 
-**還缺什麼**：台灣訊號仍然只有 2026-09 那一則 21 讚的「艦隊模式」留言；作者仍然沒有營運多 agent 拓樸的第一手數據。
+**還缺什麼**：台灣訊號仍然只有 2026-09 那一則講「艦隊模式」的留言；作者仍然沒有營運多 agent 拓樸的第一手數據。
 
 **升級證據**：作者 2026-11 變異實驗的三組延伸出「單 agent vs manager-worker」的第四組並有數據；台灣團隊在社團公開艦隊模式的**成效**（不只是「怎麼設」）；2609.01873 的證據根論證在軟體工程情境（不是一般推理任務）重現；`abs:"multi-agent" AND (topology OR coordination) AND "software engineering"` 這條字串的命中數從 1 回到兩位數。
 
@@ -193,7 +193,7 @@
 **本圈新增的證據**：
 
 - **第一個「agent 去用另一個 agent 的產品」的完整實例。** 一家日本公司讓 **AI 打真的電話**去測自己的語音 agent，而 harness 刻意選 reasoning model 而不是即時語音 model，理由是「better at following instructions and staying on script」（`2QlDg` p-14）；六個工具的表面、「Same tools every time. Only the prompt we hand the AI changes」（p-21）、收尾是「AI products, tested and monitored by AI」（p-27）。另一場給了斷言形式：trajectory assertion 加 mocked tool（`2UjnC` 摘要）。**注意**：p-14 與 p-21 這兩筆已被指派為 10 月測試篇 §八的插入句（`conference_digest.md` §4），本條要用的是**整個 harness 選型的故事**，不是那一句。deck 是 OCR（`p-N` 標記），引述要保守。
-- **台灣的開場軼事到位了。** Claude Taiwan 一個做台灣電商的設計工作室：「Vibe Coding 最容易漏掉的 Bug，可能根本不在 Code 裡…程式碼沒有 error。API 串接正常。Webhook 也有收到…但整間商店跑起來，就是會出事」，回覆是「每個 function 都沒錯，不代表 system 沒錯」（27/2/2，`community_digest.md` §1.2）。這一句就是本條的第一段。
+- **台灣的開場軼事到位了。** Claude Taiwan 有一個做台灣電商的設計工作室貼文說：最容易漏掉的 bug 根本不在 code 裡—程式沒有 error、API 串接正常、webhook 也收得到，但整間商店跑起來就是會出事；底下的回覆把它收斂成一句，每個 function 都對不代表系統對（逐字與反應數見 `community_digest.md` §1.2）。這一句就是本條的第一段。
 - **arXiv 仍然是空的。** `("exploratory testing" OR "computer-use agent" OR "GUI agent") AND (testing OR QA)` **0 筆**；擴展查詢 `"exploratory testing"` 1、`"computer-use agent" AND testing` 3、`"GUI agent" AND testing` 4。這題的證據來源會是實務與書，不是論文—寫的時候要誠實說。
 - **JSTQB 秋季大會 2026-10-16 還沒到**，議程仍是升級條件之一。
 
@@ -229,13 +229,13 @@
 
 **pitch**（2026-09 的三篇結構保留：韌性篇／本地與混合篇／Token 流向篇），但本圈出現**一條繞開讀者錯位的重切**：
 
-- **台灣自己做出了第一張 pass@1-by-model 表。** 搞笑談軟工的版主讓四個 model「在同一套 specification、同一套 harness 下，依據 10 個 Problem Frames 規格，從頭產生 Product Aggregate 的完整後端程式」（DDD + Clean Architecture + CQRS + Event Sourcing + Design by Contract），一輪通過 Gate 的結果是 **Fable 9/10、Opus 8/10、Sonnet 5/10、Haiku 1/10**；最弱的那個第一次生成花 148 分鐘、總共 **40 個修補輪**（236 反應／32 留言／41 分享，本圈全社團最大的一串）。他自己的說法是「故意找能力比較弱的 Haiku 來驗證我的 AI Coding 方法論的邊界」，另一串是讀者問「地端 LLM 可否跑我的 AI Coding 專案？」（107/9/12）。
-- **這把本條從抱怨換成一個工程指標**：**一套 harness 的好壞，等於它在 model 變便宜、變小、變本地時退化得多優雅；量法是每個 gate 的修補輪數 × model**。它同時接上 Claude Taiwan 那八串額度貼文裡真正有形狀的兩個詞—「分層派工」與「混用模型」（§1.7）—以及 Red Hat 那則的提問：「下一個模型發布時，你需要重建嗎？」（§1.3）。
+- **台灣自己做出了第一張 pass@1-by-model 表。** 搞笑談軟工的版主讓四個 model 在同一套 specification、同一套 harness 下，依 10 個 Problem Frames 規格從頭產生 Product Aggregate 的完整後端程式（DDD + Clean Architecture + CQRS + Event Sourcing + Design by Contract），一輪通過 Gate 的結果是 **Fable 9/10、Opus 8/10、Sonnet 5/10、Haiku 1/10**；最弱的那個第一次生成花 148 分鐘、總共 **40 個修補輪**。這是本圈回應最多的一串，他自述挑最弱的 model 是為了驗自己那套方法論的邊界；另一串是有人問地端 LLM 跑不跑得動（逐字與反應數見 `community_digest.md`）。
+- **這把本條從抱怨換成一個工程指標**：**一套 harness 的好壞，等於它在 model 變便宜、變小、變本地時退化得多優雅；量法是每個 gate 的修補輪數 × model**。它同時接上 Claude Taiwan 那八串額度貼文裡真正有形狀的兩個詞—「分層派工」與「混用模型」（§1.7）—以及 Red Hat 那則貼文問的「換下一個模型時要不要重建」（`community_digest.md` §1.3）。
 - **東京給了企業版的同一句話。** 兩份印上日期的 model 名單，以及那句操作性的框架：「Budget pressure makes self-hosting an operational decision rather than a research one」，而且名單是「by the hardware they need, not by how good they are」分組的（`2So56` slides 3、9；`2QlEY` p.6 標「Verified September 11, 2026」）。反面則是一個 29 turn 之後被放棄的 open-weight session（`2QsV2` [00:03:24–00:03:42]）。
 - **成本側的反直覺持續累積。** 2609.13890（階層式 ~10 倍 token，且預算對齊會重排排行榜）；2607.02436（測試工具讓成本 **+42–68% 而功能與可靠度都沒有增益**，但 xHigh reasoning 用多 9–29% 的成本換到 first-try-perfect **28% → 89%**）；2609.11076（specify-and-verify 在五個 Rust/Verus 元件上成本全部更貴）；2609.01600（一個有限參考語意就能精確決定的東西，花掉約 3,000 個 reasoning token）。`x_digest.md` §8 gap 4 補上 feed 版本：會更貴的 routing、harness 層快取、「$38 的瑣碎問題」、「Inference FinOps」變成職稱。
 - **開發者真正在吵什麼，也支持重切。** 2609.04680 的 25,227 筆 VS Code issue 由 **agent 管理、設定、可靠度、認證與帳務**主導—帳務是其中之一，但不是主角。
 
-**為什麼仍是觀察中**：2026-09 的升級條件第一項「3–5 家台灣公司的企業層採購型態觀察」**缺一不可**，本圈沒有任何進展；Claude Taiwan 的八串仍然全是個人席位（630 元台幣變 630 美元那串 154/46/3 是最典型的）。重切解決的是**角度**，不是**讀者**。
+**為什麼仍是觀察中**：2026-09 的升級條件第一項「3–5 家台灣公司的企業層採購型態觀察」**缺一不可**，本圈沒有任何進展；Claude Taiwan 的八串仍然全是個人席位（最典型的是那串講訂閱價從台幣 630 變成美金 630 的）。重切解決的是**角度**，不是**讀者**。
 
 **升級證據**（第一項仍缺一不可，新增一條平行路線）：3–5 家台灣公司的企業層採購型態觀察；Grok Memphis 等級的 vendor outage 再發生且有台灣團隊公開影響；主權模型政策有具體法規動作；vLLM 台北 meetup 第二場以上；Claude Taiwan 以外的實務社團出現席位／額度討論。**新增（可取代第一項，走可攜性路線）**：作者或社群產出一張 harness portability 表—同一份規格、同一套 harness、≥ 3 個 model，報一輪通過率與修補輪數—並且至少包含一個地端 model；那位版主的地端 LLM 重試有結果。
 
@@ -252,7 +252,7 @@
 **本圈新增的證據—幾乎沒有，記第一次空手**：
 
 - **arXiv 完全空。** `("domain-driven design" OR "bounded context" OR "event storming") AND LLM` **0 筆**；擴展 `"domain-driven design" AND LLM` 0、`"event storming"` 0、`"bounded context" AND LLM` 3 筆**且三筆全部無關**（一個 TTS codec、一個電網 QA 渲染器、一個長時程軌跡模型）。
-- **社群也空。** DDDesign Taiwan 本圈只有管理公告：官網重啟加知識庫（24/1/4）、Line 與 Telegram 十月關閉全面轉 Discord（25/1）、一則 Impact Mapping 訪談（16/1）、一位新成員的 `handoff-semantics` .NET 8 參考實作（3）。**沒有任何 agent 相關討論。**
+- **社群也空。** DDDesign Taiwan 本圈只有管理公告：官網重啟加知識庫、Line 與 Telegram 十月關閉全面轉 Discord、一則 Impact Mapping 訪談、一位新成員的 `handoff-semantics` .NET 8 參考實作（`community_digest.md`）。**沒有任何 agent 相關討論。**
 - **唯一的新材料來自東京，而且只有一句。** context graph 被當成「承載決策而非程式碼」的工件，而且是直接對著棕地講的：「your agent inherits code, not decisions」（`2QlDU`；`2WZJf` slides 17、29）。同一份 deck 預告了一本可能的書錨：《GraphRAG: The Definitive Guide》（O'Reilly，2026-12，`2WZJf` slide 37）—但那是 GraphRAG 不是 DDD，別混用。
 
 **狀態處置**：維持 `候選`，但**記第一次空手**。依使用規則，若 2026-11、2026-12 兩圈仍無新證據，降為 `觀察中`。另一個現成的動作在 digest 裡：DDD Taiwan 十月轉進 Discord 而且明說「bot-friendly」，那是 10 月系列上線後投放的地方（`community_digest.md` §1.10）。
@@ -391,7 +391,7 @@
 
 **Facebook 社團**（保留在 `FB_GROUPS`；括號內是該社團的有效指標）
 
-14. Backend 台灣：分享數 ≥ 15 的事故／資安解剖 → 第 1、2 條（本圈最接近的是 217/12/15 的共用 library 那串）。搞笑談軟工：一輪通過 Gate 的模型表、地端 LLM 重試、去技能化、論文發表 → 第 6、9 條與 2026-11 回響。DDDesign Taiwan：**十月轉進 Discord**，Line／Telegram 關閉—監看要跟著搬，否則第 7 條會永遠空手。DevOps Taiwan：驗證閉環、SDD 是不是瀑布、棕地 meetup 後續 → 第 2、3 條。Scrum Community 與 Agile 內湖：測試專欄（3–17 反應）與 Sprint 45《與我的 AI 焦慮共處》（09-23）→ 2026-10 回響、第 9 條。Claude Taiwan：handoff／compact 門檻、plugin eval、分層派工與混用模型 → 第 4、6 條；**席位抱怨只當第 6 條的症狀計數器，不當主證據**。Twinkle AI：MCP Hub、vLLM 台北 meetup、主權模型 → 第 3、6 條。六個 vendor 社團（MCP、OpenClaw ×2、GCP & K8s、Cowork、Antigravity）本圈**再次全是詐騙與外語廣告**，只有三則與 agent 有關且已抽出—下圈若仍如此，從 `FB_GROUPS` 拿掉。
+14. Backend 台灣：分享數 ≥ 15 的事故／資安解剖 → 第 1、2 條（本圈最接近的是共用 library 那串，剛好達標）。搞笑談軟工：一輪通過 Gate 的模型表、地端 LLM 重試、去技能化、論文發表 → 第 6、9 條與 2026-11 回響。DDDesign Taiwan：**十月轉進 Discord**，Line／Telegram 關閉—監看要跟著搬，否則第 7 條會永遠空手。DevOps Taiwan：驗證閉環、SDD 是不是瀑布、棕地 meetup 後續 → 第 2、3 條。Scrum Community 與 Agile 內湖：測試專欄與那場以 AI 焦慮為題的活動（09-23）→ 2026-10 回響、第 9 條。Claude Taiwan：handoff／compact 門檻、plugin eval、分層派工與混用模型 → 第 4、6 條；**席位抱怨只當第 6 條的症狀計數器，不當主證據**。Twinkle AI：MCP Hub、vLLM 台北 meetup、主權模型 → 第 3、6 條。六個 vendor 社團（MCP、OpenClaw ×2、GCP & K8s、Cowork、Antigravity）本圈**再次全是詐騙與外語廣告**，只有三則與 agent 有關且已抽出—下圈若仍如此，從 `FB_GROUPS` 拿掉。
 
 **會議與日期**（2026-09 的 15 保留；本圈把東京帶回來的日期全部併進來）
 

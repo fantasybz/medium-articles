@@ -31,7 +31,7 @@
 3. **追責的基礎設施是空的。** 2608.23610（2026-08-21）檢查 47 個平台（20 個 CI/CD、27 個 model-serving / agent），**0 個**預設輸出「行為組態」（論文稱 behavioural tuple；組成動筆前依全文確認—本系列 attestation block 用的 model snapshot + harness version + skills digest + config digest 四個欄位，是自己的設計，不是論文的定義）的 content-addressed 身分；2608.15678（2026-08-16）比對七家 provider 的 18 份條款：一家禁止指派者核准 agent 的 PR，另一家的 agent 卻能在風險門檻下自動核准並 dismiss review，而 approval artifact 承載的責任比條款假設的少—這一點 10 月 Review 篇已經拿來當主證據，12 月只接不重講。
 4. **觀測工具剛好成熟到可以落地。** Agent Flight Recorder（2609.01931，2026-09-01）把防竄改事件帳本壓到每事件 48 µs、每 10 萬事件 2.30 美元；結構化 live trace（2609.01466，同日）讓觀察者 token 少 14–15 倍、準確率從 0.48 升到 0.85–0.87；AgentLogs（2608.29204，2026-08-29）公開 GitHub Copilot cloud agent 的 307,416 個 task、64.3M 筆日誌—**一份可以拿來對照規模的公開 agent 遙測資料集**（摘要裡的規模；本系列不使用它做練習）。不寫「最大」：2026 年 9 月上半的掃描又多了兩份同類語料（2609.12205 的 5,851 場真實開發者 session / 355,942 次 tool call，以及 2607.23999 的 17,640 筆 trace 紀錄與一份共用的 rollout-trace schema），這個形容詞沒有根據。OTel 的 GenAI semantic conventions 在 KubeCon + CloudNativeCon Japan 2026 由 Alolita S.（OTel Governance Committee；**全名與講題原文動筆前依大會議程確認**，摘要裡只有「Alolita S.」）以 keynote 談 observing agentic systems（LinkedIn 35 反應）。
 5. **Kubernetes 上剛好有幾個可以借的 primitive—不是為 agent 改的。** v1.37 Garhwal（2026-08-26）的 HPA scale-to-zero（beta）、pod certificates 與 cluster trust bundles、declarative validation，都是通用的平台元件；它們只是剛好對得上 bursty、per-run identity 的 agent sandbox 需求。要說清楚這是**借**不是**為你做的**：把 2026 年 9 月上半的 arXiv 用七個不同的 query string 掃過，「agent 跑在 Kubernetes 上」這個題目在視窗內是 **0 篇**，最接近的幾篇都停在 serving 層（KV cache、記憶體、排程），不是平台層。所以這一段只能是規模化的一段，不能是論點。（同一句在可靠篇 §7 用一次，總論 §十 不重列。）
-6. **這題在中文、在 harness 這一層，現在沒人在講。** X digest 掃過 291 個追蹤帳號、355 則頂級貼文，agent observability 標準是「完全沒出現」的主題；台灣社群唯一相鄰的訊號是一位 Backend 台灣作者在 Backend 台灣的 Grafana + Claude Code AIOps bot（39 反應 / 17 分享）—但那是 **agent 做 SRE**，不是 **SRE for agents**，總論要把這個倒轉講清楚。Google 的 agents 白皮書已經把這門學問叫「Agent Ops」，是命名上的對手，總論要正面點名。
+6. **這題在中文、在 harness 這一層，現在沒人在講。** X digest 掃過 291 個追蹤帳號、355 則頂級貼文，agent observability 標準是「完全沒出現」的主題；台灣社群唯一相鄰的訊號是一位 Backend 台灣成員在該社團貼的 Grafana + Claude Code AIOps bot—但那是 **agent 做 SRE**，不是 **SRE for agents**，總論要把這個倒轉講清楚。Google 的 agents 白皮書已經把這門學問叫「Agent Ops」，是命名上的對手，總論要正面點名。
 
 ### 與已發布三部曲的關係
 
@@ -57,7 +57,7 @@
 | 1 | **結案報告當驗收** | agent 說「done」就算 done。10 月已用 FrontierChallenge 與 trajectory-judge 證明自我申報不可信；12 月只補一件事：**run 的 outcome 欄位不能由 agent 填**—outcome 讀 `outcome_verified`，不讀 agent 的話（證據清單由該 workflow 宣告，表在可靠篇 §2） | 總論 §五、觀測篇 §3、可靠篇 §2 |
 | 2 | **只觀測 model call** | 2025 年的層次：token、latency、cost 都有，但看不到 run、tool call、approval，等於只量了引擎轉速不量車子去哪 | 總論 §六、觀測篇 |
 | 3 | **把可寫的 log 當證據** | 整段對話丟進 log 系統—cardinality 爆、隱私爆、什麼都查不到，是這個反模式的前半；後半更致命：**可寫的紀錄根本不是證據**。「A writable log can be altered or deleted. A later audit cannot undo execution」（`2VRYC`）。事件帳本與對話紀錄要分開存，而且帳本要 append-only、在 agent 的 namespace 之外 | 總論 §六、觀測篇 §4、應變篇 §3 |
-| 4 | **買一個 AI observability SaaS 就算有觀測** | 沒接進既有 stack、沒有 SLO、沒有 on-call。工具買了放在架上（Weinberg，DevOps Taiwan 21 反應） | 總論 §十、觀測篇 |
+| 4 | **買一個 AI observability SaaS 就算有觀測** | 沒接進既有 stack、沒有 SLO、沒有 on-call。工具買了放在架上（Weinberg；DevOps Taiwan 有一串在講同一件事） | 總論 §十、觀測篇 |
 | 5 | **沒有 change management 的 harness** | 兩個極端：`@latest` 自動更新（vendor 每天 >2 版，2607.03691；換個 tool-output 裁切 28%→49%，2608.26218），或 set-and-forget（73.8% 的 AI 組態從未修改，2608.25241） | 總論 §八、可靠篇 |
 | 6 | **拿 pass@1 當 SLO** | offline eval 分數當 production SLI。pass@1 是單次能力、pass^k 是重複可靠度，兩者都在 offline 量（10 月可靠度篇）；production SLI 量的是真實流量下的事件比率，只能用 telemetry 拿得到的東西 | 可靠篇 |
 | 7 | **Agent 自己當自己的 on-call** | agent 診斷自己、修自己、核准自己的 PR。10 月 Review 篇點過的那個「在風險門檻下自動核准並 dismiss review」的 agent 就是這個 | 應變篇 |
@@ -138,7 +138,7 @@
 - **開場改用東京現場**：2026-09-10，AGNTCon + MCPCon Japan 的 keynote 上，Solo.io 的 Lin Sun 把 agentgateway 擋在一個 director agent、兩個 A2A 子 agent 與五個 MCP server 中間，當場示範了三件事—每個 agent 有自己的預算（現場設 **$10 per day**，另一條 200/day 的配額當場噴出 429，她說那個值「a little bit too low」，改 config 不用重啟）；Jaeger 上「We had four turns together… **the last one has 62 spans**」，其中 **46 秒**花在產生影片的那一個 span 上，A2A 的 hop 也在同一條 trace 上；而換一把 token 之後，同一組工具從「16 tools」變成「20 tools」—**授權改變了工具面，程式一行沒改**（`2Qral` [00:30:52–00:39:10]）。
 - 這就是本月要講的東西的樣子：一次 agent run 是一條有幾十個 span 的 trace，上面同時有錢、有時間、有授權決定。**但台上那條 trace 只是給人看的**—它可以被改、三十天後就過期。所以這篇的第二句話是：trace 是線索，證據要另外存。
 - 誰該對這條 trace 負責，AAIF 自己在台上問過：一個客服 agent 退了十倍的錢，該算誰的？「Was it the team that set the rules, the runtime that managed the loop, the model that chose the action, or the tool that carried it out?」—四個嫌疑人，而每一層該有的能力是三個動詞：inspect what happened、constrain what can happen、change the system when it no longer meets their needs；她最後那句「Who owns the outcome when an agent acts on your behalf?」台上沒給答案（`2Wbgx`，Angie Jones, VP, AAIF，2026-09-10；**該場僅有議程描述，無投影片、無錄影**）。本系列三篇就是在補那三個動詞的工具：trace（inspect）、SLO 與 error budget（constrain）、runbook 與 attestation（change）。
-- 一位 Backend 台灣作者的 AIOps bot 那段**不刪但下移一句**：Grafana + openab + Claude Code 打造第一線 AIOps 機器人（「寫程式從來不是生產環境工程的瓶頸，除錯才是」，39 反應 / 17 分享），是這次掃過的台灣社群資料裡唯一一則 SRE × agent 的貼文—但它是 **agent 做 SRE**，這篇問的是反過來的那題：**誰對 agent 做 SRE？** 當那個 bot 半夜合併了一個錯的 PR，誰接電話、trace 在哪、誰簽的名？
+- 一位 Backend 台灣作者的 AIOps bot 那段**不刪但下移一句**：Grafana + openab + Claude Code 打造第一線 AIOps 機器人（貼文的論點是瓶頸從來不在寫程式，而在除錯；逐字與反應數見 `community_digest.md`），是這次掃過的台灣社群資料裡唯一一則 SRE × agent 的貼文—但它是 **agent 做 SRE**，這篇問的是反過來的那題：**誰對 agent 做 SRE？** 當那個 bot 半夜合併了一個錯的 PR，誰接電話、trace 在哪、誰簽的名？
 - 三個問題：agent 上個月花了多少（cost per successful task 是趨勢還是傳聞）、做壞了幾次（revert 是靠 incident 開單才知道，還是 gate 擋下來就知道）、誰批准了那個 PR（五分鐘內答得出來嗎—9 月總論 §六 立的 flag）。
 
 > 為什麼是我來寫這題：我的地盤在 Kubernetes 與 observability（OTCA、PCA，CNPE 的「Observability and Operations」佔 20%），而這一次要觀測的不是叢集，是 agent。
@@ -1474,7 +1474,7 @@ flowchart TB
 
 1. **兩種 on-call：agent 當第一線的邊界**
    - 開場（書錨候選，讀完剩下 20% 再定；橋接要寫成一段論證，不能只有一句）：Kent Beck《The Beauty of Maintenance》的主張是維護不是寫程式的殘餘，是主要的工作—系統大部分的生命在寫完之後。agent 的 production 生命也是：一條 golden workflow 上線之後，runbook、postmortem、rollback、re-approve 才是 harness 的主要工作，寫 prompt 只是它出生的那一刻。所以「agent 出事怎麼辦」不是附錄，是 harness 的日常—這篇就是那個日常。若讀完發現書的重點不在這裡，改把它放到 §6 結語當收束。
-   - 一位 Backend 台灣作者的 bot（Backend 台灣 39 / 17）與 @learnk8s 07-30 的 SRE agent 設計（讀 alert、log、runbook，提出安全動作）：**agent 做 SRE**。它是有價值的，但它自己也是需要 SRE 的 workload—這篇是後者。
+   - 一位 Backend 台灣成員的 bot與 @learnk8s 07-30 的 SRE agent 設計（讀 alert、log、runbook，提出安全動作）：**agent 做 SRE**。它是有價值的，但它自己也是需要 SRE 的 workload—這篇是後者。
    - **表格 I1（PNG）agent 當第一線的邊界**，格子不變（read-only 診斷 ✔、提出 remediation ✔、執行 remediation 需 `org.approval`（kind=remediation，計入可靠篇的 intervention ratio）、核准自己的 PR ✘、碰 production DB ✘、關 alert ✘），但**依據整批換成四個生產環境的說法，不靠 benchmark**。三家在同一場會議上、彼此沒見過面的團隊，把同一條線畫在同一個位置：
      - **一家事故管理廠商**：「drafts a fix command. **It never touches production**」，決定性的那一半是「MCP guardrail check — Role-based access control, Command blocklist, **Production is read-only**」；範圍內「Read-only calls execute. **Anything destructive waits for a human approval**」，而被擋下時「Returns 'no permission' and **fires an event**」—**被擋下要發事件，不是安靜地回一句做不到**（`2QlEA`；這一格正是可靠篇 §3 `policy_violation_rate` 的資料來源）。他們替 agent 寫的 job description 裡直接有一行「Acts as a co-pilot, not the captain」。
      - **一家軟體公司的事故 agent 名冊**，五個 agent 裡只有兩個有寫入權：「Fix-Proposer — **Opens a PR, never merges**」、「Comms & Reporter — Gated by human approval」；最重的那一格是「Trigger a rollback / change prod config — **Explicit approval + 2FA**」（`2QlDv` slides 10、17）。

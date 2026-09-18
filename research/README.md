@@ -112,6 +112,12 @@ research/
 .context/mermaid/             # mermaid_check.sh 的算繪暫存
 .context/render/<dir>[-<lang>]/   # render_images.sh 的算繪暫存
 .context/collect.lock         # collect.sh 跑的期間持有；mermaid_check.sh 與 render_images.sh 看到它就退出 75，等它跑完再來
+.context/quality/             # 期中加圈潤稿的機械閘與逐篇稽核：p-check.sh（voice_brief §9.2 的不變量，對
+                              # git HEAD 比數字／連結／區塊／標題／表格／TL;DR，例外記在 num-exceptions.txt）、
+                              # protected-check.sh + protected.json、mirror-check.sh（中英逐節段數）、
+                              # voice-check.sh（新增句的禁用語）。research/YYYY-MM/workflows/quality-*.js 依賴它們，
+                              # 所以那幾份是紀錄不是可直接重跑的範本。要搬進 research/scripts/ 的話，
+                              # p-check.sh 得先加 base-ref 參數（現在對 HEAD 比，文章一 commit 就自動全過）並補測試。
 ```
 
 ## 分析階段
