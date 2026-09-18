@@ -12,35 +12,33 @@ James Bach 是 Context-Driven Testing 與 Rapid Software Testing 方法論的作
 
 照這個分法，CI 綠燈是 checking，agent 說「測試全過」也是 checking。驗收是 testing，是人的判斷。
 
-總論也給了這條界線的第一個數字。SWE-Gate 這個 benchmark 在一批 Python repo 的修補任務上，把功能測試與 reviewer 提出的約束分開跑，結果是通過功能測試的修補裡，有 34% 違反了約束。也就是說，綠燈量不到 reviewer 真正在乎的那些事。
+總論也給了這條界線的第一個數字。SWE-Gate 這個 benchmark 在一批 Python repo 的修補任務上，把功能測試與 reviewer 提出的約束（constraint）分開跑，結果是通過功能測試的修補裡，有 34% 違反了約束。也就是說，綠燈量不到 reviewer 真正在乎的那些事。
 
 那是綠燈量不到的其中一層。本篇要談的是更前面的另一層：測試本身有沒有用。這是三道閘裡的第一道，test gate。三道閘就是這個系列的三篇深掘，test gate 在本篇，review gate 是下一篇，reliability gate 在可靠度篇。
+
+至於三分法（agent 的陳述、agent 寫的測試、團隊擁有的測試），以及「什麼時候 agent 寫的測試才算團隊的測試」這條升格規則，總論第二節已經寫過，這裡不重列。
 
 先講為什麼測試比程式碼更需要審。Scrum Community 轉貼過 Lada Kesseler 的一句話，短到可以當標語，大意是：我對 AI 寫的測試的信任，比對它寫的程式碼還少。
 
 理由很直接：測試是 agent 對自己的驗收標準，出題者與考生是同一個。程式碼寫錯了，測試還有機會攔下來。測試寫鬆了，就沒有下一道防線了。
 
-至於三分法，以及「什麼時候 agent 寫的測試才算團隊的測試」這條升格規則，總論第二節已經寫過，這裡不重列。
+第二個理由來自 Bach。他說 tester 的核心能力是 rapid learning，也就是把陌生的東西快速學起來的能力。在 agent 時代這句話有一個具體的版本：讀 agent 留下的測試，比讀它的程式碼更快知道它理解了什麼、沒理解什麼。
 
-Bach 說 tester 的核心能力是 rapid learning。在 agent 時代這句話有一個具體的版本：讀 agent 留下的測試，比讀它的程式碼更快知道它理解了什麼、沒理解什麼。
+原因是測試是 agent 對需求的翻譯。程式碼只告訴你它做了什麼，測試會告訴你它以為需求是什麼。翻錯的地方，斷言、fixture（測試前先準備好的資料與環境）與測試名稱會先露餡。
 
-原因是測試是 agent 對需求的翻譯。程式碼只告訴你它做了什麼，測試會告訴你它以為需求是什麼。翻錯的地方，斷言、fixture 與測試名稱會先露餡。
+回到 Lada Kesseler 那句話。它是往「少信一點」走，台灣真正燒起來的討論在 DevOps Taiwan，方向剛好相反。Uncle Bob（Robert C. Martin）是 TDD 最主要的推廣者，有人把他「不讀 agent 的程式碼、只看測試與品質指標」的立場貼上去，底下吵成一串，也有人半開玩笑地要他把該做的測試全部列出來。
 
-台灣真正燒起來的討論在 DevOps Taiwan。有人把 Uncle Bob（Robert C. Martin，TDD 最主要的推廣者）「不讀 agent 的程式碼、只看測試與品質指標」的立場貼上去，底下吵成一串，也有人半開玩笑地要他把該做的測試全部列出來。
+他其實列過（[2026-07-26](https://x.com/unclebobmartin/status/2081332683582427641)）：agent 寫得快，把省下的時間花在 unit、acceptance、property、torture、mutation 與 QA 測試上。property 是拿隨機輸入驗證不變的性質。torture 最少被提到，指的是拿超出正常範圍的輸入、負載與並行去折磨系統，看它在哪裡垮。六種裡本篇只深談 mutation，它是唯一直接量得到「測試有沒有用」的那一種。
 
-他其實列過（[2026-07-26](https://x.com/unclebobmartin/status/2081332683582427641)）：agent 寫得快，把省下的時間花在 unit、acceptance、property、torture、mutation 與 QA 測試上。其中 torture 測試最少被提到，指的是拿超出正常範圍的輸入、負載與並行去折磨系統，看它在哪裡垮。
-
-本篇就是回答那一串的。回答的不是測試種類的清單，是三個 check 與門檻。要講 check 之前，得先知道它們各自在防什麼。
+本篇就是回答那一串的。回答的不是測試種類的清單，是三個 check 與門檻。順序是：先看 agent 寫的測試會壞在哪，再看為什麼人眼擋不住，然後是 mutation 這道門檻與 diff 上的三個 check，接著是覆蓋率為什麼當不了這道門檻，再用一個我親手跑出來的例子畫出它們的邊界，最後收在 tester 審一份測試的十題 checklist。要講 check 之前，得先知道它們各自在防什麼。
 
 ---
 
 ## 二、agent 寫的測試會壞在哪：四種型態
 
-agent 寫的測試不是隨機地壞，它壞的方式有固定的形狀。把常見的收攏起來是四種型態：斷言被鬆綁、現狀 bug 被錄成 golden、測試永不紅、覆蓋率被當成品質。
+agent 寫的測試不是隨機地壞，它壞的方式有固定的形狀。把常見的收攏起來是四種型態：斷言被鬆綁、現狀 bug 被錄成 golden file、測試永不紅、覆蓋率被當成品質。
 
-這四種型態不是只有我這樣分。李博杰是《深入理解 AI Agent：設計原理與工程實踐》的作者。他在談 agent 評估的第七章把 coding agent 的失敗分成九類，其中一類叫 hack 驗證環境：改斷言、加 skip、mock 掉被測邏輯，以及聲稱「測試已通過」但軌跡裡根本沒有那道指令。前三項在上面那四種裡都找得到位置，第四項不在：那是連測試都沒跑，只有一句宣稱。
-
-這四種壞法在 CI 上長得一模一樣，都是綠的。這裡只給 check 的名字，實作留到第五節：
+這四種壞法在 CI 上長得一模一樣，都是綠的。這裡只給 check 的名字，實作留到第五節。golden file 是事先存好的「正確輸出」，測試拿實際輸出跟它比；表裡提到的 mutant，是被故意改壞的一版程式碼，第四節會展開。四種型態與它們的偵測方式對照如下：
 
 | 型態 | 症狀 | 為什麼 agent 會這樣 | 怎麼偵測 |
 |---|---|---|---|
@@ -49,15 +47,21 @@ agent 寫的測試不是隨機地壞，它壞的方式有固定的形狀。把�
 | **永不紅的測試** | 測試通過，但被測的路徑從未執行；tautology（`assert result == result`）；mock 的回傳值就是斷言值 | agent 為了讓測試過，會讓測試「自我證明」 | red-then-green：新測試對修補前的 code 跑一次，必須因為對的理由紅—**只對修改既有行為的 PR**；feature PR 的新測試交給 mutation，殺不死任何 mutant 的測試就是永不紅 |
 | **覆蓋率當品質** | CI 的覆蓋率門檻過了，但 repo 原有的測試只碰到 agent 改動行的 27%（Python） | 覆蓋率是一條可以被改掉的斷言：exclude pattern、trivial test、只呼叫不斷言 | 覆蓋率只看 agent 改動的行，而且與 mutation score 成對讀 |
 
-表裡最值得停下來看的是第三欄。四種壞法沒有一種是 agent 在使壞，它們全部是「讓測試過」這個目標底下最省力的路徑。這也決定了處方的方向：與其寫規則叫它不要這樣，不如讓這條省力的路徑在 CI 上被看見。
+表裡最值得停下來看的是第三欄。四種壞法沒有一種是 agent 在使壞，它們全部是「讓測試過」這個目標底下最省力的路徑。對 agent 來說，「做成了」的訊號就是測試過不過，怎麼過的不在那個訊號裡。這也決定了處方的方向：與其寫規則叫它不要這樣，不如讓這條省力的路徑在 CI 上被看見。
 
-還有第五種，它不單獨列，因為它不是測試自己壞掉，是 red-then-green 這道檢查會踩到的坑：**因為錯的理由紅**。
+這四種型態不是只有我這樣分。李博杰是 Pine AI 的首席科學家、《深入理解 AI Agent：設計原理與工程實踐》的作者，他在談 agent 評估的第七章有一節講失敗歸因：一條失敗的執行紀錄擺在面前，錯是從哪一步開始的。那一節把 coding agent 的失敗先分成九類。其中一類叫 hack 驗證環境：改斷言、加 skip、拿假物件把被測邏輯 mock 掉，以及聲稱「測試已通過」但執行紀錄裡根本沒有那道指令。
+
+前三項在上面那四種裡都找得到位置，第四項不在：那是連測試都沒跑，只有一句宣稱。他自己也說這類分類會一路長到上百類，本篇不照搬。
+
+第四項連 checking 都算不上：CI 自己把測試跑一次就拆穿。四種壞法都是測試跑了而且是綠的，這一項是綠燈之前的事，所以本篇不把它列成第五種。
+
+還有一種壞法不列進表，因為它不是測試自己壞掉，是 red-then-green 這道檢查會踩到的坑：**因為錯的理由紅**。
 
 LeSS in Action 這門課教 A-TDD（Acceptance Test-Driven Development，先寫驗收測試再寫實作）時有一條紀律，就是關注錯誤訊息，錯誤訊息要符合預期。red-then-green 的 red 套用同一條紀律：要看到預期的斷言失敗，不是 import error 這種「測試根本沒跑到」的紅。
 
-第七節的工作坊實例是第三列的變體。它不是「永不紅」，是「測錯對象」：測試走的是 in-memory 的路徑，規格要的是 replay 的路徑。四道 check 都量不到「該有的東西沒寫」，那一節會講為什麼。
+表裡第三列還有一個變體，留給第七節的工作坊實例。它不是「永不紅」，是「測錯對象」：測試走的是 in-memory 的路徑，也就是直接從記憶體裡的物件讀，規格要的是 replay 的路徑，從事件重播回狀態的那一條。四道 check 都量不到「該有的東西沒寫」，第七節會講為什麼。
 
-把四種壞法與它們各自的 check 排在一起，會看到壞掉的方式雖然有四種，人要防的其實只有兩件事：
+把四種壞法與它們各自的 check 排在一起，會看到壞掉的方式雖然有四種，人要防的其實只有兩件事：測試被改弱，與測試沒測到。
 
 ```mermaid
 ---
@@ -106,9 +110,9 @@ flowchart LR
     class C1,C2,D1,D2 own
 ```
 
-四種壞法各有一個便宜的 check，人不用逐行讀測試。
+四種壞法各有一個便宜的對策：三個 check，加一個 PR template 欄位。
 
-機器撈得出來的是壞味道，撈不出來的是意圖。每一個 check 存在的目的，都是把人從「逐行讀測試」裡拉出來，去看機器讀不到的那一半。
+機器撈得出來的是壞味道，撈不出來的是意圖（intent）。每一個 check 存在的目的，都是把人從「逐行讀測試」裡拉出來，去看機器讀不到的那一半。
 
 ---
 
@@ -122,7 +126,7 @@ flowchart LR
 
 實驗還多試了一種條件：在斷言旁邊附上 LLM 自己的解釋，看人會不會判斷得比較準。答案是附上解釋沒有幫助，低品質的解釋反而有害。
 
-用途要先限定。這個實驗量的是「判斷 LLM 產生的斷言對不對」，不是「判斷被 agent 鬆綁的既有斷言」。兩件事我分開寫，但方向一致。
+用途要先限定。這個實驗量的是「判斷 LLM 產生的斷言對不對」，不是「判斷被 agent 鬆綁的既有斷言」。後者是第五節 assertion-change diff 的事，兩件事我分開寫，但方向一致。
 
 那如果先告訴人「這段是 AI 寫的」，他會不會看得比較仔細？另一項 eye-tracking 研究補了一刀：標示為 LLM 產生的程式碼，reviewer 看得更久，但沒有看得更徹底。時間花掉了，審視的程度沒有跟著上去。
 
@@ -149,15 +153,15 @@ Mutation testing 的做法是把程式碼改壞一點點，例如換一個運算
 
 它對測試做的事，跟 chaos engineering 對 production 做的事是同一個念頭：先自己弄壞一次，看警報會不會響。差別只在弄壞的對象是程式碼，會響的是測試。
 
-Uncle Bob 的閘門組合是 coverage、CRAP score 與 mutation tests。CRAP score（Change Risk Anti-Patterns）把複雜度與覆蓋率合成一個數字，又複雜又沒被測到的函式分數最高。
+拿 mutation 當閘門不是我先提的。Uncle Bob 的閘門組合是 coverage、CRAP score 與 mutation tests。CRAP score（Change Risk Anti-Patterns）把複雜度與覆蓋率合成一個數字，又複雜又沒被測到的函式分數最高。
 
-閘門組合與理由出自同一則貼文（[2026-07-30](https://x.com/unclebobmartin/status/2082850576832905657)）：TDD 是人的紀律，他不期待 agent 遵守，只量結果。
+這組閘門與它的理由出自他的一則貼文（[2026-07-30](https://x.com/unclebobmartin/status/2082850576832905657)）：TDD 是人的紀律，他不期待 agent 遵守，只量結果。
 
-DevOps Taiwan 轉述他的立場是：只要 agent 的程式碼過了 unit、Gherkin（用 Given／When／Then 寫成的驗收測試語法）、mutation 與品質指標，他就不再讀 code。
+第一節那個「不讀 agent 的程式碼」的立場，就是這個。DevOps Taiwan 轉述的是另一份清單：unit、Gherkin（用 Given／When／Then 寫成的驗收測試語法）、mutation 與品質指標，過了他就不再讀 code。兩份清單不完全一樣，但都有 mutation。
 
 本文不走到那麼遠。Review 篇會說人還是要讀 intent 與 constraint，但同意 mutation 是 test gate 的核心。
 
-為什麼以前不划算、現在划算？mutation 慢，慢在要跑 N 倍的測試，N 是產生出來的 mutant 數量，每一個 mutant 都要把受影響的測試重跑一次。
+mutation testing 不是新東西，它一直進不了多數團隊的 CI。為什麼以前不划算、現在划算？mutation 慢，慢在要跑 N 倍的測試，N 是產生出來的 mutant 數量，每一個 mutant 都要把受影響的測試重跑一次。
 
 agent 時代改變了兩件事。第一件是測試量大到人讀不完，所以「測試有沒有用」變成唯一值錢的問題。第二件是只算 agent 改動行的 **diff-scoped mutation**，它把 N 壓到小很多的數，成本也就回到可以接受的範圍。這跟 CI 從「每次跑全量」走到「只跑受影響的測試」是同一個轉折，只是這次省下的是 mutant，不是測試。
 
@@ -167,15 +171,15 @@ agent 時代改變了兩件事。第一件是測試量大到人讀不完，所�
 
 具體一點說，它會告訴你這個條件判斷翻過來之後沒有任何測試變紅，不會告訴你這個模組少了一條架構規則、少了一條 business constraint，或是規格要求的那條路徑根本不存在。第七節的例子就是後面這一種。
 
-多數人裝這道 check 的時候，面對的是 brownfield，也就是已經跑了很多年、測試套件又大又慢的既有系統。Brownfield 的現實：40 分鐘的測試套件上，diff-scoped mutation 仍然要對受影響的測試跑 N 倍。
+回到成本。多數人裝這道 check 的時候，面對的是 brownfield，也就是已經跑了很多年、測試套件又大又慢的既有系統。Brownfield 的現實：40 分鐘的測試套件上，diff-scoped mutation 仍然要對受影響的測試跑 N 倍。
 
-所以它是四道 check 裡**最後裝**的，只在受影響子集能在 10 分鐘內跑完的 repo 上開。安裝順序在總論第十節，這裡不重列。
+所以它是四道 check 裡**最後裝**的，只在受影響子集能在 10 分鐘內跑完的 repo 上開。為什麼是這個順序，總論第十節講過，這裡不重列。
 
-**儀式版與閘門版的差別**：這一題今年夏天被問過兩次。Thoughtworks 的 Birgitta Böckeler 問的是「TDD inside the agent loop—theater or actual value?」（Fowler [2026-08-11](https://x.com/martinfowler/status/2087173563144912985) 轉貼）。
+**儀式版與閘門版的差別**：這一題今年夏天被問過兩次。第一次是 Thoughtworks 的 Birgitta Böckeler，她問的是「TDD inside the agent loop—theater or actual value?」（Martin Fowler [2026-08-11](https://x.com/martinfowler/status/2087173563144912985) 轉貼）。agent 在自己的迴圈裡做 TDD，是做給人看的戲，還是真的有價值。
 
-Uncle Bob 8 月 17 日的 negative test experiment 是同一題的另一面：他讓四種測試紀律各寫一次同一支程式，驗收測試全綠，程式卻不一樣（[2026-08-17](https://x.com/unclebobmartin/status/2089449442089025936)，數字總論引過）。
+第二次是 Uncle Bob 8 月 17 日做的實驗（negative test experiment），問的是同一題的另一面：他讓四種測試紀律各寫一次同一支程式，驗收測試全綠，程式卻不一樣（[2026-08-17](https://x.com/unclebobmartin/status/2089449442089025936)，設計與結果總論講過）。
 
-叫 agent「跑 mutation，然後補測試補到 100%」是儀式版。你會得到專門殺 mutant 的測試，那是另一種 tautology，也就是斷言的兩邊其實是同一個東西、永遠會過的自我證明式測試。
+兩個人問的是同一件事：測試的形狀對了，不代表它守住了什麼。叫 agent「跑 mutation，然後補測試補到 100%」是儀式版。你會得到專門殺 mutant 的測試，那是另一種 tautology，永遠會過的自我證明。
 
 閘門版是 CI 把活著的 mutant 報告給人看，人決定哪些該補、哪些是 equivalent mutant。equivalent mutant 是改壞之後語意其實沒變的 mutant，它永遠殺不死，把它算進分數只會逼人去補一個沒有意義的測試。
 
@@ -212,7 +216,7 @@ Uncle Bob 8 月 17 日的 negative test experiment 是同一題的另一面：�
 
 閘門的適用範圍不能由受檢者決定。這跟系列的「量產出、不量過程」是同一件事。
 
-分類的來源有三個，照順序取。第一個是 issue 或 ticket 的 type 欄，那一欄是人設的。第二個是 harness 的 task type。兩個都沒有時，改用 diff 判斷：只要 PR 修改了任何既有的非測試檔案，就視為 behaviour change 跑檢查，只新增檔案的才跳過。
+分類的來源有三個，照順序取。第一個是 issue 或 ticket 的 type 欄，那一欄是人設的。第二個是 harness 的 task type。harness 是 agent 與工程系統之間那層介面，上一季技術篇講過。兩個都沒有時，改用 diff 判斷：只要 PR 修改了任何既有的非測試檔案，就視為 behaviour change 跑檢查，只新增檔案的才跳過。
 
 前兩個來源 agent 都改不動。第三個來自 agent 自己的 diff，但它要躲掉檢查就得完全不碰既有檔案，那等於放棄把 fix 做完。
 
@@ -340,9 +344,7 @@ flowchart TB
 
 第一個月不阻擋是刻意的。那一個月要做的是校準噪音、確認分類來源沒有錯、讓人對報告的格式建立信任。等大家知道哪些訊號真的代表風險，再把最確定的那幾項升成阻擋。
 
-那一個月要驗的還有檢查器自己。Quartic.ai 在 AGNTCon Japan 講過他們讓 agent 升級 production Kubernetes 的經驗：第一版的驗證只檢查每一跳之後的第一個節點，control plane 上到 1.31、worker 還留在 1.30，那一跳照樣被標成成功。一道只抽樣一部分邊界的檢查，量到的不是升級成功，是它自己抽到的那個節點。
-
-這是全系列唯一一組「指示 vs 量測」的 Before / After。Uncle Bob 的說法是你沒辦法叫 agent 寫乾淨，只能量它乾不乾淨，再叫它改（[2026-07-29](https://x.com/unclebobmartin/status/2082497764223492161)）。
+AGENTS.md 是 agent 開工前會讀的那份專案指示檔。它裡面的指示對上 CI 上的量測，是全系列唯一一組「指示 vs 量測」的 Before / After。Uncle Bob 的說法是你沒辦法叫 agent 寫乾淨，只能量它乾不乾淨，再叫它改（[2026-07-29](https://x.com/unclebobmartin/status/2082497764223492161)）。
 
 Before 是多數團隊現在的 AGENTS.md：
 
@@ -398,11 +400,25 @@ jobs:
 
 這份 workflow 有兩個地方值得看。一個是 `classify` 的輸出被 `red-then-green` 用 `if` 擋在外面，適用範圍是機器決定的，不是 PR 作者決定的。另一個是 `report` 的 `if: always()`，red-then-green 被跳過時報告照樣要出，不然 feature PR 在報告上會看起來像沒被檢查過。
 
+還有第三個地方，yaml 裡看不到：檢查器自己也會漏。今年九月在東京的 AGNTCon Japan（Linux Foundation 旗下 Agentic AI Foundation 辦的 agent 大會）上，Quartic.ai 的兩位 SRE 講了他們讓 agent 升級 production Kubernetes 的經驗。
+
+Kubernetes 一次只能升一個小版本，每升一版算一跳。他們在台上自己講了第一版怎麼漏的：驗證只檢查每一跳之後的第一個節點，管理節點（control plane）上到 1.31、跑工作的節點還留在 1.30，那一跳照樣被標成成功。
+
+修法是按角色找出每一個節點，全部對上版本之前，下一跳不准開始。他們把那一課收成一句話：「A cluster upgrade succeeds only when the whole cluster has crossed the version boundary.」
+
+一道只抽樣一部分邊界的檢查，量到的不是升級成功，是它自己抽到的那個節點。
+
+這份 yaml 自己就有兩個地方踩到同一個盲點。`mutation_diff` 底下多數工具以檔案為單位，限定不到行就得自己過濾，過濾器漏掉的行不會出現在報告上。`classify` 找不到連結的 issue，就退回看有沒有改既有的非測試檔，那一步量的是「碰了舊檔」，不是「改了行為」。兩個量到的都是自己搆得到的範圍，不是報告上寫的那個範圍。
+
+Quartic.ai 的示範跑在 kind（本機模擬用的 Kubernetes）叢集上，這一課在 production 付過什麼代價，投影片沒寫。
+
+校準的清單也要多一條：這三個 check 自己抽到了什麼、漏了什麼。
+
 **Agent 側的配套。** 前面三個 check 都是在 CI 上攔 agent，但攔截並不會改變它的動機。有沒有辦法讓它一開始就不想改斷言？
 
-一項研究（escalation channels，2026 年 8 月）試的是另一個方向：不攔它，改成給它一條正式的出路。做法是給 agent 一個結構化的「回報壞測試」工具，讓它在覺得測試本身有問題的時候可以舉手，而不是把測試改到過為止。數字裡有兩個詞要先說清楚：勝算比（odds ratio）是統計上的效果量，用來描述兩組的差距有多大，數字越大代表關聯越強，但它本身不告訴你這個差距有多穩。frontier model 指的是當下能力最前沿的那幾個 model。
+一項研究（escalation channels，2026 年 8 月）試的是另一個方向：不攔它，改成給它一條正式的出路。做法是給 agent 一個結構化的「回報壞測試」工具，讓它在覺得測試本身有問題的時候可以舉手，而不是把測試改到過為止。數字裡有三個詞要先說清楚：reward hacking 就是第二節那條「讓測試過」的省力路徑；勝算比（odds ratio）是兩組差距有多大的效果量，越大代表差距越明顯，但它本身不告訴你這個差距有多穩；frontier model 是當下能力最前沿的那幾個 model。
 
-效果是 reward hacking 從 23.6% 降到 5.3%（勝算比 9.2），8 個 frontier model 裡有 6 個完全消失；98.7% 的 escalation 不涉及作弊，而且缺陷偵測覆蓋率（defect-detection coverage）多了 10.1 個百分點。
+效果是在 8 個 frontier model 上量的：reward hacking 從 23.6% 降到 5.3%（勝算比 9.2），其中 6 個 model 完全消失。98.7% 的 escalation 不涉及作弊，而且缺陷偵測覆蓋率（defect-detection coverage）多了 10.1 個百分點。
 
 最後那兩個數字才是重點：這條出路沒有被拿來當新的偷懶方式，而且 agent 舉手的同時還多抓到了缺陷。落地只要兩步。
 
@@ -436,7 +452,7 @@ jobs:
 
 覆蓋率是多數團隊已經裝好的那道閘，也是最容易被誤讀的一個數字。一組資料就能說明它誤讀在哪裡。
 
-Test Coverage of Agentic PRs 量了 4,882 個 agent PR，問的問題很窄：repo 原有的測試，會不會經過 agent 改動的那些可執行的行？答案是 Java 只有 61.5%，Python 只有 27.0%。
+一項研究（Test Coverage of Agentic PRs）量了 4,882 個 agent PR，問的問題很窄：repo 原有的測試，會不會經過 agent 改動的那些可執行的行？答案是 Java 只有 61.5%，Python 只有 27.0%。
 
 repo 整體的覆蓋率數字不會告訴你這件事。不管你的 repo 整體覆蓋率是多少，Python 這邊 agent 剛改的行有將近四分之三沒有任何既有測試經過。
 
@@ -462,27 +478,27 @@ repo 整體的覆蓋率數字不會告訴你這件事。不管你的 repo 整體
 
 ## 七、第一手實例：測試全綠，replay 從未執行
 
-今年 8 月在模式語言工作坊，我拿同一個需求跑了兩種方法，各自在自己的 worktree 裡。需求本身很小，就是一個 Product aggregate 加一個 CreateProduct use case。
+今年 8 月，我在 Teddy 老師（泰迪軟體講師，部落格「搞笑談軟工」作者）的模式語言工作坊上，拿講師出的同一份需求檔跑了兩種方法：方法 A 只照那份檔案直接寫（工作坊叫它「裸 Prompt」），方法 B 多掛了講師提供的一套作業流程。兩邊各自跑在自己的 git worktree 裡，也就是同一個 repo 底下的獨立工作目錄。需求本身很小，就是一個 Product aggregate（領域驅動設計裡一組要一起保持一致的物件）加一個 CreateProduct use case。
 
 下面只談方法 A，因為要講的問題出在它身上。方法 A 交出來的東西很漂亮：25 個檔案、編譯零 warning、5 個測試全綠、分層乾淨、Javadoc 完整。
 
-問題在測試走的路徑。規格要的是 event sourcing：aggregate 的狀態不直接存起來，存的是每一次發生的事件，要用的時候再從事件一件一件重播回來。
+問題在測試走的路徑。規格要的是 event sourcing：aggregate 不直接存狀態，只存每一次發生的事件，要用的時候再從事件一件一件重播回來。
 
 方法 A 的 Product 完全不是 event sourcing。它沒有繼承 `EventSourcedAggregate`，測試也直接從記憶體裡的 aggregate 讀 `getDomainEvents()`，永遠不經過重播的路徑。
 
-另外缺了 `@DirtiesContext`。這是 Spring 用來讓測試之間不共用同一份 context 的標註，缺了它，CI 會間歇紅。
+我當時的紀錄是：A 的 10/16（工作坊的 16 項合規清單過了 10 項）不是「差一點」，而是「在只有一個 InMemory use case 的玩具規模下剛好還沒爆」。
 
-我當時的紀錄是：A 的 10/16（16 項合規清單過了 10 項）不是「差一點」，而是「在只有一個 InMemory use case 的玩具規模下剛好還沒爆」。
+還有一個跟 replay 無關的小洞：測試缺了 `@DirtiesContext`。這是 Spring 用來讓測試之間不共用同一份 context 的標註，沒有它，CI 會間歇紅。間歇紅的測試最後多半是被 retry 蓋過去，不是被修掉，那正是第八節那張清單裡的第八題。
 
-用途先限定。這是「綠燈但沒驗收」與「測錯對象」的實例，不是變異數據。N 等於 1，量的是合規。變異的題留給 11 月。
+先說這個例子能證明什麼、不能證明什麼。這是「綠燈但沒驗收」與「測錯對象」的實例，不是變異數據（variance，同一題重跑幾次結果會差多少）。N 等於 1，量的是合規。變異的題留給 11 月。
 
-接著把這個例子放回檢查清單裡看。它不是拿來證明哪個工具沒用，是拿來畫出每一道 check 的邊界。邊界畫錯的分析，Staff engineer 一眼就會抓：
+接著把這個例子放回檢查清單裡看。它不是拿來證明哪個工具沒用，是拿來畫出每一道 check 的邊界。邊界畫錯的分析，Staff engineer 一眼就會抓，所以我逐條寫：
 
 - **red-then-green 不適用**：這是 feature PR，新測試對舊 code 一定因為類別不存在而紅。
 - **mutation 也抓不到**：程式碼裡根本沒有 replay 路徑，所以不存在「replay 路徑的 mutant」可以活。
-- **抓得到的是兩樣東西**：一條 constraint test，以及人讀 intent。
+- **抓得到的是兩樣東西**：一條 constraint test（把 reviewer 提出的約束寫成可執行檢查的測試），以及人讀 intent。
 
-mutation 那一條值得多說一句。Product 既然不是 event sourcing，in-memory aggregate 的 mutation score 很可能還很漂亮。這正是第四節那一句：它量不到「該有的東西沒寫」，是更好的 check，不是 testing。
+mutation 那一條值得多說一句。Product 既然不是 event sourcing，那個 in-memory aggregate 的 mutation score 很可能還很漂亮。這正是第四節那一句：它量不到「該有的東西沒寫」，是更好的 check，不是 testing。
 
 constraint test 那一條的內容會長這樣：aggregate 必須繼承 `EventSourcedAggregate`，或至少一個測試必須經由 rehydrate 建構 aggregate。rehydrate 就是從事件把 aggregate 重建回來的那個動作，也就是規格真正要的那條路徑。這是可靠度篇第二節說的「架構規則」那一類。
 
@@ -536,9 +552,9 @@ flowchart TB
 
 圖上那條虛線才是重點。它是規格要求存在、但實作與測試都沒有走過的路徑。任何只看「已經寫出來的東西」的 check，都看不到一條不存在的線。
 
-感謝 Teddy 的工作坊給了這個例子。
-
 工具的邊界畫在這裡，人的位置就只能站在邊界外面。
+
+感謝 Teddy 的工作坊給了這個例子。
 
 ---
 
@@ -565,7 +581,7 @@ flowchart TB
 
 這就是 tester 在 test gate 的位置：不是打勾機器，是 test-suite reviewer。工作內容從「跑完測試、確認全綠」，換成「讀報告、判斷哪些訊號需要人介入」。
 
-《Testing Extreme Programming》說「人人都是測試者」。agent 時代這句話的具體版本是：每個 merge agent PR 的人，都在審一份測試。
+Lisa Crispin 與 Tip House 的《Testing Extreme Programming》說「人人都是測試者」。agent 時代這句話的具體版本是：每個 merge agent PR 的人，都在審一份測試。
 
 ---
 
@@ -573,13 +589,11 @@ flowchart TB
 
 回到工作坊那個全綠的方法 A。A 的測試沒有一個是假的，每一個都真的在跑、真的在斷言，只是全部繞過了規格要的那條路徑。那份綠燈沒有說謊，它只是從來沒有承諾過要涵蓋你以為它涵蓋的東西。
 
-本篇給的三個 check，能做的是把「綠燈沒承諾的部分」裡機器量得到的那些，一項一項變成看得見的東西：assertion-change diff 看斷言有沒有被改弱，red-then-green 看新測試對舊 code 紅不紅，diff-scoped mutation 看剛改的行有沒有被守住。方法 A 的洞不在這三道裡，它要靠 constraint test 與人讀 intent。三個都只是更好的 check，不是驗收。
-
-還有一件 testing 的事，Bach 說它不能自動化：對 agent 產出做探索式測試，不是讀它的測試，是去用它做出來的東西。那是另一篇文章的題目，這裡只點到為止。
+本篇給的三個 check 只做一件事：把「綠燈沒承諾的部分」裡，機器量得到的那些，一項一項變成看得見的東西。assertion-change diff 看斷言有沒有被改弱，red-then-green 看新測試對舊 code 紅不紅，diff-scoped mutation 看剛改的行有沒有被守住。方法 A 的洞不在這三道裡，它要靠 constraint test 與人讀 intent。三個都只是更好的 check，不是驗收。
 
 > **agent 寫的測試是它對自己的驗收標準；審它的測試，就是審它以為的「對」。**
 
-下一篇是 Review 篇：test gate 過了之後，這個 PR 誰要讀、讀什麼、誰審誰，以及 AI 審 AI 什麼時候該禁止。
+下一篇是 Review 篇：test gate 過了之後，這個 PR 誰要讀、讀什麼、誰審誰，以及 AI 審 AI 什麼時候該禁止。至於 Bach 說不能自動化的那一件—對 agent 產出做探索式測試，不是讀它的測試，是去用它做出來的東西—那是另一篇文章的題目，這裡只點到為止。
 
 ---
 
