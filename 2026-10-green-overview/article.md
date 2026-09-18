@@ -28,7 +28,7 @@ CI 綠燈本身是環境的量測，不是 agent 的陳述。它會退化成「�
 
 把上面三個情境的回答壓成一句話，刻意寫成可以不同意的形狀。你不同意也沒關係，至少可以拿它回去對照自己的 branch protection（GitHub 上的設定，規定 PR 要滿足什麼才准 merge）、review policy 與 agent workflow。
 
-裡面有四個名詞先給一句白話。constraint tests 是把 reviewer 講過的話變成 CI 會跑的檢查。mutation 報告則是「把程式故意改壞，再看測試會不會紅」的結果。intent 是 PR 說明裡「想改什麼、為什麼改」那一段。AGENTS.md 是放在 repo 裡、寫給 agent 讀的專案說明檔。前兩個後面各有一節：
+裡面有四個名詞先給一句白話。payment 不是術語，是個例子—它代表出錯會波及很大的那一類改動，auth 與 schema 也在裡面。constraint tests 是把 reviewer 講過的話變成 CI 會跑的檢查。mutation 報告則是「把程式故意改壞，再看測試會不會紅」的結果。intent 是 PR 說明裡「想改什麼、為什麼改」那一段。AGENTS.md 是放在 repo 裡、寫給 agent 讀的專案說明檔。constraint tests 與 mutation 報告後面各有一節：
 
 > **Green is checking. Acceptance is testing.** 所以改到 payment 的 PR，一旦 constraint tests 與 mutation 報告到位，人不再逐行讀 diff—讀 intent、constraint 報告與 mutation 報告，只讀被標紅的 hunk；在那之前，人讀 diff 的每一條評論都要回收成 constraint test。AI 的 approve 不計入 branch protection，不管哪一家。AGENTS.md 寫 TDD 可以，拿 TDD 的形狀當閘門不行。
 
