@@ -33,7 +33,7 @@ const ISSUES_REF = args.issuesFile ? `Read the issues from ${args.issuesFile} (J
 const MERMAID_RULES = `the YAML frontmatter config block at the top (theme base, the themeVariables colours, flowchart spacing, subGraphTitleMargin; NO fontFamily) — never %%{init}%%; classDef own/buy/bad/human applied with class, no per-node style lines; layout width 500–900 CSS px and aspect (height/width) 0.5–1.5; ≤ 12 nodes; ≤ 3 lines × 14 CJK chars per node using <br/>; edge labels ≤ 6 chars; TB for > 5 nodes, ≤ 4 nodes per rank; fontSize 16px; no emoji; when subgraphs use direction TB, wire subgraph to subgraph (an inner node connected to the outside breaks direction TB); the two-column pattern (LR with two direction-TB subgraphs) for short linear flows`
 
 const CONTEXT = `
-Today is ${args.today}. The author (@fantasybz, Kochi Chuang) publishes one THEME per month on Medium: one 總論 + 三部曲, in Traditional Chinese (Taiwan usage, English technical terms kept), plus an English edition. Audience: Engineering VPs / EMs / Staff engineers in Taiwan.
+Today is ${args.today}. The author (@fantasybz, Kochi Chuang) publishes one THEME per month on Medium: one 總論 + 三部曲, in Traditional Chinese (Taiwan usage, English technical terms kept), plus an English edition. Audience: Engineering VPs / EMs / Staff engineers / platform, SRE and QA leads in Taiwan.
 Reference files:
 - ${DIR}/style_brief.md, ${DIR}/selection.md (judges' objections and the adjustments the theme must honour, incl. the Notion 補充)
 - ${DIR}/arxiv.md, ${DIR}/x_digest.md, ${DIR}/community_digest.md, ${DIR}/notion_digest.md${EXTRA} (the ONLY allowed sources for numbers; read the parts you need)
