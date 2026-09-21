@@ -273,6 +273,25 @@ Stories → Scheduled 裡它仍在原本的時段（可靠度篇中文版 `3c64a
 但**掛在最後那道逐塊驗證時，重跑不是解法**——那代表 payload 與編輯器對不起來，
 要先查清楚。
 
+**而且「查清楚」的第一步是離線重驗，不是重跑。** 2026-09-21 測試篇 en 在這裡報了
+「167 problem(s): 166 block mismatch(es)」、圖只認得 8 槽裡的 2 槽，看起來像整篇壞掉；
+實際上那一篇是好的，驗證只是讀到還沒 settle 完的 DOM。重跑會把一篇**已排程、
+會自動發布**的文章再改寫一次，是這個狀況下風險最高的動作。先重驗：
+
+```bash
+W=$(mktemp -d)
+python3 tools/md2medium.py <pack>/medium-paste.md --out "$W/payload.json"
+python3 tools/medium_js.py dump  > "$W/dump.js"
+python3 tools/medium_js.py state > "$W/state.js"
+browse --headed goto "https://medium.com/p/<id>/edit"   # 完整載入一次，這就等於腳本的重載複驗
+browse --headed eval "$W/dump.js" > "$W/editor.json"
+python3 tools/verify_draft.py "$W/payload.json" "$W/editor.json"
+browse --headed eval "$W/state.js"                      # 期望 slots:0、figures 等於該篇圖數
+```
+
+這幾行只讀不寫，跑幾次都無害。過了就是好的（腳本的 `$WORK` 會被 `EXIT` trap 清掉，
+所以 payload 要自己重建，不必去翻 `/var/folders`）。真的沒過再談怎麼修。
+
 它一樣**不會**替你按發布。排程草稿維持排程；已發布的文章要自己按
 **Save and publish**（`postPublishedType=repub`，網址不變、不會重寄訂閱信）。
 
