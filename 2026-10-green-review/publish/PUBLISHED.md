@@ -85,4 +85,13 @@ CDN hash 記進 `.context/cover-check/baseline-2026-09-18.json`（與 2026-09-16
 把 `url=` 參數解碼回來，`#page=16` 原封不動還在。所以錨點在 Medium 上是有效的。
 
 **排程未受影響**：仍是 Oct 20, 1:00 AM (UTC)。八篇的時段與 Post ID 全部不變（第四次量到）。
-**封面圖**：**被重設，尚未還原**。/submission 上「Change preview image」按鈕這次完全不渲染，六種路徑都試過（見 `.context/cover-check/fix-2026-09-21.log`）；同一時間其他篇正常，所以是這一篇特有的前端問題。目前封面是內文第一張 `table-01.png`，應為 `diagram-02.png`（CDN `1*ya_IXqhbThh24Rh5vXfYwg.png`）。**Oct 20 發布前要手動點回去。**
+**封面圖**：被重設，**已還原**成 `diagram-02.png`（CDN `1*ya_IXqhbThh24Rh5vXfYwg.png`），/submission 頁讀回確認。
+這一篇的還原過程跟其他五篇不同，值得記下來：頁內選擇器**打不開**——
+`/submission` 上「Change preview image」與「Adjust image」兩顆按鈕根本不在 DOM 裡，
+不是被藏起來。比對一篇正常的文章才找到原因：Medium 的
+`PostViewerEdge.imageIds`（挑選器的候選圖清單）對這一篇是**空陣列**，
+正常的那篇是 7 個 hash。清單空的，元件就整塊不渲染。
+重灌一次也沒把它補回來——這欄在後端是持續卡住的，正常存稿路徑推不動它。
+最後是繞過挑選器：在一篇按鈕正常的文章上錄下按 Done 時送出的 GraphQL mutation
+（`UpdateSubmitFormStoryPreviewMetadataMutation`），再對這一篇送同一個請求。
+做法見 PUBLISHING.md〈封面挑選器打不開時〉。

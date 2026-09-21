@@ -268,6 +268,61 @@ Stories → Scheduled 裡它仍在原本的時段（可靠度篇中文版 `3c64a
 中文三篇 ledger 原本寫「封面是 `diagram-01.png`」，9/16 用上面的方法對過，實際是
 測試篇 `diagram-03`、Review 篇 `diagram-02`、可靠度篇 `diagram-02`；已更正。
 
+#### 封面挑選器打不開時
+
+2026-09-21 遇到一次：Review 篇 zh（`ccbf0cbe2691`）的 `/submission` 上，
+**「Change preview image」與「Adjust image」兩顆按鈕根本不在 DOM 裡**——不是被 CSS 藏起來，
+是 React 沒渲染那個節點。試過直接載入並輪詢、合成 mouseover、真游標 hover、
+硬重載加寬視窗、從編輯器點 Review scheduled story、全新分頁、甚至整個瀏覽器重開，
+按鈕都不出現；同一時間同一個帳號的其他七篇都正常。作者自己在自己的瀏覽器裡也點不到。
+
+原因要比對 Apollo 快取才看得到。兩篇都有 `previewImage`，結構一模一樣；差別在
+`PostViewerEdge.imageIds`——那是挑選器的候選圖清單：
+
+```js
+// browse eval 這段，比對正常的一篇與有問題的一篇
+(() => {
+  const s = window.__APOLLO_STATE__ || {}
+  for (const [k, v] of Object.entries(s))
+    if (v && v.__typename === 'PostViewerEdge') return JSON.stringify(v.imageIds)
+})()
+```
+
+正常的一篇回 7 個 hash，有問題的那篇回 `[]`。**清單是空的，元件就整塊不渲染。**
+而且**重灌不會把它補回來**：整篇重灌等於一次完整存稿、七張圖全部重傳，跑完
+`imageIds` 仍然是空的。這欄在 Medium 後端卡住了，正常的存稿路徑推不動它。
+
+繞過的方法是不用挑選器，直接送它背後那個 mutation。先在一篇**按鈕正常**的文章上
+把請求錄下來（裝 `fetch` 攔截器 → 開挑選器 → 選一張 → Done → 讀回錄到的 body），
+得到的就是下面這個；再在**有問題那篇的 `/submission` 頁上**送同一個請求，
+`medium-frontend-path` 要跟著改，才跟真的按下去一樣：
+
+```js
+await fetch('/_/graphql', {
+  method: 'POST', credentials: 'same-origin',
+  headers: {
+    'content-type': 'application/json',
+    'apollographql-client-name': 'lite',
+    'medium-frontend-route': 'post',
+    'medium-frontend-path': '/p/<id>/submission',
+    'graphql-operation': 'UpdateSubmitFormStoryPreviewMetadataMutation',
+  },
+  body: JSON.stringify([{
+    operationName: 'UpdateSubmitFormStoryPreviewMetadataMutation',
+    variables: { input: { targetPostId: '<id>', featuredImageId: '1*<hash>.png' } },
+    query: 'mutation UpdateSubmitFormStoryPreviewMetadataMutation($input: StageUpdatePostMetadataInput!) {\n  stageUpdatePostMetadata(input: $input) {\n    __typename\n  }\n}\n',
+  }]),
+})
+```
+
+回 `{"data":{"stageUpdatePostMetadata":{"__typename":"MutationSuccess"}}}` 就是存了。
+名字裡的 `stage` 不代表還要再 commit 一次：按 Done 時，送出的就只有這一個請求。
+**驗證要重新載入 `/submission` 再讀 `previewImage`**，不要看 Stories → Scheduled 上的
+卡片縮圖——那是 Medium 自己的社群卡快取，會落後。排程與內文都不受影響。
+
+要錄請求，挑一篇封面已經正確的文章當範本：先選一張**別的**圖錄下形狀，
+再用挑選器選回原本那張。兩次都是同一個 mutation，等於順便驗證了這條路走得通。
+
 **中途失敗會留下半殘狀態**：內文已經換掉、圖還沒補完。腳本的 `EXIT` trap 會印出
 這件事、排程稿與已發布文章各自的後果、以及可直接貼上的重跑指令。
 但**掛在最後那道逐塊驗證時，重跑不是解法**——那代表 payload 與編輯器對不起來，
