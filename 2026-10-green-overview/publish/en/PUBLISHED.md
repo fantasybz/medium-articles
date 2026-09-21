@@ -52,3 +52,9 @@ CDN hash 記進 `.context/cover-check/baseline-2026-09-18.json`（與 2026-09-16
 （`--post 582f24223eea` / `--post c4fc9f3d8581`），`verify_draft.py` 都過。
 封面同樣被重設，同樣用頁內選擇器點回原本那張；排程 10/06 與 10/08 未動。
 其餘六篇這一輪沒有內容變更，沒有重灌。
+
+### 2026-09-21 再重灌（SWE-Gate 來由／圖標題）
+
+The prose is unchanged; the section-3 figure's subgraph title changed (the old one contradicted the piece's own prose), so diagram-02.png was re-rendered and a refill was needed to ship the new image.
+`verify_draft.py` 通過。封面同樣被重設，同樣用頁內選擇器點回原本那張；排程未動。
+重新算繪的 diagram-02 與原圖尺寸完全相同（zh 664x836、en 664x914），兩種語言都 PASS MERMAID.md。
