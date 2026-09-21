@@ -590,7 +590,7 @@ pass^k measures what share of a set of tasks pass on every one of k attempts; G2
 22. Community discussion: Claude Taiwan (the "fleet mode" comment); Scrum Community in Taiwan ("AI has blown up the volume of code — what happens to code review?", "Why stories have to be cut smaller in the AI coding era")
 23. Author's notes: Claude Certified Architect — Foundations exam notes (separating the review instance)
 24. Last season: [The Harness Blueprint](https://fantasybz.medium.com/agentic-engineering-part-2-the-harness-blueprint-making-your-system-legible-to-agents-3facc281f633) section 6 (guardrails), [Org Design](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987) section 7 (the junior path)
-25. Studist, Masaya Nakamura — [Intent as Code: Why Existing Permissions Aren't Enough for AI](https://sched.co/2QlDX) (AGNTCon + MCPCon Japan 2026, Tokyo, 2026-09-10; [slides](https://hosted-files.sched.co/agntconmcpconjapan26/ab/Intent-as-Code%20%2813%29.pdf) slide 16, which cites H. Yu et al., [arXiv 2606.22721](https://arxiv.org/abs/2606.22721)) [section 3; cited second-hand off the slide]
+25. Studist, Masaya Nakamura — [Intent as Code: Why Existing Permissions Aren't Enough for AI](https://sched.co/2QlDX) (AGNTCon + MCPCon Japan 2026, Tokyo, 2026-09-10; [slides](https://hosted-files.sched.co/agntconmcpconjapan26/ab/Intent-as-Code%20%2813%29.pdf#page=16) slide 16, which cites H. Yu et al., [arXiv 2606.22721](https://arxiv.org/abs/2606.22721)) [section 3; cited second-hand off the slide]
 
 ---
 
