@@ -171,7 +171,7 @@ flowchart TB
     classDef bad fill:#ffe0e0,stroke:#c0392b,color:#1f2933
     classDef human fill:#e3f2fd,stroke:#1565c0,color:#1f2933
     G{"CI 綠燈"}
-    subgraph layers["三層，各一個 in-domain 錨點"]
+    subgraph layers["三層與它們的錨點"]
         direction LR
         L1["功能測試過 ≠ 約束滿足<br/>綠燈只檢查了 reviewer<br/>在乎的事的一部分"] --> S1["SWE-Gate：644 個綠燈修補<br/>34% 違反 reviewer 約束<br/>75 個 Python repo"]
         L2["有測試 ≠ 測到<br/>agent 改的程式碼<br/>有多少被測試碰到"] --> S2["Test Coverage of Agentic PRs<br/>既有測試覆蓋 agent 改動行<br/>Java 61.5%、Python 27.0%"]

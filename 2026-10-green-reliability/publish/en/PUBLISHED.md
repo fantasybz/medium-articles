@@ -74,3 +74,9 @@ CDN hash 記進 `.context/cover-check/baseline-2026-09-18.json`（與 2026-09-16
 這一篇第一次重灌在重載後的 settle poll 失敗（`no Medium editor on this page`），
 沒有走到 `verify_draft.py`。照腳本自己寫的恢復方式重跑同一道就過了；
 重跑前先開編輯器看過：圖 7 張到齊、無殘留 placeholder、仍是 Scheduled。
+
+### 2026-09-21 再重灌（SWE-Gate 來由／圖標題）
+
+Section 1 now says where the 34% came from (the overview's three-layer table leaves that layer to this piece) and carries the publication date.
+`verify_draft.py` 通過。封面同樣被重設，同樣用頁內選擇器點回原本那張；排程未動。
+重新算繪的 diagram-02 與原圖尺寸完全相同（zh 664x836、en 664x914），兩種語言都 PASS MERMAID.md。

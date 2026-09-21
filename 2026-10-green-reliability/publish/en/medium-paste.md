@@ -34,9 +34,9 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 
 ## 1. The 34% SWE-Gate measured
 
-Start with a number that anchors the gap this piece is about. SWE-Gate is a benchmark paper, and what it measures is exactly what a green build covers. It did one extra thing: it did not only ask whether the functional tests passed. It also pulled out what the reviewers had actually asked for on those PRs, turned each of those asks into an executable check, and ran them as a separate pass.
+Start with a number that anchors the gap this piece is about. The overview used this number too, in its table of the three layers a green build cannot measure, and the layer where functional tests pass but the constraints are not met was left to this piece. SWE-Gate is a benchmark paper, and what it measures is exactly what a green build covers. It did one extra thing: it did not only ask whether the functional tests passed. It also pulled out what the reviewers had actually asked for on those PRs, turned each of those asks into an executable check, and ran them as a separate pass.
 
-The 34% is what SWE-Gate measured on 75 Python repos and 303 patch tasks. Of the 644 patches that passed the functional tests, 221 violated one of those constraints. In plain language: one in every three green patches violates a constraint the reviewer cared about.
+The 34% is what SWE-Gate (September 2026) measured on 75 Python repos and 303 patch tasks. Of the 644 patches that passed the functional tests, 221 violated one of those constraints. In plain language: one in every three green patches violates a constraint the reviewer cared about.
 
 There are two ways to misread that number, so let me block both first.
 
