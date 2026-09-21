@@ -171,7 +171,7 @@ flowchart TB
     classDef bad fill:#ffe0e0,stroke:#c0392b,color:#1f2933
     classDef human fill:#e3f2fd,stroke:#1565c0,color:#1f2933
     G{"Green CI build"}
-    subgraph layers["Three layers, one in-domain anchor each"]
+    subgraph layers["The three layers and their anchors"]
         direction LR
         L1["Functional pass ≠ constraints met<br/>green checked only part of<br/>what reviewers care about"] --> S1["SWE-Gate: 644 green patches<br/>34% violate a reviewer constraint<br/>75 Python repos"]
         L2["Has tests ≠ tested<br/>how much of the agent's change<br/>do the tests actually touch"] --> S2["Test Coverage of Agentic PRs<br/>existing tests reach changed lines<br/>Java 61.5%, Python 27.0%"]
