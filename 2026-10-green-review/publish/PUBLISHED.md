@@ -73,3 +73,16 @@ CDN hash 記進 `.context/cover-check/baseline-2026-09-18.json`（與 2026-09-16
 這一篇的封面還原比其他七篇多花一輪：編輯器面板第一次打開時預覽區整個沒有圖也沒有
 「Change preview image」，hover、加寬視窗、直接開 submission URL 都叫不出來；重新載入
 編輯器、等久一點再點「Review scheduled story」就正常了。是算繪時序，不是設定問題。
+
+### 2026-09-21 再重灌（投影片連結指到引用的那一頁）
+
+以 `./tools/medium_draft.sh 2026-10-green-review --post ccbf0cbe2691` 就地重灌，Post ID 不變。
+內容變更只有一處：References 裡 Studist《Intent as Code》 那一條，連結加上 `#page=16`，讀者點過去直接落在文中引用的那一頁，
+不必自己在幾十頁的 deck 裡找。頁碼是對著 PDF 內文逐頁核過的，不是照投影片上印的頁碼推的。
+`verify_draft.py` 閘門通過（exit 0）。
+
+**Medium 會保留 fragment**（這一輪實測）：連結被包成 `medium.com/r/?url=…` 之後，
+把 `url=` 參數解碼回來，`#page=16` 原封不動還在。所以錨點在 Medium 上是有效的。
+
+**排程未受影響**：仍是 Oct 20, 1:00 AM (UTC)。八篇的時段與 Post ID 全部不變（第四次量到）。
+**封面圖**：**被重設，尚未還原**。/submission 上「Change preview image」按鈕這次完全不渲染，六種路徑都試過（見 `.context/cover-check/fix-2026-09-21.log`）；同一時間其他篇正常，所以是這一篇特有的前端問題。目前封面是內文第一張 `table-01.png`，應為 `diagram-02.png`（CDN `1*ya_IXqhbThh24Rh5vXfYwg.png`）。**Oct 20 發布前要手動點回去。**
