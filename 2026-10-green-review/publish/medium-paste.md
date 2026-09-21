@@ -421,7 +421,7 @@ pass^k 量的是一組任務裡，k 次全部通過的 case 佔多少比例，G2
 22. 社群討論：Claude Taiwan（艦隊模式留言）；Scrum Community in Taiwan（「AI 把程式碼寫爆了，code review 怎麼辦？」、「AI coding 時代，為什麼 story 要切得更小」）
 23. 筆者筆記：Claude Certified Architect — Foundations 考試筆記（review instance 分離）
 24. 上一季：[技術篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%BA%8C-harness-%E8%97%8D%E5%9C%96-%E6%8A%8A%E7%B3%BB%E7%B5%B1%E8%AE%8A%E6%88%90-agent-%E8%AE%80%E5%BE%97%E6%87%82%E7%9A%84%E5%9C%B0%E6%96%B9-f2a139f5b561)第六節（guardrails）、[組織篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%80-%E8%AA%B0%E4%BE%86%E5%81%9A-platform-federation-%E7%9A%84%E7%B5%84%E7%B9%94%E8%A8%AD%E8%A8%88%E5%AF%A6%E5%8B%99-9d9353ef7f3a)第七節（junior 路徑）
-25. Studist 的 Masaya Nakamura — [Intent as Code: Why Existing Permissions Aren't Enough for AI](https://sched.co/2QlDX)（AGNTCon + MCPCon Japan 2026，東京，2026-09-10；[講者投影片](https://hosted-files.sched.co/agntconmcpconjapan26/ab/Intent-as-Code%20%2813%29.pdf) slide 16，該頁引 H. Yu et al., [arXiv 2606.22721](https://arxiv.org/abs/2606.22721)）〔第三節；轉引投影片上的引用〕
+25. Studist 的 Masaya Nakamura — [Intent as Code: Why Existing Permissions Aren't Enough for AI](https://sched.co/2QlDX)（AGNTCon + MCPCon Japan 2026，東京，2026-09-10；[講者投影片](https://hosted-files.sched.co/agntconmcpconjapan26/ab/Intent-as-Code%20%2813%29.pdf#page=16) slide 16，該頁引 H. Yu et al., [arXiv 2606.22721](https://arxiv.org/abs/2606.22721)）〔第三節；轉引投影片上的引用〕
 
 ---
 

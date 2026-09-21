@@ -59,3 +59,16 @@ CDN hash 記進 `.context/cover-check/baseline-2026-09-18.json`（與 2026-09-16
 這一輪學到的：頁內選擇器**仍然列著原始那張的 hash**，所以還原可以用 hash 精準配對，
 不必像 2026-09-16 那樣靠算繪高度猜；縮圖本身被裁成 248×248，長寬比不能當判準，
 要比就回 CDN 取原圖尺寸。
+
+### 2026-09-21 再重灌（投影片連結指到引用的那一頁）
+
+以 `./tools/medium_draft.sh 2026-10-green-testing en --post 51d001a6dcd5` 就地重灌，Post ID 不變。
+內容變更只有一處：References 裡 Quartic.ai 的 K8s 升級 那一條，連結加上 `#page=29`，讀者點過去直接落在文中引用的那一頁，
+不必自己在幾十頁的 deck 裡找。頁碼是對著 PDF 內文逐頁核過的，不是照投影片上印的頁碼推的。
+`verify_draft.py` 閘門通過（exit 0）。
+
+**Medium 會保留 fragment**（這一輪實測）：連結被包成 `medium.com/r/?url=…` 之後，
+把 `url=` 參數解碼回來，`#page=29` 原封不動還在。所以錨點在 Medium 上是有效的。
+
+**排程未受影響**：仍是 Oct 15, 1:00 AM (UTC)。八篇的時段與 Post ID 全部不變（第四次量到）。
+**封面圖**：被重設，已還原成 `1*PalxTLDGSOxYu-qXcJDhlA.png`，/submission 頁讀回確認。

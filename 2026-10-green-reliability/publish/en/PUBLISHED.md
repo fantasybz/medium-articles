@@ -80,3 +80,19 @@ CDN hash 記進 `.context/cover-check/baseline-2026-09-18.json`（與 2026-09-16
 Section 1 now says where the 34% came from (the overview's three-layer table leaves that layer to this piece) and carries the publication date.
 `verify_draft.py` 通過。封面同樣被重設，同樣用頁內選擇器點回原本那張；排程未動。
 重新算繪的 diagram-02 與原圖尺寸完全相同（zh 664x836、en 664x914），兩種語言都 PASS MERMAID.md。
+
+### 2026-09-21 再重灌（投影片連結指到引用的那一頁）
+
+以 `./tools/medium_draft.sh 2026-10-green-reliability en --post 4b6d147bff0d` 就地重灌，Post ID 不變。
+內容變更只有一處：References 裡 PagerDuty 那一條加了頁碼錨點。這一篇引的其實是兩張不同的投影片——
+第五節先描述並引述「THE RED LINE」那張（p.15），下一段才是 H.I.R.E. 的 Red Line Rate 指標定義頁（p.21），
+原本的條目只指 p.21，讀者要自己往回翻六頁。現在兩頁各給一個錨點，點過去就落在對的那一頁。
+頁碼是對著 PDF 內文逐頁核過的，不是照投影片上印的頁碼推的（p.15 上逐字對過
+「Reads the signals and drafts a fix command.」與「It never touches production.」）。
+`verify_draft.py` 閘門通過（exit 0）。
+
+**Medium 會保留 fragment**（這一輪實測）：連結被包成 `medium.com/r/?url=…` 之後，
+把 `url=` 參數解碼回來，`#page=N` 原封不動還在。所以錨點在 Medium 上是有效的。
+
+**排程未受影響**：仍是 Oct 29, 1:00 AM (UTC)。八篇的時段與 Post ID 全部不變（第四次量到）。
+**封面圖**：被重設，已還原成 `1*R6TYJinsdAM_d3U30wrV6Q.png`，/submission 頁讀回確認。注意 Stories → Scheduled 上，卡片縮圖仍顯示舊的 `1*GIFtopFIBTu6FEE9q44RiA.jpeg`，那是 Medium 自己的社群卡快取，不是實際預覽圖——核對要以 /submission 為準。
