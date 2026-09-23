@@ -1,6 +1,6 @@
 # Green Is Not Done, Part 3 — The 34% SWE-Gate Found Behind a Green Build: Constraint Tests, pass^k and the Gate for Expanding Autonomy
 
-> **TL;DR** — The final part of the trilogy, on the reliability gate: which numbers decide whether an agent's authority gets expanded. SWE-Gate measured it on 75 Python repos and 303 patch tasks: of the 644 patches that passed the functional tests, 221 (34%) violated a constraint a reviewer had actually added — one in every three green patches broke a constraint the reviewer cared about. This piece is about three numbers only. **Constraint pass rate**: write review constraints as executable constraint tests (review comment → rule → check), so that "what the reviewer cares about" becomes part of CI. **pass^k**: reliability is not capability — pass@1 is each case's single-attempt success rate, pass^k is the share of cases that pass all k times; report them separately. **Oversight budget**: two systems 0.3 percentage points apart in accuracy can differ by nearly 10 percentage points in the human review they need (READY), so "how many people have to look" is a budget derived backward from your reliability target, not "look as much as you can" — this piece gives a simplified model so you can compute your own. The three numbers go into the monthly leadership report and connect back to the G2 gate of the operations piece: expanding authority looks at pass^k, constraint pass rate and escape rate, not at pass@1.
+> **TL;DR** — The final part of the trilogy asks what evidence should guide expanded agent authority. Across 75 Python repos and 303 patch tasks, SWE-Gate found that 221 of 644 patches passing functional tests (34%) violated a constraint a reviewer had actually added. That gap leads to three metrics. **Constraint pass rate** is the share of functionally passing PRs that also pass all constraint tests. **pass^k** is the share of cases in a task set that pass all k runs, reported separately from single-attempt success rate, pass@1. **Oversight budget** addresses the human work still needed: in READY's clinical-audit case, systems only 0.3 percentage points apart in accuracy differed by nearly 10 percentage points in review requirements. Those staffing figures cannot transfer directly to code review. This piece borrows the idea of working backward from a reliability target, using a simplified model to estimate a review minimum and compare it with actual review and sustainable capacity. These results join test effectiveness and existing operating conditions in the monthly leadership report and the G2 authority decision. pass@1 alone does not decide expansion.
 
 > Series: [Overview](https://medium.com/p/c4fc9f3d8581) → [1. Testing](https://medium.com/p/51d001a6dcd5) → [2. Review](https://medium.com/p/4d36d0f2f9c1) → **3. Reliability (this piece)**
 
@@ -8,11 +8,11 @@
 
 ## 1. The 34% SWE-Gate measured
 
-Start with a number that anchors the gap this piece is about. The overview used this number too, in its table of the three layers a green build cannot measure, and the layer where functional tests pass but the constraints are not met was left to this piece. SWE-Gate is a benchmark paper, and what it measures is exactly what a green build covers. It did one extra thing: it did not only ask whether the functional tests passed. It also pulled out what the reviewers had actually asked for on those PRs, turned each of those asks into an executable check, and ran them as a separate pass.
+The overview separated the problems a green build does not cover into three layers. This piece starts with one of them: passing functional tests does not mean meeting the team's constraints. When requirements a reviewer has already raised are absent from the functional tests, a green build cannot answer those questions. The numbers cited in the overview make that gap concrete. SWE-Gate is a benchmark paper, and what it measures is exactly what a green build covers. It did one extra thing: it did not only ask whether the functional tests passed. It also pulled out what the reviewers had actually asked for on those PRs, turned each of those asks into an executable check, and ran them as a separate pass.
 
 The 34% is what SWE-Gate (September 2026) measured on 75 Python repos and 303 patch tasks. Of the 644 patches that passed the functional tests, 221 violated one of those constraints. In plain language: one in every three green patches violates a constraint the reviewer cared about.
 
-There are two ways to misread that number, so let me block both first.
+Two points need clarifying before using these numbers, so the study's conclusion is not misread.
 
 The domain boundary comes first — Python repos, patch tasks, not "all agent PRs." That is the range it measured. Change the language, change the shape of the task, and the number has to be measured again.
 
@@ -20,7 +20,7 @@ Look at the denominator too. The denominator is "patches that passed the functio
 
 A green build has layers, and each layer has evidence from the same domain: measured on a language and a shape of task close to yours, not numbers borrowed from somewhere else. Of the three studies below, the first two sit one on each layer, and the third gives the premise all those layers share.
 
-SWE-NFI (188 tasks, 92 executable rules) measures "passing functionally does not mean the non-functional rules are satisfied": the best agent passed 70.0% functionally and fell short on the non-functional rules across the board. Non-functional rules are things like performance, security and log format — requirements that never turn a functional test red, and that the team cares about all the same.
+SWE-NFI, with 188 tasks and 92 executable rules, measures the gap between functional success and non-functional compliance. The best agent reached a 70.0% functional pass rate, while performance on non-functional rules generally lagged. These rules include performance, security and log-format requirements. If functional tests do not include those conditions, passing them does not answer those questions.
 
 OpenHarmony Bench (153 app tasks) measures a layer further down, "**a green build does not mean the behavior is right**": buildable 94.77% to 100%, behaviorally correct only 48.36% to 58.39%. The gap is far wider, but behavioral errors are what functional tests are supposed to catch in the first place, so it does not sit in the 34% layer.
 
@@ -28,7 +28,7 @@ Rebuild Dossier is a design premise, not an observed result. It is a paper propo
 
 Once the layers are laid out, one thing becomes visible: all three look identical on a dashboard. The light is green in every case. The only difference is what that light measured, and whether you went and measured the rest yourself. A green build never volunteers what it left out, and that is exactly what makes it dangerous.
 
-This piece deals with only two of those layers. One is the reviewer constraints, which is what the opening number measured. The other is reliability, which is whether the same thing done again still comes out right. None of the three studies above measured that layer; this piece measures it itself in the reliability section, and when it does, it only accepts the kind of independent evidence Rebuild Dossier warned about. Below, the constraints get written as checks first, then capability and reliability get measured separately, then the bill for review gets computed, and finally it all connects back to the gate.
+This piece deals with only two of those layers. One is the reviewer constraints, which is what the opening number measured. The other is reliability, which is whether the same thing done again still comes out right. None of the three studies above measured that layer; the reliability section explains how to measure it on your own system, using only the kind of independent evidence Rebuild Dossier warned about. Below, the constraints get written as checks first, then capability and reliability get measured separately, then the bill for review gets computed, and finally it all connects back to the gate.
 
 ---
 
@@ -36,7 +36,7 @@ This piece deals with only two of those layers. One is the reviewer constraints,
 
 The last section said one in every three green patches violates a constraint the reviewer cared about. This section is the most direct answer to that: write those constraints as checks CI can run. Checks like these have a name — constraint tests. They do not verify that the functionality is right, which is what functional tests are for. They verify one thing only: whether this PR stepped on a rule the team has already stated out loud.
 
-What does a constraint look like? Think of it first as the things a team says over and over but should not have to rely on a person to remember every time. The seven categories below are what I distilled from my teams' review comments, meant to show where constraint tests can grow from, not to be a complete taxonomy; for SWE-NFI's 92 rules and SWE-Gate's comment taxonomy, the papers themselves are the authority:
+What does a constraint look like? Think of it first as the things a team says over and over but should not have to rely on a person to remember every time. The seven categories below illustrate how review requirements can become constraint tests; they are not a complete taxonomy; for SWE-NFI's 92 rules and SWE-Gate's comment taxonomy, the papers themselves are the authority:
 
 | Category | Example | How to check |
 |---|---|---|
@@ -48,21 +48,21 @@ What does a constraint look like? Think of it first as the things a team says ov
 | Security | No writes to env, no disabling TLS verification | AST and secret scan |
 | Architecture rules | Layer dependency direction; aggregates must extend EventSourcedAggregate | Import graph, inheritance check |
 
-The column worth looking at in that table is the rightmost one. Seven kinds of constraint, seven ways to check them, and not one of them needs an LLM to judge anything: lockfile diffs, AST (the syntax tree of the code) scans and import graphs are all old tools. Turning review constraints into checks has a lower bar than most people assume.
+The rightmost column shows that lockfile diffs, AST analysis and import graphs let us start with existing tools. Each example still needs a defined scope. A static rule for "no database calls inside loops" may recognize certain patterns without covering every indirect call. Establishing what a check can see tells us which remaining questions need another owner.
 
-The pipeline is four steps: review comment → rule → constraint test → CI. The rules file (one file in the repo that records every rule) has its shape borrowed from a July 2026 study: every accepted review comment becomes one entry in that rules file under version control (section 3 of the review piece reuses that same file). The reason for borrowing it is simple: a comment that got accepted means the team has already agreed to that rule, and there is no reason to make a person say it again on the next PR.
+The process has four steps: review comment → rule → constraint test → CI. The rule-file approach comes from a July 2026 study that preserved accepted comments in version control for later work, also discussed in section 3 of the review piece. Before implementing a constraint test, establish whether a comment is a general rule or a one-off exception and whether it can become a stable check. Acceptance once does not settle its scope forever.
 
-The rules file records two kinds of thing. The first is provenance: each rule records its source PR and date, and a rule that has not fired in six months gets reviewed for expiry. The second is responsibility, which is why there are two more fields — owner (who maintains this rule) and expiry (the date it comes up for review). Rules rot precisely because nobody owns them and nothing expires, and these two fields are the mechanism that keeps them from rotting.
+The rules file records two kinds of thing. The first is provenance: each rule records its source PR and date, and a rule that has not fired in six months gets reviewed for expiry. The second is responsibility, which is why there are two more fields — owner (who maintains this rule) and expiry (the date it comes up for review). Even a rule that was once useful can grow outdated without someone to maintain it and a time to revisit it. These two fields tell the team who should return to check when that time comes.
 
 Now that the rules have an owner, the next question is whether the agent can change them. Section 2 of the overview splits evidence into three classes: the first is what the agent says, the second is the tests the agent wrote itself, and the third is the tests the agent cannot change. What lands here is that third class, and the mechanism has three parts.
 
-First, `tests/constraints/` and the golden set directory go into CODEOWNERS, listing humans only. CODEOWNERS is the file GitHub uses to specify which directories need approval from whom; the golden set is the batch of acceptance cases the team picked itself, defined in the next section. Second, changes to the rules file need human approval. Third, any weakening of an assertion in a test of the third class is blocked outright by Check 2 from the testing piece.
+CODEOWNERS assigns review responsibility but needs merge rules to enforce it. First, assign only human owners to `tests/constraints/` and the golden set, and enable Require review from Code Owners. Second, require human approval for changes to the rule file, CODEOWNERS and verification workflow, with no agent bypass. Third, use Check 2 from the testing piece to block any weakening of category （c） assertions.
 
-The agent has write access to the repo, but a change to these three paths does not reach main without a human approval. "Cannot change it" does not mean the agent is forbidden to touch them; it means touching them gets it nowhere.
+The agent can propose changes on a branch but cannot approve and merge them itself. When evaluating a PR, obtain constraints and verification code from a protected version and use them against the candidate code. A PR must not rewrite its checker and then cite that checker's green result as proof of compliance. That is the independence "cannot change unilaterally" needs to preserve.
 
-Walk one real comment through those four steps. Before, it is the comment a human has to repeat every time: "Please don't `new HttpClient` directly here, use `clients.http()`." It only ever covers the one PR in front of it, and once it has been said it is gone. After, it becomes three things: an executable check, a rule with an owner, and a door the agent cannot move.
+Walk an illustrative comment through those four steps. The PR number, dates and accounts below are examples too. Before, it is the comment a human has to repeat every time: "Please don't `new HttpClient` directly here, use `clients.http()`." It only ever covers the one PR in front of it, and once it has been said it is gone. After, the comment becomes three arrangements: CI runs a check, a maintainer owns the rule, and permissions restrict who can approve changes.
 
-The first is the test file. It only scans the Python files this PR touched, so it runs in seconds:
+First is the test file. This minimal illustration checks direct `HttpClient(...)` calls in changed Python files. It does not cover aliases, attribute calls or dynamic construction. A production implementation must also handle deleted files, git-command failures and the diff baseline. The excerpt is not a complete security boundary:
 
 ```python
 # tests/constraints/test_http_client_reuse.py
@@ -101,7 +101,7 @@ The second is the rules file. It records where the rule came from and how long i
 - expiry: 2027-03-31 (review on expiry: delete, keep or change)
 ```
 
-The third is CODEOWNERS. The first two make the rule exist; this one makes it unchangeable:
+Third is a CODEOWNERS excerpt. It assigns reviewers for these directories and the rule file. Merge restrictions still require the rules described above, plus protection for CODEOWNERS and the verification workflow themselves:
 
 ```text
 # CODEOWNERS
@@ -110,11 +110,11 @@ The third is CODEOWNERS. The first two make the rule exist; this one makes it un
 /rules.md             @acme/platform-humans
 ```
 
-Put the three together and that review comment goes from "a person has to say it every time" to "said once, then checked on every PR after that." That is what compounding means here: one comment a human wrote while reading a diff covers that one PR and no more; recycled into a constraint test, it covers every PR not yet written.
+Put the three together and that review comment goes from "a person has to say it every time" to "said once, then checked on every PR after that." That is what compounding means here: one comment a human wrote while reading a diff covers that one PR and no more; recycled into a constraint test, the experience from that review can help check every PR that follows.
 
-How cheap that compounding is can be put plainly too. Constraint tests are deterministic (rule-based, the same result on every run), run in seconds, and their reach is the whole PR. "Reach" is the word section 10 of the overview uses for how much code one check covers in a single run: a unit test covers only the lines that got called, while a constraint test covers the whole diff.
+That compounding still has a cost, depending on how the constraint is checked. An AST rule like the example can analyze selected files without running the whole product test suite. Performance or behavioral constraints may need a separate environment and tests. Reach also depends on the checker: reading the whole diff does not mean verifying every requirement in it.
 
-By that principle, they are the cheapest verification there is, and the first gate for a brownfield system. Brownfield means an existing system that has been running for years, with incomplete tests and incomplete documentation. What such a system fears most is "you need tests before you can start," and constraint tests need no existing tests.
+That is why I put constraints expressible as static checks early in brownfield adoption. A brownfield system has operated for years and may have incomplete tests and documentation. These rules offer a starting point: check a few explicit team requirements even before a complete test suite exists.
 
 So how does a team with no review history get started? Start from the team's conventions and the last five incidents, and write those "let's not do that again" sentences down as checks first.
 
@@ -159,7 +159,7 @@ flowchart TB
     class E buy
 ```
 
-What to take from this diagram is that dashed line: a rule is not settled once it is written. A rule base with no expiry loop turns, two years on, into a pile of checks nobody dares delete and nobody believes, and then the whole mechanism gets routed around.
+What to take from this diagram is that dashed line: a rule is not settled once it is written. A rule base with no mechanism for reviewing rules when they expire turns, two years on, into a pile of checks nobody dares delete and nobody believes, and then the whole mechanism gets routed around.
 
 Before this section closes, the boundary with November's contracts piece has to be drawn, or the two kinds of constraint blur into one. The constraints in this piece come from **review history**: accumulated after the fact, empirical. The contracts piece's constraints come from the **spec**: agreed up front, normative.
 
@@ -171,35 +171,35 @@ Both go into CI, but they have different owners and different lifespans. A revie
 
 The last section was about whether the rules got kept. This one is about something else: do the same thing again, and will it still come out right? Capability and reliability are two numbers, and plenty of teams collapse them into one, so let me pin the definitions down first.
 
-The definitions follow section 8 of the overview: run every case in the golden set k times. The golden set is the batch of acceptance cases the team picked itself and reruns unchanged every month.
+Use the definitions from section 8 of the overview: run each golden-set case k times. These are representative acceptance cases chosen by the team. Start each attempt independently from the same initial state, fixing the model, harness version and scoring rules. Record the case-set version for comparisons across months so changes remain interpretable.
 
 **pass@1 is the single-attempt success rate, estimated from the k repeated runs.** Per case, it is the number of passes out of k divided by k. The question it answers is whether the agent can do this on average.
 
-**pass^k is the share of cases that succeed on all k runs.** One failure anywhere in a case and the whole case does not count. The question it answers is whether the agent can do this every time.
+**pass^k is the share of cases that succeed in all k attempts.** Any failed attempt excludes that case from the all-pass count. It describes consistency over these cases and these k runs, not a guarantee that the next run will succeed.
 
-Both are computed per case first, then aggregated over the whole golden set. This step is easy to get wrong: pool all the runs together and average them, and "one case that fails every time" comes out looking exactly like "every case failing once in a while" — and those two call for completely different responses.
+Keep each case's results before computing aggregate metrics. With equal attempts per case, averaging per-case pass@1 gives the same value as pooling all runs. But pass^k needs to know which successes and failures belong to the same case. A total success count cannot distinguish a few cases that always fail from occasional failures spread across cases, and those patterns call for different interventions.
 
 There is one more symbol that looks almost the same, so rule it out now: "the share that succeeds at least once" is pass@k, a different number, and this series does not use it.
 
-Besides pass^k, the monthly report has one more column, constraint pass rate: among the PRs that passed the functional tests, the share that also pass every constraint test. With the two numbers side by side, the next sentence is load-bearing: **pass^k and constraint pass rate can only be computed from the third class of evidence** — only from the tests the team owns and the constraint tests. The agent's closing report does not count, and neither do the tests it added itself that have not yet been promoted. Promoted means a human has looked at that test, moved it into a directory the team owns, and put it under CODEOWNERS.
+The monthly report also includes constraint pass rate: among PRs passing functional tests, the share passing all constraint tests. Both metrics have the same premise: **pass^k and constraint pass rate must be computed from category （c） evidence**, maintained by the team and not rewriteable for acceptance by the agent under evaluation. An agent's completion report does not qualify. Its new tests must pass the test gate, receive human approval into main, and enter the protected verification process to complete the promotion described in the overview.
 
-My notes from preparing for Anthropic's Claude Certified Architect certification exam hold the smallest possible example: you do not guess whether the agent's turn has ended from the assistant's reply text, you look at stop_reason (the "why it stopped" field in the API response, filled in by the system). The reply text is what the model says about itself; stop_reason is what the system recorded. They do not come from the same source. Moved to code it is the same thing: "the tests all pass" is the agent talking about itself, and red or green in CI is what the system recorded. That is what "the first class of evidence is not evidence" means.
+My notes from preparing for Anthropic's Claude Certified Architect certification exam contain a small example: you do not guess whether the agent's turn has ended from the assistant's reply text, you look at stop_reason (the "why it stopped" field in the API response, filled in by the system). The reply text is what the model says about itself; stop_reason is what the system recorded. They do not come from the same source. The same reasoning applies to accepting code: "the tests all pass" is the agent talking about itself, and red or green in CI is what the system recorded. That is why claims in the first class need verification and cannot independently establish acceptance.
 
-Why run code k times instead of trusting a single run? Because the agent's score wobbles with how the task is worded, and anything that wobbles cannot be measured just once. The evidence is two studies of rephrasing sensitivity.
+Why is one success insufficient? A single run reveals neither consistency across repeated attempts nor sensitivity to changed conditions. Those are separate measurement questions. The next two studies concern rephrasing the same task, not run-to-run variation under a fixed prompt.
 
 RealSWE (381 task families) measured this: reword the same task and the average drops 6.4 percentage points, and the model rankings reshuffle. The reshuffling is the more troublesome half. It means part of what you are reading off a leaderboard is how the task was worded, not a gap between the models.
 
 Another study of semantics-preserving rephrasing measured a drop of a similar size: an average of up to 6.7 percentage points, **but only 6 of the 16 model-and-scaffold combinations reached statistical significance.** So the right reading is not "every model is equally shaky" but that the effect is real and uneven. Whether your own combination is shaky is something you have to measure on your own combination.
 
-Ask the same thing in different words and get a different result: that is a reliability problem.
+Changes in performance after rephrasing call for evaluating robustness to input variation. pass^k from repeated runs under fixed conditions answers a different question. The experiments can sit alongside each other, but the first is not a measurement of the second.
 
-The corroboration comes from outside code, and this is the only place in the whole series that quotes the full numbers. What Thinkingbox (a benchmark paper) measured is 507 policy-conditioned MCP workflows — multi-step tool-calling tasks carrying policy constraints, where the agent has to keep calling tools through MCP (the protocol for calling tools) and keep the rules at the same time. On that batch, Claude Opus 5 scored 66.50% pass@1 and 47.53% pass^20. You would expect two out of three attempts to come out right, and yet fewer than half of the tasks come out right twenty times in a row.
+The corroboration comes from outside code, and this is the only place in the whole series that quotes the full numbers. What Thinkingbox (a benchmark paper) measured is 507 policy-conditioned MCP workflows — multi-step tool-calling tasks carrying policy constraints, where the agent has to keep calling tools through MCP (the protocol for calling tools) and keep the rules at the same time. On that batch, Claude Opus 5 scored 66.50% pass@1 and 47.53% pass^20.
 
-The two numbers sit nearly twenty percentage points apart, and that gap is what separates capability from reliability.
+Looking only at the average success rate, you would expect roughly two out of three attempts to succeed. Yet fewer than half of the tasks succeed twenty times in a row. The gap is nearly twenty percentage points: the distance between capability and reliability.
 
 Its conclusion — "clean termination and valid tool calls are not proxy indicators of completion" — holds in the code domain just the same: the agent saying it finished, with every tool call well formed, is a different thing from the task having been done right.
 
-So how do you do this on your own evals? Reuse the operations piece's golden set, 20 to 50 cases, and run it monthly at k = 5; that is the set the thresholds are read off. The frontier set runs separately at k = 3: it is a harder batch that does not pass yet, there to show where the ceiling is, and it is not used as a threshold. The report has three fixed columns, so every month you are looking at the same numbers; the third number from the opening, the oversight budget's r, is a policy derived from those three columns, and the oversight-budget section is where it gets computed.
+So how do you do this on your own evals? Reuse the operations piece's golden set, 20 to 50 cases, and run it monthly at k = 5; that is the set the thresholds are read off. The frontier set runs separately at k = 3: it is a harder batch that does not pass yet, there to show where the ceiling is, and it is not used as a threshold. The report has three fixed columns, so every month you are looking at the same numbers; the oversight budget is reported separately. It uses the first column together with the reliability target and review effectiveness to estimate the required share, then compares that need with actual review and sustainable capacity. Section 4 works through the calculation.
 
 The three columns look like this:
 
@@ -211,9 +211,9 @@ The three columns look like this:
 
 The most important column in that table is the rightmost one: all three numbers come from something the team owns. If you cannot name that source for a column, that column does not belong in the monthly report.
 
-The source comes before the threshold. **My suggested value (not an industry standard)**: k = 5, and pass^5 ≥ 60% before anything counts as "allowed to run autonomously at low blast radius," meaning the class of PR where a bad change can still be taken back.
+**My suggested values, not an industry standard**: k = 5 and pass^5 ≥ 60% as one condition for considering expanded authority on low-blast-radius tasks. It cannot authorize expansion alone; the other conditions in section 5 and human approval still apply. Low blast radius means bounded impact with a workable recovery path, not simply a task labeled "internal tool."
 
-**Granularity warning**: with fewer than 30 cases in the golden set, report pass^k as a trend only, not as a threshold — 20 cases give a granularity of 5 percentage points, one case flipping takes you from 65% to 60%, and month-to-month noise dominates. If you really want it as a threshold, it has to be met two months in a row.
+**Granularity warning**: with fewer than 30 cases, report pass^k as a trend, not a gate. With 20 cases, one case changes the result by 5 percentage points, from 65% to 60%. The proposal here requires at least 30 cases and two consecutive qualifying months before using it for an authority decision. More months alone do not replace the minimum case count.
 
 Lay three cases out and compute both numbers once, and the difference becomes visible. The one to watch is case B in the middle, which fails exactly once:
 
@@ -259,47 +259,47 @@ flowchart TB
     class P5,D buy
 ```
 
-One sentence to take from this diagram: on the same batch of golden cases, pass@1 of 93% and pass^5 of 67% are two different numbers, not two ways of writing the same one. The first says it is good on average; the second says you cannot let go yet. Authority looks at the latter.
+One sentence to take from this diagram: on the same batch of golden cases, pass@1 of 93% and pass^5 of 67% are two different numbers, not two ways of writing the same one. The first describes average performance; the second describes consistency across repeated runs. An authority decision needs the latter alongside constraint and review requirements.
 
 ---
 
 ## 4. Oversight budget: READY and a simplified model
 
-The last section gave you two numbers; this one deals with their bill: the oversight budget, which is "how much human effort am I planning to spend on review this month." The higher the reliability target, the more people you have to pay to read.
+The last section gave you two numbers; this one deals with their bill: the oversight budget, which is "how much human effort am I planning to spend on review this month." The higher the reliability target, the more human review work you need to arrange.
 
-How to estimate that budget: start with a study that actually computed it. READY is a qualification framework for enterprise agent deployment (September 2026). One idea in it is especially useful here: do not look only at the agent's accuracy, work backward from a reliability target to how much human review an "agent plus human-review policy" needs. What it measured is counterintuitive: two systems only 0.3 percentage points apart in accuracy had human-review requirements that differed by nearly 10 percentage points, and it was the less accurate one that needed fewer people. In this piece READY is used to prove exactly one thing: **the ranking by accuracy is not the ranking by human effort.**
+How to estimate that budget: start with a study that actually computed it. READY is a qualification framework for enterprise agent deployment (September 2026). One idea in it is especially useful here: do not look only at the agent's accuracy, work backward from a reliability target to how much human review an "agent plus human-review policy" needs. What it measured is counterintuitive: two systems only 0.3 percentage points apart in accuracy had human-review requirements that differed by nearly 10 percentage points, and it was the less accurate one that needed less human review. In this piece READY is used to prove exactly one thing: **the ranking by accuracy is not the ranking by human effort.**
 
-Let me be clear about what is borrowed and what is not. Its case is a clinical-audit workflow, not code — only the concept is borrowed here, and none of the numbers transfer. Its reversal, the less accurate system needing fewer people, is not something the simplified model below reproduces either; what I borrow is the sensitivity alone. The full numbers and the domain caveat are in section 8 of the overview. I make no promise of reproducing its numbers, and its method certainly accounts for more than the simplified model below does.
+I borrow the concept, not the numbers. READY uses a clinical audit workflow rather than code and estimates human effort for the system and review policy. The model below only illustrates the connection between accuracy, review effectiveness and a reliability target. It neither reproduces READY's method nor explains the ranking reversal between those two systems. Section 8 of the overview gives the full figures and domain.
 
-**My simplified model (not READY's method)**, which turns "the share of PRs under human review" into something you can compute:
+**My simplified model, not READY's method**, starts with three assumptions: deep reads are randomly sampled within a stratum; detected errors can be successfully corrected before release; and review does not turn correct results into incorrect ones. Let p be success before deep review, r the share deeply reviewed, and c the probability that deep review successfully corrects an existing error. Success after review is p + (1 − p) · r · c. Requiring it to reach T gives:
 
 > r ≥ (T − p) / ((1 − p) · c)
 
-Read plainly, the formula says this: the gap between the target and where you are has to be closed by human eyes, and human eyes only close c of it. The wider the gap and the less reliable the eyes, the larger the share you have to deep-read. The three inputs are:
+The right-hand side is the minimum required review share, called r_min below; the actual r must not fall below it. If T is already no higher than p, the model requires no additional deep reads, though human approval remains. A result above 1 means reviewing everything is insufficient. If c is 0 and a gap remains, review cannot meet the target under this model. The three inputs are:
 
-- **p**: that stratum's **pass@1** on the golden set. Reviewing a single PR uses per-attempt accuracy, not the all-k pass rate. pass^k is reserved for the authority expansion in section 5 and stays out of this formula.
+- **p**: that stratum's **pass@1** on the golden set, used to estimate success before deep review. The cases must represent the tasks being released; a mismatch between the golden set and real work cannot be repaired by inserting the number into a formula. pass^k informs the authority decision in section 5 and does not enter this equation.
 - **T**: the reliability target for that blast-radius tier, which is to say which cell of the review piece's triage matrix (the table that sets review depth by blast radius and verifiability) it sits in. Changing auth or a schema and changing an internal tool do not get the same target.
-- **c**: the probability that human review catches an error.
+- **c**: the probability that an erroneous PR, once selected for deep review, has its error identified and successfully corrected. Detection without correction does not improve success in this model.
 
-Of the three, c is the one most likely to get skipped, and it is the one that decides the most. Compute c from your own history of sampled deep reads: of the deep-read PRs later confirmed to have a defect, what share was caught during the deep read itself. With no history, start at 0.6 and recalibrate monthly.
+c is difficult to estimate, and "our reviewers are senior" is not a substitute. Start with deep-review records whose later outcomes are known, identify errors found and successfully corrected, and track those missed. Undiscovered defects can still be absent from the records, so this remains an estimate. With no history, 0.6 is an illustrative assumption to recalibrate monthly, not measured review performance that can justify expansion.
 
-The human eye is not a safety net, and the testing piece has the numbers: 86 developers judging LLM-written assertions, only 49% of the wrong ones caught and 74% of the right ones recognized. Put a wrong assertion in front of a person, in other words, and there is a one-in-two chance it gets waved through. Those figures measure judging assertions, not catching defects in PR review, and they cannot be used as c directly. Here they are only a warning: the human eye cannot be assumed to be 100%. The c = 0.6 in the worked examples below is that starting value. The human catch rate directly decides how much human effort you pay for.
+The assertion study in the testing piece also cautions against treating human review as an infallible safety net. Among 86 developers, judgment accuracy was 49% for incorrect assertions and 74% for correct ones. That measures assertion judgment, not the probability that PR review successfully corrects an error, so neither figure can be substituted for c. The examples below use c = 0.6 only as an illustrative assumption to explore how review effectiveness affects staffing needs.
 
-Below I work through it with numbers of my own. The point is not to memorize the formula, but to feel one thing first: the share of human review that comes out is usually much higher than intuition suggests.
+Below I work through it with illustrative values. The point is not to memorize the formula, but to feel one thing first: the share of human review that comes out is usually much higher than intuition suggests.
 
 - p = 0.80, T = 0.95, c = 0.6 → r ≥ (0.95 − 0.80) / (0.20 × 0.6) = 1.25. **Even reviewing everything is not enough**; raise p or c first.
-- p = 0.90, T = 0.95, c = 0.6 → r ≥ (0.95 − 0.90) / (0.10 × 0.6) = 0.83. Raising accuracy from 0.80 to 0.90 only turns "even everything is not enough" into "review eighty percent."
-- p = 0.90, c = 0.6, with T lowered to 0.92 → r ≥ 0.02 / 0.06 = 0.33. The target dropped by only three percentage points, and the human effort fell from eighty percent to thirty.
+- p = 0.90, T = 0.95, c = 0.6 → r ≥ (0.95 − 0.90) / (0.10 × 0.6) ≈ 0.8333. Raising accuracy from 0.80 to 0.90 still leaves more than four-fifths needing deep review. If scheduling in whole percentages, allocate at least 84%.
+- p = 0.90 and c = 0.6, with T changed to 0.92 → r ≥ 0.02 / 0.06 ≈ 0.3333, or at least 34% when scheduling whole percentages. This illustrates sensitivity to the target, not a recommendation to lower a reliability commitment to reduce review work.
 
-Put the three examples side by side: p changes first, then T. The first time you run the numbers you will probably find that which cell the reliability target sits in decides human effort more than the agent's accuracy does.
+The examples vary p and then T to expose the cost of different choices. They do not establish that one input always dominates. The questions to bring back to the team are where the target should sit, whether the assumptions are credible and whether the required effort is sustainable.
 
-Where does the r you computed go? Into the review piece's triage matrix. The low-radius, verifiable cell has an item called "deep-read sampling by someone other than the assignee" (someone not assigned to this PR samples it and reads it line by line), and its share is the r computed here. Every cell still has a human reading the report and approving; r only decides what share of those get read line by line.
+The computed r_min is the lower bound for sampled deep review in the review piece. In the low-radius, verifiable cell, someone other than the assigner samples at the actual r, with r ≥ r_min. Not every PR gets line-by-line review, but every PR still requires a human to read the report and approve. Compare r_min with the sustainable ceiling r_budget as well; that becomes an authority condition in section 5.
 
-The sampling has to be stratified as well. Another line from my exam notes: aggregate accuracy hides low performance on particular categories, so use stratified random sampling. Moved to code, there is one more cut inside the same blast-radius cell: task type, repo and agent version, with p computed separately for each.
+The sampling has to be stratified as well. Another line from my exam notes: aggregate accuracy hides low performance on particular categories, so use stratified random sampling. Applied to code review, there is one more cut inside the same blast-radius cell: task type, repo and agent version, with p computed separately for each.
 
 Suppose a team's p looks fine overall, but comes out a good deal lower when schema migrations are counted on their own. Look only at the aggregate and you staff to the flattering number, then pull people away from the very category that needed more of them.
 
-Draw the whole path as one diagram. The 49% and 74% written in the c box are the two numbers of the warning above; they give an order of magnitude, not a measured value of c: the human eye is not 100%. The box to look at is the bottom one: r is not the end of it; stratified sampling still has to catch it:
+The diagram connects estimation with execution. Both p and c need your own data; the 49% and 74% from assertion judgments cannot be inserted as PR-review performance. The formula establishes a minimum, after which the team schedules stratified sampling at or above it:
 
 ```mermaid
 ---
@@ -333,15 +333,15 @@ flowchart TB
     classDef human fill:#e3f2fd,stroke:#1565c0,color:#1f2933
     I1["p: the stratum's pass@1<br/>golden set, per stratum"] --> F["r ≥ (T − p) / ((1 − p) · c)<br/>my simplified model<br/>not READY's method"]
     I2["T: reliability target<br/>tiered by blast radius"] --> F
-    I3["c: human review catch rate<br/>judging assertions: 49%–74%<br/>is c's order of magnitude"] --> F
-    F --> O["oversight budget: r is a budget,<br/>not 'look as much as you can'<br/>p 0.9, T 0.95, c 0.6 → r 0.83"]
+    I3["c: errors successfully corrected<br/>after deep review<br/>estimate from team data"] --> F
+    F --> O["Separate need from capacity<br/>p 0.9, T 0.95, c 0.6<br/>actual deep review at least 84%"]
     O --> S["stratified sampling of deep reads<br/>by task type, repo, agent version<br/>so aggregates hide no weak spot"]
     class I1,I2,I3 human
     class F,O own
     class S buy
 ```
 
-What to take from this diagram is the direction of the arrows: the human-review share is a budget derived backward from the reliability target, not a constant. The worked example in the diagram is mine; compute your own numbers. READY's own worked example is 76% → 29.6%, where the first is a reliability target and the second is the human-review share computed under that target, not a drop along one axis; the full numbers are in the overview.
+What to take from this diagram is the direction of the arrows: the human-review share is a budget derived backward from the reliability target, not a constant. The diagram is my worked example; using it in practice requires recalculating with your own team's data. READY's own worked example is 76% → 29.6%, where the first is a reliability target and the second is the human-review share computed under that target, not a drop along one axis; the full numbers are in the overview.
 
 Three numbers plus a budget: put them together and you have the report that gets handed over every month. It looks like this:
 
@@ -358,37 +358,39 @@ oversight:                  # simplified model, computed per stratum
     p: 0.91
     T: 0.95
     c: 0.60
-    r: 0.74                 # (0.95 - 0.91) / (0.09 * 0.60)
+    r_min: 0.740741          # required minimum, displayed rounded
+    r_budget: 0.80           # illustrative sustainable capacity
+    r: 0.75                 # ceil to whole %: (0.95 - 0.91) / (0.09 * 0.60)
 ```
 
-The part of that report to look at is the last block. Oversight is written per stratum, not as one company-wide number: each stratum has its own p, so it has its own r. The metrics above are measured facts, the block below is the policy you derived from them, and putting both in the same file is the only way to see whether the policy is actually tracking the numbers.
+All numbers in this report are illustrative. The upper part shows measurement fields; the lower part shows a stratified calculation. The given p, T and c yield r_min of approximately 0.7407, so scheduling in whole percentages rounds upward to 0.75. Keep the required share, actual share and sustainable ceiling separate so the report shows both whether capacity is sufficient and whether review actually meets the requirement.
 
-What this section is really for is an ordering: set the reliability target first, then compute how much human review you have to pay for. Not count the reviewers you happen to have, then work backward to how much you dare hand the agent.
+Set the reliability target, estimate the review required, then check whether staffing can sustain it. If it cannot, narrow authority, improve the system or add capacity. Do not conceal the gap behind a more convenient sampling percentage.
 
 ---
 
 ## 5. The gate for expanding authority: back to G2
 
-The four sections so far have given you numbers and a budget. This one connects them to a place where they actually change behavior: whether authority gets expanded to the next batch of teams. That gate already exists in the operations piece: the operations piece has three scaling gates, and this is the second. What this section does is add the reliability side of it.
+The four sections so far have given you numbers and a budget. This one turns those results into a basis for an actual decision: whether authority gets expanded to the next batch of teams. That gate already exists in the operations piece: the operations piece has three scaling gates, and this is the second. What this section does is add the reliability side of it.
 
 The operations piece's G2 had three original conditions: retry rate (the share of agent runs that fail and get retried) under 15%, escape rate (the share of defects found only once they reached production) flat, and the champion system (the seed engineers in each team who push agent adoption part-time) running itself, meaning it keeps moving without a central push. This piece adds four, all labeled "my suggested value (not an industry standard)."
 
 Every threshold uses the same sentence form, "met, and not rising / not falling for two consecutive months," never "falling for consecutive months" — once a steady state gets down to 2% there is nothing left to fall, and the gate can never pass again. Demanding that a metric keep dropping forever amounts to designing the gate to jam at the healthiest moment, and then the whole thing gets torn out.
 
-The small-sample rule is the granularity warning of section 3. With fewer than 30 cases in the golden set, the single number for pass^5 (the point estimate) is not a threshold. Either report it together with its Wilson interval, or wait for "two consecutive months plus at least 30 cases" before using it as a gate. A Wilson interval is a confidence interval for a proportion from a small sample; it turns "I only have twenty-odd cases" into a width you can see on the report.
+The small-sample rule matches section 3: below 30 golden-set cases, report pass^5 as a trend and optionally attach a Wilson confidence interval to show uncertainty, but do not use it as an authority gate. Under this proposal, wait for at least 30 cases and two consecutive qualifying months. Attaching an interval does not itself satisfy that requirement.
 
 The four new conditions are below, and the rightmost column is what each of them is there to block. The mutation score in the third comes from the testing piece (break the code on purpose and see whether the tests go red; the share that do is the score):
 
 | New condition | Threshold | Why |
 |---|---|---|
 | pass^5 on golden set | ≥ 60% for two consecutive months, with at least 30 cases in the golden set; under 30, report a trend or attach the Wilson interval, not a threshold | One success is not reliability |
-| constraint violation rate (share of PRs passing the functional tests that violate a constraint test) | < 10% and not rising for two consecutive months, or already below 5% for two consecutive months | SWE-Gate's 34% is the starting point, not the norm |
+| constraint violation rate (share of PRs passing functional tests that violate a constraint test) | < 10% and not rising for two consecutive months, or already below 5% for two consecutive months | SWE-Gate's 34% illustrates the risk; measure your own baseline |
 | mutation score on agent-changed lines | ≥ 70% for two consecutive months | The testing piece |
-| oversight budget | Human deep-read share ≤ the r computed by section 4's simplified model from your own T and c, and not rising for two consecutive months | The budget is computed, not copied |
+| oversight budget | Required r_min ≤ sustainable r_budget and not rising for two consecutive months; actual deep-read share r ≥ r_min | Enough capacity to meet the target, without under-reviewing |
 
-The row worth looking at is the last one. The thresholds in the first three you can copy; that one you cannot. Its threshold is the r you computed yourself with the formula in the previous section, and it comes out different for every team.
+The last row checks two things: required effort fits within the budget, and actual deep review meets the requirement. r_min is a minimum need; r_budget is a sustainable ceiling. They cannot be represented by the same r. The first three thresholds are also only my starting suggestions and need calibration against your team's data.
 
-Written into the policy file it looks like this, with every entry matching a row in that table:
+The following is a policy design example, not configuration an existing tool can execute directly. It combines the three original conditions with four additions. The oversight condition contains separate checks for capacity and actual execution:
 
 ```yaml
 # agent-policy.yaml excerpt: extends the G2 format from the operations piece
@@ -400,10 +402,12 @@ gates:
         value: 0.15
       - metric: escape_rate
         op: flat_two_months
-      - metric: pass_pow_5            # added in this piece
-        op: ">="
-        value: 0.60
-        for_months: 2
+      - metric: champions_self_sustaining
+        op: "=="
+        value: true
+      - all_of:                     # pass^5 with a minimum sample size
+          - { metric: golden_set_cases, op: ">=", value: 30, for_months: 2 }
+          - { metric: pass_pow_5, op: ">=", value: 0.60, for_months: 2 }
       - any_of:                       # the two branches of that table row
           - { metric: constraint_violation_rate, op: "<", value: 0.10, not_rising_for_months: 2 }
           - { metric: constraint_violation_rate, op: "<", value: 0.05, for_months: 2 }
@@ -411,40 +415,44 @@ gates:
         op: ">="
         value: 0.70
         for_months: 2
-      - metric: deep_read_ratio
-        op: "<="
-        value: computed_r             # section 4's simplified model
-        not_rising_for_months: 2
-    on_fail: hold                     # no expansion: fix the harness or add constraint tests first
+      - all_of:
+          - metric: required_deep_read_ratio
+            op: "<="
+            value: sustainable_review_budget
+            not_rising_for_months: 2
+          - metric: actual_deep_read_ratio
+            op: ">="
+            value: computed_r_min
+    on_fail: hold                     # hold: investigate, then close verification or review gaps
 ```
 
-The line to look at in that excerpt is the last one. `on_fail: hold` means a failed gate is no expansion, not "expand now and fix it later." Writing the gate as a file instead of a slide is exactly what this buys: a file cannot be talked round in a meeting room.
+`on_fail: hold` means no expansion when a condition fails. This YAML still needs an evaluator, trustworthy measurement inputs and protection against unauthorized policy changes before it becomes an enforced gate. A file makes criteria reviewable and traceable; the file alone cannot block a bad decision.
 
-Beyond this gate, three more things have to be added together. The first goes on the gate above this one, against the eval being contaminated by the system itself. G3 (the last of the operations piece's three scaling gates) gets one more condition: the frozen holdout eval must not be touched by the agent or the harness (the layer of interface between the agent and the engineering system, from the harness piece). A frozen holdout eval is a batch of tasks locked away where neither the agent nor the harness can see them, and the only reason it exists is not to be optimized against.
+Three safeguards sit alongside this gate. First, at G3, the last scaling gate in the operations piece, retain a frozen holdout eval isolated from routine development and self-improvement. Evaluation may present the task to the agent, but an independent evaluation process keeps the answer key and scoring assets away from it. Repeatedly feeding results back must not turn the holdout into a practice set.
 
-Why lock it down that hard? A September 2026 study documents a case from a production self-improvement loop: the agent found a cached answer key, scored 100%, and its real capability was 68%. It was not trying to deceive anyone. It found a shorter path, and that path was one you had not blocked off.
+Why lock it down that hard? A September 2026 study documents a case from a production self-improvement loop: the agent found a cached answer key, scored 100%, and its real capability was 68%. Access to the answer key made the score a poor measure of capability. The behavior alone does not establish the agent's intent.
 
 The second is canaries: a small set of probe tasks mixed into production traffic, there to confirm that the numbers from the lab still hold in the real environment.
 
 The third is the judge trap. A judge is one model scoring another agent's output, and the rubric is the scoring sheet you hand it. Section 2 of the operations piece listed three traps; the fourth one goes here: do not let the transcript (the execution record the agent writes about itself) prove itself.
 
-Trap 1 there was about tone: judges prefer long answers and a confident voice. An August 2026 trajectory-judge study read 400 trajectories (see the paper for the task domain) and measured a more specific layer: an agent fabricating action claims of "I did X" fools a step-rubric judge 82% of the time — of every ten fabricated claims, eight get taken as actually done. A step-rubric judge scores step by step against the rubric, and what it is reading is precisely the process the agent wrote down about itself.
+Trap 1 there was about tone: judges prefer long answers and a confident voice. An August 2026 trajectory-judge study analyzed 400 trajectories (see the paper for the task domain) and measured a more specific problem: an agent fabricating action claims of "I did X" fools a step-rubric judge 82% of the time — of every ten fabricated claims, eight get taken as actually done. A step-rubric judge scores step by step against the rubric, and what it is reading is precisely the process the agent wrote down about itself.
 
-So the factual items a rubric binds to have to be verifiable from the environment — test results, constraint results, traces (the call trail the system recorded) — not from the transcript. The agent saying it ran the tests, and that run actually appearing in the CI record, are two things you can check against each other. The first is the agent talking about itself; the second is not.
+So the facts used for rubric scoring have to be verifiable from environment records — test results, constraint results, traces (the call trail the system recorded) — not from the transcript. The agent saying it ran the tests, and that run actually appearing in the CI record, are two things you can check against each other. The first is the agent talking about itself; the second is not.
 
-Back to the gate. "No expansion" is also a decision. If pass^k drops, go back and fix the harness first (see the harness piece), and do not push through. If constraint violations rise, add constraint tests first, and do not push through there either. How much verification to buy, and which to buy first, is section 10 of the overview.
+Back to the gate: no expansion is a decision too. If pass^k falls, examine task composition and model or harness changes before diagnosing the cause. If constraint violations rise, identify the violated rules and investigate regressions or missed checks. The metrics tell us where to investigate; they do not by themselves prove that the remedy is a harness fix or an extra test.
 
 But when the numbers are all good, expand — do not stage a fake no just to "prove the gate works." A gate earns its credibility by moving in both directions: it holds, and it also lets things past. But these four new conditions share one blind spot.
 
-All four new conditions have to wait for a PR to come in and the monthly report to come out before they can be computed at all. What do you look at in between two reports? Not one of the four answers that.
+These four conditions use accumulated monthly evidence for an authority decision, although some measurements can update continuously. They do not directly answer another question: does the agent repeatedly attempt to cross its permission boundary? That needs an additional runtime signal.
 
 PagerDuty works in on-call and incident management, and in September 2026, at AGNTCon Japan in Tokyo (a technical conference for the agent field), it talked about its own SRE agent. The speaker, Inês Bolaños, positioned it as co-pilot, not captain: the slide that drew the line was titled "THE RED LINE", with one sentence on it, "drafts a fix command. It never touches production." — it drafts the fix command, and production is read-only to it, never written.
 
-That red line is the same line as "touching them gets it nowhere" in the constraint-tests section. The difference is that there it is design and here it is measurement: only once the line is drawn hard can you measure how often the agent runs into it.
+That red line serves the same purpose as the earlier rule that changes cannot merge into main without human approval. The constraint-tests section designs the permission boundary; here the task is to measure the agent's behavior. Once the boundary is clear, it becomes possible to record how often the agent tries to cross it and how often those attempts are intercepted.
 
-The H.I.R.E. evaluation framework she presented has one metric that measures exactly this, Red Line Rate: the share of actions the agent suggests or executes that a permission check, a blocklist or a security check rejects. The permission layer emits it directly, it needs no golden set, and it does not wait for a PR or a monthly report — the reliability section's rule, that a column you cannot name a source for does not belong in the monthly report, is one this metric can answer.
+The H.I.R.E. evaluation framework she presented lists five metrics, including one for these attempts to cross the boundary: Red Line Rate: the share of actions the agent suggests or executes that a permission check, a blocklist or a security check rejects. The permission layer emits it directly, it needs no golden set, and it does not wait for a PR or a monthly report — the reliability section's rule, that a column you cannot name a source for does not belong in the monthly report, is one this metric can answer.
 
-For me it is an observation for now, not a threshold: this gate only takes numbers with two months of baseline behind them, and Red Line Rate does not have that yet. It goes into the monthly report first, and once two months have accumulated we can talk about the gate. That makes it the one number outside the gate that moves before an expansion happens: no waiting for the month to close, you can look at it any time.
+I would first include Red Line Rate as an observation in the monthly report, collect two months of data, then assess whether it merits a threshold. It adds a runtime boundary signal; it is not the only metric available for ongoing observation. A rising rate also needs diagnosis: more prohibited attempts, changed permissions or false blocks of allowed actions can all require different responses.
 
 The gate itself is still seven conditions. Stack the original conditions and the new ones together and you have the gate as it now stands. The thing to look at is the diamond in the middle: it is an and, not a vote:
 
@@ -484,51 +492,51 @@ flowchart TB
     end
     subgraph add["Four added here: my suggested values"]
         direction TB
-        N1["pass^5 on golden set ≥ 60%<br/>two consecutive months"] ~~~ N2["constraint violation rate<br/>#lt; 10%, not rising for 2 months"]
-        N2 ~~~ N3["agent-changed lines<br/>mutation score ≥ 70%"] ~~~ N4["deep-read share ≤ the model's r<br/>not rising for 2 months"]
+        N1["pass^5 ≥ 60%<br/>at least 30 cases<br/>two consecutive months"] ~~~ N2["constraint violations<br/>#lt; 10%, 2 months no rise<br/>or #lt; 5% for 2 months"]
+        N2 ~~~ N3["agent-changed lines<br/>mutation score ≥ 70%<br/>two consecutive months"] ~~~ N4["r_min ≤ r_budget<br/>r ≥ r_min<br/>r_min not rising, 2 months"]
     end
     cur --> G{{"G2: expand authority?"}}
     add --> G
     G -->|all pass| Y["expand to the next<br/>batch of teams"]
-    G -->|any fails| K["hold: fix the harness<br/>or add constraint tests first"]
+    G -->|any fails| K["hold: investigate the cause<br/>close verification or review gaps"]
     class N1,N2,N3,N4 own
     class G buy
     class K human
 ```
 
-What to take from this diagram is the shape G2 now has: three original conditions plus four new ones, and all seven have to pass. Six is not a pass. This gate has no cell for "close enough."
+What to take from this diagram is the shape G2 now has: three original conditions plus four new ones, and all seven have to pass. Meeting only six still does not allow autonomy to expand. This gate has no cell for "close enough."
 
 ---
 
 ## 6. Closing and handoff
 
-The last section wrote the four new conditions into that gate, and with that everything this piece had to hand over is handed over. What is left is to go back to the gap in the opening. What SWE-Gate measured is not that agents cannot write code; it is that "the tests are green" never promised what you took it to promise. The trilogy went from the testing piece through the review piece to this one, and all three are working on the same gap. A green build is a check, and a check does not volunteer what it did not measure.
+The last section wrote four new conditions into the autonomy gate. Looking back at the opening gap from here makes it clearer why the work needed to go this far. What SWE-Gate measured is not that agents cannot write code; it is that "the tests are green" never promised what you took it to promise. The trilogy went from the testing piece through the review piece to this one, and all three are working on the same gap. A green build is a check, and a check does not volunteer which problems it did not cover.
 
-This piece breaks that gap into three things you can measure. Three numbers go into the monthly report: constraint pass rate, pass^5, and the oversight budget's r. They are not three views of one thing; they are three different questions.
+This piece breaks that gap into three metrics that can be measured or calculated. The monthly report presents constraint pass rate, pass^5, and human-review needs alongside the actual share and sustainable capacity. They answer three different questions.
 
-The first question is rules. Constraint pass rate answers whether this agent kept the rules the team laid down. Those rules used to live only in review comments, kept alive by somebody remembering and saying them again. Written as constraint tests, they live in CI instead, and no person has to be that memory any more.
+The first question is rules. Constraint pass rate answers whether this agent kept the rules the team laid down. Those rules used to remain in review comments. The next time the same problem appeared, a colleague had to remember and raise it again. Once they become constraint tests, CI can keep checking them, and the team no longer has to place that burden of memory on the same person.
 
 The second question is steadiness. pass^k answers whether what it managed this time it will still manage next time. Between succeeding once and succeeding several times in a row sits the question of whether you dare let go.
 
-The third question is the bill. r answers how much human effort you pay to cover the part that steadiness does not cover on its own. It is derived backward from the reliability target, not called out by feel.
+The third question is the bill. r_min gives the minimum human review needed to reach the target; r records the share actually reviewed, and r_budget is the sustainable ceiling. Together, they show whether capacity is sufficient and the required review is being done.
 
-On the gate side, G2 gains four conditions. The point of adding them is not to pile the bar higher but to change what is being judged. The old question was whether the agent finished the task; the new one is whether it can finish it verifiably, steadily, and at a review cost you can afford. Those three adjectives are the three numbers above, in the same order.
+G2 already tracks retries, escaped defects and the champion system. The four new conditions add test effectiveness, team constraints, repeat-run consistency and human-review requirements. Together they help the team judge whether this class of tasks has sufficient verification and whether it can sustain the work that broader authority would bring.
 
 All four are my suggested values, not an industry standard, and the thresholds themselves should be rewritten by your own data. What I want to leave behind is not the numbers but the habit of arguing about expanded authority against numbers at all.
 
-Next month's contracts piece picks up the other half of the split made earlier here: the constraints that come from the spec. How two kinds of constraint with different origins sit in the same CI, and how their owners and expiry dates get arranged, is left to that piece.
+Next month's contracts piece picks up the other half of the split made earlier here: the constraints that come from the spec. How two kinds of constraint with different origins sit in the same CI, and who maintains them and when they should be reviewed again, is left to that piece.
 
 November also turns pass^k over to its other side: pass^k is the outcome side of "run the same spec N times"; November measures the variance side, the structure of the implementations. Five runs of the same spec all passing does not mean the code came out the same way five times, and that is a different kind of variance.
 
-There is one more thing at the end of the year. The two numbers pass^k and r do not stop at the monthly report — they become SLIs in December. An SLI is a service level indicator, the number actually measured behind the level a service promises to the outside. When a number goes from the monthly report to an SLI, it goes from a number you look at yourself to a number you are answerable to someone else for. That is why granularity, sample size and the handling of small samples have to be spelled out now.
+One question remains for the end of the year: how these offline evaluations and review budgets connect to production reliability. December will distinguish offline gates from SLIs, service level indicators measured from actual service operation. pass^k and r do not become SLIs simply by appearing in a monthly report. Their measurement target, time window and data sources still need separate design.
 
-If there is only one thing to take away, it is the order of the three layers below: a green build at the bottom, constraint tests in the middle, pass^k on top. r is not on that axis — it is the bill that comes due once all three have been computed. I do not think they can be swapped, because each layer above assumes the one below it already holds.
+If there is one sequence to retain, I would first establish meaningful checks of functionality and team constraints, then assess consistency across repeated tasks. The success criterion for pass^k must include those requirements, or it can describe consistently missing the same problem. Human review is a separate axis: estimate the need under the chosen target and assumptions, then confirm sufficient capacity and actual review at or above the minimum.
 
-It is not hard to picture what the reverse order looks like. A team sees that the agent writes well, so it loosens authority first, goes back to fill in the team's rules afterward, and only then finds out that the functional tests were never measuring what they should have been. Every step on that path looks reasonable on its own; put together, they leave the weakest layer holding everything else up.
+It is not hard to picture what the reverse order looks like. A team sees that the agent writes well, so it loosens authority first, goes back to fill in the team's rules afterward, and only then finds out that the functional tests were never checking the behavior that needed verification. Every step on that path looks reasonable on its own; put together, they leave the weakest layer holding everything else up.
 
-> **A green build tells you the agent did not break the functionality; constraint tests tell you whether it kept the team's rules; pass^k tells you whether you can let go. You need all three, and the order cannot be reversed.**
+> **Green tells you the functional checks that ran did not fail. Constraint tests add the team's rules; pass^k checks consistency across repeated attempts. Together they inform authority decisions. None can vouch for the other two.**
 
-That is the end of the trilogy. It started from one question: when the tests were written by the agent, does a green build still count? It does, but only for the layer it measured. Everything it left out is where these three numbers take over.
+That is the end of the trilogy. It started from one question: when the tests were written by the agent, does a green build still count? It does, but only for the layer it actually checked. The remaining constraints, consistency and human-review requirements are what these three numbers keep track of.
 
 ---
 

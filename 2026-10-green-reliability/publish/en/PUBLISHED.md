@@ -1,8 +1,8 @@
 # Publication record (English edition)
 
-**Title** Part 3 — The 34% SWE-Gate Found Behind a Green Build
+**Title** Green Is Not Done, Part 3 — The 34% SWE-Gate Found Behind a Green Build: Constraint Tests, pass^k and the Gate for Expanding Autonomy
 **Post ID** `4b6d147bff0d`（draft https://medium.com/p/4b6d147bff0d/edit；stable URL after publishing https://medium.com/p/4b6d147bff0d）
-**Schedule** 2026-10-29（三）09:00 GMT+8（two days after the Chinese edition, same week）
+**Schedule** 2026-10-29（四）09:00 GMT+8（2026-09-23 已重新讀取 Medium 排程確認）
 **Built with** `./tools/medium_draft.sh 2026-10-green-reliability en`, block-by-block verification clean
 
 ## Settings
@@ -10,7 +10,7 @@
 | Item | Value |
 |---|---|
 | Topics | Software Testing、Code Review、AI、Software Engineering、Engineering Management |
-| Preview image | Medium default, first figure (`diagram-01.png`) |
+| Preview image | `diagram-02.png`（`1*R6TYJinsdAM_d3U30wrV6Q.png`，2026-09-23 已核對） |
 | Notify subscribers | yes (default) |
 
 ## Status (2026-09-07)
@@ -96,3 +96,26 @@ Section 1 now says where the 34% came from (the overview's three-layer table lea
 
 **排程未受影響**：仍是 Oct 29, 1:00 AM (UTC)。八篇的時段與 Post ID 全部不變（第四次量到）。
 **封面圖**：被重設，已還原成 `1*R6TYJinsdAM_d3U30wrV6Q.png`，/submission 頁讀回確認。注意 Stories → Scheduled 上，卡片縮圖仍顯示舊的 `1*GIFtopFIBTu6FEE9q44RiA.jpeg`，那是 Medium 自己的社群卡快取，不是實際預覽圖——核對要以 /submission 為準。
+
+## 逐句精修與 Medium 同步（2026-09-23）
+
+依作者確認的共用風格，補足動作敘述中的對象與目的，調整敘事承接，並精修指涉、因果、
+證據的適用範圍與數字定義。中文與英文正文、發布稿及本輪變更的圖表同步更新。
+
+以 `./tools/medium_draft.sh 2026-10-green-reliability en --post 4b6d147bff0d` 就地更新既有排程文章。等待儲存完成後，
+另開新分頁從 Medium 讀回，`verify_draft.py` 逐塊比對通過：
+
+| 核對項目 | 結果 |
+|---|---|
+| 文字區塊 | 151 個，逐塊相符 |
+| 連結 | 23 個，目的地與本次發布稿相符 |
+| 圖片 | 7 張，槽位及圖檔識別碼與本次發布稿相符 |
+| 分隔線 | 10 條，數量相符 |
+| 殘留圖片 placeholder | 0 |
+
+封面已選回 `diagram-02.png`，重新載入發布設定後確認識別碼為
+`1*R6TYJinsdAM_d3U30wrV6Q.png`。正文標題與預覽文字已核對。
+
+Post ID、五個 Topics、訂閱通知設定與排程均保留。發布設定讀回的時間為
+**2026-10-29（四）09:00 GMT+8**，文章仍是排程狀態；本次沒有重新排程或提前發布。
+發布紀錄原先誤寫的星期已依這個時間校正。

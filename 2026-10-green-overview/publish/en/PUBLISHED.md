@@ -2,7 +2,7 @@
 
 **Title** Green Is Not Done: Testing, Review and Reliability for Agent Output
 **Post ID** `c4fc9f3d8581`（draft https://medium.com/p/c4fc9f3d8581/edit；stable URL after publishing https://medium.com/p/c4fc9f3d8581）
-**Schedule** 2026-10-08（三）09:00 GMT+8（two days after the Chinese edition, same week）
+**Schedule** 2026-10-08（四）09:00 GMT+8（2026-09-23 已重新讀取 Medium 排程確認）
 **Built with** `./tools/medium_draft.sh 2026-10-green-overview en`, block-by-block verification clean
 
 ## Settings
@@ -10,7 +10,7 @@
 | Item | Value |
 |---|---|
 | Topics | Software Testing、Code Review、AI、Software Engineering、Engineering Management |
-| Preview image | Medium default, first figure (`diagram-01.png`) |
+| Preview image | `diagram-04.png`（`1*AGrOkMD2NUf4FXaZ2-bI-A.png`，2026-09-23 已核對） |
 | Notify subscribers | yes (default) |
 
 ## Status (2026-09-07)
@@ -58,3 +58,26 @@ CDN hash 記進 `.context/cover-check/baseline-2026-09-18.json`（與 2026-09-16
 The prose is unchanged; the section-3 figure's subgraph title changed (the old one contradicted the piece's own prose), so diagram-02.png was re-rendered and a refill was needed to ship the new image.
 `verify_draft.py` 通過。封面同樣被重設，同樣用頁內選擇器點回原本那張；排程未動。
 重新算繪的 diagram-02 與原圖尺寸完全相同（zh 664x836、en 664x914），兩種語言都 PASS MERMAID.md。
+
+## 逐句精修與 Medium 同步（2026-09-23）
+
+依作者確認的共用風格，補足動作敘述中的對象與目的，調整敘事承接，並精修指涉、因果、
+證據的適用範圍與數字定義。中文與英文正文、發布稿及本輪變更的圖表同步更新。
+
+以 `./tools/medium_draft.sh 2026-10-green-overview en --post c4fc9f3d8581` 就地更新既有排程文章。等待儲存完成後，
+另開新分頁從 Medium 讀回，`verify_draft.py` 逐塊比對通過：
+
+| 核對項目 | 結果 |
+|---|---|
+| 文字區塊 | 198 個，逐塊相符 |
+| 連結 | 29 個，目的地與本次發布稿相符 |
+| 圖片 | 18 張，槽位及圖檔識別碼與本次發布稿相符 |
+| 分隔線 | 16 條，數量相符 |
+| 殘留圖片 placeholder | 0 |
+
+封面已選回 `diagram-04.png`，重新載入發布設定後確認識別碼為
+`1*AGrOkMD2NUf4FXaZ2-bI-A.png`。正文標題與預覽文字已核對。
+
+Post ID、五個 Topics、訂閱通知設定與排程均保留。發布設定讀回的時間為
+**2026-10-08（四）09:00 GMT+8**，文章仍是排程狀態；本次沒有重新排程或提前發布。
+發布紀錄原先誤寫的星期已依這個時間校正。

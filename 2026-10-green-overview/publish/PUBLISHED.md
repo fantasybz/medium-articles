@@ -1,8 +1,8 @@
 # 發布紀錄
 
-**標題** 總論：綠燈不是驗收—agent 時代的測試、Review 與可靠度
+**標題** 綠燈不是驗收：agent 時代的測試、Review 與可靠度
 **Post ID** `582f24223eea`（草稿／排程網址 https://medium.com/p/582f24223eea/edit；上線後的穩定短網址 https://medium.com/p/582f24223eea）
-**排程** 2026-10-06（一）09:00 GMT+8（尚待作者確認；2026-09-07 以 Publish 對話框的 Schedule for later 設定，見下方狀態）
+**排程** 2026-10-06（二）09:00 GMT+8（2026-09-23 已重新讀取 Medium 排程確認）
 **建立方式** `./tools/medium_draft.sh 2026-10-green-overview`，逐塊比對零差異（見 [PUBLISHING.md](../../PUBLISHING.md)）
 
 ## 設定
@@ -10,7 +10,7 @@
 | 項目 | 值 |
 |---|---|
 | Topics | Software Testing、Code Review、AI、Software Engineering、Engineering Management |
-| 封面圖 | Medium 預設第一張 figure（`diagram-01.png`，是圖不是表格，未改） |
+| 封面圖 | `diagram-04.png`（`1*q2k7_AHpOTz2bU-HpP9ioA.png`，2026-09-23 已核對） |
 | Notify subscribers | 是（預設） |
 | 發布位置 | 個人 profile，未投稿 publication |
 
@@ -18,7 +18,7 @@
 
 - [x] 排程完成：2026-09-07 18:12 設定，Stories 頁 Scheduled 清單顯示 Oct 6, 1:00 AM（UTC，即 09:00 GMT+8）；同一篇多出來的重複草稿 `3e2b234fd2e7` 已刪除
 - 系列連結：本篇連到「發布時已上線」的篇；其餘保留「（即將發布）」，上線後用 `medium_patch.py subst` 回填（見 PUBLISHING.md〈目前的發布佇列〉）
-- 英文版：`publish/en/PUBLISHED.md`（Post ID `c4fc9f3d8581`，排程 2026-10-08（三）09:00）
+- 英文版：`publish/en/PUBLISHED.md`（Post ID `c4fc9f3d8581`，排程 2026-10-08（四）09:00）
 
 ## 上線後核對（發布後填）
 
@@ -68,3 +68,26 @@ CDN hash 記進 `.context/cover-check/baseline-2026-09-18.json`（與 2026-09-16
 正文一字未動，但第三節那張圖的 subgraph 標題從「三層，各一個 in-domain 錨點」改成「三層與它們的錨點」（原標題跟總論第 131 行自己的散文矛盾），diagram-02.png 因此重畫，必須重灌才會換到新圖。
 `verify_draft.py` 通過。封面同樣被重設，同樣用頁內選擇器點回原本那張；排程未動。
 重新算繪的 diagram-02 與原圖尺寸完全相同（zh 664x836、en 664x914），兩種語言都 PASS MERMAID.md。
+
+## 逐句精修與 Medium 同步（2026-09-23）
+
+依作者確認的共用風格，補足動作敘述中的對象與目的，調整敘事承接，並精修指涉、因果、
+證據的適用範圍與數字定義。中文與英文正文、發布稿及本輪變更的圖表同步更新。
+
+以 `./tools/medium_draft.sh 2026-10-green-overview --post 582f24223eea` 就地更新既有排程文章。等待儲存完成後，
+另開新分頁從 Medium 讀回，`verify_draft.py` 逐塊比對通過：
+
+| 核對項目 | 結果 |
+|---|---|
+| 文字區塊 | 198 個，逐塊相符 |
+| 連結 | 28 個，目的地與本次發布稿相符 |
+| 圖片 | 18 張，槽位及圖檔識別碼與本次發布稿相符 |
+| 分隔線 | 16 條，數量相符 |
+| 殘留圖片 placeholder | 0 |
+
+封面已選回 `diagram-04.png`，重新載入發布設定後確認識別碼為
+`1*q2k7_AHpOTz2bU-HpP9ioA.png`。正文標題與預覽文字已核對。
+
+Post ID、五個 Topics、訂閱通知設定與排程均保留。發布設定讀回的時間為
+**2026-10-06（二）09:00 GMT+8**，文章仍是排程狀態；本次沒有重新排程或提前發布。
+發布紀錄原先誤寫的星期已依這個時間校正。
