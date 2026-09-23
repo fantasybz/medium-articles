@@ -1,5 +1,10 @@
+// HISTORICAL RECORD ONLY (superseded 2026-09-23): do not run or reuse this workflow.
+// Its prompts preserve the retired voice rules for traceability, not current guidance.
+// Historical handbook references point to research/2026-09/voice_brief.history.md.
+// For new writing or review, read STYLE.md and research/2026-09/voice_brief.md,
+// then the current month's style_brief.md; use the reusable research/workflows/ scripts.
 // REQUIRES (not in the repo): the mechanical gates this run was verified with live in
-// .context/quality/, which is gitignored — p-check.sh (voice_brief §9.2 invariants vs git
+// .context/quality/, which is gitignored — p-check.sh (voice_brief.history §9.2 invariants vs git
 // HEAD, plus num-exceptions.txt), protected-check.sh (+ protected.json), mirror-check.sh,
 // voice-check.sh. So this file is a readable record, not a runnable template. Promoting
 // them into research/scripts/ is worth doing and is NOT a copy job: p-check.sh diffs
@@ -7,7 +12,7 @@
 // base-ref argument and a test before it becomes repo API.
 export const meta = {
   name: 'research-2026-10-quality-finish',
-  description: 'Finish the October readability pass: the voice pass for the two articles whose lenses died, the recovered voice revision for Review, the zh-tw gate for all four, a final fidelity+reader verification, and a zh/en mirror audit that closes the one EN-only orphan sentence.',
+  description: 'HISTORICAL RECORD ONLY — do not run or reuse. Finish the October readability pass: the voice pass for the two articles whose lenses died, the recovered voice revision for Review, the zh-tw gate for all four, a final fidelity+reader verification, and a zh/en mirror audit that closes the one EN-only orphan sentence.',
   phases: [
     { title: 'Voice', detail: 'the two articles whose lenses died, plus the recovered findings for Review' },
     { title: 'zh-tw', detail: 'Taiwan-usage gate over the changed lines — all four' },
@@ -20,7 +25,7 @@ const ROOT = args.root
 const TODAY = args.today
 const Q = ROOT + '/.context/quality'
 const REC = Q + '/recovered'
-const VOICE = ROOT + '/research/2026-09/voice_brief.md'
+const VOICE = ROOT + '/research/2026-09/voice_brief.history.md'
 const STYLE = ROOT + '/research/2026-09/style_brief.md'
 const DIGEST = ROOT + '/research/2026-10/conference_digest.md'
 const NOTES = ROOT + '/.context/research/2026-09-conf/notes_sep10.md and ' + ROOT + '/.context/research/2026-09-conf/notes_sep11.md'
@@ -36,8 +41,8 @@ const common = (a) => `Repo root ${ROOT}; absolute paths only; never cd out of i
 FILE: ${ROOT}/${a.dir}/article.md — ${a.name} of the October series, the author's own Traditional-Chinese prose, already written and scheduled on Medium but not yet published. The English edition ${ROOT}/${a.dir}/article.en.md is handled by the LAST stage of this run; do not touch it in this stage.
 WHERE THIS RUN IS: a readability pass already applied, in this order, 術語 gloss → 脈絡與句子 → the AGNTCon/book insertion paragraphs → a two-lens verification and fix → the English mirror. All of that is in the working tree (git diff HEAD shows it). What is left is the voice pass, the zh-tw gate, one last verification and the mirror audit. Do not redo earlier stages.
 DIAGNOSIS: ${Q}/${a.dir}.zh.md — the editor's audit that drove the pass, with verbatim quotes and line numbers. Line numbers were taken at git HEAD and every stage since has shifted them: ALWAYS locate text by verbatim quote (grep -nF), never by line number.
-STANDARDS: ${VOICE} — read with sed: §9.2 (lines 558–599, the eighteen untouchables), §9.3 (600–607, how a gloss is written), §9.4 (608–619, the protected claims), and §十 (659 to end: fifteen before/after examples the author approved in September — imitate their shapes, do not invent new ones). ${STYLE} for the series voice.
-HARD RULES (voice_brief §9.2; the gates below check them mechanically): P1 every number and its precision unchanged; P2 a number's qualifier stays in the same sentence or paragraph; P3 names of studies, tools, communities stay verbatim — add "what it is" beside a name, never replace it; P4 Uncle Bob, Teddy, Böckeler, James Bach keep their names; P5 every link unchanged; P6 mermaid blocks and their positions unchanged; P7 tables keep columns, rows, order and cell text (an overlong cell may be lifted into prose); P8 code/yaml/text blocks unchanged to the character; P9 headings unchanged; P10/§9.4 the protected claims stay verbatim — never add 可能／或許／建議／在某些情況下, never 只能→最好, never 不看→較不倚重; P11 every 誠信裝置 (self-disclosure, hedge on evidence, "筆者的判斷") stays — may be split into its own sentence, never deleted, merged or weakened; P12 the TL;DR block is untouched entirely; P13 the series navigation line and the 系列文章 block untouched; P14 References untouched; P15/P16 the AI 協作說明 and the closing Medium line untouched; P17 the lines that defer to 11 月／12 月 untouched — do not import November or December material; P18 English technical terms stay English; new prose uses the single "—", never "——".
+STANDARDS: ${VOICE} — read with sed: §9.2 (lines 564–605, the eighteen untouchables), §9.3 (606–613, how a gloss is written), §9.4 (614–625, the protected claims), and §十 (665 to end: fifteen before/after examples the author approved in September — imitate their shapes, do not invent new ones). ${STYLE} for the series voice.
+HARD RULES (voice_brief.history §9.2; the gates below check them mechanically): P1 every number and its precision unchanged; P2 a number's qualifier stays in the same sentence or paragraph; P3 names of studies, tools, communities stay verbatim — add "what it is" beside a name, never replace it; P4 Uncle Bob, Teddy, Böckeler, James Bach keep their names; P5 every link unchanged; P6 mermaid blocks and their positions unchanged; P7 tables keep columns, rows, order and cell text (an overlong cell may be lifted into prose); P8 code/yaml/text blocks unchanged to the character; P9 headings unchanged; P10/§9.4 the protected claims stay verbatim — never add 可能／或許／建議／在某些情況下, never 只能→最好, never 不看→較不倚重; P11 every 誠信裝置 (self-disclosure, hedge on evidence, "筆者的判斷") stays — may be split into its own sentence, never deleted, merged or weakened; P12 the TL;DR block is untouched entirely; P13 the series navigation line and the 系列文章 block untouched; P14 References untouched; P15/P16 the AI 協作說明 and the closing Medium line untouched; P17 the lines that defer to 11 月／12 月 untouched — do not import November or December material; P18 English technical terms stay English; new prose uses the single "—", never "——".
 VOICE: allowed connectives are only 但／所以／也就是說／其實／實際上／事實上／相反 (never 因此／然而／但是／於是／不過／當然／換句話說／首先／其次／總之); continuity comes from 冒號導引句, 時間副詞 and 代詞回指; new text says 我, not 筆者; 讀者 is a forbidden word except where it names real people who replied; no imperatives at the reader; a paragraph ends on a judgement, not on a deposited fact.
 METHOD: Edit tool, one change at a time, verbatim old_string; never Write the whole file, never a sed/python rewrite script.
 GATES — run both at the end and paste the output; both must pass, fix before returning if not:

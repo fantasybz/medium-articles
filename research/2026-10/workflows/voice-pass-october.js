@@ -1,6 +1,11 @@
+// HISTORICAL RECORD ONLY (superseded 2026-09-23): do not run or reuse this workflow.
+// Its prompts preserve the retired voice rules for traceability, not current guidance.
+// Historical handbook references point to research/2026-09/voice_brief.history.md.
+// For new writing or review, read STYLE.md and research/2026-09/voice_brief.md,
+// then the current month's style_brief.md; use the reusable research/workflows/ scripts.
 export const meta = {
   name: 'research-2026-10-voice-pass',
-  description: 'Make every sentence inserted into the four October articles read as if the author wrote it: two lenses per article judge the new lines against the 91K-character voice manual and against the rhythm of the paragraph they landed in, then one reviser rewrites ONLY those lines and re-proves that the author original is byte-intact.',
+  description: 'HISTORICAL RECORD ONLY — do not run or reuse. Make every sentence inserted into the four October articles read as if the author wrote it: two lenses per article judge the new lines against the 91K-character voice manual and against the rhythm of the paragraph they landed in, then one reviser rewrites ONLY those lines and re-proves that the author original is byte-intact.',
   phases: [
     { title: 'Judge', detail: 'per article: voice-manual rules lens + ear/rhythm lens, zh and en' },
     { title: 'Revise', detail: 'rewrite only the inserted lines; prove the original is untouched' },
@@ -9,7 +14,7 @@ export const meta = {
 
 const ROOT = args.root
 const TODAY = args.today
-const VOICE = `${ROOT}/research/2026-09/voice_brief.md`
+const VOICE = `${ROOT}/research/2026-09/voice_brief.history.md`
 const STYLE = `${ROOT}/research/2026-09/style_brief.md`
 const ARTICLES = args.articles
 

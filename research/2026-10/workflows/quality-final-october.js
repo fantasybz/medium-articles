@@ -1,5 +1,10 @@
+// HISTORICAL RECORD ONLY (superseded 2026-09-23): do not run or reuse this workflow.
+// Its prompts preserve the retired voice rules for traceability, not current guidance.
+// Historical handbook references point to research/2026-09/voice_brief.history.md.
+// For new writing or review, read STYLE.md and research/2026-09/voice_brief.md,
+// then the current month's style_brief.md; use the reusable research/workflows/ scripts.
 // REQUIRES (not in the repo): the mechanical gates this run was verified with live in
-// .context/quality/, which is gitignored — p-check.sh (voice_brief §9.2 invariants vs git
+// .context/quality/, which is gitignored — p-check.sh (voice_brief.history §9.2 invariants vs git
 // HEAD, plus num-exceptions.txt), protected-check.sh (+ protected.json), mirror-check.sh,
 // voice-check.sh. So this file is a readable record, not a runnable template. Promoting
 // them into research/scripts/ is worth doing and is NOT a copy job: p-check.sh diffs
@@ -7,7 +12,7 @@
 // base-ref argument and a test before it becomes repo API.
 export const meta = {
   name: 'research-2026-10-quality-final',
-  description: 'The last seven reader-lens findings that fall inside the approved scope — the opening roadmap sentence, three passages read a second or fourth time, a self-referential clause, a counting ambiguity, and the Bach paragraph this pass pushed past the punchline — applied, verified and mirrored.',
+  description: 'HISTORICAL RECORD ONLY — do not run or reuse. The last seven reader-lens findings that fall inside the approved scope — the opening roadmap sentence, three passages read a second or fourth time, a self-referential clause, a counting ambiguity, and the Bach paragraph this pass pushed past the punchline — applied, verified and mirrored.',
   phases: [
     { title: 'Apply', detail: 'seven findings, one agent per article' },
     { title: 'Verify', detail: 'fidelity lens, then fix' },
@@ -17,7 +22,7 @@ export const meta = {
 
 const ROOT = args.root
 const Q = ROOT + '/.context/quality'
-const VOICE = ROOT + '/research/2026-09/voice_brief.md'
+const VOICE = ROOT + '/research/2026-09/voice_brief.history.md'
 
 const ITEMS = {
   '總論': [],
@@ -66,7 +71,7 @@ const ISSUES = { type: 'object', required: ['checked', 'issues'], properties: {
 const apply = (a) => `Repo root ${ROOT}; absolute paths only; never cd. FILE: ${ROOT}/${a.dir}/article.md — ${a.name} of the October series, the author's own Traditional-Chinese prose.
 A readability pass and a repair pass have already run; this is the last set. A reader lens read the finished article end to end and named these places. They are in the author's ORIGINAL prose, so be conservative: make the smallest change that fixes what is named, and keep the author's words wherever they still work.
 METHOD: Edit tool, one change at a time, verbatim old_string located with grep -nF (never by line number). Read the paragraph before and after each edit. If a quote no longer matches verbatim, grep for its distinctive words and adapt — say so in your reply.
-RULES that bind (voice_brief §9.2; the gates check them): every number and its precision unchanged (P1); a number's qualifier stays in the same sentence or paragraph (P2); names verbatim (P3/P4); links unchanged (P5); mermaid blocks and positions unchanged (P6); tables unchanged (P7); code blocks unchanged (P8); headings unchanged (P9); the §9.4 protected claims verbatim (P10); every 誠信裝置 stays — may move, never be deleted, merged or weakened (P11); the TL;DR untouched in both languages (P12); series navigation and 系列文章 block untouched (P13); References untouched (P14); the AI 協作說明 and closing Medium line untouched (P15/P16); the 11 月／12 月 deferrals untouched and no November/December material imported (P17); English technical terms stay English (P18) and new prose uses a single "—", never "——".
+RULES that bind (voice_brief.history §9.2; the gates check them): every number and its precision unchanged (P1); a number's qualifier stays in the same sentence or paragraph (P2); names verbatim (P3/P4); links unchanged (P5); mermaid blocks and positions unchanged (P6); tables unchanged (P7); code blocks unchanged (P8); headings unchanged (P9); the §9.4 protected claims verbatim (P10); every 誠信裝置 stays — may move, never be deleted, merged or weakened (P11); the TL;DR untouched in both languages (P12); series navigation and 系列文章 block untouched (P13); References untouched (P14); the AI 協作說明 and closing Medium line untouched (P15/P16); the 11 月／12 月 deferrals untouched and no November/December material imported (P17); English technical terms stay English (P18) and new prose uses a single "—", never "——".
 VOICE: allowed connectives are only 但／所以／也就是說／其實／實際上／事實上／相反 (never 因此／然而／但是／於是／不過／當然／換句話說／首先／其次／總之); new text says 我, never 筆者; 讀者 is forbidden in new text; no imperatives at the reader; a paragraph ends on a judgement. ${VOICE} §十 (line 659 to the end) has fifteen before/after pairs the author approved — imitate their shapes.
 FINDINGS:
 ${JSON.stringify(ITEMS[a.name], null, 1)}

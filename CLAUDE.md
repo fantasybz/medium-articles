@@ -6,6 +6,15 @@ the layout, [PUBLISHING.md](PUBLISHING.md) for how a post gets to Medium,
 and [research/README.md](research/README.md) for the monthly loop that picks the
 next theme.
 
+## Writing style
+
+Before outlining, drafting, reviewing, polishing or translating an article,
+read [STYLE.md](STYLE.md), then the current month's `research/YYYY-MM/style_brief.md`.
+STYLE.md is the shared standard for every future series: describe actions fully,
+connect ideas clearly, and ground warmth and storytelling in the author's actual
+experience. Current author instructions take precedence; monthly briefs and
+historical voice analyses must not override this shared standard.
+
 ## Testing
 
 ```bash

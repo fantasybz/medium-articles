@@ -3,6 +3,8 @@
 這個資料夾放的是流程，用來決定下個月寫什麼；文章本身不在這裡，仍然一篇一個
 `YYYY-MM-slug/` 資料夾（見上層 [README.md](../README.md)）。
 
+所有月份共用 [作者寫作風格](../STYLE.md)。選題、大綱、撰稿、審稿、潤稿與翻譯前，先讀這份標準，再讀當月的 `style_brief.md`；完整的動作敘述、清楚的語意與邏輯、以真實經驗帶出的溫度與故事，都是後續系列的基本要求。
+
 目標是每月轉一圈、越轉越準的迴圈：
 
 ```mermaid
@@ -97,7 +99,7 @@ research/
     ├── x_digest.md / arxiv.md      # digest：X、arXiv
     ├── community_digest.md         # digest：FB 社團／LinkedIn／Medium stats — local only，gitignored
     ├── notion_digest.md            # digest：作者自己的 Notion — local only，gitignored
-    ├── style_brief.md        # 寫法摘要；寫完新系列後更新
+    ├── style_brief.md        # 當期格式與觀察；連回根目錄 STYLE.md 的共用標準
     ├── selection.md          # 選題結果：評審意見、反駁、每個主題必須遵守的調整
     ├── 2026-10-<slug>.md     # 三個主題的完整大綱（總論 + 三部曲）
     ├── 2026-11-<slug>.md
@@ -106,19 +108,24 @@ research/
     ├── codex-review-*.md     # Codex 二審的原話
     ├── backlog.md            # 落選主題 + 訊號監看清單
     ├── conference_digest.md / book_<slug>.md   # 期中加圈才有：會議整合 digest、書摘（兩份都 commit）
-    └── workflows/            # 期中加圈才有：這一圈實際跑的 Workflow 腳本，留作紀錄與下次的範本（root／today 從 args 進，prompt 內容綁定這一圈的材料）
+    └── workflows/            # 期中加圈才有：這一圈實際跑的 Workflow 腳本，留作紀錄（prompt 綁定當期材料；重用前先確認適用範圍）
 
 .context/research/YYYY-MM/    # collect.sh 的原始 JSON（整個 .context/ gitignored）
 .context/mermaid/             # mermaid_check.sh 的算繪暫存
 .context/render/<dir>[-<lang>]/   # render_images.sh 的算繪暫存
 .context/collect.lock         # collect.sh 跑的期間持有；mermaid_check.sh 與 render_images.sh 看到它就退出 75，等它跑完再來
-.context/quality/             # 期中加圈潤稿的機械閘與逐篇稽核：p-check.sh（voice_brief §9.2 的不變量，對
+.context/quality/             # 歷史潤稿的機械閘與逐篇稽核：p-check.sh（voice_brief.history.md §9.2 的舊不變量，對
                               # git HEAD 比數字／連結／區塊／標題／表格／TL;DR，例外記在 num-exceptions.txt）、
                               # protected-check.sh + protected.json、mirror-check.sh（中英逐節段數）、
-                              # voice-check.sh（新增句的禁用語）。research/YYYY-MM/workflows/quality-*.js 依賴它們，
-                              # 所以那幾份是紀錄不是可直接重跑的範本。要搬進 research/scripts/ 的話，
-                              # p-check.sh 得先加 base-ref 參數（現在對 HEAD 比，文章一 commit 就自動全過）並補測試。
+                              # voice-check.sh（當時對新增句設的禁用語）。2026-10/workflows/quality-*.js 依賴它們；
+                              # 這些腳本與 voice-pass-october.js 都只保留歷史紀錄，不可重跑或沿用舊禁詞與保護清單。
 ```
+
+`2026-10/workflows/voice-pass-october.js` 與四份 `quality-*.js` 保留當時的 prompt，舊手冊引用改指向
+[歷史分析](2026-09/voice_brief.history.md)，不代表現行風格要求。新的撰稿與審稿先讀
+[STYLE.md](../STYLE.md)、[現行聲音手冊](2026-09/voice_brief.md) 與當月 `style_brief.md`，
+再使用 `research/workflows/` 的共用流程。若要重新設計舊機械閘，需先依現行標準重訂檢查項目；
+例如 `p-check.sh` 原本只對 HEAD 比對，文章一 commit 就會全過，仍須加入明確的 base-ref 並驗證其行為。
 
 ## 分析階段
 
@@ -140,7 +147,7 @@ research/
   1. **Codex 二審**：`research/scripts/codex_review.sh <outline.md>`，用 OpenAI Codex（`~/.codex/config.toml` 的 model，reasoning `xhigh`）審每份大綱。理由是大綱由 Claude 寫、Claude 批評、Claude 修訂，同一個模型審自己有盲點；Codex 在 repo 根目錄 read-only 跑，會自己讀 digest 與 selection.md 查引用。原話存成 `codex-review-<slug>.md`，再由 Claude 修訂大綱。期中加圈時大綱會引到標準四份以外的 digest（會議、書摘），要用 `EXTRA_DIGESTS="conference_digest.md book_ai_agent_book.md"` 帶進去，`review-outlines.js` / `finish-outline.js` 對應的參數是 `extraSources`；漏了 Codex 讀不到來源，會把那些數字全判成捏造。
   2. **zh-tw 檢查**：所有要給人讀的中文檔（大綱、backlog、selection.md、本 README、之後的 article.md 與 medium-paste.md）最後都過 `mcp__zhtw-mcp__zhtw`（content_type markdown、fix_mode lexical_safe、translationese_domain technical、fix_output search_replace），**逐條看它提議的替換再套，不要整檔覆蓋**：2026-09-06 實測它會把「未通過」改成「未透過」、「縮進容器」改成「縮排容器」、「原始碼」改成「原始程式碼」，三個都是誤判。真正有用的是翻譯腔警告（定語堆疊、被動語態），照著拆句即可。這是最後一步，任何修改之後都要再跑。**大檔（> 30K 字元）交給一個 agent 做**：MCP 工具只吃 `text` 參數，主迴圈自己貼會把整份大綱當輸出 token 重打一遍；agent 依標題切成 ≤ 30K 的段、逐段呼叫、逐條判斷再套回原檔（prompt 見 `prompts/zhtw_pass.md`）。
 
-重跑：把 `research/YYYY-MM/` 的四份 digest 與 `style_brief.md` 準備好（原始 JSON 在 `.context/research/YYYY-MM/`，workflow 不讀它），
+重跑：確認根目錄的 `STYLE.md` 已反映作者最新要求，並把 `research/YYYY-MM/` 的四份 digest 與 `style_brief.md` 準備好（原始 JSON 在 `.context/research/YYYY-MM/`，workflow 不讀它），
 在 Claude Code 裡用 Workflow 工具帶 `scriptPath` 執行。四支 workflow 都不寫死路徑、日期與已發布文章：
 `root`（repo 根目錄）、`month`（研究月份）、`today`（`YYYY-MM-DD`；workflow 腳本裡沒有 `Date`，缺了會直接丟錯）、
 `published`（已發布文章的目錄清單，缺了也丟錯）一律從 args 帶入。目前的 `published` 是下面這四個目錄，新系列上線後在這裡加：
@@ -174,9 +181,10 @@ presentations 的那幾週，都是粉絲團有分享的週。這些數字放在
 **4. digest 累積成觀點資料庫。** 每個月的四份 digest 都留在 `research/YYYY-MM/`（兩份只在本機，見「資料來源」），
 寫文章時可以回頭引用「三個月前社群在爭什麼」；跨月比對也是 總論 裡「市場走到哪裡了」那一節的素材。
 
-**5. style brief 隨每個系列更新。** 新系列寫完，把用得順的結構、被讀者回應的段落、
-出過問題的格式（例如 `——` 會裂）補回 `style_brief.md`。它是給 agent 的 AGENTS.md，
-標準跟技術篇說的一樣：新來的 agent 拿著它，能不能不問人就寫出對的大綱。
+**5. 共用風格持續沿用，每月摘要累積觀察。** 作者明確要求以後沿用的寫作偏好，補進根目錄
+[STYLE.md](../STYLE.md)。新系列寫完，把用得順的結構、被讀者回應的段落、出過問題的格式
+（例如 `——` 會裂）補回當月 `style_brief.md`，並保留對共用標準的連結。每月摘要可以補充，
+不能覆蓋作者的共用要求。四支 workflow 與 Codex 二審都會要求先讀 `STYLE.md`，避免換月後遺漏。
 
 **6. 系列互連。** 每個新主題的總論要回連上一個系列；本圈的三個主題都建立在 Agentic Engineering
 三部曲之上。舊文也要補一句指向新系列，讓讀者能沿著鏈讀。修改已發布文章用 `tools/medium_patch.py`。

@@ -1,5 +1,7 @@
 # Style brief — how @fantasybz writes (2026-10 cycle)
 
+> 共用標準：撰稿、潤稿與翻譯前先讀 [STYLE.md](../../STYLE.md)。作者最新要求與共用標準優先；本檔保留當期格式、素材與歷史觀察。
+
 > Updates `research/2026-09/style_brief.md` with the October drafts, the 09-08 voice polish and Medium data as of 2026-09-15.
 
 ## Author identity
@@ -9,20 +11,30 @@
 
 ## Series architecture (the shape, with the October numbers)
 - One theme = **總論 + 三部曲**. October 「綠燈不是驗收」: 總論 (three gates, anti-patterns, VP decision, 90-day blueprint) → 測試篇 (assertion-change diff, red-then-green, mutation score) → Review 篇 (triage matrix, reviewer fleet, closed-loop ban) → 可靠度篇 (constraint pass rate, pass^k, oversight budget).
-- **Real length**: 總論 ≈ 10,000 CJK chars / 12 sections / 18 figures (10 mermaid + 8 tables); each part ≈ 7,600–8,000 chars / 6–9 sections / 7–8 figures (4 mermaid + 3–4 tables；可靠度篇只有 6 節）. Targets were 3,600 and 1,800–2,300; the drafts run 2.8–4× that and **the author accepted the overrun** — consistent with the 2025 evidence that his long pieces finish best. The targets are a floor, not a budget.
+- **Length snapshot after the 09-08 polish (historical)**: 總論 ≈ 10,000 CJK chars / 12 sections / 18 figures (10 mermaid + 8 tables); each part ≈ 7,600–8,000 chars / 6–9 sections / 7–8 figures (4 mermaid + 3–4 tables；可靠度篇只有 6 節）. Targets were 3,600 and 1,800–2,300; the drafts run 2.8–4× that and **the author accepted the overrun**. Earlier long articles also attracted completed reads; this does not establish length as their cause. Those targets are historical planning estimates, not a sentence-compression budget or a minimum to pad toward; retain necessary explanation and narrative.
 - Opening: `# Title` → `> **TL;DR** — ...` (360–730 chars: symptoms → one-line thesis → what each gate measures → the disagreeable claims → one sourced number with its domain → what the tail delivers) → `> 系列導覽：…` with **本篇** bolded, unpublished siblings 「（即將發布）」/"(coming soon)", plus a 「上一季」 row.
-- Chinese-numeral sections (`## 一、…`), 6–12 per piece (總論 12; 測試篇 9; Review 篇 8; 可靠度篇 6); the last is 結語 / 結語與交接, with a quotable blockquote and a hand-off.
+- Chinese-numeral sections (`## 一、…`), 6–12 per piece (總論 12; 測試篇 9; Review 篇 8; 可靠度篇 6); the last is 結語 / 結語與交接, returning to the opening question or documented experience before a hand-off; a blockquote is optional.
 - Tail: `### 系列文章` → `### References` (numbered, org — [title](url), each with a 〔第 N 節〕 back-pointer) → `### AI 協作說明` → italic signature.
 
 ## Rhetorical moves that recur
-- Opens with the question the reader is actually asking (§一 「「AI 說沒問題」之後，我該相信什麼？」), answered by a bolded one-liner. Anti-patterns named before prescriptions (「八個反模式」); decision artefacts everywhere (triage matrices, gate tables with exit criteria, a 90-day plan with 退出條件); cross-references so the four read as one product.
-- Numbers ship with sample size and domain: 「34% 的綠燈修補違反 reviewer 約束」 carries 「SWE-Gate 在 75 個 Python repo、303 個任務上量到」. Vendor- or organiser-reported figures say so; his own are 「我的建議值（不是業界標準）」.
+- Opens with the question the reader is actually asking (§一〈「AI 說沒問題」之後，我該相信什麼？〉), answered by a bolded one-liner. Anti-patterns named before prescriptions (「八個反模式」); decision artefacts everywhere (triage matrices, gate tables with exit criteria, a 90-day plan with 退出條件); cross-references so the four read as one product.
+- Numbers ship with sample size and domain: 「34% 的綠燈修補違反 reviewer 約束」 carries 「SWE-Gate 在 75 個 Python repo、303 個任務上量測到」. Vendor- or organiser-reported figures say so; his own are 「我的建議值（不是業界標準）」.
 - **書錨 opening (new, 總論 §二).** A named book carries the thesis before any data: 「書錨：Bach 的 testing 與 checking」 says who Bach is, quotes two verbatim lines, **states the limit honestly** (「先說限制：這本書我還沒讀完」), then derives the series' vocabulary from it (evidence classes a / b / c, reused by all four).
 - **Before/After config blocks (new).** Short, paired, concrete: `# Before：指示（agent 讀完，什麼都沒有變）` vs the executable rule; `# Before：同一個 runner、同一個 session 審自己` vs the fleet config. Always 「指示 → 可執行的檢查」.
 - **The 「設計規格，非現成工具」 label (new).** Any YAML/CODEOWNERS/policy block not run in production says so in its first comment line — `reviewer-fleet.yaml（設計規格，非現成工具）`, `CODEOWNERS（設計草稿，未在生產 repo 實測…）` — and the prose repeats it plus how he will verify.
 - **Reader roles (new).** Each piece names the person it changes, in a section title: 總論 「如果我是 Engineering VP / QA lead，我會怎麼決策」; 測試篇 「Tester 的角色：從打勾機器到 test-suite reviewer」; Review 篇 assigns fleet roles (verifier / falsifier / architect); 可靠度篇 speaks to whoever signs off autonomy.
 - First-hand evidence gets its own section (「第一手實例：測試全綠，replay 從未執行」): his own workshop A/B run, mechanism named.
-- **Voice rules re-established by the 2026-09-08 polish** (the eight September stories were republished in place — `repub`, no re-notify, +2–4 min; PUBLISHING.md 〈目前的發布佇列〉, `voice_brief.md`): it **added sentences rather than cutting them**. Keep a 導讀句 ending in 「：」 before every figure and table, one explanatory sentence the first time a term appears, 「我認為」 on opinions, 「不是 A，而是 B」 at closings. Dashes and semicolons stay scarce: the polish cut the October four from 5.4–7.5 dashes per 1,000 prose chars to 1.2–2.2 (2.04 / 1.16 / 2.12 / 2.20), and September 總論 now sits at 2.08 (dashes 29 → 22).
+- **Voice rules re-established by the 2026-09-08 polish** (the eight September stories were republished in place — `repub`, no re-notify, +2–4 min; PUBLISHING.md 〈目前的發布佇列〉, `voice_brief.md`): it **added sentences rather than cutting them**. Introduce what each figure or table is meant to clarify, explain new terms, and distinguish the author's judgment from findings. Do not require an identical lead-in, first-person marker or 「不是 A，而是 B」 closing in every section. The old punctuation measurements describe that revision, not quotas for future prose: the polish cut the October four from 5.4–7.5 dashes per 1,000 prose chars to 1.2–2.2 (2.04 / 1.16 / 2.12 / 2.20), and September 總論 now sits at 2.08 (dashes 29 → 22).
+
+## 作者確認的共用標準（2026-09-23）
+
+本月與後續所有系列遵循 [STYLE.md](../../STYLE.md) 及 [現行聲音手冊](../2026-09/voice_brief.md)。這次修正的重點是：
+
+- 動作交代完整。測得結果用「量測」，計算比例用「統計」或「計算」，評估效果用「衡量」，確認要求用「檢查」或「驗證」。同樣檢查「跑、收、擋、放、綁、接」的對象與目的，不做機械替換。
+- 敘事從既有的工作坊、閱讀與會議紀錄出發，交代問題如何帶出作者的思考。可以補承接與解釋，不能補造親歷、對話、情緒或研究發現。
+- 逐篇、逐句核對指涉、因果、適用條件與數字分母。小樣本、作者建議值、理論框架與實測結果分開寫，不能為了讓句子有力就放大結論。
+- 短句、反轉句、第一人稱與連接詞依情境使用。舊手冊的禁詞、固定句型與標點配額不再沿用；完整清楚優先於壓縮字數。
+- 中英版保留相同文意與限制，正文、圖表、政策範例與發布稿同步更新。舊稿字元數與詞頻是歷史紀錄，不是這輪稿件的驗收門檻。
 
 ## Conference and book material (new for this cycle)
 - **A session is cited as speaker, company, session, slide/timestamp**: 「在 AGNTCon Japan 的 X 場，<講者>（<公司>）在 slide N 說…」. Stage numbers are organiser-, vendor- or team-reported and say so; press coverage is not a source. Ground truth is `notes_sep10/11.md`.

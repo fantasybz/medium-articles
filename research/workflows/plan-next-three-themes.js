@@ -30,6 +30,7 @@ const nextMonths = (ym, n) => Array.from({ length: n }, (_, i) => {
 })
 const TARGETS = args.months || nextMonths(args.month, 3)
 const INPUTS = `
+Read ${ROOT}/STYLE.md first in every stage, including lenses with restricted reading lists. It is the shared author-approved standard for all months and takes precedence over historical voice summaries: make actions, objects and purposes clear; check references, transitions and logic; ground warmth and storytelling in documented experience. Never invent personal scenes or sacrifice meaning to brevity.
 Read ALL of these files fully before doing anything (use the Read tool; they are long, read them in chunks if needed):
 - ${DIR}/style_brief.md  (how the author writes, series format, audience, reception data)
 - ${DIR}/x_digest.md  (X/Twitter: top posts from followed accounts, themes, debates, gaps — post count and date range are in the digest header)
@@ -47,7 +48,7 @@ const PROPOSAL_SCHEMA = {
     type: 'object', required: ['slug', 'title_zh', 'title_en', 'thesis_zh', 'why_now', 'evidence', 'author_fit', 'parts', 'overlap_risk'],
     properties: {
       slug: { type: 'string' }, title_zh: { type: 'string' }, title_en: { type: 'string' },
-      thesis_zh: { type: 'string', description: 'one-line quotable thesis in Traditional Chinese' },
+      thesis_zh: { type: 'string', description: 'clear, concise thesis in Traditional Chinese that preserves necessary conditions' },
       why_now: { type: 'string', description: '3–6 sentences: what happened in the last 3 months that makes this urgent' },
       evidence: { type: 'array', minItems: 4, items: { type: 'object', required: ['source', 'ref', 'claim'], properties: { source: { type: 'string', description: 'x | arxiv | facebook | linkedin | medium-stats | notion | article' }, ref: { type: 'string', description: 'URL, arXiv id, group name or post handle+date exactly as it appears in the digest' }, claim: { type: 'string' } } } },
       author_fit: { type: 'string' },
@@ -155,9 +156,9 @@ log('selected: ' + selection.selected.map(s => `${s.month} ${s.title_zh}`).join(
 phase('Outline')
 const outlined = await pipeline(selection.selected,
   s => agent(
-    `${INPUTS}\nWrite the full article PLAN for this monthly theme as a Markdown file at ${OUT}/${s.month}-${s.slug}.md (use the Write tool; create the directory if needed). Write it in Traditional Chinese (Taiwan usage, English technical terms untranslated, single "—" dash only, never "——"). Follow the author's format from style_brief.md exactly. The file must contain:
+    `${INPUTS}\nWrite the full article PLAN for this monthly theme as a Markdown file at ${OUT}/${s.month}-${s.slug}.md (use the Write tool; create the directory if needed). Write it in Traditional Chinese (Taiwan usage, English technical terms untranslated, single "—" dash only, never "——"). Follow STYLE.md for voice and clarity, and style_brief.md for the series format. The file must contain:
 1. 主題總覽: month, slug, title_zh, title_en, 一句話論點 (thesis), 目標讀者, 為什麼是現在 (with dated evidence), 與已發布三部曲的關係 (what it builds on, what it must NOT repeat), 反模式清單 (5–8 named anti-patterns the series will call out), 本主題的歷史類比 (DevOps/CI/testing-history analogy if a good one exists).
-2. 總論 outline: title, draft TL;DR paragraph (in the author's voice), 系列導覽 line, then 10–12 sections numbered 一、二、… each with 3–6 bullet points of actual content (claims, numbers, sources), the decision artefacts (tables / decision tree / gate table / 90-day plan) and the mermaid figures to draw (name each figure and what it shows), the quotable one-liner, and the References list (only sources that appear in the digests: URLs, arXiv ids with titles, X posts with handle+date).
+2. 總論 outline: title, draft TL;DR paragraph (in the author's voice), 系列導覽 line, then 10–12 sections numbered 一、二、… each with 3–6 bullet points of actual content (claims, numbers, sources), the decision artefacts (tables / decision tree / gate table / 90-day plan) and the mermaid figures to draw (name each figure and what it shows), a concluding judgment with its necessary conditions, and the References list (only sources that appear in the digests: URLs, arXiv ids with titles, X posts with handle+date).
 3. 三部曲 outlines: for each of the three deep dives: title, TL;DR draft, 6–8 sections with 3–5 bullets each, the reference implementation / code or config snippet ideas (Before/After style), tables and figures, references. Make sure the three parts do not overlap each other or the 總論 beyond a one-paragraph recap.
 4. 寫作前要補的證據: 5–10 specific things to verify or collect before drafting (numbers to re-check, papers to read in full, community posts to quote with permission, own experiments to run).
 5. 英文版注意事項: title_en and anything that needs adapting for the English edition.
@@ -168,7 +169,7 @@ THEME:\n${JSON.stringify(s, null, 1)}`,
     { label: `outline:${s.slug}`, phase: 'Outline', schema: FILE_SCHEMA, effort: 'high' }
   ),
   (f, s) => agent(
-    `${INPUTS}\nYou are a rigorous critic. Read the article plan at ${f.path} and check it against: (a) style_brief.md (format, voice, series shape, dash rule, Traditional Chinese Taiwan usage); (b) the published articles (flag any section that repeats them instead of extending); (c) the four digests (every cited source/ref/number must actually exist there; flag anything invented or misquoted); (d) internal overlap between the 總論 and the three parts, and between the parts; (e) whether each part gives a Staff engineer or VP something they can act on (a reference implementation, a decision table, a gate); (f) whether the thesis is genuinely arguable and not a platitude. List issues with severity blocker/major/minor, where, problem, and a concrete fix.`,
+    `${INPUTS}\nYou are a rigorous critic. Read the article plan at ${f.path} and check it against: (a) STYLE.md (complete actions, clear logic, grounded storytelling) and style_brief.md (format, series shape, dash rule, Traditional Chinese Taiwan usage); (b) the published articles (flag any section that repeats them instead of extending); (c) the four digests (every cited source/ref/number must actually exist there; flag anything invented or misquoted); (d) internal overlap between the 總論 and the three parts, and between the parts; (e) whether each part gives a Staff engineer or VP something they can act on (a reference implementation, a decision table, a gate); (f) whether the thesis is genuinely arguable and not a platitude. List issues with severity blocker/major/minor, where, problem, and a concrete fix.`,
     { label: `critic:${s.slug}`, phase: 'Outline', schema: CRITIC_SCHEMA, effort: 'high' }
   ).then(c => ({ file: f, critic: c })),
   (x, s) => agent(
