@@ -41,7 +41,7 @@ flowchart LR
 | 1–2 日 | 四個 digest agent（X、社群、arXiv、Notion）把四份 digest 寫進 `research/YYYY-MM/`（Notion 與社群兩份只留本機，見「資料來源」）→ 執行 `workflows/plan-next-three-themes.js` | `research/YYYY-MM/` 下的 `selection.md`、主題大綱 + `backlog.md` |
 | 2 日 | `workflows/review-outlines.js` 第二輪批評／修訂 → 每份大綱跑 `research/scripts/codex_review.sh`（Codex，reasoning xhigh，第二個模型的意見）→ 依意見修訂 → 大綱裡每張 Mermaid 圖跑 `research/scripts/mermaid_check.sh`（規範見 [MERMAID.md](../MERMAID.md)）→ 所有中文產出過 zh-tw MCP 檢查（`mcp__zhtw-mcp__zhtw`，markdown、lexical_safe） | `codex-review-*.md`、修訂後的大綱 |
 | 2 日 | 人工看一遍：選題是否對、調整大綱、決定要不要換掉某一個 | 定稿的大綱 |
-| 3–14 日 | 長度基準（Medium 讀時算 CJK 字、英文字與圖）：已發布總論 3,629 個中文字 ≈ 18 分鐘，深掘 1,800–2,300 字 ≈ 8–12 分鐘，寫的時候以此為準。每篇跑 `workflows/write-article.js`（草稿 → 三視角批評 → 修訂 → 驗證）→ zh-tw agent → 英文版；`scripts/article_to_paste.py` 產 `publish/medium-paste.md`、`scripts/render_images.sh` 算繪圖與表格 PNG；`python3 tools/test_tools.py` 過 lockstep；`tools/medium_draft.sh` 建草稿 | 四篇草稿 × 兩種語言 |
+| 3–14 日 | 歷史篇幅參考（Medium 讀時算 CJK 字、英文字與圖）：當時已發布總論 3,629 個中文字 ≈ 18 分鐘，深掘規劃為 1,800–2,300 字 ≈ 8–12 分鐘。這些數字用來規劃範圍；依 `STYLE.md` 保留必要說明與敘事承接，並尊重當月 `style_brief.md` 記錄的作者認可篇幅。每篇跑 `workflows/write-article.js`（草稿 → 三視角批評 → 修訂 → 驗證）→ zh-tw agent → 英文版；`scripts/article_to_paste.py` 產 `publish/medium-paste.md`、`scripts/render_images.sh` 算繪圖與表格 PNG；`python3 tools/test_tools.py` 過 lockstep；`tools/medium_draft.sh` 建草稿 | 四篇草稿 × 兩種語言 |
 | 15–20 日 | 發布。Medium 24 小時內最多 2 篇，八篇至少要四天，順序見 [PUBLISHING.md](../PUBLISHING.md) | 上線文章 + `PUBLISHED.md` |
 | 發布當天 | 粉絲團與 X 貼分享文。2025 年的資料顯示，reads 主要來自粉絲團分享 | 分享文 |
 | 月底 | `collect.sh medium` 抓一次 stats，比對上月；回填 `backlog.md` 的權重 | 成效表 |
