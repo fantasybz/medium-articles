@@ -1,8 +1,8 @@
 # 發布紀錄
 
-**標題** 二、Review 篇：Review 是控制點，不是瓶頸—分流、reviewer agent 艦隊與閉環禁令
+**標題** 綠燈不是驗收（二）Review 篇：Review 是控制點，不是瓶頸—分流、reviewer agent 艦隊與閉環禁令
 **Post ID** `ccbf0cbe2691`（草稿／排程網址 https://medium.com/p/ccbf0cbe2691/edit；上線後的穩定短網址 https://medium.com/p/ccbf0cbe2691）
-**排程** 2026-10-20（一）09:00 GMT+8（尚待作者確認；2026-09-07 以 Publish 對話框的 Schedule for later 設定，見下方狀態）
+**排程** 2026-10-20（二）09:00 GMT+8（2026-09-23 已重新讀取 Medium 排程確認）
 **建立方式** `./tools/medium_draft.sh 2026-10-green-review`，逐塊比對零差異（見 [PUBLISHING.md](../../PUBLISHING.md)）
 
 ## 設定
@@ -10,7 +10,7 @@
 | 項目 | 值 |
 |---|---|
 | Topics | Software Testing、Code Review、AI、Software Engineering、Engineering Management |
-| 封面圖 | `diagram-02.png`（2026-09-16 用 CDN 原圖的高寬比對出來的；本欄原本寫 `diagram-01.png`，是記錯。內文第一張其實是 `table-01.png`，所以這個封面是人挑過的，不是 Medium 預設） |
+| 封面圖 | `diagram-02.png`（`1*ya_IXqhbThh24Rh5vXfYwg.png`，2026-09-23 已核對） |
 | Notify subscribers | 是（預設） |
 | 發布位置 | 個人 profile，未投稿 publication |
 
@@ -18,7 +18,7 @@
 
 - [x] 排程完成：2026-09-07 18:33 設定為 2026-10-20 09:00 GMT+8
 - 系列連結：本篇連到「發布時已上線」的篇；其餘保留「（即將發布）」，上線後用 `medium_patch.py subst` 回填（見 PUBLISHING.md〈目前的發布佇列〉）
-- 英文版：`publish/en/PUBLISHED.md`（Post ID `4d36d0f2f9c1`，排程 2026-10-22（三）09:00）
+- 英文版：`publish/en/PUBLISHED.md`（Post ID `4d36d0f2f9c1`，排程 2026-10-22（四）09:00）
 
 ## 上線後核對（發布後填）
 
@@ -95,3 +95,30 @@ CDN hash 記進 `.context/cover-check/baseline-2026-09-18.json`（與 2026-09-16
 最後是繞過挑選器：在一篇按鈕正常的文章上錄下按 Done 時送出的 GraphQL mutation
 （`UpdateSubmitFormStoryPreviewMetadataMutation`），再對這一篇送同一個請求。
 做法見 PUBLISHING.md〈封面挑選器打不開時〉。
+
+## 逐句精修與 Medium 同步（2026-09-23）
+
+依作者確認的共用風格，補足動作敘述中的對象與目的，調整敘事承接，並精修指涉、因果、
+證據的適用範圍與數字定義。中文與英文正文、發布稿及本輪變更的圖表同步更新。
+
+以 `./tools/medium_draft.sh 2026-10-green-review --post ccbf0cbe2691` 就地更新既有排程文章。等待儲存完成後，
+另開新分頁從 Medium 讀回，`verify_draft.py` 逐塊比對通過：
+
+| 核對項目 | 結果 |
+|---|---|
+| 文字區塊 | 193 個，逐塊相符 |
+| 連結 | 33 個，目的地與本次發布稿相符 |
+| 圖片 | 7 張，槽位及圖檔識別碼與本次發布稿相符 |
+| 分隔線 | 12 條，數量相符 |
+| 殘留圖片 placeholder | 0 |
+
+封面已選回 `diagram-02.png`，重新載入發布設定後確認識別碼為
+`1*ya_IXqhbThh24Rh5vXfYwg.png`。正文標題與預覽文字已核對。
+
+Post ID、五個 Topics、訂閱通知設定與排程均保留。發布設定讀回的時間為
+**2026-10-20（二）09:00 GMT+8**，文章仍是排程狀態；本次沒有重新排程或提前發布。
+發布紀錄原先誤寫的星期已依這個時間校正。
+
+本輪 `/submission` 的封面挑選器仍未出現，原有 GraphQL 路徑也持續回傳服務容量錯誤。
+改由舊版編輯器三點選單 → Change featured image 選回原圖並按 Done，
+再從新分頁的發布設定讀回確認封面已保存；完整步驟已補入 PUBLISHING.md。

@@ -1,8 +1,8 @@
 # 發布紀錄
 
-**標題** 三、可靠度篇：SWE-Gate 量到的 34%—constraint tests、pass^k 與授權擴張的閘門
+**標題** 綠燈不是驗收（三）可靠度篇：SWE-Gate 量測到的 34%—constraint tests、pass^k 與授權擴張的閘門
 **Post ID** `3c64a9622777`（草稿／排程網址 https://medium.com/p/3c64a9622777/edit；上線後的穩定短網址 https://medium.com/p/3c64a9622777）
-**排程** 2026-10-27（一）09:00 GMT+8（尚待作者確認；2026-09-07 以 Publish 對話框的 Schedule for later 設定，見下方狀態）
+**排程** 2026-10-27（二）09:00 GMT+8（2026-09-23 已重新讀取 Medium 排程確認）
 **建立方式** `./tools/medium_draft.sh 2026-10-green-reliability`，逐塊比對零差異（見 [PUBLISHING.md](../../PUBLISHING.md)）
 
 ## 設定
@@ -10,7 +10,7 @@
 | 項目 | 值 |
 |---|---|
 | Topics | Software Testing、Code Review、AI、Software Engineering、Engineering Management |
-| 封面圖 | `diagram-02.png`（2026-09-16 用 CDN 原圖的高寬比對出來的；本欄原本寫 `diagram-01.png`，是記錯。內文第一張其實是 `table-01.png`，所以這個封面是人挑過的，不是 Medium 預設） |
+| 封面圖 | `diagram-02.png`（`1*dt6CGm73bHy5WRyvsd7ppQ.png`，2026-09-23 已核對） |
 | Notify subscribers | 是（預設） |
 | 發布位置 | 個人 profile，未投稿 publication |
 
@@ -18,7 +18,7 @@
 
 - [x] 排程完成：2026-09-07 18:45 設定為 2026-10-27 09:00 GMT+8（第一次點到月曆裡九月尾巴的 27，顯示 9/27，改點十月格子後才對；排程前一律核對顯示的日期字串）
 - 系列連結：本篇連到「發布時已上線」的篇；其餘保留「（即將發布）」，上線後用 `medium_patch.py subst` 回填（見 PUBLISHING.md〈目前的發布佇列〉）
-- 英文版：`publish/en/PUBLISHED.md`（Post ID `4b6d147bff0d`，排程 2026-10-29（三）09:00）
+- 英文版：`publish/en/PUBLISHED.md`（Post ID `4b6d147bff0d`，排程 2026-10-29（四）09:00）
 
 ## 上線後核對（發布後填）
 
@@ -93,3 +93,26 @@ CDN hash 記進 `.context/cover-check/baseline-2026-09-18.json`（與 2026-09-16
 
 **排程未受影響**：仍是 Oct 27, 1:00 AM (UTC)。八篇的時段與 Post ID 全部不變（第四次量到）。
 **封面圖**：被重設，已還原成 `1*dt6CGm73bHy5WRyvsd7ppQ.png`，/submission 頁讀回確認。
+
+## 逐句精修與 Medium 同步（2026-09-23）
+
+依作者確認的共用風格，補足動作敘述中的對象與目的，調整敘事承接，並精修指涉、因果、
+證據的適用範圍與數字定義。中文與英文正文、發布稿及本輪變更的圖表同步更新。
+
+以 `./tools/medium_draft.sh 2026-10-green-reliability --post 3c64a9622777 --retitle` 就地更新既有排程文章。等待儲存完成後，
+另開新分頁從 Medium 讀回，`verify_draft.py` 逐塊比對通過：
+
+| 核對項目 | 結果 |
+|---|---|
+| 文字區塊 | 151 個，逐塊相符 |
+| 連結 | 22 個，目的地與本次發布稿相符 |
+| 圖片 | 7 張，槽位及圖檔識別碼與本次發布稿相符 |
+| 分隔線 | 10 條，數量相符 |
+| 殘留圖片 placeholder | 0 |
+
+封面已選回 `diagram-02.png`，重新載入發布設定後確認識別碼為
+`1*dt6CGm73bHy5WRyvsd7ppQ.png`。正文標題與預覽文字已核對。
+
+Post ID、五個 Topics、訂閱通知設定與排程均保留。發布設定讀回的時間為
+**2026-10-27（二）09:00 GMT+8**，文章仍是排程狀態；本次沒有重新排程或提前發布。
+發布紀錄原先誤寫的星期已依這個時間校正。
