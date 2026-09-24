@@ -1,6 +1,6 @@
 # Green Is Not Done, Part 2 — Review Is the Control Point, Not the Bottleneck: Triage, Reviewer Fleets and the Closed-Loop Ban
 
-> **TL;DR** — A Scrum Community post describes PR volume doubling in half a year while senior engineers' calendars fill up. A longitudinal study of a million PRs finds faster decisions under some AI-review adoption patterns without corresponding quality gains. CodeRabbit comments on ten thousand PRs were rejected 56% of the time, while cross-product AI-to-AI review grew 100-fold over two quarters. These findings turn my attention to the division of review work: **review is the control point where an organization shapes whether agents add value or debt**. That framing comes from a theory built by coding 3,100 practitioner accounts. A separate study of 182 repos found that each 10-percentage-point increase in unreviewed merges was associated with about 6% more agentic-code maintenance burden, not a causal estimate. This piece proposes risk-based triage, reviewer-agent roles separated from generation, and a ban on self-gating loops. Machines organize evidence; humans examine reports or diffs according to the triage decision, and every merge requires human approval. An experiment in which "pre-approved under SEC-2291" helped roughly eight in ten narrative-wrapped exfiltration PRs pass the scanning stage adds another lesson: verify authority claims against the system of record. Approval must remain attached to a responsible person; differences in vendor terms are left to December.
+> **TL;DR** — A Scrum Community post describes PR volume doubling in half a year while senior engineers' calendars fill up. A longitudinal study of a million PRs finds faster decisions under some AI-review adoption patterns without corresponding quality gains. CodeRabbit comments on ten thousand PRs were rejected 56% of the time, while cross-product AI-to-AI review grew 100-fold over two quarters. These findings turn my attention to the division of review work: **review is the control point where an organization shapes whether agents add value or debt**. That framing comes from a theory built by coding 3,100 practitioner accounts. A separate study of 182 repos found that each 10-percentage-point increase in unreviewed merges was associated with about 6% more agentic-code maintenance burden, not a causal estimate. This piece proposes risk-based triage, reviewer-agent roles separated from generation, and a ban on self-gating loops. Machines organize evidence; humans examine reports or diffs according to the triage decision, and every merge requires human approval. An experiment in which "pre-approved under SEC-2291" helped roughly eight in ten narrative-wrapped exfiltration PRs pass the scanning stage adds another lesson: verify authority claims against the system of record. Approval must identify the responsible person and reviewed content; section 7 explains the records and rules that support it.
 
 > Series: [Overview](https://medium.com/p/c4fc9f3d8581) → [1. Testing](https://medium.com/p/51d001a6dcd5) → **2. Review (this piece)** → 3. Reliability (coming soon)
 
@@ -26,7 +26,7 @@ The course copy of DeepLearning.AI, Andrew Ng's online course platform, puts it 
 
 These sources differ: a shared article, a company account, a community scenario and course copy cannot be combined into a general measurement. They do, however, bring the same practical question into view: when code output increases, the time a team can allocate to reviewing it does not increase automatically.
 
-Calling this a "bottleneck" is the line section 7 of the overview already corrected. Last season wrote "review becomes the new bottleneck", and that line only went as far as the surface: the bottleneck is the symptom, and the cause is putting humans at the wrong gate, reading the wrong thing.
+In “Don’t Build Your Own Devin,” I wrote that review becomes the new bottleneck. Section 7 of this series’ overview takes that judgment further: waiting time is a visible symptom, but we also need to examine which work we assign to people and what evidence we give them to judge it.
 
 This piece covers only the design of the review gate. The conclusion first:
 
@@ -185,15 +185,15 @@ The matrix assigns "machines read the diff" to two cells. Now it needs to specif
 
 People in Taiwan are already doing this. A comment in Claude Taiwan, a Taiwanese Claude user group on Facebook, described the poster's own "fleet mode": two review agents, one to confirm and one to falsify, an architecture agent to guard against over-design, and one supervisor over all of them.
 
-What makes that comment interesting is not the name but that the poster has already broken review out of "one reviewer looks at everything" into several angles, each covering one part. The community has been assembling reviewer fleets on its own for a while; what is missing is the bans and the accountability design.
+The comment made me notice how review can be divided by question: one reviewer checks whether requirements were met, another searches for counterexamples, and another examines architecture. Multiple agents can then supply different leads. Trusting that arrangement still requires establishing their independence and identifying who gives final approval.
 
-This section gives it a config you can review and three principles.
+The next three principles make those conditions explicit, followed by a configuration draft the team can discuss and implement.
 
 **Principle one: heterogeneity.** A fleet's value is not its size; it is that the angles differ.
 
 A study had Anthropic's Claude and OpenAI's Codex collaborate through files, producing 375 review artifacts (June 2026). Its comparison of defect recording reports 69.8% for heterogeneous pairs and 53.1% for homogeneous pairs. The difference supports further evaluation of heterogeneous pairing; the two proportions alone do not establish that switching models will produce the same gain in every repo.
 
-A separate lab measurement on 116 problems found that the direction of the pairing is asymmetric, so who reviews whom matters. But that is a July 2026 measurement and will very likely flip with model versions (the author's judgment). Claude Fable 5.1 and GPT-6 Astra both shipped the month before this piece was written, so do not use it to decide which vendor to buy.
+A separate lab measurement on 116 problems found that pairing direction was asymmetric: swapping generator and reviewer changed the result. That measurement dates to July 2026. My judgment is that model versions and task mix can affect the ranking, so procurement still needs evaluation on the team’s own tasks rather than treating one experiment’s winning pair as a lasting answer.
 
 Heterogeneity is a structural principle, not a procurement ranking.
 
@@ -211,17 +211,17 @@ The fleet's first layer is lint, constraint tests and secret scan, not an LLM.
 
 **Principle three: separation from generation.** These are two lines from my notes for the Claude Certified Architect exam: an independent review instance beats reviewing your own work. The CI review session and the code-writing session have to be separate. A session is one conversation and the memory it accumulates.
 
-The reason is straightforward. If the reviewer shares its context with the generator (the model that wrote the code), it will keep rationalizing forward from the original assumptions instead of going back and checking them again.
+The concern is that the same assumptions carry through the whole process. A reviewer that continues the generator’s context may accept its explanation first and then look for support. An isolated session lets the reviewer begin again from requirements, the diff and verification results. That reduces dependence on the original account, without guaranteeing the absence of shared blind spots.
 
 Beyond the separation from generation, review itself runs in two passes. The local pass goes file by file and looks for problems inside a single file. The integration pass goes across files and asks whether the intent, the constraints and the overall behaviour still line up.
 
-**What if you only have one vendor?** A 300-person company usually has only one enterprise contract, so heterogeneous pairing is out of reach for now, and it is not worth reopening procurement over.
+**What if you only have one vendor?** Consider a 300-person company with one enterprise contract and no immediate route to cross-vendor pairing. It can begin improving review isolation and responsibilities without waiting for a second contract.
 
 Start with deterministic checks, have a reviewer from the same vendor but an isolated session provide comments, then have a human read the reports and approve. This separates generation from review without immediately adding a supplier. Defect detection and actual cost still need evaluation on your PRs; the difference from the heterogeneous-pairing study cannot simply be transplanted.
 
 Run it that way first, and once the unreviewed merge rate and the escape rate have a baseline, decide whether to buy a second vendor. The escape rate is the share of defects that get past this gate and are only found later, in production.
 
-A same-vendor, different-session reviewer may comment, but its approval does not enter the approval artifact's signal column. That distinction is worth holding on to: section 5's table of conditional allowances pins it down with the same criterion.
+For a same-vendor, different-session setup, this proposal takes a more conservative rule: retain the reviewer’s comments, but do not record its approve in the approval artifact’s signal field. Section 5 collects the criteria. In either pairing arrangement, AI signals cannot replace human approval.
 
 With those principles established, here is the promised configuration example. Before deliberately illustrates a risky setup: the same runner, the same session and automatic release:
 
@@ -231,7 +231,7 @@ reviewers: [claude-code]
 auto_approve: true
 ```
 
-After is a design spec, modeled on the `agent-policy.yaml` format from last season's Harness Blueprint. It is **not a config file for an existing tool**; you implement it yourself with a workflow or a GitHub App:
+After is a design spec, modeled on the `agent-policy.yaml` format from “The Harness Blueprint”. It is **not a config file for an existing tool**; you implement it yourself with a workflow or a GitHub App:
 
 ```yaml
 # reviewer-fleet.yaml (design spec, not an existing tool)
@@ -315,25 +315,25 @@ flowchart TB
 
 The PR first passes deterministic checks, then goes to reviewers with distinct roles and contexts isolated from generation. A human makes the final approval decision.
 
-As soon as the fleet grows, principle three gets tested at once. If these reviewers are the same model, holding the same context, as the one that wrote the code, what they are reviewing is themselves.
+That division of work still needs scrutiny: did adding reviewers actually add independent judgment? If they all inherit the generation context, the number of reports can grow without adding independent evidence. The next section addresses arrangements that appear to provide review while continuing to confirm the original account.
 
 ---
 
 ## 5. The closed-loop ban: when AI reviewing AI must be forbidden
 
-What I think is most dangerous about a closed loop is that its symptoms look exactly like everything going well. The comments pile up and the PRs pass faster, but the one reviewing and the one writing share a single set of blind spots, so what could not be seen still cannot be seen.
+My concern with closed-loop review is that its surface signals are hard to interpret. More comments and faster merges may indicate useful assistance, or they may mean the reviewer has adopted the generator’s assumptions. Distinguishing those possibilities requires inspecting the basis of review and the feedback path, beyond counting comments and merge speed.
 
-Closed-loop review comes in three shapes, and all of them are forbidden:
+This proposal bans three arrangements that can undermine independent review, grouping them under the closed-loop rules. Their mechanisms differ: shared generation context, learning from acceptance signals, and compressing multiple PRs into one review. The following separates the evidence for each from the workflow restriction I propose:
 
 1. **The same model family reviewing its own PR in the same session or shared context.** This proposal bans arrangements without an independent review perspective. Model family does not mean every product from one vendor. AI-to-AI Code Reviews (August 2026) observed more comments in same-product pairings but did not measure whether that meant better defect detection. The heterogeneous-pairing results in section 4 provide another reference point, not a direct measurement of this ban's effect.
-2. **Self-gating acceptance.** The reviewer says yes, and the generator learns from that yes — the accept feedback becomes training data. A study (June 2026) showed that this loop walks into a rubber-stamp regime where the acceptance rate rises and correctness falls. A rubber-stamp regime is one where the gate is still there and the light still turns green, but it no longer stops anything. The paper did not measure the version where the feedback becomes a prompt, and I treat it as the same shape.
-3. **Whole-window review.** An August 2026 study of long-horizon malicious PRs found that splitting an attack across multiple commits barely affected detection, but a window that reviews twenty-odd PRs at once dropped detection to roughly a third of its original level. What batching saves is human time; what it pays out is detection rate. Review each PR separately, rather than combining the whole window into one review.
+2. **Feeding the reviewer’s acceptance directly back to the generator.** In a June 2026 study using accept signals as training feedback, acceptance rose while correctness fell: a rubber-stamp regime. Review still operated, but increasingly accepted worse output. The paper did not measure feeding the same signals back through a prompt. Including that version in this restriction is my extension based on the risk of reinforcing self-confirmation.
+3. **Combining multiple PRs into one whole-window review.** An August 2026 experiment on long-horizon malicious PRs found that splitting an attack across commits barely affected detection, while reviewing twenty-odd PRs at once reduced detection to roughly a third of its earlier level. That result belongs to the experiment’s setting, not an estimate of every team’s loss. It supports my more conservative choice: review PRs individually and preserve a separate judgment and record for each.
 
 Two more patterns are conditionally allowed.
 
 The first allowed arrangement uses a reviewer from a different vendor in an isolated session, followed by a human reading the report, approving, and sampling deep reads.
 
-The second is the same vendor but a different session. It is allowed to comment, and **its approval does not enter the approval artifact's signal column**. It is not "may not press approve"; it is that pressing it does not count as a signal, and that is the substantive difference from a heterogeneous reviewer.
+The second uses the same vendor in a different session: retain comments, but **do not record approve in the approval artifact’s signal field**. The distinction from a heterogeneous reviewer concerns recorded reference signals. Both arrangements still require human approval; neither kind of AI approve can satisfy required approvals directly.
 
 One more design principle: **do not show the reviewer the previous round's scores.**
 
@@ -400,7 +400,7 @@ flowchart LR
     class Y3 human
 ```
 
-All three closed-loop shapes are forbidden; only the open loop is allowed. A same-vendor, different-session reviewer may only comment, and its approval does not enter the signal column.
+These rules protect one thing: the reviewer must be able to challenge the generator on evidence, and the approver must be able to see unresolved questions. More reviewers are only a configuration choice. Context separation, preserved verification results and a human decision make that choice into a review process.
 
 ---
 
@@ -414,17 +414,17 @@ The attack was simple: an issue asking to "add telemetry" that actually exfiltra
 
 The result: about 80% of the laundered PRs **passed the scanning stage**, and under the worst set of experimental conditions 55% were fully compromised.
 
-Those two numbers are two different failures. One is getting past the scan stage; the other is the whole pipeline failing to stop it from end to end.
+Keep those rates separate. Roughly 80% describes passage through scan; 55% describes end-to-end compromise under the worst experimental condition. The former is not a deployment success rate, and the two should not be collapsed into one attack-success figure.
 
 In this experimental setup, content scanning did not reliably stop the attack, while reasoning about the change's actual purpose helped. That does not establish that all scanners are ineffective. It shows that descriptions and claims of authority also need verification.
 
 Another benchmark of about 1,000 adversarial PRs reverted the patches of real CVEs to reintroduce the vulnerabilities, then wrapped them in 15 kinds of narrative, and all 8 review agents were swayed by the narrative.
 
-Both studies point at the same conclusion: an agent reads the diff through the frame the PR description gives it, and a PR description is something anyone can write.
+Both studies make me cautious about treating PR descriptions as neutral background. They can frame a diff in ways that reduce scrutiny. A description helps explain the author’s intent, but because the author can write it, it cannot also establish that approval has been granted.
 
 The attack path leads to three requirements for the process, and all three land on the review gate:
 
-1. **Every authority claim is checked against the system of record.** "Already approved", "security signed off", "urgent" — those three claims go to the ticket system, CODEOWNERS and the approval log, every time. The system of record is the one authoritative source for the fact being claimed; a PR description is not that source. In the reviewer agent's context, mark the PR description as untrusted input. Last season's Harness Blueprint said in its guardrails that issues and PR comments are untrusted input; this is that rule landing in review.
+1. **Every authority claim is checked against the system of record.** "Already approved", "security signed off", "urgent" — those three claims go to the ticket system, CODEOWNERS and the approval log, every time. The system of record is the one authoritative source for the fact being claimed; a PR description is not that source. In the reviewer agent's context, mark the PR description as untrusted input. “The Harness Blueprint” said in its guardrails that issues and PR comments are untrusted input; this is that rule landing in review.
 2. **Check consistency between intent and diff.** The Intent field supplies a starting point. If it says "only add telemetry" while the diff reads environment variables and sends data externally, establish what is sent, where it goes and whether that is within the approved scope. Telemetry can legitimately use external connections; the operation alone does not prove an attack. The issue is whether the data and purpose match.
 3. **Review each PR separately, rather than combining the whole window into one review.** This is the same rule as the third closed-loop shape in the previous section; social engineering is just another way in.
 
@@ -472,7 +472,7 @@ flowchart TB
     class P human
 ```
 
-One line of "pre-approved" gets past the scanner and the reviewer agent; only checking the system of record stops it.
+The defense in the figure does not ask the reviewer to reread “pre-approved” more carefully. It obtains a separate record that can be checked. An absent approval or a mismatch with the current change should stop release until the responsible person resolves it.
 
 As a starting point, put this requirement in the reviewer agent's system prompt to distinguish a PR description from an approval source:
 
@@ -490,13 +490,13 @@ The prompt is not enforcement by itself. The reviewer needs access to protected 
 
 ## 7. Approval identifies the responsible person: the three rules the review gate needs
 
-Approval is the last cell of the review gate, and it is where accountability actually lands. Whoever presses that button is the person whose name stays in the record afterward.
+After checks and review, someone must answer: on the evidence available, do I agree to let this change enter the system? Approval records that decision. An account name and timestamp alone still leave an investigation short of evidence if they do not identify what was reviewed.
 
-The full design of accountability waits for December's accountability piece. What stays here are the three rules the review gate needs:
+Accountability also involves organizational policy and audit requirements. Here the scope is three rules the review gate can implement directly, connecting the approver, the reviewed content and the conditions for release:
 
 1. **AI approvals do not count toward branch protection.** Do it with mechanisms GitHub actually has, not with fields that do not exist. The two routes come right after this list.
-2. **On high-radius PRs, the task assigner may not approve.** The two cells of section 3's matrix already say so. Low radius is exempt, for the reason given there: the assigner is the person who understands the intent best, and a blanket ban would double the review load.
-3. **The vendor terms contradict each other.** One vendor forbids the task assigner from approving; another vendor's agent auto-approves below a risk threshold (Where Accountability Lives, August 2026). Approval policy cannot be outsourced to a vendor's defaults, because the defaults of two vendors fight each other and you end up having to write your own anyway. The details of the terms and the identity standard for the approval artifact: see December.
+2. **Have someone other than the task assigner approve high-blast-radius PRs.** This corresponds to the two higher-risk cells in section 3 and preserves an independent judgment. For bounded-impact PRs, follow the matrix rather than always adding another approver. The assigner may understand intent best and can undertake that review when the required evidence is available.
+3. **Define an approval policy for the team.** Where Accountability Lives (August 2026) records conflicting vendor terms: one prohibits approval by the task assigner, while another’s agent auto-approves below a risk threshold. Teams need explicit decisions about eligible approvers, situations requiring independent review and the records to retain. Combining tool defaults does not produce a coherent accountability policy.
 
 Back to the first rule. By the design in GitHub's documentation there are two routes.
 
@@ -506,7 +506,7 @@ Back to the first rule. By the design in GitHub's documentation there are two ro
 
 The maintenance work differs: route a) needs a current human-owner list, merge rules and bypass settings; route b) also requires maintaining the approval-state logic and status check.
 
-**The author has not tested in a production repo whether CodeRabbit's or Copilot's approvals really do not count under these two routes**; the CODEOWNERS excerpt below is a design draft. Before you set it up, verify once in your own repo with a GitHub App's approval, and GitHub's rules will change too (this article is scheduled for October 2026).
+**I have not tested in a production repo whether these configurations actually exclude CodeRabbit or Copilot approvals.** The CODEOWNERS excerpt below is therefore a design draft. Before adoption, consult the then-current GitHub documentation and repo settings, and test enforcement with a GitHub App’s approve. Recheck it after changes to rules, accounts or bypass permissions.
 
 Here is the minimal configuration of route a). The point of it is that only humans are listed, and not a single App:
 
@@ -521,13 +521,13 @@ Here is the minimal configuration of route a). The point of it is that only huma
 
 This excerpt illustrates the relationship between product directories and approval rules; it is not a complete permission setup. Protect CODEOWNERS and the verification workflow, restrict bypasses, and verify that new commits invalidate old approvals. With a custom status check, the agent under review must not control the checking code or the authority to publish its successful result.
 
-Here is the definition section 3 owed: the minimum version of an approval artifact needs three things.
+Now complete the approval artifact introduced in section 3. Its minimum version retains three kinds of information so someone examining it later can identify who approved and on what evidence.
 
 The first is a human identity, because the approval record must identify the responsible person. The second is the hash of the reviewed tuple, the tuple being the set of contents reviewed together: the diff, the constraint report, the mutation report and the reviewer agent's version. The third is the AI reviewer's signal column, comment or approve, for reference only.
 
 The content hash makes it possible to identify exactly what was reviewed. A hash alone does not invalidate approval, though. Before merging, compare the current content with the artifact and require renewed approval after changes. The record and the check together make responsibility more than a timestamp.
 
-This design comes with one bonus. Section 7 of last season's Org Design piece said a junior's first month should be spent "reviewing agent PRs with a checklist". That checklist now exists: the Intent and Constraints honoured fields of section 3's PR template, and the consistency of the reports with them.
+This also connects to section 7 of “Agentic Engineering: Platform + Federation in Practice,” which proposes having junior engineers review agent PRs with a checklist. Intent, Constraints honoured and verification reports provide concrete material to compare. Someone new to the system can identify what agrees and what remains unclear, then discuss it with an experienced reviewer. The checklist supports learning and collaboration; it does not make a new hire ready to approve every high-risk change independently.
 
 > **An agent can help prepare the information an approval needs, but it cannot make the approval decision in a human's place.**
 
@@ -535,7 +535,7 @@ This design comes with one bonus. Section 7 of last season's Org Design piece sa
 
 ## 8. Closing, and the order of rollout
 
-The rollout has seven steps. The principle behind the order is to get the things people have to read into place first, and only then touch the rules about approval:
+To change an existing workflow, I would start with one pilot repo, prepare the information reviewers need, then introduce approval rules and responsibilities in stages. The following seven steps describe that rollout. Each needs an owner to verify the result, beyond checking off a configuration change.
 
 - **Add the two PR template fields** (Intent and Constraints honoured). Without them, later reviewers lack a statement of purpose and constraints to check the work against.
 - **Put deterministic dispatch in front.** The PR passes lint, constraint tests and secret scan before it reaches LLM review.
@@ -545,7 +545,7 @@ The rollout has seven steps. The principle behind the order is to get the things
 - **Prohibit the assigner from approving in the two high-radius cells.** Someone other than the assigner takes responsibility for approval.
 - **Include the unreviewed merge rate in the monthly report**, tracking merges that had no human approval.
 
-**Do not apply the assigner ban to every repo on day one**: get the machine verification the matrix needs working first, then introduce the ban. Run the order backwards and you get a pile of stuck PRs first, and then someone dismantles the ban.
+**Introduce the assigner restriction together with a handoff plan.** In the pilot repo, verify that checks work, reports are understandable and an approver other than the assigner is available before extending the process. If no qualified reviewer is available for a high-risk change, delay release. Queue pressure does not remove the need for independent judgment.
 
 Return to the four sources at the start. Fully booked senior engineers and accumulating PRs point to the same difficulty: the way code is produced has changed, while the people receiving it still work under the old division of labor. That is why I want to redesign review. Asking the person in front of us to work faster is not enough; the team also has to decide which parts actually need their judgment.
 
@@ -555,9 +555,9 @@ Model versions keep changing, and review shares need to follow measured results.
 
 > **Review is not a race to read diffs. It is the control point where an organization decides how to take responsibility for agent output and its acceptance.**
 
-Next is the reliability piece: how review constraints become constraint tests, how pass^k is computed, how the share of human re-checking is derived backward from a reliability target, and how these numbers inform the autonomy decision at gate G2 in last season's Evals and Unit Economics piece.
+“The 34% SWE-Gate Found Behind a Green Build” takes the next step, from approving one PR to deciding whether a class of tasks warrants broader autonomy. It develops constraint tests, pass^k and the human review budget, connecting them to G2 in “Agentic Engineering: Evals, Unit Economics, and Scaling.”
 
-pass^k measures what share of a set of tasks pass on every one of k attempts; G2 is that gate in last season's piece, the one that decides whether to widen an agent's authority. The unreviewed merge rate this piece puts in the monthly report will sit next to those three numbers on the same leadership report.
+What I want to leave here is a workable division of responsibility: tools prepare evidence, reviewers know what they need to judge, and the person pressing approve can explain the decision. Receiving agent output then becomes more than fitting another obligation into an already-full calendar.
 
 ---
 
@@ -595,10 +595,10 @@ pass^k measures what share of a set of tasks pass on every one of k attempts; G2
 21. Greg Brockman (@gdb) — [2026-08-06 Codex Security Review on every PR](https://x.com/gdb/status/2085496677725860064)
 22. Community discussion: Claude Taiwan (the "fleet mode" comment); Scrum Community in Taiwan ("AI has blown up the volume of code — what happens to code review?", "Why stories have to be cut smaller in the AI coding era")
 23. Author's notes: Claude Certified Architect — Foundations exam notes (separating the review instance)
-24. Last season: [The Harness Blueprint](https://fantasybz.medium.com/agentic-engineering-part-2-the-harness-blueprint-making-your-system-legible-to-agents-3facc281f633) section 6 (guardrails), [Org Design](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987) section 7 (the junior path)
+24. Related reading, the Agentic Engineering series: [The Harness Blueprint](https://fantasybz.medium.com/agentic-engineering-part-2-the-harness-blueprint-making-your-system-legible-to-agents-3facc281f633) section 6 (guardrails), [Org Design](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987) section 7 (the junior path)
 25. Studist, Masaya Nakamura — [Intent as Code: Why Existing Permissions Aren't Enough for AI](https://sched.co/2QlDX) (AGNTCon + MCPCon Japan 2026, Tokyo, 2026-09-10; [slides](https://hosted-files.sched.co/agntconmcpconjapan26/ab/Intent-as-Code%20%2813%29.pdf#page=16) slide 16, which cites H. Yu et al., [arXiv 2606.22721](https://arxiv.org/abs/2606.22721)) [section 3; cited second-hand off the slide]
-26. GitHub documentation — [About code owners](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners), code ownership and required approvals (sections 3 and 5).
-27. GitHub documentation — [About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches), required reviews, stale approvals and bypass settings (section 5).
+26. GitHub documentation — [About code owners](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners), code ownership and required approvals (sections 3 and 7).
+27. GitHub documentation — [About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches), required reviews, stale approvals and bypass settings (section 7).
 
 ---
 

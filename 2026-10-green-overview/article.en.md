@@ -2,7 +2,7 @@
 
 > **TL;DR** — When a team adopts coding agents and keeps seeing green CI, a growing review queue and production failures, it is worth asking whether its acceptance criteria have kept pace. If an agent writes both the implementation and its tests, without independent scrutiny of those tests, green only shows that it passed its own exam. In James Bach's terms, that is *checking*; it is not enough to complete *testing*. Three gates divide the work: the test gate assesses test effectiveness through mutation score; the review gate assigns who examines what; and the reliability gate uses constraint tests and pass^k to inform expanded authority. Section 1 sets out three positions: how humans review payment PRs, whether AI approvals count, and whether TDD can serve as a gate. Every number keeps its domain attached: SWE-Gate measured the finding that "34% of green patches violate reviewer constraints" across 75 Python repos. A 90-day blueprint closes the piece.
 
-> Series: **Overview (this piece)** → 1. Testing (coming soon) → 2. Review (coming soon) → 3. Reliability (coming soon). Last season: [Don't Build Your Own Devin](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9) → [1. Org Design](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987) → [2. The Harness Blueprint](https://fantasybz.medium.com/agentic-engineering-part-2-the-harness-blueprint-making-your-system-legible-to-agents-3facc281f633) → [3. Evals and Unit Economics](https://fantasybz.medium.com/agentic-engineering-part-3-evals-unit-economics-and-scaling-running-agents-like-a-product-1cb1855a2046)
+> Series: **Overview (this piece)** → 1. Testing (coming soon) → 2. Review (coming soon) → 3. Reliability (coming soon). Related reading, the Agentic Engineering series: [Don't Build Your Own Devin](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9) → [1. Org Design](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987) → [2. The Harness Blueprint](https://fantasybz.medium.com/agentic-engineering-part-2-the-harness-blueprint-making-your-system-legible-to-agents-3facc281f633) → [3. Evals and Unit Economics](https://fantasybz.medium.com/agentic-engineering-part-3-evals-unit-economics-and-scaling-running-agents-like-a-product-1cb1855a2046)
 
 ---
 
@@ -202,7 +202,7 @@ This sounds like a new problem agents brought with them, and it isn't. The next 
 
 ## 4. Testing history has already run this experiment
 
-A new verification problem is usually an old one in different clothes. Last season's historical through-line was DevOps 2014–2016; this season it is the history of testing.
+When a new verification problem appears, I find it useful to look for similar situations in engineering history. “Don’t Build Your Own Devin” drew on DevOps in 2014–2016 to discuss organizational choices. This piece turns to testing history and the debates that preceded today’s questions.
 
 The reason for the shift is that testing has long discussed many of the methods now used to verify agent output. Faster production creates fresh pressure to rethink the cost and division of verification work. The diagram places testing history on the left and today's verification layer on the right to show the connections:
 
@@ -381,7 +381,7 @@ On September 2 Martin Fowler reposted an article, "Maybe we shouldn't be reviewi
 
 This piece's version: **redesigning review is not about making humans read faster; it is about deciding what deserves a human's reading.**
 
-The "review becomes the new bottleneck" point in [last season's overview](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9), section 4, is one I have to correct myself: the bottleneck is a symptom; the disease is putting humans at the wrong gate, reading the wrong thing.
+The "review becomes the new bottleneck" point in [“Don’t Build Your Own Devin”](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9), section 4, is one I have to correct myself: the bottleneck is a symptom; the disease is putting humans at the wrong gate, reading the wrong thing.
 
 This section uses two numbers, one about scale and one about association.
 
@@ -439,11 +439,11 @@ flowchart TB
 
 The right side lays out two workflow choices and the outcomes to track. Preserving comments as checks lets the same requirements be checked again; removing review can leave maintenance and security risks. This is a rationale for the design, not a causal conclusion from the associations above. After adoption, measure whether risk actually falls.
 
-So why isn't a human reading the payment diff line by line the safety net? I have two reasons.
+Reading payment changes line by line still has value. Relying on it as the only safety net, however, asks too much of a reviewer’s attention. I see at least two reasons to move repeatable checks into tools.
 
 The first reason is the 49% in section 3: developers in that experiment identified incorrect assertions with roughly half accuracy. The task was assertion judgment, not a full PR review, so this is not a PR defect-detection rate. It is a reminder that time spent reading does not guarantee a correct judgment.
 
-The second is compounding. A comment a human leaves while reading a diff reviews this one PR, and it is over once that PR merges. The same comment recycled into a constraint test checks every PR that follows.
+The second reason is to preserve what a review teaches the team. A comment may resolve the current PR without being remembered when the next change arrives. Turning its repeatable requirement into a constraint test makes that check available to later PRs and saves reviewers from having to raise the same concern again.
 
 For PRs with a high blast radius, turn repeatable conditions found during diff review into constraint tests. Blast radius is the reach of a failure. Auth, payments, schemas and infrastructure usually warrant close attention; an internal tool must also be assessed by its permissions and the data it can affect, rather than assumed to be low risk by name.
 
@@ -495,15 +495,15 @@ flowchart TB
 
 The lower-right cell is an easily missed starting point: for a bounded-impact PR without verification evidence, add checks before arranging report review and approval. If key requirements remain unverified, the low-risk label does not turn a hurried approval into adequate assurance.
 
-The four exits are the four cells of the review piece's triage matrix. The full table is in that piece, and so are the reviewer fleet (layers of reviewers each looking at one part), the closed-loop ban and the approval artifact.
+These four exits correspond to the triage matrix in the review piece, which develops the reviewer fleet’s responsibilities, the ban on same-session self-review, and the information an approval record needs to preserve. For now, the decision starts here: before assigning reading, establish what evidence the PR already has and which questions remain open.
 
-Review decides who reads what. The next section changes the question: how much autonomy can this kind of task actually be given?
+The review gate determines how to assess the PR in front of us. Passing that review still leaves another question: when we hand this class of task to the agent repeatedly, is its performance consistent enough to justify broader autonomy?
 
 ---
 
 ## 8. Reliability is not capability: pass@1, pass^k and the oversight budget
 
-Reliability is not capability, and that is this section's whole position. How strong an agent is and whether you dare hand it a whole class of tasks are two different things. Separating them takes two definitions:
+A successful attempt shows what an agent can do. Deciding how much authority to give it also requires knowing whether that performance holds across repeated attempts. Those questions need separate measurements rather than one undifferentiated “pass rate”:
 
 - **pass@1**: the per-attempt success rate of each case, estimated from k reruns.
 - **pass^k**: the share of cases that succeed on all k runs.
@@ -555,11 +555,11 @@ flowchart TB
     class P5 buy
 ```
 
-The gap between the two boxes on the right is what to take from the figure: same case, same set of runs, and the two numbers reach completely different conclusions. One red is enough for "right every time" to be false.
+Both numbers describe the same set of runs. pass@1 retains the successful attempts; pass^k asks whether this case succeeded every time. One failure excludes the case from the group that passed all k attempts. The gap comes from different criteria, not conflicting reports.
 
-The gap can be large. To measure it on your own system, repeat the 20–50 cases in last season's operations-piece golden set at k = 5 to 10 and compare the results. Those measurements should inform how far you expand autonomy; somebody else's benchmark cannot make that decision for you.
+To measure that gap in your own system, use the golden-set approach proposed in “Agentic Engineering: Evals, Unit Economics, and Scaling”: select 20–50 cases and run each independently at k = 5 to 10. Those measurements provide a starting point for the autonomy discussion. Another team’s benchmark can inform it, but cannot make the decision for you.
 
-The third number is human effort. Here I borrow **a corroborating case outside code** — the concept transfers, the numbers do not.
+After measuring success and consistency, we still need to account for human time. A **case from outside code** illustrates why systems with similar accuracy may need different review arrangements. The reasoning is useful here; its staffing proportions cannot be transferred directly to coding agents.
 
 READY is a qualification framework for enterprise agent deployment (September 2026). It asks, before an agent system is cleared to run, how many people it takes to reach the reliability you want. Its case is a clinical audit workflow, 16 agent systems, 750 cases. The domain is not code.
 
@@ -615,7 +615,7 @@ flowchart LR
     class B3 own
 ```
 
-The two systems in the figure start out almost identical and end up far apart, and the only thing they share in between is that reliability target. An autonomy decision cannot be made on an accuracy number alone, and this figure is the reason.
+The systems have similar autonomous accuracy but need different review shares to reach the same reliability target. For the person allocating staff, that gap cannot disappear inside an average accuracy score. Choosing a system also means checking whether the team can sustain the review work it requires.
 
 The leadership monthly report works the same way: the single "pass rate" gives way to three numbers — the two golden-set numbers from above, plus section six's constraint pass rate:
 
@@ -625,21 +625,21 @@ The leadership monthly report works the same way: the single "pass rate" gives w
 | pass^k (golden set, k = 5–10) | How much autonomy this kind of task can get | Comparing against someone else's benchmark |
 | Constraint pass rate (SWE-Gate style) | What was violated beyond the green build | Replacing review |
 
-The column that matters most in that table is the last one. "What it must not be used for" is not filler; it blocks the three most common misuses — deciding autonomy on a capability number, comparing your own numbers against someone else's benchmark, and treating a constraint pass rate as a reason to skip review.
+Each metric adds evidence and has limits. pass@1 can track capability but cannot decide autonomy on its own. pass^k only supports a meaningful comparison when the task set and k are considered with it. Constraint pass rate covers only requirements that have become checks. Keeping them separate prevents an attractive overall score from hiding different risks.
 
-These three numbers connect back to last season's operations-piece gate that decides whether autonomy gets opened wider (G2): autonomy expansion looks at pass^k and escape rate, not pass@1; escape rate is the share of defects that slip past these gates and are only found in production afterwards.
+These measurements feed into G2, the autonomy-expansion gate in “Agentic Engineering: Evals, Unit Economics, and Scaling.” The decision needs more than pass@1: it must also consider pass^k and escape rate, the share of defects that pass these gates and are discovered only in production.
 
-G2 originally tracked retries, escaped defects and the champion system. This season adds four measurable conditions — pass^k, the complement of constraint pass rate (constraint violation rate, or 1 minus the pass rate), a mutation score floor and oversight budget — and the full table is in the reliability piece.
+G2 originally tracked retries, escaped defects and the champion system. This series adds four conditions: pass^k, constraint violation rate (1 minus constraint pass rate), a mutation score floor, and the oversight budget. The reliability piece brings them into one decision table, with conditions for expanding autonomy or holding it steady.
 
-Whether capability is improving and whether you can let go were always two different questions.
+Measuring capability tells a team whether its tools are improving. Granting autonomy also requires accounting for the consequences of failure and the people who must respond.
 
-The question, the measurement and the owner for each of the three gates are now in place. The next section walks it backwards: what you see on the ground when none of this is installed.
+We now have a question, evidence requirements and an owner for each gate. The next step is to look at everyday work and ask which familiar practices may be bypassing those decisions.
 
 ---
 
 ## 9. Eight anti-patterns
 
-Everything so far has been about what to do. This section turns it around into eight anti-patterns, because on the ground the thing recognized first is usually not the correct practice, it's the symptom. Every line in the right column below is something you can match yourself against directly:
+A workflow can look clear in a document and still give way to familiar shortcuts in a busy PR queue. The table below describes eight anti-patterns through concrete situations. Use them to examine which signals your own acceptance process treats as sufficient evidence.
 
 | # | Anti-pattern | Where you see it |
 |---|---|---|
@@ -703,9 +703,9 @@ flowchart TB
     class t1,t2,t3,t4,r1,r2,l1,l2 bad
 ```
 
-The assignment itself is the takeaway: not one of the eight is "the agent's problem." Every one of them maps to a gate that hasn't been installed yet.
+The figure connects each symptom to a part of the workflow the team can improve. Loosened assertions call for checking what the test gate detects; same-session self-review calls for examining review isolation and approval. This does not absolve the agent of problems. It identifies controls the team can improve without relying solely on a model change.
 
-Of the eight, in Taiwanese communities I see "coverage as quality" and "closed-loop review" most often — 5 and 6 in the table; an observation, not a statistic. The reasons are practical in both cases: coverage is the threshold easiest to bolt onto existing CI, with the number already there and no process to change, and seat-based subscriptions make "review yourself on the same subscription" the cheapest option.
+In Taiwanese community discussions, I more often encounter “coverage as quality” and “closed-loop review,” entries 5 and 6. That is an observation, not a statistical finding. Adoption cost may help explain their appeal: coverage is often already available in CI, and an existing seat subscription makes reusing the same agent for review convenient. Understanding those constraints helps in designing an alternative the team can afford.
 
 None of the studies I have read counted the share of closed-loop reviews. The available research records a different kind of pairing. An August 2026 study (AI-to-AI Code Reviews) looked at 248,641 PRs. Cross-product AI-reviews-AI — a reviewer from a different vendor reviewing agent PRs — is only about 1.6% of the total, but between Q1 and Q3 2025 grew more than 100x.
 
@@ -717,20 +717,20 @@ Once the symptoms are recognizable, what's left is the decision. In the next sec
 
 ## 10. If I were the engineering VP or QA lead, how I would decide
 
-The previous nine sections turn into a decision list here. The three lines below are written as realistic proposals, because that is usually how they get said out loud. I would **not** approve:
+In a budget or workflow meeting, I would start with two questions: what evidence supports approval, and who will own the resulting responsibilities? The following proposals are illustrative examples. On the evidence they provide, I would **not** approve them:
 
 > "Turn the QA team into a prompt team."
 > "Use AI review to clear the review backlog; an AI approve is enough to merge."
 > "On the strength of an 85% eval pass rate, open write tools to every team in Q4."
 
-The write tools in the third line are the tool permissions that let an agent change a system by itself. All three are blocked for the same reason: each of them wants an unmeasured number or process to stand in for a gate that isn't installed yet.
+The first proposal leaves testing judgment without an owner. The second removes human approval. The third treats a per-attempt pass rate as sufficient evidence for broader autonomy; its write tools are permissions that let an agent change the system. The missing evidence differs, but none explains how the revised process will preserve the judgment people previously supplied.
 
 I **would** approve four things:
 
 1. **Turn review comments into constraint tests first.** Pull 50 review comments from the agent PRs sent back in the last 90 days, classify them, pick out the executable ones, and write the first 10 constraint tests. For a repo with no comment history, derive the first 5 from the last 5 incident postmortems instead. This is the main route, not a fallback, because every "this must never happen again" was a constraint to begin with.
-2. **Install a mutation gate on one pilot repo**, counting only the lines the agent changed. There are two conditions for turning it on: 200+ engineers or a QA lead who will read the report, and the affected test subset finishing within 10 minutes — at 50 people, don't turn it on, and the reason is in the table below. The threshold is **my suggested value (not an industry standard)**: mutation score ≥ 70%. Below the threshold, the PR goes back to the agent for more tests, not to a human to read. The rollout order is report only for a month, then block.
+2. **Pilot a mutation gate in one repo**, measuring only agent-changed lines. A team of 200+ engineers, or one with a QA lead who can regularly interpret reports, can assess adoption. Whatever the headcount, someone must own calibration, and the affected test subset must finish within 10 minutes. Start observing against **my suggested value, not an industry standard**, of mutation score ≥ 70%. Collect reports for a month before deciding whether to block. Below-threshold results should send missed behaviors and test gaps back to the agent for repair, with the owner handling exceptions and false positives.
 3. **The reviewer agent must be an instance from a different vendor, or at least a different session** (switch to another vendor's model, or at least open a separate conversation to do the review), and an AI approve never counts toward required approvals. Required approvals is GitHub's setting for how many approves a PR needs before it can merge. A merge with only an AI approve counts as unreviewed in section 7's unreviewed-merge rate. GitHub offers two candidate mechanisms. One is CODEOWNERS listing humans only, plus Require review from Code Owners; the other is a required status check that counts human approves. I have not tested either on a production repo, so I will validate first with a GitHub App's approve on my own repo, to see whether either route holds up. A design draft is in the review piece.
-4. **The approval artifact binds a human identity to the hash of what was reviewed.** An approval artifact records who pressed approve on exactly what content; change the content and the record is void. On high-blast-radius PRs, whoever assigned the task cannot approve. There is a second reason to bind it to a person. Vendor terms contradict one another on "who may approve an agent's PR" (Where Accountability Lives, August 2026); the details go to December's accountability piece.
+4. **Tie approval to a person and the content that person actually reviewed.** The approval artifact should record the approver and a hash of the reviewed content; changes require renewed approval. On high-blast-radius PRs, the task assigner cannot also be the approver. Where Accountability Lives (August 2026) identifies conflicting vendor terms about who may approve an agent’s PR. That is another reason for teams to define responsibilities explicitly rather than assume that an approve button establishes accountability.
 
 **How to think about the verification budget.** An August 2026 study (The reach of a verification tool decides its value) gave me one principle: a verification tool's value is set by its reach. Its sample is 1,116 web apps, 6 models and 8 tool configurations. The clearest illustration is the boot probe, a check that only asks whether the app starts: at about 35% of a full shell's token cost, it removed almost all startup failures; a full shell costs 2.35x.
 
@@ -738,7 +738,7 @@ My proposed order starts with inexpensive checks that catch common errors, then 
 
 The budget ratio runs like this: for every $1 the agent spends producing, budget $0.30 to $0.50 to verify it. The denominator is agent tokens plus generation-side CI, the machine cost of what the agent produces; the numerator is verification-side compute, the machine cost of verifying it. **The ratio is my provisional heuristic, to be calibrated by the pilot** — that paper supports the principle, not the ratio. **Human review time is not in this ratio**; it goes through the reliability piece's oversight budget, and the two are reported to the CFO separately.
 
-**Installing at 50 / 200 / 1,000 engineers.** This is about rolling a gate from one repo to forty; the autonomy expansion G2 talks about is a different thing:
+**Planning for 50 / 200 / 1,000 engineers.** These are three adoption scenarios for extending checks from a few repos across an organization, a separate decision from G2’s autonomy expansion. The 50-person scenario assumes no capacity to maintain mutation reports. Headcount describes the setting; the real prerequisite is having someone who can own the work:
 
 | Scale | How to install the verification layer | Who owns it |
 |---|---|---|
@@ -746,9 +746,9 @@ The budget ratio runs like this: for every $1 the agent spends producing, budget
 | 200 engineers (30–50 repos) | All four checks in the paved-road CI template; on by default for new repos, brownfield order for old ones; the reviewer fleet defined once in a central config file | QA lead owns the test gate; EMs own the review gate's triage matrix |
 | 1,000 engineers | Platform runs the test gate as a product (versions, SLA, dashboard); the reviewer fleet is managed centrally and each BU picks its configuration; each BU computes its own oversight sampling rate | Platform product owner + each BU's QA lead |
 
-What is worth looking at in that table is the gap between the middle column and the right one: the set of checks only shrinks at the smallest scale, but who owns the gate changes on every row. The shrink has exactly one reason: at a scale where nobody would read the report, mutation stays off. The paved road in the table is the path the platform has laid in advance and that works by default.
+As adoption grows, the work changes beyond choosing checks: someone must maintain rules, interpret reports and handle exceptions. The paved road is the workflow the platform provides for teams to use by default. Adding checks there reduces repeated setup across repos, but central installation cannot improve quality if nobody takes responsibility for the results.
 
-**Brownfield: which gate comes first.** Consider a concrete scenario: a 15-year-old legacy monolith, a 40-minute test suite, 30% coverage and no organized review-comment history. The sequence below is for introducing verification in that kind of repo, with each step's prerequisites listed. It does not replace the legibility sequence from section 7 of last season's overview: characterization tests → logs / traces → architecture rules. If there are no tests, recording existing behavior with characterization tests is step 0. Those records still need to distinguish requirements from current behavior that has not yet been validated:
+**Brownfield: which gate comes first.** Consider a concrete scenario: a 15-year-old legacy monolith, a 40-minute test suite, 30% coverage and no organized review-comment history. The sequence below is for introducing verification in that kind of repo, with each step's prerequisites listed. It does not replace the legibility sequence from section 7 of “Don’t Build Your Own Devin”: characterization tests → logs / traces → architecture rules. If there are no tests, recording existing behavior with characterization tests is step 0. Those records still need to distinguish requirements from current behavior that has not yet been validated:
 
 | Order | Gate | Why this position | Precondition |
 |---|---|---|---|
@@ -763,11 +763,11 @@ These four checks are just as useful on human-written PRs — loosened assertion
 
 ## 11. A 90-day action blueprint for the verification layer
 
-The previous section listed what I would and would not approve, but a list on its own has no order. This section lays it out on a timeline: which gate goes in which month, and what has to be visible at the end of each month before it is reasonable to move on.
+To act on those decisions, the team needs a sequence it can sustain. This 90-day blueprint starts with baselines and a limited pilot, then introduces blocking and autonomy decisions gradually. Each phase must leave observable results so the team can judge whether it is ready for the next step.
 
 The starting point first. Once the gates are in, someone will ask whether things actually got better, and answering that requires knowing what things were like before adoption. The main work of month 1 is to establish a baseline: measure performance before any intervention, so there is something to compare the later results with.
 
-There are six metrics to track. The first two were already being measured last season: escape rate, defined in section eight, and review minutes per PR, the average human review minutes each PR consumes. The other four are new this season:
+There are six metrics to track. “Agentic Engineering: Evals, Unit Economics, and Scaling” introduced two: escape rate, defined in section 8, and review minutes per PR, the average human review time each PR requires. This series adds four to show how tests and acceptance evidence are changing:
 
 - The share of PRs that weaken an existing assertion
 - The share of snapshot or golden-file updates with no stated reason (a golden file records the current output as the expected answer; it is not the same thing as the golden set)
@@ -776,7 +776,7 @@ There are six metrics to track. The first two were already being measured last s
 
 The last one deserves its own note. What it measures is not quality but whether the opening section's premise holds at all. If most new tests are still human-written, the repo differs from the scenario in section 1, which can inform adoption priorities. Test independence still needs scrutiny; authorship alone does not establish it. The reason from the previous section still stands: these checks are useful on human-written PRs too. Understanding the current state helps set an adoption pace the team can sustain.
 
-With the six numbers in hand, what's left is the schedule. Each row of the table below is one phase: the middle column is that month's work, and the right column is the exit criteria — the bar for moving on to the next month.
+Once the baseline is established, the team can plan the pilot and compare results. Months in the table describe a suggested pace; the right-hand column states what each phase must deliver. Reaching a date does not establish readiness. The exit criteria determine whether to proceed.
 
 | Phase | Goal | Exit criteria |
 |---|---|---|
@@ -829,14 +829,14 @@ flowchart TB
     class G buy
 ```
 
-The main line runs straight down and lands on the node at the bottom right. The end of three months is not "all four checks are installed," it is that someone has taken these numbers and made one keep-or-expand call on autonomy, with the reasons said out loud. Expanding and holding both count; nobody deciding is the failure.
+The sequence should culminate in an evidence-based autonomy decision. The owner needs to explain which results support expansion or which risks justify holding steady. Even if autonomy has not expanded after three months, a clear rationale and a clear account of the missing evidence mean the pilot has answered an important question.
 
 Two reminders to close on, both about the places I think this most easily goes wrong:
 
 1. **Add mutation last; report before blocking.** Observe reports in month 1 and introduce blocking in month 3 based on calibration. The team needs to understand which signals warrant stopping before it can trust the gate. Red-then-green also needs explicit scope: here it applies to changes to existing behavior. A feature PR may fail to run because a class or interface does not yet exist; that is not the behavioral difference being tested and is not a valid red.
-2. **Start constraint tests from the rules that are executable and least contested.** What do those look like? No new dependencies, no new public API, a consistent log format. What they have in common is that right and wrong are obvious, and writing them as a CI check starts no arguments. Do not start with architecture rules. Suppose the first rule you write is "no calls across layers": that rule sets off an architecture debate inside review, and the whole constraint-tests effort stalls before it has run once.
+2. **Start constraint tests with rules the team already agrees on and can check clearly.** Examples include adding no dependencies or public APIs within a particular task, or following an established log format. State their scope rather than assuming universal agreement. If “no calls across layers” has no shared definition yet, settle that boundary before encoding it in CI. Otherwise one failed check carries both a technical result and an unresolved architecture dispute, leaving the recipient unsure what to do.
 
-Whether three months is enough has less to do with how good the tools are than with whether anyone is willing to stop when the exit criteria haven't been met.
+Tools and staffing affect the pace; exit criteria protect the decision. When evidence is still missing, allowing the plan to take longer is preferable to expanding autonomy just to meet a date.
 
 ---
 
@@ -848,9 +848,9 @@ The next time the engineer is asked whether the PR was tested, there will be con
 
 The PR that turned `assertEqual` into `assertIn` gets caught by the assertion-change diff before merge — equality swapped for containment is a drop in strength, and it blocks outright. The tests are still green; the PR still doesn't get through.
 
-As for the one that broke production and turned out to have only a reviewer agent's approve, the "who looked at this change" field in the postmortem will have a name in it, because an AI approve never counted in the first place.
+In a workflow that previously accepted only a reviewer agent’s approve, enforced human approval and preserved records establish who reviewed which version. That cannot guarantee an incident-free release. It gives the investigation a concrete starting point: what was examined, and which risks went unrecognized.
 
-Not one of the three came from the agent getting better. All they did was move the source of evidence out of the agent's own hands and into measurements the organization owns.
+All three changes begin with the team taking ownership of acceptance evidence: someone validates the tests, checks can be reproduced, and approval can be traced to the reviewed content and the responsible person. Better agents still help, but an organization need not wait for them to stop making mistakes before establishing these practices.
 
 Back to Bach: checking can be automated; testing still requires human judgment. Agents make some checks easier to create and run, which gives teams a more pressing question: which unexamined problems deserve the time we have saved? That is the human effort I want to preserve: suspecting that something may be wrong, then finding a way to investigate it.
 
@@ -858,9 +858,9 @@ One last prediction with a date on it, so that it can be checked and so that it 
 
 > **When an agent writes both implementation and tests without independent scrutiny, green means it passed its own exam. Measure the work it delivers, then reserve human time for the decisions that need judgment.**
 
-Turning some measurements into checks in CI is engineering work a team can build up gradually. The next decision is a shared one: what should human time be reserved for? Acknowledging that reviewer time is finite makes room to discuss which work machines can handle and which still needs a person to look closely.
+For me, the design returns to the engineer in the opening section who is asked whether the work has been tested. The next answer should give the engineer and reviewer something they can examine together: evidence, questions and an account of what still deserves investigation. Tools handle repeatable checks so people have room to continue that work.
 
-One piece per gate, starting with the testing piece. Further out, November's theme, "the same spec, run ten times," pushes pass^k one step further, into the variance of the harness (the layer last season's technical piece covered: the tools and process around the agent). How consistent the results are when the same task is repeated is mostly treated today as a question about the model. What I want to talk about is how much of it the harness decides.
+The three companion pieces develop the test, review and reliability gates in turn. To start with the PR in front of you, begin with “Reviewing the Tests an Agent Wrote” and ask what the tests that have already turned green actually protect.
 
 ---
 
@@ -873,7 +873,7 @@ Three deep dives, one gate each:
 3. Part 2 — Review Is the Control Point, Not the Bottleneck: Triage, Reviewer Fleets and the Closed-Loop Ban (coming soon)
 4. Part 3 — The 34% SWE-Gate Found Behind a Green Build: Constraint Tests, pass^k and the Gate for Expanding Autonomy (coming soon)
 
-Last season's Agentic Engineering series: [Overview](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9), [1. Org Design](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987), [2. The Harness Blueprint](https://fantasybz.medium.com/agentic-engineering-part-2-the-harness-blueprint-making-your-system-legible-to-agents-3facc281f633), [3. Evals and Unit Economics](https://fantasybz.medium.com/agentic-engineering-part-3-evals-unit-economics-and-scaling-running-agents-like-a-product-1cb1855a2046).
+Related reading, the Agentic Engineering series: [Overview](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9), [1. Org Design](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987), [2. The Harness Blueprint](https://fantasybz.medium.com/agentic-engineering-part-2-the-harness-blueprint-making-your-system-legible-to-agents-3facc281f633), [3. Evals and Unit Economics](https://fantasybz.medium.com/agentic-engineering-part-3-evals-unit-economics-and-scaling-running-agents-like-a-product-1cb1855a2046).
 
 ---
 
