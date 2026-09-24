@@ -16,19 +16,19 @@
  "tables": [
   {
    "file": "table-01.png",
-   "markdown": "| Tier | Location | Contents | Owner | Update cadence |\n|---|---|---|---|---|\n| **Org** | Platform repo, distributed to each repo | Language and framework standards, security red lines, shared tool commands | Platform team | Quarterly |\n| **Repo** | Root of each repo | Build and test commands, architectural boundaries, conventions | Domain team (champion drives) | Monthly |\n| **Directory** (optional) | Special subdirectories | Module-specific rules | Code owner | As changes land |\n"
+   "markdown": "| Tier | Location | Contents | Owner | Suggested review cadence |\n|---|---|---|---|---|\n| **Org** | Platform repo, distributed to each repo | Shared standards, security limits, common tool commands | Platform team | Quarterly; update immediately for material changes |\n| **Repo** | Root of each repo | Build and test commands, architectural boundaries, conventions | Domain team, supported by its champion | Monthly and when development workflows change |\n| **Directory** (optional) | Special subdirectories | Module-specific rules | Code owner | When the module changes |\n"
   },
   {
    "file": "table-02.png",
-   "markdown": "| Tier | Examples | Policy |\n|---|---|---|\n| **read** | Query logs, read issues, search code | Open by default |\n| **write** | Open a PR, post a comment, file a ticket | Must be registered with an owner |\n| **dangerous** | DB writes, deploys, sending external email | Human approval — or simply closed for the first year |\n"
+   "markdown": "| Tier | Examples | Starting policy |\n|---|---|---|\n| **read** | Query logs, read issues, search code | Limit access to task-relevant data; authorize sensitive data separately |\n| **write** | Open a PR, post a comment, file a ticket | Register an owner, limit targets and content, retain records |\n| **dangerous** | DB writes, deploys, external email | Disabled by default; require human approval and explicit scope when needed |\n"
   },
   {
    "file": "table-03.png",
-   "markdown": "| Option | Isolation | Startup | Fits |\n|---|---|---|---|\n| **Container** (devcontainer-style) | Medium | Fast (seconds) | The starting point for most situations |\n| **MicroVM** (Firecracker-style) | High | Medium | Multi-tenant, running untrusted code |\n| **Local worktree** | Low | Fastest | Assisted development with a human present; unsuitable for autonomous runs |\n"
+   "markdown": "| Option | Isolation properties | Startup considerations | Fits |\n|---|---|---|---|\n| **Container** (devcontainer-style) | Isolates processes and files while sharing the host kernel | Image, initialization, and cache behavior matter | A common starting point for controlled workloads |\n| **MicroVM** (Firecracker-style) | Virtualization boundary with a separate guest kernel | Measure both VM startup and task environment preparation | Multi-tenant or untrusted code; configuration still matters |\n| **Local worktree** | Separates Git working directories; no security boundary | Directory creation is fast; dependencies are separate | Can be combined with isolation; assess host risk if used alone |\n"
   },
   {
    "file": "table-04.png",
-   "markdown": "| Question | Passing bar |\n|---|---|\n| Can the agent run \"only the affected tests\" in one command? | `make test FILTER=<path>` exists and is fast |\n| Do test failure messages locate the cause? | Assertion messages include expected and actual |\n| Are logs structured? | JSON or logfmt, carrying a request ID |\n| Can a production error be reproduced locally? | A trace ID is enough to reproduce locally |\n| Can UI changes be verified automatically? | Headless browser plus screenshots are wired up |\n| Are flaky tests quarantined and tracked? | Quarantine marker plus a fix SLA |\n"
+   "markdown": "| Question | Checkable condition |\n|---|---|\n| Can the agent run affected tests? | A documented entry point, such as `make test FILTER=<path>`, with a known scope |\n| Do test failures help locate the problem? | Assertions, expected and actual values, and necessary context |\n| Can logs be queried for the task? | JSON or logfmt with a request ID that supports correlation |\n| Can a production error be reconstructed? | Trace links to version, relevant inputs, and dependency state; sensitive data is handled appropriately |\n| Can UI changes be verified? | Browser actions, assertions, and screenshot comparisons where needed |\n| Is someone addressing flaky tests? | Quarantine reason, owner, repair deadline, and interim verification |\n"
   }
  ]
 }

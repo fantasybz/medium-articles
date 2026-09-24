@@ -10,7 +10,7 @@
   },
   {
    "file": "diagram-03.png",
-   "mermaid": "flowchart TD\n    Q1{\"已有 internal developer<br/>platform（IDP）team？\"} -->|沒有| N1[\"新成立 Agentic Platform Pod<br/>它日後就是你的 platform team\"]\n    Q1 -->|有| Q2{\"他們有餘裕接新 mission？\"}\n    Q2 -->|有| A1[\"Agentic 併入 IDP mission<br/>補 2–3 個 headcount\"]\n    Q2 -->|沒有| A2[\"先開獨立 pod<br/>12–18 個月後併回\"]\n    A2 --> M[\"合併條件：runtime 穩定、<br/>治理進 CI、champions 自轉\"]\n    style A1 fill:#d4edda,stroke:#2e7d32\n"
+   "mermaid": "---\nconfig:\n  theme: base\n  themeVariables:\n    fontSize: 16px\n    primaryColor: \"#f8f9fa\"\n    primaryTextColor: \"#1f2933\"\n    primaryBorderColor: \"#6b7280\"\n    lineColor: \"#6b7280\"\n    secondaryColor: \"#f8f9fa\"\n    tertiaryColor: \"#ffffff\"\n    clusterBkg: \"#ffffff\"\n    clusterBorder: \"#9ca3af\"\n    edgeLabelBackground: \"#ffffff\"\n  flowchart:\n    nodeSpacing: 36\n    rankSpacing: 44\n    padding: 12\n    htmlLabels: true\n    subGraphTitleMargin:\n      top: 8\n      bottom: 12\n    curve: basis\n---\nflowchart TB\n    classDef own fill:#d4edda,stroke:#2e7d32,color:#1f2933\n    classDef buy fill:#fff3cd,stroke:#b8860b,color:#1f2933\n    classDef bad fill:#ffe0e0,stroke:#c0392b,color:#1f2933\n    classDef human fill:#e3f2fd,stroke:#1565c0,color:#1f2933\n    Q1{\"已有 IDP team？\"} -->|沒有| N1[\"建立 Platform Pod<br/>預留日後整合\"]\n    Q1 -->|有| Q2{\"有餘裕承接新工作？\"}\n    Q2 -->|有| A1[\"納入 IDP 職責<br/>評估增補 2–3 人\"]\n    Q2 -->|沒有| A2[\"先成立獨立 pod<br/>12–18 個月後再評估\"]\n    A2 --> M[\"整併條件檢查<br/>Runtime 與治理穩定<br/>Champions 有工時與支援\"]\n    class A1 own\n    class Q1,Q2,A2 buy\n"
   }
  ],
  "tables": [
@@ -20,15 +20,15 @@
   },
   {
    "file": "table-02.png",
-   "markdown": "| 規模 | 專職 | Champions | 治理手段 | 下一步升級訊號 |\n|---:|---|---|---|---|\n| ~50 人 | 0 | 2 位（20%） | checklist + vendor 預設 | champions 過載 |\n| ~200 人 | 4–6 | 每 team 1 位 | gateway + policy as code | eval 與成本需要專人 |\n| ~1,000 人 | 8–12（三 squad） | guild 制度化 | 完整 platform + council | 吸收進 IDP，名字消失 |\n"
+   "markdown": "| 規模 | 專職 | Champions | 治理手段 | 下一步升級訊號 |\n|---:|---|---|---|---|\n| ~50 人 | 0 | 2 位（各 20% 工時） | checklist + 已確認適用的 vendor 能力 | 協作需求持續超過分配工時 |\n| ~200 人 | 4–6 | 每 team 1 位 | gateway + policy as code | eval 與成本需要專人 |\n| ~1,000 人 | 8–12（三 squad） | guild 制度化 | platform + council | 與 IDP 的責任與服務逐步整合 |\n"
   },
   {
    "file": "table-03.png",
-   "markdown": "| 找這種人 | 避開這種人 |\n|---|---|\n| 已經在日常用 agent 且有實際產出 | 只想研究新工具、不想碰別人 repo |\n| 寫過 team 的 onboarding 文件或測試基礎設施 | 把 champion 當升遷跳板、不教人 |\n| 願意花時間帶人、能把抱怨轉成需求 | 對「非確定性系統」沒有耐性 |\n"
+   "markdown": "| 可以觀察的經驗 | 面談時再確認 |\n|---|---|\n| 日常使用 agent，能說明產出與限制 | 是否願意了解其他 team 的 repo 與工作方式 |\n| 維護 onboarding 文件或測試基礎設施 | 能否把做法整理成同事能使用的指引 |\n| 協助同事，將反覆問題整理成需求 | 面對不穩定結果時，如何保留證據並持續調查 |\n"
   },
   {
    "file": "table-04.png",
-   "markdown": "| Bucket | 內容 | 行為 |\n|---|---|---|\n| **Run** | Token、vendor 訂閱、sandbox 運算 | 隨 adoption 線性成長，需要 quota 管理 |\n| **Build** | Platform team 人事 | 固定，4–6 人起 |\n| **Enable** | Champions 的 20% 時間、訓練、guild | 隱形成本，不編列就會被日常工作吃掉 |\n"
+   "markdown": "| Bucket | 內容 | 行為 |\n|---|---|---|\n| **Run** | Token、vendor 訂閱、sandbox 運算 | 隨任務量、model、context 與 retry 改變；另列固定訂閱費 |\n| **Build** | Platform team 人事 | 依編制安排固定投入；本篇 200 人情境以 4–6 人規劃 |\n| **Enable** | Champions 的 20% 工時、訓練、guild | 需調整原有交付安排，並追蹤實際投入時間 |\n"
   }
  ]
 }

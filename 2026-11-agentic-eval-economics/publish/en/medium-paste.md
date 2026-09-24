@@ -26,7 +26,7 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 
 # Agentic Engineering, Part 3 — Evals, Unit Economics, and Scaling: Running Agents Like a Product
 
-> **TL;DR** — The final part. You bought the runtime, organized the way part one describes, built the harness from part two. Then what? Most adoptions die on "then what": no evals, so the model-switch decision comes down to a hunch; no cost model, so the CFO shows up six months later with a knife; no gaming-resistant metrics, so the numbers look great while nobody actually gets faster. This piece covers the full operations layer: the eval dataset pipeline and its tiers, unit economics and model routing, the metric tree with an anti-gaming counter for each metric, the scaling gates that come after the pilot, and how to manage vendors.
+> **TL;DR** — The final part covers the decisions that follow a working environment: how to assess agent performance, what completing a task costs, and when to expand use. It develops eval dataset maintenance, cost models and model routing, metrics that need to be read together, post-pilot scaling gates, and vendor management. Counts and thresholds are starting suggestions. Teams need to adjust them to task risk, sample size, and observed results to turn an adoption effort into an internal product with continuing ownership.
 
 > Series: [Overview](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9) → [1. Org Design](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987) → [2. The Harness Blueprint](https://fantasybz.medium.com/agentic-engineering-part-2-the-harness-blueprint-making-your-system-legible-to-agents-3facc281f633) → **3. Evals and Unit Economics (this piece)**
 
@@ -34,24 +34,24 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 
 ## 1. Run agentic capability as an internal product
 
-Start with a shift in perspective. Your *product* is the paved road. Your *customers* are the domain teams. Your *revenue* is tasks successfully delegated. Your *churn* is an engineer who tried twice, failed, and quietly went back to writing it by hand.
+Treat the platform’s paved road as an internal product used by domain teams. Its value depends on whether engineers can delegate suitable tasks, receive acceptable results, and find reason to keep using it. If trying the agent creates substantial cleanup work, returning to a manual workflow may be reasonable. The platform team needs to understand that choice.
 
-The paved road is the default path the platform has already laid down: follow it and your environment, permissions and verification come wired up. You can leave it, but then you carry the weight yourself.
+The paved road is the platform’s maintained default path, integrating environments, permissions, and verification. Teams with special requirements can propose exceptions, with explicit maintenance ownership, risk assessment, and a way to preserve necessary checks.
 
-Once the framing shifts, so does the work. This stops being a tooling purchase and becomes product management, and there are four jobs in it:
+From this perspective, procurement is the starting point. Ongoing operations need to answer at least four questions:
 
-- **Measurement.** Which tasks are actually being delegated successfully? That is what evals and metrics are for.
-- **Unit economics.** What does one successful delegation cost? Call that number cost per successful task.
-- **Growth strategy.** When do you widen permissions, and when do you stop and fix the platform instead? Those are the scaling gates.
-- **Supply chain management.** When your primary vendor changes its price or its policy, you have to be able to move — hence a vendor strategy.
+- **Effectiveness.** Which tasks were delegated, which passed acceptance, and how much human help did they need? Evals and usage records need to answer together.
+- **Unit economics.** Including failures and retries, what did each accepted task cost?
+- **Expansion.** Which new tasks or teams does the evidence support, and which gaps need attention first?
+- **Vendor choice.** When prices, capabilities, or policies change, is there a verified alternative the organization can afford?
 
-This piece takes those four in order.
+The sections below connect these questions to one decision: whether the next investment should expand use or improve the current workflow.
 
-Start with why evals come first. An eval dataset is a bank of tasks you maintain yourself, each one packaged with its context and its acceptance criteria, so that you can measure different models and different versions of the harness against the same questions.
+Evals come first because later comparisons need a shared basis. An eval dataset is a maintained set of tasks, each with the required context, acceptance criteria, and scoring method. It allows models and harness versions to be assessed under comparable conditions.
 
-The overview's judgment was that **the eval dataset is the only asset that compounds.** That sentence has two halves. One half expires: models turn over every six months and harness assumptions keep going stale. The other half doesn't: "what counts as correct on my workload" only accumulates, and that accumulation is your moat.
+The overview treats the eval dataset as an asset that can accumulate value. That value comes from clarifying what counts as acceptable work and turning failures into repeatable checks. Requirements, systems, and risks change, however. The dataset needs maintenance too; an old answer cannot remain authoritative indefinitely.
 
-So every model upgrade and every vendor price war increases its value, because you're the only one who can validate a new option against your own evals in a day. Everyone else reads benchmarks and guesses.
+When a new model or pricing plan appears, this basis lets the team compare options against its own workload. Evaluation still takes time and money, but the team does not have to start again with a vendor demonstration and a guess.
 
 ---
 
@@ -59,59 +59,59 @@ So every model upgrade and every vendor price war increases its value, because y
 
 ### Where the dataset comes from
 
-Most teams stall on the first step: where do evals come from? My answer is to stop treating it as a research project that starts from nothing. Your engineering history already holds plenty of raw material. What's missing is a pipeline that harvests it into cases.
+“Where do evals come from?” is a practical first question. I would begin with engineering history: incidents worth reproducing, PRs that exposed judgment gaps, and everyday tasks that represent the team’s work. These are raw materials that still need preparation and verification before becoming useful cases.
 
-What to look for in the diagram is how the material comes in, and how it circles back to feed the dataset again:
+The diagram connects case preparation, version control, execution, scoring, and decisions, with a path for adding newly discovered failures back to the dataset:
 
 📌【在此插入圖 diagram-01.png】
 
-Follow the dashed line at the end — that is the one most people skip. Without it the eval set is just a past exam paper that slowly goes stale: however diligently you run it, all you are doing is re-confirming problems you fixed long ago.
+That feedback path lets everyday use expose gaps in the evals. Existing cases can protect known behavior; new ones reflect changes in work and risk. Both require maintenance. Running the same cases more often does not keep them representative on its own.
 
-Each source has its own character:
+For each source, I would check different conditions:
 
-- **Incident harvesting.** Every post-mortem is a ready-made case: give the agent the context and symptoms from that day and see whether it finds the root cause. These are the most expensive cases to build and the most authentic.
-- **PR history harvesting.** An agent PR a reviewer sent back, together with the review comment, is the most realistic negative example available. The ones that passed cleanly are your golden paths, and they tell you whether the basics have regressed.
-- **Hand-picked golden tasks.** Take 10–20 representative completed tasks — a few bug fixes, a few small features, a few refactors — and freeze their context and acceptance criteria. This is the one batch you control completely, so it is worth taking your time over the picks.
+- **Incidents.** Reconstruct the symptoms, version, and necessary data available at the time, and confirm that the environment can reproduce the problem. Keep the root cause and repair answer on the scoring side, outside the evaluated agent’s context.
+- **PR history.** Rejected PRs and review comments can reveal failure patterns, but the review itself needs verification. Approved PRs also need independent outcome checks; having been merged does not make a patch a correct answer.
+- **Hand-picked tasks.** Start with perhaps 10–20 representative bug fixes, small features, and refactors, fixing inputs and acceptance criteria. That is a suggestion for establishing the process; expand the sample to reflect actual work.
 
 ### What an eval case looks like
 
-I write cases declaratively, rather than leaving a loose natural-language prompt for everyone to read their own way. Declarative here means splitting provenance, context, the expected result and the scoring method into fixed fields, each spelled out. That is what lets a case live under the same rules as code: versioned alongside it, reviewed alongside it.
+I would record provenance, context, expected results, and scoring in structured fields so cases can be versioned and reviewed. The payment timeout below is fictional and illustrates the format. Its date, repo, and root cause do not refer to an incident cited in this article, and the schema is not an executable eval framework:
 
 ```yaml
-# evals/cases/payment-timeout-fix.yaml (excerpt)
+# evals/cases/payment-timeout-fix.yaml (fictional example)
 id: payment-timeout-fix
-source: incident-2026-04-18        # provenance stays traceable
+source: example-incident-2026-04-18 # illustrative ID, not a real incident
 context:
   repo: shop-backend
   entry: "Intermittent 504s at checkout, trace ID attached"
 expected:
   root_cause: "connection pool ceiling"
-  fix_touches: ["internal/db/pool.go"]
+  candidate_files: ["internal/db/pool.go"] # clues, not the only valid edit location
   tests_added: true
 scoring: rubric                    # rubric / exact / llm_judge
 ```
 
-In that file, defend the `source` field above all. Every case points back at something that really happened — an incident, a PR, a task somebody finished. Otherwise the eval set drifts into a mock exam you wrote for yourself.
+`source` should explain where a case came from. Deliberately constructed cases are also useful when labeled as such. Keep `expected` on the scoring side to avoid leaking answers. The candidate file is an investigation clue, not a rule that a correct fix must touch it. Likewise, `tests_added: true` establishes only that tests were added; review must still establish whether they detect the original defect.
 
 ### Three tiers, each with a job
 
-You don't need evals to be one single set, and they shouldn't be. The three tiers answer different questions, and each one runs on its own rhythm:
+I would organize evals into three tiers by purpose. These counts and cadences are starting suggestions, not industry standards; adjust samples to task types, risk, and execution cost:
 
 📌【在此插入表 table-01.png】
 
-The frontier tier is the one most often skipped, and the reason is easy to see: it protects nothing about today's workflow, so a month without running it hurts nobody. But it answers the most valuable question: **what couldn't the agent do before that the latest model can now?** That question directly determines whether the permission scope widens — it is the input the gates run on (see section 5).
+Frontier cases explore valuable tasks that are not yet reliable, helping the team observe whether a new version extends capability. Results can inform a permissions discussion, but cannot authorize high-risk operations by themselves. Environmental restrictions, incident handling, and recovery capability need examination too.
 
 ### Three traps in LLM-as-judge
 
-Once you have enough cases, human scoring can't keep up, so at volume you will end up using an LLM as the judge: a second model scores against the rubric, which is what LLM-as-judge means. It's usable, but three pitfalls first:
+Start scoring with directly checkable methods such as tests, output comparisons, and policy checks. For explanations or tasks with several valid solutions, another model can help score against a rubric: LLM-as-judge. Before adopting it, I would address three risks:
 
-1. **Judges prefer long answers and confident tone.** Bind the rubric to factual items — did the tests pass, are the changed files right, is the root cause correct — rather than "overall quality, 1 to 10."
-2. **Same-family favoritism.** A judge from the same model family as the subject shows bias. The fix is to use a different family as judge, or to run two judges and take the intersection.
-3. **Judge drift.** The judge's own model gets upgraded too, and yesterday's 85 may not be today's 85. Pin the judge's model version and record every change to it.
+1. **Presentation can influence scores.** Length and confidence may conceal factual errors. Require checkable evidence in the rubric, such as test results, support for the root cause, and corrected behavior, rather than a vague overall score.
+2. **The judge and evaluated model may share blind spots.** Models can have different biases. A different family or a second judge adds a comparison signal without guaranteeing independence or correctness. Resolve disagreements against the evidence.
+3. **Judge drift.** Changes to the scoring model, prompt, or rubric can change what a score means. Record versions and settings, and reassess a human-labeled set whenever they change.
 
-There's only one anchor for calibration: **a monthly human scoring pass over a sample of 10 cases**, held up against the judge's scores. The judge is moving too, so you need one reference point that doesn't move with it.
+Human sampling is an essential calibration source, with an explicit rubric and a process for disagreements. I would begin with 10 cases each month, covering successes, failures, and judge disagreements, then expand according to risk. Ten is a starting sample, not assurance that rare errors are covered. Human ratings also need periodic comparison and discussion.
 
-Fully automated evals are the destination, not the starting point. An automated score with no human anchor can drift without you ever noticing.
+Automation reduces repetitive scoring work; human checks help expose gaps between the scoring standard and actual needs. The objective is an assessment that supports decisions, rather than the elimination of human involvement.
 
 ---
 
@@ -119,96 +119,96 @@ Fully automated evals are the destination, not the starting point. An automated 
 
 ### Anatomy of a single run
 
-Before arguing about cost, take one bill apart, or the discussion never gets past the impression that agents are expensive. One autonomous run costs model tokens (typically 60–80%), plus sandbox compute (10–25%), plus peripherals like observability and storage.
+Define the accounting scope first. Direct run costs may include model usage, sandbox compute, observability, and storage. Their shares depend on tasks, caching, pricing, and duration, so calculate them from your own bills and execution records.
 
-The total ranges from tens of cents to tens of dollars — and the driver isn't task difficulty. It's two sources of waste:
+Then connect all attempts for each task. Here, **cost per successful task** means the direct costs included in the reporting period divided by the number of accepted tasks. The numerator includes failures, retries, and abandoned tasks. If no task passes, report total spend and zero completions rather than a zero unit cost. For an overall economic comparison, report human review, rework, and platform maintenance separately.
 
-- **Retry tax.** The cost of failed attempts. Bringing retry rate from 30% down to 10% cuts total cost by more than a fifth on its own — and nine times out of ten the root cause of a high retry rate lives in the harness's context and feedback layers (part two), not in the model. **Money burned on retries is a tax on harness quality.**
-- **Context bloat.** The lazy habit of stuffing the whole repo into context. Say a task only touches one handler, and the agent reads the entire repo first: most of the budget is gone before any work starts, and the part that actually needs attention gets whatever is left. The three-tier AGENTS.md and the "100 lines for the repo tier" discipline from part two are the diet plan.
+- **Retry cost depends on actual attempts.** Suppose every attempt costs `c`, a task can have at most one additional attempt, and final acceptance rate and task mix remain unchanged. Reducing the share of tasks needing a retry from 30% to 10% lowers average cost from `1.3c` to `1.1c`, a reduction of about 15.4%. This is only an illustration. Real retries can differ in duration and occur several times, so retry rate alone cannot establish savings.
+- **Match context to task needs.** Reading a large amount of irrelevant material for a one-handler change can increase both cost and the burden of interpretation. The technical piece’s layered instructions and explicit links help supply relevant information. Do not remove background needed for verification merely to reduce token count.
 
 ### The model routing matrix
 
-Model routing means assigning a model tier to each class of work in advance, instead of pointing the whole company at the strongest model available. The criteria are the cost of an error and how verifiable the output is, and keeping that judgment in the platform (the gateway from part two) means it gets made once, not by every team separately.
+Model routing selects an appropriate model or execution tool for a task. The platform team can maintain shared routing and records while domain teams supply risk and acceptance criteria. Together, they use evals to decide which combinations are suitable. This judgment needs revisiting as workloads and versions change.
 
-The task types and the tiers will move with each model generation. The reasoning won't:
+The table lists conditions I would examine first. Price or model tier can identify options; performance on the relevant work must support the choice:
 
 📌【在此插入表 table-02.png】
 
-Planning and review both get the strongest model, and those two rows carry the point. One is the decision at the very front, the other is the last line of defense, and money saved at either end tends to come back later as a retry or an escape.
+Planning and review deserve substantial validation: one shapes the work, while the other can influence acceptance. Using the strongest model still does not guarantee a correct judgment or give it final approval authority.
 
 ### Budget guardrails
 
-Budget guardrails are limits you agree on in advance. The first two are there for the hours when nobody is watching and one accident burns a quarter's budget. The third is there so you don't read the number wrong:
+Budget guardrails should leave room for learning while exposing uncontrolled consumption early. I would set both team-level and per-run limits:
 
-- **Per-team quota with an overage alert.** Observe before you enforce — early on, knowing the shape of usage is worth more than the money you'd save.
-- **A run-level kill switch.** A single run that exceeds a cost ceiling — say $20 — pauses for human confirmation. This is the fuse against a runaway retry loop: an agent stuck on the same error all night shouldn't first surface on the bill at the end of the month.
-- **Read cost per successful task as a trend, not an absolute.** Year one is tuition (see the budget narrative in part one); year two is when you compare it against headcount cost.
+- **Team quotas and staged alerts.** Allocate enough budget to conduct the pilot, notify owners as limits approach, and adjust based on task needs and evidence already collected. Early flexibility still needs an overall ceiling.
+- **A run-level kill switch.** Pause when a run exceeds its cost or attempt limit. For example, $20 might be an initial review point for one pilot task class. Set limits by workload and account for delayed charges and requests still in flight. An owner should decide whether continuing is justified.
+- **Track unit cost from the pilot onward.** Compare similar tasks on human effort, quality, and completion as well. Explain first-year learning costs separately, including what improvement they produced, rather than postponing accounting until year two.
 
-A cost line that gets pulled out and graded on its own will always be pushed down until it looks good.
+A cost-only target can encourage removing necessary verification or excluding human cleanup from the accounting. Read cost together with quality, completion, and human effort to establish whether the workflow improved.
 
 ---
 
 ## 4. The metric tree and how each metric gets gamed
 
-The overview gave the North Star formula. Here it is expanded into a measurable tree. Read past the names of the four branches; what matters is that every branch has something measurable hanging under it:
+The overview describes engineering value through four dimensions; here they become measurable indicators. Delegation is the share of eligible tasks assigned to an agent to attempt. Completion uses those delegated tasks as its denominator and counts those that pass acceptance. Keeping them separate distinguishes the scope of use from the ability to finish.
 
 📌【在此插入圖 diagram-02.png】
 
-The shape of the tree is its discipline. Drop one branch and the remaining three start lying to you: watch only Delegation and Completion, and you get a report that looks excellent while nobody's day has actually gotten easier.
+Read these four dimensions together rather than multiplying them into a score. Human effort includes review, correction, investigation, and the burden of waiting; quality also requires observation after delivery. Here, escape rate means the share of delivered changes in which defects are discovered after delivery. Comparisons need the same observation window and defect definition. A short period with no discovered defect does not establish that none exists.
 
-Every one of these gets gamed — not out of malice, but because Goodhart's law operates daily: once a measure becomes a target, it stops being a good measure. So design the antidote at the same time you design the metric:
+Metrics also change behavior. When a single number becomes a performance target, people may prioritize work that improves it without intending any harm. Preserve task mix and quality signals in the report so that a change in selection is not mistaken for a capability gain:
 
 📌【在此插入表 table-03.png】
 
-The principle in one line: **metrics come in pairs — every speed metric needs a quality metric beside it.** Grade any single number in isolation and you will get that number, along with everything that was sacrificed to produce it. This is the 2.0 version of the vanity metrics lesson from the DevOps era.
+My principle is to **read speed and cost alongside quality and human effort**. If review time falls while more colleagues handle rework after delivery, the improvement may exist mainly in the report. Bringing that burden into the same discussion keeps it connected to the work people actually experience.
 
 ---
 
 ## 5. After day 90: scaling gates
 
-The overview gave the first 90 days: pick pilots, measure a baseline, build evals. The most common mistake once the pilot ends is declaring victory and rolling out everywhere.
+The overview proposes a bounded pilot with selected teams, a measured baseline, and an initial eval set. At the scheduled review, a company-wide rollout is only one possible next step. Addressing identified problems and observing for longer may be the better decision.
 
-Scale through gates instead. Each gate fixes its quantitative conditions in advance, and only passing it unlocks the next step. The further along the gates you go, the more dangerous the things an agent is allowed to touch:
+I would use gates to organize evidence for expansion, while approving team coverage and operating permissions separately. The 25%, 15%, and six-month observation period below are discussion starting points to adjust for risk, sample size, and task mix. Meeting them makes a proposal ready for review; it does not grant permission automatically:
 
 📌【在此插入表 table-04.png】
 
-Every condition on all three gates has to be written as something you can check. Retry rate and escape rate are already numbers. "Using it steadily" and "the champion system runs itself" need an agreed definition up front, and cannot be left at "people seem happy with it." The dangerous tools in that last cell are the ones that reach production and the outside world. A mistake with them can't be taken back, which is why they come last.
+Before review, define how continuing use and adequate support will be established, and record each metric’s denominator and observation period. Six incident-free months may reflect low volume or an unencountered failure mode. They do not prove safety. Dangerous tools reach production or the outside world, so each operation needs its own scope, approver, and recovery assessment.
 
-Drawn as a flow, the gates look like this:
+The diagram shows successive reviews. At every stage the team can reduce scope or return to improvement work; the calendar does not automatically open the next gate:
 
 📌【在此插入圖 diagram-03.png】
 
-All three dashed lines end up in the same box, and that is deliberate.
+The return paths lead to improvement work. Pausing expansion is a valid decision; the next task is to turn the reason for that pause into a concrete correction and verification plan.
 
-The first discipline: **when you're stuck, go back and fix it — don't push through.** Failing G2 usually means a harness problem (part two), and failing G3 usually means guardrails and eval coverage. Neither is the kind of problem that resolves itself if you push for one more quarter.
+The first principle is **diagnose before scheduling a fix**. A failed gate may involve the harness, model, task selection, or organizational support. Use execution records and cases to identify the gap, assign an owner, and choose which checks to repeat. Moving the date by another quarter does not resolve the cause.
 
-The second: **expansion speed is set by evals and escape rate, not by the roadmap.** "Q3 says company-wide rollout" is not a reason G2 passes automatically.
+The second is **expand at a pace supported by evidence and operational capacity**. A roadmap can schedule a review without supplying its approval rationale. Each new stage still needs stop, recovery, and reassessment conditions, with continuing observation of new teams and tasks.
 
-Both disciplines assume the same thing: that you can put eval results on the table as evidence at any moment. That same evidence is what decides how you negotiate with vendors.
+These decisions need traceable evals, usage records, and incident evidence. The same basis also helps compare vendors, so a change need not become another adoption effort starting from nothing.
 
 ---
 
 ## 6. Managing vendors
 
-There isn't much to watch on the vendor side. Three things:
+Vendor management should preserve choices while making the cost of maintaining them visible. I would divide the work into three parts:
 
-- **Two vendors is the steady state**: one primary, one challenger. This isn't distrust, it's negotiating structure — your eval dataset turns "let's see what the challenger can do" into a one-day exercise, which is the compounding from section 1 paying out.
-- **The model-switch decision process.** New model ships → run golden and frontier evals → look at three things: change in pass rate, change in cost per task, and **new failure modes that didn't exist before** (the one people skip) → canary on 20% of workload for two weeks → full rollout. That process does exactly one thing: it drags "should we switch" back from a matter of feel to a matter of evidence. Never switch models because of a benchmark score or a demo.
-- **Four things to watch in the contract**: whether your code and transcripts are used for training; where logs are stored and for how long; rate limits and SLA; and price protection — token pricing moves a lot, so lock a year where you can.
+- **Prepare a verifiable alternative.** When resources allow, retain a primary vendor and a candidate. Run comparable evals and record authentication, tool compatibility, data policy, and migration costs. A second account alone does not make switching practical.
+- **Evaluate model changes in stages.** Run golden and frontier evals first, comparing acceptance, full costs, and new failure modes. If results are acceptable, use a low-risk, comparable workload for a canary. Twenty percent for two weeks may suit one experiment, but event counts and risk should determine scope and duration. Expand only when predefined conditions pass and recovery has been verified.
+- **Check both contracts and actual settings.** Establish whether code and transcripts are used for training; data and log locations, retention, and deletion; rate limits, SLA, and pricing. Evaluate long-term price commitments alongside minimum usage, termination, and migration restrictions.
 
-Taken together, those three exist so that dropping any one vendor stays an option you can afford.
+An alternative may not be cheap, and it need not continuously serve production traffic. What matters is knowing the work a switch requires, who can perform it, and whether the organization will fund it. That makes decisions about price or policy changes actionable.
 
 ---
 
 ## 7. Closing the series
 
-The trilogy ends where the overview started:
+Returning to the overview, the series argues for preserving the organization’s ability to understand and improve its own engineering workflow:
 
 > **Buy the intelligence. Build the environment. Own the feedback loop.**
 
-Organization (part one) decides who does the work. The harness (part two) decides whether agents can do it well. Operations (this piece) decides whether you know how well it's going and whether to keep investing. None of the three is a project you finish; all three are internal products you run.
+“Who Does This?” establishes responsibilities and support. “The Harness Blueprint” develops an environment where work can be performed and verified. This operations piece makes results and costs subject to continuing review. Maintaining all three helps users find support when something goes wrong and helps the platform team decide what to improve next.
 
-If you can only start three things: **measure a baseline, pick a pilot, and build your first ten eval cases.** Ninety days later you'll be entitled to make the next decision on evidence instead of vibes.
+If I could begin with only three things, I would choose a pilot with an owner, measure a comparable baseline, and establish ten verified eval cases. At review time, bring usage, human burden, and quality results together to decide whether to improve, expand, or stop an unsuitable workflow. Elapsed time is not the outcome. What the team can explain about what it learned is the basis for its next decision.
 
 ---
 
@@ -226,6 +226,7 @@ If you can only start three things: **measure a baseline, pick a pilot, and buil
 1. Anthropic — [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents)
 2. Google — [2025 DORA report: How are developers using AI?](https://blog.google/innovation-and-ai/technology/developers-tools/dora-report-2025/)
 3. Stack Overflow — [Agents on a leash: Agentic AI remains mostly monitored at work](https://stackoverflow.blog/2026/05/27/agents-on-a-leash-agentic-ai-remains-mostly-monitored-at-work/)
+4. Anthropic — [Demystifying evals for AI agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)
 
 ---
 

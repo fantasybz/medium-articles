@@ -1,6 +1,6 @@
 # Agentic Engineering, Part 1 — Who Does This? Platform Plus Federation in Practice
 
-> **TL;DR** — The first deep dive from [Don't Build Your Own Devin](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9). The overview's conclusion: don't stand up a central agent team, stand up a small Agentic Platform team. This piece takes "how do you actually organize it" down to the level you could walk into a headcount meeting with: real org charts at three company sizes, how to select and evaluate champions, how to merge with your existing DevEx or SRE function, and the budget narrative that works with a CFO.
+> **TL;DR** — The first deep dive from [Don't Build Your Own Devin](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9). The overview proposes champions or a small Agentic Platform team according to organizational scale and workload, helping product teams use and improve agents more independently. This piece turns that proposal into concrete options for a headcount discussion: suggested staffing models at three company sizes, how to select and evaluate champions, how to merge with your existing DevEx or SRE function, and the budget narrative that works with a CFO.
 
 > Series: [Overview](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9) → **1. Org Design (this piece)** → [2. The Harness Blueprint](https://fantasybz.medium.com/agentic-engineering-part-2-the-harness-blueprint-making-your-system-legible-to-agents-3facc281f633) → [3. Evals and Unit Economics](https://fantasybz.medium.com/agentic-engineering-part-3-evals-unit-economics-and-scaling-running-agents-like-a-product-1cb1855a2046)
 
@@ -8,17 +8,17 @@
 
 ## 1. Why organizations drift into the wrong design
 
-The overview named four failure modes. This piece starts with the central agent team. I picked it not because it's the most absurd of the four, but for the opposite reason: it's usually the option that goes down easiest in the room. It isn't a stupid decision. It's what organizational gravity produces on its own.
+The overview, Don't Build Your Own Devin, named four failure modes. This piece starts with the central agent team because it is often the easiest option to agree on in a headcount meeting: someone manages the budget, scarce expertise sits together, and security has a contact. Those needs are reasonable. The question is whether the new team will help product engineers do more of their own work independently.
 
-Three forces push you there:
+I think of this tendency as three forms of organizational gravity. Understanding the needs behind them is the first step toward designing a different division of work:
 
-- **Budget gravity.** AI money is usually new money, and new money needs a cost center to hang on. So: "let's create a team first and figure it out later."
-- **Scarcity gravity.** Early on, few people understand agents, so concentrating them *looks* like the efficient allocation.
-- **Control gravity.** Legal and security want a single point of contact they can govern. A central team hands them a convenient handle.
+- **Budget gravity.** When AI gets a new budget, finance needs to know who manages it. Creating a cost center and a team can quickly become the first answer.
+- **Scarcity gravity.** Few people understand agents at first. Bringing them together appears to reduce duplicated exploration, but it can also keep every other team dependent on those same people.
+- **Control gravity.** Legal and security need a clear point of contact. A central team can provide one without having to perform every task on everyone else's behalf.
 
-All three forces are real, and none of them is malicious. But what they optimize for is manageability, not output.
+Budget, expertise, and governance all need attention. Trouble starts when the design answers who will manage the work but leaves out how product teams will develop the capability themselves. What makes administration easier can then make delivery slower.
 
-Conway's law says the system you build ends up shaped like the way your organization communicates. Here you have to run it in reverse: the delivery system you end up with will look like your org chart — and a central team's org chart produces a ticket-queue delivery system. By ticket queue I mean the domain team drops from owner to requester. Whatever it wants done gets written up, dropped into the central team's schedule, and then it waits.
+Conway's law reminds us that an organization's communication patterns shape its systems. Here I would work backward from the delivery model we want and arrange collaboration to support it. If every domain team must go through a central team to use agents, requests can turn into a ticket queue. Engineers who own a product gradually become people who submit requests and wait for a slot, instead of people equipped to solve the problem.
 
 > If you want a self-service system, you have to draw a self-service org chart first.
 
@@ -26,7 +26,7 @@ Conway's law says the system you build ends up shaped like the way your organiza
 
 ## 2. Platform plus federation, in full
 
-The overview gave the concept. Here it is at RACI resolution across the three roles. RACI is four markers for assigning responsibility: R is who does the work, A is who is accountable for the result, C is who has to be consulted, and I is who only has to be informed. Start with what actually moves between the three roles:
+The overview gave the concept; RACI makes the responsibilities more explicit. R does the work, A is accountable for the result, C supplies necessary advice, and I receives relevant information. The headcount in the diagram is illustrative; the next section discusses staffing. For now, look at what the platform team, champions, and domain teams need to deliver to one another.
 
 ```mermaid
 flowchart LR
@@ -51,7 +51,7 @@ flowchart LR
     style PT fill:#d4edda,stroke:#2e7d32
 ```
 
-The one thing to hold on to from that diagram is where the champion sits. They are embedded inside the domain team, not a liaison the platform team posted there, so the pain points they carry back are ones they hit themselves rather than ones they are relaying. A paved road is exactly what the name says. The shared pieces — runtime, sandbox, an AGENTS.md template, the eval framework — get built once, so an engineer who follows the road doesn't have to cut their own.
+Where the champion sits matters. They still do product work inside the domain team, so they can bring adoption problems and their context back to the platform while helping colleagues use it. The paved road is a default path that integrates the runtime, sandbox, AGENTS.md template, and eval framework. When the platform handles that shared integration, each product team has less to rediscover on its own.
 
 Put the three roles through RACI item by item and the split looks like this:
 
@@ -66,23 +66,23 @@ Put the three roles through RACI item by item and the split looks like this:
 | Cost and quota policy | **R / A** | I | C |
 | Output quality and production ownership | I | I | **R / A** |
 
-The most important cell in that table is the last row: **production ownership always stays with the domain team.** Any design that routes "the agent's code broke production" to the platform team will collapse into finger-pointing at the first incident.
+**Production ownership for the product stays with the domain team.** Using an agent does not transfer business judgment or acceptance to the platform. That does not let the platform step aside either: if an incident involves the sandbox, permissions, or shared tools, the platform team remains responsible for its part. RACI should help people find the right colleagues to resolve an incident, rather than give either side a way to disclaim responsibility.
 
 ---
 
-## 3. Real org charts at three sizes
+## 3. Planning staffing at three sizes
 
-RACI tells you who is responsible for what, but it won't tell you how many people you need. Headcount depends on size, and the difference between the sizes isn't proportional scaling. The approach changes entirely.
+RACI describes responsibilities. Staffing asks how much time those responsibilities take and which capabilities need dedicated maintenance. The 50-, 200-, and 1,000-engineer examples below are planning scenarios. Their headcounts and time allocations are my recommendations, not thresholds that automatically require a new team. Usage, system complexity, and existing platform capability still decide what fits.
 
 ### 50 engineers: the no-team version
 
-- Zero dedicated headcount. Two champions at 20% time each, plus a sponsor (a VP or senior EM).
-- Adopt a SaaS runtime and the vendor's default sandbox. Govern with a checklist; don't build a gateway.
-- **Upgrade signal:** when champions are spending more than 30% of their time helping other teams wire up tooling, it's time to open a pod.
+- Start without dedicated headcount if the workload allows it: two champions at 20% time each, plus a sponsor such as a VP or senior EM who can coordinate resources.
+- Evaluate a SaaS runtime and the vendor's sandbox first, checking that permissions, data handling, and audit capabilities fit your needs. A checklist can organize those checks at this stage; a custom gateway need not be the first investment.
+- **Upgrade signal:** if champions spend more than 30% of their total working time helping other teams integrate tooling for several consecutive weeks, the promised 20% no longer covers the work. The sponsor should assess additional capacity or a dedicated pod.
 
 ### 200 engineers: a 4–6 person platform pod
 
-At this size champions can no longer carry it, and you need people on this full time. The chart below is my recommended shape, not the answer. Read it for two things: who reports to whom, and which roles are borrowed.
+Once adoption spans several teams, shared environments, permissions, and evals may need more maintenance than part-time champions can provide. The chart is one staffing proposal for an organization of roughly 200 engineers: four to five dedicated members plus half of a security role, within this section's suggested four-to-six-person allocation. Look beyond reporting lines and check that the borrowed time is actually available.
 
 ```mermaid
 flowchart TB
@@ -95,55 +95,55 @@ flowchart TB
     style PL fill:#d4edda,stroke:#2e7d32
 ```
 
-The hard part of that chart isn't where the boxes go, it's the skill mix. And the skill mix comes down to one sentence: this is a **product team, not a research team**. Its product is the paved road described above, and its customers are internal engineers. So hire people who have built developer tooling, CI, and test infrastructure — not people with model research backgrounds.
+Drawing the chart is only the beginning. Can those people form a **product team** that serves internal engineers? The product is the paved road, so experience with developer tooling, CI, test infrastructure, and user feedback is closer to its daily work than a hiring plan built around model research alone.
 
-Borrow that half-person of security: giving the security team a stake up front is far cheaper than getting sent back by an audit later. They still sit in the security team and are reviewed by the security team. They just spend a fixed slice of their time inside the platform's design discussions.
+The half security role is an explicit allocation of working time, not an extra responsibility somebody takes on after finishing their day job. That person remains managed and evaluated by security while participating regularly in platform design, risk decisions, and acceptance. Building that collaboration into the work makes it easier to understand constraints early, rather than asking security to review a finished system.
 
 ### 1,000 engineers: a platform group with specialization
 
-- Platform grows to 8–12, split into three squads: **runtime and environment**, **context and tools**, **eval and FinOps**.
-- Add a cross-functional virtual security council (one person each from security, legal, and platform; monthly is enough).
-- What doesn't change: even at this size, there is no "team that writes code for other teams using agents."
+- A platform group could have 8–12 people, divided by workload into **runtime and environment**, **context and tools**, and **eval and FinOps** squads.
+- Bring representatives from security, legal, and platform into a virtual security council to review policy and exceptions. Monthly meetings can be a starting point; urgent risks still need a separate, timely decision path.
+- Even at this scale, I would not create a service team that uses agents to write code for everyone else. Additional staffing should improve shared capabilities and support, rather than centralize product work in a queue.
 
-The three tiers side by side:
+Putting the scenarios side by side should help identify the capability you need next, rather than encourage you to choose the most elaborate org chart:
 
 | Size | Dedicated | Champions | Governance | Next upgrade signal |
 |---:|---|---|---|---|
-| ~50 | 0 | 2 (20% time) | Checklist plus vendor defaults | Champions overloaded |
+| ~50 | 0 | 2 (20% time each) | Checklist plus verified vendor capabilities | Support work persistently exceeds allocated time |
 | ~200 | 4–6 | 1 per team | Gateway plus policy as code | Evals and cost need dedicated people |
-| ~1,000 | 8–12 (three squads) | Formalized guild | Full platform plus council | Absorbed into the IDP; the name disappears |
+| ~1,000 | 8–12 (three squads) | Formalized guild | Platform plus council | Integrate responsibilities and services with the IDP |
 
-The column to read in that table is the last one. The three sizes aren't three identities, they're three stages. What tells you to move down a row is whether the upgrade signal has appeared, not whether the company has hit a headcount number.
+I would read the last column before the staffing numbers. Some 50-person teams already face complex systems and governance requirements; some 200-person organizations can use an established IDP. The reason to change the arrangement is that it can no longer carry the work, not that the company has crossed a headcount threshold.
 
 ---
 
 ## 4. The champion system, and how it usually gets broken
 
-Once the headcount is settled, the thing most likely to collapse isn't the platform team. It's the line that connects platform and domain. The champion is that line.
+Staffing the platform gives it capacity to offer a service. Helping domain teams adopt it still takes someone who can guide colleagues, organize problems, and carry feedback back to the platform. That easily overlooked work is the champion's responsibility.
 
-A champion isn't a title. It's a job with a job description. The way it gets broken is always the same: name the most senior person, give them no time, put it in no one's review, and watch the whole thing become nominal within six months.
+A champion needs defined responsibilities and allocated time. Give the title to the most senior person without reducing their existing commitments or changing how they are evaluated, and it becomes difficult to support colleagues consistently. If the arrangement fades, the problem may be the conditions of the job rather than the person's commitment.
 
-It usually looks good while it's happening. Name the people, open a channel, announce that the guild exists — every ceremony you need is done inside a day. But the time, the output, and the review take a whole quarter, so most organizations only ever do the first day's part.
+Naming people, opening a channel, and announcing a guild can happen quickly. Allocating time, coordinating product commitments, and following adoption outcomes are work for every quarter that follows. If those two parts never connect, an energetic launch can leave a few people carrying an extra job.
 
 **Selection criteria** (these matter more than seniority):
 
-| Look for this | Avoid this |
+| Experience to look for | What to explore in an interview |
 |---|---|
-| Already uses agents daily with real output to show | Wants to evaluate new tools, doesn't want to touch anyone else's repo |
-| Has written the team's onboarding docs or test infrastructure | Treats champion as a promotion stepping stone, doesn't teach |
-| Willing to spend time coaching; turns complaints into requirements | No patience for non-deterministic systems |
+| Uses agents in daily work and can explain results and limitations | Willingness to understand other teams’ repos and workflows |
+| Maintains onboarding guidance or test infrastructure | Ability to turn a practice into instructions colleagues can use |
+| Helps colleagues and turns recurring problems into requirements | How they preserve evidence and investigate inconsistent results |
 
-Read the two columns together and the direction is obvious: what you want in a champion is someone willing to give away how they work, not the person who is best with the tools.
+The selection criteria ask whether someone will teach colleagues and turn recurring problems into actionable requests. Knowing the tools helps, but the champion's main contribution is helping other people use them well.
 
 **Time and evaluation:**
 
-- Put the 20% in their OKRs. This isn't "passion after hours." It's work that goes into the quarterly goals, where a manager will track it. A champion system with no time commitment is not a champion system.
-- Evaluate on **the team's adoption metrics**, not individual output: the team's percentage of tasks delegated, the drop in retry rate, the freshness of AGENTS.md. A champion succeeds when the team gets stronger, not when they personally get good at it.
-- **Rotate half of them every quarter.** Rotation isn't a demotion, it's a knowledge diffusion mechanism. Two years out you don't want ten super-champions; you want half the engineering org to have done the job.
+- **Put the 20% in work plans and OKRs**, with a corresponding adjustment to existing delivery expectations. Promising time without reducing other work pushes coaching and collaboration into evenings.
+- **Look at the team's outcomes:** whether suitable tasks are being delegated, retry rate is improving, and AGENTS.md still reflects reality. Read those signals alongside task mix and quality. Do not delegate unsuitable work just to raise a percentage, or attribute every model and platform change to the champion's individual performance.
+- **Consider rotating half the champions each quarter**, with time for handover and mentoring. The purpose is to spread adoption and acceptance knowledge. Track participation, handover quality, and whether colleagues can increasingly resolve common issues themselves.
 
-**How the guild runs:** biweekly, with only three kinds of content. The first is internal demos, so everyone gets to see how the paved road is actually used. The second is a pain-point list that takes whatever the domain teams are stuck on back into the platform backlog. The third, and the most valuable, is **failure stories.**
+**The guild can start with a meeting every two weeks.** Internal demos show how the paved road helps with actual work. A list of problems goes into the platform backlog with an owner and a follow-up outcome. I would reserve time for **failure stories**: what the team meant to accomplish, where the run departed from that intent, how people noticed, and what check could help next time.
 
-Where an agent screwed something up and why is the scarcest learning material in the entire organization. Every team eventually works out the successful patterns on its own. But if nobody tells the story of the time it went wrong, the next team just walks into it the same way.
+The value of a failure record is helping the next team avoid the same detour. If people preserve the symptoms, context, and response, the platform can turn that difficulty into documentation, a tool improvement, or an eval case. A discussion focused on learning from the work also makes it easier for colleagues to bring problems they have not yet solved.
 
 ---
 
@@ -151,81 +151,110 @@ Where an agent screwed something up and why is the scarcest learning material in
 
 Most companies aren't starting from a blank page. You already have a DevEx team, a platform team, or SRE. So who owns agentic?
 
-This turns into a political argument very easily, so pull it back to a question about organizational capability. There are only two things to decide. First, whether you have an internal developer platform (IDP) team — the internal, self-service platform your engineers already build on. Second, if you do, whether they have the room right now to take on another mission. Use this tree:
+Before debating which department gets the name, I would establish two things: whether the company has an internal developer platform (IDP), and whether its maintainers have capacity for the additional work. The decision tree is a starting point for that conversation. Its staffing additions and merger timelines are planning assumptions that need to fit local conditions.
 
 ```mermaid
-flowchart TD
-    Q1{"Do you have an internal developer<br/>platform (IDP) team?"} -->|No| N1["Start an Agentic Platform Pod<br/>it becomes your platform team later"]
-    Q1 -->|Yes| Q2{"Do they have capacity<br/>for a new mission?"}
-    Q2 -->|Yes| A1["Fold agentic into the IDP mission<br/>add 2–3 headcount"]
-    Q2 -->|No| A2["Start a separate pod<br/>merge back in 12–18 months"]
-    A2 --> M["Merge conditions: runtime stable,<br/>governance in CI, champions self-sustaining"]
-    style A1 fill:#d4edda,stroke:#2e7d32
+---
+config:
+  theme: base
+  themeVariables:
+    fontSize: 16px
+    primaryColor: "#f8f9fa"
+    primaryTextColor: "#1f2933"
+    primaryBorderColor: "#6b7280"
+    lineColor: "#6b7280"
+    secondaryColor: "#f8f9fa"
+    tertiaryColor: "#ffffff"
+    clusterBkg: "#ffffff"
+    clusterBorder: "#9ca3af"
+    edgeLabelBackground: "#ffffff"
+  flowchart:
+    nodeSpacing: 36
+    rankSpacing: 44
+    padding: 12
+    htmlLabels: true
+    subGraphTitleMargin:
+      top: 8
+      bottom: 12
+    curve: basis
+---
+flowchart TB
+    classDef own fill:#d4edda,stroke:#2e7d32,color:#1f2933
+    classDef buy fill:#fff3cd,stroke:#b8860b,color:#1f2933
+    classDef bad fill:#ffe0e0,stroke:#c0392b,color:#1f2933
+    classDef human fill:#e3f2fd,stroke:#1565c0,color:#1f2933
+    Q1{"Existing IDP team?"} -->|No| N1["Create a platform pod<br/>Plan future integration"]
+    Q1 -->|Yes| Q2{"Capacity for agent work?"}
+    Q2 -->|Yes| A1["Integrate with IDP<br/>Plan 2–3 added roles"]
+    Q2 -->|No| A2["Start a separate pod<br/>Reassess in 12–18 months"]
+    A2 --> M["Integration review<br/>Runtime and controls stable<br/>Champions have support"]
+    class A1 own
+    class Q1,Q2,A2 buy
 ```
 
-The principle in one line: **an agentic platform is the next chapter of your IDP, not a parallel universe.** They will merge eventually. Separating is only a concession to startup speed, which is why an independent pod should share backlog tooling and design review with the IDP from day one. When the merge day arrives, the only thing you have to move is people, not two sets of process and two cultures.
+My direction is to **treat agentic capability as an extension of the IDP and work toward shared services and responsibilities.** If a separate pod helps get started, share backlog tooling and design reviews from day one, then revisit the conditions for integration. The 12–18 months in the diagram is a review window. Runtime stability, implemented governance, and sustainable champion collaboration matter more than reaching a date.
 
-SRE works the same way: reuse the existing observability stack for agent observability — traces, metrics, alerting. Don't let the platform team rebuild it. That stack is already running in production, and an agent is just one more kind of thing to observe.
+SRE can provide the existing observability stack so agent execution records use traces, metrics, and alerting the company already maintains. The platform team supplies the agent-specific data and workflows, and agrees with SRE on retention, access, and alert ownership. That uses existing experience without silently handing another team new maintenance work.
 
-The only difference is a handful of new signals. Run ID stitches one complete agent run together, tool call shows which external capabilities it reached for, retry shows how unstable it is, and token usage pulls cost into the same picture.
+Additional signals include a run ID that connects a complete execution, the capabilities used and results returned by each tool call, retry reasons and counts, and token usage linked to cost. A high retry rate is a reason to investigate. On its own, it cannot tell you that the model, harness, or a particular team is at fault.
 
 ---
 
 ## 6. Budget and the pitch: what to tell a CFO
 
-The hard part of pitching a CFO isn't the size of the number. It's that this money has three components that behave nothing like each other, and presenting them as one thing gets the whole proposal sent back.
+Bundle subscriptions, staffing, and adoption time into one AI budget, and it becomes hard to explain what grows with usage, what is a fixed investment, and how much work the team is absorbing. Separating those costs gives the CFO and engineering team a shared basis for discussing results and tradeoffs.
 
-Budget splits into three buckets, and the third is the one that gets left out:
+I would divide the budget into three buckets. The third needs an explicit allocation alongside the more visible tooling and staffing costs:
 
 | Bucket | Contents | Behavior |
 |---|---|---|
-| **Run** | Tokens, vendor subscriptions, sandbox compute | Grows linearly with adoption; needs quota management |
-| **Build** | Platform team headcount | Fixed; 4–6 people to start |
-| **Enable** | Champions' 20% time, training, the guild | An invisible cost — if you don't budget it, day-to-day work eats it |
+| **Run** | Tokens, vendor subscriptions, sandbox compute | Varies with task volume, model, context, and retries; separate fixed subscriptions |
+| **Build** | Platform team staffing | Fixed allocation by staffing plan; this piece uses 4–6 people for the 200-engineer scenario |
+| **Enable** | Champions' 20% time, training, the guild | Adjust existing delivery plans and track time actually invested |
 
-Enable gets left out because it never appears on a quote. What it spends is the time of engineers you already employ, and nothing that wasn't budgeted gets reconciled at the end of the year.
+Enable is easy to overlook because it uses the time of engineers already employed and may never appear on a new vendor quote. Yet that time changes what is available for product work. Recording it in the budget and schedule makes the tradeoff visible and helps keep the champion role from becoming two jobs at once.
 
-**The ROI narrative.** Don't use "this replaces N engineers." It frightens the team, and it isn't accurate anyway. My claim is that agentic engineering redistributes engineering attention rather than removing people.
+**The ROI narrative** should begin with what the team can accomplish. I would not translate time savings directly into a number of engineers to replace: fewer minutes spent on an operation do not automatically become removable salary costs. What matters to me is whether attention spent repeatedly preparing environments, assembling context, and handling retries can return to product judgment and difficult problems.
 
-Use **attention leverage** instead: the drop in human review minutes per PR, multiplied by total PR volume, equals engineering attention freed. That is, what you're selling the CFO isn't saved salary, it's more capacity out of the same people. Pair it with evidence that production escape rate — the share of problems that only get caught once they've reached production — held flat, which proves you didn't buy speed with quality.
+**Attention leverage** can start with a comparable workload: multiply the reduction in average review time for PRs of similar risk and size by the number of those PRs. That estimates time potentially freed from this part of the work, not net capacity. Debugging, rework, training, and incident response also belong in the account. Compare production escape rate—the share of delivered changes in which defects are discovered after delivery—using the same definition and observation window. A flat rate is one piece of evidence about the quality tradeoff, not proof that quality was unchanged in every respect.
 
-**Managing time expectations.** Don't promise cost reduction in year one. Promise a measurable curve on delivery speed and quality. Cost per successful task only becomes meaningful as a comparison in year two, because year one is still paying the retry tax: the tokens and the time burned on failed attempts. That number comes down as the harness and the context improve. Year one's retry tax is tuition, not waste (see part three).
+**Managing time expectations.** In year one, commit to a baseline for delivery speed, quality, and cost, then let pilot results guide further investment. Measure cost per successful task from the pilot onward, including failed attempts and retries. Control for task mix and cost scope when comparing results; there is no reason to wait until year two. Exploration can have a learning cost, but that tuition is worth continuing only when failures lead to verifiable improvements. Part 3, Evals, Unit Economics, and Scaling, develops that account further.
 
-One red line to close on: if the proposal contains "we will build our own agent runtime," delete it. The reasoning is in the overview's buy-versus-build section. In short, that's a bet against an entire industry's capital expenditure, and not one of the three buckets above can cover a seat at that table.
+I would not make building a generic agent runtime a default budget item. The overview's buy-versus-build argument is about putting effort into company context, permissions, acceptance, and workflows. If existing products cannot meet a necessary requirement, first describe the gap, alternatives, and long-term maintenance cost. That gives the team a basis for deciding whether a custom implementation is worth funding.
 
 ---
 
 ## 7. Talent: hiring, transitions, and the junior path
 
-That's the money settled. What's left is the people: how you hire from outside, how you convert from inside, and how you grow juniors. Of the three, the third is the one that most often gets skipped.
+How long the investment can last comes back to who has time to do the work and who can keep developing the needed skills. Hiring and internal transfers can fill immediate gaps. Growing junior engineers determines whether someone will be ready to take responsibility in the years ahead. All three belong in the plan.
 
 **Hiring.** The keyword in the job description is not prompt engineering. Look for people who've built developer tooling, CI, test infrastructure, or documentation systems. The reason is that what this role handles every day is how engineers wire an agent into an existing workflow, not how to write a prompt that reads nicely.
 
-On top of that you want one trait that's hard to quantify and matters enormously: **the temperament to debug non-deterministic systems.** Agent failures don't reproduce cleanly, and that's a very different experience from debugging traditional software. Suppose the same task runs twice, passes once, fails once, and the two diffs don't even match. The person you want is the one who goes and measures the distribution, not the one who loses their temper first.
+I would also look at how a candidate approaches **debugging a non-deterministic system**. Suppose the same task passes once and fails once, with different diffs from the two runs. Do they preserve versions, inputs, and execution records, then use repeated runs to examine the distribution of outcomes and compare failure conditions? Patient evidence gathering fits this work better than expecting every problem to reproduce in one attempt.
 
-**Internal transfers beat external hiring.** The first two or three people on the platform team come most smoothly from internal DevEx or infra, because they already understand the systems and the politics. Save external hiring for genuinely new skills: eval engineering and FinOps. The first has to be able to put a number on whether an agent's output is any good. The second has to manage token spend the way you'd manage a cloud bill.
+**Assess internal transfers, then fill the missing expertise.** The first two or three members could come from DevEx or infrastructure, where people already know the systems, but those transfers need a handover of existing responsibilities. Eval engineering organizes tasks, acceptance criteria, and scoring. FinOps brings token use, compute, and human effort into one cost discussion. Which skills to develop internally and which to hire depends on the team you already have.
 
-**The junior path** (turning the overview's argument into a ladder):
+**The junior path** can have three stages. The months below are points for coaching and checking progress, not dates on which someone automatically acquires more responsibility:
 
-1. **Month 1:** review agent PRs with a checklist. The goal isn't catching errors; it's building an instinct for what "correct" looks like.
-2. **Months 2–3:** write eval cases. Defining what "right" means is the best training in technical judgment there is.
-3. **Months 4–6:** own the maintenance of a golden workflow, and start contributing to the team's adoption metrics.
+1. **Month 1:** review low-risk agent PRs with a senior engineer and a checklist. Practice explaining requirements, inspecting tests, and asking for evidence. The aim is to understand why work counts as complete; final approval remains with someone who has the responsibility and authority to give it.
+2. **Months 2–3:** help write and review eval cases, run tests, and reproduce problems. Practice turning a vague idea of correctness into conditions that can be checked.
+3. **Months 4–6:** maintain a golden workflow with guidance, follow the problems users encounter and the results of checks, and expand responsibility as demonstrated capability grows.
 
-What this path produces isn't someone who is better with the tools. It's an engineer who can define problems and acceptance criteria — precisely the scarcest capability of the agent era. The implementation can be delegated, but someone still has to judge what counts as correct, where the risk sits, and which parts a human has to look at.
+The aim is an engineer who can define a problem, examine evidence, and make a judgment. Review is one way to practice, alongside implementation, debugging, and feedback. Even when an agent does part of the implementation, engineers need to understand how the code works to know what warrants investigation and when to ask a more experienced colleague to help.
 
-Organizations that skip it and reserve all review for seniors will discover in three years that they have no succession bench.
+Reserve every judgment for seniors and juniors lose opportunities to practice and receive feedback. Building a succession path requires time now; it cannot wait until experienced colleagues leave or the workload grows, when the organization suddenly needs somebody ready to take over.
 
 ---
 
 ## 8. Closing
 
-The goal of the org design compresses into one sentence:
+Return to the opening problem: the budget needs an owner, scarce expertise needs a workable allocation, and security needs clear collaborators. Platform plus federation is my answer to those needs. Its division of work can be remembered this way:
 
 > **Domain teams keep context and ownership. The platform team keeps leverage and guardrails. Champions keep the two talking.**
 
-Go back to the three forms of organizational gravity from the first section. They don't go away. Budget, scarce talent, and the demand for control will push you again every quarter, and every time someone will suggest that you just stand up a team. What this org chart is really for is making sure that each time you get pushed, you can still answer the question: who owns this?
+The value of the chart shows up in everyday collaboration. Domain teams know which capabilities they can use themselves and when to ask the platform for help. Champions have time to organize feedback, and the platform knows what its shared services need to improve. Budget and control pressures will return, but sending every request to a central team no longer has to be the only available answer.
 
-The next piece covers what the platform team actually builds: the three-tier AGENTS.md architecture, a minimum viable MCP gateway, sandbox selection, and the brownfield renovation playbook.
+Part 2, The Harness Blueprint: Making Your System Legible to Agents, describes the capabilities this arrangement maintains: AGENTS.md, the MCP gateway, sandboxes, and brownfield renovation. Assigning responsibility and time first gives those technical investments people who can keep them useful.
 
 ---
 

@@ -10,7 +10,7 @@
   },
   {
    "file": "diagram-03.png",
-   "mermaid": "flowchart TD\n    Q1{\"Do you have an internal developer<br/>platform (IDP) team?\"} -->|No| N1[\"Start an Agentic Platform Pod<br/>it becomes your platform team later\"]\n    Q1 -->|Yes| Q2{\"Do they have capacity<br/>for a new mission?\"}\n    Q2 -->|Yes| A1[\"Fold agentic into the IDP mission<br/>add 2–3 headcount\"]\n    Q2 -->|No| A2[\"Start a separate pod<br/>merge back in 12–18 months\"]\n    A2 --> M[\"Merge conditions: runtime stable,<br/>governance in CI, champions self-sustaining\"]\n    style A1 fill:#d4edda,stroke:#2e7d32\n"
+   "mermaid": "---\nconfig:\n  theme: base\n  themeVariables:\n    fontSize: 16px\n    primaryColor: \"#f8f9fa\"\n    primaryTextColor: \"#1f2933\"\n    primaryBorderColor: \"#6b7280\"\n    lineColor: \"#6b7280\"\n    secondaryColor: \"#f8f9fa\"\n    tertiaryColor: \"#ffffff\"\n    clusterBkg: \"#ffffff\"\n    clusterBorder: \"#9ca3af\"\n    edgeLabelBackground: \"#ffffff\"\n  flowchart:\n    nodeSpacing: 36\n    rankSpacing: 44\n    padding: 12\n    htmlLabels: true\n    subGraphTitleMargin:\n      top: 8\n      bottom: 12\n    curve: basis\n---\nflowchart TB\n    classDef own fill:#d4edda,stroke:#2e7d32,color:#1f2933\n    classDef buy fill:#fff3cd,stroke:#b8860b,color:#1f2933\n    classDef bad fill:#ffe0e0,stroke:#c0392b,color:#1f2933\n    classDef human fill:#e3f2fd,stroke:#1565c0,color:#1f2933\n    Q1{\"Existing IDP team?\"} -->|No| N1[\"Create a platform pod<br/>Plan future integration\"]\n    Q1 -->|Yes| Q2{\"Capacity for agent work?\"}\n    Q2 -->|Yes| A1[\"Integrate with IDP<br/>Plan 2–3 added roles\"]\n    Q2 -->|No| A2[\"Start a separate pod<br/>Reassess in 12–18 months\"]\n    A2 --> M[\"Integration review<br/>Runtime and controls stable<br/>Champions have support\"]\n    class A1 own\n    class Q1,Q2,A2 buy\n"
   }
  ],
  "tables": [
@@ -20,15 +20,15 @@
   },
   {
    "file": "table-02.png",
-   "markdown": "| Size | Dedicated | Champions | Governance | Next upgrade signal |\n|---:|---|---|---|---|\n| ~50 | 0 | 2 (20% time) | Checklist plus vendor defaults | Champions overloaded |\n| ~200 | 4–6 | 1 per team | Gateway plus policy as code | Evals and cost need dedicated people |\n| ~1,000 | 8–12 (three squads) | Formalized guild | Full platform plus council | Absorbed into the IDP; the name disappears |\n"
+   "markdown": "| Size | Dedicated | Champions | Governance | Next upgrade signal |\n|---:|---|---|---|---|\n| ~50 | 0 | 2 (20% time each) | Checklist plus verified vendor capabilities | Support work persistently exceeds allocated time |\n| ~200 | 4–6 | 1 per team | Gateway plus policy as code | Evals and cost need dedicated people |\n| ~1,000 | 8–12 (three squads) | Formalized guild | Platform plus council | Integrate responsibilities and services with the IDP |\n"
   },
   {
    "file": "table-03.png",
-   "markdown": "| Look for this | Avoid this |\n|---|---|\n| Already uses agents daily with real output to show | Wants to evaluate new tools, doesn't want to touch anyone else's repo |\n| Has written the team's onboarding docs or test infrastructure | Treats champion as a promotion stepping stone, doesn't teach |\n| Willing to spend time coaching; turns complaints into requirements | No patience for non-deterministic systems |\n"
+   "markdown": "| Experience to look for | What to explore in an interview |\n|---|---|\n| Uses agents in daily work and can explain results and limitations | Willingness to understand other teams’ repos and workflows |\n| Maintains onboarding guidance or test infrastructure | Ability to turn a practice into instructions colleagues can use |\n| Helps colleagues and turns recurring problems into requirements | How they preserve evidence and investigate inconsistent results |\n"
   },
   {
    "file": "table-04.png",
-   "markdown": "| Bucket | Contents | Behavior |\n|---|---|---|\n| **Run** | Tokens, vendor subscriptions, sandbox compute | Grows linearly with adoption; needs quota management |\n| **Build** | Platform team headcount | Fixed; 4–6 people to start |\n| **Enable** | Champions' 20% time, training, the guild | An invisible cost — if you don't budget it, day-to-day work eats it |\n"
+   "markdown": "| Bucket | Contents | Behavior |\n|---|---|---|\n| **Run** | Tokens, vendor subscriptions, sandbox compute | Varies with task volume, model, context, and retries; separate fixed subscriptions |\n| **Build** | Platform team staffing | Fixed allocation by staffing plan; this piece uses 4–6 people for the 200-engineer scenario |\n| **Enable** | Champions' 20% time, training, the guild | Adjust existing delivery plans and track time actually invested |\n"
   }
  ]
 }
