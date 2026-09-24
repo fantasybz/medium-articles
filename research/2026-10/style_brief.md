@@ -12,7 +12,7 @@
 ## Series architecture (the shape, with the October numbers)
 - One theme = **總論 + 三部曲**. October 「綠燈不是驗收」: 總論 (three gates, anti-patterns, VP decision, 90-day blueprint) → 測試篇 (assertion-change diff, red-then-green, mutation score) → Review 篇 (triage matrix, reviewer fleet, closed-loop ban) → 可靠度篇 (constraint pass rate, pass^k, oversight budget).
 - **Length snapshot after the 09-08 polish (historical)**: 總論 ≈ 10,000 CJK chars / 12 sections / 18 figures (10 mermaid + 8 tables); each part ≈ 7,600–8,000 chars / 6–9 sections / 7–8 figures (4 mermaid + 3–4 tables；可靠度篇只有 6 節）. Targets were 3,600 and 1,800–2,300; the drafts run 2.8–4× that and **the author accepted the overrun**. Earlier long articles also attracted completed reads; this does not establish length as their cause. Those targets are historical planning estimates, not a sentence-compression budget or a minimum to pad toward; retain necessary explanation and narrative.
-- Opening: `# Title` → `> **TL;DR** — ...` (360–730 chars: symptoms → one-line thesis → what each gate measures → the disagreeable claims → one sourced number with its domain → what the tail delivers) → `> 系列導覽：…` with **本篇** bolded, unpublished siblings 「（即將發布）」/"(coming soon)", plus a 「上一季」 row.
+- Opening: `# Title` → `> **TL;DR** — ...` (360–730 chars: symptoms → one-line thesis → what each gate measures → the disagreeable claims → one sourced number with its domain → what the tail delivers) → `> 系列導覽：…` with **本篇** bolded and unpublished siblings 「（即將發布）」/"(coming soon)". Name related series explicitly instead of identifying them only as 「上一季」.
 - Chinese-numeral sections (`## 一、…`), 6–12 per piece (總論 12; 測試篇 9; Review 篇 8; 可靠度篇 6); the last is 結語 / 結語與交接, returning to the opening question or documented experience before a hand-off; a blockquote is optional.
 - Tail: `### 系列文章` → `### References` (numbered, org — [title](url), each with a 〔第 N 節〕 back-pointer) → `### AI 協作說明` → italic signature.
 
@@ -35,6 +35,13 @@
 - 逐篇、逐句核對指涉、因果、適用條件與數字分母。小樣本、作者建議值、理論框架與實測結果分開寫，不能為了讓句子有力就放大結論。
 - 短句、反轉句、第一人稱與連接詞依情境使用。舊手冊的禁詞、固定句型與標點配額不再沿用；完整清楚優先於壓縮字數。
 - 中英版保留相同文意與限制，正文、圖表、政策範例與發布稿同步更新。舊稿字元數與詞頻是歷史紀錄，不是這輪稿件的驗收門檻。
+
+## 跨篇指涉與全文完成度（作者確認，2026-09-24）
+
+- 公開文章以篇名、系列名或明確主題指引讀者，不使用「11 月那篇」「下個月的契約篇」「年底再談」或只寫「上一季營運篇」。第一次提到別的系列，先交代可辨識的名稱，已發布內容附確認過的連結；後文才沿用簡稱。
+- 未定稿或排程未定的內容，不承諾月份，不把暫定題目當成既有文章。若沒有必要引向另一篇，直接說明本篇尚未涵蓋的問題即可。內部研究目錄與規劃日期、研究及會議的實際日期不受此限制。
+- 潤稿涵蓋整篇，尤其要從中段一路讀到結語，逐段檢查操作說明、圖表解讀、清單與交接。後半部不能退回短語堆疊或提案摘要；要交代使用情境、理由、負責的人與判斷邊界。
+- 結語回應開場，不用連續預告未定文章收尾。正文中的樣本限制、推論條件與人力前提，在最後幾段也必須保留。完成前對照前後半部的語氣與說明深度，英文同步遵守。
 
 ## Conference and book material (new for this cycle)
 - **A session is cited as speaker, company, session, slide/timestamp**: 「在 AGNTCon Japan 的 X 場，<講者>（<公司>）在 slide N 說…」. Stage numbers are organiser-, vendor- or team-reported and say so; press coverage is not a source. Ground truth is `notes_sep10/11.md`.

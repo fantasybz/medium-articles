@@ -21,6 +21,13 @@
 - Short sentences, contrastive closings and rhetorical questions are choices, not quotas. Do not prohibit connective words or personal pronouns based on historical frequency.
 - Use [the current voice handbook](voice_brief.md) for practical editing; [the historical analysis](voice_brief.history.md) preserves quotations and old measurements, not current rules.
 
+## Cross-references and complete-article polish (author-confirmed 2026-09-24)
+
+- Identify another article by its title, series and explicit topic, with a verified link when published. Do not make readers identify it from “the November piece,” “next month,” “year-end” or “last season.” Establish a recognizable name before using a shortened reference.
+- For unfinished work without a confirmed publication date, name the planned topic only if the handoff is useful; do not promise a month or present a working title as a published piece. Often it is clearer to state the current article’s scope directly. Preserve dates that identify research, conferences and actual events.
+- Read the entire second half as a continuous argument, including instructions, figure explanations, lists, the conclusion and handoffs. Give it the same complete actions, transitions and reasoning as the opening; do not let it collapse into outline notes.
+- Return the ending to the opening question or documented experience. Retain the body’s conditions and evidence limits, and avoid substituting a sequence of future-article announcements for a conclusion. Apply the same checks to the English edition.
+
 ## Rhetorical moves observed in the earlier series
 - Opens with the question the target reader is actually asking ("每個 Engineering VP 都在問的問題") and answers it up front with a bolded one-liner (`**Own your Agentic Engineering Platform, but don't own the whole agent.**`, `**Buy the intelligence. Build the environment. Own the feedback loop.**`).
 - Anchors claims with named industry sources and numbers (OpenAI Harness Engineering, Anthropic long-running harnesses, DORA, Stack Overflow survey, AAIF member count), each linked; never vague "experts say".
