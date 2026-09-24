@@ -6,11 +6,11 @@
   },
   {
    "file": "diagram-02.png",
-   "mermaid": "flowchart TD\n    NS[\"Effective Engineering Leverage\"] --> A[\"Delegation<br/>成功委派的任務比例\"]\n    NS --> B[\"Completion<br/>End-to-end 完成率\"]\n    NS --> C[\"Attention<br/>人類投入時間 / 任務\"]\n    NS --> D[\"Quality<br/>Production 正確性\"]\n    A --> A1[\"任務類型覆蓋率\"]\n    B --> B1[\"Retry rate\"]\n    B --> B2[\"Autonomous completion rate\"]\n    C --> C1[\"Review minutes / PR\"]\n    C --> C2[\"等待與 context switch\"]\n    D --> D1[\"Escape rate\"]\n    D --> D2[\"Revert rate\"]\n    style NS fill:#d4edda,stroke:#2e7d32\n"
+   "mermaid": "---\nconfig:\n  theme: base\n  themeVariables:\n    fontSize: 16px\n    primaryColor: \"#f8f9fa\"\n    primaryTextColor: \"#1f2933\"\n    primaryBorderColor: \"#6b7280\"\n    lineColor: \"#6b7280\"\n    secondaryColor: \"#f8f9fa\"\n    tertiaryColor: \"#ffffff\"\n    clusterBkg: \"#ffffff\"\n    clusterBorder: \"#9ca3af\"\n    edgeLabelBackground: \"#ffffff\"\n  flowchart:\n    nodeSpacing: 36\n    rankSpacing: 44\n    padding: 12\n    htmlLabels: true\n    subGraphTitleMargin:\n      top: 8\n      bottom: 12\n    curve: basis\n---\nflowchart TB\n    classDef own fill:#d4edda,stroke:#2e7d32,color:#1f2933\n    classDef buy fill:#fff3cd,stroke:#b8860b,color:#1f2933\n    classDef bad fill:#ffe0e0,stroke:#c0392b,color:#1f2933\n    classDef human fill:#e3f2fd,stroke:#1565c0,color:#1f2933\n    NS[\"工程效益的四個面向\"] --> delivery\n    NS --> outcomes\n    subgraph delivery[\"使用與完成\"]\n      direction TB\n      A[\"Delegation<br/>符合條件任務的委派率<br/>任務類型覆蓋\"] --> B[\"Completion<br/>驗收完成率與重試率<br/>自主完成率\"]\n    end\n    subgraph outcomes[\"人工投入與品質\"]\n      direction TB\n      C[\"Attention<br/>每件任務的審查與返工<br/>等待與 context switch\"] --> D[\"交付後的品質<br/>Escape rate<br/>Revert rate\"]\n    end\n    class NS,A,B own\n    class C human\n    class D buy\n"
   },
   {
    "file": "diagram-03.png",
-   "mermaid": "flowchart LR\n    P[\"Pilot（90 天）\"] --> G1{\"G1\"} --> E1[\"25% teams\"] --> G2{\"G2\"} --> E2[\"全員 + write tools\"] --> G3{\"G3\"} --> E3[\"深度授權\"]\n    G1 -.->|未過| F1[\"回頭修 harness / 組織\"]\n    G2 -.->|未過| F1\n    G3 -.->|未過| F1\n    style F1 fill:#ffe0e0,stroke:#c0392b\n"
+   "mermaid": "---\nconfig:\n  theme: base\n  themeVariables:\n    fontSize: 16px\n    primaryColor: \"#f8f9fa\"\n    primaryTextColor: \"#1f2933\"\n    primaryBorderColor: \"#6b7280\"\n    lineColor: \"#6b7280\"\n    secondaryColor: \"#f8f9fa\"\n    tertiaryColor: \"#ffffff\"\n    clusterBkg: \"#ffffff\"\n    clusterBorder: \"#9ca3af\"\n    edgeLabelBackground: \"#ffffff\"\n  flowchart:\n    nodeSpacing: 36\n    rankSpacing: 44\n    padding: 12\n    htmlLabels: true\n    subGraphTitleMargin:\n      top: 8\n      bottom: 12\n    curve: basis\n---\nflowchart TB\n    classDef own fill:#d4edda,stroke:#2e7d32,color:#1f2933\n    classDef buy fill:#fff3cd,stroke:#b8860b,color:#1f2933\n    classDef bad fill:#ffe0e0,stroke:#c0392b,color:#1f2933\n    classDef human fill:#e3f2fd,stroke:#1565c0,color:#1f2933\n    subgraph pilot[\"先驗證一段範圍清楚的工作\"]\n      direction LR\n      P[\"範圍清楚的 pilot<br/>90 天作為排程參考\"] --> G1[\"G1：Pilot 檢視<br/>例如先擴至 25% teams\"]\n    end\n    subgraph scale[\"擴大使用與權限分開審查\"]\n      direction LR\n      G2[\"G2：規模驗證<br/>擴大團隊覆蓋<br/>寫入工具另行審核\"] -->|審查通過| G3[\"G3：高風險操作審查<br/>人工核准與限額<br/>停止與回復條件\"]\n    end\n    pilot -->|審查通過| scale\n    pilot -.->|有缺口| F[\"查明原因<br/>修正並重新驗證\"]\n    scale -.->|任一審查有缺口| F\n    class G1,G2,G3 buy\n    class F bad\n"
   }
  ],
  "tables": [
@@ -20,15 +20,15 @@
   },
   {
    "file": "table-02.png",
-   "markdown": "| 任務類型 | 建議層級 | 理由 |\n|---|---|---|\n| Planning、架構判斷 | 最強 model | 錯誤成本最高，一次做對 |\n| 大量 code 生成 | 中階 model | 有 tests 兜底，量大 |\n| Eval 執行、lint 類 | 便宜 model | 高頻、低風險 |\n| Review、安全判斷 | 最強 model | 最後防線不省錢 |\n"
+   "markdown": "| 任務類型 | 選擇原則 | 保留的檢查 |\n|---|---|---|\n| Planning、架構分析 | 以代表性 eval 比較推理與限制理解能力 | 人類確認重大架構與風險決策 |\n| 大量 code 生成 | 選擇符合驗收要求且成本合適的 model | Tests、review 與修改範圍限制 |\n| 測試、lint 等確定性檢查 | 直接執行工具，通常不需要 LLM | 檢查執行狀態與結果是否完整 |\n| Review、安全分析 | 依檢出能力與錯誤類型選 model | 專用檢查、高風險人工審核與執行時限制 |\n"
   },
   {
    "file": "table-03.png",
-   "markdown": "| 指標 | 會被怎麼 game | 對策 |\n|---|---|---|\n| % tasks delegated | 把大任務拆小灌件數 | 搭配「任務類型覆蓋率」，看廣度不看件數 |\n| Review minutes / PR | Rubber stamp 快速放行 | 與 escape / revert rate 成對讀 |\n| Completion rate | 只委派簡單任務 | Frontier evals 追蹤能力邊界有沒有前進 |\n| Escape rate | 出事不開 incident | Incident 定義綁 SLO，不綁人的判斷 |\n"
+   "markdown": "| 指標 | 可能造成的偏差 | 搭配檢查 |\n|---|---|---|\n| 任務委派率 | 拆小任務增加件數，或改變合格任務的定義 | 固定任務單位與分母，依類型和難度分層 |\n| Review minutes / PR | 縮短審查，卻增加交付後的返工 | 一起看 escape、revert 與返工時間 |\n| Completion rate | 只委派較容易的任務 | 保留任務組成，搭配 golden 與 frontier evals |\n| Escape rate | 缺陷未通報，或觀察時間太短 | 預先定義缺陷分類與觀察窗口，納入 SLO、資安及業務正確性，抽查通報完整性 |\n"
   },
   {
    "file": "table-04.png",
-   "markdown": "| Gate | 過關條件 | 解鎖 |\n|---|---|---|\n| **G1：Pilot 結業** | 2 個 teams 穩定使用；eval 就緒；對照 baseline 有感改善 | 擴大到 25% teams |\n| **G2：規模驗證** | Retry rate < 15%；escape rate 持平；champions 體系自轉 | 全部 teams + 開放 write 級 tools |\n| **G3：深度授權** | Frontier evals 連續穩定；audit 半年無重大事件 | Dangerous tools 白名單、多步 autonomous run |\n"
+   "markdown": "| Gate | 需要檢查的證據 | 可考慮的下一步 |\n|---|---|---|\n| **G1：Pilot 檢視** | 2 個 teams 持續使用；eval 可執行；與可比 baseline 對照，品質及人工負擔可接受 | 分批擴大，例如先到 25% teams |\n| **G2：規模驗證** | 重試原因可追查，可先以 retry rate < 15% 討論；escape rate 未惡化；champions 有工時與支援 | 擴大團隊覆蓋；個別 write tools 另行審核 |\n| **G3：深度授權** | 目標任務的 eval、攻擊情境與回復演練通過；可參考半年 audit，不能只看有無重大事件 | 審查特定高風險操作，保留人工核准、限額與停止機制 |\n"
   }
  ]
 }

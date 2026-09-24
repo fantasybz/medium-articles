@@ -16,19 +16,19 @@
  "tables": [
   {
    "file": "table-01.png",
-   "markdown": "| 層級 | 位置 | 內容 | Owner | 更新頻率 |\n|---|---|---|---|---|\n| **Org 層** | Platform repo，同步分發到各 repo | 語言與框架規範、安全紅線、共用工具指令 | Platform team | 每季 |\n| **Repo 層** | 各 repo 根目錄 | Build / test 指令、架構邊界、conventions | Domain team（champion 推動） | 每月 |\n| **Dir 層**（選配） | 特殊子目錄 | 模組專屬規則 | Code owner | 隨改動 |\n"
+   "markdown": "| 層級 | 位置 | 內容 | Owner | 例行檢視建議 |\n|---|---|---|---|---|\n| **Org 層** | Platform repo，分發到各 repo | 共通規範、安全限制、共用工具指令 | Platform team | 每季，重大變更時即時更新 |\n| **Repo 層** | 各 repo 根目錄 | Build / test 指令、架構邊界、conventions | Domain team，由 champion 協助維護 | 每月，隨開發流程更新 |\n| **Dir 層**（選配） | 特殊子目錄 | 模組專屬規則 | Code owner | 隨模組改動 |\n"
   },
   {
    "file": "table-02.png",
-   "markdown": "| 級別 | 例子 | 政策 |\n|---|---|---|\n| **read** | 查 log、讀 issue、搜 code | 預設開放 |\n| **write** | 開 PR、發 comment、建 ticket | 需在 registry 註冊 owner |\n| **dangerous** | DB 寫入、deploy、對外發信 | 人工 approve，或第一年完全不開放 |\n"
+   "markdown": "| 級別 | 例子 | 起始政策 |\n|---|---|---|\n| **read** | 查 log、讀 issue、搜尋 code | 只開放任務需要的資料，敏感資料另行授權 |\n| **write** | 開 PR、發 comment、建 ticket | 登記 owner，限制目標與內容範圍，保留操作紀錄 |\n| **dangerous** | DB 寫入、deploy、對外發信 | 預設停用；有需要時採人工核准與明確的操作範圍 |\n"
   },
   {
    "file": "table-03.png",
-   "markdown": "| 方案 | 隔離強度 | 啟動速度 | 適用 |\n|---|---|---|---|\n| **Container**（devcontainer 類） | 中 | 快（秒級） | 大多數情境的起點 |\n| **MicroVM**（Firecracker 類） | 高 | 中 | 多租戶、要跑不可信 code |\n| **Local worktree** | 低 | 最快 | 人在旁邊的輔助開發；不適合 autonomous run |\n"
+   "markdown": "| 方案 | 隔離特性 | 啟動考量 | 適用情境 |\n|---|---|---|---|\n| **Container**（devcontainer 類） | 隔離程序與檔案空間，但共享 host kernel | 受 image、初始化與快取影響 | 受控工作負載的常見起點 |\n| **MicroVM**（Firecracker 類） | 提供獨立 guest kernel 的虛擬化邊界 | 需量測 VM 與任務環境的完整啟動時間 | 多租戶或不可信 code，仍需完善設定 |\n| **Local worktree** | 只分開 Git 工作目錄，不是安全邊界 | 建立目錄快，依賴環境另計 | 可搭配隔離環境；單獨使用需評估 host 風險 |\n"
   },
   {
    "file": "table-04.png",
-   "markdown": "| 問題 | 及格線 |\n|---|---|\n| Agent 能一行指令跑「受影響的測試」嗎？ | `make test FILTER=<path>` 存在且快 |\n| 測試失敗訊息能定位原因嗎？ | Assert 訊息含 expected / actual |\n| Log 是結構化的嗎？ | JSON 或 logfmt，帶 request id |\n| Production 錯誤能在本地重現嗎？ | Trace id 可以帶回本地 repro |\n| UI 改動能自動驗證嗎？ | Headless browser + screenshot 就緒 |\n| Flaky tests 有隔離與追蹤嗎？ | Quarantine 標記 + 修復 SLA |\n"
+   "markdown": "| 問題 | 可檢查的條件 |\n|---|---|\n| Agent 能執行受影響的測試嗎？ | 有明確入口，例如 `make test FILTER=<path>`，並知道適用範圍 |\n| 測試失敗訊息有助於定位原因嗎？ | 包含 assertion、expected / actual 與必要上下文 |\n| Log 能否依任務查詢？ | 使用 JSON 或 logfmt，包含可關聯的 request id |\n| Production 錯誤能否重建？ | Trace 可連回版本、必要輸入與依賴狀態，敏感資料經過處理 |\n| UI 改動能否驗證？ | 有 browser 操作、assertions 與需要的 screenshot 比對 |\n| Flaky tests 有人處理嗎？ | 記錄隔離原因、owner、修復期限與暫代驗證方式 |\n"
   }
  ]
 }

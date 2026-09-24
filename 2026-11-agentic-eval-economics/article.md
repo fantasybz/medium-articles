@@ -1,6 +1,6 @@
 # Agentic Engineering 三部曲（三）：Eval、單位經濟與規模化—把 agent 當產品營運
 
-> **TL;DR** — 三部曲最終篇。Runtime 用買的、組織照第一篇組、harness 照第二篇蓋，然後呢？多數導入死在「然後」：沒有 eval 所以換不換 model 靠感覺、沒有成本模型所以 CFO 半年後來砍預算、沒有反作弊的指標所以數字漂亮但沒人變快。本篇給出完整的營運層：eval dataset 的實作 pipeline 與分級、單位經濟與 model routing、指標樹與每個指標的反作弊設計、pilot 之後的 scaling gates，以及 vendor 管理的決策流程。
+> **TL;DR** — 三部曲最終篇，接著處理環境建好之後的日常決策：如何知道 agent 做得好不好、一次完成任務花多少錢，以及什麼時候適合擴大使用。本篇整理 eval dataset 的建立與維護、成本模型與 model routing、需要搭配解讀的指標，以及 pilot 之後的 scaling gates 和 vendor 管理。文中的數量與門檻是起始建議，團隊仍要依任務風險、樣本與實際成效調整，才能把一次導入變成持續有人負責的內部產品。
 
 > 系列導覽：[總論](https://fantasybz.medium.com/%E5%88%A5%E6%80%A5%E8%91%97%E6%89%93%E9%80%A0%E4%BD%A0%E7%9A%84-devin-agentic-engineering-%E7%9A%84%E7%B5%84%E7%B9%94%E7%AD%96%E7%95%A5%E8%88%87-90-%E5%A4%A9%E8%A1%8C%E5%8B%95%E8%97%8D%E5%9C%96-7342ababc417) → [一、組織篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%80-%E8%AA%B0%E4%BE%86%E5%81%9A-platform-federation-%E7%9A%84%E7%B5%84%E7%B9%94%E8%A8%AD%E8%A8%88%E5%AF%A6%E5%8B%99-9d9353ef7f3a) → [二、技術篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%BA%8C-harness-%E8%97%8D%E5%9C%96-%E6%8A%8A%E7%B3%BB%E7%B5%B1%E8%AE%8A%E6%88%90-agent-%E8%AE%80%E5%BE%97%E6%87%82%E7%9A%84%E5%9C%B0%E6%96%B9-f2a139f5b561) → **三、營運篇（本篇）**
 
@@ -8,24 +8,24 @@
 
 ## 一、把 agentic capability 當內部產品營運
 
-先做一個視角轉換：你的「產品」是 paved road，「客戶」是 domain teams，「營收」是被成功委派的任務，「流失」是工程師試了兩次失敗之後，悄悄回去手寫。
+先換一個視角：把平台提供的 paved road 當成內部產品，domain teams 就是使用它的團隊。這個產品有沒有價值，要看工程師能否把合適的任務交給 agent、取得可接受的結果，並且願意繼續使用。如果嘗試之後仍得花大量時間善後，回到手動工作也可能是合理選擇；平台需要理解這個選擇背後的原因。
 
-paved road 是平台鋪好的那條預設路徑，照著走，環境、權限與驗證都已經接好。不走也可以，只是要自己扛。
+Paved road 是平台維護的預設路徑，把環境、權限與驗證方式整合在一起。團隊有特殊需求時，可以提出例外，但要說清楚由誰維護、承擔哪些風險，以及如何保留必要的檢查。
 
-視角一換，要處理的事情就跟著換了：它不再是工具採購，而是產品管理。四件事：
+用這個角度看，採購只是起點。後續營運至少要持續回答四個問題：
 
-- **量測**：哪些任務真的被委派成功了？這是 eval 與指標的工作。
-- **單位經濟**：一次成功委派花掉多少錢？這就是 cost per successful task。
-- **成長策略**：什麼時候該擴大授權、什麼時候該停下來修平台？這是 scaling gates。
-- **供應鏈管理**：主力 vendor 的價格或政策一變，你得換得掉。這是 vendor 策略。
+- **成效**：哪些任務被委派，哪些通過驗收，又需要多少人工協助？Eval 與使用紀錄要一起回答。
+- **單位經濟**：包含失敗與重試之後，每件通過驗收的任務花費多少？
+- **擴大使用**：現有證據足以支援哪些新任務或團隊，哪些缺口要先處理？
+- **供應商選擇**：價格、功能或政策改變時，有沒有經過驗證且負擔得起的替代方案？
 
-本篇依序處理這四件事。
+本篇依序處理這四個問題，也把它們連回同一個決策：下一筆投入，應該用來擴大使用，還是改善目前的流程。
 
-先講為什麼 eval 排第一。所謂 eval dataset，是一組你自己維護的任務題庫，每一題都附好 context 與驗收條件，讓你用同一份題目去量不同的 model、不同版本的 harness。
+Eval 排在前面，是因為後續比較需要共同基準。Eval dataset 是團隊維護的任務集合，每個 case 都有必要的 context、驗收條件與評分方式，讓不同 model 或 harness 版本在可比較的條件下接受評估。
 
-總論的判斷是：**eval dataset 是唯一會複利的資產**。這句話要拆成兩半讀。一半是會過期的東西：model 每半年一代，harness 的假設不斷過時。另一半不會過期：「你的工作負載上什麼叫做對」這件事，累積下來就是你的護城河。
+總論把 eval dataset 視為可以持續累積價值的資產。這個價值來自團隊逐步釐清「什麼結果可以接受」，並把失敗經驗轉成可重複檢查的案例。不過，需求、系統與風險都會改變，dataset 也需要維護，不能把舊答案永遠當成正確答案。
 
-所以市場每次 model 升級、每場 vendor 價格戰，都讓它增值一次：因為只有你能在一天內用自己的 eval 驗證新選項，別人只能讀 benchmark 用猜的。
+有了這份基準，新 model 或價格方案出現時，團隊就能用自己的工作負載比較選項。評估仍然需要時間與成本，但不必每次都從 vendor 的展示重新猜起。
 
 ---
 
@@ -33,9 +33,9 @@ paved road 是平台鋪好的那條預設路徑，照著走，環境、權限與
 
 ### Dataset 從哪裡來
 
-多數團隊卡在第一步：「eval 要從哪來？」我的答案是：先不要把它想成一個從零開始的研究專案。你的工程歷史裡已經有大量現成材料，缺的只是一條把它們回收成 case 的 pipeline。
+「Eval 要從哪裡來？」是很實際的起始問題。我會先回頭整理工程歷史：哪些事故值得重現、哪些 PR 暴露了判斷缺口，以及哪些日常任務最能代表團隊的工作。這些都是材料，還需要整理與驗證，才能成為可用的 case。
 
-這張圖要看的是材料怎麼進來、又怎麼流回自己：
+下圖把材料整理、版本控管、執行、評分與決策連起來，也保留一條把新失敗案例補回 dataset 的路徑：
 
 ```mermaid
 flowchart LR
@@ -50,37 +50,37 @@ flowchart LR
     style DS fill:#d4edda,stroke:#2e7d32
 ```
 
-圖上最容易被略過的，是最後那條回填的虛線。少了它，eval 就只是一份會慢慢過期的考古題：跑得再勤，也只是在重複驗證你早就修好的問題。
+最後那條回填路徑，讓日常使用能持續修正 eval 的盲點。既有案例仍可保護已知行為，新案例則讓團隊看見工作內容與風險的變化。兩者都需要維護，不能只靠增加執行頻率維持代表性。
 
-三個來源各有特性：
+整理三種來源時，我會分別注意：
 
-- **Incident 回收**：每份 post-mortem 都是現成的 case。把當時的 context 與症狀交給 agent，它找不找得到 root cause？這類 case 最貴也最真實。
-- **PR history 回收**：被 reviewer 打回的 agent PR，連同那則 review comment，是最真實的 negative example。一次過關的則是 golden path，用來確認基本盤有沒有退步。
-- **手工 golden tasks**：挑 10–20 個有代表性的已完成任務（bug fix、小 feature、refactor 各幾個），固定 context 與驗收條件。這一批是你唯一完全可控的樣本，值得花時間慢慢挑。
+- **Incident**：從 post-mortem 重建當時可取得的症狀、版本與必要資料，確認環境可以重現。根因與修復答案留給評分端，不能直接放進受測 agent 的 context。
+- **PR history**：被退回的 PR 與 review comment 可以揭露錯誤模式，但 review 意見也要查證。已核准的 PR 同樣需要獨立確認結果，不能把「曾經合併」直接當成正確答案。
+- **手工挑選的任務**：可以先整理 10–20 個代表性的 bug fix、小 feature 與 refactor，固定輸入與驗收條件。這是建立流程的起始建議，後續要依實際任務分布補足樣本。
 
 ### Eval case 的形狀
 
-Case 我會用宣告式格式寫，而不是留一段自然語言 prompt 讓每個人各自解讀。宣告式的意思是把出處、context、期望結果與評分方式拆成固定欄位、各自寫清楚，這樣它才能跟 code 被同樣對待：一起版本控管、一起 review。
+我會用結構化欄位記錄 case 的來源、context、期望結果與評分方式，讓它可以一起版本控管與 review。下面是虛構的付款逾時案例，用來說明格式；日期、repo 與根因都不是本文引用的真實事故，也不是可直接執行的 eval framework：
 
 ```yaml
-# evals/cases/payment-timeout-fix.yaml（節錄）
+# evals/cases/payment-timeout-fix.yaml（虛構案例示意）
 id: payment-timeout-fix
-source: incident-2026-04-18        # 出處可追溯
+source: example-incident-2026-04-18 # 示意識別碼，非真實事故
 context:
   repo: shop-backend
   entry: "使用者結帳偶發 504，附 trace id"
 expected:
   root_cause: "connection pool 上限"
-  fix_touches: ["internal/db/pool.go"]
+  candidate_files: ["internal/db/pool.go"] # 調查線索，不是唯一合法修改位置
   tests_added: true
 scoring: rubric                    # rubric / exact / llm_judge
 ```
 
-這份 case 裡最該守住的是 source 那一欄。每個 case 都指得回一件真的發生過的事：一次 incident、一個 PR、一個做完的任務。這樣 eval 才不會慢慢變成一份自己出給自己的模擬考。
+`source` 要能說明案例來自哪裡；人工設計的案例也可以納入，只要清楚標示。`expected` 應由評分端保存，避免洩漏答案。範例裡的檔案只是可能相關的位置，不能用「有沒有改到這個檔案」判定修復正確；`tests_added: true` 也只能確認有新增測試，還要檢查測試能否辨認原本的缺陷。
 
 ### 三級 eval，各司其職
 
-Eval 不必也不該只有一組，三級各自回答不同的問題，也各有自己的節奏：
+我會依用途把 eval 分成三級。表中的數量與頻率是起始建議，並非業界標準；樣本應隨任務類型、風險與執行成本調整：
 
 | 級別 | 數量 | 執行時機 | 回答的問題 |
 |---|---|---|---|
@@ -88,19 +88,19 @@ Eval 不必也不該只有一組，三級各自回答不同的問題，也各有
 | **Golden** | 20–50 | 每週 + 每次 model 升級 | 核心能力有沒有回歸？ |
 | **Frontier** | 10–20 | 每月 | 能力邊界推進到哪？該不該擴大授權？ |
 
-三級裡最容易被省略的是 Frontier，原因很好懂：它不保護今天的流程，一個月不跑也不會有人痛。但它回答的是最值錢的問題：**agent 現在做不到的事，下一版 model 做到了沒**。這個問題直接決定授權範圍要不要放寬，也就是第五節那組 gates 的輸入。
+Frontier 用來探索目前還不穩定、但有價值的任務，讓團隊觀察新版本是否改善了能力邊界。它的結果可以支援授權討論，卻不能單獨決定是否開放高風險操作；實際環境的限制、事故處理與回復能力仍要一起檢查。
 
 ### LLM-as-judge 的三個陷阱
 
-Case 一多，人工評分就跟不上了，所以量大之後一定會用 LLM 當評審：讓另一個 model 照著 rubric 給分，這就是 LLM-as-judge。它可以用，但三個坑先講：
+評分先採用可直接查證的方法，例如測試結果、輸出比對與政策檢查。對需要判讀說明或多種合理解法的部分，可以讓另一個 model 依 rubric 協助評分，也就是 LLM-as-judge。採用之前，我會先處理三種風險：
 
-1. **Judge 偏好長答案與自信語氣**。Rubric 要綁事實項：測試過了嗎、改的檔案對嗎、root cause 對嗎，而不是「整體品質 1–10 分」。
-2. **同家族偏袒**。Judge 與被評的 model 同一家族時會偏心。解法是用不同家族的 model 當 judge，或雙 judge 取交集。
-3. **Judge drift**。Judge 用的 model 也會升級，昨天的 85 分和今天的 85 分可能不是同一件事。Judge 的 model 版本也要 pin 住，每次變更都要記錄。
+1. **表達方式影響評分**。長答案與自信語氣可能掩蓋內容錯誤。Rubric 要要求可查證的依據，例如測試結果、根因證據與修正行為，避免只給模糊的總分。
+2. **Judge 與受測 model 共享盲點**。不同 model 的評分可能有不同偏差；換一家族或使用雙 judge，可以增加比較訊號，但不能保證獨立或正確。意見分歧需要回到證據檢查。
+3. **Judge drift**。評分 model、prompt 或 rubric 改變後，同一個分數可能代表不同標準。記錄完整版本與設定，變更時重新評估一組人工標註案例。
 
-校準的錨只有一個：**每月一次、抽 10 個 case 的人工評分**，拿它跟 judge 的分數對照。Judge 自己也在變，你需要一個不會跟著漂的參考點。
+人工抽查是必要的校準來源，也需要明確 rubric 與分歧處理。我會先安排每月抽查 10 個 case，涵蓋成功、失敗與 judge 意見分歧的情況，再依風險擴大樣本。這個數量只是起點，不能用來保證罕見錯誤已被涵蓋；人工評分本身也應定期對照與討論。
 
-全自動 eval 是目標，不是起點。沒有人工錨的自動評分，飄掉了你也不會知道。
+自動化可以減少重複評分的工作，人工抽查則幫團隊發現標準與實際需求之間的落差。目標是讓評估結果足以支援決策，而不是把人工介入降到零。
 
 ---
 
@@ -108,131 +108,196 @@ Case 一多，人工評分就跟不上了，所以量大之後一定會用 LLM �
 
 ### 一次 run 的成本解剖
 
-談成本之前先把一筆帳拆開，不然討論很容易停在「agent 好貴」這種印象上。一次 autonomous run 的成本 = model tokens（通常佔 60–80%）+ sandbox 運算（10–25%）+ 週邊（觀測、儲存）。
+談成本前，先定義計算範圍。一次 run 的直接成本可以包含 model 使用量、sandbox 運算、觀測與儲存。各項占比會隨任務、快取、計價方式與執行時間改變，應從自己的帳單與 run 紀錄計算。
 
-花費從幾十美分到幾十美元不等，而決定因素不是任務難度，是兩個浪費源：
+接著把同一任務的所有嘗試連起來。這裡的 **cost per successful task**，定義為同一觀察期內納入統計的直接成本，除以通過驗收的任務數；分子包含失敗、重試與最後放棄的任務。若沒有任務通過，應報告總成本與零完成件數，不能把單位成本記成零。比較整體效益時，另外列出人工 review、返工與平台維護成本。
 
-- **Retry tax**：失敗重試的成本。Retry rate 從 30% 降到 10%，總成本直接砍兩成以上—而 retry rate 高的根因，九成在 harness 的 context 與 feedback 層（第二篇），不在 model。**Retry 燒掉的錢，是 harness 品質的稅。**
-- **Context 肥大**：把整個 repo 塞進 context 的懶惰做法。假設一個只改一支 handler 的小任務，agent 卻先把整包 repo 讀過一遍，光讀完就吃掉大半預算，真正要動手的地方反而分不到注意力。第二篇的三層 AGENTS.md 與「repo 層 100 行」紀律，就是 context 的減肥方案。
+- **重試成本要看實際嘗試次數**。假設每次嘗試都花費 `c`，每件任務最多額外重試一次，且最終通過率與任務組成不變。需要重試的任務比例從 30% 降到 10%，平均成本就從 `1.3c` 降到 `1.1c`，約減少 15.4%。這只是算例；實際重試可能長短不同、發生多次，不能只從 retry rate 推算省下多少錢。
+- **Context 要符合任務需求**。如果只修改一個 handler，卻每次讀取大量無關內容，就可能增加成本與判斷負擔。技術篇的分層文件與明確連結，有助於提供必要資訊；但不能只為了降低 token 數，刪掉驗證所需的背景。
 
 ### Model routing 矩陣
 
-Model routing 就是替每一類工作事先指定 model 等級，而不是全公司一律用最強的那一顆。判斷依據是錯誤成本與可驗證性，這種判斷放在 platform 層（第二篇的 gateway）只需要做一次，各 team 不用自己決定。
+Model routing 是依任務特性選擇合適的 model 或執行工具。Platform team 可以維護共通路由與紀錄，domain team 則提供風險與驗收條件，雙方用 eval 決定哪些組合可用。這個判斷需要隨工作負載與版本更新，無法做一次就永遠沿用。
 
-任務類型與層級都會隨著 model 世代改變，理由不會：
+下表整理我會先檢查的條件。Model 的價格或等級可以提供選項，真正的依據仍是它在這類任務上的表現：
 
-| 任務類型 | 建議層級 | 理由 |
+| 任務類型 | 選擇原則 | 保留的檢查 |
 |---|---|---|
-| Planning、架構判斷 | 最強 model | 錯誤成本最高，一次做對 |
-| 大量 code 生成 | 中階 model | 有 tests 兜底，量大 |
-| Eval 執行、lint 類 | 便宜 model | 高頻、低風險 |
-| Review、安全判斷 | 最強 model | 最後防線不省錢 |
+| Planning、架構分析 | 以代表性 eval 比較推理與限制理解能力 | 人類確認重大架構與風險決策 |
+| 大量 code 生成 | 選擇符合驗收要求且成本合適的 model | Tests、review 與修改範圍限制 |
+| 測試、lint 等確定性檢查 | 直接執行工具，通常不需要 LLM | 檢查執行狀態與結果是否完整 |
+| Review、安全分析 | 依檢出能力與錯誤類型選 model | 專用檢查、高風險人工審核與執行時限制 |
 
-表裡最重要的是頭尾兩列：planning 與 review 都指定最強的 model。一個是最前面的決策、一個是最後一道防線，在這兩處省下來的錢，多半會在後面以 retry 或 escape 的形式還回來。
+Planning 與 review 值得投入較多驗證，因為前者影響後續方向，後者可能影響是否接受結果。但使用最強的 model 也不能保證判斷正確，更不代表它自動取得最終核准權限。
 
 ### Budget guardrails
 
-Budget guardrails 是花錢的護欄。前兩條防的是沒有人看著的時候，一次意外燒掉整季的預算，第三條防的是看錯數字：
+Budget guardrails 要讓團隊在學習期間保有空間，也能及早發現失控的消耗。我會同時設定團隊層與單次執行的限制：
 
-- **Per-team quota + 超額 alert**：先觀察，不硬斷—初期的用量分布資訊，比省下的錢更值錢。
-- **Run-level kill switch**：單次 run 超過成本上限（例如 20 美元）自動暫停、要求人工確認。它是對付 runaway retry loop 的保險絲：agent 卡在同一個錯誤上重試一整夜，帳單不該等到月底才被看見。
-- **Cost per successful task 看趨勢，不看絕對值**：第一年是學費期（組織篇的預算敘事），第二年才拿它跟人力成本做比較。
+- **團隊配額與分段 alert**：先給足以完成 pilot 的預算，接近門檻時通知 owner；需要增加時，再依任務需求與已取得的結果調整。初期可以保留彈性，但仍要有總額上限。
+- **Run-level kill switch**：單次 run 超過設定成本或嘗試次數時暫停，例如先以 20 美元作為某類 pilot 的檢查點。實際上限要依任務設定，並考慮尚未回報的費用與進行中的請求。恢復前由負責人確認是否值得繼續。
+- **從 pilot 就追蹤單位成本**：和相近任務的人工投入、品質與完成率一起比較。第一年的學習成本可以單獨說明，但必須指出它換來什麼改善，不能等到第二年才開始算帳。
 
-成本這條線只要單獨拉出來考核，就一定會被壓到好看為止。
+如果只要求成本下降，團隊可能會減少必要的驗證，或把人工善後移出統計範圍。成本因此要和品質、完成率及人工投入一起閱讀，才知道流程是否真的改善。
 
 ---
 
 ## 四、指標樹與反作弊
 
-總論給了 North Star 的公式，這裡展開成可以量測的 metric tree。看這張圖的時候，重點不是四個分支各叫什麼名字，而是每個分支底下都掛著可以量的東西：
+總論用四個面向描述工程效益，這裡把它們展開成可量測的指標。Delegation 是符合條件的任務中，實際交由 agent 嘗試的比例；Completion 則以這些已委派任務為分母，統計通過驗收的比例。兩者分開，才能看見使用範圍與完成能力的差異。
 
 ```mermaid
-flowchart TD
-    NS["Effective Engineering Leverage"] --> A["Delegation<br/>成功委派的任務比例"]
-    NS --> B["Completion<br/>End-to-end 完成率"]
-    NS --> C["Attention<br/>人類投入時間 / 任務"]
-    NS --> D["Quality<br/>Production 正確性"]
-    A --> A1["任務類型覆蓋率"]
-    B --> B1["Retry rate"]
-    B --> B2["Autonomous completion rate"]
-    C --> C1["Review minutes / PR"]
-    C --> C2["等待與 context switch"]
-    D --> D1["Escape rate"]
-    D --> D2["Revert rate"]
-    style NS fill:#d4edda,stroke:#2e7d32
+---
+config:
+  theme: base
+  themeVariables:
+    fontSize: 16px
+    primaryColor: "#f8f9fa"
+    primaryTextColor: "#1f2933"
+    primaryBorderColor: "#6b7280"
+    lineColor: "#6b7280"
+    secondaryColor: "#f8f9fa"
+    tertiaryColor: "#ffffff"
+    clusterBkg: "#ffffff"
+    clusterBorder: "#9ca3af"
+    edgeLabelBackground: "#ffffff"
+  flowchart:
+    nodeSpacing: 36
+    rankSpacing: 44
+    padding: 12
+    htmlLabels: true
+    subGraphTitleMargin:
+      top: 8
+      bottom: 12
+    curve: basis
+---
+flowchart TB
+    classDef own fill:#d4edda,stroke:#2e7d32,color:#1f2933
+    classDef buy fill:#fff3cd,stroke:#b8860b,color:#1f2933
+    classDef bad fill:#ffe0e0,stroke:#c0392b,color:#1f2933
+    classDef human fill:#e3f2fd,stroke:#1565c0,color:#1f2933
+    NS["工程效益的四個面向"] --> delivery
+    NS --> outcomes
+    subgraph delivery["使用與完成"]
+      direction TB
+      A["Delegation<br/>符合條件任務的委派率<br/>任務類型覆蓋"] --> B["Completion<br/>驗收完成率與重試率<br/>自主完成率"]
+    end
+    subgraph outcomes["人工投入與品質"]
+      direction TB
+      C["Attention<br/>每件任務的審查與返工<br/>等待與 context switch"] --> D["交付後的品質<br/>Escape rate<br/>Revert rate"]
+    end
+    class NS,A,B own
+    class C human
+    class D buy
 ```
 
-這棵樹的形狀就是它的紀律：四個分支缺一個，剩下三個就會開始說謊。只盯 Delegation 與 Completion，你會拿到一份很好看、但沒有人變輕鬆的報表。
+這四個面向要一起解讀，不能直接相乘成一個總分。人工投入包含 review、修正、調查與等待造成的負擔；品質則需要交付後的觀察。本文的 escape rate 指「交付後才發現缺陷的變更」占同批交付變更的比例，比較時必須使用相同的觀察窗口與缺陷定義。短期沒有發現缺陷，仍不等於已經證明沒有問題。
 
-每個指標都會被 game—不是因為有人惡意，而是 Goodhart's law 的日常運作：一個指標一旦變成考核目標，它就不再是好指標。設計指標的時候就要同時配好解藥：
+指標也會改變人的行為。當單一數字成為考核目標，大家可能在沒有惡意的情況下，優先選擇能讓數字改善的工作。設計報表時就要保留任務組成與品質訊號，避免把這種變化誤認為能力提升：
 
-| 指標 | 會被怎麼 game | 對策 |
+| 指標 | 可能造成的偏差 | 搭配檢查 |
 |---|---|---|
-| % tasks delegated | 把大任務拆小灌件數 | 搭配「任務類型覆蓋率」，看廣度不看件數 |
-| Review minutes / PR | Rubber stamp 快速放行 | 與 escape / revert rate 成對讀 |
-| Completion rate | 只委派簡單任務 | Frontier evals 追蹤能力邊界有沒有前進 |
-| Escape rate | 出事不開 incident | Incident 定義綁 SLO，不綁人的判斷 |
+| 任務委派率 | 拆小任務增加件數，或改變合格任務的定義 | 固定任務單位與分母，依類型和難度分層 |
+| Review minutes / PR | 縮短審查，卻增加交付後的返工 | 一起看 escape、revert 與返工時間 |
+| Completion rate | 只委派較容易的任務 | 保留任務組成，搭配 golden 與 frontier evals |
+| Escape rate | 缺陷未通報，或觀察時間太短 | 預先定義缺陷分類與觀察窗口，納入 SLO、資安及業務正確性，抽查通報完整性 |
 
-原則一句話：**指標成對出現—速度指標必配品質指標**。單獨考核任何一個數字，你就會得到那個數字，以及它背後被犧牲的一切。這是 DevOps 時代 vanity metrics 的 2.0 版教訓。
+我的原則是：**速度與成本指標，都要搭配品質與人工投入解讀**。如果 review 時間下降，卻有更多同事在交付後處理返工，改善的可能只是報表。把這些負擔放回同一個視野，討論才會接近團隊真正經歷的工作。
 
 ---
 
 ## 五、90 天之後：Scaling Gates
 
-總論給了前 90 天的行動藍圖（選 pilot、量 baseline、建 eval）。Pilot 結束後，最常見的錯誤是宣布成功、全面推廣。
+總論建議先用一段有範圍的 pilot，選定團隊、量測 baseline 並建立 eval。到了原定檢視時間，下一步不必然是全面推廣；有時更合理的決定，是把已找到的問題修好，再繼續觀察。
 
-規模化要用 gate 制，意思是每道門檻先把量化條件寫死，過了才解鎖下一步。門檻愈往後，agent 能碰的東西愈危險：
+我會用 gates 整理擴大前需要的證據，但把「增加使用團隊」與「放寬操作權限」分開核准。下面的 25%、15% 與半年觀察期都是討論起點，應依風險、樣本量與任務組成調整；達到門檻，也只是進入審查的條件：
 
-| Gate | 過關條件 | 解鎖 |
+| Gate | 需要檢查的證據 | 可考慮的下一步 |
 |---|---|---|
-| **G1：Pilot 結業** | 2 個 teams 穩定使用；eval 就緒；對照 baseline 有感改善 | 擴大到 25% teams |
-| **G2：規模驗證** | Retry rate < 15%；escape rate 持平；champions 體系自轉 | 全部 teams + 開放 write 級 tools |
-| **G3：深度授權** | Frontier evals 連續穩定；audit 半年無重大事件 | Dangerous tools 白名單、多步 autonomous run |
+| **G1：Pilot 檢視** | 2 個 teams 持續使用；eval 可執行；與可比 baseline 對照，品質及人工負擔可接受 | 分批擴大，例如先到 25% teams |
+| **G2：規模驗證** | 重試原因可追查，可先以 retry rate < 15% 討論；escape rate 未惡化；champions 有工時與支援 | 擴大團隊覆蓋；個別 write tools 另行審核 |
+| **G3：深度授權** | 目標任務的 eval、攻擊情境與回復演練通過；可參考半年 audit，不能只看有無重大事件 | 審查特定高風險操作，保留人工核准、限額與停止機制 |
 
-三道門的條件都要寫成可以驗的東西。Retry rate、escape rate 這類直接是數字，「穩定使用」「體系自轉」則要事先講好怎麼算，不能停在「大家覺得還不錯」。最後那格寫的 Dangerous tools，指的是動得到 production、也動得到外部世界的那些 tool。做錯了收不回來，所以排在最後。
+審查前要先定義「持續使用」與「有人支援」如何確認，也要記錄各指標的分母與觀察期。半年沒有重大事故，可能只是工作量小或尚未遇到某種情境，不能直接推成安全證明。Dangerous tools 涉及 production 或外部世界，更需要針對操作本身確認範圍、核准人與回復方法。
 
-把三道門畫成流程：
+下圖表示逐步審查的方向。每一個階段都可以縮小範圍或回頭改善，沒有因為日期到了就自動開放的步驟：
 
 ```mermaid
-flowchart LR
-    P["Pilot（90 天）"] --> G1{"G1"} --> E1["25% teams"] --> G2{"G2"} --> E2["全員 + write tools"] --> G3{"G3"} --> E3["深度授權"]
-    G1 -.->|未過| F1["回頭修 harness / 組織"]
-    G2 -.->|未過| F1
-    G3 -.->|未過| F1
-    style F1 fill:#ffe0e0,stroke:#c0392b
+---
+config:
+  theme: base
+  themeVariables:
+    fontSize: 16px
+    primaryColor: "#f8f9fa"
+    primaryTextColor: "#1f2933"
+    primaryBorderColor: "#6b7280"
+    lineColor: "#6b7280"
+    secondaryColor: "#f8f9fa"
+    tertiaryColor: "#ffffff"
+    clusterBkg: "#ffffff"
+    clusterBorder: "#9ca3af"
+    edgeLabelBackground: "#ffffff"
+  flowchart:
+    nodeSpacing: 36
+    rankSpacing: 44
+    padding: 12
+    htmlLabels: true
+    subGraphTitleMargin:
+      top: 8
+      bottom: 12
+    curve: basis
+---
+flowchart TB
+    classDef own fill:#d4edda,stroke:#2e7d32,color:#1f2933
+    classDef buy fill:#fff3cd,stroke:#b8860b,color:#1f2933
+    classDef bad fill:#ffe0e0,stroke:#c0392b,color:#1f2933
+    classDef human fill:#e3f2fd,stroke:#1565c0,color:#1f2933
+    subgraph pilot["先驗證一段範圍清楚的工作"]
+      direction LR
+      P["範圍清楚的 pilot<br/>90 天作為排程參考"] --> G1["G1：Pilot 檢視<br/>例如先擴至 25% teams"]
+    end
+    subgraph scale["擴大使用與權限分開審查"]
+      direction LR
+      G2["G2：規模驗證<br/>擴大團隊覆蓋<br/>寫入工具另行審核"] -->|審查通過| G3["G3：高風險操作審查<br/>人工核准與限額<br/>停止與回復條件"]
+    end
+    pilot -->|審查通過| scale
+    pilot -.->|有缺口| F["查明原因<br/>修正並重新驗證"]
+    scale -.->|任一審查有缺口| F
+    class G1,G2,G3 buy
+    class F bad
 ```
 
-三條虛線最後都通往同一個地方，這是刻意的。
+回頭的路徑都指向改善工作。它們提醒團隊，暫停擴大本身也是一個有效決策，接下來要把未通過的原因轉成具體修正與驗證。
 
-第一條：**卡住就回頭修，不硬推**。G2 過不了，通常是 harness 問題（第二篇），G3 過不了，通常是 guardrails 與 eval 覆蓋問題，這兩種都不是再推一季就會自己好的東西。
+第一個原則是**先查原因，再安排改善**。門檻未通過，可能涉及 harness、model、任務選擇或組織支援。依執行紀錄與案例找到缺口、指定 owner，再決定重做哪一組驗證，不能只把時程往後延一季。
 
-第二條：**擴張速度由 eval 與 escape rate 決定，不由 roadmap 決定**。Roadmap 上寫著 Q3 全面導入，不構成 G2 自動過關的理由。
+第二個原則是**擴大範圍要跟得上證據與支援能力**。Roadmap 可以安排檢視時間，不能代替核准理由。進入下一階段後，仍要保留停止、回復與重新審查的條件，持續觀察新團隊與新任務帶來的變化。
 
-這兩條紀律都預設了同一件事：你隨時拿得出 eval 的結果當證據。同一份證據，也決定了你跟 vendor 怎麼談。
+這些決策需要可追溯的 eval、實際使用紀錄與事故資料。相同的比較基礎，也能幫團隊評估供應商選項，而不必把更換 vendor 當成另一次從零開始的導入。
 
 ---
 
 ## 六、Vendor 管理
 
-Vendor 這一節要盯的東西不多，三件而已：
+Vendor 管理要讓團隊保有選擇，同時看見維持選項的成本。我會把工作分成三部分：
 
-- **雙 vendor 是常態**：一個主力、一個挑戰者。這不是不信任，是議價結構—你的 eval dataset 讓「讓挑戰者試試」變成一天的事，這正是第一節說的複利在兌現。
-- **換 model 的決策流程**：新 model 發布 → 跑 golden + frontier evals → 看三件事：pass rate 變化、cost per task 變化、**新出現的失敗模式**（最容易被忽略）→ 用 20% workload 做兩週 canary → 全量。這條流程只做一件事，就是把「換不換」從感覺題拉回證據題。永遠不要因為 benchmark 分數或 demo 換 model。
-- **合約要盯的四件事**：你的 code 與 transcript 是否被用於訓練、log 的保存位置與期限、rate limit 與 SLA、以及價格保護：token 單價波動大，能鎖一年就鎖一年。
+- **準備可驗證的替代方案**：資源允許時，保留一個主力與一個候選 vendor。用相同 eval 檢查候選方案，也記錄認證、工具相容性、資料政策與遷移成本。不能因為有第二個帳號，就認為隨時切得過去。
+- **分階段評估 model 變更**：先執行 golden 與 frontier evals，比較通過率、完整成本與新失敗模式。結果可接受，再選擇低風險、可比較的 workload 做 canary；20% 流量、兩週可以是某次試驗的起點，但仍要依事件數與風險調整。只有預定條件通過且回復方式確認可用，才逐步擴大。
+- **確認合約與實際設定**：檢查 code、transcript 是否用於訓練，資料與 logs 的保存位置、期限及刪除方式，以及 rate limits、SLA 與計價條件。長期價格承諾還要一起評估最低用量、解約與遷移限制。
 
-這三件事合起來，是為了讓「換掉任何一家」永遠是你付得起的選項。
+替代方案不一定便宜，也不一定需要一直承接正式流量。重點是知道切換需要哪些工作、誰能完成，以及組織是否願意負擔；這樣遇到價格或政策變動時，才能作出實際可行的決定。
 
 ---
 
 ## 七、系列收尾
 
-三部曲收在總論的同一句話：
+回到總論提出的主張，三部曲想保留的是組織理解與改善自己工程流程的能力：
 
 > **Buy the intelligence. Build the environment. Own the feedback loop.**
 
-組織（第一篇）決定誰來做；harness（第二篇）決定 agent 能不能做好；營運（本篇）決定你知不知道它做得好不好、值不值得繼續加碼。三者都不是一次到位的工程，是持續經營的內部產品。
+組織篇「誰來做？」釐清責任與支援；技術篇「Harness 藍圖」建立可操作、可驗證的環境；營運篇則讓團隊持續檢查成果與成本。這三件事需要一起維護，才能讓使用者遇到問題時找得到人，也讓平台知道下一步該改善什麼。
 
-如果只能從三件事開始：**量 baseline、挑 pilot、建前 10 個 eval cases**。九十天後，你就有資格用證據而不是 vibes，做下一個決策。
+如果現在只能先做三件事，我會選定有 owner 的 pilot、量測可比較的 baseline，並建立前 10 個經過查證的 eval cases。到了檢視時間，再把使用紀錄、人工負擔與品質結果放在一起，決定繼續改善、擴大使用，或停止不合適的流程。時間經過多久不是成果；團隊能說清楚這次嘗試學到了什麼，才是下一個決策的起點。
 
 ---
 
@@ -250,6 +315,7 @@ Vendor 這一節要盯的東西不多，三件而已：
 1. Anthropic — [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents)
 2. Google — [2025 DORA report: How are developers using AI?](https://blog.google/innovation-and-ai/technology/developers-tools/dora-report-2025/)
 3. Stack Overflow — [Agents on a leash: Agentic AI remains mostly monitored at work](https://stackoverflow.blog/2026/05/27/agents-on-a-leash-agentic-ai-remains-mostly-monitored-at-work/)
+4. Anthropic — [Demystifying evals for AI agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)
 
 ---
 

@@ -1,34 +1,34 @@
 # Don't Build Your Own Devin: Org Strategy and a 90-Day Blueprint for Agentic Engineering
 
-> **TL;DR** — Most engineering groups don't need a silo whose job is "building agents for other teams." What they do need is a small **Agentic Engineering Platform / Enablement team**. And don't build a complete agent runtime from scratch: the winning strategy is **buy the generic agent runtime, build the organization-specific harness layer**. If you map it onto DevOps history, Agentic Engineering in September 2026 sits roughly where DevOps and Cloud Native sat in 2014–2016: the direction is settled, the primitives are arriving, but the best practices and org structures haven't crystallized. A 90-day action blueprint is at the end.
+> **TL;DR** — Engineering organizations have reason to invest in Agentic Engineering, starting with the conditions product teams need to use agents: clear permissions, working environments, and acceptance criteria. My recommendation is to assign champions or a small Platform / Enablement Team according to scale, adopt a general-purpose runtime first, and invest in the organization’s harness and feedback loop. From the perspective of September 2026, this resembles DevOps and Cloud Native in 2014–2016: components are coming together while organizational responsibilities and maintenance practices are still evolving. This piece develops that comparison, the staffing and sourcing decisions, and a 90-day pilot blueprint to adapt to local conditions.
 
 > Series: **Overview (this piece)** → [1. Org Design](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987) → [2. The Harness Blueprint](https://fantasybz.medium.com/agentic-engineering-part-2-the-harness-blueprint-making-your-system-legible-to-agents-3facc281f633) → [3. Evals and Unit Economics](https://fantasybz.medium.com/agentic-engineering-part-3-evals-unit-economics-and-scaling-running-agents-like-a-product-1cb1855a2046)
 
 ---
 
-## 1. The question every engineering VP is asking
+## 1. The questions engineering leaders need to answer
 
-Over the past year, nearly every engineering organization has been asking the same three questions:
+As agents move from individual tools into team workflows, engineering leaders face questions beyond which product to choose. Someone must maintain the environment, accept the results, and explain what the investment should improve. I want to begin with three questions:
 
 - Should we stand up an AI Agent team?
 - Should we build our own harness — or even our own agent?
 - Is investing now too early, or already too late?
 
-This piece is my complete answer. The conclusion first:
+This piece sets out my judgment on those questions. The central position is:
 
 > **Own your Agentic Engineering Platform, but don't own the whole agent.**
 
-What follows walks from the state of the market, through the lessons DevOps already taught us, into org design, the buy-vs-build call, and finally a concrete 90-day plan.
+Putting that position into practice starts with understanding what the market offers, then revisiting the organizational experience of DevOps. From there, teams can assign responsibilities, choose what to adopt or build, and design a pilot.
 
-That order is deliberate. If you haven't established where the industry actually is, and haven't looked at the holes DevOps fell into on the way, then the org design and the buy-vs-build call are just picking a side on instinct, and you're one step away from another AI initiative that exists because everyone else has one.
+The order matters to me because a capable agent demonstration does not establish who will look after it once a team adopts it. Considering technology choices alongside everyday responsibilities gives an experiment a better chance of leaving something maintainable behind.
 
 ---
 
 ## 2. Where the market actually is in 2026
 
-Start by locating yourself on a rough maturity ladder. The axis here isn't how capable the models are; it's how much of the work people are willing to hand over.
+Start with a diagram of different working arrangements. It describes the scope of work people might delegate, rather than a maturity ladder every organization must climb in order.
 
-The whole industry has visibly shifted rightward, and the center of gravity is now pressing on the last two stages:
+Products are exploring longer autonomous runs and multi-agent collaboration. In actual use, teams retain different levels of human involvement according to task risk:
 
 ```mermaid
 flowchart LR
@@ -40,43 +40,43 @@ flowchart LR
     style E fill:#ffe0e0,stroke:#c0392b
 ```
 
-Two surveys are worth anchoring on. Google's 2025 DORA report (nearly 5,000 respondents) found that **90% of engineers now use AI at work**, with a median of two hours a day spent on it — yet only about 24% report high trust in what it produces. Stack Overflow's data shows AI agent usage jumping from 31% to 59% in a single year, while 87% of developers worry about the correctness of agent output. Read together, the message is unambiguous: **adoption stopped being the bottleneck a while ago. Trust and verification are the bottleneck now** — which is exactly what the harness and eval sections below are about.
+[Google’s 2025 DORA survey](https://blog.google/innovation-and-ai/technology/developers-tools/dora-report-2025/) helps show the gap. It covered nearly 5,000 technology professionals and reported that 90% of surveyed software development professionals used AI at work, while about 24% expressed high trust in its output. [Stack Overflow’s 2026 pulse survey](https://stackoverflow.blog/2026/05/27/agents-on-a-leash-agentic-ai-remains-mostly-monitored-at-work/), with about 1,100 developers and working professionals, found agent use at 59%, compared with 31% in the previous year’s Developer Survey. That comparison does not track the same people over time. The pulse survey also found 63% rarely or never let agents run entirely on autopilot. My reading is that use is expanding while verification and human supervision remain part of adoption. Using AI is not equivalent to delegating the whole workflow.
 
-The table below isn't a scoreboard of who wins. Here's what each ecosystem is pushing on, and the signal I think actually matters:
+The table groups several product directions and the engineering implications I draw from them. The right column is interpretation; capabilities still need validation in the environment where they will be used:
 
-| Ecosystem | Current focus | The signal that actually matters |
+| Ecosystem | Direction being explored | Engineering implication I would examine |
 |---|---|---|
-| **OpenAI Codex** | Harness engineering, long autonomous runs, agents reviewing agents, Symphony orchestration | **The repo and environment themselves become part of the agent runtime** |
-| **Anthropic Claude Code** | Long-running harnesses, planner / generator / evaluator, multi-agent, sandboxing, Managed Agents | **The model decouples from the execution environment** |
-| **GitHub Copilot** | Cloud agent, custom agents, sub-agents, MCP, agent definitions living in the repo | GitHub is turning into an **agent control plane** |
-| **Google** | Jules → Antigravity, multi-agent backend, agent-first IDE | **The IDE flips from a human's tool into an agent's control surface, with humans stepping back to review and steer** |
-| **Cursor** | Cloud agents, VM isolation, background tasks, automations | Local IDE → **remote engineering workers** |
-| **Devin and peers** | Autonomous software engineer, agent fleets | Approaching an abstraction over engineering headcount |
-| **Open ecosystem** | MCP, AGENTS.md, goose, AAIF | An interoperability layer forming, much like the early CNCF era |
+| **OpenAI Codex** | Harness engineering, agents participating in development and verification | Design the repo and feedback environment together |
+| **Anthropic Claude Code** | Initialization, incremental long-task execution, and session handoffs | Agents need work state they can resume |
+| **GitHub Copilot** | Cloud agents, research and planning, repo-defined custom agents | Repositories increasingly support agent work management |
+| **Google Antigravity** | An agent-centered development environment | Interfaces need to support delegation, inspection, and steering |
+| **Cursor** | Cloud agents, VM environments, and result verification | The remote working environment becomes part of the product |
+| **Devin and peers** | Delegating more complete development tasks | Task decomposition and acceptance responsibilities need attention |
+| **Open ecosystem** | MCP, AGENTS.md, goose, AAIF | A shared basis for collaboration on tool and context interoperability |
 
-A few of these deserve unpacking.
+Several engineering accounts make these directions more concrete.
 
 ### OpenAI: engineering becomes environment design
 
-OpenAI's published [harness engineering experiment](https://openai.com/index/harness-engineering/) is the one to study: three engineers, working through Codex, produced roughly a million lines of code and about 1,500 PRs in five months. But the headline isn't the LOC. It's that their job shifted into **designing environments, constraints, and feedback loops** rather than writing code directly. Symphony went further still, turning a Linear backlog into the control plane for agent orchestration.
+In its [harness engineering account](https://openai.com/index/harness-engineering/), OpenAI reports roughly five months of work resulting in a repository of about a million lines across application code, infrastructure, tooling, and documentation, with about 1,500 opened and merged PRs. The team started with three engineers and had grown to seven by the time of writing. This is one team’s experience, not a general productivity multiplier. What interests me is the extension of engineering work into **designing environments, constraints, and feedback loops** that support continuing agent work.
 
-### Anthropic: separating brain from hands
+### Anthropic: carrying a long task across sessions
 
-Anthropic landed in nearly the same place. In [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents) they decompose long-running application development into planner / generator / evaluator, and in Managed Agents they split **brain, hands, and session**: model plus harness is the brain; container, device, and MCP tools are the hands.
+In [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents), Anthropic describes two roles: an initializer agent prepares the environment, and a coding agent makes incremental progress while leaving records that later sessions can understand. The case draws attention to preserving progress, identifying unfinished work, and verifying the previous change. A long task needs more support than a well-written prompt.
 
-Anthropic also offers a warning worth taking seriously: a harness encodes assumptions about what the model can do — and those assumptions go stale fast as models improve. **That is the core reason I don't advise enterprises to build a complete agent runtime from scratch.**
+Those designs need reassessment as model capabilities and task forms change. I would therefore adopt an existing runtime first, then identify the capabilities specific to the organization that it lacks. A proposal to build one should establish the unmet need and the cost of maintaining it.
 
 ### GitHub: the repository becomes the agent's work management system
 
-GitHub's trajectory looks a lot like the platformization of CI/CD a decade ago. [Copilot cloud agent](https://github.blog/changelog/2026-04-01-research-plan-and-code-with-copilot-cloud-agent/) already works inside its own development environment: researching the codebase, producing a plan, writing the code. [Custom agents](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/create-custom-agents) let you define tools, MCP servers, and prompts inside the repo, then have a parent agent invoke them as sub-agents. This isn't "Copilot" anymore — it's turning the GitHub repository into an agent work management system.
+[Copilot cloud agent](https://github.blog/changelog/2026-04-01-research-plan-and-code-with-copilot-cloud-agent/) extends work into codebase research, implementation planning, and changes on a branch. [Custom agents](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/create-custom-agents) provide a way to define roles and tools. I read this as a repository increasingly becoming a place to organize agent work and review results, alongside storing code.
 
 ### Cursor: the CI runner story, repeating
 
-Cursor is solving the same problem from another angle. Every [cloud agent](https://cursor.com/blog/cloud-agent-lessons) gets a dedicated VM, repo, dependencies, secrets, and network policy, and when it finishes it hands back screenshots, video, and logs — so humans verify the *result* instead of watching every step. They've even started [caching ready-to-use development environments](https://cursor.com/blog/cloud-agent-environment), because startup time for agent infrastructure has become the bottleneck. Which is precisely the arc CI runners took: cold runs → containerized CI → warm pools.
+Cursor’s [cloud agent account](https://cursor.com/blog/cloud-agent-lessons) treats dedicated VMs, dependencies, and network access as part of the product. Its [development environment article](https://cursor.com/blog/cloud-agent-environment) explains why skills alone did not resolve convoluted build commands: the team also simplified operating interfaces, maintained environment health, and enabled agents to execute and verify changes. This reminds me of the evolution of CI runners. Whether work starts reliably and failures can be diagnosed determines whether a tool fits everyday development.
 
 ### The biggest signal: standards are converging
 
-In December 2025 the Linux Foundation formed the [Agentic AI Foundation (AAIF)](https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation), bringing **MCP, AGENTS.md, and goose** under one roof; as of August 2026 it counts 247 member organizations. The industry is standardizing the interfaces between model, tools, and repository context, instead of every agent vendor shipping its own closed integrations. This looks very much like the moment the CNCF ecosystem started to converge.
+In December 2025, the Linux Foundation [announced the Agentic AI Foundation (AAIF)](https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation), with **MCP, AGENTS.md, and goose** as initial contributions. These projects address tool connections, repo guidance, and agent implementation. To me, the significant development is a shared basis for work on interoperability. Compatibility and governance still require practical effort.
 
 ---
 
@@ -84,7 +84,7 @@ In December 2025 the Linux Foundation formed the [Agentic AI Foundation (AAIF)](
 
 First, what this comparison is for. I'm not claiming Agentic Engineering will repeat DevOps step by step. I want to borrow what DevOps and Cloud Native went through, so we can tell which parts of today are only new names and which are old problems handed to a new kind of worker.
 
-Seen that way, the two eras map onto each other almost item for item:
+This comparison reveals similar engineering responsibilities. The table is an analogy; paired tools do not necessarily perform the same functions:
 
 | DevOps / Cloud Native | Agentic Engineering |
 |---|---|
@@ -100,40 +100,66 @@ Seen that way, the two eras map onto each other almost item for item:
 | IDP / Backstage | Agentic Engineering Platform |
 | "You build it, you run it" | **"You specify it, agents build it, you own it"** |
 
-The row worth staring at is the last one. Everything above it lines up component against component and practice against practice. What the last row changes isn't a component at all, it's the responsibility model. The act of delivering gets handed to agents, while the responsibility stays with the same people.
+The last row makes the responsibility clear: even when an agent performs implementation, the organization still owns requirements, acceptance, and consequences after delivery. Components can change without transferring that responsibility.
 
-Lay the two timelines on top of each other:
+The diagram places the two periods side by side as a reference. DevOps dates are simplified historical markers; 2027 and 2029 in the Agentic section are my projections, not an established industry schedule:
 
 ```mermaid
-timeline
-    title DevOps and Agentic Engineering, side by side
-    section DevOps era
-        2009 : DevOps movement takes hold
-        2013 : Docker
-        2014 : Kubernetes
-        2016 : SRE goes mainstream
-        2020 : Platform Engineering
-    section Agentic era
-        2024 : Copilot-style assistance
-        2025 : Coding agents mature
-        2026 : Harness and MCP standardization (now)
-        2027 : Agent platformization
-        2029 : Agent-native engineering
+---
+config:
+  theme: base
+  themeVariables:
+    fontSize: 16px
+    primaryColor: "#f8f9fa"
+    primaryTextColor: "#1f2933"
+    primaryBorderColor: "#6b7280"
+    lineColor: "#6b7280"
+    secondaryColor: "#f8f9fa"
+    tertiaryColor: "#ffffff"
+    clusterBkg: "#ffffff"
+    clusterBorder: "#9ca3af"
+    edgeLabelBackground: "#ffffff"
+  flowchart:
+    nodeSpacing: 36
+    rankSpacing: 44
+    padding: 12
+    htmlLabels: true
+    subGraphTitleMargin:
+      top: 8
+      bottom: 12
+    curve: basis
+---
+flowchart LR
+    classDef own fill:#d4edda,stroke:#2e7d32,color:#1f2933
+    classDef buy fill:#fff3cd,stroke:#b8860b,color:#1f2933
+    classDef bad fill:#ffe0e0,stroke:#c0392b,color:#1f2933
+    classDef human fill:#e3f2fd,stroke:#1565c0,color:#1f2933
+    subgraph past["DevOps: simplified milestones"]
+      direction TB
+      D1["2009<br/>DevOps movement"] --> D2["2013<br/>Docker"] --> D3["2014<br/>Kubernetes"] --> D4["2016<br/>SRE adoption"] --> D5["2020<br/>Platform engineering"]
+    end
+    subgraph present["Agentic: observations and projections"]
+      direction TB
+      A1["2024<br/>Assisted development"] --> A2["2025<br/>Coding agents"] --> A3["2026<br/>Harness and interfaces"] --> A4["2027: projection<br/>Agent platforms"] --> A5["2029: projection<br/>Agent-native engineering"]
+    end
+    past -.-> present
+    class A3 own
+    class A4,A5 buy
 ```
 
-My read is that **2026 is the Kubernetes moment**. Everyone already accepts that agents are here to stay. What's still being fought over is how they execute, how they get context, how they reach tools, how they collaborate, how they're constrained, and how they're observed.
+I see 2026 as a period when basic components are becoming available while integration practices are still evolving, with some resemblance to the period around Kubernetes’ arrival. The work worth examining is concrete: how agents execute, obtain context, use tools, encounter restrictions, and leave records that support investigation.
 
 And the biggest organizational lesson DevOps left behind:
 
 > **Don't turn a culture-and-capability problem into another functional silo.**
 
-Plenty of companies stood up standalone DevOps teams early on, only to convert "Dev → Ops ticket" into "Dev → DevOps ticket." It took years to evolve into platform teams, paved roads, and self-service. Agentic Engineering should **skip that wrong turn entirely**.
+If a DevOps team becomes another handoff point, the queue that once waited for Ops can persist under a different name. Platform teams and paved roads create value by making repeated capabilities available for self-service. When planning Agentic Engineering, I would first check whether the proposal creates another place for requests to wait.
 
 ---
 
 ## 4. Don't build this team
 
-Start with the wrong answer that gets reached for most often. The organization's first move is usually to stand up a central agent team and let every other team throw its requests over the wall:
+Suppose an organization establishes a central agent team to receive development requests from product teams. The work can take this form:
 
 ```mermaid
 flowchart TB
@@ -148,22 +174,22 @@ flowchart TB
     style AGT fill:#ffe0e0,stroke:#c0392b
 ```
 
-It's not that the central team lacks the smarts. The position itself doesn't hold. This design fails for two reasons:
+Two limitations need attention in this arrangement, even with a highly capable central team:
 
-1. It swaps a queue waiting on Ops for a queue waiting on the agent team. Same bottleneck, new name.
-2. A central agent team will never understand business context better than the domain team — and context is precisely what determines the quality of what an agent produces.
+1. Product requests enter a shared queue, making the central team a potential delivery bottleneck.
+2. Domain context and acceptance judgments require continuing handoffs. If product teams only submit requests, the central team must repeatedly recover missing background.
 
-Beyond the central agent team, three failure modes show up just as often and get named far less:
+I would also check an adoption plan for three risks:
 
-- **Building your own runtime.** Six to twelve months spent on an in-house Claude Code or Devin. The vendor's next release makes it obsolete. You are betting against the capital expenditure of an entire industry, and the odds of losing are close to certain.
-- **The AGENTS.md graveyard.** A big push requiring every repo to have an AGENTS.md, with nobody owning maintenance and no evals confirming it actually improves agent output. Six months later it's as stale as the company wiki. Context is a living artifact that needs an owner, not a document you write once and archive.
-- **Review becomes the new bottleneck.** Agents produce PRs ten times faster while the review process stays exactly the same. The result isn't faster delivery. It's an exploding review queue, reviewer fatigue, and eventually rubber-stamped approvals. The quality problem hasn't gone anywhere; it has moved downstream into production. This is why agent-reviewing-agent and evals have to be funded in step with generation capacity.
+- **Building a runtime too early.** Months spent recreating a full agent before validating demand can create a continuing obligation to keep up with general-purpose capabilities. Adopt an existing option first, establish the gaps, then choose the build scope.
+- **AGENTS.md without maintenance.** Requiring a file in every repo without owners, updates, or effectiveness checks lets guidance drift as code evolves. Context needs to follow the way work is actually done.
+- **Review becoming the bottleneck.** As PR output grows, insufficient review and verification capacity can turn the gain into waiting and rework. Improve tests, review support, and workload allocation together, and check whether reviewers’ burden actually falls.
 
 ---
 
 ## 5. Build this team instead
 
-The right shape is **platform plus federation**: a central platform team paves roads, domain teams drive themselves onto them, and embedded champions connect the two. By a paved road I mean that security, environments, tooling, and evals are wired up in advance, so the default path is also the safe one; the champions are engineers scattered across the product teams who still build product day to day:
+My proposed starting point is **platform plus federation**. A central platform team maintains shared environments, permissions, tools, and evals. Domain teams work through that default path, while embedded champions support adoption and bring problems back to the platform. The default path still needs continuing validation; platform ownership alone does not make it risk-free.
 
 ```mermaid
 flowchart TB
@@ -180,9 +206,9 @@ flowchart TB
     style PT fill:#d4edda,stroke:#2e7d32
 ```
 
-The part of this model that starts the most arguments is ownership. My rule for splitting it: anything that crosses repos, crosses teams, or touches security and infrastructure consistency belongs to the Agentic Platform Team, and anything that decides product correctness or takes domain judgment stays with the Product Engineering Team.
+Make ownership explicit: the platform team maintains shared infrastructure and controls across repos; product engineering teams own requirements, domain judgments, and acceptance. During an incident, both need to address the parts for which they are responsible.
 
-Ownership splits like this:
+Use the table as a starting point for discussion, then assign owners to the actual workflow:
 
 | Agentic Platform Team owns | Product Engineering Team owns |
 |---|---|
@@ -198,15 +224,15 @@ Ownership splits like this:
 | Golden workflows | Domain workflows |
 | Security guardrails | Production ownership |
 
-The single most important idea in that table:
+The split can be expressed as a working relationship:
 
 > **The platform team builds the harness. The product team builds agent-legible software.**
 
-Those are two entirely different jobs.
+These responsibilities need distinct owners and joint validation.
 
-The harness answers whether an agent can work safely, reliably, and observably. Agent-legible software answers a different question: whether your own system carries tests, documentation, logs, traces, and rules clear enough for the agent to get the work right. The first is paving the road. The second is putting up the signs along it.
+The harness provides a controlled working environment. Agent-legible software gives the product system clear tests, documentation, logs, traces, and rules for understanding and verifying changes. The platform provides the road; product teams add the domain’s signs. Neither can complete the work alone.
 
-On sizing — these are my numbers, not an industry standard:
+The following numbers are my starting suggestions, not industry standards. Actual staffing also depends on repo count, risk, existing platform capability, and support demand. Champion time must be included in work planning:
 
 | Engineering headcount | Recommendation |
 |---:|---|
@@ -215,21 +241,21 @@ On sizing — these are my numbers, not an industry standard:
 | 100–500 | **A permanent 4–8 person Agentic Platform Team** |
 | > 500 | Agent platform, evals, and security as specialties (8–12 people and up) |
 
-Even past 500 engineers, I would not put a central team in charge of "making agents for everyone else." For the actual org charts at each tier, the skill mix, and the signals that tell you it's time to move up a tier, see [the org design piece](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987).
+Even above 500 engineers, I would keep the focus on shared capabilities and self-service. Staffing examples, skill mix, and signals for increasing capacity are developed in [“Who Does This? Platform Plus Federation in Practice,” the org design piece](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987).
 
-One question that gets skipped: **how you pick champions, and how people transition.** A good agent champion is not "the person best at prompting." It's whoever was already good at developer experience — the engineer who writes tests, keeps documentation honest, and has taste in CI/CD and tooling. Harness engineering is DX engineering with the audience swapped from humans to agents.
+**Choosing champions and developing people** also belong in the plan. Engineers with strength in testing, documentation, CI/CD, and developer experience can often identify where colleagues get stuck and turn a solution into a reusable workflow. Alongside technical skill, they need time and organizational support to help others.
 
-As for junior engineers, my view runs against the fashionable pessimism. The scarcest skills of the agent era are decomposing problems, defining acceptance criteria, and judging output quality, and all three are built precisely by reviewing large volumes of agent output. So organizations should deliberately design "review the agent's PRs" into the junior training path, rather than reserving it for seniors and then wondering, three years later, why nobody is ready to step up.
+I want junior engineers to participate in that process too. Problem decomposition, acceptance criteria, and judgment require practice. Reviewing bounded agent PRs with senior guidance can be one learning path, alongside implementation, debugging, and writing tests. Assign approval responsibility according to capability and risk rather than placing a newcomer at the final gate.
 
 ---
 
 ## 6. A harness is not a prompt
 
-Follow the org design far enough and it lands on a technical question: what is the platform team actually supposed to build? If the answer turns out to be a handful of prompt templates, the division of labor above has nothing to stand on.
+Once responsibilities are clear, the next question is what the platform team provides. Self-service needs an environment that supports real tasks if it is to move from an organization chart into everyday work.
 
-The harness here is not a few more paragraphs of prompt, and it isn't rebuilding an agent of your own from scratch. More precisely, it's the layer where a company wires together context, tools, environment, feedback, guardrails, and evals, so an agent can actually finish work inside your engineering system instead of only producing code.
+The harness integrates context, tools, environment, feedback, guardrails, and evals. It supports information retrieval, execution, result checking, and work within an authorized scope.
 
-Here's how I define the harness a company builds for itself:
+I would use these six aspects to examine the team’s environment:
 
 ```mermaid
 mindmap
@@ -266,26 +292,26 @@ mindmap
       Autonomy
 ```
 
-**The prompt may well be the least important piece in there.** Which is why the industry conversation has moved from prompt engineering to harness engineering.
+Prompts still matter, alongside available tools, explicit permissions, and reliable verification. Harness engineering lets the team examine those conditions together rather than attributing every problem to prompt wording.
 
-### AGENTS.md: what good and bad look like
+### AGENTS.md: extending an overview into operating guidance
 
-The "context" branch deserves something concrete. A good AGENTS.md is not a project overview. It's an operating manual written for an agent. Its purpose isn't to introduce, it's to prevent:
+For context, AGENTS.md can extend project background into operating guidance. This hypothetical order service illustrates the difference; commands and paths still need to match the actual project:
 
 ```text
-# Wrong: describing the current state
-This is an order management service written in Go and PostgreSQL, following clean architecture.
+# Project background
+This is an order management service using Go and PostgreSQL with clean architecture.
 
-# Right: preventing mistakes
-- Run only affected tests: `make test FILTER=<path>` — the full suite is slow, don't default to it
-- `legacy/` is read-only: call into it, never modify it. To change it, open an issue for @platform-team
+# Add operating instructions and limits
+- During development, run affected tests: `make test FILTER=<path>`; run `make test` before submission
+- Do not modify `legacy/` by default; open an issue for @platform-team review when a change is needed
 ```
 
-Every sentence in the first block is true, and an agent that reads it can do exactly nothing more than before. Every line in the second block corresponds to a mistake somebody actually made.
+Background helps explain the system; operating guidance explains what to do next and whom to contact about a restriction. The text does not prevent writes by itself. Enforced boundaries still need tool permissions and CI checks.
 
-There's only one test for quality: **can a new agent — or a new engineer — take this and ship a correct first PR on day one without asking anyone?**
+I would assess whether an agent or new engineer can find the necessary commands, complete verification, and identify someone to ask when stuck. Representative task evals then provide evidence of how the guidance affects actual behavior.
 
-Put the harness into the wider system, and you get the layer a company should genuinely own:
+Placing these capabilities in the wider system shows what the platform needs to integrate:
 
 ```mermaid
 flowchart TB
@@ -314,188 +340,233 @@ flowchart TB
     style PLATFORM fill:#d4edda,stroke:#2e7d32
 ```
 
-Note carefully: **owning that middle layer is not the same as writing your own Claude Code.**
+The middle layer can combine purchased components, custom work, and existing services. The organization needs to understand how they work together and who maintains and changes them.
 
 ### Guardrails are not optional
 
-The policy, identity, and guardrails boxes deserve their own callout, because they are exactly what you'll be asked about the moment you take this architecture to a CISO:
+Policy, identity, and guardrails should be designed with security early. I would begin with three checks:
 
-- **Identity and least privilege.** Every agent run should have its own identity and scoped credentials. That is, it gets the repos, secrets, and APIs this task needs and nothing more, not a shared human token. When something goes wrong, "which agent, which run, acting with what permissions" has to be answerable in five minutes.
-- **Prompt injection is a real attack surface.** Agents read issues, PR comments, external web pages, and logs — all untrusted input. Tiered tool permissions and sandbox egress policy are table stakes, not extra credit.
-- **Audit trail.** Every tool call by every agent must be traceable. Starting to build this when compliance asks "who decided this code should work this way" is starting far too late.
+- **Identity and least privilege.** Give each run a traceable identity and restricted credentials for the resources its task needs. Finding the run, permissions, and actions within five minutes can be an initial drill target, with requirements adjusted to risk.
+- **Untrusted inputs.** Issues, PR comments, external pages, and logs may carry malicious instructions. Tool authorization, sandbox isolation, and egress policy should jointly restrict actions, with attack scenarios used to verify the controls.
+- **Audit trail.** Retain tool calls, policy decisions, results, and necessary human approvals, while redacting sensitive content. Records should connect to the same run and support investigation and improvement.
 
 ---
 
 ## 7. The real moat: agent legibility
 
-In OpenAI's harness engineering piece, the most important thing isn't Codex. It's one sentence:
+Reading OpenAI’s harness engineering account, I was particularly interested in the investment in agent legibility. I would summarize that direction this way:
 
 > **Make the system legible to agents.**
 
-Legible here does not mean writing more documentation for the agent to read. It means that the clues a human digs through while debugging or reviewing have to be clues the agent can dig through on its own.
+Legibility means giving agents access to the clues engineers need for debugging and review, with guidance on how to use them. Documentation is one part, alongside queryable execution state and repeatable verification.
 
-Turn logs, metrics, traces, browser state, DOM, screenshots, tests, architecture, dependency rules, CI, and PR feedback into things an agent can query, operate, and verify directly. Once you have, the delivery pipeline looks like this:
+Making logs, metrics, traces, browser state, tests, architectural rules, and PR feedback available under appropriate permissions supports the loop below. Passing CI must still be followed by the team’s required review and approvals before merge:
 
 ```mermaid
-flowchart TB
-    BR["Bug report"] --> AL
-    AL["<b>The agent's automated loop</b>
-    reproduce → inspect logs / traces → modify code
-    → run tests → run the app → verify UI"]
-    AL -->|tests pass| AR["Agent review"]
-    AR --> CI["PR → CI"]
-    CI -->|red, back to the loop| AL
-    CI -->|green| MG["Merge"]
-    HUMAN["<b>What stays human</b>
-    Intent · Architecture · Constraints · Taste · Risk · Prioritization · Acceptance"]
-    HUMAN -.->|governs| BR
-    HUMAN -.->|governs| MG
-    style HUMAN fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
-    style AL fill:#f4f7f5,stroke:#2e5e46,stroke-width:2px
+---
+config:
+  theme: base
+  themeVariables:
+    fontSize: 16px
+    primaryColor: "#f8f9fa"
+    primaryTextColor: "#1f2933"
+    primaryBorderColor: "#6b7280"
+    lineColor: "#6b7280"
+    secondaryColor: "#f8f9fa"
+    tertiaryColor: "#ffffff"
+    clusterBkg: "#ffffff"
+    clusterBorder: "#9ca3af"
+    edgeLabelBackground: "#ffffff"
+  flowchart:
+    nodeSpacing: 36
+    rankSpacing: 44
+    padding: 12
+    htmlLabels: true
+    subGraphTitleMargin:
+      top: 8
+      bottom: 12
+    curve: basis
+---
+flowchart LR
+    classDef own fill:#d4edda,stroke:#2e7d32,color:#1f2933
+    classDef buy fill:#fff3cd,stroke:#b8860b,color:#1f2933
+    classDef bad fill:#ffe0e0,stroke:#c0392b,color:#1f2933
+    classDef human fill:#e3f2fd,stroke:#1565c0,color:#1f2933
+    subgraph work["Agent work and verification"]
+      direction TB
+      A["Bug report<br/>Reproduce the problem"] --> B["Inspect logs and traces<br/>Modify code"] --> C["Run tests and app<br/>Verify the UI"]
+      C -.->|Revise| A
+    end
+    subgraph accept["Review and acceptance"]
+      direction TB
+      D["Agent review<br/>CI checks"] --> E["Human review<br/>Required approvals"] --> F["Merge"]
+    end
+    work -->|Evidence| accept
+    accept -.->|Rework| work
+    class A,B,C own
+    class E human
 ```
 
-What's left for humans is intent, architecture, constraints, taste, risk, prioritization, and acceptance.
+People remain responsible for intent, architecture, constraints, risk, priorities, acceptance, and exceptions the workflow does not cover. The level of item-by-item review should follow task risk and the evidence available.
 
-The center of gravity for people moves upstream. You stop spending most of your time on each line of the implementation, and take responsibility instead for setting the direction, the constraints, and the bar for what counts as done. **That, to me, is the actual definition of Agentic Engineering.**
+To me, Agentic Engineering extends engineering work into continually improving delegation, feedback, and acceptance. It redistributes work without removing responsibility for engineering judgment.
 
 ### What about brownfield?
 
-That diagram assumes a system that already has tests, structured logs, and documented architecture. The reality at most companies is a fifteen-year-old legacy monolith with none of the three — which is exactly why legibility investment needs an order. Mine:
+The workflow needs usable tests and observability. Teams maintaining older systems may need to strengthen those foundations first. I would choose one bounded workflow and prioritize the following improvements, allowing them to overlap where necessary:
 
-1. **Characterization tests first.** Give the agent feedback it can use to verify its own changes. Everything else depends on this.
-2. **Then structured logs and traces.** Let the agent debug itself instead of pasting a stack trace back to a human every time.
-3. **Architecture rules and documentation last.** This layer has the highest value, but without the first two, an agent can understand the rules and still get the work wrong.
+1. **Establish characterization tests.** Record current behavior to expose later differences, then ask someone who understands the product which behavior should remain. A baseline may contain bugs; it is not automatically a correct answer.
+2. **Improve logs and traces.** Supply fields, versions, and input clues needed for investigation. Sometimes observability must improve before a reproduction test can be written.
+3. **Implement architectural checks and guidance.** Put confirmed boundaries into CI and explain how to verify them. Necessary permissions and operating instructions can begin before the other work is complete.
 
-The counterintuitive part: this ordering is identical to what you'd invest in to get new engineers productive quickly. Agent legibility and human legibility are the same thing. Which is why, even if the agent bet doesn't pan out, almost none of this spend is wasted.
+These investments also help new engineers understand the system and reduce repeated requests for background from colleagues. Even if the pilot does not expand, usable tests, clear errors, and maintainable documentation remain useful in everyday work.
 
 ---
 
 ## 8. What to buy and what to build
 
-This may be the most consequential judgment in the whole piece. The diagram below splits into two boxes. The top one holds everything the market will keep upgrading on your behalf; the bottom one holds everything that only you will build, because only you need it:
+The sourcing decision should follow what the organization needs to understand and control. The Buy / Adopt group lists general-purpose capabilities worth evaluating first. Build / Own lists work the organization must integrate and maintain, which can also use existing components:
 
 ```mermaid
-flowchart TB
-    BUY["<b>Buy / adopt</b>
-    • Codex / Claude Code / Copilot / Antigravity
-    • Base agent loop
-    • Generic planning / memory
-    • Generic code search
-    • Generic sandbox technology"]
-    BUILD["<b>Build / own</b>
-    • Company context
-    • MCP gateway
-    • Identity / permissions
-    • Repo conventions / architecture constraints
-    • Internal tools
-    • Eval dataset
-    • Observability / cost controls
-    • Workflow integration"]
-    BUY -->|compose| BUILD
-    style BUY fill:#fff3cd,stroke:#b8860b,stroke-width:2px
-    style BUILD fill:#d4edda,stroke:#2e7d32,stroke-width:2px
+---
+config:
+  theme: base
+  themeVariables:
+    fontSize: 16px
+    primaryColor: "#f8f9fa"
+    primaryTextColor: "#1f2933"
+    primaryBorderColor: "#6b7280"
+    lineColor: "#6b7280"
+    secondaryColor: "#f8f9fa"
+    tertiaryColor: "#ffffff"
+    clusterBkg: "#ffffff"
+    clusterBorder: "#9ca3af"
+    edgeLabelBackground: "#ffffff"
+  flowchart:
+    nodeSpacing: 36
+    rankSpacing: 44
+    padding: 12
+    htmlLabels: true
+    subGraphTitleMargin:
+      top: 8
+      bottom: 12
+    curve: basis
+---
+flowchart LR
+    classDef own fill:#d4edda,stroke:#2e7d32,color:#1f2933
+    classDef buy fill:#fff3cd,stroke:#b8860b,color:#1f2933
+    classDef bad fill:#ffe0e0,stroke:#c0392b,color:#1f2933
+    classDef human fill:#e3f2fd,stroke:#1565c0,color:#1f2933
+    subgraph adopt["Buy / adopt"]
+      direction TB
+      B1["Runtime and agent loop<br/>Codex / Claude / Copilot"] --> B2["Generic planning<br/>Memory and code search"] --> B3["Sandbox technology"]
+    end
+    subgraph own["Build / own: integrate and maintain"]
+      direction TB
+      O1["Company context<br/>Repo and architecture rules"] --> O2["Gateway and internal tools<br/>Identity and permissions"] --> O3["Environment and feedback<br/>Workflow integration"] --> O4["Evals and observability<br/>Cost controls"]
+    end
+    adopt -->|Compose| own
+    class B1,B2,B3 buy
+    class O1,O2,O3,O4 own
 ```
 
-Compressed into one line:
+I use this line to keep responsibility focused on the parts that require understanding the organization’s workload:
 
 > **Buy the intelligence. Build the environment. Own the feedback loop.**
 
-The reasoning goes back to Anthropic's warning: a harness encodes assumptions about model capability, and every six months a new model invalidates some of them. Generic capability — the agent loop, planning, sandbox technology — is the layer where vendors compete furiously and upgrade you for free. Your context, your conventions, your eval dataset, your feedback loop: those are the assets no model release can erase.
+General-purpose runtimes, planning, and sandbox tools will keep evolving, so assess existing options before building. The organization needs to accumulate its own context, conventions, eval dataset, and feedback practices. These assets can also become stale. Maintaining them preserves a basis for judgment when changing models or tools.
 
 ---
 
-## 9. Evals: the only asset that compounds
+## 9. Evals: making engineering experience reusable and testable
 
-I've claimed the eval dataset is the moat a model release can't erase. Most teams stall on the first step: where do evals come from? The answer: **they're already sitting in your engineering history.**
+An eval dataset is worth maintaining because it turns problems the team has encountered into cases that can support the next assessment. Engineering history often provides the starting material, with preparation and verification still required:
 
-- **Harvest from incidents.** Every post-mortem is a ready-made eval case — give the agent the context and symptoms from that day and see whether it finds the root cause.
-- **Harvest from PR history.** An agent PR a reviewer sent back, together with the review comment, is the most authentic negative example you will ever get. The ones that sailed through are your golden paths.
-- **Golden tasks.** Pick 10–20 representative completed tasks — a few bug fixes, a few small features, a few refactors — and freeze their context and acceptance criteria. Re-run them every time the model or the harness changes.
+- **Prepare incident cases.** Reconstruct symptoms, versions, and necessary inputs, and confirm reproducibility. Keep root causes and repair answers on the scoring side, outside the evaluated agent’s context.
+- **Find judgment gaps in PR history.** Review comments provide clues that need checking. Merged PRs also need verified outcomes before serving as reference answers.
+- **Establish golden tasks.** Begin with 10–20 representative completed tasks, fixing context and acceptance criteria. Re-run this small initial set when a model or harness changes, and gradually add task types.
 
-The maintenance cost is lower than people expect. Evals don't have to be fully automated from day one; a monthly round of human scoring is enough to answer the two most expensive questions you face — "a new model shipped, should we switch?" and "did that harness change make things better or worse?" Organizations without evals can only answer those on instinct, and instinct doesn't survive contact with vendor marketing and a good demo.
+The first version need not be fully automated. Tests and a human scoring rubric can establish a baseline, with continuing sampling afterward. That requires allocated maintenance time and execution records for unstable cases. It supplies evidence for model changes and harness improvements; a small sample cannot guarantee reliability across all work.
 
-That's what compounding means here: every model upgrade and every vendor price war increases the value of your eval dataset, because you're the only one who can validate a new option against your own workload in a day. Everyone else is reading benchmarks and guessing.
+As the team adds requirements and failure cases, experience supports the next selection or improvement. That is the accumulated value I mean: each comparison can reuse an established basis while correcting parts that no longer apply.
 
 ---
 
 ## 10. If I were the engineering VP
 
-I would **not** approve this:
+When reviewing an investment proposal, I would ask this one to establish its needs and maintenance rationale first:
 
 > "Stand up a 10-person AI agent team and build our own Devin."
 
-I **would** approve this:
+For an organization with several product teams and existing platform infrastructure, I would be more willing to support this starting point:
 
-> "Stand up a 4–6 person Agentic Engineering Platform team, and within six months let every engineering team use Codex, Claude, or Copilot safely and self-service."
+> “Assign a 4–6 person Agentic Engineering Platform Team to enable a few pilot teams to use existing agents under clear permissions and acceptance criteria. Within six months, decide the next rollout scope based on results and support capacity.”
 
-The North Star for year one shouldn't be AI-generated LOC, and it shouldn't be PR count. It should look closer to this:
+AI-generated LOC and PR counts are insufficient measures of first-year engineering value. I would examine four dimensions together:
 
 ```text
-% tasks successfully delegated
-        ×
-end-to-end completion rate
-        ×
-human attention saved
-        ×
-production correctness
+Delegation: share of eligible tasks assigned to agents
+Completion: accepted tasks / delegated tasks
+Attention: human effort needed per comparable task
+Quality: defects discovered after delivery
 ```
 
-A North Star can only tell you whether the direction is right, which isn't enough to run the operation day to day. What a weekly or monthly review needs is something plainer: numbers that show whether speed, human attention, output quality, and cost are all improving together.
+These dimensions form a decision framework, not a formula to multiply. Delegation and completion have different denominators; effort and quality have their own units. Compare each dimension across similar work to see whether a gain carries a cost elsewhere.
 
-Paired with a set of operating metrics:
+A weekly or monthly review can begin with the following indicators, after agreeing on definitions and observation periods:
 
-| Metric | What it tells you |
+| Metric | What to examine |
 |---|---|
-| Time to merge | Whether the delivery cycle actually shortened |
-| Human review minutes per PR | Whether human attention was actually saved |
-| Agent retry rate | The quality of your harness and context |
-| Eval pass rate | Reliability of the output |
-| Production escape rate | The last line of defense on correctness |
-| Cost per successful task | Unit economics |
-| Autonomous completion rate | Real progress on autonomy |
+| Time to merge | Delivery duration under a consistent start and end definition |
+| Human review minutes per PR | Changes in review effort, alongside rework time |
+| Agent retry rate | Share of delegated tasks needing additional attempts, followed by cause analysis |
+| Eval pass rate | Performance on this dataset under its scoring criteria |
+| Production escape rate | Share of a delivered cohort with defects discovered after delivery |
+| Cost per successful task | Direct cost per accepted task, including failures and retries |
+| Autonomous completion rate | Share of delegated tasks accepted without human mid-task correction |
 
-**Cost per successful task** deserves unpacking, because agent unit economics behave nothing like headcount. A single successful autonomous run can cost anywhere from tens of cents to tens of dollars, and the driver is retry count and context size — not how hard the task was. Two practical rules:
+**Cost per successful task** must include failures, retries, and abandoned work from the same observation period, divided by accepted tasks. Overall economics also needs human review, rework, and platform maintenance. Escape-rate comparisons need a fixed defect definition and post-delivery observation window, so undiscovered problems are not mistaken for better quality.
 
-- **Model routing.** Use the strongest model for planning and review; use cheap models for bulk generation and eval runs. That routing logic belongs in the platform, so teams don't each invent their own.
-- **Treat agent retry rate as a leading indicator.** Money burned on retries is almost entirely a tax on context and feedback loops you haven't fixed. If retry rate won't come down, fix the harness before blaming the model.
+- **Validate routing for the task.** The platform maintains shared routes, domain teams supply risk and acceptance criteria, and evals compare the choices. Tests and lint can execute directly without an LLM at every step. High-risk judgments still need appropriate human responsibility.
+- **Use retry rate to guide investigation.** Determine whether retries reflect missing context, unclear feedback, tool failure, or a mismatch between model and task. Diagnose before choosing a layer to improve; not every retry is a harness defect.
 
-This is how you avoid re-running the vanity metrics of early DevOps — "we deploy a lot, therefore our DevOps is good."
+These numbers should identify the next problem to improve. Growing PR or run counts alone can obscure whether delivery is more reliable and whether people’s burden has actually decreased.
 
-One prediction while we're here: by 2028–2030, the name "Agentic Engineering team" will likely fade out, the way mature engineering organizations today don't have a "Git team" or a "CI team." Agentic capability gets absorbed into developer platform, SRE, security, and engineering productivity.
+One projection: by 2028–2030, some organizations may stop using “Agentic Engineering Team” as a separate name and integrate the capability into developer platform, SRE, security, and engineering productivity. Whatever the name becomes, maintenance, acceptance, and support still need owners.
 
 ---
 
 ## 11. The first 90 days
 
-If you decide to do this, here's how I'd sequence the first 90 days:
+I would treat the first 90 days as a bounded period of learning and verification. The schedule below is a suggestion; unmet exit conditions call for scope changes or longer observation:
 
-| Phase | Goal | Exit criteria |
+| Phase | Work to do | Check before progressing |
 |---|---|---|
-| **Month 1** | Pick 2 pilot teams and their champions; measure the baseline (time to merge, review minutes per PR); finish runtime selection with sandbox and permissions ready | Someone on each pilot team is genuinely using agents every day |
-| **Month 2** | Ship the first golden workflow (start with the bug-fix flow); land the AGENTS.md template in pilot repos; build the first 10–20 eval cases | Completed agent work can be checked against evals rather than gut feel |
-| **Month 3** | Review pilot results against the baseline; make the keep/expand call; open self-service to the next wave of teams | A go/no-go backed by measurement instead of vibes |
+| **Month 1** | Select two pilot teams and champions; measure delivery and human-effort baselines; prepare runtime, sandbox, and permissions | Owners and support time are assigned; representative tasks can start in a controlled environment |
+| **Month 2** | Establish a first golden workflow, such as a bounded bug fix; maintain repo guidance; prepare 10–20 eval cases | Acceptance has evidence; failures and retries are traceable; human handoff conditions are clear |
+| **Month 3** | Compare similar tasks on baseline, quality, human burden, and cost; review continuation or expansion | A documented go/no-go; open the next team group only after review |
 
-Three warnings:
+During execution, I would watch three things:
 
-1. **Pick pilots that are painful but not fatal**: internal tools, test coverage, bug backlog. Not the mission-critical path.
-2. **Start without a baseline and you will be unable to prove anything three months later.** This is the most common and most expensive mistake.
-3. **The platform team's first customer is the pilot team, not the whole company.** Chasing coverage too early is the most common way a platform team dies.
+1. **Choose valuable work with a containable impact.** Internal tools, test improvements, and bug backlogs may fit, but inspect the data and external systems they touch.
+2. **Establish a comparable baseline before starting.** Record task types, start and end points, review, and rework. Changes in work or personnel can affect before-and-after comparisons; a single number cannot establish causation.
+3. **Address the pilot team’s actual needs first.** Resolve stalled steps, support delays, and acceptance difficulties before pursuing wider coverage.
 
 ---
 
 ## 12. Closing
 
-Having walked through all of that, I'll reduce the whole argument to one thing. It is genuinely the right moment to invest in Agentic Engineering. But the thing to invest in isn't "our own agent." It's this:
+Returning to the three opening questions, my judgment is that an organization can begin with a bounded pilot without building a complete agent first. The capability worth accumulating is this:
 
-> **Make any agent work well inside your engineering system.**
+> **Enable suitable agents to participate in engineering work under clear environments, constraints, and acceptance criteria.**
 
-That will outlast whichever of Codex, Claude Code, Copilot, or Devin happens to win.
+Product, platform, and security teams need to maintain this capability together. It helps engineers find support when problems arise and preserves judgment when the organization changes tools. I would begin with one verifiable cycle of work, then use what the team learns to decide what comes next.
 
 ---
 
 ### The series
 
-This is the overview of a four-part series on Agentic Engineering. Each deep dive takes one dimension — organization, technology, operations — down to the level where you can start work:
+This is the overview of the Agentic Engineering series. The three deep dives develop organizational responsibilities, technical design, and operational decisions so teams can plan implementation around their own conditions:
 
 1. **Overview (this piece)**: market state, the DevOps parallel, the decision framework, and the 90-day blueprint
 2. [1. Org Design: who does this? Platform plus federation in practice](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987) — headcount, the champion system, merge decisions, budget narrative
@@ -513,6 +584,8 @@ This is the overview of a four-part series on Agentic Engineering. Each deep div
 5. Linux Foundation — [Announcing the Agentic AI Foundation (AAIF)](https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation)
 6. Google — [2025 DORA report: How are developers using AI?](https://blog.google/innovation-and-ai/technology/developers-tools/dora-report-2025/)
 7. Stack Overflow — [Agents on a leash: Agentic AI remains mostly monitored at work](https://stackoverflow.blog/2026/05/27/agents-on-a-leash-agentic-ai-remains-mostly-monitored-at-work/)
+8. Google — [Antigravity](https://antigravity.google/)
+9. Cognition — [Devin](https://devin.ai/)
 
 ---
 
