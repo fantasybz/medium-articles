@@ -183,7 +183,7 @@ These discussions bring me back to one question: a process can have the right sh
 
 The gate version starts with CI listing surviving mutants, then distinguishes test gaps from equivalent mutants. Equivalent mutants preserve observable behavior, so tests cannot distinguish them from the original. Exclude confirmed equivalents with a recorded reason, have the agent add tests for the remaining gaps, and reserve human attention for cases requiring judgment. That avoids handing every entire report back to a reviewer.
 
-The threshold is my recommended value, not an industry standard: mutation score on the agent's changed lines ≥ 70% before the PR enters review, with a month of reports before the gate begins blocking PRs that fall short. The number is Uncle Bob's practice plus my own rough estimate; I'll add my own data in November.
+The threshold is my recommended value, not an industry standard: mutation score on the agent's changed lines ≥ 70% before the PR enters review, with a month of reports before the gate begins blocking PRs that fall short. The number draws on Uncle Bob’s practice and my initial estimate. It still needs calibration against my own pilot data; it is not a validated universal threshold.
 
 On tooling, the JVM has PIT, JS and TS have Stryker, Python has mutmut. How far each can be confined to the diff varies, so check how your stack does it before you start.
 
@@ -212,11 +212,11 @@ The scope comes first. The red-then-green gate proposed here applies to changes 
 
 That is why this proposal does not apply red-then-green to every feature PR: excluding incomparable situations keeps red meaningful as a behavioral difference. Use Check 3 to help assess new feature tests, then return to the requirement to confirm that they test the right thing.
 
-**The classification must not come from the PR's author.** If the label is set by the agent that opened the PR, this goes bad quickly. An agent driven by the "make the tests pass" reward learns one thing: label every PR a feature and never get checked.
+**Classification must be independent of the PR author.** If the agent opening a PR can assign its own label, it may classify a fix as a feature and bypass red-then-green. The design should close that route without assuming the agent will inevitably take it.
 
-The scope of a gate can't be decided by the party being checked. This is the same thing as the series' "measure the output rather than checking the form of the process".
+Classification is part of verification. Protecting its inputs lets the team trust that “this check does not apply” is a supported decision rather than an exemption the author granted itself.
 
-There are three sources for the classification, taken in order. The first is the type field on the issue or ticket, which a human set. The second is the task type from the harness (the layer between the agent and the engineering system, which last season's Harness Blueprint was about). With neither available, judge from the diff: if the PR modified any existing non-test file, treat it as a behavior change and run the check; only PRs that just add files skip it.
+There are three sources for the classification, taken in order. The first is the type field on the issue or ticket, which a human set. The second is the task type from the harness (the layer between the agent and the engineering system, which “The Harness Blueprint” was about). With neither available, judge from the diff: if the PR modified any existing non-test file, treat it as a behavior change and run the check; only PRs that just add files skip it.
 
 The first two sources must be maintained by people or protected harness configuration, so the agent cannot change its own classification. The third is only a conservative fallback when task metadata is absent: it detects changes to existing files, not whether the requirement is complete. A fix that only adds files can still escape it, so classifications need spot checks.
 
@@ -342,7 +342,7 @@ flowchart TB
 
 The three jobs can run in parallel and feed one report, with classification deciding whether red-then-green runs. This excerpt illustrates the initial reporting phase: PRs are not blocked during the first month. It does not yet enforce the gates described above.
 
-Not blocking for the first month is deliberate. That month is for calibrating the noise, confirming the classification source isn't wrong, and letting people build trust in the format of the report. Once everyone knows which signals really mean risk, promote the most certain of them to blocking.
+Keeping the first month in reporting mode gives the people receiving the results time to understand them. Each warning needs examination: does it identify a test gap, or an incomplete classification or environment setup? Once the owner can explain those differences, reliable checks can become blocking conditions. The team then knows why a PR stopped and what needs fixing.
 
 The instructions in AGENTS.md (the project instruction file an agent reads before it starts work), set against the measurements on CI, form an "instruction vs. measurement" Before / After. Uncle Bob's version is that you can't tell an agent to write clean code; you can only measure whether it did and then tell it to fix it ([2026-07-29](https://x.com/unclebobmartin/status/2082497764223492161)).
 
@@ -400,9 +400,9 @@ jobs:
 
 In the implementation, `red_then_green.py` must retain output and exit codes from both runs, distinguishing expected failure, unexpected failure and failure after the patch. A red classification alone is insufficient. The reporting job must retrieve artifacts from each job and distinguish skipped, failed and completed checks; a missing file is not a pass.
 
-Two things in this design are worth a look. One is that `red-then-green` sits behind an `if` on `classify`'s output, so the scope is decided by a machine and not by the PR's author. The other is `report`'s `if: always()`: the report still has to go out when red-then-green is skipped, or a feature PR will look on the report as though it was never checked at all.
+Two decisions in the configuration matter. Because `red-then-green` reads `classify` through an `if`, classification must use protected inputs rather than merely repeat the author’s label. And `report` uses `if: always()` so skipped or failed checks still leave a report. A reader should be able to distinguish “not applicable,” “incomplete” and “passed” without guessing what a missing result means.
 
-There is a third thing, and it isn't visible in the yaml: the checker itself can miss. This September in Tokyo, at AGNTCon Japan (the agent conference run by the Agentic AI Foundation under the Linux Foundation), two SREs from Quartic.ai described letting an agent upgrade production Kubernetes.
+Even with those states made explicit, YAML cannot tell us whether the verifier covers everything it claims to check. At AGNTCon Japan in Tokyo in September 2026, the agent conference organized by the Agentic AI Foundation under the Linux Foundation, two SREs from Quartic.ai described just such a gap in their work on agent-driven production Kubernetes upgrades.
 
 Kubernetes only moves one minor version at a time, and each version is one hop. They told the room themselves how their first version missed: the verifier checked only the first node after each hop, so the control plane reached 1.31, the worker nodes stayed on 1.30, and the hop was still marked successful.
 
@@ -410,11 +410,11 @@ The fix was to enumerate every node by role and refuse to start the next hop unt
 
 Checking only some nodes yields a result that represents only those nodes. Whether the whole cluster has completed the upgrade remains unverified.
 
-This yaml has the same blind spot in two places. Under `mutation_diff`, most tools work per file; if yours can't be confined to lines, you filter yourself, and a line the filter misses never shows up in the report. `classify`, when it can't find a linked issue, falls back to whether any existing non-test file changed, and that step identifies a change to an existing file; it does not establish that behavior changed. Both checks have limits to what they cover, while the names on their reports can easily suggest that everything was checked.
+Returning to this design, two places deserve the same scrutiny. If `mutation_diff` filters file-level results down to lines, verify that it does not omit mutants that belong in the score. When task information is missing, `classify` infers a behavior change from modifications to existing non-test files; that inference cannot establish requirement completeness. Reports need to state those boundaries so “diff” and “classification” do not promise more than the checks deliver.
 
 Quartic.ai's demo ran on a kind cluster (Kubernetes simulated on a local machine); what that lesson cost in production, the slides don't say.
 
-Calibration therefore needs one more question: which parts did these three checks actually inspect, and what did they miss?
+When calibrating a report, I would check execution success separately from inspection completeness. One asks whether the job finished normally; the other compares the intended scope with what was actually inspected. Quartic.ai’s example makes the distance between those questions concrete.
 
 **The agent-side counterpart.** The three checks inspect output in CI. If an agent believes an existing test is wrong, what can the workflow offer beyond repeated attempts or changing the assertion?
 
@@ -438,21 +438,21 @@ The last two figures make the approach worth trying: in the tested setting, most
 }
 ```
 
-The `reason` and `evidence` fields are the key part. They force the agent to turn "this test is wrong" into a claim a human can overrule, rather than a complaint.
+`reason` explains the suspected problem in the test; `evidence` supplies something reproducible. Together they let the recipient check the claim, request more information or reject the proposed change. Filled fields are not proof: someone still needs to assess their contents.
 
 **Step two: tell the agent in AGENTS.md that the road exists.** AGENTS.md gets one added line: "If you believe a test is wrong, call `report_broken_test`; do not change the assertion." Registration also needs instructions about when to use the tool, what evidence to supply and who handles the report afterward.
 
 This makes the environmental change concrete: restrict unilateral assertion changes while providing a channel for objections. The team then needs to confirm that reports are handled, not merely that the tool was called.
 
-One last small thing, and it costs almost nothing: add a required "golden source" field to the PR template. Where did the new snapshot or golden file come from? There are only three answers to pick from: the spec, actual production output, or "this is what it produces right now".
+One practical addition to the PR template is to ask where a snapshot or golden file’s expected values came from. Were they derived from the spec, taken from production output, or simply recorded from the current implementation? Naming the source tells the reviewer what evidence to examine next.
 
-The third answer isn't forbidden, but it has to be written down where the reviewer can see it. A golden that freezes a bug almost always grows in the space where nobody asked that question.
+Recording current behavior has a purpose, such as establishing characterization tests for legacy code. It must not become the correct answer without scrutiny, and production output may contain defects too. Separating observed behavior from required behavior keeps a convenient golden file from becoming evidence in defense of a bug.
 
 ---
 
 ## 6. Coverage is an assertion that can be edited away
 
-Coverage is the gate most teams already have installed, and it's also the number most easily misread. One set of data is enough to show where the misreading happens.
+Even as these reports become available, a team may still reach first for the familiar coverage percentage. To judge whether it supports the current PR, start by asking what it measures: the entire repo, or the code that actually changed?
 
 One study (Test Coverage of Agentic PRs) measured 4,882 agent PRs, and the question it asked is a narrow one: do the repo's existing tests run through the executable lines the agent changed? In Java the answer is only 61.5%, and in Python only 27.0%.
 
@@ -460,21 +460,21 @@ The denominator is the executable lines changed by agents in the study sample, n
 
 To assess the PR in front of you, inspect coverage over its changes as well. Keep the overall figure, but do not let it answer questions about a change it may barely reflect.
 
-That is also why coverage is so easy to game. Game is a verb here: it means making the number look good without making anything better.
+Scope is only part of the problem. Both the coverage configuration and the tests themselves can change, so a higher percentage need not mean that more behavior is protected.
 
-All three ways to game it are cheap. The first is adding a line to the exclude pattern, and that file stops counting toward the denominator. The second is calling without asserting, so the line gets run and the behavior goes unchecked. The third is moving the hard-to-test logic into an excluded file.
+Adding a file to an exclude pattern removes its lines from the denominator. Calling code without assertions can execute more lines without checking the result. Moving difficult logic into an excluded file also changes what the percentage represents. Each change needs review together with its rationale.
 
-None of the three is necessarily malicious. Sometimes it's time pressure, and sometimes the legacy code really is hard to test. The result is the same either way: coverage looks better, and the tests hold the behavior no more tightly than before.
+The person making such a change may be short of time or struggling with tightly coupled legacy code. Understanding that difficulty helps the team decide how to improve the tests. It still cannot count an increase caused by a changed measurement scope as an improvement in test quality.
 
-So the prescriptions have to be narrow too. Start with three changes without rebuilding the whole coverage regime:
+This does not require an immediate rebuild of the whole coverage system. For agent PRs, start with three additions to the existing review process:
 
-First, measure coverage on the agent's changed lines only. This one shrinks the scope, so the overall number can't take a bullet for new code.
+First, show coverage of agent-changed lines separately so the reviewer can see the scope of testing for this change. Continue tracking total coverage, but do not use it as a substitute.
 
 Second, interpret coverage together with mutation score. Executing a line does not mean an assertion protects its behavior; mutation adds that check.
 
-Third, route exclude-pattern changes through human review. This one closes the cheapest escape hatch.
+Third, have a human review exclude-pattern changes, including the reason for exclusion, the scope no longer measured and any checks that compensate. The aim is to protect the meaning of the measurement, not merely its configuration file.
 
-In one line: **coverage tells you where the tests ran; mutation tells you where the tests hold.**
+**Coverage shows where tests executed; mutation checks whether they detect deliberate changes to that code.** Together they still share a limit: when required behavior was never implemented, the numbers may remain reassuring. The workshop experience below made that gap concrete for me.
 
 ---
 
@@ -492,15 +492,15 @@ My note at the time: A's 10/16 (10 of the 16 items on the workshop's compliance 
 
 There was another gap unrelated to replay: the tests lacked `@DirtiesContext`. Spring uses that annotation to remove a contaminated test context from the cache so later tests can rebuild it. If tests alter shared state without appropriate reset or isolation, they can interfere with one another. Retrying until green does not resolve that issue, which is why section 8 asks how flaky tests are handled.
 
-Scope it first. This is an instance of "green but not accepted" and "testing the wrong thing", not variance data (how much the result moves when the same task is rerun). N equals 1, and what was measured is compliance. The variance question waits for November.
+This example illustrates a green build that has not met acceptance requirements, with tests following a different path from the spec. But the evidence here is one implementation from Approach A: N equals 1, and the measurement is compliance. Understanding variation across repeated attempts on the same spec requires a separate experiment; this result cannot establish it.
 
 Looking back at this example, what I want to understand is where each check helps and where it stops. Spelling out their capabilities and limits makes it possible to see what evidence is still missing beyond the green build:
 
 - **red-then-green doesn't apply**: this is a feature PR, and the new tests would go red against the old code because the class doesn't exist.
-- **mutation can't catch it either**: there's no replay path in the code at all, so there's no "replay-path mutant" that could survive.
-- **What does catch it is two things**: a constraint test (a constraint the reviewer stated, written as an executable check), and a human reading the intent.
+- **mutation cannot directly verify the missing replay path**: without that path in the code, there is no corresponding code from which to generate mutants.
+- **Closing the gap starts with the requirement**: a person reviews intent, identifies the missing behavior, and turns the repeatable requirement into a constraint test.
 
-The mutation line deserves one more sentence. Since Product isn't event sourcing, the in-memory aggregate's mutation score is quite possibly still beautiful. This is exactly the sentence from section 4 — it cannot detect a requirement that was never implemented at all; it's a better check, not testing.
+Approach A’s mutation score was not measured here, so a possibly high score is not a finding. The point is narrower: even if tests detect mutations in the existing in-memory aggregate, that does not establish that replay was implemented. Mutation evaluates the code supplied to it.
 
 The constraint test would read like this: the aggregate must extend `EventSourcedAggregate`, or at least one test must construct the aggregate via rehydrate. Rehydrate is the act of rebuilding the aggregate from its events, which is the path the spec actually wanted. It's the "architecture rule" kind that section 2 of the Reliability piece describes.
 
@@ -550,11 +550,11 @@ flowchart TB
     class C,X bad
 ```
 
-5 tests all green; the replay path the spec asked for was never executed.
+Placed side by side, the paths explain why 5 green tests and an unexecuted replay path can coexist: the tests completed the checks they contained, but those checks did not cover the required behavior.
 
-The dashed line in that diagram is the point. It's the path the spec requires to exist and that neither the implementation nor the tests ever took. A check that only looks at what has been written can't see a line that isn't there.
+The dashed line marks that gap. A review that follows only the existing implementation and tests can keep confirming details along the same path without asking where the other path required by the spec went. That is a question I want the acceptance process to preserve.
 
-This is where the checks reach their limit. A person still needs to return to the original requirement and confirm that the implementation follows the right path.
+Once the missing requirement is recognized, parts of it can become new checks. The person’s role is not to repeat every tool’s work forever, but to identify requirements the current checks have not yet expressed.
 
 Thanks to Teddy's workshop, a gap that is easy to leave as an abstract idea became an implementation experience I can return to and examine.
 
@@ -562,28 +562,28 @@ Thanks to Teddy's workshop, a gap that is easy to leave as an abstract idea beca
 
 ## 8. The tester's role: from box-ticker to test-suite reviewer
 
-By this point everything above collapses into a very small list. It doesn't ask anyone to reread every test; it asks them to ask the right questions, and tools already answer most of them.
+The workshop example gives the following checklist a purpose: helping testers find questions worth pursuing in the reports, then return to the requirements. It provides a reading order, not a substitute for checking that tests and implementation agree. Some questions still require opening both and reading closely.
 
 Ten questions for reviewing a test suite an agent wrote:
 
 | # | Question | Matching check or field |
 |---|---|---|
 | 1 | Where does the expected value come from? | The golden-source field in the PR template |
-| 2 | Does the new test go red against the old code? | red-then-green |
-| 3 | Is the reason it went red the right one? | red-then-green's three exits |
-| 4 | Did any assertion go from strong to weak, get deleted, or get skipped? | assertion-change diff |
-| 5 | Is the mock's return value the asserted value? | red-then-green, mutation |
-| 6 | Where are the surviving mutants? | The diff-scoped mutation report |
-| 7 | Did the exclude pattern change? | Coverage config goes through human review |
-| 8 | Are flaky tests quarantined, or retried until they pass? | Last season's Harness Blueprint: fix flakiness before you talk about autonomy |
-| 9 | Does the test name describe behavior, or implementation? | A human reads it |
+| 2 | Does the new test fail on the pre-change code for the expected behavioral difference? | red-then-green |
+| 3 | Does the failure come from behavior, or from the environment, imports or fixtures? | red-then-green’s three outcome categories |
+| 4 | Were existing assertions weakened or removed, or were tests disabled? | assertion-change diff |
+| 5 | Does the test merely assert the mock’s preset return value without checking product behavior? | red-then-green, mutation |
+| 6 | Which mutants survived, and which changes did the tests fail to distinguish? | The diff-scoped mutation report |
+| 7 | Did the coverage exclusion pattern change? | A human reviews changes to coverage configuration |
+| 8 | Are flaky tests isolated and investigated, or merely retried until they pass? | “The Harness Blueprint”: address flakiness before expanding autonomy |
+| 9 | Does the test name describe behavior, or implementation? | A human compares the requirement with the test’s contents |
 | 10 | Which behavior would lose protection if this test were deleted? | A human checks the requirement to distinguish useful protection from ineffective or duplicate tests |
 
 Tools can supply initial evidence for the first eight questions; the last two need more direct judgment about requirements. Keep the final question in particular: which behavior loses protection if this test is removed? No clear answer may indicate an ineffective test, or simply overlapping coverage. Investigate its purpose before declaring that it can never fail.
 
-That is the tester's position at the test gate: not a box-ticker, but a test-suite reviewer. The job changes from "run the tests and confirm they're green" to "read the report and decide which signals need a human".
+At the test gate, the tester examines how the suite interprets requirements as well as whether it finished running. Reports can organize assertion changes, surviving mutants and unverified areas. The tester uses that evidence to decide where tests need improving, which requirements need clarification and which questions deserve exploratory testing.
 
-Lisa Crispin and Tip House's *Testing Extreme Programming* says everyone is a tester. The agent-era version of that line is: everyone who merges an agent PR is reviewing a test suite.
+Lisa Crispin and Tip House’s *Testing Extreme Programming* says everyone is a tester. My reading here is that anyone merging an agent PR also has responsibility for its acceptance evidence. Tools can collect results, but the agent that produced the tests cannot be left to decide on its own why they are sufficient.
 
 ---
 
@@ -595,7 +595,7 @@ The three checks in this piece do one thing only: take the parts of what green n
 
 > **An agent's tests are its acceptance criteria for itself; reviewing its tests is reviewing what it believes "correct" means.**
 
-Next is the Review piece: once the test gate passes, who reads this PR, what they read, who reviews whom, and when AI reviewing AI should be banned. As for the one piece Bach says can't be automated—exploratory testing of what the agent produced, not reading its tests but using the thing it built—that's a topic for another article; here I only point at it.
+Reviewing the test suite this way gives the team firmer ground for the next question: who still needs to examine the PR, what should they read, and who gives final approval? “Review Is the Control Point, Not the Bottleneck” develops those arrangements. For the work in front of us, we can start with an already-green suite and ask: does it verify what we originally set out to build?
 
 ---
 
@@ -619,7 +619,7 @@ Next is the Review piece: once the test gate passes, who reads this PR, what the
 7. Martin Fowler (@martinfowler) — [2026-08-11, TDD inside the agent loop](https://x.com/martinfowler/status/2087173563144912985) (section 4)
 8. Community discussions: Scrum Community in Taiwan (the Lada Kesseler reshare; "the AI said it's fine"); DevOps Taiwan (the Uncle Bob mutation-gate thread)
 9. Author's notes: A-TDD course notes from LeSS in Action; the A/B implementation log from the pattern-language-driven development workshop (2026-08) (section 7); reading notes on *Testing Extreme Programming* (section 8)
-10. Last season: [Part 2, The Harness Blueprint](https://fantasybz.medium.com/agentic-engineering-part-2-the-harness-blueprint-making-your-system-legible-to-agents-3facc281f633), section 5 (flaky quarantine)
+10. Related reading, the Agentic Engineering series: [Part 2, The Harness Blueprint](https://fantasybz.medium.com/agentic-engineering-part-2-the-harness-blueprint-making-your-system-legible-to-agents-3facc281f633), section 5 (flaky quarantine)
 11. Bojie Li, *AI Agents in Depth: Design Principles and Engineering Practice* v2.0 — [Chapter 7, Evaluating Agents](https://bojieli.github.io/ai-agent-book/book-en/chapter7/) (2026-09-06; §7.5.2, the coding-agent failure-attribution table). Section 2.
 12. Quartic.ai — [Letting an Agent Upgrade Production Kubernetes — Without Getting Paged at 3 AM](https://sched.co/2QlD9) (AGNTCon + MCPCon Japan 2026, 2026-09-10; [slides](https://hosted-files.sched.co/agntconmcpconjapan26/d9/AGNTCon-MCPCon-Japan-2026_Abhijeet_Sanskar_final.pdf#page=29), slide 29). Section 5.
 13. Spring Framework documentation — [@DirtiesContext](https://docs.spring.io/spring-framework/reference/testing/annotations/integration-spring/annotation-dirtiescontext.html), explaining context invalidation, removal and rebuilding (section 7).

@@ -32,7 +32,7 @@
   },
   {
    "file": "table-04.png",
-   "markdown": "| # | 問題 | 對應的 check 或欄位 |\n|---|---|---|\n| 1 | 期望值從哪裡來？ | PR template 的 golden 來源欄 |\n| 2 | 新測試對舊 code 紅不紅？ | red-then-green |\n| 3 | 紅的理由對不對？ | red-then-green 的三類出口 |\n| 4 | 有沒有斷言由強變弱、被刪、被 skip？ | assertion-change diff |\n| 5 | mock 的回傳值是不是就是斷言值？ | red-then-green、mutation |\n| 6 | 活著的 mutant 在哪？ | diff-scoped mutation 報告 |\n| 7 | exclude pattern 動了沒？ | 覆蓋率設定走人審 |\n| 8 | flaky 的處理是 quarantine，還是 retry 到過為止？ | 上一季技術篇：先修 flaky，再談 autonomous |\n| 9 | 測試名稱描述的是行為，還是實作？ | 人讀 |\n| 10 | 刪掉這個測試後，哪些行為會失去保護？ | 人對照需求，釐清測試是否有效或與其他測試重複 |\n"
+   "markdown": "| # | 問題 | 對應的 check 或欄位 |\n|---|---|---|\n| 1 | 期望值從哪裡來？ | PR template 的 golden 來源欄 |\n| 2 | 新測試在修正前的程式碼上，是否會因預期的行為差異而失敗？ | red-then-green |\n| 3 | 失敗是來自行為差異，還是環境、import 或 fixture 問題？ | red-then-green 的三種結果分類 |\n| 4 | 是否有既有斷言被弱化、移除，或測試被停用？ | assertion-change diff |\n| 5 | 測試是否只核對 mock 預設的回傳值，沒有驗證產品行為？ | red-then-green、mutation |\n| 6 | 哪些 mutant 仍然存活，對應哪些未被測試辨識的變動？ | diff-scoped mutation 報告 |\n| 7 | 是否修改覆蓋率的排除範圍（exclude pattern）？ | 覆蓋率設定的變更由人審核 |\n| 8 | flaky 測試是否被隔離並追查，還是只重試到通過？ | 〈Harness 藍圖〉：先處理 flaky，再放寬授權 |\n| 9 | 測試名稱描述的是行為，還是實作？ | 由人對照需求與測試內容 |\n| 10 | 刪掉這個測試後，哪些行為會失去保護？ | 人對照需求，釐清測試是否有效或與其他測試重複 |\n"
   }
  ]
 }

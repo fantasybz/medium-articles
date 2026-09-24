@@ -183,7 +183,7 @@ agent 讓測試產出變快，也讓逐份人工審閱更難負擔，因此更�
 
 閘門版先讓 CI 列出存活的 mutant，再區分需要補測試的缺口與 equivalent mutant。後者指變動前後的可觀察行為相同，測試原本就無法區分。可確認的等價變異應排除並留下理由，其餘缺口再交給 agent 補測試，由人判讀需要裁量的部分。這樣才不會把每份報告全部丟回 reviewer。
 
-門檻是我的建議值，不是業界標準：agent 改動行的 mutation score ≥ 70% 才進入 review。導入時先提供一個月的報告，再開始阻擋未達標的 PR。這個數字是 Uncle Bob 的做法加上我的初步估計，11 月會補上自己的數據。
+門檻是我的建議值，不是業界標準：agent 改動行的 mutation score ≥ 70% 才進入 review。導入時先提供一個月的報告，再開始阻擋未達標的 PR。這個數字參考 Uncle Bob 的做法，再加上我的初步估計，尚待自己的試行資料校準；它不是已經驗證過的通用門檻。
 
 工具方面，JVM 有 PIT、JS 與 TS 有 Stryker、Python 有 mutmut。能不能限定在 diff 範圍，各家支援程度不同，動手前先確認你那套的做法。
 
@@ -212,11 +212,11 @@ agent 讓測試產出變快，也讓逐份人工審閱更難負擔，因此更�
 
 這也是本文不把 red-then-green 套用到所有 feature PR 的理由：先排除無法比較的情境，才能讓 red 代表有意義的行為差異。feature PR 的新測試先由 Check 3 輔助評估，再回到需求確認是否測對了對象。
 
-**分類的來源必須不是 PR 的作者。** 如果由開 PR 的 agent 自己設定分類 label，事情很快會變質。agent 被「讓測試過」的 reward 驅動，它會學到一件事：所有 PR 都標成 feature，就不會被檢查。
+**分類來源必須獨立於 PR 作者。** 如果開 PR 的 agent 可以自行設定分類 label，就可能把應該受檢的修正標成 feature，避開 red-then-green。這裡要防的是流程留下的繞路，不必先假定 agent 一定會這樣做。
 
-閘門的適用範圍不能由受檢者決定。這跟系列的「衡量產出，而不是檢查過程的形式」是同一件事。
+分類本身也是驗證的一部分。團隊得先保護分類依據，才能相信「這個 PR 不適用」是有根據的判斷，而不是作者替自己免除檢查。
 
-分類的來源有三個，照順序取。第一個是 issue 或 ticket 的 type 欄，那一欄是人設的。第二個是 harness 的 task type。harness 是 agent 與工程系統之間那層介面，上一季技術篇講過。兩個都沒有時，改用 diff 判斷：只要 PR 修改了任何既有的非測試檔案，就視為 behaviour change，執行這道檢查，只新增檔案的才跳過。
+分類的來源有三個，照順序取。第一個是 issue 或 ticket 的 type 欄，那一欄是人設的。第二個是 harness 的 task type。harness 是 agent 與工程系統之間那層介面，〈Harness 藍圖〉技術篇有完整說明。兩個都沒有時，改用 diff 判斷：只要 PR 修改了任何既有的非測試檔案，就視為 behaviour change，執行這道檢查，只新增檔案的才跳過。
 
 前兩個來源必須由人或受保護的 harness 設定維護，agent 才不能自行改分類。第三個只是沒有任務資訊時的保守推定：它看得出有沒有改既有檔案，看不出需求是否完整。只新增檔案的 fix 也可能漏過，因此分類結果仍要接受抽查。
 
@@ -342,7 +342,7 @@ flowchart TB
 
 三個 job 可以平行執行，結果彙整成同一份報告；red-then-green 依分類決定是否執行。這裡示範的是導入初期的報告模式，第一個月暫不阻擋 PR，不是前面所說的正式閘門已經生效。
 
-第一個月不阻擋是刻意的。那一個月要做的是校準噪音、確認分類來源沒有錯、讓人對報告的格式建立信任。等大家知道哪些訊號真的代表風險，再把最確定的那幾項升成阻擋。
+第一個月先保留報告，是為了讓接手的人有機會理解新訊號。哪些警告確實指出測試缺口，哪些只是分類或環境設定不完整，都需要逐項核對。等負責人能解釋這些差異，再把可靠的檢查升成阻擋條件，團隊才知道 PR 為什麼被停下來、接著該修什麼。
 
 AGENTS.md 是 agent 開工前會讀的那份專案指示檔。下面把裡面的指示與 CI 實際執行的量測並列，呈現一組「指示 vs 量測」的 Before / After。Uncle Bob 的說法是你沒辦法叫 agent 寫乾淨，只能量測程式碼的品質，再依結果要求它修正（[2026-07-29](https://x.com/unclebobmartin/status/2082497764223492161)）。
 
@@ -400,9 +400,9 @@ jobs:
 
 正式實作時，`red_then_green.py` 必須保存兩次執行的輸出與退出碼，區分預期失敗、非預期失敗與修補後未通過；不能只留下 red 的分類。`report` 則要先取得各 job 上傳的檔案，把未執行、執行失敗與已完成分開呈現，缺檔不能當成通過。
 
-這份設計有兩個地方值得看。一個是 `red-then-green` 透過 `if` 讀取 `classify` 的輸出，決定是否執行檢查，適用範圍是機器決定的，不是 PR 作者決定的。另一個是 `report` 的 `if: always()`，red-then-green 被跳過時仍然要產生報告，不然 feature PR 在報告上會看起來像沒被檢查過。
+設定裡有兩個決定需要保留下來。`red-then-green` 透過 `if` 讀取 `classify` 的輸出，因此分類依據必須受到保護，不能只把作者填的 label 再讀一次。`report` 使用 `if: always()`，則是要在檢查被跳過或失敗時，仍然留下報告。讀者應該分得出「不適用」「尚未完成」與「已經通過」，而不是看到少了一份結果就自行猜測。
 
-還有第三個地方，yaml 裡看不到：檢查器自己也會漏。今年九月在東京的 AGNTCon Japan（Linux Foundation 旗下 Agentic AI Foundation 辦的 agent 大會）上，Quartic.ai 的兩位 SRE 講了他們讓 agent 升級 production Kubernetes 的經驗。
+即使這些狀態都寫清楚，還有一件事無法從 YAML 看出來：檢查器是否真的涵蓋了它宣稱要檢查的範圍。2026 年 9 月在東京的 AGNTCon Japan（Linux Foundation 旗下 Agentic AI Foundation 舉辦的 agent 大會）上，Quartic.ai 的兩位 SRE 分享了讓 agent 升級 production Kubernetes 的經驗，其中就有這樣的缺口。
 
 Kubernetes 一次只能升級一個小版本，每次升級算一跳。他們在台上自己講了第一版怎麼漏的：驗證只檢查每一跳之後的第一個節點，管理節點（control plane）上到 1.31、跑工作的節點還留在 1.30，那一跳照樣被標成成功。
 
@@ -410,11 +410,11 @@ Kubernetes 一次只能升級一個小版本，每次升級算一跳。他們在
 
 只檢查部分節點，得到的結果就只能代表那些節點。整個叢集是否完成升級，仍然沒有被驗證。
 
-這份 yaml 自己就有兩個地方踩到同一個盲點。`mutation_diff` 底下多數工具以檔案為單位，限定不到行就得自行篩選，篩選器漏掉的行不會出現在報告上。`classify` 找不到連結的 issue，就退回看有沒有改既有的非測試檔，那一步辨識的是「修改了既有檔案」，不等於確認「修改了行為」。這兩個檢查都有各自能涵蓋的範圍，報告的名稱卻很容易讓人以為它們已經檢查了全部。
+回頭看本篇的設計，也有兩處需要同樣的警覺。`mutation_diff` 若從檔案範圍自行篩選到行，必須確認篩選器沒有漏掉該計分的 mutant。`classify` 找不到任務資訊時，則只能用「是否修改既有非測試檔」推定行為變更，不能靠這項推定確認需求是否完整。報告應該交代這些邊界，讓名稱裡的「diff」與「classification」不至於變成過度承諾。
 
 Quartic.ai 的示範跑在 kind（本機模擬用的 Kubernetes）叢集上，這一課在 production 付過什麼代價，投影片沒寫。
 
-所以校準時還要多確認一件事：這三個 check 實際檢查了哪些範圍，又漏掉了什麼。
+校準報告時，我會把「執行成功」與「檢查完整」分開確認。前者看 job 是否正常結束，後者要回頭對照預期範圍與實際檢查清單。Quartic.ai 的例子提醒的，正是這兩件事之間的距離。
 
 **Agent 側的配套。** 前面三個 check 都在 CI 上檢查產出。但 agent 若認為既有測試有錯，除了反覆嘗試或修改斷言，流程還能提供什麼處理方式？
 
@@ -438,21 +438,21 @@ Quartic.ai 的示範跑在 kind（本機模擬用的 Kubernetes）叢集上，�
 }
 ```
 
-`reason` 與 `evidence` 兩個欄位是關鍵。它們逼 agent 把「這個測試錯了」寫成一個可以被人否決的主張，而不是一句抱怨。
+`reason` 要說明 agent 認為測試哪裡有問題，`evidence` 則提供可重現的依據。這兩個欄位讓接手的人能核對主張、要求補件，或否決修改建議。欄位填滿本身不代表證據成立，仍要有人完成判斷。
 
 **第二步，在 AGENTS.md 裡告訴 agent 這條路存在。** AGENTS.md 只加一句：「你認為測試錯了，就呼叫 `report_broken_test`，不要改斷言。」工具註冊之外，也要交代何時使用、提出什麼證據，以及回報後由誰接手。
 
 這讓「改環境比寫規則有效」有了具體做法：一邊限制任意改動斷言，一邊提供提出異議的管道。團隊接下來要確認的，是回報有沒有被處理，而不只是工具有沒有被呼叫。
 
-最後一個小東西，成本幾乎是零：PR template 加一個「golden 來源」欄，必填。新的 snapshot 或 golden file 從哪裡來，只有三個答案可以選：規格、production 的實際輸出、還是「現在跑出來就是這樣」。
+還有一項可以直接放進 PR template 的安排：要求作者交代 snapshot 或 golden file 的期望值從哪裡來。是依照規格推導、取自 production 的實際輸出，還是只記錄「現在執行的結果」？把來源寫出來，reviewer 才知道下一步要核對哪份依據。
 
-第三個答案不是不行，但要寫出來，讓 reviewer 看得到。凍結 bug 的 golden，幾乎都是在沒有人問這個問題的時候長出來的。
+記錄現況有它的用途，例如替 legacy code 建立 characterization tests；但現況不能未經確認就升格為正確答案。production 輸出也可能包含缺陷。把「觀察到的行為」與「需求要求的行為」分開，才能避免一份方便的 golden file，變成替 bug 辯護的依據。
 
 ---
 
 ## 六、覆蓋率是一條可以被改掉的斷言
 
-覆蓋率是多數團隊已經裝好的那道閘，也是最容易被誤讀的一個數字。一組資料就能說明它誤讀在哪裡。
+即使前面的報告逐漸建立起來，團隊仍可能習慣先看那個最熟悉的覆蓋率數字。要判斷它能不能支持眼前的 PR，得先問：這個數字量測的是整個 repo，還是這次真正改動的程式碼？
 
 一項研究（Test Coverage of Agentic PRs）量測了 4,882 個 agent PR，問的問題很窄：repo 原有的測試，會不會經過 agent 改動的那些可執行的行？答案是 Java 只有 61.5%，Python 只有 27.0%。
 
@@ -460,21 +460,21 @@ Quartic.ai 的示範跑在 kind（本機模擬用的 Kubernetes）叢集上，�
 
 因此，要評估眼前這個 PR，還得另外檢視改動範圍的覆蓋率。整體數字可以保留，但不能替這份改動回答問題。
 
-這也是為什麼覆蓋率很容易被 game。game 在這裡當動詞用，指的是不改善品質、只把數字做漂亮。
+量測範圍之外，還有另一個需要留意的問題：覆蓋率的計算方式與測試內容都可以被修改。數字提高了，未必表示更多行為受到保護。
 
-三種 game 法都很便宜。第一種是 exclude pattern 加一行，那個檔案從此不算進分母。第二種是只呼叫、不斷言，行被跑到了，行為沒有被檢查。第三種是把難測的邏輯搬到被排除的檔案裡。
+例如，在 exclude pattern 裡排除一個檔案，那些行就不再算進分母；測試若只呼叫程式而沒有斷言，會增加執行過的行，卻沒有檢查結果；把難測的邏輯移到被排除的檔案，也會改變數字呈現的樣子。這三種改動都需要連同理由一起審閱。
 
-這三種都不一定是惡意的，有時候只是趕時間，有時候是 legacy code 真的難測。但結果一樣：覆蓋率變漂亮，測試對行為的約束沒有變強。
+做這些改動的人可能只是時間不夠，也可能真的被 legacy code 的耦合卡住。先理解困難，才有辦法討論怎麼補測；但無論理由是什麼，都不能把計算範圍改變所帶來的上升，直接記成測試品質的進步。
 
-所以處方也要窄，先不要把整個 coverage 制度重做一遍。可以先從三件事做起：
+不必為了這個問題立刻重做整套 coverage 制度。針對 agent PR，可以先把三件事放進既有的審查流程：
 
-第一條，覆蓋率只看 agent 改動的行。這條縮小範圍，讓整體數字沒有辦法替新的程式碼擋子彈。
+第一，另外呈現 agent 改動行的覆蓋率，讓 reviewer 看見這次改動的測試範圍。整體覆蓋率可以繼續追蹤，但不能用來代替這個問題。
 
 第二條，將覆蓋率與 mutation score 搭配判讀。程式碼被執行過，不代表行為有被斷言守住，mutation 補上的正是這項檢查。
 
-第三條，exclude pattern 的變更由人類審核。這條把最便宜的那道逃生門關上。
+第三，exclude pattern 的變更交由人類審核，說明排除的理由、漏掉的範圍，以及還有哪些檢查能補足。要保護的是量測的意義，不只是設定檔本身。
 
-一句話：**覆蓋率告訴你測試跑過哪裡，mutation 告訴你測試守住哪裡。**
+**覆蓋率回答測試執行過哪裡；mutation 進一步檢查，刻意改動那些程式碼時，測試能不能辨識差異。** 兩者搭配，仍然有共同的界線：規格要求的行為如果根本沒被實作，數字可能照樣很好看。下面這個工作坊經驗，讓我具體看見了這個缺口。
 
 ---
 
@@ -492,15 +492,15 @@ Quartic.ai 的示範跑在 kind（本機模擬用的 Kubernetes）叢集上，�
 
 還有一個跟 replay 無關的小洞：測試缺了 `@DirtiesContext`。這是 Spring 用來把受污染的測試 context 移出快取、讓後續測試重新建立 context 的標註。若測試已改變共用狀態，卻沒有適當重設或隔離，就可能發生相互干擾。只靠 retry 把結果重試到綠，並沒有解決這個問題；這也是第八節清單裡會追問 flaky 處理方式的原因。
 
-先說這個例子能證明什麼、不能證明什麼。這是「綠燈但沒驗收」與「測錯對象」的實例，不是變異數據（variance，同一題重跑幾次結果會差多少）。N 等於 1，衡量的是合規程度。變異的題留給 11 月。
+這個例子能說明「綠燈但尚未完成驗收」，也能讓人看見測試與需求走上不同路徑的情況。但這裡檢視的是方法 A 的單次實作，N 等於 1，量測的是合規程度。要討論同一份規格反覆執行時有多大變異，必須另外設計重複執行的實驗，不能從這次結果推論。
 
 回頭看這個例子，我更想釐清的是：每一道 check 到底能幫上什麼忙，又會在哪裡停下來。把能力與限制逐條寫清楚，才知道這份綠燈之外還缺了哪些證據：
 
 - **red-then-green 不適用**：這是 feature PR，新測試對舊 code 一定因為類別不存在而紅。
-- **mutation 也抓不到**：程式碼裡根本沒有 replay 路徑，所以不存在「replay 路徑的 mutant」可以活。
-- **抓得到的是兩樣東西**：一條 constraint test（把 reviewer 提出的約束寫成可執行檢查的測試），以及由人審閱 intent。
+- **mutation 無法直接驗證缺少的 replay 路徑**：程式碼裡沒有這條路徑，就沒有對應的程式碼可供產生 mutant。
+- **補上缺口需要先回到需求**：由人審閱 intent、辨識缺少的行為，再把可重複檢查的要求寫成 constraint test。
 
-mutation 那一條值得多說一句。Product 既然不是 event sourcing，那個 in-memory aggregate 的 mutation score 很可能還很漂亮。這正是第四節那一句：它無法偵測「規格要求的東西根本沒有寫出來」，是更好的 check，不是 testing。
+這裡沒有實測方法 A 的 mutation score，所以不能把「分數可能很好」當成結果。真正需要保留的判斷是：即使既有 in-memory aggregate 的測試能抓到程式變異，也不能據此證明 replay 已經被實作。mutation 評估的範圍，仍然是拿去產生變異的那份程式碼。
 
 constraint test 那一條的內容會長這樣：aggregate 必須繼承 `EventSourcedAggregate`，或至少一個測試必須經由 rehydrate 建構 aggregate。rehydrate 就是從事件把 aggregate 重建回來的那個動作，也就是規格真正要的那條路徑。這是可靠度篇第二節說的「架構規則」那一類。
 
@@ -550,11 +550,11 @@ flowchart TB
     class C,X bad
 ```
 
-5 個測試全綠，規格要的 replay 路徑從未被執行。
+把兩條路徑並排看，5 個測試全綠與 replay 從未執行就不再矛盾：測試確實完成了它們寫下的檢查，只是那些檢查沒有涵蓋需求要的行為。
 
-圖上那條虛線才是重點。它是規格要求存在、但實作與測試都沒有走過的路徑。任何只看「已經寫出來的東西」的 check，都看不到一條不存在的線。
+圖上的虛線標出這個落差。如果審查只順著現有實作與測試閱讀，很容易一直在同一條路徑裡確認細節，卻沒有抬頭問：需求要的另一條路呢？這是我希望留在驗收流程裡的問題。
 
-檢查器能做到的事停在這裡，人還需要回到原本的需求，確認實作是不是走在正確的路上。
+一旦這個問題被辨識出來，其中一些要求就能寫成新的 check。人的工作不是永遠補在工具後面重查一遍，而是找出目前的檢查還沒有表達出來的需求。
 
 感謝 Teddy 的工作坊，讓這個容易停留在概念裡的落差，成了一份可以回頭檢視的實作經驗。
 
@@ -562,28 +562,28 @@ flowchart TB
 
 ## 八、Tester 的角色：從打勾機器到 test-suite reviewer
 
-到這裡，前面幾節可以收斂成一張很小的清單。它不要求任何人重讀所有測試，它要求的是問對問題，而且多數問題已經有工具會回答。
+工作坊的例子也讓下面這份清單有了用途：幫 tester 從報告裡找到值得追問的地方，再回到需求判斷。它可以提供閱讀順序，卻不能代替讀者確認測試與實作是否對得上；必要時，仍然要打開測試與程式碼仔細看。
 
 審閱一份 agent 寫的測試時，可以逐一確認這十個問題：
 
 | # | 問題 | 對應的 check 或欄位 |
 |---|---|---|
 | 1 | 期望值從哪裡來？ | PR template 的 golden 來源欄 |
-| 2 | 新測試對舊 code 紅不紅？ | red-then-green |
-| 3 | 紅的理由對不對？ | red-then-green 的三類出口 |
-| 4 | 有沒有斷言由強變弱、被刪、被 skip？ | assertion-change diff |
-| 5 | mock 的回傳值是不是就是斷言值？ | red-then-green、mutation |
-| 6 | 活著的 mutant 在哪？ | diff-scoped mutation 報告 |
-| 7 | exclude pattern 動了沒？ | 覆蓋率設定走人審 |
-| 8 | flaky 的處理是 quarantine，還是 retry 到過為止？ | 上一季技術篇：先修 flaky，再談 autonomous |
-| 9 | 測試名稱描述的是行為，還是實作？ | 人讀 |
+| 2 | 新測試在修正前的程式碼上，是否會因預期的行為差異而失敗？ | red-then-green |
+| 3 | 失敗是來自行為差異，還是環境、import 或 fixture 問題？ | red-then-green 的三種結果分類 |
+| 4 | 是否有既有斷言被弱化、移除，或測試被停用？ | assertion-change diff |
+| 5 | 測試是否只核對 mock 預設的回傳值，沒有驗證產品行為？ | red-then-green、mutation |
+| 6 | 哪些 mutant 仍然存活，對應哪些未被測試辨識的變動？ | diff-scoped mutation 報告 |
+| 7 | 是否修改覆蓋率的排除範圍（exclude pattern）？ | 覆蓋率設定的變更由人審核 |
+| 8 | flaky 測試是否被隔離並追查，還是只重試到通過？ | 〈Harness 藍圖〉：先處理 flaky，再放寬授權 |
+| 9 | 測試名稱描述的是行為，還是實作？ | 由人對照需求與測試內容 |
 | 10 | 刪掉這個測試後，哪些行為會失去保護？ | 人對照需求，釐清測試是否有效或與其他測試重複 |
 
 前八題可以先由工具提供線索，後兩題更需要回到需求判斷。最後一題尤其值得留著：刪掉一個測試後，哪些行為會失去保護？如果答不出來，可能是測試無效，也可能只是與其他測試重複；下一步是釐清它的用途，不是立刻把它判成「永不紅」。
 
-這就是 tester 在 test gate 的位置：不是打勾機器，是 test-suite reviewer。工作內容從「跑完測試、確認全綠」，換成「閱讀報告、判斷哪些訊號需要人介入」。
+在 test gate 裡，tester 不只確認測試有沒有執行完畢，也要審閱這份測試如何理解需求。報告能先整理斷言變更、存活的 mutant 與未驗證的範圍；tester 再據此決定哪些地方要補測、哪些要求需要澄清，以及哪些疑點值得用探索式測試繼續追查。
 
-Lisa Crispin 與 Tip House 的《Testing Extreme Programming》說「人人都是測試者」。agent 時代這句話的具體版本是：每個 merge agent PR 的人，都在審一份測試。
+Lisa Crispin 與 Tip House 的《Testing Extreme Programming》說「人人都是測試者」。我在這裡的理解是，合併 agent PR 的人也要對驗收依據負責。可以請工具協助蒐集結果，但不能把「這些測試為什麼足夠」一起交給產出它們的 agent 自己回答。
 
 ---
 
@@ -595,7 +595,7 @@ Lisa Crispin 與 Tip House 的《Testing Extreme Programming》說「人人都�
 
 > **agent 寫的測試是它對自己的驗收標準；審它的測試，就是審它以為的「對」。**
 
-下一篇是 Review 篇：test gate 過了之後，這個 PR 誰要讀、讀什麼、誰審誰，以及 AI 審 AI 什麼時候該禁止。至於 Bach 說不能自動化的那一件—對 agent 產出做探索式測試，不是讀它的測試，是去用它做出來的東西—那是另一篇文章的題目，這裡只點到為止。
+測試套件經過這樣的審閱，團隊才比較有依據地討論下一個問題：這個 PR 還需要誰來看、看哪些部分，以及最後由誰核准。〈Review 篇：Review 是控制點，不是瓶頸〉會接著展開這些安排。回到眼前的工作，則可以先從一份已經全綠的測試開始，問它一句：你驗證的，真的是我們原本要做的事嗎？
 
 ---
 
@@ -619,7 +619,7 @@ Lisa Crispin 與 Tip House 的《Testing Extreme Programming》說「人人都�
 7. Martin Fowler（@martinfowler）— [2026-08-11 TDD inside the agent loop](https://x.com/martinfowler/status/2087173563144912985)〔第四節〕
 8. 社群討論：Scrum Community in Taiwan（Lada Kesseler 的轉貼、「AI 說沒問題」）；DevOps Taiwan（Uncle Bob 的 mutation gate 討論串）
 9. 筆者筆記：LeSS in Action 的 A-TDD 課程筆記；模式語言驅動開發工作坊（2026-08）的 A/B 實作紀錄〔第七節〕；《Testing Extreme Programming》書摘〔第八節〕
-10. 上一季：[技術篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%BA%8C-harness-%E8%97%8D%E5%9C%96-%E6%8A%8A%E7%B3%BB%E7%B5%B1%E8%AE%8A%E6%88%90-agent-%E8%AE%80%E5%BE%97%E6%87%82%E7%9A%84%E5%9C%B0%E6%96%B9-f2a139f5b561)第五節（flaky quarantine）
+10. Agentic Engineering：[技術篇：Harness 藍圖](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%BA%8C-harness-%E8%97%8D%E5%9C%96-%E6%8A%8A%E7%B3%BB%E7%B5%B1%E8%AE%8A%E6%88%90-agent-%E8%AE%80%E5%BE%97%E6%87%82%E7%9A%84%E5%9C%B0%E6%96%B9-f2a139f5b561)第五節（flaky quarantine）
 11. 李博杰《深入理解 AI Agent：設計原理與工程實踐》v2.0 — [第七章〈Agent 的評估〉](https://bojieli.github.io/ai-agent-book/book-en/chapter7/)（2026-09-06，§7.5.2 失敗歸因的 Coding Agent 錯誤分類表）〔第二節〕
 12. Quartic.ai — [Letting an Agent Upgrade Production Kubernetes — Without Getting Paged at 3 AM](https://sched.co/2QlD9)（AGNTCon + MCPCon Japan 2026，2026-09-10；[講者投影片](https://hosted-files.sched.co/agntconmcpconjapan26/d9/AGNTCon-MCPCon-Japan-2026_Abhijeet_Sanskar_final.pdf#page=29) slide 29）〔第五節〕
 13. Spring Framework 官方文件 — [@DirtiesContext](https://docs.spring.io/spring-framework/reference/testing/annotations/integration-spring/annotation-dirtiescontext.html)，說明測試 context 的失效、移除與重建〔第七節〕。

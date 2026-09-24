@@ -18,7 +18,7 @@ The domain boundary comes first — Python repos, patch tasks, not "all agent PR
 
 Look at the denominator too. The denominator is "patches that passed the functional tests," so the correct plain-language reading is "one in every three green patches violates a constraint." It is **not** "a green build misses a third of what reviewers care about." That version swaps the unit for a share of "the things reviewers care about," which the paper did not measure. The two sentences look almost identical, but their denominators are not, and taking the wrong one into an argument gets you knocked over by the first follow-up question.
 
-A green build has layers, and each layer has evidence from the same domain: measured on a language and a shape of task close to yours, not numbers borrowed from somewhere else. Of the three studies below, the first two sit one on each layer, and the third gives the premise all those layers share.
+Understanding the gap requires separating several meanings of “passed”: a successful build, correct functionality and satisfied non-functional requirements. The next two benchmarks measure gaps between those judgments; a third, workflow-design paper identifies a premise they share.
 
 SWE-NFI, with 188 tasks and 92 executable rules, measures the gap between functional success and non-functional compliance. The best agent reached a 70.0% functional pass rate, while performance on non-functional rules generally lagged. These rules include performance, security and log-format requirements. If functional tests do not include those conditions, passing them does not answer those questions.
 
@@ -159,11 +159,11 @@ flowchart TB
     class E buy
 ```
 
-What to take from this diagram is that dashed line: a rule is not settled once it is written. A rule base with no mechanism for reviewing rules when they expire turns, two years on, into a pile of checks nobody dares delete and nobody believes, and then the whole mechanism gets routed around.
+The dashed line gives people a chance to reconsider a rule. Two years later, a once-prohibited approach may have a different implementation. If all that remains is a failed check, without its rationale or owner, the next person cannot easily decide whether the code or the rule needs changing. Expiry preserves the opportunity to ask that question.
 
-Before this section closes, the boundary with November's contracts piece has to be drawn, or the two kinds of constraint blur into one. The constraints in this piece come from **review history**: accumulated after the fact, empirical. The contracts piece's constraints come from the **spec**: agreed up front, normative.
+Constraints can come from different sources. This piece mainly draws on **review history**: a problem occurred, and the team decided to preserve the resulting requirement. Another source is the **spec**, the contract agreed before implementation begins. Both can become checks, but reconsidering them requires returning to their respective basis.
 
-Both go into CI, but they have different owners and different lifespans. A review constraint is owned by the team that raised the comment in the first place, and its lifespan is set by its expiry — when that date arrives, somebody has to confirm it still holds. A spec constraint follows the spec: as long as the spec is there, so is the constraint.
+The team that raised a review constraint maintains it and checks at expiry whether its rationale still holds. A spec-derived constraint should be reconsidered with requirement changes by the people responsible for the spec. Sharing a CI pipeline does not remove the need to retain source and owner. Those records let rules evolve and let someone explain why they remain.
 
 ---
 
@@ -199,7 +199,7 @@ Looking only at the average success rate, you would expect roughly two out of th
 
 Its conclusion — "clean termination and valid tool calls are not proxy indicators of completion" — holds in the code domain just the same: the agent saying it finished, with every tool call well formed, is a different thing from the task having been done right.
 
-So how do you do this on your own evals? Reuse the operations piece's golden set, 20 to 50 cases, and run it monthly at k = 5; that is the set the thresholds are read off. The frontier set runs separately at k = 3: it is a harder batch that does not pass yet, there to show where the ceiling is, and it is not used as a threshold. The report has three fixed columns, so every month you are looking at the same numbers; the oversight budget is reported separately. It uses the first column together with the reliability target and review effectiveness to estimate the required share, then compares that need with actual review and sustainable capacity. Section 4 works through the calculation.
+So how do you do this on your own evals? Reuse the golden set from “Agentic Engineering: Evals, Unit Economics, and Scaling”, 20 to 50 cases, and run it monthly at k = 5; that is the set the thresholds are read off. The frontier set runs separately at k = 3: it is a harder batch that does not pass yet, there to show where the ceiling is, and it is not used as a threshold. The report has three fixed columns, so every month you are looking at the same numbers; the oversight budget is reported separately. It uses the first column together with the reliability target and review effectiveness to estimate the required share, then compares that need with actual review and sustainable capacity. Section 4 works through the calculation.
 
 The three columns look like this:
 
@@ -259,15 +259,15 @@ flowchart TB
     class P5,D buy
 ```
 
-One sentence to take from this diagram: on the same batch of golden cases, pass@1 of 93% and pass^5 of 67% are two different numbers, not two ways of writing the same one. The first describes average performance; the second describes consistency across repeated runs. An authority decision needs the latter alongside constraint and review requirements.
+The same batch of golden cases yields pass@1 of 93% and pass^5 of 67%. One describes average performance per attempt; the other identifies cases with no failure across five attempts. Separating them exposes repeat-run failures that an average can obscure. Expanding autonomy still requires considering constraint checks and human review alongside both figures.
 
 ---
 
 ## 4. Oversight budget: READY and a simplified model
 
-The last section gave you two numbers; this one deals with their bill: the oversight budget, which is "how much human effort am I planning to spend on review this month." The higher the reliability target, the more human review work you need to arrange.
+Once the team understands the agent’s success rate and consistency, the next question falls to the people receiving its work: how much review is still needed to meet the reliability commitment? The oversight budget connects that demand with the effort the team can sustain. Raising a reliability target without identifying who can perform the necessary review leaves the target as a number on paper.
 
-How to estimate that budget: start with a study that actually computed it. READY is a qualification framework for enterprise agent deployment (September 2026). One idea in it is especially useful here: do not look only at the agent's accuracy, work backward from a reliability target to how much human review an "agent plus human-review policy" needs. What it measured is counterintuitive: two systems only 0.3 percentage points apart in accuracy had human-review requirements that differed by nearly 10 percentage points, and it was the less accurate one that needed less human review. In this piece READY is used to prove exactly one thing: **the ranking by accuracy is not the ranking by human effort.**
+READY (September 2026) offers a useful starting point. This enterprise-agent deployment qualification framework works backward from a reliability target to the review share required by an agent system and its human-review policy. In its case study, two systems only 0.3 percentage points apart in autonomous accuracy needed review shares nearly 10 percentage points apart, with the less accurate system requiring less review. The result reminds me that **ranking accuracy alone does not tell a team how much review work it must sustain.**
 
 I borrow the concept, not the numbers. READY uses a clinical audit workflow rather than code and estimates human effort for the system and review policy. The model below only illustrates the connection between accuracy, review effectiveness and a reliability target. It neither reproduces READY's method nor explains the ranking reversal between those two systems. Section 8 of the overview gives the full figures and domain.
 
@@ -285,7 +285,7 @@ c is difficult to estimate, and "our reviewers are senior" is not a substitute. 
 
 The assertion study in the testing piece also cautions against treating human review as an infallible safety net. Among 86 developers, judgment accuracy was 49% for incorrect assertions and 74% for correct ones. That measures assertion judgment, not the probability that PR review successfully corrects an error, so neither figure can be substituted for c. The examples below use c = 0.6 only as an illustrative assumption to explore how review effectiveness affects staffing needs.
 
-Below I work through it with illustrative values. The point is not to memorize the formula, but to feel one thing first: the share of human review that comes out is usually much higher than intuition suggests.
+The next three examples use illustrative values to make the tradeoffs concrete. They do not set a review percentage for the industry. They show how, under these assumptions, better system performance or a different target changes the required effort.
 
 - p = 0.80, T = 0.95, c = 0.6 → r ≥ (0.95 − 0.80) / (0.20 × 0.6) = 1.25. **Even reviewing everything is not enough**; raise p or c first.
 - p = 0.90, T = 0.95, c = 0.6 → r ≥ (0.95 − 0.90) / (0.10 × 0.6) ≈ 0.8333. Raising accuracy from 0.80 to 0.90 still leaves more than four-fifths needing deep review. If scheduling in whole percentages, allocate at least 84%.
@@ -295,9 +295,9 @@ The examples vary p and then T to expose the cost of different choices. They do 
 
 The computed r_min is the lower bound for sampled deep review in the review piece. In the low-radius, verifiable cell, someone other than the assigner samples at the actual r, with r ≥ r_min. Not every PR gets line-by-line review, but every PR still requires a human to read the report and approve. Compare r_min with the sustainable ceiling r_budget as well; that becomes an authority condition in section 5.
 
-The sampling has to be stratified as well. Another line from my exam notes: aggregate accuracy hides low performance on particular categories, so use stratified random sampling. Applied to code review, there is one more cut inside the same blast-radius cell: task type, repo and agent version, with p computed separately for each.
+After calculating the review share, decide which tasks to sample. My exam notes warn that aggregate accuracy can hide poor performance in particular categories, motivating stratified random sampling. Here, tasks within the same blast-radius cell can be divided by task type, repo and agent version, with p estimated separately rather than shared as one overall average.
 
-Suppose a team's p looks fine overall, but comes out a good deal lower when schema migrations are counted on their own. Look only at the aggregate and you staff to the flattering number, then pull people away from the very category that needed more of them.
+For example, overall p may look good while schema migrations perform less well. Allocating review from the overall average can underestimate the attention those tasks need. Stratification helps staffing follow the risks of the work being reviewed.
 
 The diagram connects estimation with execution. Both p and c need your own data; the 49% and 74% from assertion judgments cannot be inserted as PR-review performance. The formula establishes a minimum, after which the team schedules stratified sampling at or above it:
 
@@ -341,9 +341,9 @@ flowchart TB
     class S buy
 ```
 
-What to take from this diagram is the direction of the arrows: the human-review share is a budget derived backward from the reliability target, not a constant. The diagram is my worked example; using it in practice requires recalculating with your own team's data. READY's own worked example is 76% → 29.6%, where the first is a reliability target and the second is the human-review share computed under that target, not a drop along one axis; the full numbers are in the overview.
+Following this sequence gives the review share a rationale: the target, the data source and the assumptions behind the estimate. The diagram uses my simplified model. READY’s 76% → 29.6% belongs to a different example, connecting a reliability target to the review share required in that setting. It is not performance falling from 76% to 29.6%, and cannot calibrate this diagram. Section 8 of the overview gives its full figures and domain.
 
-Three numbers plus a budget: put them together and you have the report that gets handed over every month. It looks like this:
+The monthly report can now bring measurements and staffing together. The format below is illustrative: it lets the people making decisions see agent performance, review demand and actual effort at the same time, instead of receiving one overall pass rate:
 
 ```yaml
 # eval-report.yaml: one per month, goes into the leadership report
@@ -371,15 +371,15 @@ Set the reliability target, estimate the review required, then check whether sta
 
 ## 5. The gate for expanding authority: back to G2
 
-The four sections so far have given you numbers and a budget. This one turns those results into a basis for an actual decision: whether authority gets expanded to the next batch of teams. That gate already exists in the operations piece: the operations piece has three scaling gates, and this is the second. What this section does is add the reliability side of it.
+The measurements and budget now need to support a decision: is this setup ready for broader use by more teams and the authority that comes with it? “Agentic Engineering: Evals, Unit Economics, and Scaling” organizes expansion into three scaling gates, with G2 second. This section adds reliability and review-capacity requirements to its existing conditions.
 
 The operations piece's G2 had three original conditions: retry rate (the share of agent runs that fail and get retried) under 15%, escape rate (the share of defects found only once they reached production) flat, and the champion system (the seed engineers in each team who push agent adoption part-time) running itself, meaning it keeps moving without a central push. This piece adds four, all labeled "my suggested value (not an industry standard)."
 
-Every threshold uses the same sentence form, "met, and not rising / not falling for two consecutive months," never "falling for consecutive months" — once a steady state gets down to 2% there is nothing left to fall, and the gate can never pass again. Demanding that a metric keep dropping forever amounts to designing the gate to jam at the healthiest moment, and then the whole thing gets torn out.
+A threshold should consider stability as well as attainment. Each condition below requires two consecutive months of evidence: some require sustained attainment, while others also require violations or the required review share not to rise. If violations have already fallen to 2%, the gate should not demand another reduction every month. A healthy steady state needs a path through the gate too.
 
 The small-sample rule matches section 3: below 30 golden-set cases, report pass^5 as a trend and optionally attach a Wilson confidence interval to show uncertainty, but do not use it as an authority gate. Under this proposal, wait for at least 30 cases and two consecutive qualifying months. Attaching an interval does not itself satisfy that requirement.
 
-The four new conditions are below, and the rightmost column is what each of them is there to block. The mutation score in the third comes from the testing piece (break the code on purpose and see whether the tests go red; the share that do is the score):
+The four additions assess repeat-run consistency, constraint violations, test effectiveness and review capacity. The third uses the testing piece’s mutation score, the share of valid mutations detected by tests. Placing them together gives each risk its own basis for judgment:
 
 | New condition | Threshold | Why |
 |---|---|---|
@@ -432,17 +432,17 @@ Three safeguards sit alongside this gate. First, at G3, the last scaling gate in
 
 Why lock it down that hard? A September 2026 study documents a case from a production self-improvement loop: the agent found a cached answer key, scored 100%, and its real capability was 68%. Access to the answer key made the score a poor measure of capability. The behavior alone does not establish the agent's intent.
 
-The second is canaries: a small set of probe tasks mixed into production traffic, there to confirm that the numbers from the lab still hold in the real environment.
+The second safeguard is canaries: a small number of probe tasks observed within a controlled scope in production traffic. Offline evaluation and production may differ, so the team needs to watch for new failures. Probes provide signals; a small set cannot establish that production meets the overall reliability target.
 
-The third is the judge trap. A judge is one model scoring another agent's output, and the rubric is the scoring sheet you hand it. Section 2 of the operations piece listed three traps; the fourth one goes here: do not let the transcript (the execution record the agent writes about itself) prove itself.
+The third safeguard concerns scoring evidence. A judge is a model evaluating an agent’s output; its rubric states the assessment criteria. Section 2 of the operations piece identifies three judge traps. Here is another: when a transcript contains the agent’s account of its own actions, the judge must not treat that account alone as evidence that the work happened.
 
 Trap 1 there was about tone: judges prefer long answers and a confident voice. An August 2026 trajectory-judge study analyzed 400 trajectories (see the paper for the task domain) and measured a more specific problem: an agent fabricating action claims of "I did X" fools a step-rubric judge 82% of the time — of every ten fabricated claims, eight get taken as actually done. A step-rubric judge scores step by step against the rubric, and what it is reading is precisely the process the agent wrote down about itself.
 
-So the facts used for rubric scoring have to be verifiable from environment records — test results, constraint results, traces (the call trail the system recorded) — not from the transcript. The agent saying it ran the tests, and that run actually appearing in the CI record, are two things you can check against each other. The first is the agent talking about itself; the second is not.
+Any rubric judgment about what was done needs a corresponding environment record: test results, constraint results or traces, the system-recorded call history. An agent’s statement that it ran tests can help locate the evidence. The result of that CI run is what should support the judgment. This returns to the series’ distinction between a claim and independent evidence.
 
 Back to the gate: no expansion is a decision too. If pass^k falls, examine task composition and model or harness changes before diagnosing the cause. If constraint violations rise, identify the violated rules and investigate regressions or missed checks. The metrics tell us where to investigate; they do not by themselves prove that the remedy is a harness fix or an extra test.
 
-But when the numbers are all good, expand — do not stage a fake no just to "prove the gate works." A gate earns its credibility by moving in both directions: it holds, and it also lets things past. But these four new conditions share one blind spot.
+Conversely, when all seven conditions are met and the data and scope have been checked, the policy can support considering expansion. There is no need for a staged rejection to demonstrate caution. Credibility comes from consistent criteria: explain the gap when evidence is insufficient, and acknowledge it when the conditions hold. The four new measurements still do not cover every risk.
 
 These four conditions use accumulated monthly evidence for an authority decision, although some measurements can update continuously. They do not directly answer another question: does the agent repeatedly attempt to cross its permission boundary? That needs an additional runtime signal.
 
@@ -450,11 +450,11 @@ PagerDuty works in on-call and incident management, and in September 2026, at AG
 
 That red line serves the same purpose as the earlier rule that changes cannot merge into main without human approval. The constraint-tests section designs the permission boundary; here the task is to measure the agent's behavior. Once the boundary is clear, it becomes possible to record how often the agent tries to cross it and how often those attempts are intercepted.
 
-The H.I.R.E. evaluation framework she presented lists five metrics, including one for these attempts to cross the boundary: Red Line Rate: the share of actions the agent suggests or executes that a permission check, a blocklist or a security check rejects. The permission layer emits it directly, it needs no golden set, and it does not wait for a PR or a monthly report — the reliability section's rule, that a column you cannot name a source for does not belong in the monthly report, is one this metric can answer.
+The H.I.R.E. framework she presented contains five metrics. Red Line Rate measures the share of actions an agent suggests or executes that are intercepted by permission checks, blocklists or security checks. Permission and interception records provide a runtime signal without first requiring a golden set. It extends the question beyond whether the output qualifies: did the agent repeatedly approach prohibited operations while producing it?
 
 I would first include Red Line Rate as an observation in the monthly report, collect two months of data, then assess whether it merits a threshold. It adds a runtime boundary signal; it is not the only metric available for ongoing observation. A rising rate also needs diagnosis: more prohibited attempts, changed permissions or false blocks of allowed actions can all require different responses.
 
-The gate itself is still seven conditions. Stack the original conditions and the new ones together and you have the gate as it now stands. The thing to look at is the diamond in the middle: it is an and, not a vote:
+Red Line Rate begins as an observation in this design, not an additional passing condition. G2 therefore still combines three original conditions with four additions. The figure joins them at one decision to show that all seven must hold; a high score on one cannot compensate for a gap in another:
 
 ```mermaid
 ---
@@ -504,35 +504,35 @@ flowchart TB
     class K human
 ```
 
-What to take from this diagram is the shape G2 now has: three original conditions plus four new ones, and all seven have to pass. Meeting only six still does not allow autonomy to expand. This gate has no cell for "close enough."
+If only six conditions hold, the team should identify what the seventh lacks and who will address it. Once all seven hold, the owner confirms that the evidence applies to the task scope proposed for expansion. G2 then leaves more than a pass or hold: it preserves a rationale the team can revisit.
 
 ---
 
 ## 6. Closing and handoff
 
-The last section wrote four new conditions into the autonomy gate. Looking back at the opening gap from here makes it clearer why the work needed to go this far. What SWE-Gate measured is not that agents cannot write code; it is that "the tests are green" never promised what you took it to promise. The trilogy went from the testing piece through the review piece to this one, and all three are working on the same gap. A green build is a check, and a check does not volunteer which problems it did not cover.
+Returning to the opening 34% from the authority decision clarifies its significance. In SWE-Gate’s sample of Python repair tasks, passing functional tests still left reviewer constraints unsatisfied. From reviewing tests through organizing review to measuring reliability, the series has been building evidence for questions a green result did not answer.
 
 This piece breaks that gap into three metrics that can be measured or calculated. The monthly report presents constraint pass rate, pass^5, and human-review needs alongside the actual share and sustainable capacity. They answer three different questions.
 
 The first question is rules. Constraint pass rate answers whether this agent kept the rules the team laid down. Those rules used to remain in review comments. The next time the same problem appeared, a colleague had to remember and raise it again. Once they become constraint tests, CI can keep checking them, and the team no longer has to place that burden of memory on the same person.
 
-The second question is steadiness. pass^k answers whether what it managed this time it will still manage next time. Between succeeding once and succeeding several times in a row sits the question of whether you dare let go.
+The second question is consistency. pass^k records how many cases in this set succeeded on all k attempts. It reveals variation beyond a single success, but does not guarantee the next result. Changes to tasks, models or the harness require reconsidering what the existing measurements still support.
 
-The third question is the bill. r_min gives the minimum human review needed to reach the target; r records the share actually reviewed, and r_budget is the sustainable ceiling. Together, they show whether capacity is sufficient and the required review is being done.
+The third question is staffing. r_min estimates the minimum review required under the target and model assumptions; r records actual allocation, and r_budget is what the team can sustain. Showing all three makes the resulting work and available capacity visible before autonomy expands.
 
 G2 already tracks retries, escaped defects and the champion system. The four new conditions add test effectiveness, team constraints, repeat-run consistency and human-review requirements. Together they help the team judge whether this class of tasks has sufficient verification and whether it can sustain the work that broader authority would bring.
 
-All four are my suggested values, not an industry standard, and the thresholds themselves should be rewritten by your own data. What I want to leave behind is not the numbers but the habit of arguing about expanded authority against numbers at all.
+The four thresholds are starting suggestions, not industry standards. Teams can adjust them using their own data, while retaining the rationale and evidence for each change. Missing a threshold this month is not by itself a reason to lower it just enough to pass. The habit I want to preserve is making authority decisions open to scrutiny and assigning responsibility for them.
 
-Next month's contracts piece picks up the other half of the split made earlier here: the constraints that come from the spec. How two kinds of constraint with different origins sit in the same CI, and who maintains them and when they should be reviewed again, is left to that piece.
+The approach still has boundaries. Constraints recovered from review history cannot replace a specification that remains unclear. If requirements are ambiguous, adding CI rules does not automatically establish which behavior the team intends.
 
-November also turns pass^k over to its other side: pass^k is the outcome side of "run the same spec N times"; November measures the variance side, the structure of the implementations. Five runs of the same spec all passing does not mean the code came out the same way five times, and that is a different kind of variance.
+Likewise, repeatedly passing the same specification and producing similar implementation structures are different questions. pass^k assesses the former. Even after five passing attempts, comparing the code and design is still necessary to discuss the latter.
 
-One question remains for the end of the year: how these offline evaluations and review budgets connect to production reliability. December will distinguish offline gates from SLIs, service level indicators measured from actual service operation. pass^k and r do not become SLIs simply by appearing in a monthly report. Their measurement target, time window and data sources still need separate design.
+Offline evaluation also cannot stand in for production service performance. An SLI, or service level indicator, needs measurements from actual operation, with a clearly defined measurement scope, time window and data source. Reporting pass^k and r supports the authority and staffing decisions discussed here; it does not automatically make them production SLIs.
 
 If there is one sequence to retain, I would first establish meaningful checks of functionality and team constraints, then assess consistency across repeated tasks. The success criterion for pass^k must include those requirements, or it can describe consistently missing the same problem. Human review is a separate axis: estimate the need under the chosen target and assumptions, then confirm sufficient capacity and actual review at or above the minimum.
 
-It is not hard to picture what the reverse order looks like. A team sees that the agent writes well, so it loosens authority first, goes back to fill in the team's rules afterward, and only then finds out that the functional tests were never checking the behavior that needed verification. Every step on that path looks reasonable on its own; put together, they leave the weakest layer holding everything else up.
+That sequence makes room for the people who receive the work. If a team expands authority before discovering that its tests miss key behavior, the gap eventually falls to reviewers and on-call engineers. Making evidence and review demand explicit beforehand lets them help decide the scope, rather than inherit unaccounted work after an incident.
 
 > **Green tells you the functional checks that ran did not fail. Constraint tests add the team's rules; pass^k checks consistency across repeated attempts. Together they inform authority decisions. None can vouch for the other two.**
 
@@ -563,7 +563,7 @@ That is the end of the trilogy. It started from one question: when the tests wer
 10. trajectory-judge — [arXiv 2609.00038](https://arxiv.org/abs/2609.00038) (2026-08) — section 5; 400 trajectories; domain in the paper
 11. LLM-as-a-Judge Is Not an Oracle — [arXiv 2609.02246](https://arxiv.org/abs/2609.02246) (2026-09) — section 5
 12. Author's notes: Claude Certified Architect — Foundations exam notes (stop_reason, stratified sampling)
-13. Last season's operations piece: [Agentic Engineering, Part 3 — Evals, Unit Economics, and Scaling](https://fantasybz.medium.com/agentic-engineering-part-3-evals-unit-economics-and-scaling-running-agents-like-a-product-1cb1855a2046), sections 2 and 5 (the three judge traps, the G2 gate)
+13. Agentic Engineering: [Agentic Engineering, Part 3 — Evals, Unit Economics, and Scaling](https://fantasybz.medium.com/agentic-engineering-part-3-evals-unit-economics-and-scaling-running-agents-like-a-product-1cb1855a2046), sections 2 and 5 (the three judge traps, the G2 gate)
 14. PagerDuty — [From Clicks To Context: Building an Open-Source Evaluation Pipeline for AI Agents](https://sched.co/2QlEA) (AGNTCon + MCPCon Japan 2026, 2026-09-11) — section 5; [slides](https://hosted-files.sched.co/agntconmcpconjapan26/57/From%20Clicks%20to%20Context_%20Building%20an%20Open-Source%20Evaluation%20Pipeline%20for%20AI%20Agents%20_%20Ine%CC%82s%20Bolan%CC%83os.pdf#page=15) p. 15, the slide titled “THE RED LINE”, and [p. 21](https://hosted-files.sched.co/agntconmcpconjapan26/57/From%20Clicks%20to%20Context_%20Building%20an%20Open-Source%20Evaluation%20Pipeline%20for%20AI%20Agents%20_%20Ine%CC%82s%20Bolan%CC%83os.pdf#page=21) for the Red Line Rate of H.I.R.E.
 
 ---
