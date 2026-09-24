@@ -444,7 +444,7 @@ Medium 限制同一作者 **24 小時內最多發布或排程 2 篇**。撞到�
 (2) 英文版上線後，在中文版文末加一行「英文版：[English edition](…)」。這兩件事每週一次，日期跟著上表。
 
 Topics 八篇相同：Software Testing、Code Review、AI、Software Engineering、Engineering Management。
-封面圖用 Medium 預設的第一張 figure（都是圖，不是表格）。Notify subscribers 維持預設勾選。
+封面圖依 2026-09-23 核對結果，中英版皆為：總論 `diagram-04.png`、測試篇 `diagram-03.png`、Review 篇 `diagram-02.png`、可靠度篇 `diagram-02.png`。Notify subscribers 維持預設勾選。
 排程 UI 的實測：Publish 對話框 → Schedule for later → 「Schedule a time to publish」開月曆與 24 小時制的時、分按鈕
 （分要在選完時之後再點一次才生效；十月的月曆格子開頭是九月 27–30 的尾巴，也能點，所以要用「十月 1 號之後第 N 格」選日子，並在按下前核對顯示的日期字串）→ Schedule to publish；Stories 頁的 Scheduled 清單顯示的是 UTC（09:00 GMT+8 顯示為 1:00 AM）。
 
