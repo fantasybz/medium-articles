@@ -2,7 +2,7 @@
 
 > **TL;DR** — A Scrum Community post describes PR volume doubling in half a year while senior engineers' calendars fill up. A longitudinal study of a million PRs finds faster decisions under some AI-review adoption patterns without corresponding quality gains. CodeRabbit comments on ten thousand PRs were rejected 56% of the time, while cross-product AI-to-AI review grew 100-fold over two quarters. These findings turn my attention to the division of review work: **review is the control point where an organization shapes whether agents add value or debt**. That framing comes from a theory built by coding 3,100 practitioner accounts. A separate study of 182 repos found that each 10-percentage-point increase in unreviewed merges was associated with about 6% more agentic-code maintenance burden, not a causal estimate. This piece proposes risk-based triage, reviewer-agent roles separated from generation, and a ban on self-gating loops. Machines organize evidence; humans examine reports or diffs according to the triage decision, and every merge requires human approval. An experiment in which "pre-approved under SEC-2291" helped roughly eight in ten narrative-wrapped exfiltration PRs pass the scanning stage adds another lesson: verify authority claims against the system of record. Approval must identify the responsible person and reviewed content; section 7 explains the records and rules that support it.
 
-> Series: [Overview](https://medium.com/p/c4fc9f3d8581) → [1. Testing](https://medium.com/p/51d001a6dcd5) → **2. Review (this piece)** → 3. Reliability (coming soon)
+> Series: [Overview](https://medium.com/p/c4fc9f3d8581) → [1. Testing](https://medium.com/p/51d001a6dcd5) → **2. Review (this piece)** → 3. Reliability (coming soon) → Payment walkthrough (draft ready; unscheduled)
 
 ---
 
@@ -98,6 +98,16 @@ The second row calls for preserving comments as rules before deciding which can 
 A study (July 2026) ran on a platform made up of more than 35 services and turned every accepted review comment into a version-controlled rule plus a pre-submit checklist. The rules grew from 5 to 18, the error categories that had been turned into rules recurred 0% of the time, and review effort moved to the design layer.
 
 The study supports preserving review experience instead of repeating the same reminders. But there is a further step from a rule file to an executable constraint test: establishing whether the comment can become a stable, decidable check. Put the automatable part into CI and retain judgment-dependent guidance for reviewers. Both need an owner.
+
+**A payment makes the selections concrete.** Suppose an agent changes the retry flow for buying a bottle of 無糖純喫綠茶, unsweetened pure green tea, with an illustrative NTD 35 order. There are two selections: who reviews which changes, and which comments deserve lasting protection. The small amount does not make shared payment logic low risk; the same change can affect many orders.
+
+I would have a payment owner examine order/key relationships, the amount source, charge calls and exception handling; a test reviewer examine fixtures, assertions and surviving mutants; and someone with integration or operations expertise examine shared storage, concurrency or reconciliation when those boundaries change. Roles can overlap, but the reviewed scope should be recorded. Selecting highlighted diff lines alone misses surrounding guards, control flow and callers that may determine whether a charge is repeated.
+
+Now consider illustrative Review comments. “Could another click charge again?” identifies a consequence, a stable observation and a durable requirement: retain a constraint that the same payment attempt calls the provider once. “Capture may precede a timeout” calls for a lost-response test that retains `PENDING` and prevents another charge on replay. A local naming concern belongs in the current edit or established lint rules. “Should the campaign offer refunds?” first needs product and payment policy; the agent cannot invent the expected answer.
+
+For retained rules, record the source, scope, test name, owner and reconsideration conditions. A consequential risk deserves protection on its first appearance, without waiting for another incident. These are teaching comments and a suggested workflow, not a real PR history. The [payment example](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment) provides the mapping and runnable code; the unscheduled Payment Walkthrough draft develops it step by step.
+
+The example also shows why machine verifiability cannot be reduced to an aggregate score. Omitting the timeout test still produces 85.7%, but M5, which turns an unknown result into `PAID`, survives. These seven hand-selected teaching mutants cannot directly inherit a threshold for a tool-generated set on a real diff. A reviewer should identify the unprotected requirement and add its test and evidence. Exceeding the Testing article's 70% starting reference does not move this PR into a cell where close reading can be reduced.
 
 The "until then" in the second row's Exceptions column is the overview's phrase too: that cell is the transition.
 
@@ -567,6 +577,7 @@ What I want to leave here is a workable division of responsibility: tools prepar
 2. [1. Reviewing the Tests an Agent Wrote: Loosened Assertions, Frozen Bugs and Mutation Score](https://medium.com/p/51d001a6dcd5)
 3. **2. Review Is the Control Point, Not the Bottleneck (this piece)**
 4. 3. The 34% SWE-Gate Found Behind a Green Build: Constraint Tests, pass^k and the Gate for Expanding Autonomy (coming soon)
+5. A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score (draft ready; unscheduled)
 
 ---
 
@@ -599,6 +610,7 @@ What I want to leave here is a workable division of responsibility: tools prepar
 25. Studist, Masaya Nakamura — [Intent as Code: Why Existing Permissions Aren't Enough for AI](https://sched.co/2QlDX) (AGNTCon + MCPCon Japan 2026, Tokyo, 2026-09-10; [slides](https://hosted-files.sched.co/agntconmcpconjapan26/ab/Intent-as-Code%20%2813%29.pdf#page=16) slide 16, which cites H. Yu et al., [arXiv 2606.22721](https://arxiv.org/abs/2606.22721)) [section 3; cited second-hand off the slide]
 26. GitHub documentation — [About code owners](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners), code ownership and required approvals (sections 3 and 7).
 27. GitHub documentation — [About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches), required reviews, stale approvals and bypass settings (section 7).
+28. Accompanying implementation — [Tea payment, constraint tests and seven selected mutants](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment) [section 3; measured teaching example, no real provider]
 
 ---
 

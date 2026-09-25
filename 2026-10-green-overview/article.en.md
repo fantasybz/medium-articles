@@ -2,7 +2,7 @@
 
 > **TL;DR** — When a team adopts coding agents and keeps seeing green CI, a growing review queue and production failures, it is worth asking whether its acceptance criteria have kept pace. If an agent writes both the implementation and its tests, without independent scrutiny of those tests, green only shows that it passed its own exam. In James Bach's terms, that is *checking*; it is not enough to complete *testing*. Three gates divide the work: the test gate assesses test effectiveness through mutation score; the review gate assigns who examines what; and the reliability gate uses constraint tests and pass^k to inform expanded authority. Section 1 sets out three positions: how humans review payment PRs, whether AI approvals count, and whether TDD can serve as a gate. Every number keeps its domain attached: SWE-Gate measured the finding that "34% of green patches violate reviewer constraints" across 75 Python repos. A 90-day blueprint closes the piece.
 
-> Series: **Overview (this piece)** → 1. Testing (coming soon) → 2. Review (coming soon) → 3. Reliability (coming soon). Related reading, the Agentic Engineering series: [Don't Build Your Own Devin](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9) → [1. Org Design](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987) → [2. The Harness Blueprint](https://fantasybz.medium.com/agentic-engineering-part-2-the-harness-blueprint-making-your-system-legible-to-agents-3facc281f633) → [3. Evals and Unit Economics](https://fantasybz.medium.com/agentic-engineering-part-3-evals-unit-economics-and-scaling-running-agents-like-a-product-1cb1855a2046)
+> Series: **Overview (this piece)** → 1. Testing (coming soon) → 2. Review (coming soon) → 3. Reliability (coming soon) → Payment walkthrough (draft ready; unscheduled). Related reading, the Agentic Engineering series: [Don't Build Your Own Devin](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9) → [1. Org Design](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987) → [2. The Harness Blueprint](https://fantasybz.medium.com/agentic-engineering-part-2-the-harness-blueprint-making-your-system-legible-to-agents-3facc281f633) → [3. Evals and Unit Economics](https://fantasybz.medium.com/agentic-engineering-part-3-evals-unit-economics-and-scaling-running-agents-like-a-product-1cb1855a2046)
 
 ---
 
@@ -351,7 +351,7 @@ flowchart LR
     class R human
 ```
 
-The figure is about the line down the middle: however well the left side does its job, it never crosses to the right on its own. The three gates on the right are ordered, and if the previous one hasn't passed, there is nothing to discuss about the next.
+The figure is about the line down the middle: however well the left side does its job, it never crosses to the right on its own. The order on the right describes evidence needed before merging or expanding autonomy. It does not require people to wait for the test gate before discussing a change. Review can establish requirements and constraints earlier, then feed them back into testing. Final approval still needs the missing evidence filled in.
 
 Each gate needs a clear question to answer, a metric to measure, and someone responsible for it:
 
@@ -361,9 +361,13 @@ Each gate needs a clear question to answer, a metric to measure, and someone res
 | Review gate | Who should read this PR, and what should they read? | Triage matrix, reviewer heterogeneity, approval artifact | EM + seniors | Review piece |
 | Reliability gate | How much autonomy can this kind of task get? | Constraint pass rate, pass^k, oversight budget | Platform + VP | Reliability piece |
 
-One part in that table is shared by all three gates: constraint tests. The other terms get defined in the section that uses them; this one comes first. Take a hypothetical. A reviewer once left "don't open a new HTTP client every time here" on some PR, and that sentence gets written up as a rule CI runs on every PR. It has just turned from a comment into a check.
+One component is shared by all three gates: constraint tests. Consider a bottle of 無糖純喫綠茶, unsweetened pure green tea, with an illustrative NTD 35 order. A reviewer asks: “The payment was sent, but the screen stopped responding. Could another click charge again?” The team agrees that replaying the same attempt must not charge twice and retains an executable check. The comment now protects future changes. This is a teaching scenario, not the product's actual price.
 
-Constraint tests are installed and maintained by the test gate's owner, and the reliability gate only consumes the constraint pass rate computed from them (of the PRs that passed the functional tests, the share that also pass every constraint test).
+“Constraint” describes the requirement's origin and continuing responsibility, not a test technology that excludes functional behavior. Charging the right amount and avoiding duplicate charges are both product requirements. A unit or integration test can protect a constraint the reviewer has chosen to retain. Selection depends on consequences, a decidable expected result and ownership; not every comment needs its own test.
+
+In the accompanying [payment example](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment), two happy-path tests detect two of seven selected mutants, for a mutation score of 28.6%. Eight tests omitting the timeout case reach 85.7% while still missing an unknown payment marked successful. All nine tests detect all seven mutants. These are measured results from sequential calls to a fake provider in one process, not evidence about concurrency, restarts or real charges.
+
+The test gate supplies the individual results. At the review gate, someone who understands payments decides whether a surviving mutant violates a critical requirement; the percentage alone cannot authorize the change. Measuring constraint pass rate at the reliability gate changes the denominator to candidate PRs passing functional checks, then asks what share also pass every applicable constraint. One example passing nine tests does not measure an agent's long-term reliability. The unscheduled companion draft “A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score” develops the selection decisions, implementation and arithmetic.
 
 All three gates share one line of design philosophy: **designing the environment beats writing rules**.
 
@@ -872,6 +876,7 @@ Three deep dives, one gate each:
 2. Part 1 — Reviewing the Tests an Agent Wrote: Loosened Assertions, Frozen Bugs and Mutation Score (coming soon)
 3. Part 2 — Review Is the Control Point, Not the Bottleneck: Triage, Reviewer Fleets and the Closed-Loop Ban (coming soon)
 4. Part 3 — The 34% SWE-Gate Found Behind a Green Build: Constraint Tests, pass^k and the Gate for Expanding Autonomy (coming soon)
+5. A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score (draft ready; unscheduled)
 
 Related reading, the Agentic Engineering series: [Overview](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9), [1. Org Design](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987), [2. The Harness Blueprint](https://fantasybz.medium.com/agentic-engineering-part-2-the-harness-blueprint-making-your-system-legible-to-agents-3facc281f633), [3. Evals and Unit Economics](https://fantasybz.medium.com/agentic-engineering-part-3-evals-unit-economics-and-scaling-running-agents-like-a-product-1cb1855a2046).
 
@@ -894,6 +899,7 @@ Related reading, the Agentic Engineering series: [Overview](https://fantasybz.me
 13. Robert C. Martin (@unclebobmartin) — [2026-07-26 kinds of tests](https://x.com/unclebobmartin/status/2081332683582427641), [2026-07-29 measure cleanliness](https://x.com/unclebobmartin/status/2082497764223492161), [2026-07-30 TDD is a human discipline](https://x.com/unclebobmartin/status/2082850576832905657), [2026-08-05 deterministic tools](https://x.com/unclebobmartin/status/2085104553746190372), [2026-08-17 negative test experiment](https://x.com/unclebobmartin/status/2089449442089025936)
 14. Martin Fowler (@martinfowler) — [2026-08-11 TDD inside the agent loop (Birgitta Böckeler)](https://x.com/martinfowler/status/2087173563144912985), [2026-09-02 Maybe we shouldn't be reviewing all this code](https://x.com/martinfowler/status/2095147242986373485)
 15. Community discussion: public posts in the Scrum Community in Taiwan group ("the AI said it's fine"; "demanding human values of an AI is right")
+16. Accompanying implementation — [Tea payment, constraint tests and seven selected mutants](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment) [section 6; measured teaching example, no real provider]
 
 ---
 

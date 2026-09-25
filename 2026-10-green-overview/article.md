@@ -2,7 +2,7 @@
 
 > **TL;DR** — 導入 coding agent 之後，如果團隊反覆遇到 CI 綠了、review 排隊、上線仍出事，值得回頭檢查的，是驗收依據是否跟著改變。當實作與測試都由 agent 撰寫、測試又未經獨立審查，綠燈只證明它通過了自己出的題；借用 James Bach 的區分，那是 *checking*，還不足以完成 *testing*。驗證層的三道閘各有分工：test gate 衡量測試的保護力（mutation score），review gate 決定誰審閱哪些內容，reliability gate 用 constraint tests 與 pass^k 判斷授權能否擴張。人如何審閱 payment PR、AI approve 算不算、TDD 能不能當閘門，會在第一節結尾提出。數字都標領域：「34% 的綠燈修補違反 reviewer 約束」是 SWE-Gate 在 75 個 Python repo 上量測到的。文末附 90 天藍圖。
 
-> 系列導覽：**總論（本篇）** → 一、測試篇（即將發布） → 二、Review 篇（即將發布） → 三、可靠度篇（即將發布）。延伸閱讀「Agentic Engineering 三部曲」：[別急著打造你的 Devin](https://fantasybz.medium.com/%E5%88%A5%E6%80%A5%E8%91%97%E6%89%93%E9%80%A0%E4%BD%A0%E7%9A%84-devin-agentic-engineering-%E7%9A%84%E7%B5%84%E7%B9%94%E7%AD%96%E7%95%A5%E8%88%87-90-%E5%A4%A9%E8%A1%8C%E5%8B%95%E8%97%8D%E5%9C%96-7342ababc417) → [組織篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%80-%E8%AA%B0%E4%BE%86%E5%81%9A-platform-federation-%E7%9A%84%E7%B5%84%E7%B9%94%E8%A8%AD%E8%A8%88%E5%AF%A6%E5%8B%99-9d9353ef7f3a) → [技術篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%BA%8C-harness-%E8%97%8D%E5%9C%96-%E6%8A%8A%E7%B3%BB%E7%B5%B1%E8%AE%8A%E6%88%90-agent-%E8%AE%80%E5%BE%97%E6%87%82%E7%9A%84%E5%9C%B0%E6%96%B9-f2a139f5b561) → [營運篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%89-eval-%E5%96%AE%E4%BD%8D%E7%B6%93%E6%BF%9F%E8%88%87%E8%A6%8F%E6%A8%A1%E5%8C%96-%E6%8A%8A-agent-%E7%95%B6%E7%94%A2%E5%93%81%E7%87%9F%E9%81%8B-d6d9623c2dc6)
+> 系列導覽：**總論（本篇）** → 一、測試篇（即將發布） → 二、Review 篇（即將發布） → 三、可靠度篇（即將發布） → 付款實作篇（草稿完成，尚未排程）。延伸閱讀「Agentic Engineering 三部曲」：[別急著打造你的 Devin](https://fantasybz.medium.com/%E5%88%A5%E6%80%A5%E8%91%97%E6%89%93%E9%80%A0%E4%BD%A0%E7%9A%84-devin-agentic-engineering-%E7%9A%84%E7%B5%84%E7%B9%94%E7%AD%96%E7%95%A5%E8%88%87-90-%E5%A4%A9%E8%A1%8C%E5%8B%95%E8%97%8D%E5%9C%96-7342ababc417) → [組織篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%80-%E8%AA%B0%E4%BE%86%E5%81%9A-platform-federation-%E7%9A%84%E7%B5%84%E7%B9%94%E8%A8%AD%E8%A8%88%E5%AF%A6%E5%8B%99-9d9353ef7f3a) → [技術篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%BA%8C-harness-%E8%97%8D%E5%9C%96-%E6%8A%8A%E7%B3%BB%E7%B5%B1%E8%AE%8A%E6%88%90-agent-%E8%AE%80%E5%BE%97%E6%87%82%E7%9A%84%E5%9C%B0%E6%96%B9-f2a139f5b561) → [營運篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%89-eval-%E5%96%AE%E4%BD%8D%E7%B6%93%E6%BF%9F%E8%88%87%E8%A6%8F%E6%A8%A1%E5%8C%96-%E6%8A%8A-agent-%E7%95%B6%E7%94%A2%E5%93%81%E7%87%9F%E9%81%8B-d6d9623c2dc6)
 
 ---
 
@@ -351,7 +351,7 @@ flowchart LR
     class R human
 ```
 
-圖的重點在中間那條分界線：左邊做得再好，也不會自己跨到右邊來。右邊三道閘則是有順序的，前一道沒過，後一道不必談。
+圖的重點在中間那條分界線：左邊做得再好，也不會自己跨到右邊來。右邊的順序描述合併與擴張授權前需要累積的證據，不是要求人等 test gate 通過才開始討論。Review 可以更早確認需求、提出約束，再把這些要求交回測試驗證；最終核准時，前面欠缺的證據仍然要補齊。
 
 每道閘都需要說清楚：要回答什麼問題、用什麼指標量測，以及由誰負責：
 
@@ -361,9 +361,13 @@ flowchart LR
 | Review gate | 這個 PR 值得誰讀、讀什麼？ | 分流矩陣、reviewer 異質性、approval artifact | EM + senior | Review 篇 |
 | Reliability gate | 這類任務能開放哪些操作？ | constraint pass rate、pass^k、oversight budget | platform + VP | 可靠度篇 |
 
-表裡有一個零件是三道閘共用的：constraint tests；其他名詞留到各自那一節定義。舉一個假設的情境，reviewer 在某個 PR 上留過「這裡不要每次都開一個新的 HTTP client」，這句話被寫成一條 CI 每次都會跑的規則，它就從一則評論變成了一道 check。
+表裡有一個零件是三道閘共用的：constraint tests。先用一瓶無糖純喫綠茶把它說清楚。假設示範訂單是 35 元，reviewer 問：「付款已經送出，畫面卻沒有回應，再按一次會不會多扣一筆？」團隊確認同一付款嘗試不得重複扣款，再把這個要求寫成可執行的檢查，一則評論就留下了可以持續使用的保護。這是教學情境，35 元不是商品實際售價。
 
-constraint tests 由 test gate 的 owner 安裝與維護，reliability gate 則使用這些檢查得到的 constraint pass rate：功能測試過了的 PR 裡，constraint tests 也全過的比例。
+這裡的「constraint」描述要求的來源與長期責任，不是排除功能行為的另一種測試技術。正常購買要扣對金額，重送不能再次扣款，都是產品要求；reviewer 決定保留後，unit test 或 integration test 都能成為約束的實作。選擇依據是後果、可判定的預期結果與維護責任，不是每則評論都必須變成一個測試。
+
+在隨文的 [付款範例](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment) 中，兩個正常購買測試只辨識出七個指定 mutant 裡的兩個，mutation score 是 28.6%；八個測試漏掉逾時案例時，分數雖到 85.7%，仍抓不到「把未知付款標成成功」。完整九個測試才辨識出這七種變異。這是同一行程、依序呼叫假金流的實測，不能替並行、重新啟動與真實扣款作保。
+
+test gate 交出這份逐項報告；review gate 則由懂付款的人判斷存活的變異是否違反關鍵要求，不能只看分數放行。若接著量測 reliability gate 的 constraint pass rate，分母才換成功能檢查通過的候選 PR，計算其中也通過全部適用約束的比例。單一範例通過九個測試，並不是 agent 的長期可靠度。完整的選擇理由、程式與計分，已整理在〈付款實作篇：買一瓶無糖純喫綠茶，從 Review 約束走到 mutation score〉草稿中，尚未設定發布日期。
 
 三道閘共用一句設計哲學：**設計環境比寫規則有效**。
 
@@ -872,6 +876,7 @@ RD 再被問「這個 PR 測過了嗎」的時候，就能拿著幾份具體的�
 2. 一、測試篇：怎麼審閱一份 agent 寫的測試—斷言鬆綁、凍結 bug 與 mutation score（即將發布）
 3. 二、Review 篇：Review 是控制點，不是瓶頸—分流、reviewer agent 艦隊與閉環禁令（即將發布）
 4. 三、可靠度篇：SWE-Gate 量測到的 34%—constraint tests、pass^k 與授權擴張的閘門（即將發布）
+5. 付款實作篇：買一瓶無糖純喫綠茶，從 Review 約束走到 mutation score（草稿完成，尚未排程）
 
 延伸閱讀「Agentic Engineering 三部曲」：[總論](https://fantasybz.medium.com/%E5%88%A5%E6%80%A5%E8%91%97%E6%89%93%E9%80%A0%E4%BD%A0%E7%9A%84-devin-agentic-engineering-%E7%9A%84%E7%B5%84%E7%B9%94%E7%AD%96%E7%95%A5%E8%88%87-90-%E5%A4%A9%E8%A1%8C%E5%8B%95%E8%97%8D%E5%9C%96-7342ababc417)、[組織篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%80-%E8%AA%B0%E4%BE%86%E5%81%9A-platform-federation-%E7%9A%84%E7%B5%84%E7%B9%94%E8%A8%AD%E8%A8%88%E5%AF%A6%E5%8B%99-9d9353ef7f3a)、[技術篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%BA%8C-harness-%E8%97%8D%E5%9C%96-%E6%8A%8A%E7%B3%BB%E7%B5%B1%E8%AE%8A%E6%88%90-agent-%E8%AE%80%E5%BE%97%E6%87%82%E7%9A%84%E5%9C%B0%E6%96%B9-f2a139f5b561)、[營運篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%89-eval-%E5%96%AE%E4%BD%8D%E7%B6%93%E6%BF%9F%E8%88%87%E8%A6%8F%E6%A8%A1%E5%8C%96-%E6%8A%8A-agent-%E7%95%B6%E7%94%A2%E5%93%81%E7%87%9F%E9%81%8B-d6d9623c2dc6)。
 
@@ -894,6 +899,7 @@ RD 再被問「這個 PR 測過了嗎」的時候，就能拿著幾份具體的�
 13. Robert C. Martin（@unclebobmartin）— [2026-07-26 測試種類](https://x.com/unclebobmartin/status/2081332683582427641)、[2026-07-29 measure cleanliness](https://x.com/unclebobmartin/status/2082497764223492161)、[2026-07-30 TDD is a human discipline](https://x.com/unclebobmartin/status/2082850576832905657)、[2026-08-05 deterministic tools](https://x.com/unclebobmartin/status/2085104553746190372)、[2026-08-17 negative test experiment](https://x.com/unclebobmartin/status/2089449442089025936)
 14. Martin Fowler（@martinfowler）— [2026-08-11 TDD inside the agent loop（Birgitta Böckeler）](https://x.com/martinfowler/status/2087173563144912985)、[2026-09-02 Maybe we shouldn't be reviewing all this code](https://x.com/martinfowler/status/2095147242986373485)
 15. 社群討論：Scrum Community in Taiwan 的公開貼文（「AI 說沒問題」、「把人類的價值要求 AI 是對的」）
+16. 隨文實作 — [無糖純喫綠茶付款、constraint tests 與七個指定 mutant](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment)〔第六節；教學案例與實測，非真實金流〕
 
 ---
 

@@ -1,0 +1,26 @@
+{
+ "figures": [
+  {
+   "file": "diagram-01.png",
+   "mermaid": "---\nconfig:\n  theme: base\n  themeVariables:\n    fontSize: 16px\n    primaryColor: \"#f8f9fa\"\n    primaryTextColor: \"#1f2933\"\n    primaryBorderColor: \"#6b7280\"\n    lineColor: \"#6b7280\"\n    secondaryColor: \"#f8f9fa\"\n    tertiaryColor: \"#ffffff\"\n    clusterBkg: \"#ffffff\"\n    clusterBorder: \"#9ca3af\"\n    edgeLabelBackground: \"#ffffff\"\n  flowchart:\n    nodeSpacing: 36\n    rankSpacing: 52\n    padding: 12\n    htmlLabels: true\n    subGraphTitleMargin:\n      top: 8\n      bottom: 12\n    curve: basis\n---\nflowchart TB\n    P[\"Record attempt<br/>PENDING\"] --> Q[\"Call provider<br/>Await outcome\"]\n    Q --> S[\"Success response<br/>PAID\"]\n    Q --> D[\"Explicit decline<br/>DECLINED\"]\n    Q --> U[\"Timeout: return PENDING<br/>Other error: propagate<br/>Keep pending record\"]\n    classDef buy fill:#fff3cd,stroke:#b8860b,color:#1f2933\n    classDef own fill:#d4edda,stroke:#2e7d32,color:#1f2933\n    classDef bad fill:#ffe0e0,stroke:#c0392b,color:#1f2933\n    class P,U buy\n    class S own\n    class D bad\n"
+  }
+ ],
+ "tables": [
+  {
+   "file": "table-01.png",
+   "markdown": "| Review responsibility | What to read closely | Judgment to record |\n|---|---|---|\n| Payment domain owner | Order/key relationship, amount source, charge call and state transitions | When a request may charge, reuse a result or be rejected |\n| QA / test reviewer | Fixtures, assertions, failure cases and surviving mutants | Whether important requirements have tests that distinguish incorrect behavior |\n| Integration / operations reviewer | Changes involving shared storage, concurrency, restarts, provider lookup and reconciliation | What the test environment establishes and what evidence deployment still needs |\n"
+  },
+  {
+   "file": "table-02.png",
+   "markdown": "| Review concern | Treatment in this example | Reason |\n|---|---|---|\n| Could a repeated request charge again? | Retain as C1: two requests, one charge attempt | Clear consequence and a requirement future retry changes must preserve |\n| Could a key be rebound? | Retain as C2: reject the conflicting relationship before another provider call | An explicit identity boundary and observable result |\n| Could a decline or timeout appear successful? | Separate C3 and C4, using different provider scenarios | A known rejection and an unknown outcome require different judgments |\n| Rename a local variable | Address in this change; use lint for established conventions | Not every naming preference needs a behavior test |\n| Should the campaign offer refunds? | Ask the product and payment owners to settle policy first | The expected result is undefined; an agent cannot invent the approved answer |\n"
+  },
+  {
+   "file": "table-03.png",
+   "markdown": "| ID | Deliberate code change | Observable consequence | Initial happy-path tests |\n|---|---|---|---|\n| M1 | Send NTD 1 to the provider | Charged amount differs from the order | killed |\n| M2 | Skip the existing-attempt guard | Repeating an operation may charge again | survived |\n| M3 | Remove the cross-order key rejection | The same key can pay another order | survived |\n| M4 | Mark a decline `PAID` | A rejected payment appears successful | survived |\n| M5 | Mark a timeout `PAID` | An unknown outcome appears successful | survived |\n| M6 | Put sweetened tea on the successful receipt | Receipt product differs from the order | killed |\n| M7 | Remove the pre-call PENDING record | Replay after another connection error may charge again | survived |\n"
+  },
+  {
+   "file": "table-04.png",
+   "markdown": "| Test selection | Killed / scored | Mutation score | Survivors |\n|---|---|---|---|\n| Two happy-path tests | 2 / 7 | 28.6% | M2, M3, M4, M5, M7 |\n| Eight tests, omitting the timeout case | 6 / 7 | 85.7% | M5 |\n| All nine payment tests | 7 / 7 | 100.0% | None of these seven |\n"
+  }
+ ]
+}
