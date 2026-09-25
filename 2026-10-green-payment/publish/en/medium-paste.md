@@ -206,7 +206,7 @@ When no counterexample is apparent, distinguish undefined requirements, unreacha
 
 All seven mutants execute and are non-equivalent, so this experiment keeps a denominator of seven. Its mutation score is the number detected by tests divided by seven, multiplied by 100%. The denominator counts mutants, not tests. It is not the probability that the product has no bugs.
 
-I executed the accompanying `mutation_demo.py` with three test selections. The original program passed each selection before the mutations ran:
+The accompanying `mutation_demo.py` was executed with three test selections. The original program passed each selection before the mutations ran:
 
 📌【在此插入表 table-04.png】
 
