@@ -16,6 +16,7 @@ Medium articles by [@fantasybz](https://medium.com/@fantasybz) — long-form pos
 | 2026-10 | [綠燈不是驗收（一）測試篇：怎麼審閱一份 agent 寫的測試—斷言鬆綁、凍結 bug 與 mutation score](2026-10-green-testing/article.md) | [EN](2026-10-green-testing/article.en.md) | 已排程 10/13（二）09:00 發布；英文版已排程 10/15（四）09:00（GMT+8）；佇列見 [PUBLISHING.md](PUBLISHING.md) | [PUBLISHED.md](2026-10-green-testing/publish/PUBLISHED.md) |
 | 2026-10 | [綠燈不是驗收（二）Review 篇：Review 是控制點，不是瓶頸—分流、reviewer agent 艦隊與閉環禁令](2026-10-green-review/article.md) | [EN](2026-10-green-review/article.en.md) | 已排程 10/20（二）09:00 發布；英文版已排程 10/22（四）09:00（GMT+8）；佇列見 [PUBLISHING.md](PUBLISHING.md) | [PUBLISHED.md](2026-10-green-review/publish/PUBLISHED.md) |
 | 2026-10 | [綠燈不是驗收（三）可靠度篇：SWE-Gate 量測到的 34%—constraint tests、pass^k 與授權擴張的閘門](2026-10-green-reliability/article.md) | [EN](2026-10-green-reliability/article.en.md) | 已排程 10/27（二）09:00 發布；英文版已排程 10/29（四）09:00（GMT+8）；佇列見 [PUBLISHING.md](PUBLISHING.md) | [PUBLISHED.md](2026-10-green-reliability/publish/PUBLISHED.md) |
+| 未排程 | [綠燈不是驗收・付款實作篇：買一瓶無糖純喫綠茶，從 Review 約束走到 mutation score](2026-10-green-payment/article.md) | [EN](2026-10-green-payment/article.en.md) | Repo 中英文草稿與發布包完成；Medium 同步待完成，尚未排程 | 尚未建立 |
 
 ## Structure
 
@@ -43,6 +44,20 @@ LinkedIn / Medium stats / arXiv / Notion 的訊號 → 四份 digest（哪幾份
 research/README.md 的「資料來源」）→ workflow 提案、評審、選題 →
 每個主題一份「總論 + 三部曲」大綱，落選的進 backlog。第一圈的產出在
 [research/2026-09/](research/2026-09/)。
+
+付款實作補篇採用定向補充：一手來源 → 證據摘要與可重跑實驗 → Claude Code／Codex 獨立審閱 → 修訂與雙語交付。
+來源、適用界線與審閱後的修正在 [付款實作研究紀錄](research/2026-10/payment-example-evidence.md)；這次沿用既有主題，沒有重新執行整月選題。
+
+## Runnable examples
+
+[examples/tea_payment](examples/tea_payment/README.md) 讓讀者重跑付款實作篇的實驗。需要 Python 3.10 以上，從 repo 根目錄執行：
+
+```bash
+python3 -B -m unittest discover -s examples/tea_payment -p 'test_*.py' -v
+python3 -B examples/tea_payment/mutation_demo.py
+```
+
+第一個命令執行 9 個付款測試與 12 個 mutation runner 回歸測試；第二個命令對同一組 7 個人工指定變異比較三種測試選擇，輸出 28.6%、85.7%、100.0%。[rules.md](examples/tea_payment/rules.md) 說明 Review 意見如何對應到約束、測試與變異。範例使用假金流、單行程記憶體與依序呼叫，不會真的扣款；100% 只涵蓋這 7 個變異，不能作為正式付款服務的安全保證。
 
 ## Publishing
 

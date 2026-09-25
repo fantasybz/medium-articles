@@ -50,6 +50,8 @@ flowchart LR
 
 **期中加圈**（2026-09-15 第一次：AGNTCon + MCPCon Japan 與《AI Agents in Depth》）：月中作者去了一場會議、或讀完一本要當書錨的書，不等下個月 1 日，直接加一圈。`collect.sh all` 照跑，digest 寫到 `research/<下個月>/`；會議材料抓到 `.context/research/<slug>-conf/`（sched 議程含作者打勾的場次、附件投影片用 pdftotext／pptx／keynote-parser／OCR 轉文字、keynote 直播字幕、主辦方部落格）→ 一天一份逐場筆記 `notes_<day>.md`（全部場次都寫，作者參加的標 ✅）→ `prompts/conference_digest.md` 整合成 `conference_digest.md`（會 commit：只引公開材料）→ 書摘 `book_<slug>.md`（會 commit）→ 用這些重切下下個月的大綱、把可插的證據補進當月還沒發布的文章（只加句子與 References，不改作者的字；改完要用 `tools/medium_draft.sh <dir> --post <id>` 重灌草稿）→ 更新 backlog 與 style brief。期中加圈不重新選題，`selection.md` 只記錄改了什麼。每個產出檔都要過一個 skeptic agent 對原始來源抽查再用：session 撞額度會讓 agent 寫到一半停下，檔尾乾淨不代表完整，要拿獨立的清單（場次 id、章節、查詢字串）對覆蓋率。
 
+**既有系列的定向補充**（2026-09-25）：依作者要求，以購買無糖純喫綠茶補足 constraint tests、Review 選擇與 mutation score 的連續實例。這次沿用既有主題，依序整理一手來源、可重跑實驗與證據界線，再經 Claude Code／Codex 獨立審閱、修訂與雙語交付；[付款實作研究紀錄](2026-10/payment-example-evidence.md) 保留來源、實測與各輪修正，沒有重新執行整月選題。
+
 ## 資料來源
 
 | 來源 | 登入方式 | 抓什麼 | 腳本 | 已知問題 |
@@ -219,8 +221,8 @@ presentations 的那幾週，都是粉絲團有分享的週。這些數字放在
 - [x] 2026-12 第二輪完成（2026-09-06 23:15）：4 視角 27 major，修訂 51 條、驗證通過（3 個殘留由筆者手修）；14 張 Mermaid 全部 PASS，大綱內嵌版已同步。
 - [x] **10 月四篇初稿已寫好並以 PR #5 併入 main（2026-09-07 09:20）**：總論 7,168 中文字、測試篇 3,820、Review 篇 3,925、可靠度篇 2,850（目標 3,500–4,500 / 1,900–2,600），圖全部 PASS、paste 與 PNG 已產、兩套測試 OK。
 - [x] **批評／修訂完成（2026-09-07 15:20）**：四篇各過三視角批評 → 修訂 → 驗證（總論兩輪，第二輪併入 Codex 對計畫的意見）；最終 zh-tw 檢查只採納 是一個→是、場景→情境、全形標點旁的空白；英文版四篇（`article.en.md`，`publish/en/`）由翻譯 agent 產出、英文圖標籤縮短到 MERMAID.md 寬度內。正文中文字：總論 4,497、測試篇 4,144、Review 篇 4,061、可靠度篇 3,221（三部曲仍高於 1,900–2,600 的目標，批評者未再要求裁減；作者校閱時可再刪）。**接下來是作者的事**：逐節校閱四篇 zh 與 en；做完「作者親手做的兩件事」；依 PUBLISHING.md 用 `tools/medium_draft.sh <dir>` 與 `<dir> en` 建草稿（Medium 每 24 小時只能發兩篇），發布後把 URL 填回四篇的系列連結與 README、PUBLISHED.md。
-- [x] **10 月八篇已上 Medium 排程（2026-09-07 晚）**：草稿全部以 `tools/medium_draft.sh` 建立並逐塊比對通過，中文每週一 09:00（10/06、10/13、10/20、10/27）、英文同週三 09:00（10/08、10/15、10/22、10/29），Post ID 與狀態在 PUBLISHING.md〈目前的發布佇列〉與各篇 `publish/PUBLISHED.md`。**每週一次的回填**（上線後把其他篇的「（即將發布）」換成連結、英文版上線後在中文版文末加英文版連結）還是人工／下一個 session 的事，指令在 PUBLISHING.md。這次踩到三個 Medium 改寫：日期連字號變 en dash、`(c)` 變 ©、`^5` 變上標—前兩個進了 `verify_draft.py` 的摺疊與 `md2medium.py` 的守衛，第三個進了摺疊。
-- [ ] **英文版尚未經過 critic**：四篇 `article.en.md` 只做過翻譯與機械檢查（paste、lockstep、圖寬），沒有跑 evidence／reader／editor 三視角；發布前至少讓一個 agent 對照 zh 逐節核對數字與 hedge。
+- [x] **10 月八篇已上 Medium 排程（2026-09-07 晚）**：草稿全部以 `tools/medium_draft.sh` 建立並逐塊比對通過，中文每週二 09:00（10/06、10/13、10/20、10/27）、英文同週四 09:00（10/08、10/15、10/22、10/29）。星期誤記已依 2026-09-23 與 2026-09-25 的 Medium 排程核對校正；Post ID 與狀態在 [PUBLISHING.md](../PUBLISHING.md)〈目前的發布佇列〉與各篇 `publish/PUBLISHED.md`。**每週一次的回填**（上線後把其他篇的「（即將發布）」換成連結、英文版上線後在中文版文末加英文版連結）還是人工／下一個 session 的事，指令在 PUBLISHING.md。這次踩到三個 Medium 改寫：日期連字號變 en dash、`(c)` 變 ©、`^5` 變上標—前兩個進了 `verify_draft.py` 的摺疊與 `md2medium.py` 的守衛，第三個進了摺疊。
+- [x] **英文版校閱已補上（2026-09-23 至 2026-09-25）**：2026-09-07 的四篇英文稿當時只有翻譯與機械檢查，尚未做 evidence／reader／editor 三視角批評。2026-09-23、24 已完成中英文逐句精修、證據限制與後半部論述核對，並同步 Medium（見各篇 `publish/en/PUBLISHED.md`）。2026-09-25 再就付款補充段落與新實作篇，由 Claude Code／Codex 獨立對照數字、程式、語意與適用界線；本輪審閱範圍及修正見 [付款實作研究紀錄](2026-10/payment-example-evidence.md)。
 - [x] **Codex 二審已跑（2026-09-07 14:04–14:25，gpt-5.5 xhigh）**：`research/2026-09/codex-review-{selection,2026-10-…,2026-11-…,2026-12-…}.md` 原話照錄。10 月的致命項已在文章批評／修訂中處理（payment PR「不讀 diff」改為「不逐行讀、只讀標紅 hunk」、READY 標非 code、0.3–0.5 元比例標為暫定啟發式、brownfield 順序與上一季總論對齊、c 不用 49% 當量測值）。**11、12 月大綱要依 Codex 意見再修一輪再寫**：11 月—「沒人量過變異」不誠實（2608.25399 有 run-to-run variance）、變異篇實驗規模砍到 A0/A/B/C 各 N=10、全系列只用一個實驗案例、12 月獨佔數字不得在 11 月出現；12 月—OTel semconv 的 `invoke_agent`/`execute_tool` 要先實查、`outcome_verified` 不能只靠 human approval、burn-rate 加 `min_events`、error budget 與 YAML 矛盾、2608.23610 的 behavioural tuple 待全文、時程砍到三個工件；Codex 總判斷「12 月目前不合格，必須重切成 flight recorder / accountability，否則把爆炸半徑提前」。
 - [ ] LinkedIn 動態牆的 selector（目前靠「Feed post」切文字，只抓到 8 篇）。
 - [ ] `collect.sh` 還沒以單一腳本從頭跑過一次；第一次請逐段看。
