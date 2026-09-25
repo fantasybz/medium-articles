@@ -1,8 +1,8 @@
 # 綠燈不是驗收（三）可靠度篇：SWE-Gate 量測到的 34%—constraint tests、pass^k 與授權擴張的閘門
 
-> **TL;DR** — 三部曲最終篇，講 reliability gate：授權要不要擴張，該依據什麼判斷。SWE-Gate 在 75 個 Python repo、303 個修補任務上量測到：功能測試通過的 644 個修補裡，有 221 個（34%）違反 reviewer 實際加過的約束。這個落差帶出本篇的三項指標。**constraint pass rate**：在功能測試通過的 PR 中，統計 constraint tests 也全過的比例。**pass^k**：統計同一組任務中，k 次執行全部通過的 case 比例，與單次嘗試的成功率 pass@1 分開呈現。**oversight budget**：READY 的案例裡，兩個準確率只差 0.3 個百分點的系統，人工複核需求卻差近 10 個百分點；這來自臨床稽核，不能直接當成程式碼複核的人力估計。本篇借用從可靠度目標反推人力的概念，用簡化模型估算所需複核下限，再對照實際安排與可負擔預算。這些結果連同測試保護力與既有營運條件，納入 leadership 月報與 G2 的授權判斷，不靠 pass@1 單獨決定。
+> **TL;DR** — 四部曲第三篇討論 reliability gate：授權要不要擴張，該依據什麼判斷。SWE-Gate 在 75 個 Python repo、303 個修補任務上量測到：功能測試通過的 644 個修補裡，有 221 個（34%）違反 reviewer 實際加過的約束。這個落差帶出本篇的三項指標。**constraint pass rate**：在功能測試通過的 PR 中，統計 constraint tests 也全過的比例。**pass^k**：統計同一組任務中，k 次執行全部通過的 case 比例，與單次嘗試的成功率 pass@1 分開呈現。**oversight budget**：READY 的案例裡，兩個準確率只差 0.3 個百分點的系統，人工複核需求卻差近 10 個百分點；這來自臨床稽核，不能直接當成程式碼複核的人力估計。本篇借用從可靠度目標反推人力的概念，用簡化模型估算所需複核下限，再對照實際安排與可負擔預算。這些結果連同測試保護力與既有營運條件，納入 leadership 月報與 G2 的授權判斷，不靠 pass@1 單獨決定。
 
-> 系列導覽：[總論](https://medium.com/p/582f24223eea) → [一、測試篇](https://medium.com/p/b01055139451) → [二、Review 篇](https://medium.com/p/ccbf0cbe2691) → **三、可靠度篇（本篇）** → 付款實作篇（草稿完成，尚未排程）
+> 系列導覽：[總論](https://medium.com/p/582f24223eea) → [一、測試篇](https://medium.com/p/b01055139451) → [二、Review 篇](https://medium.com/p/ccbf0cbe2691) → **三、可靠度篇（本篇）** → 四、付款實作篇（草稿完成，尚未排程）
 
 ---
 
@@ -167,7 +167,7 @@ flowchart TB
 
 這條規則不能只靠掃描有沒有 `PENDING` 字串來驗證。隨文 [付款範例](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment) 讓 `FakeGateway` 在記錄成功扣款後拋出逾時，再透過 `Checkout.pay()` 重送同一張訂單與 key。測試同時確認結果維持 `PENDING`、沒有 payment ID，且金流呼叫與成功扣款都只有一筆。替身刻意不幫忙去重，才不會掩蓋應用程式缺少 guard 的錯誤。完整測試另外涵蓋扣款前逾時及其他連線例外。
 
-從 Review 挑出它的理由，是後果明確、預期結果可判定、需求會延續到後續修改，而且有人維護。命名偏好不必各建一個行為測試；尚未決定的退款政策，則要先確認需求。〈付款實作篇〉草稿把這些選擇、九個付款測試與七個指定 mutant 完整接起來，尚未設定發布日期。
+從 Review 挑出它的理由，是後果明確、預期結果可判定、需求會延續到後續修改，而且有人維護。命名偏好不必各建一個行為測試；尚未決定的退款政策，則要先確認需求。第四篇〈付款實作篇〉草稿把這些選擇、九個付款測試與七個指定 mutant 完整接起來，尚未設定發布日期。
 
 這裡也要守住量測的分母。完整測試辨識出 7／7 個指定變異，是這份測試套件在本例範圍內的 mutation score；不是 agent 的 constraint pass rate，也不是 pass^k。前者要統計多個功能檢查通過的候選修補，有多少也通過全部適用約束；後者要對固定任務進行多次獨立的 agent 嘗試。同一份 unittest 重跑五次，不能代替下一節要量測的五次 agent 成果。
 
@@ -546,17 +546,19 @@ G2 原本已經追蹤重試、外逸缺陷與 champions 的運作；新增四條
 
 > **綠燈告訴你已執行的功能檢查沒有失敗；constraint tests 補上團隊約束；pass^k 再檢查反覆執行的一致性。三者一起提供授權判斷的依據，誰也不能替其他兩個作保。**
 
-三部曲到這裡結束。它從一個問題開始：當測試是 agent 寫的，綠燈還算不算數。答案是還算數，但它只代表實際檢查過的那一層。其餘的約束、穩定性與人工複核需求，就要靠這三個數字繼續追蹤。
+走到 reliability gate，可以回頭回答系列最初的問題：當測試是 agent 寫的，綠燈還算不算數。答案是還算數，但它只代表實際檢查過的那一層。其餘的約束、穩定性與人工複核需求，就要靠這三個數字繼續追蹤。
+
+第四篇〈付款實作篇〉把焦點拉回一筆購買無糖純喫綠茶的訂單：從 Review 意見挑出約束，寫成測試，再檢查 mutation score 背後還漏了什麼。草稿已完成，尚未排程。它讓前三篇的判斷有一個可以重跑的起點，也保留本篇的提醒：單一付款範例的結果，仍不能代替一組任務反覆執行的可靠度證據。
 
 ---
 
 ### 系列文章
 
-1. [總論：綠燈不是驗收—agent 時代的測試、Review 與可靠度](https://medium.com/p/582f24223eea)
-2. [一、測試篇：怎麼審閱一份 agent 寫的測試—斷言鬆綁、凍結 bug 與 mutation score](https://medium.com/p/b01055139451)
-3. [二、Review 篇：Review 是控制點，不是瓶頸—分流、reviewer agent 艦隊與閉環禁令](https://medium.com/p/ccbf0cbe2691)
-4. **三、可靠度篇（本篇）**
-5. 付款實作篇：買一瓶無糖純喫綠茶，從 Review 約束走到 mutation score（草稿完成，尚未排程）
+- [總論：綠燈不是驗收—agent 時代的測試、Review 與可靠度](https://medium.com/p/582f24223eea)
+- [一、測試篇：怎麼審閱一份 agent 寫的測試—斷言鬆綁、凍結 bug 與 mutation score](https://medium.com/p/b01055139451)
+- [二、Review 篇：Review 是控制點，不是瓶頸—分流、reviewer agent 艦隊與閉環禁令](https://medium.com/p/ccbf0cbe2691)
+- **三、可靠度篇（本篇）**
+- 四、付款實作篇：買一瓶無糖純喫綠茶，從 Review 約束走到 mutation score（草稿完成，尚未排程）
 
 ---
 

@@ -1,6 +1,6 @@
 # A bottle of tea: payment, review constraints and mutation testing
 
-This is a runnable teaching example for the **綠燈不是驗收 / Green Is Not Done** series. The fictional order is one bottle of **無糖純喫綠茶 (unsweetened pure green tea)** for **NTD 35**. The price is illustrative. No real payment provider, network request, credential or external package is used. Python 3.10 or later is required.
+This is the runnable teaching example for **Part 4 — A Payment Walkthrough** in the **綠燈不是驗收 / Green Is Not Done** series, which consists of an overview and four parts. Read the article in [Chinese](../../2026-10-green-payment/article.md) or [English](../../2026-10-green-payment/article.en.md). The fictional order is one bottle of **無糖純喫綠茶 (unsweetened pure green tea)** for **NTD 35**. The price is illustrative. No real payment provider, network request, credential or external package is used. Python 3.10 or later is required.
 
 From the repository root:
 
@@ -30,11 +30,15 @@ The first six mutants change the charged amount (M1), skip an existing attempt (
 | Everything except the timeout test | 8 pass | 6 / 7 | 85.7% | M5 survives |
 | Complete teaching suite | 9 pass | 7 / 7 | 100.0% | None of these seven survive |
 
-These are **hand-seeded, executable, non-equivalent mutants**, not all mutations a tool could generate. There are zero excluded mutants in this example. The denominator stays seven in all three runs. Each run first checks that the original program passes its selected tests. A subprocess failure, timeout, zero-test result, test execution error, skipped test, expected failure, unexpected success or unexpected test selection aborts the experiment instead of being silently counted as a kill. Normal assertion failures identify killed mutants. Results are printed, not used as an automatic merge gate.
+These are **hand-seeded, executable, non-equivalent mutants**, not all mutations a tool could generate. There are zero excluded mutants in this example. The denominator stays seven in all three runs. Each run first checks that the original program passes its selected tests. A subprocess failure, timeout, zero-test result, test execution error, skipped test, expected failure, unexpected success, wrong test count or missing/renamed timeout test aborts the experiment instead of being silently counted as a kill. Normal assertion failures identify killed mutants. Results are printed, not used as an automatic merge gate.
 
 The saved [observed-mutations.json](observed-mutations.json) contains the executed results; rerunning the command reproduces them.
 
-The 85.7% result is deliberately incomplete: M5 violates a critical requirement despite exceeding the series' illustrative 70% threshold. The 70% comparison is illustrative: a hand-selected set cannot directly inherit a threshold for tool-generated mutants on a real diff. A team reviews the surviving failure mode rather than accepting the average. The 100% result covers only these seven mutations and these fixtures.
+The 85.7% result is deliberately incomplete: M5 violates a critical requirement despite exceeding the series' illustrative 70% threshold. The 70% comparison is illustrative: a hand-selected set cannot directly inherit a threshold for tool-generated mutants on a real diff. A team reviews the surviving failure mode rather than accepting the average. The 100% result covers only these seven mutations and these fixtures. It does not prove every test is individually effective: M2 is detected by several tests. An executed experiment in an isolated copy replaced the C1 replay test and C2 new-key/changed-order tests with empty `pass` bodies; all three scores remained unchanged and all 21 tests still passed. Individual failing-test lists changed. Inspect assertions and their mapping to mutants, or run a specific constraint test against a known violating version, before claiming that test has been validated. The original tests remain intact.
+
+This runner labels every undetected mutant `survived`; it does not measure coverage. The eight-test selection never executes M5’s timeout branch. Full tools distinguish that NoCoverage result from executed-but-undetected Survived, while retaining both in the ordinary score denominator. In the functional selection, M2/M3/M7 illustrate executed code whose changed behavior escapes the assertions; M4/M5 illustrate unexecuted exception branches.
+
+The runner checks counts and the uniquely named timeout test, not the identity of every selected test. Its JSON records failing test IDs, not assertion messages. Regression tests constrain the intended selections and kill sets; they do not independently validate every test’s assertions.
 
 The empty-key input guard is not included in the seven-mutant experiment. Neither the sample's 100% nor its selected tests claim exhaustive branch or input coverage. The runner's conservative error policy also differs from tools that classify test errors or timeouts as detected mutants; compare status definitions before comparing percentages.
 

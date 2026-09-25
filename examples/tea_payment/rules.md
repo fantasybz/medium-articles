@@ -11,6 +11,8 @@ All comments and owners below are **illustrative roles**, not historical PR evid
 
 The two functional tests check the purchased SKU/receipt and actual captured amount (M6 and M1). Those are also durable business requirements. The separate test classes make the narrative easier to follow; they do not imply functional requirements and constraints cannot overlap.
 
+The mapping above identifies relevant mutations, not independent proof for every test. M2 is killed by multiple tests. Replacing C1’s replay test and C2’s new-key/changed-order tests with empty bodies in an isolated copy leaves all three aggregate scores unchanged. A 7/7 result therefore cannot establish that those individual assertions are effective. Review the assertions and failing-test mapping, and isolate a constraint test against a known violating version when that evidence is needed.
+
 ## Choosing from review comments
 
 Retain a test when the comment identifies a consequential failure, describes a requirement expected to survive this PR, has a stable observable oracle and a maintainable test boundary, and has a human owner. Do not require an incident to happen twice before retaining a high-impact rule.

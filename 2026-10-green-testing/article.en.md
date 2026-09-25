@@ -2,7 +2,7 @@
 
 > **TL;DR** — The overview argues that when an agent writes both code and tests, and those tests have not been independently reviewed, green is insufficient for acceptance. This piece develops the test gate. Tests record the agent's understanding of the requirements, so they need review too. Four common risks are weakened assertions, existing bugs recorded as golden outputs, tests that fail to detect faults or exercise the wrong path, and coverage mistaken for quality. Human inspection alone is unreliable: in an experiment with 86 developers, accuracy on incorrect LLM-written assertions was only 49%, without lower confidence. **Assertion-change diff, red-then-green and diff-scoped mutation score** help identify these risks, each with costs and limits. The piece ends with a ten-question checklist and my workshop example of "all tests green, replay never executed." That example made the remaining task clear: beyond test effectiveness, someone must establish whether the implementation answers the original requirement.
 
-> Series: [Overview](https://medium.com/p/c4fc9f3d8581) → **1. Testing (this piece)** → 2. Review (coming soon) → 3. Reliability (coming soon) → Payment walkthrough (draft ready; unscheduled)
+> Series: [Overview](https://medium.com/p/c4fc9f3d8581) → **1. Testing (this piece)** → 2. Review (coming soon) → 3. Reliability (coming soon) → 4. Payment Walkthrough (draft ready; unscheduled)
 
 ---
 
@@ -14,7 +14,7 @@ On that distinction, CI performs checking. An agent saying "all tests passed" is
 
 The overview also put the first number on that line. SWE-Gate is a benchmark that, on patching tasks across a set of Python repos, runs a patch's functional tests separately from the constraints its reviewer stated. Among the patches that passed the functional tests, 34% violated a constraint. A green build does not cover those requirements the reviewer actually cares about.
 
-That is one layer a green build does not cover. This piece is about the layer in front of it: whether the tests themselves are any good. That is the first of the three gates, the test gate. The three gates are the three deep dives in this series — the test gate here, the review gate next, the reliability gate in the Reliability piece.
+That is one layer a green build does not cover. This piece is about the layer in front of it: whether the tests themselves are any good. That is the first of the three gates, the test gate. The first three parts develop one gate each: the test gate here, the review gate in the Review piece, and the reliability gate in the Reliability piece. Part 4, “A Payment Walkthrough,” uses one order to carry those decisions into code and tests.
 
 For the three-way split (the overview sorts evidence into three categories: the agent's statements, agent-written tests, and team-owned tests), and the promotion rule for when an agent-written test becomes the team's test, see section 2 of the overview; it isn't repeated here.
 
@@ -203,7 +203,7 @@ except TimeoutError:
 
 The experiment keeps seven hand-seeded, executable, non-equivalent mutants, with no exclusions. Two happy-path tests detect 2/7, or 28.6%. Adding the other constraints but omitting the timeout test detects 6/7, or 85.7%, while M5 survives. Restoring that test brings the nine-test suite to 7/7, or 100.0%. Each selection first passes on the original program, then runs against every mutant.
 
-The 70% comparison is illustrative; seven hand-selected mutants cannot directly inherit a threshold for tool-generated mutants on a real diff. Even though 85.7% exceeds 70%, it cannot justify approving this payment change: a critical constraint remains unprotected. The 100% result only describes these seven mutants. It does not verify real providers, concurrency or restarts. The demo uses sequential calls and a fake provider in one process. The unscheduled companion draft “A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score” develops the code, Review selections and denominator in full.
+The 70% comparison is illustrative; seven hand-selected mutants cannot directly inherit a threshold for tool-generated mutants on a real diff. Even though 85.7% exceeds 70%, it cannot justify approving this payment change: a critical constraint remains unprotected. The 100% result only describes these seven mutants. It does not verify real providers, concurrency or restarts. The demo uses sequential calls and a fake provider in one process. The unscheduled draft of “Part 4 — A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score” develops the code, Review selections and denominator in full.
 
 On tooling, the JVM has PIT, JS and TS have Stryker, Python has mutmut. How far each can be confined to the diff varies, so check how your stack does it before you start.
 
@@ -621,11 +621,11 @@ Reviewing the test suite this way gives the team firmer ground for the next ques
 
 ### The series
 
-1. [Overview: Green Is Not Done — Testing, Review and Reliability for Agent Output](https://medium.com/p/c4fc9f3d8581)
-2. **1. Testing (this piece)**
-3. 2. Review: Review Is the Control Point, Not the Bottleneck — Triage, Reviewer Fleets and the Closed-Loop Ban (coming soon)
-4. 3. Reliability: The 34% SWE-Gate Found Behind a Green Build — Constraint Tests, pass^k and the Gate for Expanding Autonomy (coming soon)
-5. A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score (draft ready; unscheduled)
+- [Overview: Green Is Not Done — Testing, Review and Reliability for Agent Output](https://medium.com/p/c4fc9f3d8581)
+- **Part 1 — Testing (this piece)**
+- Part 2 — Review: Review Is the Control Point, Not the Bottleneck — Triage, Reviewer Fleets and the Closed-Loop Ban (coming soon)
+- Part 3 — Reliability: The 34% SWE-Gate Found Behind a Green Build — Constraint Tests, pass^k and the Gate for Expanding Autonomy (coming soon)
+- Part 4 — A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score (draft ready; unscheduled)
 
 ---
 

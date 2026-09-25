@@ -28,7 +28,7 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 
 > **TL;DR** — When a team adopts coding agents and keeps seeing green CI, a growing review queue and production failures, it is worth asking whether its acceptance criteria have kept pace. If an agent writes both the implementation and its tests, without independent scrutiny of those tests, green only shows that it passed its own exam. In James Bach's terms, that is *checking*; it is not enough to complete *testing*. Three gates divide the work: the test gate assesses test effectiveness through mutation score; the review gate assigns who examines what; and the reliability gate uses constraint tests and pass^k to inform expanded authority. Section 1 sets out three positions: how humans review payment PRs, whether AI approvals count, and whether TDD can serve as a gate. Every number keeps its domain attached: SWE-Gate measured the finding that "34% of green patches violate reviewer constraints" across 75 Python repos. A 90-day blueprint closes the piece.
 
-> Series: **Overview (this piece)** → 1. Testing (coming soon) → 2. Review (coming soon) → 3. Reliability (coming soon) → Payment walkthrough (draft ready; unscheduled). Related reading, the Agentic Engineering series: [Don't Build Your Own Devin](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9) → [1. Org Design](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987) → [2. The Harness Blueprint](https://fantasybz.medium.com/agentic-engineering-part-2-the-harness-blueprint-making-your-system-legible-to-agents-3facc281f633) → [3. Evals and Unit Economics](https://fantasybz.medium.com/agentic-engineering-part-3-evals-unit-economics-and-scaling-running-agents-like-a-product-1cb1855a2046)
+> Series: **Overview (this piece)** → 1. Testing (coming soon) → 2. Review (coming soon) → 3. Reliability (coming soon) → 4. Payment Walkthrough (draft ready; unscheduled). Related reading, the Agentic Engineering series: [Don't Build Your Own Devin](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9) → [1. Org Design](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987) → [2. The Harness Blueprint](https://fantasybz.medium.com/agentic-engineering-part-2-the-harness-blueprint-making-your-system-legible-to-agents-3facc281f633) → [3. Evals and Unit Economics](https://fantasybz.medium.com/agentic-engineering-part-3-evals-unit-economics-and-scaling-running-agents-like-a-product-1cb1855a2046)
 
 ---
 
@@ -76,7 +76,7 @@ In plain language, checking takes a set of propositions someone has already writ
 
 There is nothing wrong with CI automating checking. What we need to distinguish is what CI actually executed, who validated the propositions in the tests, and how the agent described the result afterward. The words "all tests passed" are themselves only a claim.
 
-Once claims and execution results are separated, the next question is which results can support acceptance. This series distinguishes three sources, using the same labels in the three deep dives:
+Once claims and execution results are separated, the next question is which results can support acceptance. This series distinguishes three sources; that distinction guides the discussion of acceptance evidence throughout the four parts:
 
 - a) **The agent's statements**: "done," "all tests pass," "LGTM."
 - b) **Tests the agent wrote or modified**: green only proves it passed the questions it set for itself.
@@ -200,7 +200,7 @@ One component is shared by all three gates: constraint tests. Consider a bottle 
 
 In the accompanying [payment example](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment), two happy-path tests detect two of seven selected mutants, for a mutation score of 28.6%. Eight tests omitting the timeout case reach 85.7% while still missing an unknown payment marked successful. All nine tests detect all seven mutants. These are measured results from sequential calls to a fake provider in one process, not evidence about concurrency, restarts or real charges.
 
-The test gate supplies the individual results. At the review gate, someone who understands payments decides whether a surviving mutant violates a critical requirement; the percentage alone cannot authorize the change. Measuring constraint pass rate at the reliability gate changes the denominator to candidate PRs passing functional checks, then asks what share also pass every applicable constraint. One example passing nine tests does not measure an agent's long-term reliability. The unscheduled companion draft “A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score” develops the selection decisions, implementation and arithmetic.
+The test gate supplies the individual results. At the review gate, someone who understands payments decides whether a surviving mutant violates a critical requirement; the percentage alone cannot authorize the change. Measuring constraint pass rate at the reliability gate changes the denominator to candidate PRs passing functional checks, then asks what share also pass every applicable constraint. One example passing nine tests does not measure an agent's long-term reliability. The unscheduled draft of “Part 4 — A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score” develops the selection decisions, implementation and arithmetic.
 
 All three gates share one line of design philosophy: **designing the environment beats writing rules**.
 
@@ -421,19 +421,19 @@ One last prediction with a date on it, so that it can be checked and so that it 
 
 For me, the design returns to the engineer in the opening section who is asked whether the work has been tested. The next answer should give the engineer and reviewer something they can examine together: evidence, questions and an account of what still deserves investigation. Tools handle repeatable checks so people have room to continue that work.
 
-The three companion pieces develop the test, review and reliability gates in turn. To start with the PR in front of you, begin with “Reviewing the Tests an Agent Wrote” and ask what the tests that have already turned green actually protect.
+The four parts begin with the test, review and reliability gates, then connect constraints, tests and judgment through a payment for unsweetened green tea. To start with the PR in front of you, begin with “Reviewing the Tests an Agent Wrote” and ask what the tests that have already turned green actually protect.
 
 ---
 
 ### The series
 
-Three deep dives, one gate each:
+The overview and four parts make five articles: the first three parts develop one gate each; Part 4 connects them through a payment walkthrough.
 
-1. **Overview (this piece)**
-2. Part 1 — Reviewing the Tests an Agent Wrote: Loosened Assertions, Frozen Bugs and Mutation Score (coming soon)
-3. Part 2 — Review Is the Control Point, Not the Bottleneck: Triage, Reviewer Fleets and the Closed-Loop Ban (coming soon)
-4. Part 3 — The 34% SWE-Gate Found Behind a Green Build: Constraint Tests, pass^k and the Gate for Expanding Autonomy (coming soon)
-5. A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score (draft ready; unscheduled)
+- **Overview (this piece)**
+- Part 1 — Reviewing the Tests an Agent Wrote: Loosened Assertions, Frozen Bugs and Mutation Score (coming soon)
+- Part 2 — Review Is the Control Point, Not the Bottleneck: Triage, Reviewer Fleets and the Closed-Loop Ban (coming soon)
+- Part 3 — The 34% SWE-Gate Found Behind a Green Build: Constraint Tests, pass^k and the Gate for Expanding Autonomy (coming soon)
+- Part 4 — A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score (draft ready; unscheduled)
 
 Related reading, the Agentic Engineering series: [Overview](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9), [1. Org Design](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987), [2. The Harness Blueprint](https://fantasybz.medium.com/agentic-engineering-part-2-the-harness-blueprint-making-your-system-legible-to-agents-3facc281f633), [3. Evals and Unit Economics](https://fantasybz.medium.com/agentic-engineering-part-3-evals-unit-economics-and-scaling-running-agents-like-a-product-1cb1855a2046).
 

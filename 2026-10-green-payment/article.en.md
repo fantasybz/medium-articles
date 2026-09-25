@@ -1,8 +1,8 @@
-# Green Is Not Done — A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score
+# Green Is Not Done, Part 4 — A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score
 
 > **TL;DR** — You want to buy a bottle of unsweetened pure green tea, but the payment screen has stopped responding. Will pressing the button again charge you twice? This walkthrough uses a fictional NTD 35 order to connect the series' three gates: assign reviewers and reading depth by risk, select durable constraints from Review comments, turn them into tests, then choose relevant code for mutation testing. The runnable Python example executes seven explicitly selected mutants. Two happy-path tests kill two of them, for a score of 28.6%. Eight tests, omitting only the timeout case, reach 85.7% while still missing a payment incorrectly marked successful. All nine payment tests detect all seven mutants. That 100% describes the selected scope; it says nothing by itself about concurrency, restarts or a real provider integration.
 
-> Series: [Overview: Green Is Not Done](https://medium.com/p/c4fc9f3d8581) → [Testing](https://medium.com/p/51d001a6dcd5) → [Review](https://medium.com/p/4d36d0f2f9c1) → [Reliability](https://medium.com/p/4b6d147bff0d) → **Payment walkthrough (this piece)**. This article stands on its own; the four main pieces provide the research background and organizational design.
+> Series: [Overview: Green Is Not Done](https://medium.com/p/c4fc9f3d8581) → [1. Testing](https://medium.com/p/51d001a6dcd5) → [2. Review](https://medium.com/p/4d36d0f2f9c1) → [3. Reliability](https://medium.com/p/4b6d147bff0d) → **4. Payment Walkthrough (this piece)**. This article stands on its own; the overview and first three parts provide the research background and organizational design.
 
 ---
 
@@ -198,7 +198,7 @@ The branch that retains `PENDING` has no direct arrow to `PAID`. Lookup and reco
 
 Other provider exceptions propagate out of the method, but the pending record written before the call remains. A replay therefore does not send another charge. That early record needs its own protection. While developing the example, an independent Claude Code review identified this testing gap. The example was extended with a capture followed by a non-timeout connection error, plus M7, which removes the early record. Review identified a risk the initial selection had missed; mutation then checked whether the added test protected it.
 
-Mutation testing begins with a passing original program. Change one thing, run the selected tests and discard that mutated copy. An assertion failure caused by the changed behavior identifies a killed mutant; if the tests still pass, it survives.
+Mutation testing begins with a passing original program. Change one thing, run the selected tests and discard that mutated copy. An assertion failure caused by the changed behavior identifies a killed mutant. This simple runner labels every undetected mutant survived. It does not measure coverage, so that label also includes branches the selected tests never execute. Full tools distinguish NoCoverage from Survived, meaning executed but undetected; keep that distinction in mind when reading the tables.
 
 ---
 
@@ -232,7 +232,7 @@ When no counterexample is apparent, distinguish undefined requirements, unreacha
 
 ## 7. Calculate the score, then state what it leaves unanswered
 
-All seven mutants execute and are non-equivalent, so this experiment keeps a denominator of seven. Its mutation score is the number detected by tests divided by seven, multiplied by 100%. The denominator counts mutants, not tests. It is not the probability that the product has no bugs.
+All seven mutated programs are executable and non-equivalent, so this experiment keeps a denominator of seven. Its mutation score is the number detected by tests divided by seven, multiplied by 100%. The denominator counts mutants, not tests. It is not the probability that the product has no bugs.
 
 The accompanying `mutation_demo.py` was executed with three test selections. The original program passed each selection before the mutations ran:
 
@@ -242,15 +242,17 @@ The accompanying `mutation_demo.py` was executed with three test selections. The
 | Eight tests, omitting the timeout case | 6 / 7 | 85.7% | M5 |
 | All nine payment tests | 7 / 7 | 100.0% | None of these seven |
 
-The first two tests are real tests that exercise payment. They simply do not require the program to handle replay, key conflicts, declines or timeouts. Mutation makes that boundary visible.
+The first two tests are real tests that exercise payment. They simply do not require the program to handle replay, key conflicts, declines or timeouts. The locations changed by M2, M3 and M7 execute, yet the tests do not detect the behavioral differences: mutation asks more than whether a line ran. M4 and M5 never reach their exception branches, a gap branch coverage could also reveal.
 
-The second row deserves a pause. A team using only the Testing article's proposed starting threshold of 70% would see 85.7% as enough. Yet C4 remains partly unprotected: M5 changes `PENDING` to `PAID`, and all eight tests accept it. **An aggregate score above the threshold cannot compensate for an unverified critical payment constraint.** This PR needs the timeout case and evidence that it fails against M5.
+The second row deserves a pause. A team using only the Testing article's proposed starting threshold of 70% would see 85.7% as enough. Yet C4 remains partly unprotected: M5 changes `PENDING` to `PAID`, but none of these eight tests executes the timeout branch, so they cannot detect that error. **An aggregate score above the threshold cannot compensate for an unverified critical payment constraint.** This PR needs the timeout case and evidence that it fails against M5.
 
 The 70% comparison illustrates how an aggregate can hide a critical survivor. Seven manually selected mutants differ from the set a tool generates on changed lines, and the score depends on that selection. This small denominator cannot calibrate, or directly inherit, a real repository's threshold.
 
 The third row restores that timeout test and detects all seven mutants. It supports the claim that these nine tests catch these seven selected changes. It does not make the payment service “100% reliable.” Concurrency, restarts and provider integration do not acquire evidence merely because every mutant in this denominator was detected.
 
-The report must preserve why a test failed. This runner checks a clean baseline and verifies the intended test selection and count. It executes each mutant in a separate temporary directory and reports failing test names. Import errors, execution errors, missing tests or execution timeouts abort the experiment instead of quietly counting as kills. This is a conservative convention for the teaching runner, not a claim about every production mutation tool's default classification.
+Nor does 100% prove that every test is individually effective. M2 fails several tests at once. In an isolated copy, replacing C1’s replay test and C2’s new-key and changed-order tests with empty `pass` bodies still produced 28.6%, 85.7% and 100%. Other tests continued to detect M2, hiding three tests that had lost their assertions. This counterexample was executed; the original example retains its tests. Review must also inspect assertions and individual failing-test results. Where needed, run a constraint’s test alone against a version that violates its requirement.
+
+The report must also explain its classification. This runner checks a passing baseline, each selection’s test count and the timeout test’s name. It executes each mutant in a separate temporary directory, distinguishes assertion failures from execution errors and reports failing test names. It does not lock every test’s identity or include assertion messages in the JSON. Import errors, execution errors, missing tests or execution timeouts abort the experiment instead of quietly counting as kills. This is a conservative convention for the teaching runner, not a claim about every production mutation tool's default classification.
 
 There are two different levels of timeout here. M5 changes how the payment code handles `TimeoutError`; its tests finish normally. A mutation tool's execution timeout means the mutant's test process exceeded a time limit. Stryker counts the latter as detected, while this runner aborts. Neither means that every payment timeout counts as a detected bug.
 
@@ -305,17 +307,17 @@ For the engineering team, the example connects three selections: choose reviewer
 
 I would not turn 100% into a new acceptance slogan. The number I want to leave with the reader is 85.7%. It looks reassuring, yet the payment outcome can still be reported incorrectly. A reviewer who can name the missing scenario, rule and mutant has evidence with which to act.
 
-The tea's price is just an illustration. What deserves care is that someone entrusted a payment to this system. The team needs to explain what it has checked and which questions still need verification.
+The four parts bring us back to the person waiting for a payment result. The tea's price is just an illustration. What deserves care is that someone entrusted a payment to this system. The team needs to explain what it has checked and which questions still need verification.
 
 ---
 
 ### Series
 
 - [Overview: Green Is Not Done](https://medium.com/p/c4fc9f3d8581): three gates and their adoption order.
-- [Testing](https://medium.com/p/51d001a6dcd5): checking whether tests distinguish incorrect behavior.
-- [Review](https://medium.com/p/4d36d0f2f9c1): human judgment, risk triage and approval responsibility.
-- [Reliability](https://medium.com/p/4b6d147bff0d): retaining reviewer constraints and measuring candidate patches and repeated attempts.
-- **Payment walkthrough (this piece)**: connecting selection, tests and evidence through one bottle of tea.
+- [1. Testing](https://medium.com/p/51d001a6dcd5): checking whether tests distinguish incorrect behavior.
+- [2. Review](https://medium.com/p/4d36d0f2f9c1): human judgment, risk triage and approval responsibility.
+- [3. Reliability](https://medium.com/p/4b6d147bff0d): retaining reviewer constraints and measuring candidate patches and repeated attempts.
+- **4. Payment Walkthrough (this piece)**: connecting selection, tests and evidence through one bottle of tea.
 
 ### References
 
