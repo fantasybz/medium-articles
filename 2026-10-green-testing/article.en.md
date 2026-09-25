@@ -2,7 +2,7 @@
 
 > **TL;DR** — The overview argues that when an agent writes both code and tests, and those tests have not been independently reviewed, green is insufficient for acceptance. This piece develops the test gate. Tests record the agent's understanding of the requirements, so they need review too. Four common risks are weakened assertions, existing bugs recorded as golden outputs, tests that fail to detect faults or exercise the wrong path, and coverage mistaken for quality. Human inspection alone is unreliable: in an experiment with 86 developers, accuracy on incorrect LLM-written assertions was only 49%, without lower confidence. **Assertion-change diff, red-then-green and diff-scoped mutation score** help identify these risks, each with costs and limits. The piece ends with a ten-question checklist and my workshop example of "all tests green, replay never executed." That example made the remaining task clear: beyond test effectiveness, someone must establish whether the implementation answers the original requirement.
 
-> Series: [Overview](https://medium.com/p/c4fc9f3d8581) → **1. Testing (this piece)** → 2. Review (coming soon) → 3. Reliability (coming soon)
+> Series: [Overview](https://medium.com/p/c4fc9f3d8581) → **1. Testing (this piece)** → 2. Review (coming soon) → 3. Reliability (coming soon) → 4. Payment Walkthrough (draft ready; unscheduled)
 
 ---
 
@@ -14,7 +14,7 @@ On that distinction, CI performs checking. An agent saying "all tests passed" is
 
 The overview also put the first number on that line. SWE-Gate is a benchmark that, on patching tasks across a set of Python repos, runs a patch's functional tests separately from the constraints its reviewer stated. Among the patches that passed the functional tests, 34% violated a constraint. A green build does not cover those requirements the reviewer actually cares about.
 
-That is one layer a green build does not cover. This piece is about the layer in front of it: whether the tests themselves are any good. That is the first of the three gates, the test gate. The three gates are the three deep dives in this series — the test gate here, the review gate next, the reliability gate in the Reliability piece.
+That is one layer a green build does not cover. This piece is about the layer in front of it: whether the tests themselves are any good. That is the first of the three gates, the test gate. The first three parts develop one gate each: the test gate here, the review gate in the Review piece, and the reliability gate in the Reliability piece. Part 4, “A Payment Walkthrough,” uses one order to carry those decisions into code and tests.
 
 For the three-way split (the overview sorts evidence into three categories: the agent's statements, agent-written tests, and team-owned tests), and the promotion rule for when an agent-written test becomes the team's test, see section 2 of the overview; it isn't repeated here.
 
@@ -183,7 +183,27 @@ These discussions bring me back to one question: a process can have the right sh
 
 The gate version starts with CI listing surviving mutants, then distinguishes test gaps from equivalent mutants. Equivalent mutants preserve observable behavior, so tests cannot distinguish them from the original. Exclude confirmed equivalents with a recorded reason, have the agent add tests for the remaining gaps, and reserve human attention for cases requiring judgment. That avoids handing every entire report back to a reviewer.
 
-The threshold is my recommended value, not an industry standard: mutation score on the agent's changed lines ≥ 70% before the PR enters review, with a month of reports before the gate begins blocking PRs that fall short. The number draws on Uncle Bob’s practice and my initial estimate. It still needs calibration against my own pilot data; it is not a validated universal threshold.
+The threshold is my recommendation, not an industry standard: start with a mutation score of ≥ 70% on agent-changed lines as a pre-merge reference, reporting for a month before blocking PRs that fall short. The number draws on Uncle Bob's practice and my initial estimate. It needs calibration against my own pilot data, rather than being a validated universal threshold. Review can establish specifications and select tests earlier; even an above-threshold score still needs examination of critical risks.
+
+**A payment makes the percentage's limits visible.** The accompanying [runnable example](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment) buys a bottle of 無糖純喫綠茶, unsweetened pure green tea, at an illustrative NTD 35. A fake provider records a capture and then raises a timeout. The application only knows that the response was lost, so it must retain `PENDING`. A reviewer preserves the requirement that an unknown outcome must not appear successful and replay must not charge again. That constraint test also protects functional behavior; the terms are not mutually exclusive.
+
+The test calls `Checkout.pay()` twice with the same order and key, checks that the result remains `PENDING` without a payment ID, and verifies there was only one provider call. The full version also covers a timeout before capture, so “unknown” does not become “definitely charged.” Its oracle, the expected result used to judge correctness, comes from the agreed payment requirement, not from asking the implementation to calculate its own answer.
+
+M5 deliberately breaks that branch:
+
+```python
+# Original payment code
+except TimeoutError:
+    receipt = replace(receipt, status="PENDING")
+
+# M5: the intentionally incorrect variant
+except TimeoutError:
+    receipt = replace(receipt, status="PAID")
+```
+
+The experiment keeps seven hand-seeded, executable, non-equivalent mutants, with no exclusions. Two happy-path tests detect 2/7, or 28.6%. Adding the other constraints but omitting the timeout test detects 6/7, or 85.7%, while M5 survives. Restoring that test brings the nine-test suite to 7/7, or 100.0%. Each selection first passes on the original program, then runs against every mutant.
+
+The 70% comparison is illustrative; seven hand-selected mutants cannot directly inherit a threshold for tool-generated mutants on a real diff. Even though 85.7% exceeds 70%, it cannot justify approving this payment change: a critical constraint remains unprotected. The 100% result only describes these seven mutants. It does not verify real providers, concurrency or restarts. The demo uses sequential calls and a fake provider in one process. The unscheduled draft of “Part 4 — A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score” develops the code, Review selections and denominator in full.
 
 On tooling, the JVM has PIT, JS and TS have Stryker, Python has mutmut. How far each can be confined to the diff varies, so check how your stack does it before you start.
 
@@ -191,7 +211,7 @@ Put this section's two thresholds next to the thresholds for the other two check
 
 | Item | My recommended value | Notes |
 |---|---|---|
-| Mutation score (agent-changed lines) | ≥ 70% before entering review | Report for a month, then block |
+| Mutation score (agent-changed lines) | ≥ 70% starting reference; review critical constraints separately | Report for a month, then block |
 | Run time of the affected subset | < 10 minutes before turning mutation on | Repos over that install the first three checks first |
 | assertion-change diff | Removal and disabling always block; strength drops and precision relaxations block | Other changes to existing assertions get `needs-human-test-review` |
 | red-then-green | Only for PRs that change existing behavior | The classification doesn't come from the PR author |
@@ -601,10 +621,11 @@ Reviewing the test suite this way gives the team firmer ground for the next ques
 
 ### The series
 
-1. [Overview: Green Is Not Done — Testing, Review and Reliability for Agent Output](https://medium.com/p/c4fc9f3d8581)
-2. **1. Testing (this piece)**
-3. 2. Review: Review Is the Control Point, Not the Bottleneck — Triage, Reviewer Fleets and the Closed-Loop Ban (coming soon)
-4. 3. Reliability: The 34% SWE-Gate Found Behind a Green Build — Constraint Tests, pass^k and the Gate for Expanding Autonomy (coming soon)
+- [Overview: Green Is Not Done — Testing, Review and Reliability for Agent Output](https://medium.com/p/c4fc9f3d8581)
+- **Part 1 — Testing (this piece)**
+- Part 2 — Review: Review Is the Control Point, Not the Bottleneck — Triage, Reviewer Fleets and the Closed-Loop Ban (coming soon)
+- Part 3 — Reliability: The 34% SWE-Gate Found Behind a Green Build — Constraint Tests, pass^k and the Gate for Expanding Autonomy (coming soon)
+- Part 4 — A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score (draft ready; unscheduled)
 
 ---
 
@@ -623,6 +644,7 @@ Reviewing the test suite this way gives the team firmer ground for the next ques
 11. Bojie Li, *AI Agents in Depth: Design Principles and Engineering Practice* v2.0 — [Chapter 7, Evaluating Agents](https://bojieli.github.io/ai-agent-book/book-en/chapter7/) (2026-09-06; §7.5.2, the coding-agent failure-attribution table). Section 2.
 12. Quartic.ai — [Letting an Agent Upgrade Production Kubernetes — Without Getting Paged at 3 AM](https://sched.co/2QlD9) (AGNTCon + MCPCon Japan 2026, 2026-09-10; [slides](https://hosted-files.sched.co/agntconmcpconjapan26/d9/AGNTCon-MCPCon-Japan-2026_Abhijeet_Sanskar_final.pdf#page=29), slide 29). Section 5.
 13. Spring Framework documentation — [@DirtiesContext](https://docs.spring.io/spring-framework/reference/testing/annotations/integration-spring/annotation-dirtiescontext.html), explaining context invalidation, removal and rebuilding (section 7).
+14. Accompanying implementation — [Tea payment, constraint tests and seven selected mutants](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment) [section 4; measured teaching example, no real provider]
 
 ---
 

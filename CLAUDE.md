@@ -20,6 +20,7 @@ historical voice analyses must not override this shared standard.
 ```bash
 python3 tools/test_tools.py
 python3 -m unittest research/scripts/test_research_scripts.py
+python3 -B -m unittest discover -s examples/tea_payment -p 'test_*.py' -v
 ```
 
 Stdlib `unittest`, no dependencies, no network, no browser. Covers the parts of
@@ -67,6 +68,16 @@ writes `codex-review-<slug>.md` are both covered without a Codex session. The
 extractors, `collect.sh`, `mermaid_check*.sh` and `render_images.sh` need a
 browser or the macOS Keychain, so they are not in it; like `medium_draft.sh`,
 they check their own output at run time.
+
+The third command covers the [tea payment teaching example](examples/tea_payment/README.md):
+nine payment tests and twelve mutation-runner regression tests, all offline with
+the standard library on Python 3.10 or later. Run
+`python3 -B examples/tea_payment/mutation_demo.py` to reproduce the three scores
+for the same seven hand-seeded mutants. The runner tests are separate from both
+the payment-test count and the score denominator. This sequential, in-memory
+fake-provider example is not a deployable payment service; its reviewed rules
+and evidence limits are documented in [rules.md](examples/tea_payment/rules.md)
+and the [research record](research/2026-10/payment-example-evidence.md).
 
 Expectations for changes in `tools/`, and for any `research/scripts/` code that
 runs offline (the pure Python the second suite imports):

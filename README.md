@@ -12,10 +12,11 @@ Medium articles by [@fantasybz](https://medium.com/@fantasybz) — long-form pos
 | 2026-09 | [三部曲（一）組織篇：誰來做？Platform + Federation 的組織設計實務](2026-09-agentic-org-design/article.md) | [EN](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987) | [已發布](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%80-%E8%AA%B0%E4%BE%86%E5%81%9A-platform-federation-%E7%9A%84%E7%B5%84%E7%B9%94%E8%A8%AD%E8%A8%88%E5%AF%A6%E5%8B%99-9d9353ef7f3a) | [PUBLISHED.md](2026-09-agentic-org-design/publish/PUBLISHED.md) |
 | 2026-10 | [三部曲（二）技術篇：Harness 藍圖—把系統變成 agent 讀得懂的地方](2026-10-agentic-harness-blueprint/article.md) | [EN](https://fantasybz.medium.com/agentic-engineering-part-2-the-harness-blueprint-making-your-system-legible-to-agents-3facc281f633) | [已發布](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%BA%8C-harness-%E8%97%8D%E5%9C%96-%E6%8A%8A%E7%B3%BB%E7%B5%B1%E8%AE%8A%E6%88%90-agent-%E8%AE%80%E5%BE%97%E6%87%82%E7%9A%84%E5%9C%B0%E6%96%B9-f2a139f5b561) | [PUBLISHED.md](2026-10-agentic-harness-blueprint/publish/PUBLISHED.md) |
 | 2026-11 | [三部曲（三）營運篇：Eval、單位經濟與規模化—把 agent 當產品營運](2026-11-agentic-eval-economics/article.md) | [EN](https://fantasybz.medium.com/agentic-engineering-part-3-evals-unit-economics-and-scaling-running-agents-like-a-product-1cb1855a2046) | [已發布](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%89-eval-%E5%96%AE%E4%BD%8D%E7%B6%93%E6%BF%9F%E8%88%87%E8%A6%8F%E6%A8%A1%E5%8C%96-%E6%8A%8A-agent-%E7%95%B6%E7%94%A2%E5%93%81%E7%87%9F%E9%81%8B-d6d9623c2dc6) | [PUBLISHED.md](2026-11-agentic-eval-economics/publish/PUBLISHED.md) |
-| 2026-10 | [綠燈不是驗收：agent 時代的測試、Review 與可靠度](2026-10-green-overview/article.md)（第二個系列的總論） | [EN](2026-10-green-overview/article.en.md) | 已排程 10/06（二）09:00 發布；英文版已排程 10/08（四）09:00（GMT+8）；佇列見 [PUBLISHING.md](PUBLISHING.md) | [PUBLISHED.md](2026-10-green-overview/publish/PUBLISHED.md) |
+| 2026-10 | [綠燈不是驗收：agent 時代的測試、Review 與可靠度](2026-10-green-overview/article.md)（四部曲總論） | [EN](2026-10-green-overview/article.en.md) | 已排程 10/06（二）09:00 發布；英文版已排程 10/08（四）09:00（GMT+8）；佇列見 [PUBLISHING.md](PUBLISHING.md) | [PUBLISHED.md](2026-10-green-overview/publish/PUBLISHED.md) |
 | 2026-10 | [綠燈不是驗收（一）測試篇：怎麼審閱一份 agent 寫的測試—斷言鬆綁、凍結 bug 與 mutation score](2026-10-green-testing/article.md) | [EN](2026-10-green-testing/article.en.md) | 已排程 10/13（二）09:00 發布；英文版已排程 10/15（四）09:00（GMT+8）；佇列見 [PUBLISHING.md](PUBLISHING.md) | [PUBLISHED.md](2026-10-green-testing/publish/PUBLISHED.md) |
 | 2026-10 | [綠燈不是驗收（二）Review 篇：Review 是控制點，不是瓶頸—分流、reviewer agent 艦隊與閉環禁令](2026-10-green-review/article.md) | [EN](2026-10-green-review/article.en.md) | 已排程 10/20（二）09:00 發布；英文版已排程 10/22（四）09:00（GMT+8）；佇列見 [PUBLISHING.md](PUBLISHING.md) | [PUBLISHED.md](2026-10-green-review/publish/PUBLISHED.md) |
 | 2026-10 | [綠燈不是驗收（三）可靠度篇：SWE-Gate 量測到的 34%—constraint tests、pass^k 與授權擴張的閘門](2026-10-green-reliability/article.md) | [EN](2026-10-green-reliability/article.en.md) | 已排程 10/27（二）09:00 發布；英文版已排程 10/29（四）09:00（GMT+8）；佇列見 [PUBLISHING.md](PUBLISHING.md) | [PUBLISHED.md](2026-10-green-reliability/publish/PUBLISHED.md) |
+| 未排程 | [綠燈不是驗收（四）付款實作篇：買一瓶無糖純喫綠茶，從 Review 約束走到 mutation score](2026-10-green-payment/article.md) | [EN](2026-10-green-payment/article.en.md) | Medium 完整草稿：[中](https://medium.com/p/46377fd460fe/edit)／[EN](https://medium.com/p/20452944263b/edit)，皆未排程 | [中](2026-10-green-payment/publish/PUBLISHED.md)／[EN](2026-10-green-payment/publish/en/PUBLISHED.md) |
 
 ## Structure
 
@@ -41,8 +42,22 @@ YYYY-MM-slug/
 下個月寫什麼，由 [research/](research/README.md) 的每月迴圈決定：收集 X / Facebook /
 LinkedIn / Medium stats / arXiv / Notion 的訊號 → 四份 digest（哪幾份進 git、哪幾份只留本機，見
 research/README.md 的「資料來源」）→ workflow 提案、評審、選題 →
-每個主題一份「總論 + 三部曲」大綱，落選的進 backlog。第一圈的產出在
+每個主題原先以「總論 + 三部曲」規劃大綱，落選的進 backlog。第一圈的產出在
 [research/2026-09/](research/2026-09/)。
+
+「綠燈不是驗收」依作者要求擴為「總論＋四部曲」，共五篇文章、十份中英原稿。第四篇〈付款實作篇〉採用定向研究：一手來源 → 證據摘要與可重跑實驗 → Claude Code／Codex 獨立審閱 → 修訂與雙語交付。
+來源、適用界線與審閱後的修正在 [付款實作研究紀錄](research/2026-10/payment-example-evidence.md)；這次沿用既有主題，沒有重新執行整月選題。
+
+## Runnable examples
+
+[examples/tea_payment](examples/tea_payment/README.md) 讓讀者重跑付款實作篇的實驗。需要 Python 3.10 以上，從 repo 根目錄執行：
+
+```bash
+python3 -B -m unittest discover -s examples/tea_payment -p 'test_*.py' -v
+python3 -B examples/tea_payment/mutation_demo.py
+```
+
+第一個命令執行 9 個付款測試與 12 個 mutation runner 回歸測試；第二個命令對同一組 7 個人工指定變異比較三種測試選擇，輸出 28.6%、85.7%、100.0%。[rules.md](examples/tea_payment/rules.md) 說明 Review 意見如何對應到約束、測試與變異。範例使用假金流、單行程記憶體與依序呼叫，不會真的扣款；100% 只涵蓋這 7 個變異，不能作為正式付款服務的安全保證。
 
 ## Publishing
 

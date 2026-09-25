@@ -28,7 +28,7 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 
 > **TL;DR** — 總論說：當實作與測試都由 agent 撰寫、測試尚未經獨立審查，綠燈還不足以支持驗收。這一篇講 test gate 的工具。測試寫下了 agent 對需求的理解，因此也需要被審閱。常見風險有四種：斷言被鬆綁、現狀 bug 被錄成 golden、測試無法辨識錯誤或走的不是規格要求的路徑、覆蓋率被當成品質。單靠人眼並不可靠：一項 86 位開發者的實驗裡，判斷 LLM 所寫錯誤斷言的準確率只有 49%，信心卻沒降。本篇用 **assertion-change diff、red-then-green、diff-scoped mutation score** 協助辨識這些風險，並交代各自的成本與限制。文末附 tester 審閱測試的十題 checklist，以及我在模式語言工作坊遇到的「測試全綠、replay 從未執行」實例。那個例子讓我看見：測試有效性之外，還得有人確認實作是否回應了原本的需求。
 
-> 系列導覽：[總論](https://medium.com/p/582f24223eea) → **一、測試篇（本篇）** → 二、Review 篇（即將發布） → 三、可靠度篇（即將發布）
+> 系列導覽：[總論](https://medium.com/p/582f24223eea) → **一、測試篇（本篇）** → 二、Review 篇（即將發布） → 三、可靠度篇（即將發布） → 四、付款實作篇（草稿完成，尚未排程）
 
 ---
 
@@ -40,7 +40,7 @@ James Bach 是 Context-Driven Testing 與 Rapid Software Testing 方法論的作
 
 總論也給了這條界線的第一個數字。SWE-Gate 這個 benchmark 在一批 Python repo 的修補任務上，把功能測試與 reviewer 提出的約束（constraint）分開執行檢查，結果是通過功能測試的修補裡，有 34% 違反了約束。也就是說，綠燈沒有涵蓋 reviewer 真正在乎的那些要求。
 
-那是綠燈無法涵蓋的其中一層。本篇要談的是更前面的另一層：測試本身有沒有用。這是三道閘裡的第一道，test gate。三道閘就是這個系列的三篇深掘，test gate 在本篇，review gate 是下一篇，reliability gate 在可靠度篇。
+那是綠燈無法涵蓋的其中一層。本篇要談的是更前面的另一層：測試本身有沒有用。這是三道閘裡的第一道，test gate。四部曲的前三篇分別深入這三道閘：test gate 在本篇，review gate 在〈Review 篇〉，reliability gate 在〈可靠度篇〉。第四篇〈付款實作篇〉再用同一筆訂單，把前三篇的判斷落到程式與測試上。
 
 至於三分法（agent 的陳述、agent 寫的測試、團隊擁有的測試），以及「什麼時候 agent 寫的測試才算團隊的測試」這條升格規則，總論第二節已經寫過，這裡不重列。
 
@@ -154,7 +154,27 @@ agent 讓測試產出變快，也讓逐份人工審閱更難負擔，因此更�
 
 閘門版先讓 CI 列出存活的 mutant，再區分需要補測試的缺口與 equivalent mutant。後者指變動前後的可觀察行為相同，測試原本就無法區分。可確認的等價變異應排除並留下理由，其餘缺口再交給 agent 補測試，由人判讀需要裁量的部分。這樣才不會把每份報告全部丟回 reviewer。
 
-門檻是我的建議值，不是業界標準：agent 改動行的 mutation score ≥ 70% 才進入 review。導入時先提供一個月的報告，再開始阻擋未達標的 PR。這個數字參考 Uncle Bob 的做法，再加上我的初步估計，尚待自己的試行資料校準；它不是已經驗證過的通用門檻。
+門檻是我的建議值，不是業界標準：先以 agent 改動行的 mutation score ≥ 70% 作為合併前的起始參考。導入時先提供一個月的報告，再開始阻擋未達標的 PR。這個數字參考 Uncle Bob 的做法，再加上我的初步估計，尚待自己的試行資料校準；它不是已經驗證過的通用門檻。Review 可以提早確認規格與挑選測試，分數過線則仍要逐項判讀關鍵風險。
+
+**用付款把百分比的限制看清楚。** 隨文新增的 [可執行範例](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment)，是一瓶示範售價 35 元的無糖純喫綠茶。金流替身先記錄扣款，再拋出逾時；應用程式只知道回覆遺失，因此要保留 `PENDING`。Reviewer 將「未知結果不得冒充成功，重送不得再次扣款」留下來，成為 constraint test。它同時也是功能行為的要求，兩個名稱並不互斥。
+
+這個測試會用同一張訂單與 key 呼叫兩次 `Checkout.pay()`，確認回覆維持 `PENDING`、沒有 payment ID，金流呼叫仍只有一次。完整版本另外涵蓋扣款前就逾時的情境，避免把「不知道」誤解成「一定已經扣款」。這個 oracle，也就是測試用來判斷對錯的預期結果，來自事先確認的付款要求，不是由待測程式幫自己算答案。
+
+M5 故意把這一個分支改壞：
+
+```python
+# 原始付款程式
+except TimeoutError:
+    receipt = replace(receipt, status="PENDING")
+
+# M5：示範中的錯誤變異
+except TimeoutError:
+    receipt = replace(receipt, status="PAID")
+```
+
+實測固定使用七個人工指定、可執行且不等價的 mutant，沒有排除項目。只有兩個正常購買測試時，抓到 2／7，分數 28.6%；加入其他約束、唯獨漏掉逾時測試時，抓到 6／7，分數已達 85.7%。M5 卻仍然存活。補回逾時測試後，九個測試辨識出全部七個變異，得到 100.0%。每組都先確認原始程式通過，再對每個變異執行所選測試。
+
+這裡用 70% 作教學對照；手選七個 mutant 不能直接套用工具在真實 diff 上的門檻。即使只看數字，85.7% 超過 70%，仍不足以核准這筆付款變更，因為關鍵約束尚未被保護。100% 也只代表這七個指定變異被辨識，並非真實金流、並行或行程重新啟動都已驗證。這個範例使用同一行程內的假金流與依序呼叫，完整程式、Review 的挑選理由與分母說明，已整理在第四篇〈付款實作篇：買一瓶無糖純喫綠茶，從 Review 約束走到 mutation score〉草稿中，尚未設定發布日期。
 
 工具方面，JVM 有 PIT、JS 與 TS 有 Stryker、Python 有 mutmut。能不能限定在 diff 範圍，各家支援程度不同，動手前先確認你那套的做法。
 
@@ -439,10 +459,11 @@ Lisa Crispin 與 Tip House 的《Testing Extreme Programming》說「人人都�
 
 ### 系列文章
 
-1. [總論：綠燈不是驗收—agent 時代的測試、Review 與可靠度](https://medium.com/p/582f24223eea)
-2. **一、測試篇（本篇）**
-3. 二、Review 篇：Review 是控制點，不是瓶頸—分流、reviewer agent 艦隊與閉環禁令（即將發布）
-4. 三、可靠度篇：SWE-Gate 量測到的 34%—constraint tests、pass^k 與授權擴張的閘門（即將發布）
+- [總論：綠燈不是驗收—agent 時代的測試、Review 與可靠度](https://medium.com/p/582f24223eea)
+- **一、測試篇（本篇）**
+- 二、Review 篇：Review 是控制點，不是瓶頸—分流、reviewer agent 艦隊與閉環禁令（即將發布）
+- 三、可靠度篇：SWE-Gate 量測到的 34%—constraint tests、pass^k 與授權擴張的閘門（即將發布）
+- 四、付款實作篇：買一瓶無糖純喫綠茶，從 Review 約束走到 mutation score（草稿完成，尚未排程）
 
 ---
 
@@ -461,6 +482,7 @@ Lisa Crispin 與 Tip House 的《Testing Extreme Programming》說「人人都�
 11. 李博杰《深入理解 AI Agent：設計原理與工程實踐》v2.0 — [第七章〈Agent 的評估〉](https://bojieli.github.io/ai-agent-book/book-en/chapter7/)（2026-09-06，§7.5.2 失敗歸因的 Coding Agent 錯誤分類表）〔第二節〕
 12. Quartic.ai — [Letting an Agent Upgrade Production Kubernetes — Without Getting Paged at 3 AM](https://sched.co/2QlD9)（AGNTCon + MCPCon Japan 2026，2026-09-10；[講者投影片](https://hosted-files.sched.co/agntconmcpconjapan26/d9/AGNTCon-MCPCon-Japan-2026_Abhijeet_Sanskar_final.pdf#page=29) slide 29）〔第五節〕
 13. Spring Framework 官方文件 — [@DirtiesContext](https://docs.spring.io/spring-framework/reference/testing/annotations/integration-spring/annotation-dirtiescontext.html)，說明測試 context 的失效、移除與重建〔第七節〕。
+14. 隨文實作 — [無糖純喫綠茶付款、constraint tests 與七個指定 mutant](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment)〔第四節；教學案例與實測，非真實金流〕
 
 ---
 

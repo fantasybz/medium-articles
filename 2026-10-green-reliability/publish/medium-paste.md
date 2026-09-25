@@ -26,9 +26,9 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 
 # 綠燈不是驗收（三）可靠度篇：SWE-Gate 量測到的 34%—constraint tests、pass^k 與授權擴張的閘門
 
-> **TL;DR** — 三部曲最終篇，講 reliability gate：授權要不要擴張，該依據什麼判斷。SWE-Gate 在 75 個 Python repo、303 個修補任務上量測到：功能測試通過的 644 個修補裡，有 221 個（34%）違反 reviewer 實際加過的約束。這個落差帶出本篇的三項指標。**constraint pass rate**：在功能測試通過的 PR 中，統計 constraint tests 也全過的比例。**pass^k**：統計同一組任務中，k 次執行全部通過的 case 比例，與單次嘗試的成功率 pass@1 分開呈現。**oversight budget**：READY 的案例裡，兩個準確率只差 0.3 個百分點的系統，人工複核需求卻差近 10 個百分點；這來自臨床稽核，不能直接當成程式碼複核的人力估計。本篇借用從可靠度目標反推人力的概念，用簡化模型估算所需複核下限，再對照實際安排與可負擔預算。這些結果連同測試保護力與既有營運條件，納入 leadership 月報與 G2 的授權判斷，不靠 pass@1 單獨決定。
+> **TL;DR** — 四部曲第三篇討論 reliability gate：授權要不要擴張，該依據什麼判斷。SWE-Gate 在 75 個 Python repo、303 個修補任務上量測到：功能測試通過的 644 個修補裡，有 221 個（34%）違反 reviewer 實際加過的約束。這個落差帶出本篇的三項指標。**constraint pass rate**：在功能測試通過的 PR 中，統計 constraint tests 也全過的比例。**pass^k**：統計同一組任務中，k 次執行全部通過的 case 比例，與單次嘗試的成功率 pass@1 分開呈現。**oversight budget**：READY 的案例裡，兩個準確率只差 0.3 個百分點的系統，人工複核需求卻差近 10 個百分點；這來自臨床稽核，不能直接當成程式碼複核的人力估計。本篇借用從可靠度目標反推人力的概念，用簡化模型估算所需複核下限，再對照實際安排與可負擔預算。這些結果連同測試保護力與既有營運條件，納入 leadership 月報與 G2 的授權判斷，不靠 pass@1 單獨決定。
 
-> 系列導覽：[總論](https://medium.com/p/582f24223eea) → [一、測試篇](https://medium.com/p/b01055139451) → [二、Review 篇](https://medium.com/p/ccbf0cbe2691) → **三、可靠度篇（本篇）**
+> 系列導覽：[總論](https://medium.com/p/582f24223eea) → [一、測試篇](https://medium.com/p/b01055139451) → [二、Review 篇](https://medium.com/p/ccbf0cbe2691) → **三、可靠度篇（本篇）** → 四、付款實作篇（草稿完成，尚未排程）
 
 ---
 
@@ -60,7 +60,7 @@ Rebuild Dossier 則是設計前提，不是觀察到的實證。它是一篇論�
 
 ## 二、把 review 約束寫成可執行的 constraint tests
 
-上一節說每三個綠燈修補就有一個違反 reviewer 在乎的約束。這一節做的是最直接的回應：把那些約束寫成 CI 能執行的檢查。這種檢查有個名字，叫 constraint tests。它不負責驗證功能是否正確，那是功能測試的事。它要檢查的是另一件事：這個 PR 有沒有踩到團隊講過的規矩。
+上一節說，SWE-Gate 量測到約三分之一的綠燈修補違反 reviewer 在乎的約束。這一節做的是最直接的回應：把值得保留的要求寫成 CI 能執行的 constraint tests。這個名稱描述測試的來源與保護責任，不是與功能測試互斥的技術分類。「同一筆付款不得重複扣款」既是功能行為，也可以是 reviewer 決定長期維護的約束；unit test 或 integration test 都能用來驗證它。
 
 約束長什麼樣？先把它想成團隊反覆講過、但不該每次都靠人記得的那些話。以下七類用來示範如何把 review 要求整理成 constraint tests，不是一份完整的分類法。SWE-NFI 的 92 條規則與 SWE-Gate 的評論分類，以論文原文為準：
 
@@ -71,6 +71,8 @@ Rebuild Dossier 則是設計前提，不是觀察到的實證。它是一篇論�
 整條流程是四步：review 評論 → 規則 → constraint test → CI。規則檔的做法借自 2026 年 7 月一篇研究：把被接受的 review 評論納入版本控制，供後續工作參考，Review 篇第三節用的是同一份研究。實作成 constraint tests 之前，還要確認評論是通則還是單次例外，以及能否寫成穩定的檢查；被接受過，不代表適用範圍從此不必再問。
 
 規則檔要記兩種東西。第一種是來歷，每條規則記來源 PR 與日期，半年沒觸發的規則要 review 是否已經過期。第二種是責任，也就是再加兩個欄位：owner（誰維護這條規則）與 expiry（到期 review 的日期）。一條規則即使曾經有用，沒有人維護、沒有重新檢視的時間，也會慢慢過時。這兩欄讓團隊知道，到時候該由誰回來確認。
+
+這裡的「半年」是安排重新檢視的提醒，不是刪除規則的理由。付款安全約束可能正因持續有效，才很久沒有失敗；是否保留，仍要回到業務契約、實作與風險是否改變來判斷。
 
 規則有了主人，下一個問題是 agent 能不能改它。總論第二節把證據分成三類：第一類是 agent 自己說的，第二類是 agent 自己寫的測試，第三類是 agent 改不動的測試。這裡要落地的是第三類，機制有三道。
 
@@ -141,6 +143,14 @@ def test_no_direct_http_client_construction():
 📌【在此插入圖 diagram-01.png】
 
 圖中的虛線讓規則有機會回到人的手上重新檢視。兩年後，原本禁止的做法可能已經有了新的實作方式；若只留下 failed check，卻找不到當初的理由與負責人，接手的人就很難判斷該修程式還是修規則。expiry 要保留的，是這個重新確認的機會。
+
+**再看一條需要執行行為的付款約束。** 假設示範訂單是一瓶 35 元的無糖純喫綠茶，reviewer 提醒：「畫面逾時時，金流可能已經扣款；重送不能直接開始另一筆。」團隊確認要求後，保留來源、payment owner、適用的重送情境，以及 provider 契約改變時重新檢視的條件。這些評論與價格都是教學設定，不是實際事故或商品售價。
+
+這條規則不能只靠掃描有沒有 `PENDING` 字串來驗證。隨文 [付款範例](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment) 讓 `FakeGateway` 在記錄成功扣款後拋出逾時，再透過 `Checkout.pay()` 重送同一張訂單與 key。測試同時確認結果維持 `PENDING`、沒有 payment ID，且金流呼叫與成功扣款都只有一筆。替身刻意不幫忙去重，才不會掩蓋應用程式缺少 guard 的錯誤。完整測試另外涵蓋扣款前逾時及其他連線例外。
+
+從 Review 挑出它的理由，是後果明確、預期結果可判定、需求會延續到後續修改，而且有人維護。命名偏好不必各建一個行為測試；尚未決定的退款政策，則要先確認需求。第四篇〈付款實作篇〉草稿把這些選擇、九個付款測試與七個指定 mutant 完整接起來，尚未設定發布日期。
+
+這裡也要守住量測的分母。完整測試辨識出 7／7 個指定變異，是這份測試套件在本例範圍內的 mutation score；不是 agent 的 constraint pass rate，也不是 pass^k。前者要統計多個功能檢查通過的候選修補，有多少也通過全部適用約束；後者要對固定任務進行多次獨立的 agent 嘗試。同一份 unittest 重跑五次，不能代替下一節要量測的五次 agent 成果。
 
 這裡也要區分約束的來源。本篇主要從 **review 歷史** 回收經驗：某個問題發生過，團隊決定把相關要求留下來。另一種來源是 **spec**，也就是實作開始前就約定的規格契約。兩者都能寫成檢查，但重新檢視時要回到各自的依據。
 
@@ -384,16 +394,19 @@ G2 原本已經追蹤重試、外逸缺陷與 champions 的運作；新增四條
 
 > **綠燈告訴你已執行的功能檢查沒有失敗；constraint tests 補上團隊約束；pass^k 再檢查反覆執行的一致性。三者一起提供授權判斷的依據，誰也不能替其他兩個作保。**
 
-三部曲到這裡結束。它從一個問題開始：當測試是 agent 寫的，綠燈還算不算數。答案是還算數，但它只代表實際檢查過的那一層。其餘的約束、穩定性與人工複核需求，就要靠這三個數字繼續追蹤。
+走到 reliability gate，可以回頭回答系列最初的問題：當測試是 agent 寫的，綠燈還算不算數。答案是還算數，但它只代表實際檢查過的那一層。其餘的約束、穩定性與人工複核需求，就要靠這三個數字繼續追蹤。
+
+第四篇〈付款實作篇〉把焦點拉回一筆購買無糖純喫綠茶的訂單：從 Review 意見挑出約束，寫成測試，再檢查 mutation score 背後還漏了什麼。草稿已完成，尚未排程。它讓前三篇的判斷有一個可以重跑的起點，也保留本篇的提醒：單一付款範例的結果，仍不能代替一組任務反覆執行的可靠度證據。
 
 ---
 
 ### 系列文章
 
-1. [總論：綠燈不是驗收—agent 時代的測試、Review 與可靠度](https://medium.com/p/582f24223eea)
-2. [一、測試篇：怎麼審閱一份 agent 寫的測試—斷言鬆綁、凍結 bug 與 mutation score](https://medium.com/p/b01055139451)
-3. [二、Review 篇：Review 是控制點，不是瓶頸—分流、reviewer agent 艦隊與閉環禁令](https://medium.com/p/ccbf0cbe2691)
-4. **三、可靠度篇（本篇）**
+- [總論：綠燈不是驗收—agent 時代的測試、Review 與可靠度](https://medium.com/p/582f24223eea)
+- [一、測試篇：怎麼審閱一份 agent 寫的測試—斷言鬆綁、凍結 bug 與 mutation score](https://medium.com/p/b01055139451)
+- [二、Review 篇：Review 是控制點，不是瓶頸—分流、reviewer agent 艦隊與閉環禁令](https://medium.com/p/ccbf0cbe2691)
+- **三、可靠度篇（本篇）**
+- 四、付款實作篇：買一瓶無糖純喫綠茶，從 Review 約束走到 mutation score（草稿完成，尚未排程）
 
 ---
 
@@ -413,6 +426,7 @@ G2 原本已經追蹤重試、外逸缺陷與 champions 的運作；新增四條
 12. 筆者筆記：Claude Certified Architect — Foundations 考試筆記（stop_reason、stratified sampling）
 13. Agentic Engineering：[營運篇：Eval、單位經濟與規模化](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%89-eval-%E5%96%AE%E4%BD%8D%E7%B6%93%E6%BF%9F%E8%88%87%E8%A6%8F%E6%A8%A1%E5%8C%96-%E6%8A%8A-agent-%E7%95%B6%E7%94%A2%E5%93%81%E7%87%9F%E9%81%8B-d6d9623c2dc6)第二、五節（judge 三陷阱、G2 gate）
 14. PagerDuty — [From Clicks To Context: Building an Open-Source Evaluation Pipeline for AI Agents](https://sched.co/2QlEA)（AGNTCon + MCPCon Japan 2026，2026-09-11）〔第五節；[講者投影片](https://hosted-files.sched.co/agntconmcpconjapan26/57/From%20Clicks%20to%20Context_%20Building%20an%20Open-Source%20Evaluation%20Pipeline%20for%20AI%20Agents%20_%20Ine%CC%82s%20Bolan%CC%83os.pdf#page=15) 第 15 頁「THE RED LINE」那張，與[第 21 頁](https://hosted-files.sched.co/agntconmcpconjapan26/57/From%20Clicks%20to%20Context_%20Building%20an%20Open-Source%20Evaluation%20Pipeline%20for%20AI%20Agents%20_%20Ine%CC%82s%20Bolan%CC%83os.pdf#page=21) H.I.R.E. 的 Red Line Rate〕
+15. 隨文實作 — [無糖純喫綠茶付款、constraint tests 與七個指定 mutant](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment)〔第二節；教學案例與實測，非真實金流〕
 
 ---
 

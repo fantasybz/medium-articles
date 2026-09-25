@@ -1,0 +1,26 @@
+{
+ "figures": [
+  {
+   "file": "diagram-01.png",
+   "mermaid": "---\nconfig:\n  theme: base\n  themeVariables:\n    fontSize: 16px\n    primaryColor: \"#f8f9fa\"\n    primaryTextColor: \"#1f2933\"\n    primaryBorderColor: \"#6b7280\"\n    lineColor: \"#6b7280\"\n    secondaryColor: \"#f8f9fa\"\n    tertiaryColor: \"#ffffff\"\n    clusterBkg: \"#ffffff\"\n    clusterBorder: \"#9ca3af\"\n    edgeLabelBackground: \"#ffffff\"\n  flowchart:\n    nodeSpacing: 36\n    rankSpacing: 52\n    padding: 12\n    htmlLabels: true\n    subGraphTitleMargin:\n      top: 8\n      bottom: 12\n    curve: basis\n---\nflowchart TB\n    P[\"登記付款嘗試<br/>PENDING\"] --> Q[\"呼叫金流<br/>等待結果\"]\n    Q --> S[\"收到成功回覆<br/>PAID\"]\n    Q --> D[\"收到明確拒絕<br/>DECLINED\"]\n    Q --> U[\"逾時：回傳 PENDING<br/>其他例外：向外傳遞<br/>皆保留待確認紀錄\"]\n    classDef buy fill:#fff3cd,stroke:#b8860b,color:#1f2933\n    classDef own fill:#d4edda,stroke:#2e7d32,color:#1f2933\n    classDef bad fill:#ffe0e0,stroke:#c0392b,color:#1f2933\n    class P,U buy\n    class S own\n    class D bad\n"
+  }
+ ],
+ "tables": [
+  {
+   "file": "table-01.png",
+   "markdown": "| 審閱責任 | 要深讀的內容 | 應留下的判斷 |\n|---|---|---|\n| Payment domain owner | 訂單與 key 的關聯、金額來源、扣款與狀態轉移 | 哪些情況可以付款、重用結果或拒絕操作 |\n| QA／test reviewer | fixture、斷言、失敗案例與存活的 mutant | 每條重要要求是否有可辨識錯誤的測試 |\n| 整合／維運 reviewer | 共享儲存、並行、重新啟動、金流查詢與對帳的變更 | 測試環境能證明到哪裡，上線前還缺哪些證據 |\n"
+  },
+  {
+   "file": "table-02.png",
+   "markdown": "| Review 意見 | 這次如何處理 | 原因 |\n|---|---|---|\n| 重送是否多扣一次？ | 保留為 C1，檢查兩次請求只有一次扣款嘗試 | 後果明確，往後的重試修改仍須遵守 |\n| key 是否被重新綁定？ | 保留為 C2，錯誤關聯須拒絕且不得再呼叫金流 | 有清楚的識別邊界與可觀察結果 |\n| 拒絕或逾時是否被當成成功？ | 分成 C3、C4，使用不同 provider 情境驗證 | 已知拒絕與結果未知需要不同判斷 |\n| 區域變數換個名字 | 當次修改；有既定慣例時交給 lint | 不必為每個命名偏好新增行為測試 |\n| 活動是否提供退款？ | 先由產品與 payment owner 確認政策 | 預期結果還沒有定義，不能讓 agent 自行出答案 |\n"
+  },
+  {
+   "file": "table-03.png",
+   "markdown": "| ID | 故意改動的程式 | 要觀察的後果 | 原先正常購買測試 |\n|---|---|---|---|\n| M1 | 把送往金流的金額改成 1 元 | 扣款金額偏離訂單 | killed |\n| M2 | 跳過既有付款嘗試的 guard | 相同操作可能再次扣款 | survived |\n| M3 | 拿掉 key 跨訂單的拒絕條件 | 同一個 key 可以付另一張訂單 | survived |\n| M4 | 把拒絕結果寫成 `PAID` | 拒絕付款卻宣稱成功 | survived |\n| M5 | 把逾時結果寫成 `PAID` | 結果未知卻宣稱成功 | survived |\n| M6 | 把成功收據的 SKU 改成有糖綠茶 | 收據品項偏離訂單 | killed |\n| M7 | 刪掉呼叫金流前的 PENDING 紀錄 | 其他連線例外後重送，可能再次扣款 | survived |\n"
+  },
+  {
+   "file": "table-04.png",
+   "markdown": "| 測試選擇 | killed／納入計分 | mutation score | 仍存活的變異 |\n|---|---|---|---|\n| 只有 2 個正常購買測試 | 2／7 | 28.6% | M2、M3、M4、M5、M7 |\n| 8 個測試，漏掉逾時案例 | 6／7 | 85.7% | M5 |\n| 完整 9 個測試 | 7／7 | 100.0% | 這七個都被辨識 |\n"
+  }
+ ]
+}

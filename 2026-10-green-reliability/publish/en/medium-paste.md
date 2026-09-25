@@ -26,9 +26,9 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 
 # Green Is Not Done, Part 3 — The 34% SWE-Gate Found Behind a Green Build: Constraint Tests, pass^k and the Gate for Expanding Autonomy
 
-> **TL;DR** — The final part of the trilogy asks what evidence should guide expanded agent authority. Across 75 Python repos and 303 patch tasks, SWE-Gate found that 221 of 644 patches passing functional tests (34%) violated a constraint a reviewer had actually added. That gap leads to three metrics. **Constraint pass rate** is the share of functionally passing PRs that also pass all constraint tests. **pass^k** is the share of cases in a task set that pass all k runs, reported separately from single-attempt success rate, pass@1. **Oversight budget** addresses the human work still needed: in READY's clinical-audit case, systems only 0.3 percentage points apart in accuracy differed by nearly 10 percentage points in review requirements. Those staffing figures cannot transfer directly to code review. This piece borrows the idea of working backward from a reliability target, using a simplified model to estimate a review minimum and compare it with actual review and sustainable capacity. These results join test effectiveness and existing operating conditions in the monthly leadership report and the G2 authority decision. pass@1 alone does not decide expansion.
+> **TL;DR** — Part 3 of this four-part series asks what evidence should guide expanded agent authority. Across 75 Python repos and 303 patch tasks, SWE-Gate found that 221 of 644 patches passing functional tests (34%) violated a constraint a reviewer had actually added. That gap leads to three metrics. **Constraint pass rate** is the share of functionally passing PRs that also pass all constraint tests. **pass^k** is the share of cases in a task set that pass all k runs, reported separately from single-attempt success rate, pass@1. **Oversight budget** addresses the human work still needed: in READY's clinical-audit case, systems only 0.3 percentage points apart in accuracy differed by nearly 10 percentage points in review requirements. Those staffing figures cannot transfer directly to code review. This piece borrows the idea of working backward from a reliability target, using a simplified model to estimate a review minimum and compare it with actual review and sustainable capacity. These results join test effectiveness and existing operating conditions in the monthly leadership report and the G2 authority decision. pass@1 alone does not decide expansion.
 
-> Series: [Overview](https://medium.com/p/c4fc9f3d8581) → [1. Testing](https://medium.com/p/51d001a6dcd5) → [2. Review](https://medium.com/p/4d36d0f2f9c1) → **3. Reliability (this piece)**
+> Series: [Overview](https://medium.com/p/c4fc9f3d8581) → [1. Testing](https://medium.com/p/51d001a6dcd5) → [2. Review](https://medium.com/p/4d36d0f2f9c1) → **3. Reliability (this piece)** → 4. Payment Walkthrough (draft ready; unscheduled)
 
 ---
 
@@ -60,7 +60,7 @@ This piece deals with only two of those layers. One is the reviewer constraints,
 
 ## 2. Writing review constraints as executable constraint tests
 
-The last section said one in every three green patches violates a constraint the reviewer cared about. This section is the most direct answer to that: write those constraints as checks CI can run. Checks like these have a name — constraint tests. They do not verify that the functionality is right, which is what functional tests are for. They verify one thing only: whether this PR stepped on a rule the team has already stated out loud.
+The last section described SWE-Gate's finding that roughly one-third of green patches violated constraints reviewers cared about. The direct response is to turn requirements worth retaining into constraint tests that CI can run. The name describes their source and protective responsibility, not a technology mutually exclusive with functional testing. “Do not charge the same payment twice” is both functional behavior and a constraint a reviewer can choose to maintain. A unit or integration test can check it.
 
 What does a constraint look like? Think of it first as the things a team says over and over but should not have to rely on a person to remember every time. The seven categories below illustrate how review requirements can become constraint tests; they are not a complete taxonomy; for SWE-NFI's 92 rules and SWE-Gate's comment taxonomy, the papers themselves are the authority:
 
@@ -71,6 +71,8 @@ The rightmost column shows that lockfile diffs, AST analysis and import graphs l
 The process has four steps: review comment → rule → constraint test → CI. The rule-file approach comes from a July 2026 study that preserved accepted comments in version control for later work, also discussed in section 3 of the review piece. Before implementing a constraint test, establish whether a comment is a general rule or a one-off exception and whether it can become a stable check. Acceptance once does not settle its scope forever.
 
 The rules file records two kinds of thing. The first is provenance: each rule records its source PR and date, and a rule that has not fired in six months gets reviewed for expiry. The second is responsibility, which is why there are two more fields — owner (who maintains this rule) and expiry (the date it comes up for review). Even a rule that was once useful can grow outdated without someone to maintain it and a time to revisit it. These two fields tell the team who should return to check when that time comes.
+
+Six months is a reminder to reconsider, not a reason to delete the rule. A payment safety constraint may have gone a long time without failure because its protection remains effective. Retention depends on whether the business contract, implementation or risk has changed.
 
 Now that the rules have an owner, the next question is whether the agent can change them. Section 2 of the overview splits evidence into three classes: the first is what the agent says, the second is the tests the agent wrote itself, and the third is the tests the agent cannot change. What lands here is that third class, and the mechanism has three parts.
 
@@ -141,6 +143,14 @@ Draw the four steps, comment → rule → test → CI, as a diagram, and the thi
 📌【在此插入圖 diagram-01.png】
 
 The dashed line gives people a chance to reconsider a rule. Two years later, a once-prohibited approach may have a different implementation. If all that remains is a failed check, without its rationale or owner, the next person cannot easily decide whether the code or the rule needs changing. Expiry preserves the opportunity to ask that question.
+
+**Now consider a payment constraint that needs behavioral execution.** Suppose the illustrative order is a bottle of 無糖純喫綠茶, unsweetened pure green tea, for NTD 35. A reviewer points out that a screen timeout may follow a capture, so replay must not simply start another charge. After agreeing on the requirement, retain its source, payment owner, replay scope and a condition to reconsider it when the provider contract changes. The comments and price are teaching inputs, not an actual incident or product price.
+
+Scanning for a `PENDING` string would not verify this rule. In the accompanying [payment example](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment), `FakeGateway` records a capture and raises a timeout. The test replays the same order and key through `Checkout.pay()`, checking that the result remains `PENDING`, has no payment ID, and leaves only one provider call and one capture. The fake deliberately does not deduplicate, so it cannot hide a missing application guard. The full tests also cover a timeout before capture and another connection error.
+
+This Review concern is worth retaining because its consequence is clear, its expected result is decidable, it applies to future changes and someone maintains it. Naming preferences do not each need a behavior test; unsettled refund policy first needs a requirement decision. The unscheduled draft of Part 4, “A Payment Walkthrough,” connects these selections to nine payment tests and seven selected mutants.
+
+The denominators must remain distinct. Detecting 7/7 selected mutants is this suite's mutation score within the example, not an agent's constraint pass rate or pass^k. Constraint pass rate counts candidate patches that pass all applicable constraints among those passing functional checks. Pass^k needs multiple independent agent attempts on fixed tasks. Rerunning the same unit tests five times does not produce the five agent outcomes the next section measures.
 
 Constraints can come from different sources. This piece mainly draws on **review history**: a problem occurred, and the team decided to preserve the resulting requirement. Another source is the **spec**, the contract agreed before implementation begins. Both can become checks, but reconsidering them requires returning to their respective basis.
 
@@ -384,16 +394,19 @@ That sequence makes room for the people who receive the work. If a team expands 
 
 > **Green tells you the functional checks that ran did not fail. Constraint tests add the team's rules; pass^k checks consistency across repeated attempts. Together they inform authority decisions. None can vouch for the other two.**
 
-That is the end of the trilogy. It started from one question: when the tests were written by the agent, does a green build still count? It does, but only for the layer it actually checked. The remaining constraints, consistency and human-review requirements are what these three numbers keep track of.
+At the reliability gate, we can return to the question that began the series: when the tests were written by the agent, does a green build still count? It does, but only for the layer it actually checked. The remaining constraints, consistency and human-review requirements are what these three numbers keep track of.
+
+Part 4, “A Payment Walkthrough,” returns to one order for unsweetened green tea: select constraints from Review comments, turn them into tests, then examine what the mutation score still misses. Its draft is complete and unscheduled. It gives the decisions in the first three parts a reproducible starting point, while retaining this piece’s caution: one payment example cannot replace reliability evidence from repeated attempts across a task set.
 
 ---
 
 ### The series
 
-1. [Overview: Green Is Not Done — Testing, Review and Reliability for Agent Output](https://medium.com/p/c4fc9f3d8581)
-2. [1. Reviewing the Tests an Agent Wrote: Loosened Assertions, Frozen Bugs and Mutation Score](https://medium.com/p/51d001a6dcd5)
-3. [2. Review Is the Control Point, Not the Bottleneck: Triage, Reviewer Fleets and the Closed-Loop Ban](https://medium.com/p/4d36d0f2f9c1)
-4. **3. The 34% SWE-Gate Found Behind a Green Build (this piece)**
+- [Overview: Green Is Not Done — Testing, Review and Reliability for Agent Output](https://medium.com/p/c4fc9f3d8581)
+- [Part 1 — Reviewing the Tests an Agent Wrote: Loosened Assertions, Frozen Bugs and Mutation Score](https://medium.com/p/51d001a6dcd5)
+- [Part 2 — Review Is the Control Point, Not the Bottleneck: Triage, Reviewer Fleets and the Closed-Loop Ban](https://medium.com/p/4d36d0f2f9c1)
+- **Part 3 — The 34% SWE-Gate Found Behind a Green Build (this piece)**
+- Part 4 — A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score (draft ready; unscheduled)
 
 ---
 
@@ -413,6 +426,7 @@ That is the end of the trilogy. It started from one question: when the tests wer
 12. Author's notes: Claude Certified Architect — Foundations exam notes (stop_reason, stratified sampling)
 13. Agentic Engineering: [Agentic Engineering, Part 3 — Evals, Unit Economics, and Scaling](https://fantasybz.medium.com/agentic-engineering-part-3-evals-unit-economics-and-scaling-running-agents-like-a-product-1cb1855a2046), sections 2 and 5 (the three judge traps, the G2 gate)
 14. PagerDuty — [From Clicks To Context: Building an Open-Source Evaluation Pipeline for AI Agents](https://sched.co/2QlEA) (AGNTCon + MCPCon Japan 2026, 2026-09-11) — section 5; [slides](https://hosted-files.sched.co/agntconmcpconjapan26/57/From%20Clicks%20to%20Context_%20Building%20an%20Open-Source%20Evaluation%20Pipeline%20for%20AI%20Agents%20_%20Ine%CC%82s%20Bolan%CC%83os.pdf#page=15) p. 15, the slide titled “THE RED LINE”, and [p. 21](https://hosted-files.sched.co/agntconmcpconjapan26/57/From%20Clicks%20to%20Context_%20Building%20an%20Open-Source%20Evaluation%20Pipeline%20for%20AI%20Agents%20_%20Ine%CC%82s%20Bolan%CC%83os.pdf#page=21) for the Red Line Rate of H.I.R.E.
+15. Accompanying implementation — [Tea payment, constraint tests and seven selected mutants](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment) [section 2; measured teaching example, no real provider]
 
 ---
 
