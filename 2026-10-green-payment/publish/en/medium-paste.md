@@ -302,4 +302,4 @@ The four parts bring us back to the person waiting for a payment result. The tea
 
 AI assisted with organization, writing, translation and review of this article and its code. The payment scenario and Review comments are explicitly illustrative. Test and mutation figures come from executing the accompanying code, not from fictional production outcomes.
 
-*Kochi Chuang, 榮民叔叔的藏書筆記.*
+*Kochi Chuang, 榮民叔叔的藏書筆記. Chinese edition: [中文版](https://medium.com/p/46377fd460fe).*

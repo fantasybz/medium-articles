@@ -2,7 +2,7 @@
 
 > **TL;DR** — 導入 coding agent 之後，如果團隊反覆遇到 CI 綠了、review 排隊、上線仍出事，值得回頭檢查的，是驗收依據是否跟著改變。當實作與測試都由 agent 撰寫、測試又未經獨立審查，綠燈只證明它通過了自己出的題；借用 James Bach 的區分，那是 *checking*，還不足以完成 *testing*。驗證層的三道閘各有分工：test gate 衡量測試的保護力（mutation score），review gate 決定誰審閱哪些內容，reliability gate 用 constraint tests 與 pass^k 判斷授權能否擴張。人如何審閱 payment PR、AI approve 算不算、TDD 能不能當閘門，會在第一節結尾提出。數字都標領域：「34% 的綠燈修補違反 reviewer 約束」是 SWE-Gate 在 75 個 Python repo 上量測到的。文末附 90 天藍圖。
 
-> 系列導覽：**總論（本篇）** → 一、測試篇（即將發布） → 二、Review 篇（即將發布） → 三、可靠度篇（即將發布） → 四、付款實作篇（草稿完成，尚未排程）。延伸閱讀「Agentic Engineering 三部曲」：[別急著打造你的 Devin](https://fantasybz.medium.com/%E5%88%A5%E6%80%A5%E8%91%97%E6%89%93%E9%80%A0%E4%BD%A0%E7%9A%84-devin-agentic-engineering-%E7%9A%84%E7%B5%84%E7%B9%94%E7%AD%96%E7%95%A5%E8%88%87-90-%E5%A4%A9%E8%A1%8C%E5%8B%95%E8%97%8D%E5%9C%96-7342ababc417) → [組織篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%80-%E8%AA%B0%E4%BE%86%E5%81%9A-platform-federation-%E7%9A%84%E7%B5%84%E7%B9%94%E8%A8%AD%E8%A8%88%E5%AF%A6%E5%8B%99-9d9353ef7f3a) → [技術篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%BA%8C-harness-%E8%97%8D%E5%9C%96-%E6%8A%8A%E7%B3%BB%E7%B5%B1%E8%AE%8A%E6%88%90-agent-%E8%AE%80%E5%BE%97%E6%87%82%E7%9A%84%E5%9C%B0%E6%96%B9-f2a139f5b561) → [營運篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%89-eval-%E5%96%AE%E4%BD%8D%E7%B6%93%E6%BF%9F%E8%88%87%E8%A6%8F%E6%A8%A1%E5%8C%96-%E6%8A%8A-agent-%E7%95%B6%E7%94%A2%E5%93%81%E7%87%9F%E9%81%8B-d6d9623c2dc6)
+> 系列導覽：**總論（本篇）** → 一、測試篇（即將發布） → 二、Review 篇（即將發布） → 三、可靠度篇（即將發布） → 四、付款實作篇（即將發布）。延伸閱讀「Agentic Engineering 三部曲」：[別急著打造你的 Devin](https://fantasybz.medium.com/%E5%88%A5%E6%80%A5%E8%91%97%E6%89%93%E9%80%A0%E4%BD%A0%E7%9A%84-devin-agentic-engineering-%E7%9A%84%E7%B5%84%E7%B9%94%E7%AD%96%E7%95%A5%E8%88%87-90-%E5%A4%A9%E8%A1%8C%E5%8B%95%E8%97%8D%E5%9C%96-7342ababc417) → [組織篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%80-%E8%AA%B0%E4%BE%86%E5%81%9A-platform-federation-%E7%9A%84%E7%B5%84%E7%B9%94%E8%A8%AD%E8%A8%88%E5%AF%A6%E5%8B%99-9d9353ef7f3a) → [技術篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%BA%8C-harness-%E8%97%8D%E5%9C%96-%E6%8A%8A%E7%B3%BB%E7%B5%B1%E8%AE%8A%E6%88%90-agent-%E8%AE%80%E5%BE%97%E6%87%82%E7%9A%84%E5%9C%B0%E6%96%B9-f2a139f5b561) → [營運篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%89-eval-%E5%96%AE%E4%BD%8D%E7%B6%93%E6%BF%9F%E8%88%87%E8%A6%8F%E6%A8%A1%E5%8C%96-%E6%8A%8A-agent-%E7%95%B6%E7%94%A2%E5%93%81%E7%87%9F%E9%81%8B-d6d9623c2dc6)
 
 ---
 
@@ -367,7 +367,7 @@ flowchart LR
 
 在隨文的 [付款範例](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment) 中，兩個正常購買測試只辨識出七個指定 mutant 裡的兩個，mutation score 是 28.6%；八個測試漏掉逾時案例時，分數雖到 85.7%，仍抓不到「把未知付款標成成功」。完整九個測試辨識出這七種變異。這是同一行程、依序呼叫假金流的實測，不能替並行、重新啟動與真實扣款作保。
 
-test gate 交出這份逐項報告；review gate 則由懂付款的人判斷存活的變異是否違反關鍵要求，不能只看分數放行。若接著量測 reliability gate 的 constraint pass rate，分母才換成功能檢查通過的候選 PR，計算其中也通過全部適用約束的比例。單一範例通過九個測試，並不是 agent 的長期可靠度。完整的選擇理由、程式與計分，已整理在第四篇〈付款實作篇：買一瓶無糖純喫綠茶，從 Review 約束走到 mutation score〉草稿中，尚未設定發布日期。
+test gate 交出這份逐項報告；review gate 則由懂付款的人判斷存活的變異是否違反關鍵要求，不能只看分數放行。若接著量測 reliability gate 的 constraint pass rate，分母才換成功能檢查通過的候選 PR，計算其中也通過全部適用約束的比例。單一範例通過九個測試，並不是 agent 的長期可靠度。完整的選擇理由、程式與計分，已整理在第四篇〈付款實作篇：買一瓶無糖純喫綠茶，從 Review 約束走到 mutation score〉中。
 
 三道閘共用一句設計哲學：**設計環境比寫規則有效**。
 
@@ -876,7 +876,7 @@ RD 再被問「這個 PR 測過了嗎」的時候，就能拿著幾份具體的�
 - 一、測試篇：怎麼審閱一份 agent 寫的測試—斷言鬆綁、凍結 bug 與 mutation score（即將發布）
 - 二、Review 篇：Review 是控制點，不是瓶頸—分流、reviewer agent 艦隊與閉環禁令（即將發布）
 - 三、可靠度篇：SWE-Gate 量測到的 34%—constraint tests、pass^k 與授權擴張的閘門（即將發布）
-- 四、付款實作篇：買一瓶無糖純喫綠茶，從 Review 約束走到 mutation score（草稿完成，尚未排程）
+- 四、付款實作篇：買一瓶無糖純喫綠茶，從 Review 約束走到 mutation score（即將發布）
 
 延伸閱讀「Agentic Engineering 三部曲」：[總論](https://fantasybz.medium.com/%E5%88%A5%E6%80%A5%E8%91%97%E6%89%93%E9%80%A0%E4%BD%A0%E7%9A%84-devin-agentic-engineering-%E7%9A%84%E7%B5%84%E7%B9%94%E7%AD%96%E7%95%A5%E8%88%87-90-%E5%A4%A9%E8%A1%8C%E5%8B%95%E8%97%8D%E5%9C%96-7342ababc417)、[組織篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%80-%E8%AA%B0%E4%BE%86%E5%81%9A-platform-federation-%E7%9A%84%E7%B5%84%E7%B9%94%E8%A8%AD%E8%A8%88%E5%AF%A6%E5%8B%99-9d9353ef7f3a)、[技術篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%BA%8C-harness-%E8%97%8D%E5%9C%96-%E6%8A%8A%E7%B3%BB%E7%B5%B1%E8%AE%8A%E6%88%90-agent-%E8%AE%80%E5%BE%97%E6%87%82%E7%9A%84%E5%9C%B0%E6%96%B9-f2a139f5b561)、[營運篇](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%89-eval-%E5%96%AE%E4%BD%8D%E7%B6%93%E6%BF%9F%E8%88%87%E8%A6%8F%E6%A8%A1%E5%8C%96-%E6%8A%8A-agent-%E7%95%B6%E7%94%A2%E5%93%81%E7%87%9F%E9%81%8B-d6d9623c2dc6)。
 

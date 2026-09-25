@@ -28,7 +28,7 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 
 > **TL;DR** — A Scrum Community post describes PR volume doubling in half a year while senior engineers' calendars fill up. A longitudinal study of a million PRs finds faster decisions under some AI-review adoption patterns without corresponding quality gains. CodeRabbit comments on ten thousand PRs were rejected 56% of the time, while cross-product AI-to-AI review grew 100-fold over two quarters. These findings turn my attention to the division of review work: **review is the control point where an organization shapes whether agents add value or debt**. That framing comes from a theory built by coding 3,100 practitioner accounts. A separate study of 182 repos found that each 10-percentage-point increase in unreviewed merges was associated with about 6% more agentic-code maintenance burden, not a causal estimate. This piece proposes risk-based triage, reviewer-agent roles separated from generation, and a ban on self-gating loops. Machines organize evidence; humans examine reports or diffs according to the triage decision, and every merge requires human approval. An experiment in which "pre-approved under SEC-2291" helped roughly eight in ten narrative-wrapped exfiltration PRs pass the scanning stage adds another lesson: verify authority claims against the system of record. Approval must identify the responsible person and reviewed content; section 7 explains the records and rules that support it.
 
-> Series: [Overview](https://medium.com/p/c4fc9f3d8581) → [1. Testing](https://medium.com/p/51d001a6dcd5) → **2. Review (this piece)** → 3. Reliability (coming soon) → 4. Payment Walkthrough (draft ready; unscheduled)
+> Series: [Overview](https://medium.com/p/c4fc9f3d8581) → [1. Testing](https://medium.com/p/51d001a6dcd5) → **2. Review (this piece)** → 3. Reliability (coming soon) → 4. Payment Walkthrough (coming soon)
 
 ---
 
@@ -118,7 +118,7 @@ I would have a payment owner examine order/key relationships, the amount source,
 
 Now consider illustrative Review comments. “Could another click charge again?” identifies a consequence, a stable observation and a durable requirement: retain a constraint that the same payment attempt calls the provider once. “Capture may precede a timeout” calls for a lost-response test that retains `PENDING` and prevents another charge on replay. A local naming concern belongs in the current edit or established lint rules. “Should the campaign offer refunds?” first needs product and payment policy; the agent cannot invent the expected answer.
 
-For retained rules, record the source, scope, test name, owner and reconsideration conditions. A consequential risk deserves protection on its first appearance, without waiting for another incident. These are teaching comments and a suggested workflow, not a real PR history. The [payment example](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment) provides the mapping and runnable code; the unscheduled draft of Part 4, “A Payment Walkthrough,” develops it step by step.
+For retained rules, record the source, scope, test name, owner and reconsideration conditions. A consequential risk deserves protection on its first appearance, without waiting for another incident. These are teaching comments and a suggested workflow, not a real PR history. The [payment example](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment) provides the mapping and runnable code; Part 4, “A Payment Walkthrough,” develops it step by step.
 
 The example also shows why machine verifiability cannot be reduced to an aggregate score. Omitting the timeout test still produces 85.7%, but M5, which turns an unknown result into `PAID`, survives. These seven hand-selected teaching mutants cannot directly inherit a threshold for a tool-generated set on a real diff. A reviewer should identify the unprotected requirement and add its test and evidence. Exceeding the Testing article's 70% starting reference does not move this PR into a cell where close reading can be reduced.
 
@@ -409,7 +409,7 @@ What I want to leave here is a workable division of responsibility: tools prepar
 - [Part 1 — Reviewing the Tests an Agent Wrote: Loosened Assertions, Frozen Bugs and Mutation Score](https://medium.com/p/51d001a6dcd5)
 - **Part 2 — Review Is the Control Point, Not the Bottleneck (this piece)**
 - Part 3 — The 34% SWE-Gate Found Behind a Green Build: Constraint Tests, pass^k and the Gate for Expanding Autonomy (coming soon)
-- Part 4 — A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score (draft ready; unscheduled)
+- Part 4 — A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score (coming soon)
 
 ---
 
