@@ -255,7 +255,7 @@ python3 -B examples/tea_payment/mutation_demo.py
 
 The first command runs nine tests. The second emits JSON for the three experiments, including baseline counts, kills, the fixed denominator and failing test names for each mutant. It uses only the standard library and local temporary files, with no real account or charge.
 
-The directory also contains twelve runner regression tests, checking that loading failures, abnormal test outcomes and selection drift cannot produce a trustworthy-looking report. They are outside both the nine payment tests and the seven-mutant denominator. Discovering `test_*.py` across the directory therefore runs 21 tests.
+The directory also contains twelve runner regression tests. They cover selected failure modes, including loading failures, abnormal test outcomes, changed test counts and a missing timeout test, and check the expected sets of detected mutants. They are outside both the nine payment tests and the seven-mutant denominator. Discovering `test_*.py` across the directory therefore runs 21 tests.
 
 Payment attempts live in process-local dictionaries. The evidence covers **sequential calls in one process**. Two service processes do not share that memory, and a restart loses it. Blocking repeated calls in the demo does not establish exactly-once charging in production.
 
