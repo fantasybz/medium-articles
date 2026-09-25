@@ -436,26 +436,34 @@ Medium 限制同一作者 **24 小時內最多發布或排程 2 篇**。撞到�
 | 7 | 可靠度篇（中） | `3c64a9622777` | 10/27（二）09:00 | 已排程 2026-09-07 |
 | 8 | 可靠度篇（英） | `4b6d147bff0d` | 10/29（四）09:00 | 已排程 2026-09-07 |
 
-**「綠燈不是驗收」現為總論＋四部曲，共五篇文章；第四篇〈付款實作篇〉尚未排程。** 第四篇的中英文原稿、貼稿與各 5 張圖表已在 repo 完成，Medium 同步待完成；資料夾名稱 `2026-10-green-payment` 不代表已決定發布月份。這次會更新上表八篇的內容，保留既有 Post ID、排程與發布設定；第四篇只建立中英文草稿。
+**「綠燈不是驗收」現為總論＋四部曲，共五篇文章；第四篇〈付款實作篇〉尚未排程。** 第四篇的中英文原稿、貼稿與各 5 張圖表已完成，兩份完整 Medium 草稿也已建立並重新讀回驗證（2026-09-25）。資料夾名稱 `2026-10-green-payment` 不代表已決定發布月份。上表八篇已同步四部曲內容，Post ID、排程、Topics、封面與通知設定保留；可靠度篇的預覽摘要同步更正為四部曲第三篇。第四篇沒有發布或設定排程。
 
 | 第四篇 | Repo 原稿 | Medium 狀態 |
 |---|---|---|
-| 付款實作篇（中） | [article.md](2026-10-green-payment/article.md) | 尚未建立草稿，未排程 |
-| 付款實作篇（英） | [article.en.md](2026-10-green-payment/article.en.md) | 尚未建立草稿，未排程 |
+| 付款實作篇（中） | [article.md](2026-10-green-payment/article.md) | [完整草稿](https://medium.com/p/46377fd460fe/edit)（`46377fd460fe`），未排程 |
+| 付款實作篇（英） | [article.en.md](2026-10-green-payment/article.en.md) | [完整草稿](https://medium.com/p/20452944263b/edit)（`20452944263b`），未排程 |
 
-第四篇的 [程式與重跑方式](examples/tea_payment/README.md)、[研究與實測紀錄](research/2026-10/payment-example-evidence.md) 已備妥。完成 Medium 同步後，再把實際 Post ID、草稿網址與逐塊比對結果寫入各語言包的 `PUBLISHED.md`，並更新本表；不要先填未確認的日期或網址。
+第四篇的 [程式與重跑方式](examples/tea_payment/README.md)、[研究與實測紀錄](research/2026-10/payment-example-evidence.md) 已備妥。兩篇各有 105 個文字區塊、24 個連結、5 張圖、11 條分隔線，儲存後從新分頁逐塊核對相符，沒有殘留圖片 placeholder。封面、Topics、預覽文字與未排程狀態也已重新讀取確認，完整紀錄見 [中文版](2026-10-green-payment/publish/PUBLISHED.md)／[英文版](2026-10-green-payment/publish/en/PUBLISHED.md)。英文預覽標題另用完整的短句，避免 Medium 自動截斷；正文標題保留全名。
 
 草稿網址是 `https://medium.com/p/<id>/edit`；上線後 `https://medium.com/p/<id>` 會轉到正式網址，
 所以系列連結用這個短網址就不必等上線才填。**連結只填「本篇發布時已經上線的篇」**，不留死連結：
-中文總論不連尚未發布的四篇分論；測試篇連總論；Review 篇連總論與測試篇；可靠度篇連總論、測試篇與 Review 篇。第四篇〈付款實作篇〉發布前，再確認所連的總論與前三篇皆已上線。英文版另外連前面各篇的英文版與自己的中文版。
+中文總論不連尚未發布的四篇分論；測試篇連總論；Review 篇連總論與測試篇；可靠度篇連總論、測試篇與 Review 篇。第四篇〈付款實作篇〉發布前，再確認所連的總論與前三篇皆已上線。英文版另外連前面各篇的英文版與自己的中文版；尚未排程的第四篇英文稿，須在中文版上線後、英文版發布前補上該連結。
 每篇上線後還有兩件回填要做（用 `medium_patch.py subst`，改完按 Save and publish）：
 (1) 把已上線各篇裡指向它的「（即將發布）」／「(coming soon)」換成連結；
-(2) 英文版上線後，在中文版文末加一行「英文版：[English edition](…)」。這兩件事每週一次，日期跟著上表。
+(2) 英文版上線後，在中文版文末加一行「英文版：[English edition](…)」。這兩件事依各篇實際發布狀態進行：既有八篇參照上表，第四篇待發布日期確定後再安排。
 
-Topics 八篇相同：Software Testing、Code Review、AI、Software Engineering、Engineering Management。
-封面圖依 2026-09-23 核對結果，中英版皆為：總論 `diagram-04.png`、測試篇 `diagram-03.png`、Review 篇 `diagram-02.png`、可靠度篇 `diagram-02.png`。Notify subscribers 維持預設勾選。
+本系列十份草稿的 Topics 相同：Software Testing、Code Review、AI、Software Engineering、Engineering Management。
+封面圖依 2026-09-25 核對結果，中英版皆為：總論 `diagram-04.png`、測試篇 `diagram-03.png`、Review 篇 `diagram-02.png`、可靠度篇 `diagram-02.png`、付款實作篇 `diagram-01.png`。Notify subscribers 維持預設勾選。
 排程 UI 的實測：Publish 對話框 → Schedule for later → 「Schedule a time to publish」開月曆與 24 小時制的時、分按鈕
 （分要在選完時之後再點一次才生效；十月的月曆格子開頭是九月 27–30 的尾巴，也能點，所以要用「十月 1 號之後第 N 格」選日子，並在按下前核對顯示的日期字串）→ Schedule to publish；Stories 頁的 Scheduled 清單顯示的是 UTC（09:00 GMT+8 顯示為 1:00 AM）。
+
+### 2026-09-25：沿用 CDN 圖片與延遲儲存的核對
+
+本輪八篇更新沿用已核對的 CDN 圖片，只有測試篇的中英文 `table-03.png` 重新上傳。整篇貼回時，圖片需保留原圖尺寸與封面標記；只貼 `<img src>` 雖能顯示圖片，卻可能讓預覽圖的 `originalWidth`／`originalHeight` 遺失。完成後要重新讀取封面識別碼與原圖尺寸，不能只看縮圖長得一樣。
+
+`Saved` 加上 45 秒緩衝，仍不保證下一次立即讀回完整文章。本輪有數篇先讀到部分區塊，再稍候便完整出現。這時先保留原編輯器，等待後另開分頁重新讀取；直到文字、連結、圖片槽位與分隔線全部相符，才記錄成功。不要因為第一次讀回不完整，就立即覆寫一次。
+
+可靠度篇的預覽摘要原先寫著三部曲終篇，本輪隨正文更正為四部曲第三篇。這是系列定位的必要修正；其餘預覽標題、Topics、封面、通知設定與八個排程均保留。
 
 ## Medium 會改動的排版
 

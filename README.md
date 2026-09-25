@@ -16,7 +16,7 @@ Medium articles by [@fantasybz](https://medium.com/@fantasybz) — long-form pos
 | 2026-10 | [綠燈不是驗收（一）測試篇：怎麼審閱一份 agent 寫的測試—斷言鬆綁、凍結 bug 與 mutation score](2026-10-green-testing/article.md) | [EN](2026-10-green-testing/article.en.md) | 已排程 10/13（二）09:00 發布；英文版已排程 10/15（四）09:00（GMT+8）；佇列見 [PUBLISHING.md](PUBLISHING.md) | [PUBLISHED.md](2026-10-green-testing/publish/PUBLISHED.md) |
 | 2026-10 | [綠燈不是驗收（二）Review 篇：Review 是控制點，不是瓶頸—分流、reviewer agent 艦隊與閉環禁令](2026-10-green-review/article.md) | [EN](2026-10-green-review/article.en.md) | 已排程 10/20（二）09:00 發布；英文版已排程 10/22（四）09:00（GMT+8）；佇列見 [PUBLISHING.md](PUBLISHING.md) | [PUBLISHED.md](2026-10-green-review/publish/PUBLISHED.md) |
 | 2026-10 | [綠燈不是驗收（三）可靠度篇：SWE-Gate 量測到的 34%—constraint tests、pass^k 與授權擴張的閘門](2026-10-green-reliability/article.md) | [EN](2026-10-green-reliability/article.en.md) | 已排程 10/27（二）09:00 發布；英文版已排程 10/29（四）09:00（GMT+8）；佇列見 [PUBLISHING.md](PUBLISHING.md) | [PUBLISHED.md](2026-10-green-reliability/publish/PUBLISHED.md) |
-| 未排程 | [綠燈不是驗收（四）付款實作篇：買一瓶無糖純喫綠茶，從 Review 約束走到 mutation score](2026-10-green-payment/article.md) | [EN](2026-10-green-payment/article.en.md) | Repo 中英文草稿與發布包完成；Medium 同步待完成，尚未排程 | 尚未建立 |
+| 未排程 | [綠燈不是驗收（四）付款實作篇：買一瓶無糖純喫綠茶，從 Review 約束走到 mutation score](2026-10-green-payment/article.md) | [EN](2026-10-green-payment/article.en.md) | Medium 完整草稿：[中](https://medium.com/p/46377fd460fe/edit)／[EN](https://medium.com/p/20452944263b/edit)，皆未排程 | [中](2026-10-green-payment/publish/PUBLISHED.md)／[EN](2026-10-green-payment/publish/en/PUBLISHED.md) |
 
 ## Structure
 
