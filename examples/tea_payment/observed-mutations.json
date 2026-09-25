@@ -1,0 +1,220 @@
+[
+  {
+    "suite": "functional",
+    "baseline_tests": 2,
+    "baseline_passed": true,
+    "killed": 2,
+    "scored_mutants": 7,
+    "excluded_mutants": 0,
+    "mutation_score": 28.6,
+    "mutants": [
+      {
+        "id": "M1",
+        "change": "charge 1 instead of the order amount",
+        "status": "killed",
+        "failing_tests": [
+          "test_payment.FunctionalTests.test_provider_captures_exactly_35_ntd"
+        ]
+      },
+      {
+        "id": "M2",
+        "change": "skip the existing-attempt guard",
+        "status": "survived",
+        "failing_tests": []
+      },
+      {
+        "id": "M3",
+        "change": "allow an idempotency key to move to another order",
+        "status": "survived",
+        "failing_tests": []
+      },
+      {
+        "id": "M4",
+        "change": "label a declined payment PAID",
+        "status": "survived",
+        "failing_tests": []
+      },
+      {
+        "id": "M5",
+        "change": "label a timed-out payment PAID",
+        "status": "survived",
+        "failing_tests": []
+      },
+      {
+        "id": "M6",
+        "change": "put sweetened tea on the successful receipt",
+        "status": "killed",
+        "failing_tests": [
+          "test_payment.FunctionalTests.test_receipt_preserves_purchased_tea"
+        ]
+      },
+      {
+        "id": "M7",
+        "change": "remove the pending record before the provider call",
+        "status": "survived",
+        "failing_tests": []
+      }
+    ]
+  },
+  {
+    "suite": "without-timeout",
+    "baseline_tests": 8,
+    "baseline_passed": true,
+    "killed": 6,
+    "scored_mutants": 7,
+    "excluded_mutants": 0,
+    "mutation_score": 85.7,
+    "mutants": [
+      {
+        "id": "M1",
+        "change": "charge 1 instead of the order amount",
+        "status": "killed",
+        "failing_tests": [
+          "test_payment.ConstraintTests.test_declined_payment_is_not_paid",
+          "test_payment.ConstraintTests.test_key_cannot_move_to_another_order",
+          "test_payment.ConstraintTests.test_new_key_cannot_restart_the_same_order",
+          "test_payment.ConstraintTests.test_order_contents_cannot_change_during_replay",
+          "test_payment.ConstraintTests.test_same_attempt_is_not_charged_twice",
+          "test_payment.ConstraintTests.test_unexpected_provider_error_preserves_pending_attempt",
+          "test_payment.FunctionalTests.test_provider_captures_exactly_35_ntd"
+        ]
+      },
+      {
+        "id": "M2",
+        "change": "skip the existing-attempt guard",
+        "status": "killed",
+        "failing_tests": [
+          "test_payment.ConstraintTests.test_declined_payment_is_not_paid",
+          "test_payment.ConstraintTests.test_new_key_cannot_restart_the_same_order",
+          "test_payment.ConstraintTests.test_order_contents_cannot_change_during_replay (order=Order(order_id='tea-001', sku='UNSWEETENED_PURE_GREEN_TEA', amount_ntd=1))",
+          "test_payment.ConstraintTests.test_order_contents_cannot_change_during_replay (order=Order(order_id='tea-001', sku='SWEETENED_GREEN_TEA', amount_ntd=35))",
+          "test_payment.ConstraintTests.test_order_contents_cannot_change_during_replay",
+          "test_payment.ConstraintTests.test_same_attempt_is_not_charged_twice",
+          "test_payment.ConstraintTests.test_unexpected_provider_error_preserves_pending_attempt"
+        ]
+      },
+      {
+        "id": "M3",
+        "change": "allow an idempotency key to move to another order",
+        "status": "killed",
+        "failing_tests": [
+          "test_payment.ConstraintTests.test_key_cannot_move_to_another_order"
+        ]
+      },
+      {
+        "id": "M4",
+        "change": "label a declined payment PAID",
+        "status": "killed",
+        "failing_tests": [
+          "test_payment.ConstraintTests.test_declined_payment_is_not_paid"
+        ]
+      },
+      {
+        "id": "M5",
+        "change": "label a timed-out payment PAID",
+        "status": "survived",
+        "failing_tests": []
+      },
+      {
+        "id": "M6",
+        "change": "put sweetened tea on the successful receipt",
+        "status": "killed",
+        "failing_tests": [
+          "test_payment.FunctionalTests.test_receipt_preserves_purchased_tea"
+        ]
+      },
+      {
+        "id": "M7",
+        "change": "remove the pending record before the provider call",
+        "status": "killed",
+        "failing_tests": [
+          "test_payment.ConstraintTests.test_unexpected_provider_error_preserves_pending_attempt"
+        ]
+      }
+    ]
+  },
+  {
+    "suite": "full",
+    "baseline_tests": 9,
+    "baseline_passed": true,
+    "killed": 7,
+    "scored_mutants": 7,
+    "excluded_mutants": 0,
+    "mutation_score": 100.0,
+    "mutants": [
+      {
+        "id": "M1",
+        "change": "charge 1 instead of the order amount",
+        "status": "killed",
+        "failing_tests": [
+          "test_payment.ConstraintTests.test_declined_payment_is_not_paid",
+          "test_payment.ConstraintTests.test_key_cannot_move_to_another_order",
+          "test_payment.ConstraintTests.test_new_key_cannot_restart_the_same_order",
+          "test_payment.ConstraintTests.test_order_contents_cannot_change_during_replay",
+          "test_payment.ConstraintTests.test_same_attempt_is_not_charged_twice",
+          "test_payment.ConstraintTests.test_timeout_stays_pending_without_another_charge (outcome='timeout_before_capture')",
+          "test_payment.ConstraintTests.test_timeout_stays_pending_without_another_charge (outcome='timeout_after_capture')",
+          "test_payment.ConstraintTests.test_unexpected_provider_error_preserves_pending_attempt",
+          "test_payment.FunctionalTests.test_provider_captures_exactly_35_ntd"
+        ]
+      },
+      {
+        "id": "M2",
+        "change": "skip the existing-attempt guard",
+        "status": "killed",
+        "failing_tests": [
+          "test_payment.ConstraintTests.test_declined_payment_is_not_paid",
+          "test_payment.ConstraintTests.test_new_key_cannot_restart_the_same_order",
+          "test_payment.ConstraintTests.test_order_contents_cannot_change_during_replay (order=Order(order_id='tea-001', sku='UNSWEETENED_PURE_GREEN_TEA', amount_ntd=1))",
+          "test_payment.ConstraintTests.test_order_contents_cannot_change_during_replay (order=Order(order_id='tea-001', sku='SWEETENED_GREEN_TEA', amount_ntd=35))",
+          "test_payment.ConstraintTests.test_order_contents_cannot_change_during_replay",
+          "test_payment.ConstraintTests.test_same_attempt_is_not_charged_twice",
+          "test_payment.ConstraintTests.test_timeout_stays_pending_without_another_charge (outcome='timeout_before_capture')",
+          "test_payment.ConstraintTests.test_timeout_stays_pending_without_another_charge (outcome='timeout_after_capture')",
+          "test_payment.ConstraintTests.test_unexpected_provider_error_preserves_pending_attempt"
+        ]
+      },
+      {
+        "id": "M3",
+        "change": "allow an idempotency key to move to another order",
+        "status": "killed",
+        "failing_tests": [
+          "test_payment.ConstraintTests.test_key_cannot_move_to_another_order"
+        ]
+      },
+      {
+        "id": "M4",
+        "change": "label a declined payment PAID",
+        "status": "killed",
+        "failing_tests": [
+          "test_payment.ConstraintTests.test_declined_payment_is_not_paid"
+        ]
+      },
+      {
+        "id": "M5",
+        "change": "label a timed-out payment PAID",
+        "status": "killed",
+        "failing_tests": [
+          "test_payment.ConstraintTests.test_timeout_stays_pending_without_another_charge (outcome='timeout_before_capture')",
+          "test_payment.ConstraintTests.test_timeout_stays_pending_without_another_charge (outcome='timeout_after_capture')"
+        ]
+      },
+      {
+        "id": "M6",
+        "change": "put sweetened tea on the successful receipt",
+        "status": "killed",
+        "failing_tests": [
+          "test_payment.FunctionalTests.test_receipt_preserves_purchased_tea"
+        ]
+      },
+      {
+        "id": "M7",
+        "change": "remove the pending record before the provider call",
+        "status": "killed",
+        "failing_tests": [
+          "test_payment.ConstraintTests.test_unexpected_provider_error_preserves_pending_attempt"
+        ]
+      }
+    ]
+  }
+]
