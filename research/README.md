@@ -50,7 +50,7 @@ flowchart LR
 
 **期中加圈**（2026-09-15 第一次：AGNTCon + MCPCon Japan 與《AI Agents in Depth》）：月中作者去了一場會議、或讀完一本要當書錨的書，不等下個月 1 日，直接加一圈。`collect.sh all` 照跑，digest 寫到 `research/<下個月>/`；會議材料抓到 `.context/research/<slug>-conf/`（sched 議程含作者打勾的場次、附件投影片用 pdftotext／pptx／keynote-parser／OCR 轉文字、keynote 直播字幕、主辦方部落格）→ 一天一份逐場筆記 `notes_<day>.md`（全部場次都寫，作者參加的標 ✅）→ `prompts/conference_digest.md` 整合成 `conference_digest.md`（會 commit：只引公開材料）→ 書摘 `book_<slug>.md`（會 commit）→ 用這些重切下下個月的大綱、把可插的證據補進當月還沒發布的文章（只加句子與 References，不改作者的字；改完要用 `tools/medium_draft.sh <dir> --post <id>` 重灌草稿）→ 更新 backlog 與 style brief。期中加圈不重新選題，`selection.md` 只記錄改了什麼。每個產出檔都要過一個 skeptic agent 對原始來源抽查再用：session 撞額度會讓 agent 寫到一半停下，檔尾乾淨不代表完整，要拿獨立的清單（場次 id、章節、查詢字串）對覆蓋率。
 
-**既有系列的定向擴寫**（2026-09-25）：依作者要求，「綠燈不是驗收」擴為「總論＋四部曲」，共五篇文章、十份中英原稿。第四篇〈付款實作篇〉以購買無糖純喫綠茶，補足 constraint tests、Review 選擇與 mutation score 的連續實例。這次沿用既有主題，依序整理一手來源、可重跑實驗與證據界線，再經 Claude Code／Codex 獨立審閱、修訂與雙語交付；[付款實作研究紀錄](2026-10/payment-example-evidence.md) 保留來源、實測與各輪修正。上方圖表保留原始每月規劃方式，本次沒有重新執行整月選題；第四篇尚未排程。
+**既有系列的定向擴寫**（2026-09-25）：依作者要求，「綠燈不是驗收」擴為「總論＋四部曲」，共五篇文章、十份中英原稿。第四篇〈付款實作篇〉以購買無糖純喫綠茶，補足 constraint tests、Review 選擇與 mutation score 的連續實例。這次沿用既有主題，依序整理一手來源、可重跑實驗與證據界線，再經 Claude Code／Codex 獨立審閱、修訂與雙語交付；[付款實作研究紀錄](2026-10/payment-example-evidence.md) 保留來源、實測與各輪修正。上方圖表保留原始每月規劃方式，本次沒有重新執行整月選題。第四篇初次交付為草稿，後續依作者要求於同日完成排程：中文 2026-11-03、英文 2026-11-05，皆為 09:00 GMT+8；實際時程與核對紀錄見 [PUBLISHING.md](../PUBLISHING.md)。
 
 ## 資料來源
 

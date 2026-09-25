@@ -2,7 +2,7 @@
 
 > **TL;DR** — The overview argues that when an agent writes both code and tests, and those tests have not been independently reviewed, green is insufficient for acceptance. This piece develops the test gate. Tests record the agent's understanding of the requirements, so they need review too. Four common risks are weakened assertions, existing bugs recorded as golden outputs, tests that fail to detect faults or exercise the wrong path, and coverage mistaken for quality. Human inspection alone is unreliable: in an experiment with 86 developers, accuracy on incorrect LLM-written assertions was only 49%, without lower confidence. **Assertion-change diff, red-then-green and diff-scoped mutation score** help identify these risks, each with costs and limits. The piece ends with a ten-question checklist and my workshop example of "all tests green, replay never executed." That example made the remaining task clear: beyond test effectiveness, someone must establish whether the implementation answers the original requirement.
 
-> Series: [Overview](https://medium.com/p/c4fc9f3d8581) → **1. Testing (this piece)** → 2. Review (coming soon) → 3. Reliability (coming soon) → 4. Payment Walkthrough (draft ready; unscheduled)
+> Series: [Overview](https://medium.com/p/c4fc9f3d8581) → **1. Testing (this piece)** → 2. Review (coming soon) → 3. Reliability (coming soon) → 4. Payment Walkthrough (coming soon)
 
 ---
 
@@ -203,7 +203,7 @@ except TimeoutError:
 
 The experiment keeps seven hand-seeded, executable, non-equivalent mutants, with no exclusions. Two happy-path tests detect 2/7, or 28.6%. Adding the other constraints but omitting the timeout test detects 6/7, or 85.7%, while M5 survives. Restoring that test brings the nine-test suite to 7/7, or 100.0%. Each selection first passes on the original program, then runs against every mutant.
 
-The 70% comparison is illustrative; seven hand-selected mutants cannot directly inherit a threshold for tool-generated mutants on a real diff. Even though 85.7% exceeds 70%, it cannot justify approving this payment change: a critical constraint remains unprotected. The 100% result only describes these seven mutants. It does not verify real providers, concurrency or restarts. The demo uses sequential calls and a fake provider in one process. The unscheduled draft of “Part 4 — A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score” develops the code, Review selections and denominator in full.
+The 70% comparison is illustrative; seven hand-selected mutants cannot directly inherit a threshold for tool-generated mutants on a real diff. Even though 85.7% exceeds 70%, it cannot justify approving this payment change: a critical constraint remains unprotected. The 100% result only describes these seven mutants. It does not verify real providers, concurrency or restarts. The demo uses sequential calls and a fake provider in one process. “Part 4 — A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score” develops the code, Review selections and denominator in full.
 
 On tooling, the JVM has PIT, JS and TS have Stryker, Python has mutmut. How far each can be confined to the diff varies, so check how your stack does it before you start.
 
@@ -625,7 +625,7 @@ Reviewing the test suite this way gives the team firmer ground for the next ques
 - **Part 1 — Testing (this piece)**
 - Part 2 — Review: Review Is the Control Point, Not the Bottleneck — Triage, Reviewer Fleets and the Closed-Loop Ban (coming soon)
 - Part 3 — Reliability: The 34% SWE-Gate Found Behind a Green Build — Constraint Tests, pass^k and the Gate for Expanding Autonomy (coming soon)
-- Part 4 — A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score (draft ready; unscheduled)
+- Part 4 — A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score (coming soon)
 
 ---
 

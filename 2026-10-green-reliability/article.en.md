@@ -2,7 +2,7 @@
 
 > **TL;DR** — Part 3 of this four-part series asks what evidence should guide expanded agent authority. Across 75 Python repos and 303 patch tasks, SWE-Gate found that 221 of 644 patches passing functional tests (34%) violated a constraint a reviewer had actually added. That gap leads to three metrics. **Constraint pass rate** is the share of functionally passing PRs that also pass all constraint tests. **pass^k** is the share of cases in a task set that pass all k runs, reported separately from single-attempt success rate, pass@1. **Oversight budget** addresses the human work still needed: in READY's clinical-audit case, systems only 0.3 percentage points apart in accuracy differed by nearly 10 percentage points in review requirements. Those staffing figures cannot transfer directly to code review. This piece borrows the idea of working backward from a reliability target, using a simplified model to estimate a review minimum and compare it with actual review and sustainable capacity. These results join test effectiveness and existing operating conditions in the monthly leadership report and the G2 authority decision. pass@1 alone does not decide expansion.
 
-> Series: [Overview](https://medium.com/p/c4fc9f3d8581) → [1. Testing](https://medium.com/p/51d001a6dcd5) → [2. Review](https://medium.com/p/4d36d0f2f9c1) → **3. Reliability (this piece)** → 4. Payment Walkthrough (draft ready; unscheduled)
+> Series: [Overview](https://medium.com/p/c4fc9f3d8581) → [1. Testing](https://medium.com/p/51d001a6dcd5) → [2. Review](https://medium.com/p/4d36d0f2f9c1) → **3. Reliability (this piece)** → 4. Payment Walkthrough (coming soon)
 
 ---
 
@@ -167,7 +167,7 @@ The dashed line gives people a chance to reconsider a rule. Two years later, a o
 
 Scanning for a `PENDING` string would not verify this rule. In the accompanying [payment example](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment), `FakeGateway` records a capture and raises a timeout. The test replays the same order and key through `Checkout.pay()`, checking that the result remains `PENDING`, has no payment ID, and leaves only one provider call and one capture. The fake deliberately does not deduplicate, so it cannot hide a missing application guard. The full tests also cover a timeout before capture and another connection error.
 
-This Review concern is worth retaining because its consequence is clear, its expected result is decidable, it applies to future changes and someone maintains it. Naming preferences do not each need a behavior test; unsettled refund policy first needs a requirement decision. The unscheduled draft of Part 4, “A Payment Walkthrough,” connects these selections to nine payment tests and seven selected mutants.
+This Review concern is worth retaining because its consequence is clear, its expected result is decidable, it applies to future changes and someone maintains it. Naming preferences do not each need a behavior test; unsettled refund policy first needs a requirement decision. Part 4, “A Payment Walkthrough,” connects these selections to nine payment tests and seven selected mutants.
 
 The denominators must remain distinct. Detecting 7/7 selected mutants is this suite's mutation score within the example, not an agent's constraint pass rate or pass^k. Constraint pass rate counts candidate patches that pass all applicable constraints among those passing functional checks. Pass^k needs multiple independent agent attempts on fixed tasks. Rerunning the same unit tests five times does not produce the five agent outcomes the next section measures.
 
@@ -548,7 +548,7 @@ That sequence makes room for the people who receive the work. If a team expands 
 
 At the reliability gate, we can return to the question that began the series: when the tests were written by the agent, does a green build still count? It does, but only for the layer it actually checked. The remaining constraints, consistency and human-review requirements are what these three numbers keep track of.
 
-Part 4, “A Payment Walkthrough,” returns to one order for unsweetened green tea: select constraints from Review comments, turn them into tests, then examine what the mutation score still misses. Its draft is complete and unscheduled. It gives the decisions in the first three parts a reproducible starting point, while retaining this piece’s caution: one payment example cannot replace reliability evidence from repeated attempts across a task set.
+Part 4, “A Payment Walkthrough,” returns to one order for unsweetened green tea: select constraints from Review comments, turn them into tests, then examine what the mutation score still misses. It gives the decisions in the first three parts a reproducible starting point, while retaining this piece’s caution: one payment example cannot replace reliability evidence from repeated attempts across a task set.
 
 ---
 
@@ -558,7 +558,7 @@ Part 4, “A Payment Walkthrough,” returns to one order for unsweetened green 
 - [Part 1 — Reviewing the Tests an Agent Wrote: Loosened Assertions, Frozen Bugs and Mutation Score](https://medium.com/p/51d001a6dcd5)
 - [Part 2 — Review Is the Control Point, Not the Bottleneck: Triage, Reviewer Fleets and the Closed-Loop Ban](https://medium.com/p/4d36d0f2f9c1)
 - **Part 3 — The 34% SWE-Gate Found Behind a Green Build (this piece)**
-- Part 4 — A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score (draft ready; unscheduled)
+- Part 4 — A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score (coming soon)
 
 ---
 
