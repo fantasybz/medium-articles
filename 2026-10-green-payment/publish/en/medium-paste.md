@@ -26,7 +26,7 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 
 # Green Is Not Done, Part 4 — A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score
 
-> **TL;DR** — You want to buy a bottle of unsweetened pure green tea, but the payment screen has stopped responding. Will pressing the button again charge you twice? This walkthrough uses a fictional NTD 35 order to connect the series' three gates: assign reviewers and reading depth by risk, select durable constraints from Review comments, turn them into tests, then choose relevant code for mutation testing. The runnable Python example executes seven explicitly selected mutants. Two happy-path tests kill two of them, for a score of 28.6%. Eight tests, omitting only the timeout case, reach 85.7% while still missing a payment incorrectly marked successful. All nine payment tests detect all seven mutants. That 100% describes the selected scope; it says nothing by itself about concurrency, restarts or a real provider integration.
+> **TL;DR** — You want to buy a bottle of unsweetened pure green tea, but the payment screen has stopped responding. Will pressing the button again charge you twice? This walkthrough uses a fictional NTD 35 order to connect the series' three gates: assign reviewers and reading depth by risk, select durable constraints from Review comments, turn them into tests, then choose relevant code for mutation testing. The runnable Python example executes seven explicitly selected mutants. Two happy-path tests kill two of them, for a score of 28.6%. Eight tests, omitting only the timeout case, reach 85.7% while still missing a timed-out payment reported as successful. All nine payment tests detect all seven mutants. That 100% describes the selected scope; it says nothing by itself about concurrency, restarts or a real provider integration.
 
 > Series: [Overview: Green Is Not Done](https://medium.com/p/c4fc9f3d8581) → [1. Testing](https://medium.com/p/51d001a6dcd5) → [2. Review](https://medium.com/p/4d36d0f2f9c1) → [3. Reliability](https://medium.com/p/4b6d147bff0d) → **4. Payment Walkthrough (this piece)**. This article stands on its own; the overview and first three parts provide the research background and organizational design.
 
@@ -42,6 +42,8 @@ I want this bottle of tea to make the abstract terms observable. The buyer's exp
 
 The example starts with an authorized order loaded by the server. The SKU identifies the product, `order_id` identifies the order, and `key` is the idempotency key for this payment attempt, allowing repeated requests to refer to the same operation. These identifiers serve different purposes. An arbitrary price submitted by the browser is not authoritative input to this boundary.
 
+Why spend time separating these identities? Pressing the button again looks like the same action, but it can express two different intentions. When resending a request that received no response, the caller should retain the original order and key. Buying another bottle requires another order and payment attempt. Comparing only the SKU and NTD 35 cannot distinguish them. Conversely, generating a new key on every click can turn a retry into what looks like another payment attempt. C2 will protect that distinction.
+
 ```python
 # Illustrative data: an authorized, immutable server-loaded order.
 # Full code: examples/tea_payment/. No real provider is called.
@@ -56,6 +58,8 @@ key = "buy-tea-001"
 People should agree on the payment contract before asking an agent to implement it. A normal payment sends the order amount to the provider and returns `PAID` after a successful response. The receipt preserves the order, SKU, amount and payment identifier. Repeating the same order and key returns the existing result without another charge request. A key cannot move to another order. An order with an existing attempt cannot start again by changing its key or contents.
 
 A decline and a timeout mean different things. An explicit decline is `DECLINED`. A timeout means a definite response did not arrive; the provider might already have captured the money, so the result remains `PENDING`. This demo does not automatically charge again after a timeout or implement lookup and reconciliation. Those need a separately designed and verified recovery path.
+
+The example also specifies that unclassified provider exceptions propagate to the caller. Checkout must not turn them into a claim of payment success or failure. The recorded attempt remains `PENDING`, so replay does not call the provider again. C4, introduced later, will protect this agreement alongside the timeout behavior, preserving both the error that needs investigation and the record needed for replay. The caller's error presentation and recovery flow are outside this implementation.
 
 These are the example's agreed behaviors, not universal payment API state names. [Stripe's error-handling documentation](https://docs.stripe.com/error-handling#connection-errors) likewise treats connection errors as indeterminate, but its idempotency contract permits safe retries with the same key. This demo has no provider-side idempotency implementation, so it retains a pending result. The distinction is the guarantee supporting the retry. The conservative teaching policy should not become a blanket rule that real payment systems must never retry.
 
@@ -75,6 +79,10 @@ A reviewer agent can organize the diff, locate charge calls and exception handli
 
 When selecting hunks, the blocks of changes in a diff, I would prioritize the existing-attempt check, the amount passed to the provider, the conversion of exceptions into payment states, and connected callers. Reading only the highlighted line is insufficient. A guard's position, the origin of a value or an exception swallowed nearby may determine the behavior. Changes to tests and verification configuration belong in the same review, so a weaker assertion cannot quietly manufacture a green result.
 
+Consider the timeout branch. The reviewer sees an exception handler, then needs to work out what that exception establishes. First, look outward: does a timeout from `charge()` guarantee that no money was captured? This example provides no such guarantee. Next, look inward: if the code assigned `PAID` here, what evidence would support it, and did it receive a payment identifier? Without a successful response and payment identifier, “paid” promises more than the application knows. Only then return to the tests: does any case produce this uncertain outcome and check the reported state? Following that path reveals a missing scenario, rather than a need for more assertions on the happy path.
+
+The three review responsibilities now connect. The payment owner confirms that an unknown result stays `PENDING`. The QA reviewer makes loss of the response before or after capture observable in a test. The integration reviewer asks how the real provider's result will be recovered and who handles payments that remain unresolved. Those judgments can emerge in one discussion. Recording only “tests passed” would leave the next person guessing which questions were actually settled.
+
 [Google's Code Review guidance](https://google.github.io/eng-practices/review/reviewer/looking-for.html) asks reviewers to understand their assigned code, read wider context when needed and involve qualified reviewers for specialized concerns. The three responsibilities above are my application to this payment case, not a Google requirement to assemble three people. The approval record should say who reviewed the tests and who checked the payment-state decisions.
 
 If the only evidence is happy-path testing, I would begin with a close review of the relevant diff and identify missing constraints. Once reports actually cover those requirements, there is a basis for adjusting future review depth. Removing that attention first leaves the score trying to stand in for questions nobody has answered.
@@ -93,9 +101,13 @@ All may be useful, but they call for different next steps. I would not select co
 
 A consequential requirement can deserve protection the first time it appears. There is no reason to wait for a second incorrect charge before calling it a recurring rule. A temporary migration restriction, by contrast, may need a check with an expiry condition rather than a permanent place in CI.
 
-A selected comment also needs a traceable rule record. For C4, the source is the lost-response risk in this illustrative Review. Its scope is the payment attempt and its replay. Its requirement is to retain an unknown result after timeout, without reporting success or automatically sending a new charge. The test is `test_timeout_stays_pending_without_another_charge`; a payment owner maintains it, and a change to the provider contract or reconciliation design triggers reconsideration.
+A selected comment also needs a traceable rule record. For C4, the source is the lost-response risk in this illustrative Review. Its scope is the payment attempt and its replay. Its requirement is to retain an unknown result after timeout, without reporting success or automatically sending a new charge. The timeout test is `test_timeout_stays_pending_without_another_charge`. C4 also includes the unclassified-exception behavior specified in section 1: `test_unexpected_provider_error_preserves_pending_attempt` checks propagation, retention of the early record and replay without another charge. A payment owner maintains the rule, and a change to the provider contract or reconciliation design triggers reconsideration.
 
 A real team should attach the actual PR, requirement or incident. An owner field lets the next reviewer find someone who can explain or change the expected result. A long period without failures is not, by itself, a reason to remove a payment safety rule. The rule's continuing protection may be why the mistake has stayed out.
+
+The most consequential step from comment to rule is defining the expected result. “Please handle timeouts” leaves several answers open: report failure, charge again or wait for a lookup. An agent could plausibly implement any of them. C4 needs to specify that the first timed-out call returns `PENDING` without a successful payment identifier; replay returns the same result and the provider-call count remains one. That gives everyone an answer they can inspect together.
+
+Keep both timeout scenarios. Timeout before capture prevents us from treating uncertainty as proof that money moved. Timeout after capture prevents us from treating an exception as proof that nothing happened. Both produce the same application state because the application has the same information, even though the provider's internal outcomes differ. If lookup is added later, the owner should define which new evidence permits `PENDING` to become a definite result and add the corresponding tests. The rule can evolve with the contract, with the reason for the change preserved.
 
 ---
 
@@ -103,7 +115,7 @@ A real team should attach the actual PR, requirement or incident. An owner field
 
 **“Constraint test” describes a test's origin and responsibility, not a technology mutually exclusive with functional testing.** Preventing a duplicate payment is both product behavior and a constraint a reviewer has chosen to retain. It can be checked by a unit test, integration test or another suitable mechanism. Reporting those responsibilities separately can help accountability without implying that they protect disjoint worlds.
 
-The example begins with two happy-path tests: the receipt preserves the unsweetened SKU, NTD 35 and payment identifier; the fake provider receives and captures exactly NTD 35. Seven more test methods cover C1's replay, C2's three identity conflicts, and C3/C4's decline, timeout and other connection error. One rule can require several test methods; rule count and test count need not match.
+To compare test selections, begin with the example's two happy-path tests: the receipt preserves the unsweetened SKU, NTD 35 and payment identifier; the fake provider receives and captures exactly NTD 35. Then include seven more test methods covering C1's replay, C2's three identity conflicts, and C3/C4's decline, timeout and unclassified exception, represented here by ConnectionError. One rule can require several test methods; rule count and test count need not match.
 
 `FakeGateway` is a test double. It records attempted charge `calls` separately from successful `captures`, and **deliberately does not deduplicate**. If a helpful fake silently removed duplicate requests, a missing application guard might leave every test green.
 
@@ -151,6 +163,10 @@ def test_timeout_stays_pending_without_another_charge(self):
 
 One capture but no payment ID in the receipt is an intentional asymmetry. The test can inspect the fake's internals; the application can only act on the response it receives. Knowing the fixture captured money does not justify asking the application to claim success after losing that response.
 
+Start by checking whether the arranged scenario reaches the payment code: both requests pass through `Checkout.pay()`. Then confirm that the expected answer comes from the agreed C4 contract, independently of the implementation's current return value. Finally, examine how the assertions observe the promise and the side effect. They check `PENDING`, the absent payment identifier, the unchanged replay result and the single provider call. Omitting either side can leave part of the requirement unprotected.
+
+For example, comparing `first.status` with `second.status` also appears to test replay, but it passes if both incorrectly return `PAID`. The expected value needs an independent source. Likewise, if the fake silently returns an old result on a second call, `captures` may still contain one entry even though the application called twice. Recording `calls` separately from `captures` lets that mistake become visible before the test judges it.
+
 ---
 
 ## 5. Read the payment response logic before deliberately breaking it
@@ -176,7 +192,13 @@ Follow the different responses through this diagram. It shows what this example 
 
 The branch that retains `PENDING` has no direct arrow to `PAID`. Lookup and reconciliation require new evidence, and this demo does not implement them. Saving a pending attempt gives recovery a defined starting point. Leaving it unresolved forever would not complete the payment flow.
 
-Other provider exceptions propagate out of the method, but the pending record written before the call remains. A replay therefore does not send another charge. That early record needs its own protection. While developing the example, an independent Claude Code review identified this testing gap. The example was extended with a capture followed by a non-timeout connection error, plus M7, which removes the early record. Review identified a risk the initial selection had missed; mutation then checked whether the added test protected it.
+Now follow capture followed by a lost response in time. Checkout records the attempt, then calls the provider. The fake records a successful capture and raises `TimeoutError`; Checkout returns `PENDING`. When the same request arrives again, the existing attempt is found before another provider call. Safe replay depends on what has already been recorded and where that record is checked.
+
+One detail is easy to miss. For the handled `TimeoutError`, the code also writes the attempt after exception handling. Removing the pre-call record can therefore leave timeout-only checks green. To protect the requirement that the record exists before the call, we need an exception that skips the later write. The full example uses `error_after_capture`: the fake records a capture, then raises `ConnectionError`, which neither of the two handlers catches.
+
+The first call propagates that `ConnectionError`, which the test explicitly expects. On the second call with the same order and key, the early record still exists, so Checkout returns `PENDING` without calling the provider. Remove that record and the second call reaches the charge again, allowing the test to distinguish the change. This case protects a requirement that must survive an interruption to control flow.
+
+This part is grounded in the example's development record. An independent Claude Code review identified the missing non-timeout exception test for the early `PENDING` record; the subsequent revision added that case and M7, the mutation that removes the pre-call record. The initial tests and mutants had not fully exposed the risk. Independent Review contributed a question the original selection had missed, and an executable test retained the resulting requirement. The requirement comes from the teaching contract stated in section 1; a real team still needs its responsible people to confirm that contract. The model identified the testing gap. Execution then established the test's ability to distinguish this contract violation, M7, rather than establishing that the contract itself was appropriate.
 
 Mutation testing begins with a passing original program. Change one thing, run the selected tests and discard that mutated copy. An assertion failure caused by the changed behavior identifies a killed mutant. This simple runner labels every undetected mutant survived. It does not measure coverage, so that label also includes branches the selected tests never execute. Full tools distinguish NoCoverage from Survived, meaning executed but undetected; keep that distinction in mind when reading the tables.
 
@@ -188,7 +210,7 @@ The third selection is deciding which code and mutations deserve execution. I st
 
 Only `payment.py` is mutated. Assertions, fixtures, `FakeGateway` and the mutation runner remain unchanged. Changing the question or the judge at the same time would undermine the experiment. If a real PR changes a shared payment helper, affected tests must follow its callers. “Diff-scoped” does not mean the surrounding behavior no longer matters.
 
-There is earlier industrial research behind this approach to controlling scope. Google's [Practical Mutation Testing at Scale](https://research.google/pubs/practical-mutation-testing-at-scale-a-view-from-google/) (2021) describes mutation during Code Review on changed code, filtering less useful mutants and selecting operators using historical performance. It supports considering cost and actionable results together. It does not validate this article's seven mutants or a 70% threshold.
+Earlier industrial research offers a reference for this approach to controlling scope. Google's [Practical Mutation Testing at Scale](https://research.google/pubs/practical-mutation-testing-at-scale-a-view-from-google/) (2021) describes mutation during Code Review on changed code, filtering less useful mutants and selecting operators using historical performance. It supports considering cost and actionable results together. It does not validate this article's seven mutants or a 70% threshold.
 
 For an experiment the reader can inspect individually, this example **hand-seeds seven mutants**. They are executed changes, not a complete set automatically generated by Stryker, PIT or mutmut, and they do not cover every possible payment defect.
 
@@ -196,55 +218,121 @@ For an experiment the reader can inspect individually, this example **hand-seeds
 
 Each has a demonstrable behavior difference; no equivalent mutants are excluded here. With a full mutation tool, record its version, operators, file scope and test selection, and separate compile failures, no coverage, timeouts and confirmed equivalence. For example, [Stryker's metrics](https://stryker-mutator.io/docs/mutation-testing-elements/mutant-states-and-metrics/) count both killed mutants and timeouts as detected, while valid mutants with no coverage remain in the ordinary mutation-score denominator. Dropping both timeouts and uncovered mutants as “invalid” would change the meaning of a comparison.
 
-A surviving mutant does not automatically prescribe an assertion. Read the change and find an input and side effect that expose it. M2 needs a second call; M5 needs a timeout. The complete test includes timeouts before and after capture, so “unknown” does not quietly become “definitely charged.” Five more `PAID` assertions on a normal purchase would reach none of these situations.
+Both selecting mutations and interpreting survivors require an operation that distinguishes the original program from the incorrect version. M2 needs two calls on the same order, with an observation of whether a charge happens again. M5 needs the provider to raise a timeout, followed by a check that the receipt remains pending. The complete test includes timeouts before and after capture, so uncertainty does not silently become proof that money moved. These defects need different inputs and assertions. Five more `PAID` assertions on a normal purchase would reach neither.
+
+A survivor does not always mean “add a test immediately,” either. First establish whether the behavior belongs to the promised scope and whether a person has confirmed the expected result. If refund policy remains undecided, a test would merely freeze an answer nobody has agreed on. C4 already has a clear contract, so M5's survival points directly to missing verification. Review supplies the basis for interpreting the mutation result and deciding what to do with it.
 
 When no counterexample is apparent, distinguish undefined requirements, unreachable inputs, test gaps and actual behavioral equivalence. “We do not test that input” is not an equivalence proof. [Stryker's equivalent-mutant guidance](https://stryker-mutator.io/docs/mutation-testing-elements/equivalent-mutants/) also explains the limits of automatic determination. Any exclusion needs its input domain, reason and review recorded. A consequential surviving mutation must be resolved or explicitly accepted before approval, not hidden inside the average.
 
 ---
 
-## 7. Calculate the score, then state what it leaves unanswered
+## 7. Follow the 85.7% green result to a test that actually fails
 
 All seven mutated programs are executable and non-equivalent, so this experiment keeps a denominator of seven. Its mutation score is the number detected by tests divided by seven, multiplied by 100%. The denominator counts mutants, not tests. It is not the probability that the product has no bugs.
 
-The accompanying `mutation_demo.py` was executed with three test selections. The original program passed each selection before the mutations ran:
+The accompanying `mutation_demo.py` was executed with three test selections. The original program passed each selection before the mutations ran. Start with the overall results, then follow M5 in the second row to the missing evidence.
 
 📌【在此插入表 table-04.png】
 
-The first two tests are real tests that exercise payment. They simply do not require the program to handle replay, key conflicts, declines or timeouts. The locations changed by M2, M3 and M7 execute, yet the tests do not detect the behavioral differences: mutation asks more than whether a line ran. M4 and M5 never reach their exception branches, a gap branch coverage could also reveal.
+The first two tests are real and exercise payment. They simply do not demand correct handling of replay, key conflicts, declines or timeouts. The locations changed by M2, M3 and M7 execute without the tests distinguishing the defects. That is the extra question mutation asks beyond “did this line run?” M4 and M5 never enter their exception branches; branch coverage alone could also reveal those gaps.
 
-The second row deserves a pause. A team using only the Testing article's proposed starting threshold of 70% would see 85.7% as enough. Yet C4 remains partly unprotected: M5 changes `PENDING` to `PAID`, but none of these eight tests executes the timeout branch, so they cannot detect that error. **An aggregate score above the threshold cannot compensate for an unverified critical payment constraint.** This PR needs the timeout case and evidence that it fails against M5.
+The second row detects six mutants. If a team used only the Testing article's suggested 70% starting threshold, 85.7% would clear it. Yet the surviving M5 changes exactly the behavior C4 protects. Here is its actual single-line replacement; the rest of the program and tests remain unchanged:
 
-The 70% comparison illustrates how an aggregate can hide a critical survivor. Seven manually selected mutants differ from the set a tool generates on changed lines, and the score depends on that selection. This small denominator cannot calibrate, or directly inherit, a real repository's threshold.
+```diff
+ except TimeoutError:
+-    receipt = replace(receipt, status="PENDING")
++    receipt = replace(receipt, status="PAID")
+```
 
-The third row restores that timeout test and detects all seven mutants. It supports the claim that these nine tests catch these seven selected changes. It does not make the payment service “100% reliable.” Concurrency, restarts and provider integration do not acquire evidence merely because every mutant in this denominator was detected.
+All eight tests still pass for a straightforward reason: none arranges a provider timeout, so execution never enters that branch. Read their green result again with this in mind. They confirm their arranged cases. They do not answer whether an unknown payment will be reported as successful. Execution without an error cannot answer a question the suite never asked. A full tool with coverage information would classify this as NoCoverage; under the Stryker definition discussed earlier, it remains in the ordinary mutation-score denominator. The lesson is that someone still needs to examine this unanswered question after the aggregate clears its threshold.
 
-Nor does 100% prove that every test is individually effective. M2 fails several tests at once. In an isolated copy, replacing C1’s replay test and C2’s new-key and changed-order tests with empty `pass` bodies still produced 28.6%, 85.7% and 100%. Other tests continued to detect M2, hiding three tests that had lost their assertions. This counterexample was executed; the original example retains its tests. Review must also inspect assertions and individual failing-test results. Where needed, run a constraint’s test alone against a version that violates its requirement.
+Now restore the timeout test from section 4 and use that same test against M5 and the original program. A separate isolated run executed only that test method. The following excerpt omits the full test-name prefixes, tracebacks and elapsed time, and shows the identical assertion message only once. It retains both scenarios and the counts:
 
-The report must also explain its classification. This runner checks a passing baseline, each selection’s test count and the timeout test’s name. It executes each mutant in a separate temporary directory, distinguishes assertion failures from execution errors and reports failing test names. It does not lock every test’s identity or include assertion messages in the JSON. Import errors, execution errors, missing tests or execution timeouts abort the experiment instead of quietly counting as kills. This is a conservative convention for the teaching runner, not a claim about every production mutation tool's default classification.
+```text
+# M5: two subTests arrange timeout before and after capture
+(outcome='timeout_before_capture') ... FAIL
+(outcome='timeout_after_capture') ... FAIL
+AssertionError: 'PAID' != 'PENDING'
+Ran 1 test
+FAILED (failures=2)
 
-There are two different levels of timeout here. M5 changes how the payment code handles `TimeoutError`; its tests finish normally. A mutation tool's execution timeout means the mutant's test process exceeded a time limit. Stryker counts the latter as detected, while this runner aborts. Neither means that every payment timeout counts as a detected bug.
+# Same test, original payment.py restored
+Ran 1 test
+OK
+```
 
-Putting three selections side by side compares test effectiveness. It is not a CI option allowing PR authors to remove inconvenient tests. A real acceptance process fixes and protects its test scope, rules and runner, and separately reviews changes to that evidence.
+This is **one test method with two failing subTests**, not two additional payment tests. The full suite still contains nine methods. The failure is the assertion on `first.status`: the changed program returns `PAID`, while the contract requires `PENDING`. It is not an import error, a broken environment or a failure to collect the test. The same method passes against the original program. We can now trace the requirement, input and assertion that distinguish M5.
+
+This checks a test's ability to identify a known incorrect version. It does not establish a historical TDD sequence for the feature PR. Running the full nine-test suite detects all seven specified mutants, producing 100%. The supported conclusion remains specific: the selected tests detect those seven changes. Concurrency, restarts and provider integration still require their own cases and evidence.
+
+**Clearing an aggregate threshold cannot offset an unverified payment constraint.** The 70% comparison illustrates what an aggregate can hide. Seven hand-selected mutants differ from the set a full tool generates across changed code; this small denominator cannot calibrate a universal threshold for a real repository.
+
+### Why read individual results even at 100%?
+
+The next table is derived from the full experiment's JSON. Each row represents one test method. A dot means at least one assertion or subTest in that method failed for the mutant; a dash means it did not distinguish the change. This is a failure matrix, not a coverage measurement. A dash does not necessarily mean the changed code was never executed.
+
+📌【在此插入表 table-05.png】
+
+Follow the M5 column first. Only the timeout method detects it, which explains the gap when that method is omitted. Now look at M2. Several methods detect it: although they check declines, replay or exceptions, they all encounter the existing-attempt guard. If one constraint test loses its assertions, another can still detect M2 and keep the aggregate unchanged.
+
+This was also tested, rather than inferred only from the table. In an isolated copy, the C1 replay method and the C2 methods labeled “Reject new key on same order” and “Preserve order during replay” were replaced with empty `pass` bodies. The three scores remained 28.6%, 85.7% and 100%. The official example retains its assertions. This counterexample exposes a limit of the aggregate: unittest still counts empty methods, and other cases still detect M2, so neither “nine tests” nor “100%” reveals that three methods have lost their content.
+
+After receiving the report, a reviewer therefore still needs to inspect the input and assertions for the particular constraint. Where necessary, isolate the method as in the M5 check: confirm that it fails for a violation and passes against the original program. If no suitable counterexample has been established, record that evidence gap. An unknown result need not be reported as verified to preserve an attractive score.
+
+### The report's construction must be inspectable too
+
+This runner first checks that the original program passes, verifies the selected test count and the timeout test's name, then executes each mutant in a separate temporary directory. It separates assertion failures from execution errors and lists failing test names. It does not pin every test identity or include assertion messages in its JSON, which is why the earlier failure message comes from a separate single-method run.
+
+An import or execution error, an unexpected test count or an execution timeout aborts the demonstration rather than silently counting as a kill. That is this tutorial's conservative policy. M5 models the payment code receiving `TimeoutError`; the test process completes normally. A mutation tool's execution timeout means its test process exceeded a time limit. Stryker counts that latter outcome as detected, while this runner aborts. Establish which definition applies before interpreting the report.
+
+The three suites are an experiment in test selection. A real acceptance process must fix the scope, protect its rules and runner, and review changes to them separately. If a PR author can remove unfavorable tests and return a new green result, the score no longer has a shared basis.
 
 ---
 
 ## 8. Return the evidence to Review before discussing reliability
 
-At this point, a reviewer should receive more than a percentage. The payment PR needs its intended replay behavior, C1–C4 with sources and owners, results from nine tests, individual statuses for seven mutants, and the system boundaries that remain unverified.
+Return to the PR in section 2 that promises payment replay. The reviewer now knows the commitment and has seen M5's counterexample. The decision is whether the change has sufficient evidence for approval, and what that approval covers.
 
-The human judgment at 85.7% is specific: M5 reports an unknown payment as successful, and C4 lacks its timeout test, so the aggregate score does not justify approval. After adding the test, its oracle still deserves review. A test that only checks a string returned directly by the fake, without passing through `Checkout.pay()`, would not protect the application's state handling.
+If the submission still contained the 85.7% result, I would leave a comment like this. It is a teaching example, not an actual team's approval record:
 
-Rules also need independence from the candidate implementation. A PR may propose changing a constraint, but it cannot weaken the acceptance test and use the resulting green run to authorize itself. A production workflow should require human approval for rule changes, evaluate candidate code with protected rule and runner revisions, and bind approval to the revision actually reviewed. A directory named `constraints/` creates none of that protection on its own.
+> Approval withheld. M5 changes a timeout result to `PAID`, yet all eight selected tests pass. C4's unknown payment outcome remains unverified. Add timeout cases before and after capture, checking state, payment identifier and replay side effects through `Checkout.pay()`. Provide the test failing against M5 and passing against the original program, then request the payment owner's review. This review covers the sequential, single-process teaching implementation; production recovery and integration require separate evidence.
 
-The nine tests describe one candidate program in selected scenarios. To measure an agent's constraint pass rate, the unit changes to candidate patches: among patches passing functional checks, how many also pass every applicable constraint? One patch passing seven constraint tests does not measure the agent's long-term pass rate.
+The comment connects the reason for withholding approval to the conditions for reconsidering it. The author need not guess whether the issue is a score or a naming preference. The next reviewer knows what to examine. A test that compares a string stored inside the fake without exercising the payment code would not meet the condition. The same product path must show an explainable difference between correct and incorrect versions.
 
-Likewise, pass^k involves independent agent attempts at the same task, each evaluated against requirements fixed in advance. It does not mean rerunning the same deterministic unit tests five times or running once against each mutant. This article performs no repeated-agent experiment and therefore reports no invented pass^5 figure.
+A PR evidence package can be concise while preserving those connections. Here is a completed teaching template with fields for the actual revision, rule version and report links. It is a review-record format, not an implemented automatic approval tool.
 
-That is how the three gates divide the work around this bottle of tea. The test gate supplies evidence about test protection. The review gate judges requirements, evidence and outstanding risk. The reliability gate uses repeated outcomes on a fixed task set to inform authorization. Evidence can move between stages without changing what its denominator means.
+```text
+Intent:
+  Replay of the same payment attempt returns the saved result
+  without another provider call.
+Constraints honoured:
+  C1 replay; C2 order/key boundaries; C3 decline;
+  C4 unknown outcomes and unclassified exceptions.
+Evidence:
+  Original program passes 9 payment tests.
+  All 7 specified mutants detected; 0 excluded.
+  The isolated C4 timeout method fails against M5 and passes against the original.
+Revision / rule version / report:
+  [Link actual reviewed revision, protected rule version and run results.]
+Remaining scope:
+  Persistence, concurrency, restarts, provider integration and authorization.
+Decision / approver:
+  [Responsible person records scope, decision and identity.]
+```
+
+With that evidence, the payment owner can judge whether the teaching implementation meets C1 through C4. The QA reviewer checks the relationship between tests and mutants. The integration reviewer records the remaining deployment scope. If the decision is to merge a teaching example into an article repository, those boundaries can be explicitly accepted. If it is to deploy a real payment service, the same report is insufficient. The decision changes because the commitment changes.
+
+Rules and candidate code also need independence. A candidate PR may propose a constraint change, but cannot weaken the tests and use its revised green result to authorize itself. A real process needs human approval of rule changes, evaluation against protected rule and runner versions, and an approval record tied to the reviewed revision. A later change to the payment branch requires relevant evidence for the new revision. A directory named `constraints/` does not establish those permissions or version protections.
+
+We still cannot fill in an agent reliability report from these results. Nine tests describe one candidate implementation under selected scenarios. Measuring constraint pass rate changes the unit to multiple candidate patches: among patches that pass functional checks, how many also satisfy all applicable constraints? Fix the task set, functional requirements and constraints, then record each candidate's result so the denominator is clear. One patch passing seven constraint methods cannot establish how often an agent will preserve requirements in future work.
+
+pass^k needs a separate experiment as well: the agent independently generates and validates multiple results for the same task, each judged by fixed functional and constraint requirements. Rerunning the same deterministic unittest suite five times examines one implementation; it does not supply evidence from five agent outputs. This article did not run that experiment and reports no pass^5 value. A team considering broader task authorization should first collect that evidence using the Reliability article's approach.
+
+The three gates now have a concrete handoff. The test gate supplies evidence of tests' ability to distinguish errors. The review gate evaluates requirements, evidence and remaining risk. The reliability gate examines repeated outputs across a fixed task set. Each step receives the preceding evidence, and the person taking over must ask which part of the present decision that evidence can support.
 
 ---
 
-## 9. What readers can reproduce, and what deployment still needs
+## 9. From reproducing the example to arranging the next evidence
 
 The implementation, nine payment tests, seven mutants and rule mapping are in [examples/tea_payment](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment). With Python 3.10 or later, run these commands from the repository root:
 
@@ -253,29 +341,55 @@ python3 -B -m unittest discover -s examples/tea_payment -p test_payment.py -v
 python3 -B examples/tea_payment/mutation_demo.py
 ```
 
-The first command runs nine tests. The second emits JSON for the three experiments, including baseline counts, kills, the fixed denominator and failing test names for each mutant. It uses only the standard library and local temporary files, with no real account or charge.
+The first command runs nine tests. The second prints JSON for the three experiments. Read each suite's `baseline_passed` and `baseline_tests` first, then its `scored_mutants`, `excluded_mutants` and individual `failing_tests`. Looking only at `mutation_score` would repeat the reading habit this article is trying to change.
 
-The directory also contains twelve runner regression tests. They cover selected failure modes, including loading failures, abnormal test outcomes, changed test counts and a missing timeout test, and check the expected sets of detected mutants. They are outside both the nine payment tests and the seven-mutant denominator. Discovering `test_*.py` across the directory therefore runs 21 tests.
+Start with M5 under `without-timeout`: it is marked survived, with an empty failing-test list. Find M5 under `full` and the list names both timeout subTests. Those records connect section 7's interpretation to the executed results. For each run, the runner copies the original source into a fresh temporary directory and inserts one mutant into that copy. It uses the standard library and local files, makes no real charge and leaves the official `payment.py` unchanged.
 
-Payment attempts live in process-local dictionaries. The evidence covers **sequential calls in one process**. Two service processes do not share that memory, and a restart loses it. Blocking repeated calls in the demo does not establish exactly-once charging in production.
+The directory also has twelve runner regression tests covering selected cases such as import failures, anomalous test outcomes, changed test counts and a missing timeout test, along with the expected sets of detected mutants. These are outside the nine payment tests and the seven-mutant denominator. Discovering `test_*.py` runs 21 tests in total. That total checks some behavior of the experimental tooling; it cannot be added to a payment service's coverage or reliability measure.
 
-Taking these requirements into a real service would need shared durable payment state, database uniqueness and transaction boundaries, plus concurrent-request tests for races. It would need crashes before and after capture, recovery after restart, and provider-contract tests for idempotency, lookup, reconciliation and duplicate or out-of-order webhooks. An authorized new attempt after a decline needs a separate policy. None of those are included in this example's 100%.
+### Hand unresolved outcomes to someone equipped to resolve them
 
-The identifier's lifecycle matters too. [AWS Builders' Library](https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/) discusses different intent under the same request ID and late-arriving requests. [Stripe's idempotency documentation](https://docs.stripe.com/api/idempotent_requests) says keys can be pruned once they are at least 24 hours old; reuse after pruning creates a new request. An application cannot merely remember that it once used a key without establishing whether the provider still remembers it. An in-memory dictionary cannot substitute for that integration evidence.
+This implementation stores attempts in memory and verifies **sequential calls within one process**. Separate service processes do not share that dictionary, and a restart loses it. Following one interruption scenario helps locate the next evidence needed to carry the same requirements into a real service.
 
-Authorization is another boundary the fixture cannot establish. A real service must reject cross-account access to orders. A correct receipt SKU also does not prove the warehouse delivered the unsweetened drink. Naming these boundaries gives the next person a concrete place to continue gathering evidence.
+Suppose the provider captures the payment, but the service stops before saving the final result. After restart, code that sees only an unfinished order may charge again, mistaking “no recorded result” for “no previous capture.” Replacing the dictionary with a database still leaves decisions about when to record an attempt, which operations are atomic, and how to recover when the external charge completes but the local result is not saved. One local database transaction does not automatically include the external provider's charge in the same atomic operation.
+
+These are follow-up design questions derived from the code's boundaries. This article neither implements nor measures production exactly-once guarantees. The table connects the missing evidence to the review responsibilities from section 2. Each row should become verifiable work, rather than an unexplained “handle before launch” note at the bottom of a PR.
+
+📌【在此插入表 table-06.png】
+
+Take the third row. Naming a state `PENDING` is only the beginning. The owner must establish which process looks up the result, what evidence permits a state change, and who takes over after an unresolved attempt has waited too long. The buyer's screen should describe the current state and next step according to capabilities that actually exist. A service without a notification process cannot promise a later notification. Retaining an unknown result should support recovery, rather than leave the buyer responsible for managing the uncertainty.
+
+Identifier lifetimes need deliberate design too. The [AWS Builders' Library](https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/) discusses a repeated request ID with different intent and late-arriving requests. [Stripe's idempotency documentation](https://docs.stripe.com/api/idempotent_requests) says keys may be removed after they are at least 24 hours old; reuse after pruning creates a new request. An application must account for the provider's retention and retry contract, as well as remembering that it once used the key. An order ID, payment-attempt key and webhook event ID protect different boundaries; one cannot stand in for all of them.
+
+Authorization also requires evidence from the real service. This fixture begins with an authorized order and does not test rejection of cross-account access or payment. A correct receipt SKU does not establish correct warehouse fulfillment either. These are explicit handoff tasks. Detecting all seven mutants does not complete them.
+
+### A team can start with one PR
+
+To introduce this approach, I would choose a change with clear consequences that the team can understand fully, then identify one consequential requirement whose expected result is settled. A reviewer explains its source, the implementer adds a case, and a corresponding incorrect version is seeded by hand to check whether the test distinguishes it. Completing one chain of evidence helps the team discover what its rule records, tests and review notes need to preserve.
+
+Then observe the maintenance cost. When the rule fails, can its owner distinguish an implementation regression from a changed contract or an unsuitable fixture? An implementation regression calls for a code fix and renewed verification against the existing requirement. A changed contract calls for the rule, counterexample and approval record to be updated together. A fixture that no longer represents the agreed scenario needs correction and another check of its ability to distinguish errors. An environment failure that prevents execution is a separate problem: repair it and obtain a result before counting anything for or against the requirement. Experience with those judgments gives the team a basis for expanding scope and automation, with a better chance of sustaining it than a large initial collection of ownerless constraints.
 
 ---
 
 ## 10. Return to the person waiting for a payment result
 
-The person at the start only wanted a bottle of tea. They do not need to understand a mutation-score denominator, and they should not have to guess whether pressing Pay again is safe. Those decisions belong in the requirements, implementation and acceptance process.
+Return to the payment screen at the start. The buyer's questions are still concrete: did the payment go through, is it safe to press Pay again, and whose response should they wait for? Having read the code and reports, we are better equipped to examine how a system handles those questions. But 100% in this demonstration has not determined the outcome of a real transaction. For the screen's message to deserve trust, the team still has to connect its verification results to an actual process for handling the payment.
 
-For the engineering team, the example connects three selections: choose reviewers and close reading by payment risk; retain comments that identify durable, observable requirements with an owner; then locate the enforcing code and choose mutations that test its protection. Each choice needs a reason the next person can understand and examine.
+I want to hold on to the 85.7% result in Section 7. It gives a reviewer a reason they can explain for withholding approval: the eight tests never arrange a timeout, so none objects when M5 changes an unknown outcome into success. The reviewer uses the payment contract to identify that difference, then asks for a test that fails against the faulty version and passes against the original. The implementer now knows what evidence to add, and the reviewer knows what to reconsider. The gap is unverified timeout behavior; merely raising the score threshold does not explain how to close it.
 
-I would not turn 100% into a new acceptance slogan. The number I want to leave with the reader is 85.7%. It looks reassuring, yet the payment outcome can still be reported incorrectly. A reviewer who can name the missing scenario, rule and mutant has evidence with which to act.
+Judgment continues at 100%. Detecting all seven selected mutants supports the tests' ability to distinguish those changes. The empty-test counterexample also shows how an aggregate can conceal a constraint losing its assertions. The next reviewer therefore needs to see how requirements, cases and individual results connect, so they can distinguish protection that exists from a report that only looks complete. Preserving those reasons gives the work invested in one review a chance to remain useful in the next change.
 
-The four parts bring us back to the person waiting for a payment result. The tea's price is just an illustration. What deserves care is that someone entrusted a payment to this system. The team needs to explain what it has checked and which questions still need verification.
+This connects the questions from the preceding parts. The testing part asks whether the tests' idea of “correct” matches the original requirements. The review part assigns people with the competence and responsibility to judge whether the evidence supports this approval. The reliability part then widens the question to repeated outputs across a set of tasks, and whether the team can sustain the necessary human review. This payment example supplies a reproducible starting point. A green result for one program cannot be converted directly into an agent's long-term reliability.
+
+The people making those judgments need support, too. Suppose a different colleague changes the payment flow later. They should not inherit only a rule saying that timeouts must remain PENDING, with no explanation of why that agreement was made. If the rule is connected to the provider's guarantees, the way the tests arrange unknown outcomes, and the recovery work still unfinished, the colleague can judge whether to fix the implementation or reopen the contract. Keeping the reasoning reduces the need to find the original reviewer for another explanation. It also helps prevent old tests from becoming rules nobody dares change after the requirements have moved on.
+
+The same record should make unfinished responsibilities visible. A reviewer can use the preceding evidence to judge whether this teaching example meets C1 through C4 and can be merged into the article repository. Deploying a real payment service still requires evidence for persistence, concurrency, provider integration and recovery. Labeling them “follow-up work” is insufficient: someone must take responsibility and state what results would allow the team to reconsider deployment. Until those arrangements exist, withholding approval has both an explicit reason and conditions under which the work can move forward.
+
+To bring this into a team, I would start with a PR that is already green and follow one promise it makes to a user. Which requirement defines that promise? Which test actually passes through the product path? Which version that violates the requirement would make that test fail? Who judges whether the evidence is sufficient? Wherever the chain stops, leave a concrete question for the next review. The rule cards, mutation reports and approval records discussed earlier help people make that judgment. Their value lies in enabling a colleague to take over with understanding, rather than adding another document nobody knows how to use.
+
+At the end of these four parts, this is the working habit I hope to leave with the reader: explain what has been established, put unanswered questions in the hands of people who can pursue them, and keep approval decisions connected to their evidence. An agent can help produce code, find counterexamples and organize reports. The team must continue to decide which promises those results support, and which promises it is not yet ready to make.
+
+The person waiting to buy tea will not read our test names and does not need to know what M5 means. They have entrusted a payment to the system and want a result it has grounds to give. If the outcome is still unknown, they want to know what they can do next. Our discussions of testing, review and reliability should help the team meet that expectation. Leaving both the reasons for our judgments and the unfinished responsibilities visible gives engineering care a chance to become reassurance the user can actually feel.
 
 ---
 
