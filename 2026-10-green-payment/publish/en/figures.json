@@ -21,6 +21,14 @@
   {
    "file": "table-04.png",
    "markdown": "| Test selection | Killed / scored | Mutation score | Survivors |\n|---|---|---|---|\n| Two happy-path tests | 2 / 7 | 28.6% | M2, M3, M4, M5, M7 |\n| Eight tests, omitting the timeout case | 6 / 7 | 85.7% | M5 |\n| All nine payment tests | 7 / 7 | 100.0% | None of these seven |\n"
+  },
+  {
+   "file": "table-05.png",
+   "markdown": "| Purpose of test method | M1 | M2 | M3 | M4 | M5 | M6 | M7 |\n|---|---|---|---|---|---|---|---|\n| Preserve receipt contents | — | — | — | — | — | ● | — |\n| Capture exactly NTD 35 | ● | — | — | — | — | — | — |\n| Avoid duplicate charge on replay | ● | ● | — | — | — | — | — |\n| Reject key on another order | ● | — | ● | — | — | — | — |\n| Reject new key on same order | ● | ● | — | — | — | — | — |\n| Preserve order during replay | ● | ● | — | — | — | — | — |\n| Keep declined payment unpaid | ● | ● | — | ● | — | — | — |\n| Keep timeout pending | ● | ● | — | — | ● | — | — |\n| Preserve attempt on other error | ● | ● | — | — | — | — | ● |\n"
+  },
+  {
+   "file": "table-06.png",
+   "markdown": "| Scenario to address | Next inspectable evidence | Review responsibility |\n|---|---|---|\n| Two requests begin payment concurrently | Concurrent cases; shared state, uniqueness and transaction boundaries | Payment owner + integration reviewer |\n| Interruption before or after capture, then restart | Interruption points, durable records and recovered outcomes | Integration / operations reviewer |\n| Lost response or prolonged uncertainty | Provider same-key retry / lookup contract, reconciliation and response process | Payment owner + integration reviewer |\n| Duplicate or out-of-order webhook | Event identity, duplicate handling and state-transition tests | Integration reviewer + QA |\n| New attempt after decline; cross-account request | Authorized new-attempt rules and cross-account rejection tests | Payment owner + QA |\n"
   }
  ]
 }
