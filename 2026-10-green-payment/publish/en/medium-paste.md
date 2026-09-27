@@ -59,7 +59,7 @@ People should agree on the payment contract before asking an agent to implement 
 
 A decline and a timeout mean different things. An explicit decline is `DECLINED`. A timeout means a definite response did not arrive; the provider might already have captured the money, so the result remains `PENDING`. This demo does not automatically charge again after a timeout or implement lookup and reconciliation. Those need a separately designed and verified recovery path.
 
-The example also specifies that unclassified provider exceptions propagate to the caller. Checkout must not turn them into a claim of payment success or failure. The recorded attempt remains `PENDING`, so replay does not call the provider again. This is C4's other requirement for unknown outcomes: preserve both the error that needs investigation and the record needed for replay. The caller's error presentation and recovery flow are outside this implementation.
+The example also specifies that unclassified provider exceptions propagate to the caller. Checkout must not turn them into a claim of payment success or failure. The recorded attempt remains `PENDING`, so replay does not call the provider again. C4, introduced later, will protect this agreement alongside the timeout behavior, preserving both the error that needs investigation and the record needed for replay. The caller's error presentation and recovery flow are outside this implementation.
 
 These are the example's agreed behaviors, not universal payment API state names. [Stripe's error-handling documentation](https://docs.stripe.com/error-handling#connection-errors) likewise treats connection errors as indeterminate, but its idempotency contract permits safe retries with the same key. This demo has no provider-side idempotency implementation, so it retains a pending result. The distinction is the guarantee supporting the retry. The conservative teaching policy should not become a blanket rule that real payment systems must never retry.
 
@@ -115,7 +115,7 @@ Keep both timeout scenarios. Timeout before capture prevents us from treating un
 
 **“Constraint test” describes a test's origin and responsibility, not a technology mutually exclusive with functional testing.** Preventing a duplicate payment is both product behavior and a constraint a reviewer has chosen to retain. It can be checked by a unit test, integration test or another suitable mechanism. Reporting those responsibilities separately can help accountability without implying that they protect disjoint worlds.
 
-To compare test selections, begin with the example's two happy-path tests: the receipt preserves the unsweetened SKU, NTD 35 and payment identifier; the fake provider receives and captures exactly NTD 35. Then include seven more test methods covering C1's replay, C2's three identity conflicts, and C3/C4's decline, timeout and other connection error. One rule can require several test methods; rule count and test count need not match.
+To compare test selections, begin with the example's two happy-path tests: the receipt preserves the unsweetened SKU, NTD 35 and payment identifier; the fake provider receives and captures exactly NTD 35. Then include seven more test methods covering C1's replay, C2's three identity conflicts, and C3/C4's decline, timeout and unclassified exception, represented here by ConnectionError. One rule can require several test methods; rule count and test count need not match.
 
 `FakeGateway` is a test double. It records attempted charge `calls` separately from successful `captures`, and **deliberately does not deduplicate**. If a helpful fake silently removed duplicate requests, a missing application guard might leave every test green.
 
@@ -198,7 +198,7 @@ One detail is easy to miss. For the handled `TimeoutError`, the code also writes
 
 The first call propagates that `ConnectionError`, which the test explicitly expects. On the second call with the same order and key, the early record still exists, so Checkout returns `PENDING` without calling the provider. Remove that record and the second call reaches the charge again, allowing the test to distinguish the change. This case protects a requirement that must survive an interruption to control flow.
 
-This part is grounded in the example's development record. An independent Claude Code review identified the missing non-timeout exception test for the early `PENDING` record; the subsequent revision added that case and M7, the mutation that removes the pre-call record. The initial tests and mutants had not fully exposed the risk. Independent Review contributed a question the original selection had missed, and an executable test retained the resulting requirement. The requirement comes from the teaching contract stated in section 1; a real team still needs its responsible people to confirm that contract. The model proposed a counterexample that exposed the gap. Execution then established the test's ability to distinguish a contract violation, rather than establishing that the contract itself was appropriate.
+This part is grounded in the example's development record. An independent Claude Code review identified the missing non-timeout exception test for the early `PENDING` record; the subsequent revision added that case and M7, the mutation that removes the pre-call record. The initial tests and mutants had not fully exposed the risk. Independent Review contributed a question the original selection had missed, and an executable test retained the resulting requirement. The requirement comes from the teaching contract stated in section 1; a real team still needs its responsible people to confirm that contract. The model identified the testing gap. Execution then established the test's ability to distinguish this contract violation, M7, rather than establishing that the contract itself was appropriate.
 
 Mutation testing begins with a passing original program. Change one thing, run the selected tests and discard that mutated copy. An assertion failure caused by the changed behavior identifies a killed mutant. This simple runner labels every undetected mutant survived. It does not measure coverage, so that label also includes branches the selected tests never execute. Full tools distinguish NoCoverage from Survived, meaning executed but undetected; keep that distinction in mind when reading the tables.
 
@@ -244,7 +244,7 @@ The second row detects six mutants. If a team used only the Testing article's su
 +    receipt = replace(receipt, status="PAID")
 ```
 
-All eight tests still pass for a straightforward reason: none arranges a provider timeout, so execution never enters that branch. A full tool with coverage information would classify this as NoCoverage; under the Stryker definition discussed earlier, it remains in the ordinary mutation-score denominator. Branch coverage can reveal the gap too. The lesson here is that someone still needs to examine the unanswered question after the aggregate clears its threshold. Read their green result again with this in mind. They confirm their arranged cases. They do not answer whether an unknown payment will be reported as successful. Execution without an error cannot answer a question the suite never asked.
+All eight tests still pass for a straightforward reason: none arranges a provider timeout, so execution never enters that branch. Read their green result again with this in mind. They confirm their arranged cases. They do not answer whether an unknown payment will be reported as successful. Execution without an error cannot answer a question the suite never asked. A full tool with coverage information would classify this as NoCoverage; under the Stryker definition discussed earlier, it remains in the ordinary mutation-score denominator. The lesson is that someone still needs to examine this unanswered question after the aggregate clears its threshold.
 
 Now restore the timeout test from section 4 and use that same test against M5 and the original program. A separate isolated run executed only that test method. The following excerpt omits the full test-name prefixes, tracebacks and elapsed time, and shows the identical assertion message only once. It retains both scenarios and the counts:
 
@@ -311,7 +311,7 @@ Constraints honoured:
 Evidence:
   Original program passes 9 payment tests.
   All 7 specified mutants detected; 0 excluded.
-  The isolated C4 method fails against M5 and passes against the original.
+  The isolated C4 timeout method fails against M5 and passes against the original.
 Revision / rule version / report:
   [Link actual reviewed revision, protected rule version and run results.]
 Remaining scope:
