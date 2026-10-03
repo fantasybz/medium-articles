@@ -1,0 +1,438 @@
+{
+  "schema_version": 1,
+  "reviewed_at_utc": "2026-09-25T06:00:38.719376+00:00",
+  "reviewer": "Codex evidence lens /root/recall_source_check",
+  "verdict": "EVIDENCE_READY_VARIANCE_ONLY",
+  "variance_evidence_ready": true,
+  "series_ready": false,
+  "published": false,
+  "scope": "完整閱讀 ce383be2 版本第 1–262 行，再核對兩段時態差異及還原 hash，最終判定涵蓋 1cf47ca4 版本。只審查變異篇，其他三篇仍待完整正文。未修改正文、封存資料或初審報告。",
+  "manuscript": {
+    "path": "2026-11-same-spec-variance/article.md",
+    "sha256": "1cf47ca478afca22ff028c285c4d0550a844e4794886b7e345fa122a27cac800",
+    "bytes": 40265,
+    "line_count": 262,
+    "full_read_sha256": "ce383be20445328cec4a509e8ce7f519b94e9fe99b2fd927e494ffc4661c3587",
+    "delta_verified": true,
+    "delta_record": "research/2026-10/same-spec-ten-runs/manuscripts/final-sibling-status-fix.json"
+  },
+  "prior_reviews": [
+    {
+      "path": "research/2026-10/same-spec-ten-runs/manuscripts/review-evidence.md",
+      "sha256": "7985731b59f284ece5fd26f34d23d37df49a268c50bb284f6f34fc4fa1d81a51"
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/manuscripts/review-evidence.json",
+      "sha256": "e2ae1520999a37313a072c4ba31279d143a69e949a06bb1618b046b88ba279b9"
+    }
+  ],
+  "resolutions": [
+    {
+      "id": "EV-001",
+      "prior_severity": "major",
+      "status": "resolved",
+      "lines": [
+        122
+      ],
+      "evidence": "只說節點種類的數量比例仍接近；明說未量出原始程式碼或樹狀結構保留多少，也未估計或扣除共用起點的影響。"
+    },
+    {
+      "id": "EV-002",
+      "prior_severity": "major",
+      "status": "resolved",
+      "lines": [
+        199,
+        201
+      ],
+      "evidence": "區分觀察到的 score 增加與文件效果；明說 A3 與本輪量尺不同，不能搬用 4.9 個百分點，且本輪沒有相應檢定力分析。"
+    },
+    {
+      "id": "EV-003",
+      "prior_severity": "minor",
+      "status": "resolved",
+      "lines": [
+        120
+      ],
+      "evidence": "限定為 180 個已計算的組內 pair，明確排除跨組配對；極值 0.9831 與 0.9783 正確。"
+    },
+    {
+      "id": "EV-004",
+      "prior_severity": "minor",
+      "status": "resolved",
+      "lines": [
+        49,
+        51,
+        61
+      ],
+      "evidence": "表格改為名額與結果欄位，CLI 與產物各有判定條件；保留 CLI 未完成但產物驗收合格的情形，不再描述為逐層必要前提。"
+    },
+    {
+      "id": "EV-005",
+      "prior_severity": "minor",
+      "status": "resolved",
+      "lines": [
+        126
+      ],
+      "evidence": "改成檔案數不能區分本輪候選，因此選用 AST 描述檔內差異，未宣稱 AST 是唯一能觀察差異的方法。"
+    },
+    {
+      "id": "EV-006",
+      "prior_severity": "minor",
+      "status": "resolved",
+      "lines": [
+        262
+      ],
+      "evidence": "頁尾改為作者與 Medium profile，已移除本篇發表於 Medium 的既成狀態。"
+    }
+  ],
+  "open_findings": [],
+  "open_counts": {
+    "blocker": 0,
+    "major": 0,
+    "minor": 0
+  },
+  "checks": [
+    {
+      "id": "F01",
+      "status": "pass",
+      "lines": [
+        63,
+        65
+      ],
+      "topic": "CI 解讀",
+      "evidence": "雙側 95% Clopper–Pearson 區間仍為 69.15%–100%，以反覆抽樣的涵蓋率說明；沒有把下界當成下一輪保證，也未主張等效。"
+    },
+    {
+      "id": "F02",
+      "status": "pass",
+      "lines": [
+        81,
+        83,
+        85,
+        87,
+        89
+      ],
+      "topic": "驗收盲點與零失敗",
+      "evidence": "兩個例子只指出至少能辨別哪些錯法，沒有排除其他盲點。103 項的有限覆蓋、每候選分母與多種可能原因均保留。"
+    },
+    {
+      "id": "F03",
+      "status": "pass",
+      "lines": [
+        126,
+        246
+      ],
+      "topic": "A2 版本與 42 分 rubric",
+      "evidence": "使用 Achint Mehta 的版本化 v2 PDF 題名。Table 9 的六次 42 分明確解釋成 14 criteria 首次檢查便全數合格；整體研究允許修正提示的規則，未套成這六次需要修復。"
+    },
+    {
+      "id": "F04",
+      "status": "pass",
+      "lines": [
+        128
+      ],
+      "topic": "教學示例的選取",
+      "evidence": "選取紀錄與 frozen schedule 一致：A0 block 01、02。正文標為成稿階段的事後說明示例，不列入原分析計畫，也不宣稱代表其他候選。"
+    },
+    {
+      "id": "F05",
+      "status": "pass",
+      "lines": [
+        130,
+        132,
+        139,
+        141,
+        150
+      ],
+      "topic": "教學程式節錄與結構描述",
+      "evidence": "兩個 Python code block 逐字存在於對應 candidate。第一份 main() 的區域變數與 malformed 字典、第二份 _State 及各個事件處理函式，均與原檔相符；沒有推論維護優劣。"
+    },
+    {
+      "id": "F06",
+      "status": "pass",
+      "lines": [
+        150
+      ],
+      "topic": "教學 pair 的數值與驗收",
+      "evidence": "兩份 candidate hash 與 ledger、summary、evaluation 一致；各有 103 項驗收合格，normalized AST hash 不同。獨立重算 cosine 為 0.9939804370606344，正文 0.99398 的捨入正確。"
+    },
+    {
+      "id": "F07",
+      "status": "pass",
+      "lines": [
+        152,
+        238,
+        240,
+        241,
+        242,
+        243,
+        244,
+        245,
+        252
+      ],
+      "topic": "附件連結與公開狀態",
+      "evidence": "正文 14 個本機相對連結均存在。兩處明說尚未遠端發布，且公開發文仍須補上版本固定、可存取的入口。這是本機證據核對，未冒充附件已公開。"
+    },
+    {
+      "id": "F08",
+      "status": "pass",
+      "lines": [
+        11,
+        95,
+        251,
+        252
+      ],
+      "topic": "新增舊文承接",
+      "evidence": "組織篇回扣對應舊文第 233 行，URL 與已發布紀錄吻合。green 可靠度篇回扣對應第 529 行，使用 repo 稿件並標示尚待發布，未把排程當成發布。"
+    },
+    {
+      "id": "F09",
+      "status": "pass",
+      "lines": [
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        53,
+        54,
+        55,
+        56,
+        57,
+        111,
+        112,
+        113,
+        114,
+        166,
+        167,
+        168,
+        169,
+        171,
+        175,
+        179
+      ],
+      "topic": "正式數字與表格",
+      "evidence": "固定版本、40 名額、各組 10/10、103 項、AST 與資源表，均與第一輪已重算的 ledger／summary 相符。新增示例未改分母或擴增生成樣本。"
+    },
+    {
+      "id": "F10",
+      "status": "pass",
+      "lines": [
+        177,
+        183,
+        219
+      ],
+      "topic": "成本解讀",
+      "evidence": "描述本輪 A0 合計最低，同時區分可觀察的費用差額與跨任務效果；未把牌價估計寫成帳單、ROI、品質提升或維護成本。"
+    },
+    {
+      "id": "F11",
+      "status": "pass",
+      "lines": [
+        173,
+        197,
+        199,
+        201,
+        203,
+        247,
+        248,
+        249
+      ],
+      "topic": "其他論文",
+      "evidence": "A1 的 ×1.34 成本 geometric SD、A3 的 20／26／23 與 composite 約 4.9pp、A5 的 24 tasks／18 variants／4,644 runs 均正確；版本 URL 沒有混用。"
+    },
+    {
+      "id": "F12",
+      "status": "pass",
+      "lines": [
+        205,
+        258
+      ],
+      "topic": "研究／寫作與真人狀態",
+      "evidence": "generation high、主寫 max、研究審查 xhigh 分開；補充 Codex 也參與，但仍無真人理解、維護成本、盲審或外部重現資料。"
+    },
+    {
+      "id": "F13",
+      "status": "pass",
+      "lines": [
+        17,
+        221
+      ],
+      "topic": "最後兩段時態修正",
+      "evidence": "規格篇與契約篇改為仍在成稿中，與已完成研究分開；結語改回本篇開頭，不再斷言未完成總論的內容。反向套用兩個 replacements 後，SHA 精確回到已全文審閱的 ce383be2 版本，證明這次僅有這兩處變動。"
+    }
+  ],
+  "teaching_example": {
+    "selection_record": ".context/same-spec-ten-runs/manuscripts/teaching-example-selection.json",
+    "selection_record_sha256": "eeb3862f3715800aa159de5c8765d3e5751a1a8103dc8476497cc1e5ceb6d920",
+    "selection_record_time": "2026-09-25T05:41:52.542094+00:00",
+    "schedule_first_two_A0_verified": true,
+    "post_experiment": true,
+    "preregistered_analysis": false,
+    "examples": [
+      {
+        "run_id": "formal-01-A0",
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-01-A0/candidate/codex_jsonl.py",
+        "source_lines": {
+          "start": 73,
+          "end": 76
+        },
+        "candidate_sha256": "7cc9bf5a24969310f18a50aad43ac26d4a59066321b2256ec03806da076dd2b2",
+        "normalized_ast_sha256": "dd9079c5cbee025c08b062f5523227d75eb87b5fcc2f8b49ad34ec053628d91d",
+        "case_count": 103,
+        "passed_count": 103,
+        "accepted_completion": true,
+        "excerpt_exact": true
+      },
+      {
+        "run_id": "formal-02-A0",
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-02-A0/candidate/codex_jsonl.py",
+        "source_lines": {
+          "start": 26,
+          "end": 31
+        },
+        "candidate_sha256": "f2a65e9e26aaa195ab1c0b8caf2c1920cb4e3d2ee3ad2abf30d1620a78008a57",
+        "normalized_ast_sha256": "1301aa94cf4b67a4c8e8aa6b9e1aa72295922c23cd203992934c9108ed504c42",
+        "case_count": 103,
+        "passed_count": 103,
+        "accepted_completion": true,
+        "excerpt_exact": true
+      }
+    ],
+    "cosine_recomputed": 0.9939804370606344,
+    "cosine_archived": 0.9939804370606344,
+    "cosine_display": "0.99398",
+    "candidate_execution_performed": false
+  },
+  "local_links": [
+    {
+      "target": "figures/F2.png",
+      "exists": true
+    },
+    {
+      "target": "../research/experiments/same-spec-ten-runs/RESULTS.md",
+      "exists": true
+    },
+    {
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/archive.json",
+      "exists": true
+    },
+    {
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json",
+      "exists": true
+    },
+    {
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/records.jsonl",
+      "exists": true
+    },
+    {
+      "target": "../research/experiments/same-spec-ten-runs/results/validation-2026-09-25/public-rescore.json",
+      "exists": true
+    },
+    {
+      "target": "../research/experiments/same-spec-ten-runs/results/validation-2026-09-25/formal-data-audit.md",
+      "exists": true
+    },
+    {
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json",
+      "exists": true
+    },
+    {
+      "target": "../research/2026-10/2026-11-same-spec-ten-runs.figures.md",
+      "exists": true
+    },
+    {
+      "target": "../research/experiments/same-spec-ten-runs/results/figures-2026-09-25/F2.metadata.json",
+      "exists": true
+    },
+    {
+      "target": "../research/2026-10/same-spec-ten-runs/evidence-audit.md",
+      "exists": true
+    },
+    {
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-01-A0/candidate/codex_jsonl.py",
+      "exists": true
+    },
+    {
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-02-A0/candidate/codex_jsonl.py",
+      "exists": true
+    },
+    {
+      "target": "../2026-10-green-reliability/article.md",
+      "exists": true
+    }
+  ],
+  "source_snapshots": [
+    {
+      "path": ".context/same-spec-ten-runs/manuscripts/teaching-example-selection.json",
+      "sha256": "eeb3862f3715800aa159de5c8765d3e5751a1a8103dc8476497cc1e5ceb6d920"
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/manuscripts/final-sibling-status-fix.json",
+      "sha256": "7ffee95b08341abc6467b0a3ed737376fdc9b2c7da625290791f22cbd512b095"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/manifest.json",
+      "sha256": "ba30398118ecde62b2f682884c1e882b2864c22d70faf99549ceab0d7c0a55f2"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/records.jsonl",
+      "sha256": "2be5ed458de2e2defa2ab4f24d88f25bdd3b7340c9207915ab6aa0988c0db7f0"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json",
+      "sha256": "8198a4478b8158268298960576655d920db3b8d2dc2bd207348dcef8a346dfb9"
+    },
+    {
+      "path": ".context/same-spec-ten-runs/sources/2607.02436v2.pdf",
+      "sha256": "4c80ac39360e3141df3b6b000823d2b07e92b1e79702a03b24bb35c393fe874d"
+    },
+    {
+      "path": "2026-11-same-spec-variance/figures/F2.png",
+      "sha256": "474f4ae875dcababaf7ffcddf501b2b7c49fa5d9ed0e80a4ac9a57a98f9084fb"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-01-A0/candidate/codex_jsonl.py",
+      "sha256": "7cc9bf5a24969310f18a50aad43ac26d4a59066321b2256ec03806da076dd2b2"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-02-A0/candidate/codex_jsonl.py",
+      "sha256": "f2a65e9e26aaa195ab1c0b8caf2c1920cb4e3d2ee3ad2abf30d1620a78008a57"
+    }
+  ],
+  "other_articles": [
+    {
+      "name": "overview",
+      "status": "PENDING_NOT_REVIEWED"
+    },
+    {
+      "name": "spec",
+      "status": "PENDING_NOT_REVIEWED"
+    },
+    {
+      "name": "contract",
+      "status": "PENDING_NOT_REVIEWED"
+    }
+  ],
+  "limits": [
+    "不是整個系列 READY，也不是真人審稿或作者論文重現。",
+    "附件只核對本機路徑；稿中如實說明尚未遠端公開。",
+    "新增 Medium 承接以本機已核對的發布紀錄為準；不重試 Cloudflare，也不宣稱重新讀取公開頁面。",
+    "未讀取 Claude 主寫 raw response 的思考內容，未執行候選或發出模型生成請求。"
+  ],
+  "language_check": {
+    "tool": "zhtw MCP",
+    "profile": "strict",
+    "content_type": "markdown",
+    "max_errors": 0,
+    "max_warnings": 0,
+    "errors": 0,
+    "warnings": 0,
+    "info": 6,
+    "accepted": true,
+    "exemptions": [],
+    "info_disposition": "行號列表與檔名的機械提示，保留原值。",
+    "report_sha256": "cc16daf92b4da31fd5a94211e59a6c4777eb78abbcee68836e9928c991b8fa4f"
+  }
+}

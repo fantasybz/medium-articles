@@ -1,0 +1,561 @@
+{
+  "checked_at": "2026-09-27T16:16:48.339179+00:00",
+  "scope": "Narrative revision responding to author feedback, newly written by actual Claude Code max; root paragraph editing, narrative/evidence review, actual MCP strict checks and regenerated local publishing packs.",
+  "local_revision_ready": true,
+  "remote_published": false,
+  "new_model_experiment_samples": 0,
+  "articles": [
+    {
+      "piece": "overview",
+      "article_path": "2026-11-same-spec-overview/article.md",
+      "article_sha256": "51a2be2e1614c965743386f06d913492c999786e852c2fc213f7e3947edbfeeb",
+      "principal_source_sha256": "0ca82c7c417f249370f11f4b64899cb5047b414b89cb6db6d0145a0d820ae1ed",
+      "principal_source_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-max-resume-overview-2026-09-27/complete.md",
+      "continuation_assembly": {
+        "method": "Exact concatenation of final-prose text blocks across CLI automatic continuation. No reasoning blocks used.",
+        "block_sha256": [
+          "0c3fb86abe19461f1269ff254c4c21e96257e0e425afa6bbf6984c198f01d28b",
+          "461974254e79b17c669195df54ca7939b151cbc04a7a7373d4f1f23f80734db2"
+        ],
+        "complete_sha256": "0ca82c7c417f249370f11f4b64899cb5047b414b89cb6db6d0145a0d820ae1ed",
+        "terminal_result_is_last_block_only": true
+      },
+      "paste_sha256": "e6cb3540a9c786b74a1dcf0741e0ff2f0154578a99db31091d31b73a4a3b07ff",
+      "source_paste_exact": true,
+      "figures_json_exact": true,
+      "images": [
+        {
+          "path": "2026-11-same-spec-overview/publish/images/table-01.png",
+          "sha256": "63e9a7d77a3485589d443e261c78a4e30c05ebfc7cb07f89281929726e30ea86",
+          "width": 1800,
+          "height": 764,
+          "visual_note": "四種文件各佔一列，R05 內容與協助分欄；中文、程式欄位與換行完整，沒有截字。"
+        },
+        {
+          "path": "2026-11-same-spec-overview/publish/images/table-02.png",
+          "sha256": "e8b2cad6a3758ed8d8b2f7795c49defc15ef5d0608c52ca18e772d3f8679643c",
+          "width": 1388,
+          "height": 558,
+          "visual_note": "費用欄明示十次合計，四組與合計行對齊，生成耗時中位數清楚。"
+        }
+      ],
+      "language": [
+        {
+          "report": "overview-source-06.json",
+          "input_sha256": "51a2be2e1614c965743386f06d913492c999786e852c2fc213f7e3947edbfeeb",
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 37
+          },
+          "accepted": true
+        },
+        {
+          "report": "overview-paste-03.json",
+          "input_sha256": "e6cb3540a9c786b74a1dcf0741e0ff2f0154578a99db31091d31b73a4a3b07ff",
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 37
+          },
+          "accepted": true
+        }
+      ],
+      "preview": {
+        "piece": "overview",
+        "article_sha256": "51a2be2e1614c965743386f06d913492c999786e852c2fc213f7e3947edbfeeb",
+        "paste_sha256": "e6cb3540a9c786b74a1dcf0741e0ff2f0154578a99db31091d31b73a4a3b07ff",
+        "payload_sha256": "368bebb74edbef5b376f3e174b2fe58d74015003bddc1425a15e705e21c8ced0",
+        "html_sha256": "8ec9657a6506afb4e9b9bbe9b0a737ec4b65d0e23c12277688ce03ca57a51417",
+        "state": {
+          "title": "同一份規格，跑十次：把交代寫清楚之後，agent 會穩定交付嗎？",
+          "images": [
+            {
+              "loaded": true,
+              "width": 1800,
+              "height": 764
+            },
+            {
+              "loaded": true,
+              "width": 1388,
+              "height": 558
+            }
+          ],
+          "sections": 6,
+          "code_blocks": 0,
+          "horizontal_overflow": false
+        },
+        "opening_screenshot": ".context/same-spec-ten-runs/manuscripts/overview-opening.png"
+      },
+      "root_review": {
+        "final_sha256": "51a2be2e1614c965743386f06d913492c999786e852c2fc213f7e3947edbfeeb",
+        "all_six_sections_reviewed": true,
+        "front_matter_references_and_disclosure_reviewed": true,
+        "notes": [
+          "第一節僅使用既有工作坊紀錄；N=1 是追問的理由，不當成變異證據。",
+          "第二節把單次與重複觀察的差別說清楚，再提出三個問題與真實 parser 選題理由。",
+          "第三節定義要求／文件／指令包；四份內容摘要與 C helper 例外對照凍結文件。",
+          "第四節按生成、外部驗收與平行判定說明，保留未固定條件。",
+          "第五節先讀驗收再讀資源，明示費用合計與中位數用途，區間與 AST 限制緊鄰結論。",
+          "第六節建議與研究發現分開，後三篇各接下一個讀者問題；參考資料、發布狀態與 AI 協作說明一致。"
+        ]
+      },
+      "mobile_preview": {
+        "piece": "overview",
+        "article_sha256": "51a2be2e1614c965743386f06d913492c999786e852c2fc213f7e3947edbfeeb",
+        "html_sha256": "8ec9657a6506afb4e9b9bbe9b0a737ec4b65d0e23c12277688ce03ca57a51417",
+        "state": {
+          "horizontal_overflow": false,
+          "images": [
+            {
+              "loaded": true
+            },
+            {
+              "loaded": true
+            }
+          ],
+          "width": 390
+        }
+      }
+    },
+    {
+      "piece": "spec",
+      "article_path": "2026-11-same-spec-spec/article.md",
+      "article_sha256": "fa9a3fd288d3143e52bfde0f234de345f9bbe707592a5847b0c740743b6f01da",
+      "principal_source_sha256": "888c76b4b003d8c6cf557c47d7edd2686095db9add91f46216abe8e124bebee2",
+      "principal_source_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-max-resume-spec-2026-09-27/artifact.md",
+      "continuation_assembly": null,
+      "paste_sha256": "e3763e2bf2987b6079614e249ba2acea77bd2078a6f186fd56765221b561de82",
+      "source_paste_exact": true,
+      "figures_json_exact": true,
+      "images": [
+        {
+          "path": "2026-11-same-spec-spec/publish/images/table-01.png",
+          "sha256": "3ece0fe39b14e7c191d4dc375df63fa59970c95b8b76cce608f31760c2dda8ba",
+          "width": 1800,
+          "height": 668,
+          "visual_note": "十三條要求以四類整理，null 例外、實體行號與相容案例文字完整。"
+        },
+        {
+          "path": "2026-11-same-spec-spec/publish/images/table-02.png",
+          "sha256": "580714281bca85d2ab12cc00e957175288adb81e4db9e671e6b64146f9b52d6a",
+          "width": 1696,
+          "height": 476,
+          "visual_note": "四份文件、英文詞數、包含關係與提供的協助逐列對照；重新開啟加詞數後的 PNG，文字完整且未截字。"
+        },
+        {
+          "path": "2026-11-same-spec-spec/publish/images/table-03.png",
+          "sha256": "aa5eb812e0d00e8b8b5595e0aacc375a0aafde6b4f7bebef57623918941f8fb9",
+          "width": 1234,
+          "height": 558,
+          "visual_note": "3→6→4→5→0 的條件與優先順序清楚，沒有把數字大小畫成優先。"
+        }
+      ],
+      "language": [
+        {
+          "report": "spec-source-06.json",
+          "input_sha256": "fa9a3fd288d3143e52bfde0f234de345f9bbe707592a5847b0c740743b6f01da",
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 17
+          },
+          "accepted": true
+        },
+        {
+          "report": "spec-paste-03.json",
+          "input_sha256": "e3763e2bf2987b6079614e249ba2acea77bd2078a6f186fd56765221b561de82",
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 17
+          },
+          "accepted": true
+        }
+      ],
+      "preview": {
+        "piece": "spec",
+        "article_sha256": "fa9a3fd288d3143e52bfde0f234de345f9bbe707592a5847b0c740743b6f01da",
+        "paste_sha256": "e3763e2bf2987b6079614e249ba2acea77bd2078a6f186fd56765221b561de82",
+        "payload_sha256": "110489ed68515d08195819c6e71767fde8b49037beee448f307e654622451b44",
+        "html_sha256": "999f5f57ecb14b059bfc863ee509664033a55339d96e980a7627a50265e2db29",
+        "state": {
+          "title": "同一份規格，跑十次（一）：規格篇—四份交代，究竟差在哪裡？",
+          "images": [
+            {
+              "loaded": true,
+              "width": 1800,
+              "height": 668
+            },
+            {
+              "loaded": true,
+              "width": 1696,
+              "height": 476
+            },
+            {
+              "loaded": true,
+              "width": 1234,
+              "height": 558
+            }
+          ],
+          "sections": 6,
+          "code_blocks": 1,
+          "horizontal_overflow": false
+        },
+        "opening_screenshot": ".context/same-spec-ten-runs/manuscripts/spec-opening.png"
+      },
+      "root_review": {
+        "final_sha256": "fa9a3fd288d3143e52bfde0f234de345f9bbe707592a5847b0c740743b6f01da",
+        "all_six_sections_reviewed": true,
+        "front_matter_references_and_disclosure_reviewed": true,
+        "notes": [
+          "第一節連到 Agentic golden tasks，將增加文字的維護負擔轉成可以觀察的問題。",
+          "第二節以真實 parser 的輸入、輸出、相容責任引入要求；先解釋 malformed 再用詞。",
+          "第三節按 A0→A→B→C 展示真實節譯；相同 null／false／空白輸入讓讀者自己核對 R05 展開與新增的差別。篇幅有明確計數方法。",
+          "第四節用 exit 優先序、逐欄 null、CLI 範圍強度說明怎樣判斷規格等價，沒有假稱完全等價。",
+          "第五節以明標假設的錯型例區分規格缺漏與實作判斷錯誤；不推測模型是否漏讀，不宣稱 B 已有效。費用與未量測工時分開。",
+          "第六節清楚區分行為要求與可選寫法，自查不是驗收證據，接向同一 R05 驗收例。"
+        ]
+      },
+      "mobile_preview": {
+        "piece": "spec",
+        "article_sha256": "fa9a3fd288d3143e52bfde0f234de345f9bbe707592a5847b0c740743b6f01da",
+        "html_sha256": "999f5f57ecb14b059bfc863ee509664033a55339d96e980a7627a50265e2db29",
+        "state": {
+          "horizontal_overflow": false,
+          "images": [
+            {
+              "loaded": true
+            },
+            {
+              "loaded": true
+            },
+            {
+              "loaded": true
+            }
+          ],
+          "width": 390
+        }
+      }
+    },
+    {
+      "piece": "contract",
+      "article_path": "2026-11-same-spec-contract/article.md",
+      "article_sha256": "59984f65fcdd0adb2ffe37eefb9d58b127e8bc8d1748583542bcafca34241ab2",
+      "principal_source_sha256": "afd974e1dc8ae5bbc7d57c25a500b7badbd79bac80bfc4bef322022a68a7d92c",
+      "principal_source_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-max-resume-contract-2026-09-27/artifact.md",
+      "continuation_assembly": null,
+      "paste_sha256": "ec7fe6c263926fb1266b07928c71be1fdea4cd9e5b66021fba7c2323c6f430cc",
+      "source_paste_exact": true,
+      "figures_json_exact": true,
+      "images": [
+        {
+          "path": "2026-11-same-spec-contract/publish/images/table-01.png",
+          "sha256": "38145520e0b88ea7de6f906e8b1f8ff36f2f8d87892932660cfae571c7989837",
+          "width": 1800,
+          "height": 490,
+          "visual_note": "三個假設錯法與 stdout/stderr/exit 分欄，數字 123 與 exit 5 診斷差異可辨。"
+        },
+        {
+          "path": "2026-11-same-spec-contract/publish/images/diagram-01.png",
+          "sha256": "0922df2a26985690da3f98940ea4791bd78e667864190a8166d2e4ebc3c4760a",
+          "width": 664,
+          "height": 640,
+          "visual_note": "F1 生成與驗收分區、10 個節點與停止虛線可讀；核准 Mermaid 保持原樣。"
+        },
+        {
+          "path": "2026-11-same-spec-contract/publish/images/table-02.png",
+          "sha256": "b44630145b75b9cd00db7777af2d863c0ec6e3a7b00dc879efb59d5f25b02bab",
+          "width": 1800,
+          "height": 538,
+          "visual_note": "三個 success 欄位完整可讀，交集列清楚，不以漏斗繪製。"
+        }
+      ],
+      "language": [
+        {
+          "report": "contract-source-08.json",
+          "input_sha256": "59984f65fcdd0adb2ffe37eefb9d58b127e8bc8d1748583542bcafca34241ab2",
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 36
+          },
+          "accepted": true
+        },
+        {
+          "report": "contract-paste-04.json",
+          "input_sha256": "ec7fe6c263926fb1266b07928c71be1fdea4cd9e5b66021fba7c2323c6f430cc",
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 33
+          },
+          "accepted": true
+        }
+      ],
+      "preview": {
+        "piece": "contract",
+        "article_sha256": "59984f65fcdd0adb2ffe37eefb9d58b127e8bc8d1748583542bcafca34241ab2",
+        "paste_sha256": "ec7fe6c263926fb1266b07928c71be1fdea4cd9e5b66021fba7c2323c6f430cc",
+        "payload_sha256": "f4fff95281f49a9401eb906f582e88be8e9c4e897b1cdae9aee4feaef6803d4e",
+        "html_sha256": "91a5bf739669cc39ce887ef633f9795f3f360fcb70140c0af020a71f5e3cd315",
+        "state": {
+          "title": "同一份規格，跑十次（二）：契約篇—寫在規格裡的要求，要怎麼驗收？",
+          "images": [
+            {
+              "loaded": true,
+              "width": 1800,
+              "height": 490
+            },
+            {
+              "loaded": true,
+              "width": 664,
+              "height": 640
+            },
+            {
+              "loaded": true,
+              "width": 1800,
+              "height": 538
+            }
+          ],
+          "sections": 6,
+          "code_blocks": 4,
+          "horizontal_overflow": false
+        },
+        "opening_screenshot": ".context/same-spec-ten-runs/manuscripts/contract-opening.png"
+      },
+      "root_review": {
+        "final_sha256": "59984f65fcdd0adb2ffe37eefb9d58b127e8bc8d1748583542bcafca34241ab2",
+        "all_six_sections_reviewed": true,
+        "front_matter_references_and_disclosure_reviewed": true,
+        "notes": [
+          "第一節縮短前情，先交代誰判斷、依據什麼；自我宣稱與外部執行結果分清楚。",
+          "第二節從兩行輸入依 R05、R03、R08、R11、R12 推出三出口；三種錯法是教學假設，turn.failed 的 null／false 例用相同 exit 說明診斷不能省。",
+          "第三節由終態比對看不到時間引出 streaming probe，清楚界定僅第一訊息一個觀察點。",
+          "第四節交代答案、候選介面、生成與驗收先後；F1 圖例、停止路徑與平行 success 欄位解釋完整。",
+          "第五節先說 evaluator 的失效情境再說已知答案測試、沙箱 probes 與重評能排除到哪裡；三種失敗分類不混層。",
+          "第六節回收 R05 到外部證據的過程，後續維護建議含來源、要求、版本化重評與涵蓋限制。"
+        ]
+      },
+      "mobile_preview": {
+        "piece": "contract",
+        "article_sha256": "59984f65fcdd0adb2ffe37eefb9d58b127e8bc8d1748583542bcafca34241ab2",
+        "html_sha256": "91a5bf739669cc39ce887ef633f9795f3f360fcb70140c0af020a71f5e3cd315",
+        "state": {
+          "horizontal_overflow": false,
+          "images": [
+            {
+              "loaded": true
+            },
+            {
+              "loaded": true
+            },
+            {
+              "loaded": true
+            }
+          ],
+          "width": 390
+        }
+      }
+    },
+    {
+      "piece": "variance",
+      "article_path": "2026-11-same-spec-variance/article.md",
+      "article_sha256": "75ece93803dabeac4d578611deacea4629a8740bd59e1ba69cf203a11c53365a",
+      "principal_source_sha256": "5439c618265c0e243c2812215ef676b9ef03a5b19f70a132ce84d95276e4ebe7",
+      "principal_source_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-max-resume-variance-2026-09-27/complete.md",
+      "continuation_assembly": {
+        "method": "Exact concatenation of final-prose text blocks across CLI automatic continuation; first block ends mid-link, second continues the same link. No reasoning blocks used.",
+        "block_sha256": [
+          "6cbb2d212c9f9d82db93c8c882ea0b956d04a369003f0bc995e239f21c65469c",
+          "56e96ba791d6707a027da234e6052a7b97409c2f0947b2a224ba225c8334e3e0"
+        ],
+        "complete_sha256": "5439c618265c0e243c2812215ef676b9ef03a5b19f70a132ce84d95276e4ebe7",
+        "terminal_result_is_last_block_only": true
+      },
+      "paste_sha256": "d2c843a5d4e2e82e517b85077301a7be0ba603f63e51b39c9a1728388058eacc",
+      "source_paste_exact": true,
+      "figures_json_exact": true,
+      "images": [
+        {
+          "path": "2026-11-same-spec-variance/publish/images/table-01.png",
+          "sha256": "c123c960efb487f0b36beff3b9c18359b451a2a806b6845f0dac9272a38dfa19",
+          "width": 1196,
+          "height": 476,
+          "visual_note": "四組十個名額與平行判定整齊，合法候選條件清楚。"
+        },
+        {
+          "path": "2026-11-same-spec-variance/publish/images/asset-01.png",
+          "sha256": "474f4ae875dcababaf7ffcddf501b2b7c49fa5d9ed0e80a4ac9a57a98f9084fb",
+          "width": 2304,
+          "height": 2184,
+          "visual_note": "F2 兩個 panel、0–1 完整橫軸、分母與相依性註記可讀；右緣聚集如實保留，PNG 未改。"
+        },
+        {
+          "path": "2026-11-same-spec-variance/publish/images/table-02.png",
+          "sha256": "71e08e0f7f3945d6dc762becc6133423abb50f6293bbef1bf03307a9bbdcf54e",
+          "width": 1800,
+          "height": 524,
+          "visual_note": "組內與 seed cosine 範圍、hash 計數分欄，四位小數與括號完整。"
+        },
+        {
+          "path": "2026-11-same-spec-variance/publish/images/table-03.png",
+          "sha256": "2da44ec0db6188a9a7126a849f1aabbd8508f2ead3f456ba5ae54d77e213681a",
+          "width": 1800,
+          "height": 716,
+          "visual_note": "wall time、單名額費用、合計與 output tokens 分欄，長範圍折行未截字。"
+        }
+      ],
+      "language": [
+        {
+          "report": "variance-source-06.json",
+          "input_sha256": "75ece93803dabeac4d578611deacea4629a8740bd59e1ba69cf203a11c53365a",
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 61
+          },
+          "accepted": true
+        },
+        {
+          "report": "variance-paste-03.json",
+          "input_sha256": "d2c843a5d4e2e82e517b85077301a7be0ba603f63e51b39c9a1728388058eacc",
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 60
+          },
+          "accepted": true
+        }
+      ],
+      "preview": {
+        "piece": "variance",
+        "article_sha256": "75ece93803dabeac4d578611deacea4629a8740bd59e1ba69cf203a11c53365a",
+        "paste_sha256": "d2c843a5d4e2e82e517b85077301a7be0ba603f63e51b39c9a1728388058eacc",
+        "payload_sha256": "82793cf856abfc9263aafc0432767b4675db8ead05ff38021b5431fef236f06f",
+        "html_sha256": "e686e5260f29362fef8a4dd43d5e43b0a3d51ac3b107921d04f3bda467772e1d",
+        "state": {
+          "title": "同一份規格，跑十次（三）：變異篇—四十份都通過，然後呢？",
+          "images": [
+            {
+              "loaded": true,
+              "width": 1196,
+              "height": 476
+            },
+            {
+              "loaded": true,
+              "width": 2304,
+              "height": 2184
+            },
+            {
+              "loaded": true,
+              "width": 1800,
+              "height": 524
+            },
+            {
+              "loaded": true,
+              "width": 1800,
+              "height": 716
+            }
+          ],
+          "sections": 6,
+          "code_blocks": 2,
+          "horizontal_overflow": false
+        },
+        "opening_screenshot": ".context/same-spec-ten-runs/manuscripts/variance-opening.png"
+      },
+      "root_review": {
+        "final_sha256": "75ece93803dabeac4d578611deacea4629a8740bd59e1ba69cf203a11c53365a",
+        "all_six_sections_reviewed": true,
+        "front_matter_references_and_disclosure_reviewed": true,
+        "notes": [
+          "第一節用契約篇 123 缺陷接入四十份結果，三個研究問題與總論一致。",
+          "第二節先說預先排定分母，再用假設 80% 的十次成功機率解釋不確定性；CP 區間的頻率學派意義、獨立同分布假設、排程限制保留。",
+          "第三節先讀實際 A0 pair 狀態與分派，再解釋 hash 常數例與 cosine 二維簡化例；0.99 不是原碼重合率，180 pairs 非獨立樣本。",
+          "第四節先解釋計價與 wall time，再用中位數和最大值示範怎麼讀；USD 5 明示每名額門檻，不與整批費用混淆。",
+          "第五節逐一回答三個問題；將真人 review 工時與具體原因記錄接到維護判斷，避免由結構指標直接判品質。",
+          "第六節將本輪觀察、方法與後續問題分開，沒有把全數通過推成等效或泛化承諾；References 與 AI 說明完整。"
+        ]
+      },
+      "mobile_preview": {
+        "piece": "variance",
+        "article_sha256": "75ece93803dabeac4d578611deacea4629a8740bd59e1ba69cf203a11c53365a",
+        "html_sha256": "e686e5260f29362fef8a4dd43d5e43b0a3d51ac3b107921d04f3bda467772e1d",
+        "state": {
+          "horizontal_overflow": false,
+          "images": [
+            {
+              "loaded": true
+            },
+            {
+              "loaded": true
+            },
+            {
+              "loaded": true
+            },
+            {
+              "loaded": true
+            }
+          ],
+          "width": 390
+        }
+      }
+    }
+  ],
+  "local_link_count": 140,
+  "all_local_links_exist": true,
+  "frozen_archive_files_checked": 317,
+  "frozen_archive_hash_errors": [],
+  "F1_approved_source_unchanged": true,
+  "F2_sha256": "474f4ae875dcababaf7ffcddf501b2b7c49fa5d9ed0e80a4ac9a57a98f9084fb",
+  "tests": [
+    {
+      "command": "python3 -m unittest research/scripts/test_research_scripts.py",
+      "exit_code": 0,
+      "tests": 121,
+      "elapsed_seconds": 6.179
+    },
+    {
+      "command": "python3 tools/test_tools.py",
+      "exit_code": 0,
+      "tests": 301,
+      "elapsed_seconds": 68.29,
+      "note": "Existing unicode_escape DeprecationWarning in test helper; no failures."
+    },
+    {
+      "command": "python3 -m unittest tools.test_tools.TestArticleAndPasteStayInLockstep",
+      "exit_code": 0,
+      "tests": 3,
+      "elapsed_seconds": 0.019,
+      "note": "Focused final check after narrative and publishing-pack updates; broad suites already passed with unchanged tool code."
+    }
+  ],
+  "diff_check_exit_code": 0,
+  "reader_review": {
+    "full_series": {
+      "report": "reader-review.md",
+      "invocation": "reader-invocation.json",
+      "resolution": "review-resolution.json"
+    },
+    "selected_reasoning_sections": {
+      "report": "reader-reasoning-review.md",
+      "invocation": "reader-reasoning-invocation.json",
+      "resolution": "reader-reasoning-resolution.json"
+    },
+    "final_root_reread": true,
+    "final_hashes": {
+      "overview": "51a2be2e1614c965743386f06d913492c999786e852c2fc213f7e3947edbfeeb",
+      "spec": "fa9a3fd288d3143e52bfde0f234de345f9bbe707592a5847b0c740743b6f01da",
+      "contract": "59984f65fcdd0adb2ffe37eefb9d58b127e8bc8d1748583542bcafca34241ab2",
+      "variance": "75ece93803dabeac4d578611deacea4629a8740bd59e1ba69cf203a11c53365a"
+    }
+  },
+  "narrative_response": {
+    "motivation": "Recorded workshop gap → limits of one observation → repeated delivery question using own-repo parser.",
+    "research_questions": "Repeated accepted completion; document conditions/resources; implementation differences after acceptance.",
+    "document_comparison": "Actual A0/A R05, B reasons and six checks, C optional pattern and exceptions, lengths and CLI wording caveat.",
+    "reader_judgment_process": "Show the input, apply the relevant rules, explain what the observation supports and its limits, then justify the next decision. Added worked comparisons, exit derivation, sampling illustration, AST interpretation and review-time rationale.",
+    "series_coherence": "One shared R05 thread and real candidate pair; relevant recalls use verified earlier-series claims and publication status.",
+    "style": "STYLE.md and current briefs applied to every section, chart explanation and conclusion; no invented personal scenes or length compression target."
+  }
+}

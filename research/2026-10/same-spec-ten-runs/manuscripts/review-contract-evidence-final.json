@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "reviewed_at_utc": "2026-09-25T09:29:18.329096+00:00",
+  "reviewer": "Codex evidence lens /root/series_evidence_review",
+  "review_type": "full_evidence_review_plus_exact_delta_closure",
+  "verdict": "EVIDENCE_READY_CONTRACT_ONLY",
+  "contract_evidence_ready": true,
+  "series_ready": false,
+  "published": false,
+  "english_authorized_or_reviewed": false,
+  "manuscript": {
+    "path": "2026-11-same-spec-contract/article.md",
+    "sha256": "6f99865b86beabc93adfa6ca61a2e8cd826cf926eb9b4afbfca7a149f81019cc",
+    "bytes": 45725,
+    "line_count": 293
+  },
+  "full_review": {
+    "path": "research/2026-10/same-spec-ten-runs/manuscripts/review-contract-evidence.json",
+    "sha256": "bfbe9690d1bf0daaa2bce216e89e7ce3634b6ebdfd3120083fca9a48bb062877",
+    "markdown_path": "research/2026-10/same-spec-ten-runs/manuscripts/review-contract-evidence.md",
+    "markdown_sha256": "3126fdd847abf1d84d9230e4ba603ed434812b6e532ae3fe4f688ac9c53c3253",
+    "full_read_manuscript_sha256": "416476b5ade3ded365cd3faff9477d666175ceb5154eddffc75ed18a8da18def",
+    "full_read_lines": [
+      1,
+      291
+    ]
+  },
+  "delta": {
+    "path": "research/2026-10/same-spec-ten-runs/manuscripts/contract-evidence-delta.json",
+    "sha256": "26a361bc7995ba23323fa1f05ec9577230016007b064a6a1c705b05bdd6f7eef",
+    "before_sha256": "416476b5ade3ded365cd3faff9477d666175ceb5154eddffc75ed18a8da18def",
+    "after_sha256": "6f99865b86beabc93adfa6ca61a2e8cd826cf926eb9b4afbfca7a149f81019cc",
+    "edit_records": 2,
+    "inverse_restores_full_read_sha_exactly": true,
+    "forward_replays_current_exactly": true,
+    "changed_context_reread_lines": [
+      191,
+      215
+    ]
+  },
+  "resolved_findings": [
+    {
+      "id": "CONTRACT-E01",
+      "prior_severity": "major",
+      "status": "resolved",
+      "lines": [
+        203,
+        205
+      ],
+      "evidence": "依真實來源分開 reference/mutants/timeout 測試、batch failure values、三項 denial probes 與生成 boundary_violation。未聲稱分類所有候選越界。"
+    },
+    {
+      "id": "CONTRACT-E02",
+      "prior_severity": "minor",
+      "status": "resolved",
+      "lines": [
+        195
+      ],
+      "evidence": "固定範圍限明確packet與封存所列模型、effort、CLI開關。"
+    }
+  ],
+  "open_findings": [],
+  "open_counts": {
+    "blocker": 0,
+    "major": 0,
+    "minor": 0
+  },
+  "unchanged": {
+    "table_count": 4,
+    "tables_byte_identical": true,
+    "fenced_block_count": 6,
+    "all_fenced_blocks_byte_identical": true,
+    "approved_f1_sha256": "0ba7420d3a7af4899388038dc97cd94bef12c8a50311377b1052315799bd6c97",
+    "frozen_sources_unchanged": true,
+    "original_numbers_unchanged": true
+  },
+  "new_model_samples": 0,
+  "candidate_executions": 0,
+  "fresh_web_queries": 0,
+  "raw_response_read": false,
+  "thinking_text_read": false,
+  "manuscript_modified": false,
+  "frozen_data_modified": false,
+  "prior_reports_modified": false,
+  "limitations": [
+    "僅契約篇全文證據結案，不是全系列 READY。",
+    "沿用初審核對過的凍結來源、外部來源快照與主寫紀錄，沒有新增模型或候選執行。",
+    "單案stdin仍送入候選；整份suite/expected由driver控制，不宣稱所有OS/IPC通道都隔離。",
+    "MCP語文、圖表渲染、遠端發布與英文稿不在本次結案範圍。"
+  ],
+  "markdown_report_sha256": "d3e6d627479d6d5e82a98144d220e5475913b7b8c6548739f31abc4f30470dc1"
+}

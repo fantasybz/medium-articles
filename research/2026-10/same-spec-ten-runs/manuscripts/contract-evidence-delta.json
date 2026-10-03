@@ -1,0 +1,18 @@
+{
+  "article": "2026-11-same-spec-contract/article.md",
+  "before_sha256": "416476b5ade3ded365cd3faff9477d666175ceb5154eddffc75ed18a8da18def",
+  "after_sha256": "6f99865b86beabc93adfa6ca61a2e8cd826cf926eb9b4afbfca7a149f81019cc",
+  "edits": [
+    {
+      "before": "研究者控制得到的輸入與開關都已固定，也留下了紀錄。",
+      "after": "明確送出的 packet，以及封存紀錄列出的模型、effort 與 CLI 開關均已固定，也留下了紀錄。",
+      "reason": "Limit fixed controls to enumerated values; other inherited environment values are not recorded or fully pinned."
+    },
+    {
+      "before": "驗收工具自己也需要反例。四組都是 10/10 時，一個不論收到什麼都回答「通過」的 evaluator，也會交出同樣的表格。只看 40 個正式結果，排除不了這種可能；要排除它，得先讓研究工具面對答案已知的候選。研究工具以四類 fixture 檢查自己的分類：正確的實作必須判為通過，錯誤的實作必須判為不通過，會超時的實作必須記為逾時，越界的實作必須記為越界。這裡的逾時，指候選執行案例時超過時限，和生成階段的 600 秒停止門檻是兩回事。逾時、越界與語義失敗分開記錄，對應 SaltBench 分開 termination class 的做法。三者需要回頭處理的地方不同：遇到逾時與越界，要先檢查候選的行為與執行環境；遇到語義失敗，則要回到規格與案例。",
+      "after": "驗收工具自己也需要反例。四組都是 10/10 時，一個不論收到什麼都回答「通過」的 evaluator，也會交出同樣的表格。只看 40 個正式結果，排除不了這種可能；要排除它，得先讓研究工具面對答案已知的候選。工具測試要求正確的參考實作通過、刻意破壞語義的實作被拒絕，也檢查候選執行逾時時，評估器是否留下 timeout 紀錄。這裡的逾時指候選執行案例超過時限，和生成階段的 600 秒停止門檻是兩回事。\n\n隔離則由前面的三項 preflight probe 另外驗證。讀取 oracle、寫入檔案與綁定網路埠被拒絕，各自有紀錄；這不代表 evaluator 能把每一種候選越界都辨識成獨立的失敗類別。批次案例的凍結評分函式將失敗記為 timeout、output_limit 或 mismatch；生成紀錄中的 boundary_violation，則屬於模型、工具與 trace 的另一層核對。SaltBench 區分 termination class 的方法提醒我，要先說清楚分類發生在哪一層，以及實際觀察了什麼。遇到候選 timeout，要檢查候選行為與執行環境；遇到輸出 mismatch，則要回到規格、expected 結果與實際輸出核對，不能直接假定候選的語義一定有錯。",
+      "reason": "Separate evaluator reason fields, generation boundary checks and sandbox denial probes; no invented candidate boundary classifier. Retain the concrete distinction and repair path."
+    }
+  ],
+  "basis": "Independent evidence full review; evaluator.py _grade, sandbox.py preflight, frozen manifest environment_controls."
+}

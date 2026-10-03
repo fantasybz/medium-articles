@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "review_type": "independent_reader_final_delta_check",
+  "reviewed_at": "2026-09-25T08:48:19.569516+00:00",
+  "reviewer": "Codex independent reader sub-agent (AI)",
+  "verdict": "PASS_SPEC_READER_SCOPE",
+  "series_verdict": "NOT_ASSESSED_AS_A_COMPLETE_SERIES",
+  "series_ready": false,
+  "public_release_complete": false,
+  "article": {
+    "path": "2026-11-same-spec-spec/article.md",
+    "sha256": "3d4fa69b2fb198aee8b75f01be21712c0482589f773b80873375d82d627a37ca",
+    "line_count": 194
+  },
+  "previous_full_review": {
+    "path": "research/2026-10/same-spec-ten-runs/manuscripts/review-spec-reader.json",
+    "input_sha256": "829017b621e70355979aa9ad6dc8830842fed52c74f00c95bbae53e52cedb8e6",
+    "full_read_and_separate_second_half_read": true
+  },
+  "delta_verification": {
+    "record": ".context/same-spec-ten-runs/manuscripts/spec-final-review-delta.json",
+    "replacement_count": 3,
+    "replacement_targets_unique": true,
+    "changed_lines": [
+      117,
+      125,
+      155
+    ],
+    "reverse_replacement_sha256": "829017b621e70355979aa9ad6dc8830842fed52c74f00c95bbae53e52cedb8e6",
+    "reverse_replacement_matches_prior_full_read": true,
+    "forward_replacement_byte_equal": true,
+    "only_declared_replacements": true,
+    "prior_reports_sha256": {
+      "review-spec-reader.md": "7bd24c70e5345671003ff335da61070dc381bc2a731adf3c76d7bab39d517531",
+      "review-spec-reader.json": "0800285be2a6af39b0a48f4f470c8987d716c2dabc2b9cb0f68bfbe000703ffd"
+    }
+  },
+  "reading": {
+    "current_second_half_reread_lines": [
+      98,
+      194
+    ],
+    "unaffected_sections_inherited_from_full_read": true
+  },
+  "change_assessments": [
+    {
+      "line": 117,
+      "result": "PASS",
+      "reason": "將籠統的生成邊界完整改為執行紀錄未顯示模型或工具設定越界，讀者能辨識判斷依據與可觀察範圍，不會把它當成所有環境皆受保證。"
+    },
+    {
+      "line": 125,
+      "result": "PASS",
+      "reason": "把本輪未估組間差值與累加配置不能分離跨組合獨立效果／完整交互作用分開說，保留具體設計限制，也避免讓讀者以為任何組間比較都不可估計。"
+    },
+    {
+      "line": 155,
+      "result": "PASS",
+      "reason": "本篇提供明確指向規格篇，移除它的指涉歧義；結語交代的產出與全文一致。"
+    }
+  ],
+  "findings": [],
+  "open_counts": {
+    "blocker": 0,
+    "major": 0,
+    "minor": 0
+  },
+  "scope": "完整舊稿複核加上精確三處差異驗證；本輪另連續重讀修改所在的第四節至全文末尾。沒有重做來源查核、模型實驗或 zh-TW MCP 檢查。",
+  "manuscript_modified": false,
+  "prior_reviews_modified": false,
+  "frozen_research_modified": false
+}

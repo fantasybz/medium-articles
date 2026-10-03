@@ -1,0 +1,12 @@
+{
+  "article": "2026-11-same-spec-spec/article.md",
+  "before_sha256": "55b1b472694d6e8e48a4c4137b3738b66488c0b7fc5c8c15e36e3a814d49ed55",
+  "after_sha256": "2d773424ecd438e28d771ff36a747975103ff22a3b9c95e2880c036228f41f65",
+  "reason": "Final root paragraph review and independent editorial/reader minor fixes; no data, examples, tables or figures changed.",
+  "edits": [
+    {
+      "before": "因此，本研究以 R01–R13 為共同規範基準，四份文字已嚴格等價卻不能當成核對結果。",
+      "after": "因此，本研究以 R01–R13 為共同規範基準，但核對結果不足以證明四份文字嚴格等價。"
+    }
+  ]
+}

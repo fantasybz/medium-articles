@@ -14,7 +14,7 @@
 - **Length snapshot after the 09-08 polish (historical)**: 總論 ≈ 10,000 CJK chars / 12 sections / 18 figures (10 mermaid + 8 tables); each part ≈ 7,600–8,000 chars / 6–9 sections / 7–8 figures (4 mermaid + 3–4 tables；可靠度篇只有 6 節）. Targets were 3,600 and 1,800–2,300; the drafts run 2.8–4× that and **the author accepted the overrun**. Earlier long articles also attracted completed reads; this does not establish length as their cause. Those targets are historical planning estimates, not a sentence-compression budget or a minimum to pad toward; retain necessary explanation and narrative.
 - Opening: `# Title` → `> **TL;DR** — ...` (360–730 chars: symptoms → one-line thesis → what each gate measures → the disagreeable claims → one sourced number with its domain → what the tail delivers) → `> 系列導覽：…` with **本篇** bolded and unpublished siblings 「（即將發布）」/"(coming soon)". Name related series explicitly instead of identifying them only as 「上一季」.
 - Chinese-numeral sections (`## 一、…`), 6–12 per piece (總論 12; 測試篇 9; Review 篇 8; 可靠度篇 6); the last is 結語 / 結語與交接, returning to the opening question or documented experience before a hand-off; a blockquote is optional.
-- Tail: `### 系列文章` → `### References` (numbered, org — [title](url), each with a 〔第 N 節〕 back-pointer) → `### AI 協作說明` → italic signature.
+- Tail: `### 系列文章` → `### References` (numbered, `org — [title](url)`, each with a 〔第 N 節〕 back-pointer) → `### AI 協作說明` → italic signature.
 
 ## Rhetorical moves that recur
 - Opens with the question the reader is actually asking (§一〈「AI 說沒問題」之後，我該相信什麼？〉), answered by a bolded one-liner. Anti-patterns named before prescriptions (「八個反模式」); decision artefacts everywhere (triage matrices, gate tables with exit criteria, a 90-day plan with 退出條件); cross-references so the four read as one product.
@@ -42,6 +42,13 @@
 - 未定稿或排程未定的內容，不承諾月份，不把暫定題目當成既有文章。若沒有必要引向另一篇，直接說明本篇尚未涵蓋的問題即可。內部研究目錄與規劃日期、研究及會議的實際日期不受此限制。
 - 潤稿涵蓋整篇，尤其要從中段一路讀到結語，逐段檢查操作說明、圖表解讀、清單與交接。後半部不能退回短語堆疊或提案摘要；要交代使用情境、理由、負責的人與判斷邊界。
 - 結語回應開場，不用連續預告未定文章收尾。正文中的樣本限制、推論條件與人力前提，在最後幾段也必須保留。完成前對照前後半部的語氣與說明深度，英文同步遵守。
+
+## 概念引介與主軸展開（作者試讀回饋，2026-10-03）
+
+- 新概念先給讀者一個容易理解的問題與例子，再說明名稱及它能幫助哪個判斷；只加中文譯名不算完成解釋。沿用英文術語，方便讀者對照來源。
+- 先確認每篇要回答的核心問題，再看各節如何向下展開、每段負責哪一步。從例子走到結論，要補足讀者判斷所需的前提與推導。
+- 相鄰段落靠問題與理由承接，不只增加連接詞。各篇可以獨立進入，但用共同案例與清楚交接維持系列連貫；後半部與結語同樣適用。
+- 本輪落實於「同一份規格，跑十次」四篇，見[讀者回饋修訂](same-spec-ten-runs/readability-2026-10-03/README.md)。永久標準已補入 [STYLE.md](../../STYLE.md)。
 
 ## Conference and book material (new for this cycle)
 - **A session is cited as speaker, company, session, slide/timestamp**: 「在 AGNTCon Japan 的 X 場，<講者>（<公司>）在 slide N 說…」. Stage numbers are organiser-, vendor- or team-reported and say so; press coverage is not a source. Ground truth is `notes_sep10/11.md`.

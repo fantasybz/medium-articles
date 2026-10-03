@@ -6,6 +6,7 @@
 #
 # 先跑 article_to_paste.py 產生 figures.json。圖走 mermaid_check.sh（含 MERMAID.md 的合規判定，
 # FAIL 就不會寫進 images/），表格用同一套字型與 700px 欄寬的 HTML 算繪、2x 截圖。
+# assets 裡的本機 PNG 核對 SHA-256 後原樣複製，不經瀏覽器、不重新算繪。
 # 開始算繪前先把上一輪的 diagram-*.png / table-*.png 清掉：FAIL 的圖沒有新檔，舊檔留著會像 PASS。
 # 圖與表任何一個 FAIL 都以非零離開。browse 是單一 daemon，所以一張一張跑。
 set -uo pipefail
@@ -27,9 +28,23 @@ PUB="$ROOT/$DIR/publish${LANG_:+/$LANG_}"; IMG="$PUB/images"
 refuse_if_collecting
 W="$ROOT/.context/render/$DIR${LANG_:+-$LANG_}"; rm -rf "$W"; mkdir -p "$W" "$IMG"
 
-python3 - "$PUB/figures.json" "$W" "$ROOT/MERMAID.md" <<'EOF' || { echo "could not prepare the render inputs from $PUB/figures.json" >&2; exit 1; }
-import json, sys, html, re
+python3 - "$PUB/figures.json" "$W" "$ROOT/MERMAID.md" "$ROOT/$DIR" "$HERE" <<'EOF' || { echo "could not prepare the render inputs from $PUB/figures.json" >&2; exit 1; }
+import hashlib, json, sys, html, re
+from pathlib import Path
+sys.path.insert(0, sys.argv[5])
+from article_to_paste import read_local_png
 spec, w = json.load(open(sys.argv[1])), sys.argv[2]
+# Validate and stage every asset before clearing the previous output. A changed
+# source requires regenerating figures.json, so its digest remains useful evidence.
+assets = spec.get("assets", [])
+for i, asset in enumerate(assets, 1):
+    if asset["file"] != "asset-%02d.png" % i:
+        sys.exit("invalid local PNG slot filename: %r" % asset["file"])
+    data = read_local_png(sys.argv[4], asset["source"])
+    if hashlib.sha256(data).hexdigest() != asset["sha256"]:
+        sys.exit("local PNG changed since figures.json: %s; rerun article_to_paste.py" % asset["source"])
+    Path(w, asset["file"]).write_bytes(data)
+Path(w, "assets.json").write_text(json.dumps(assets, ensure_ascii=False, indent=1), encoding="utf-8")
 # a block without the MERMAID.md frontmatter (older articles, or a hand-written figure) gets the standard config
 std = re.search(r"```mermaid\n(---\n.*?\n---\n)", open(sys.argv[3]).read(), re.S).group(1)
 for f in spec["figures"]:
@@ -60,7 +75,26 @@ print(len(spec["figures"]), "figures,", len(spec["tables"]), "tables prepared")
 EOF
 
 # 輸入都備妥了才清舊檔：figures.json 壞掉時不該連上一輪的成品一起沒了
-rm -f "$IMG"/diagram-*.png "$IMG"/table-*.png
+rm -f "$IMG"/diagram-*.png "$IMG"/table-*.png "$IMG"/asset-*.png "$PUB/.rendered-assets.json"
+
+python3 - "$W" "$IMG" "$PUB/.rendered-assets.json" <<'EOF' || exit 1
+import hashlib, json, shutil, sys
+from pathlib import Path
+assets = json.loads(Path(sys.argv[1], "assets.json").read_text(encoding="utf-8"))
+verified = []
+for asset in assets:
+    target = Path(sys.argv[2], asset["file"])
+    shutil.copyfile(Path(sys.argv[1], asset["file"]), target)
+    copied = hashlib.sha256(target.read_bytes()).hexdigest()
+    if copied != asset["sha256"]:
+        target.unlink()
+        sys.exit("local PNG copy checksum mismatch: %s" % target)
+    verified.append(dict(asset, copied_sha256=copied))
+    print("  %s: copied unchanged (SHA-256 %s)" % (asset["file"], copied))
+if verified:
+    Path(sys.argv[3]).write_text(json.dumps({"method": "byte-copy", "assets": verified},
+                                          ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+EOF
 
 fail=0
 for m in "$W"/diagram-*.mmd; do
@@ -70,7 +104,9 @@ for m in "$W"/diagram-*.mmd; do
   else echo "  $n: FAIL"; echo "$out" | sed 's/^/     /'; fail=$((fail+1)); fi
 done
 
-prepare_headless_viewport   # 沒有圖時 mermaid_check.sh 沒跑過，viewport 還沒設；有跑過就是空操作
+if compgen -G "$W/table-*.html" >/dev/null; then
+  prepare_headless_viewport   # 純本機 PNG 不需要啟動瀏覽器
+fi
 for h in "$W"/table-*.html; do
   [ -e "$h" ] || break
   n="$(basename "$h" .html)"

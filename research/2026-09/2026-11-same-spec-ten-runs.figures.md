@@ -1,5 +1,7 @@
 # 2026-11 同一份規格，跑十次：全部圖表的 Mermaid 原始碼
 
+> 歷史版本：2026-09-25 已由[新版研究大綱](../2026-10/2026-11-same-spec-ten-runs.md)取代。本文保留原始規劃與未採用主張，不能當作本輪實驗規格或已取得的結果。
+
 > 依 `research/2026-09/2026-11-same-spec-ten-runs.md`（第四版）的圖表清單，逐張給圖說、預期尺寸與完整 Mermaid 原始碼；每張都照 `MERMAID.md`：frontmatter `config`（theme base、themeVariables 顏色、flowchart 間距、subGraphTitleMargin；不含 fontFamily）、classDef 四色、節點 > 5 用 TB、≤ 12 節點、節點文字 ≤ 3 行、邊上文字 ≤ 6 字、不用 emoji、不寫逐節點 `style`。表格類（F2、F6、F10、P1-T1、P1-T2、P2-T1、P3-T2、P3-T3、P3-T5）不是圖，直接用 markdown 表格、貼 Medium 時轉 PNG—各條只留一行說明與圖說，不畫。
 >
 > 大綱已內嵌原始碼的圖（F1、F3、F4、F7、F8、F9、P1-1、P1-2、P1-3、P2-1、P2-2、P2-3a、P2-3b、P3-1、P3-2、P3-3）一律從大綱版起修，不重畫；改動處在各圖的「預期尺寸」行標明。決策節點的形狀規則：單行問句用菱形（與 `MERMAID.md` 範例一致），兩行以上用六角形（菱形會隨行數放大成正方形，撐高整張圖）。

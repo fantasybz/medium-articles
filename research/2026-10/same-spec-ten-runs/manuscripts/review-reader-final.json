@@ -1,0 +1,83 @@
+{
+  "review_type": "independent_reader_final_delta_check",
+  "reviewed_at": "2026-09-25T05:59:26.536048+00:00",
+  "reviewer": "Codex independent reader agent",
+  "scope": "只核對 READER-08 的兩段修訂與變更範圍；未重做未受影響的數字檢查",
+  "article": {
+    "path": "2026-11-same-spec-variance/article.md",
+    "sha256": "1cf47ca478afca22ff028c285c4d0550a844e4794886b7e345fa122a27cac800",
+    "line_count": 262
+  },
+  "previous_full_read_sha256": "ce383be20445328cec4a509e8ce7f519b94e9fe99b2fd927e494ffc4661c3587",
+  "article_verdict": "READY_FOR_LOCAL_DELIVERY",
+  "series_verdict": "NOT_READY_INCOMPLETE_MANUSCRIPTS",
+  "issue_resolution": {
+    "id": "READER-08",
+    "severity": "minor",
+    "status": "RESOLVED",
+    "locations": [
+      17,
+      221
+    ],
+    "evidence": [
+      "第 17 行已明說規格篇與契約篇仍在成稿中，分開交代篇章規劃與已完成的研究／實驗工具。",
+      "第 221 行已回到本篇實際介紹的 parser 案例，不再把尚未完整成稿的總論當成現有內容。"
+    ],
+    "remaining_reader_issues": {
+      "blocker": 0,
+      "major": 0,
+      "minor": 0
+    }
+  },
+  "change_verification": {
+    "record": "research/2026-10/same-spec-ten-runs/manuscripts/final-sibling-status-fix.json",
+    "replacement_count": 2,
+    "replacement_targets_unique": true,
+    "current_hash_matches_record": true,
+    "reverse_replacement_hash": "ce383be20445328cec4a509e8ce7f519b94e9fe99b2fd927e494ffc4661c3587",
+    "reverse_replacement_matches_prior_full_read": true,
+    "forward_replacement_byte_equal": true,
+    "changed_lines": [
+      17,
+      221
+    ],
+    "other_bytes_unchanged": true,
+    "prior_reports_sha256": {
+      "review-reader.md": "1eb1b0000634a36d96520704bb06e7a50e3accc203aabeefff803b1a41eb1a46",
+      "review-reader.json": "c9aa4f88e4ffa01e0285f6e63f3fc65e55943a71cd0529a3c27269d81901598f",
+      "review-reader-followup.md": "ea0ed51d9c46c542c42b4a0e01ab88ee3fade5be60972b3275e3754868f61194",
+      "review-reader-followup.json": "0f7c7aeb3d13275d4dcb708baa2a21d5115b4e04568cbc088b1d8ece7c03b408"
+    }
+  },
+  "inherited_review": {
+    "report": "research/2026-10/same-spec-ten-runs/manuscripts/review-reader-followup.json",
+    "READER_01_to_07": "沿用前輪已確認的處置；本次兩段修訂不影響其內容。",
+    "example_and_numeric_checks": "沿用前輪對兩候選節錄、hash、103／103、pair cosine 與 14 個本機目標的核對；本輪沒有聲稱重新執行。"
+  },
+  "publication_condition": {
+    "status": "PENDING_PUBLICATION_WORKFLOW",
+    "description": "本機全文可交付，公開附件入口待發布流程。",
+    "required_before_publication": "補上版本固定、可由公開讀者存取的研究附件入口，並在公開閱讀環境實際檢查。",
+    "not_claimed": "本報告不判定 Medium 或其他遠端發布完成。"
+  },
+  "other_articles": [
+    {
+      "key": "overview",
+      "status": "PENDING_FULL_MANUSCRIPT_AND_REVIEW"
+    },
+    {
+      "key": "spec",
+      "status": "PENDING_FULL_MANUSCRIPT_AND_REVIEW"
+    },
+    {
+      "key": "contract",
+      "status": "PENDING_FULL_MANUSCRIPT_AND_REVIEW"
+    }
+  ],
+  "constraints": [
+    "未修改正文",
+    "未修改初審及 followup 報告",
+    "只新增 review-reader-final.md/json",
+    "沒有給系列 READY"
+  ]
+}

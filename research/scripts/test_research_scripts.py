@@ -13,7 +13,7 @@ the way tools/test_tools.py runs medium_draft.sh's pre-flight under an empty
 HOME), the merge script whose printed count collect.sh reads, and the argument /
 keychain guards of the Notion cookie export. Everything that needs a browser, a
 real Codex session or the macOS Keychain (collect.sh, extract_*.js, notion_*.js,
-mermaid_check*.sh, render_images.sh, codex_review.sh past its pre-flight) is
+mermaid_check*.sh, render_images.sh's diagram/table rendering, codex_review.sh past its pre-flight) is
 deliberately absent.
 
 The scripts are not a package, so they are loaded by path; the ones that are
@@ -22,6 +22,7 @@ the exit codes and the exact stdout/stderr the callers parse.
 """
 
 import glob
+import base64
 import hashlib
 import importlib.util
 import io
@@ -80,6 +81,14 @@ MERMAID_A = "flowchart TB\n    A --> B\n"
 MERMAID_B = "flowchart LR\n    C --> D\n"
 TABLE = "| a | b |\n|---|---|\n| 1 | 2 |\n"
 TABLE_2 = "| c | d |\n|:--|--:|\n| 3 | 4 |\n| 5 | 6 |\n"
+# A complete 1x1 PNG fixture. Asset tests compare bytes; no image renderer runs.
+PNG = base64.b64decode("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+j2ioAAAAASUVORK5CYII=")
+
+
+def write_png(path, data=PNG):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "wb") as fh:
+        fh.write(data)
 
 
 def fence(body):
@@ -222,6 +231,102 @@ class TestConvert(unittest.TestCase):
         self.assertEqual((figures, tables), ([], [TABLE]))
 
 
+class TestLocalPNGAssets(unittest.TestCase):
+    def setUp(self):
+        root = tempfile.TemporaryDirectory()
+        self.addCleanup(root.cleanup)
+        self.article = os.path.join(root.name, "article")
+        write_png(os.path.join(self.article, "figures", "F2.png"))
+
+    def convert(self, text, assets=None):
+        return article_to_paste.convert(text, article_dir=self.article, assets=assets)
+
+    def test_caption_links_and_unpublished_markers_survive_as_prose(self):
+        caption = "圖 F2：見 [研究](https://example.test/p?q=1&b=2)（即將發布）"
+        source = "# T\n\n![%s](figures/F2.png)\n\n見 [附錄](../other/article.md)。\n" % caption
+        assets = []
+        converted = self.convert(source, assets)
+        self.assertEqual(len(converted), 3)
+        text, figures, tables = converted
+        self.assertEqual((figures, tables), ([], []))
+        self.assertEqual(text, "# T\n\n📌【在此插入圖 asset-01.png】\n\n%s\n\n\n見 [附錄](../other/article.md)。\n" % caption)
+        self.assertEqual(assets, [{"file": "asset-01.png", "source": "figures/F2.png",
+                                   "sha256": hashlib.sha256(PNG).hexdigest()}])
+        # Match the existing tools/test_tools.py lockstep scan, including links
+        # inside the caption. Converting a PNG must never swallow one of them.
+        href = re.compile(r"\]\((https?://[^)]+|\.\./[^)]+)\)")
+        self.assertEqual(href.findall(source), href.findall(text))
+        self.assertEqual(source.count("（即將發布）"), text.count("（即將發布）"))
+        payload = md2medium.convert(text)
+        self.assertEqual(payload["images"], ["asset-01.png"])
+        self.assertIn('<a href="https://example.test/p?q=1&amp;b=2">研究</a>', payload["html"])
+        self.assertIn("圖 F2：見", payload["html"])
+
+    def test_mixed_figure_types_and_repeated_sources_have_unique_ordered_slots(self):
+        source = ("# T\n\n" + fence(MERMAID_A) + "\n![第一張](figures/F2.png)\n\n"
+                  + TABLE + "\n![第二張](figures/F2.png)\n")
+        assets = []
+        text, figures, tables = self.convert(source, assets)
+        self.assertEqual((figures, tables), ([MERMAID_A], [TABLE]))
+        self.assertEqual([a["file"] for a in assets], ["asset-01.png", "asset-02.png"])
+        self.assertEqual(md2medium.convert(text)["images"],
+                         ["diagram-01.png", "asset-01.png", "table-01.png", "asset-02.png"])
+
+    def test_empty_caption_and_optional_collector_keep_the_three_value_api(self):
+        self.assertEqual(self.convert("![](./figures/F2.png)"),
+                         ("📌【在此插入圖 asset-01.png】", [], []))
+        with self.assertRaisesRegex(SystemExit, "require article_dir"):
+            article_to_paste.convert("![圖](figures/F2.png)")
+
+    def test_images_in_code_and_ordinary_links_are_unchanged(self):
+        source = ("# T\n\n```markdown\n![圖](https://example.test/a.png)\n```\n\n"
+                  "示範 `![圖](missing.png)`，見 [F2](figures/F2.png)。\n")
+        assets = []
+        self.assertEqual(self.convert(source, assets), (source, [], []))
+        self.assertEqual(assets, [])
+
+    def test_inline_or_multiple_images_are_refused_without_swallowing_prose(self):
+        for source in ("![圖](figures/F2.png) [連結](https://example.test)",
+                       "![一](figures/F2.png) ![二](figures/F2.png)",
+                       "文字 ![圖](figures/F2.png)", "![圖][ref]", "![![內圖](a.png)](figures/F2.png)"):
+            with self.subTest(source=source):
+                with self.assertRaisesRegex(SystemExit, "one standalone"):
+                    self.convert(source)
+
+    def test_urls_traversal_and_non_png_paths_are_refused(self):
+        for source in ("https://example.test/F2.png", "http://example.test/F2.png",
+                       "//example.test/F2.png", "file:///tmp/F2.png", "/tmp/F2.png",
+                       "../F2.png", "figures/../figures/F2.png", "figures/%2e%2e/F2.png",
+                       "figures/F2.png?download", "figures/F2.png#fragment", "figures/F2.jpg",
+                       "figures\\F2.png"):
+            with self.subTest(source=source):
+                with self.assertRaisesRegex(SystemExit, "article-relative .png"):
+                    self.convert("![圖](%s)" % source)
+
+    def test_missing_files_and_disguised_non_png_files_are_refused(self):
+        with self.assertRaisesRegex(SystemExit, "missing local PNG"):
+            self.convert("![圖](figures/missing.png)")
+        for data in (b"not a PNG", PNG[:20], PNG[:16] + b"\x00" * 8 + PNG[24:]):
+            write_png(os.path.join(self.article, "figures", "bad.png"), data)
+            with self.assertRaisesRegex(SystemExit, "not a PNG"):
+                self.convert("![圖](figures/bad.png)")
+
+    def test_file_directory_and_article_symlinks_are_refused_even_if_they_stay_inside(self):
+        os.symlink("F2.png", os.path.join(self.article, "figures", "link.png"))
+        os.symlink("figures", os.path.join(self.article, "linked-figures"))
+        outside = os.path.join(os.path.dirname(self.article), "outside.png")
+        write_png(outside)
+        os.symlink(outside, os.path.join(self.article, "external.png"))
+        for source in ("figures/link.png", "linked-figures/F2.png", "external.png"):
+            with self.subTest(source=source):
+                with self.assertRaisesRegex(SystemExit, "symlink"):
+                    self.convert("![圖](%s)" % source)
+        linked_article = os.path.join(os.path.dirname(self.article), "linked-article")
+        os.symlink(self.article, linked_article)
+        with self.assertRaisesRegex(SystemExit, "symlink"):
+            article_to_paste.convert("![圖](figures/F2.png)", article_dir=linked_article)
+
+
 class TestArticleToPasteCLI(unittest.TestCase):
     ARTICLE = ("# 標題\n\n開場，見 [系列](https://medium.com/@x/a)。\n\n" + fence(MERMAID_A) + "\n"
                + TABLE + "\n結尾（即將發布）\n")
@@ -351,6 +456,123 @@ class TestArticleToPasteCLI(unittest.TestCase):
         self.assertIn("lockstep", out.stderr)
         self.assertFalse(os.path.exists(os.path.join(art, "publish")))
 
+    def test_all_local_images_are_validated_before_the_pack_is_written(self):
+        art = self.article_dir("# T\n\n![一](figures/F2.png)\n\n![二](figures/missing.png)\n")
+        write_png(os.path.join(art, "figures", "F2.png"))
+        out = run_script("article_to_paste", art)
+        self.assertNotEqual(out.returncode, 0)
+        self.assertIn("missing local PNG", out.stderr)
+        self.assertFalse(os.path.exists(os.path.join(art, "publish")))
+
+
+class TestRenderLocalAssets(unittest.TestCase):
+    """Exercise the real converter -> renderer -> payload path without a browser.
+
+    The fake browse executable fails every call, so assets-only rendering cannot
+    accidentally start the shared browser daemon and still make this test pass.
+    """
+
+    def setUp(self):
+        root = tempfile.TemporaryDirectory()
+        self.addCleanup(root.cleanup)
+        self.root = root.name
+        self.article = os.path.join(self.root, "piece")
+        self.source = "# T\n\n![圖 F2：科學圖](figures/F2.png)\n\n正文。\n"
+        write_png(os.path.join(self.article, "figures", "F2.png"))
+        write(os.path.join(self.article, "article.md"), self.source)
+        write(os.path.join(self.root, "MERMAID.md"), read(os.path.join(REPO, "MERMAID.md")))
+        browse = os.path.join(self.root, ".claude", "skills", "gstack", "browse", "dist", "browse")
+        os.makedirs(os.path.dirname(browse))
+        write(browse, '#!/bin/sh\necho invoked >> "$FAKE_BROWSE_LOG"\nexit 97\n')
+        os.chmod(browse, 0o755)
+        self.calls = os.path.join(self.root, "browse.log")
+        self.env = dict(os.environ, ROOT=self.root, FAKE_BROWSE_LOG=self.calls)
+
+    def prepare(self, lang=""):
+        if lang:
+            write(os.path.join(self.article, "article.%s.md" % lang), self.source)
+        args = ("--lang", lang) if lang else ()
+        out = run_script("article_to_paste", self.article, *args)
+        self.assertEqual(out.returncode, 0, out.stderr)
+        self.assertIn("1 local PNGs", out.stdout)
+        return os.path.join(self.article, "publish", lang)
+
+    def render(self, lang=""):
+        return subprocess.run(["bash", os.path.join(HERE, "render_images.sh"), "piece", lang],
+                              env=self.env, capture_output=True, text=True)
+
+    def test_png_bytes_caption_payload_and_copy_evidence_survive_in_each_language_pack(self):
+        for lang in ("", "en"):
+            with self.subTest(lang=lang):
+                pack = self.prepare(lang)
+                write_png(os.path.join(pack, "images", "asset-99.png"))
+                out = self.render(lang)
+                self.assertEqual(out.returncode, 0, out.stderr)
+                self.assertFalse(os.path.exists(self.calls), "asset copy called browse")
+                self.assertEqual(os.listdir(os.path.join(pack, "images")), ["asset-01.png"])
+                with open(os.path.join(pack, "images", "asset-01.png"), "rb") as fh:
+                    self.assertEqual(fh.read(), PNG)
+                spec = json.loads(read(os.path.join(pack, "figures.json")))
+                self.assertEqual((spec["figures"], spec["tables"]), ([], []))
+                proof = json.loads(read(os.path.join(pack, ".rendered-assets.json")))
+                self.assertEqual(proof, {"method": "byte-copy", "assets": [dict(
+                    spec["assets"][0], copied_sha256=hashlib.sha256(PNG).hexdigest())]})
+                payload_path = os.path.join(self.root, "payload.json")
+                out = subprocess.run([sys.executable, os.path.join(REPO, "tools", "md2medium.py"),
+                                      os.path.join(pack, "medium-paste.md"), "--out", payload_path],
+                                     capture_output=True, text=True)
+                self.assertEqual(out.returncode, 0, out.stderr)
+                payload = json.loads(read(payload_path))
+                self.assertEqual(payload["images"], ["asset-01.png"])
+                self.assertIn("<p>圖 F2：科學圖</p>", payload["html"])
+                self.assertEqual(read(os.path.join(self.article, "article.md")), self.source)
+
+    def test_changed_or_unsafe_sources_fail_before_old_output_is_removed(self):
+        pack = self.prepare()
+        spec_path = os.path.join(pack, "figures.json")
+        spec = json.loads(read(spec_path))
+        for source, digest, error in (("figures/missing.png", "", "missing local PNG"),
+                                      ("../outside.png", "", "article-relative .png"),
+                                      ("figures/F2.png", "0" * 64, "changed since figures.json")):
+            with self.subTest(source=source):
+                write_png(os.path.join(pack, "images", "asset-01.png"), b"previous output")
+                write(os.path.join(pack, ".rendered-assets.json"), "previous evidence")
+                spec["assets"][0].update(source=source, sha256=digest)
+                write(spec_path, json.dumps(spec))
+                out = self.render()
+                self.assertNotEqual(out.returncode, 0)
+                self.assertIn(error, out.stderr)
+                with open(os.path.join(pack, "images", "asset-01.png"), "rb") as fh:
+                    self.assertEqual(fh.read(), b"previous output")
+                self.assertEqual(read(os.path.join(pack, ".rendered-assets.json")), "previous evidence")
+                self.assertFalse(os.path.exists(self.calls))
+
+    def test_asset_slot_filenames_cannot_escape_the_output_directory(self):
+        pack = self.prepare()
+        spec_path = os.path.join(pack, "figures.json")
+        spec = json.loads(read(spec_path))
+        for name in ("../outside.png", "diagram-01.png", "asset-02.png"):
+            spec["assets"][0]["file"] = name
+            write(spec_path, json.dumps(spec))
+            out = self.render()
+            self.assertNotEqual(out.returncode, 0)
+            self.assertIn("invalid local PNG slot filename", out.stderr)
+            self.assertFalse(os.path.exists(os.path.join(pack, "outside.png")))
+
+    def test_removing_assets_removes_stale_pngs_and_copy_evidence(self):
+        pack = self.prepare()
+        out = self.render()
+        self.assertEqual(out.returncode, 0, out.stderr)
+        write(os.path.join(self.article, "article.md"), "# T\n\n只有正文。\n")
+        out = run_script("article_to_paste", self.article)
+        self.assertEqual(out.returncode, 0, out.stderr)
+        out = self.render()
+        self.assertEqual(out.returncode, 0, out.stderr)
+        self.assertEqual(os.listdir(os.path.join(pack, "images")), [])
+        self.assertFalse(os.path.exists(os.path.join(pack, ".rendered-assets.json")))
+        self.assertNotIn("assets", json.loads(read(os.path.join(pack, "figures.json"))))
+        self.assertFalse(os.path.exists(self.calls))
+
 
 class TestCommittedPastesAreReproducible(unittest.TestCase):
     """Every medium-paste.md in the repo is article*.md after the mapping.
@@ -383,7 +605,7 @@ class TestCommittedPastesAreReproducible(unittest.TestCase):
 
     def test_every_paste_body_is_exactly_the_converted_article(self):
         for article, paste in self.pairs():
-            text = article_to_paste.convert(read(article))[0]
+            text = article_to_paste.convert(read(article), article_dir=os.path.dirname(article))[0]
             self.assertEqual(self.body(paste), "\n\n" + text,
                              "%s is not article_to_paste.convert() of its article"
                              % os.path.relpath(paste, REPO))
@@ -403,11 +625,22 @@ class TestCommittedPastesAreReproducible(unittest.TestCase):
             if os.path.exists(spec_path):
                 with_spec += 1
                 spec = json.loads(read(spec_path))
-                listed = [f["file"] for f in spec["figures"]] + [t["file"] for t in spec["tables"]]
+                assets = []
+                converted = article_to_paste.convert(read(article), article_dir=os.path.dirname(article), assets=assets)
+                listed = [f["file"] for f in spec["figures"]] + [t["file"] for t in spec["tables"]] + [a["file"] for a in spec.get("assets", [])]
                 self.assertEqual(sorted(markers), sorted(listed), os.path.relpath(pack, REPO))
                 self.assertEqual([f["mermaid"] for f in spec["figures"]],
-                                 article_to_paste.convert(read(article))[1],
+                                 converted[1],
                                  "%s: figures.json is stale" % os.path.relpath(pack, REPO))
+                self.assertEqual(spec.get("assets", []), assets, "%s: local PNG metadata is stale" % pack)
+                for asset in assets:
+                    with open(os.path.join(pack, "images", asset["file"]), "rb") as fh:
+                        self.assertEqual(hashlib.sha256(fh.read()).hexdigest(), asset["sha256"],
+                                         "%s: local PNG copy differs from its source" % pack)
+                if assets:
+                    self.assertEqual(json.loads(read(os.path.join(pack, ".rendered-assets.json"))),
+                                     {"method": "byte-copy", "assets": [dict(a, copied_sha256=a["sha256"]) for a in assets]},
+                                     "%s: local PNG copy evidence is stale" % pack)
         self.assertGreaterEqual(with_spec, 4)
 
 

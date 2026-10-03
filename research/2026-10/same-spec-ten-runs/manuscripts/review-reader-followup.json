@@ -1,0 +1,182 @@
+{
+  "review_type": "independent_reader_followup",
+  "reviewed_at": "2026-09-25T05:56:54.494870+00:00",
+  "reviewer": "Codex independent reader agent",
+  "scope": "僅變異篇新版本全文與 READER-01–07 處置複核",
+  "article": {
+    "path": "2026-11-same-spec-variance/article.md",
+    "sha256": "ce383be20445328cec4a509e8ce7f519b94e9fe99b2fd927e494ffc4661c3587",
+    "line_count": 262,
+    "status": "READ_IN_FULL",
+    "read_through": "第 1–262 行；包含後半部、結語、系列文章、References、AI 協作說明與署名"
+  },
+  "article_verdict": "READY_FOR_LOCAL_DELIVERY_WITH_MINOR_NOTE",
+  "series_verdict": "NOT_READY_INCOMPLETE_MANUSCRIPTS",
+  "summary": "原有七項均在本機交付範圍獲得處置；沒有新增 blocker 或 major。留一項兄弟篇完成時態的 minor，公開附件入口仍待發布流程。",
+  "resolution_counts": {
+    "resolved": 6,
+    "resolved_for_local_delivery": 1,
+    "unresolved_original": 0
+  },
+  "new_issue_counts": {
+    "blocker": 0,
+    "major": 0,
+    "minor": 1
+  },
+  "resolutions": [
+    {
+      "id": "READER-01",
+      "original_severity": "major",
+      "status": "RESOLVED",
+      "lines": [
+        49,
+        61
+      ],
+      "evidence": "導讀明確列出名額、CLI 與 artifact 各自的判定及交集；第 61 行保留 CLI 失敗、產物通過的可能組合。已不再把表中各列當成逐級前提。"
+    },
+    {
+      "id": "READER-02",
+      "original_severity": "major",
+      "status": "RESOLVED",
+      "lines": [
+        81,
+        89
+      ],
+      "evidence": "兩個例子限縮為至少能辨別的具體錯法；第 87 行明說不足以排除其他盲點，第 89 行把任務、規格、樣本與驗收列為可能因素，沒有只憑全綠確認原因。"
+    },
+    {
+      "id": "READER-03",
+      "original_severity": "major",
+      "status": "RESOLVED",
+      "lines": [
+        128,
+        156
+      ],
+      "evidence": "新增 formal-01-A0／formal-02-A0，按 A0 區塊編號選取，明示成稿階段事後教學用途、非預先指定分析且不具代表性。兩段節錄逐字存在於原檔；main 區域變數與 _State 類別，以及事件分派方式，均可由原檔核對。兩候選各有 103／103 通過紀錄；既有 summary 的 cosine 為 0.9939804370606344，符合文中 0.99398，正規化 AST hash 確實不同。"
+    },
+    {
+      "id": "READER-04",
+      "original_severity": "major",
+      "status": "RESOLVED",
+      "lines": [
+        120,
+        122
+      ],
+      "evidence": "比較範圍已限縮為 180 個組內 pair，排除跨組配對；高 cosine 只說節點數量比例接近，不再推成保留原始碼或樹狀骨架。"
+    },
+    {
+      "id": "READER-05",
+      "original_severity": "major",
+      "status": "RESOLVED_FOR_LOCAL_DELIVERY",
+      "lines": [
+        152,
+        252
+      ],
+      "evidence": "第 152、238 行明確說資料仍在本機 repo，未發布遠端；References 加入可開啟的相對連結與 A2 作者、完整題名。逐一解析 14 個本機目標（含 F2 圖與 recall 稿件），全部存在。這關閉了本機交付的文字誤述；公開附件入口仍須在發布流程補齊並實際檢查。",
+      "publication_action_pending": true
+    },
+    {
+      "id": "READER-06",
+      "original_severity": "minor",
+      "status": "RESOLVED",
+      "lines": [
+        67,
+        71
+      ],
+      "evidence": "正文保留同一批重評一致、非新樣本、核對範圍、AI 性質及三種實測拒絕通道；PATH、1,903／317 數量與布林欄位已退出主敘述，資訊層次較清楚。"
+    },
+    {
+      "id": "READER-07",
+      "original_severity": "minor",
+      "status": "RESOLVED",
+      "lines": [
+        181,
+        183
+      ],
+      "evidence": "分子與分母已有完整定義，接著說每筆成本都來自最後被接受的名額、沒有失敗或放棄需分攤，不再比較成本與件數的「落差」。"
+    }
+  ],
+  "new_issues": [
+    {
+      "id": "READER-08",
+      "severity": "minor",
+      "status": "open",
+      "title": "兄弟篇尚未完整成稿，正文卻以已完成的語氣回指",
+      "locations": [
+        {
+          "path": "2026-11-same-spec-variance/article.md",
+          "start_line": 17,
+          "end_line": 17
+        },
+        {
+          "path": "2026-11-same-spec-variance/article.md",
+          "start_line": 221,
+          "end_line": 221
+        }
+      ],
+      "quotes": [
+        "本系列前兩篇處理了兩個前提。",
+        "總論以 parser 的 exit code 開場"
+      ],
+      "reader_impact": "系列導覽有「即將發布」，但本輪其餘三篇仍沒有完整稿。對目前交付的單篇而言，這兩句把計畫中的篇章內容說成既成事實；不是研究結果錯誤，也不妨礙本篇的主要論證。",
+      "recommendation": "在單篇本機交付版本，將第 17 行改為「本系列規劃由規格篇與契約篇分別處理……」，第 221 行直接回到「本篇介紹的 parser 案例」。等兄弟篇完整成稿後，再依實際內容恢復明確篇名與連結。",
+      "verification": "目前版本不暗示尚未完成的全文已存在；後續系列交接依真正成稿內容核對。"
+    }
+  ],
+  "publication_condition": {
+    "status": "PENDING_PUBLICATION_WORKFLOW",
+    "description": "本機全文可交付；公開附件入口待發布流程。",
+    "required_before_publication": "為研究結果、封存索引、summary、候選與驗收工件提供版本固定且可由公開讀者存取的入口，並從公開閱讀環境實際檢查。",
+    "current_claim": "僅確認本機相對目標存在；沒有聲稱 Medium 已能打開附件，沒有發布或推送任何資料。"
+  },
+  "checks": {
+    "relative_link_targets": 14,
+    "relative_link_targets_exist": 14,
+    "code_excerpts_exact_matches": 2,
+    "example_pair": {
+      "left": "formal-01-A0",
+      "right": "formal-02-A0",
+      "cosine": 0.9939804370606344,
+      "normalized_ast_equal": false,
+      "acceptance": "兩候選均 103／103；既有紀錄，非本輪重跑"
+    },
+    "candidate_sha256": {
+      "formal-01-A0": "7cc9bf5a24969310f18a50aad43ac26d4a59066321b2256ec03806da076dd2b2",
+      "formal-02-A0": "f2a65e9e26aaa195ab1c0b8caf2c1920cb4e3d2ee3ad2abf30d1620a78008a57"
+    },
+    "original_review_files_unchanged": {
+      "review-reader.md": "1eb1b0000634a36d96520704bb06e7a50e3accc203aabeefff803b1a41eb1a46",
+      "review-reader.json": "c9aa4f88e4ffa01e0285f6e63f3fc65e55943a71cd0529a3c27269d81901598f"
+    }
+  },
+  "reader_findings": [
+    "第 11 行組織篇 recall 提供研究動機，第 95 行說明重複成功與結構的區分，第 181–183 行營運篇承接成本；三處各有不同工作，新讀者不必先讀舊文。",
+    "程式對照把 descriptor 接到實際設計差異，接下來重新生成須重新審閱的結論更容易理解，沒有比較兩種結構的好壞。",
+    "區間的解釋已說明重複抽樣含義，也明說不是下一輪七成通過的保證。",
+    "第 215–219 行依序處理可重評流程、相近小型任務的試驗與需要另訂研究的問題；結語保留樣本和量測界線，後半部維持完整敘述。",
+    "資料來源與 AI 協作說明保留本機／公開、生成 high／撰稿 max、AI 複核／人類資料的區分。"
+  ],
+  "unreviewed_articles": [
+    {
+      "path": "2026-11-same-spec-overview/article.md",
+      "status": "NOT_REVIEWED",
+      "reason": "沒有完整稿"
+    },
+    {
+      "path": "2026-11-same-spec-spec/article.md",
+      "status": "NOT_REVIEWED",
+      "reason": "沒有完整稿"
+    },
+    {
+      "path": "2026-11-same-spec-contract/article.md",
+      "status": "NOT_REVIEWED",
+      "reason": "沒有完整稿"
+    }
+  ],
+  "limitations": [
+    "沒有判定全系列 recall 分配與相互重複程度",
+    "沒有重新執行候選或增加研究樣本",
+    "沒有重做所有外部論文核對或公開連結存取驗證",
+    "未修改正文，也未修改原初審檔案"
+  ]
+}

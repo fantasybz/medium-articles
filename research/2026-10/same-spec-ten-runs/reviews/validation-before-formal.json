@@ -1,0 +1,46 @@
+{
+  "at_utc": "2026-09-25T04:23:59.758723+00:00",
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-p",
+    "test_*.py",
+    "-v"
+  ],
+  "exit_code": 0,
+  "log_sha256": "5b6e6952992acd714bb9076c1dbf38e3602aa75032a40b0fae97103a889b7803",
+  "source_sha256": {
+    "run_study.py": "2d0bd4bb0b0f02a9f12694fcf6867b8e663645cf943dc45f71f1fbfcaf6bfac8",
+    "test_campaign_status.py": "031175d51c8f59a9e035cd2a029f01cfa70481fb3fbcd6fb92e5054eb1013c64",
+    "render_results.py": "ea3c6aa0377d5bd269b49addb56af2ba6860b8b3d309d1fbb83a85ebd46e2608",
+    "sandbox.py": "50dbd5c92c39ef388090abe761e9d96527e3427c7ff3fea318865ecbdf73c523",
+    "test_archive.py": "3f117ba4485b0a56f5c7bb71f7d1137be80cbce815e47c6ddb7198c24027f74c",
+    "test_run_study.py": "b8b7d85071c8fdcfc0f963d2b932683ae92344772f5743bd65443a7d8c5d07ab",
+    "test_sandbox.py": "51e2067adcf0a6ec4659d8221125e93216b4f6eb9cfcad7167c8be2682617541",
+    "archive.py": "76c99714d155f93f2cd40ae56ba785ead4d90765d07aea837bfc710730335730",
+    "campaign_status.py": "99cc9077e1f7b413b10d126600d2f610e8fccda5633f05f850c0b6276d1b63d1",
+    "test_analyze.py": "6df978c13da388863e59ec5d17d20e227375f59b2ecdc3478b86274a68c96c7e",
+    "evaluator.py": "443b47cc93ca1559293a6025472696eee8351a25cb8486e09ee682bcfd29508a",
+    "analyze.py": "c5df73abb76fb4b36bfb63325524419f80ad1b4c7755f2036d8291ca086cb585"
+  },
+  "tests_passed": 83,
+  "scope": "Frozen study tools, external-oracle fixtures, meaningful mutants, sandbox boundaries, ledger/analysis integrity, public projection and rescoring guards; no formal model outcome inferred.",
+  "repository_regressions": [
+    {
+      "command": "/opt/homebrew/bin/python3 tools/test_tools.py",
+      "tests_passed": 301,
+      "exit_code": 0,
+      "evidence": "Earlier terminal execution in this research turn; production tools unchanged afterward."
+    },
+    {
+      "command": "/opt/homebrew/bin/python3 -m unittest research/scripts/test_research_scripts.py",
+      "tests_passed": 108,
+      "exit_code": 0,
+      "evidence": "Earlier terminal execution in this research turn; production research scripts unchanged afterward."
+    }
+  ],
+  "formal_manifest_sha256": "ba30398118ecde62b2f682884c1e882b2864c22d70faf99549ceab0d7c0a55f2"
+}

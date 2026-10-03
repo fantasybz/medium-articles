@@ -1,0 +1,10 @@
+{
+  "repository": "https://github.com/fantasybz/medium-articles",
+  "base_commit": "37f6c0ce9b536f95132d5e01a387f380bbb9639c",
+  "target_path": "research/scripts/codex_jsonl.py",
+  "seed_sha256": "4949ff55184cbfd3cbd0c8add632a6382ec4b5e6ec2240ca88018443370e6afb",
+  "task_type": "observed real malformed-event handling defect",
+  "candidate_filename": "codex_jsonl.py",
+  "requirements": "requirements.json",
+  "synthetic_bug_injection": false
+}

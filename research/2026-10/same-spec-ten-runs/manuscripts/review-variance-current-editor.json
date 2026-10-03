@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-09-25",
+  "reviewer": "Codex independent editorial sub-agent (AI): series_editor_review",
+  "lens": "editor_current_full_manuscript",
+  "verdict": "PASS_VARIANCE_EDITORIAL",
+  "series_verdict": "NOT_FULLY_REVIEWED",
+  "series_ready": false,
+  "public_release_complete": false,
+  "input": {
+    "path": "2026-11-same-spec-variance/article.md",
+    "sha256": "26adde9c3e9578ec949dbdc10e3c23fcb5faa6b20673bd8edce1120607703386",
+    "line_count": 266
+  },
+  "standards": [
+    "STYLE.md",
+    "research/2026-10/style_brief.md",
+    "research/2026-09/voice_brief.md"
+  ],
+  "reading": {
+    "complete_article_read": true,
+    "sections_read": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "tail_read": [
+      "series_articles",
+      "references",
+      "ai_disclosure",
+      "signature"
+    ],
+    "continuous_second_half_reread": {
+      "start_line": 95,
+      "end_line": 266
+    },
+    "opening_tldr_conclusion_compared": true
+  },
+  "coverage": [
+    {
+      "section": "TL;DR / navigation",
+      "lines": [
+        1,
+        5
+      ],
+      "result": "pass",
+      "notes": "共同要求與 CLI 措辭差異、tool-free、樣本限制、AST 代理指標與牌價估計均可見；導覽明示本機稿尚未發布。"
+    },
+    {
+      "section": 1,
+      "lines": [
+        9,
+        45
+      ],
+      "result": "pass",
+      "notes": "組織篇 recall 接到版本與執行紀錄；真實 repo 任務、例示輸入、四份 packet、CLI 措辭限制與封存邊界完整。"
+    },
+    {
+      "section": 2,
+      "lines": [
+        49,
+        73
+      ],
+      "result": "pass",
+      "notes": "名額分母、CLI 與產物的並列判定及交集、區間條件、同批重評與 AI 稽核範圍清楚。"
+    },
+    {
+      "section": 3,
+      "lines": [
+        77,
+        91
+      ],
+      "result": "pass",
+      "notes": "零失敗沒有被補造為失敗模式；兩個檢查例子只支持已受測能力，後文保留驗收盲點。"
+    },
+    {
+      "section": 4,
+      "lines": [
+        95,
+        158
+      ],
+      "result": "pass",
+      "notes": "Green 稿明示尚待發布；兩種 AST 描述、圖與表、配對相依、論文先例與事後程式示例各有定義與限制，review 建議沒有被寫成維護優劣。"
+    },
+    {
+      "section": 5,
+      "lines": [
+        162,
+        187
+      ],
+      "result": "pass",
+      "notes": "成本欄位、觀察精度、cache / input tokens / Haiku 邊界完整；營運篇 recall 連到失敗成本與停止條件，改寫後因果更順。"
+    },
+    {
+      "section": 6,
+      "lines": [
+        191,
+        209
+      ],
+      "result": "pass",
+      "notes": "任務選擇、服務端、樣本與量尺、交互作用、人的資料與授權限制均維持完整句子；AI 選題與同家族限制沒有被模糊。"
+    },
+    {
+      "section": 7,
+      "lines": [
+        213,
+        225
+      ],
+      "result": "pass",
+      "notes": "結語回到四十筆 accepted 與 parser 案例；重評、新任務試驗與下一輪設計的動作明確，沒有宣告組別勝負或外推可靠度。"
+    },
+    {
+      "section": "series / references / disclosure / signature",
+      "lines": [
+        229,
+        266
+      ],
+      "result": "pass",
+      "notes": "研究附件、本機稿與已發布舊文的連結用途分開；生成 high 與撰稿 max 區分，AI / 無真人盲審限制保留。"
+    }
+  ],
+  "prior_report_reference": {
+    "path": "research/2026-10/same-spec-ten-runs/manuscripts/review-editor-final.json",
+    "input_sha256": "1cf47ca478afca22ff028c285c4d0550a844e4794886b7e345fa122a27cac800",
+    "usage": "Historical review context only; this report is based on a fresh full reading of current text."
+  },
+  "current_polish_delta": {
+    "path": ".context/same-spec-ten-runs/manuscripts/variance-current-polish-delta.json",
+    "before_sha256": "5117ed22f1f93b6c5f8c094259addb87cb3b255f4f1d589ce213ccfecc24139a",
+    "after_sha256": "26adde9c3e9578ec949dbdc10e3c23fcb5faa6b20673bd8edce1120607703386",
+    "change_entries": 9,
+    "text_replacements": 10,
+    "reconstructed_prior_matches_declared_hash": true,
+    "unique_reconstruction_count": 1,
+    "note": "The polish delta starts at 5117ed22..., not the older 1cf47ca4... reviewed version. Current full reading covers the complete manuscript regardless of that intermediate edit history."
+  },
+  "recall_status_basis": {
+    "path": ".context/same-spec-ten-runs/manuscripts/recall-source-check.md",
+    "checked_rows": [
+      16,
+      18,
+      22
+    ],
+    "org_and_economics": "published per existing repo publication audit",
+    "green_reliability": "scheduled / not yet published per existing repo publication audit; current article explicitly says 尚待發布",
+    "fresh_remote_readback": false
+  },
+  "findings": [],
+  "open_counts": {
+    "blocker": 0,
+    "major": 0,
+    "minor": 0
+  },
+  "mcp_invoked_this_review": false,
+  "rendered_images_checked_this_review": false,
+  "manuscript_modified": false,
+  "prior_reviews_modified": false,
+  "frozen_data_modified": false,
+  "scope": "Full current-manuscript editorial review, including a second continuous reading from section 4 to the signature. Not a new source audit, experiment run, MCP invocation, image render inspection, or approval of other series articles.",
+  "report_path": "research/2026-10/same-spec-ten-runs/manuscripts/review-variance-current-editor.md"
+}

@@ -1,0 +1,705 @@
+{
+  "local_links": [
+    {
+      "piece": "overview",
+      "target": "../2026-11-same-spec-spec/article.md",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../2026-11-same-spec-contract/article.md",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../2026-11-same-spec-variance/article.md",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../2026-10-green-testing/article.md",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/seed/codex_jsonl.py",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../2026-11-same-spec-spec/article.md",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/evaluator.py",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/manifest.json",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../research/experiments/same-spec-ten-runs/RESULTS.md",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../2026-11-same-spec-spec/article.md",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../2026-11-same-spec-contract/article.md",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../2026-11-same-spec-variance/article.md",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../2026-10-green-testing/article.md",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/seed/codex_jsonl.py",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/manifest.json",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../research/experiments/same-spec-ten-runs/RESULTS.md",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/records.jsonl",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/evaluator.py",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../research/2026-10/same-spec-ten-runs/manuscripts/packet-wording-caveat.md",
+      "exists": true
+    },
+    {
+      "piece": "overview",
+      "target": "../research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "exists": true
+    },
+    {
+      "piece": "spec",
+      "target": "../2026-11-same-spec-overview/article.md",
+      "exists": true
+    },
+    {
+      "piece": "spec",
+      "target": "../2026-11-same-spec-contract/article.md",
+      "exists": true
+    },
+    {
+      "piece": "spec",
+      "target": "../2026-11-same-spec-variance/article.md",
+      "exists": true
+    },
+    {
+      "piece": "spec",
+      "target": "../2026-11-same-spec-overview/article.md",
+      "exists": true
+    },
+    {
+      "piece": "spec",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json",
+      "exists": true
+    },
+    {
+      "piece": "spec",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+      "exists": true
+    },
+    {
+      "piece": "spec",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+      "exists": true
+    },
+    {
+      "piece": "spec",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+      "exists": true
+    },
+    {
+      "piece": "spec",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md",
+      "exists": true
+    },
+    {
+      "piece": "spec",
+      "target": "../research/2026-10/same-spec-ten-runs/manuscripts/packet-wording-caveat.md",
+      "exists": true
+    },
+    {
+      "piece": "spec",
+      "target": "../research/experiments/same-spec-ten-runs/RESULTS.md",
+      "exists": true
+    },
+    {
+      "piece": "spec",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/evaluator.py",
+      "exists": true
+    },
+    {
+      "piece": "spec",
+      "target": "../2026-11-same-spec-variance/article.md",
+      "exists": true
+    },
+    {
+      "piece": "spec",
+      "target": "../2026-10-green-reliability/article.md",
+      "exists": true
+    },
+    {
+      "piece": "spec",
+      "target": "../2026-11-same-spec-contract/article.md",
+      "exists": true
+    },
+    {
+      "piece": "spec",
+      "target": "../2026-11-same-spec-overview/article.md",
+      "exists": true
+    },
+    {
+      "piece": "spec",
+      "target": "../2026-11-same-spec-contract/article.md",
+      "exists": true
+    },
+    {
+      "piece": "spec",
+      "target": "../2026-11-same-spec-variance/article.md",
+      "exists": true
+    },
+    {
+      "piece": "spec",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+      "exists": true
+    },
+    {
+      "piece": "spec",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+      "exists": true
+    },
+    {
+      "piece": "spec",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+      "exists": true
+    },
+    {
+      "piece": "spec",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md",
+      "exists": true
+    },
+    {
+      "piece": "spec",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json",
+      "exists": true
+    },
+    {
+      "piece": "spec",
+      "target": "../research/experiments/same-spec-ten-runs/RESULTS.md",
+      "exists": true
+    },
+    {
+      "piece": "spec",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/evaluator.py",
+      "exists": true
+    },
+    {
+      "piece": "spec",
+      "target": "../research/2026-10/same-spec-ten-runs/manuscripts/packet-wording-caveat.md",
+      "exists": true
+    },
+    {
+      "piece": "spec",
+      "target": "../2026-10-green-reliability/article.md",
+      "exists": true
+    },
+    {
+      "piece": "spec",
+      "target": "../research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../2026-11-same-spec-overview/article.md",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../2026-11-same-spec-spec/article.md",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../2026-11-same-spec-variance/article.md",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../2026-11-same-spec-spec/article.md",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../2026-10-green-review/article.md",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/seed/codex_jsonl.py",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/evaluator.py",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/PROTOCOL.md",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/records.jsonl",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/experiments/same-spec-ten-runs/RESULTS.md",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/experiments/same-spec-ten-runs/RESULTS.md",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/sandbox.py",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/manifest.json",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/launch-preflight.json",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../2026-11-same-spec-spec/article.md",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/2026-10/same-spec-ten-runs/manuscripts/packet-wording-caveat.md",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/archive.json",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/experiments/same-spec-ten-runs/results/validation-2026-09-25/public-rescore.json",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../2026-10-green-reliability/article.md",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../2026-11-same-spec-variance/article.md",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../2026-11-same-spec-overview/article.md",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../2026-11-same-spec-spec/article.md",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../2026-11-same-spec-variance/article.md",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../2026-10-green-review/article.md",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/seed/codex_jsonl.py",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/evaluator.py",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/PROTOCOL.md",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/records.jsonl",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/experiments/same-spec-ten-runs/RESULTS.md",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/sandbox.py",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/manifest.json",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/launch-preflight.json",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/2026-10/same-spec-ten-runs/manuscripts/packet-wording-caveat.md",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/archive.json",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/experiments/same-spec-ten-runs/results/validation-2026-09-25/public-rescore.json",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../2026-10-green-reliability/article.md",
+      "exists": true
+    },
+    {
+      "piece": "contract",
+      "target": "../research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../2026-11-same-spec-overview/article.md",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../2026-11-same-spec-spec/article.md",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../2026-11-same-spec-contract/article.md",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../2026-11-same-spec-contract/article.md",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../2026-11-same-spec-overview/article.md",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../research/experiments/same-spec-ten-runs/RESULTS.md",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../2026-11-same-spec-spec/article.md",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/records.jsonl",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/archive.json",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../research/experiments/same-spec-ten-runs/results/validation-2026-09-25/public-rescore.json",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../research/experiments/same-spec-ten-runs/results/validation-2026-09-25/formal-data-audit.md",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../2026-10-green-reliability/article.md",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-01-A0/candidate/codex_jsonl.py",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-02-A0/candidate/codex_jsonl.py",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../research/experiments/same-spec-ten-runs/results/figures-2026-09-25/F2.metadata.json",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "figures/F2.png",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../2026-11-same-spec-spec/article.md",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../2026-11-same-spec-overview/article.md",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../2026-11-same-spec-spec/article.md",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../2026-11-same-spec-contract/article.md",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../research/experiments/same-spec-ten-runs/RESULTS.md",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/archive.json",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/records.jsonl",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../research/experiments/same-spec-ten-runs/results/validation-2026-09-25/public-rescore.json",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../research/experiments/same-spec-ten-runs/results/validation-2026-09-25/formal-data-audit.md",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../research/2026-10/same-spec-ten-runs/manuscripts/packet-wording-caveat.md",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../research/2026-10/2026-11-same-spec-ten-runs.figures.md",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../research/experiments/same-spec-ten-runs/results/figures-2026-09-25/F2.metadata.json",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../research/2026-10/same-spec-ten-runs/evidence-audit.md",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-01-A0/candidate/codex_jsonl.py",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-02-A0/candidate/codex_jsonl.py",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../2026-10-green-reliability/article.md",
+      "exists": true
+    },
+    {
+      "piece": "variance",
+      "target": "../research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "exists": true
+    }
+  ],
+  "external_sources": "Uses previously verified versioned primary sources and published-series links; no new blanket HTTP availability claim."
+}

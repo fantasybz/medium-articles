@@ -1,0 +1,43 @@
+{
+  "review_report": "reader-reasoning-review.md",
+  "invocation": "reader-reasoning-invocation.json",
+  "resolved_by": "Codex root",
+  "checked_at": "2026-09-27T16:14:07.169316+00:00",
+  "scope": "Selected sections only; no claim of a second complete external factual audit. Root reread all four final manuscripts.",
+  "final_article_sha256": {
+    "overview": "51a2be2e1614c965743386f06d913492c999786e852c2fc213f7e3947edbfeeb",
+    "spec": "fa9a3fd288d3143e52bfde0f234de345f9bbe707592a5847b0c740743b6f01da",
+    "contract": "59984f65fcdd0adb2ffe37eefb9d58b127e8bc8d1748583542bcafca34241ab2",
+    "variance": "75ece93803dabeac4d578611deacea4629a8740bd59e1ba69cf203a11c53365a"
+  },
+  "open_items": 0,
+  "items": [
+    {
+      "id": 1,
+      "status": "resolved",
+      "action": "契約篇第二節補 R12：3／4／5 有摘要，0／6 無；逐行推到 stderr 恰好一則診斷的依據完整。",
+      "evidence": "Frozen requirements.json R12; source not modified."
+    },
+    {
+      "id": 2,
+      "status": "resolved",
+      "action": "規格篇第五節明指「規格已寫明、實作仍用真假值判斷」；理由與自查分別針對可能的誤解與漏讀，保留成因未辨識與修改須重觀察的限制。"
+    },
+    {
+      "id": 3,
+      "status": "resolved",
+      "action": "變異篇第三節先陳述實際 cosine，再解釋節點比例；以計數不看樹組織的性質說明兩項指標能同時成立，移除循環的「所以」。"
+    },
+    {
+      "id": 4,
+      "status": "resolved",
+      "action": "變異篇第四節明示 USD 5 是每名額門檻，正式名額未觸發；USD 0.199409 為單次最高牌價估計。",
+      "evidence": "Frozen source/README.md line 70, source/PROTOCOL.md and summary.json; no new model samples."
+    }
+  ],
+  "additional_root_polish": [
+    "總論分開說明十次費用合計與單次耗時中位數。",
+    "契約篇將「先只讀」改為「先從第一行看起」，避免 read-only 誤辨；重寫定語堆疊，並消除「有有效」的閱讀停頓。",
+    "cosine 簡化例明示只用兩類節點向量，不冒充完整 AST 計數。"
+  ]
+}

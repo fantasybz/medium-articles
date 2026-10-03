@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-09-25",
+  "reviewer": "Codex independent editorial sub-agent (AI): series_editor_review",
+  "lens": "editor_full_manuscript",
+  "verdict": "PASS_CONTRACT_EDITORIAL_WITH_MINOR_EDIT",
+  "series_verdict": "NOT_FULLY_REVIEWED",
+  "series_ready": false,
+  "public_release_complete": false,
+  "input": {
+    "path": "2026-11-same-spec-contract/article.md",
+    "sha256": "d7d1244e859d407fe54b19510311d4100cd370dcd9ceb71df48cd0dc151cca76",
+    "line_count": 291
+  },
+  "standards": [
+    "STYLE.md",
+    "research/2026-10/style_brief.md",
+    "research/2026-09/voice_brief.md"
+  ],
+  "reading": {
+    "complete_article_read": true,
+    "sections_read": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "tail_read": [
+      "series_articles",
+      "references",
+      "ai_disclosure",
+      "signature"
+    ],
+    "continuous_second_half_reread": {
+      "start_line": 189,
+      "end_line": 291
+    },
+    "opening_tldr_conclusion_compared": true,
+    "tables_and_code_blocks_read": true,
+    "mermaid_source_read": true
+  },
+  "findings": [
+    {
+      "id": "CONTRACT-ED-01",
+      "severity": "minor",
+      "line": 207,
+      "related_lines": [
+        209,
+        211,
+        213
+      ],
+      "status": "open",
+      "title": "第五節標題的「最後一行」沒有對應正文要區分的驗收方式",
+      "reason": "正文清楚說明批次驗收會比對整段 stdout、stderr 與 exit code，問題是只有 EOF 後的結果，無法確認有效訊息是否即時出現。標題「不能只比最後一行」容易讓讀者以為缺口在於只檢查某一行，和真正要說明的時間面向不同。",
+      "suggestion": "將標題改為「五、保留 streaming 的行為，還要檢查輸出何時出現」。正文對批次與 EOF 前 probe 的說明可保留。"
+    }
+  ],
+  "open_counts": {
+    "blocker": 0,
+    "major": 0,
+    "minor": 1
+  },
+  "scope": "Full prose and editorial review, including continuous section 4-to-signature reread. Not an independent replay of examples, source audit, MCP invocation, or rendered-image review. Does not approve the entire series.",
+  "mcp_invoked_this_review": false,
+  "rendered_images_checked_this_review": false,
+  "manuscript_modified": false,
+  "prior_reviews_modified": false,
+  "frozen_data_modified": false,
+  "report_path": "research/2026-10/same-spec-ten-runs/manuscripts/review-contract-editor.md"
+}

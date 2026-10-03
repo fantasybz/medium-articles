@@ -1,0 +1,34 @@
+{
+ "figures": [
+  {
+   "file": "diagram-01.png",
+   "mermaid": "---\nconfig:\n  theme: base\n  themeVariables:\n    fontSize: 16px\n    primaryColor: \"#f8f9fa\"\n    primaryTextColor: \"#1f2933\"\n    primaryBorderColor: \"#6b7280\"\n    lineColor: \"#6b7280\"\n    secondaryColor: \"#f8f9fa\"\n    tertiaryColor: \"#ffffff\"\n    clusterBkg: \"#ffffff\"\n    clusterBorder: \"#9ca3af\"\n    edgeLabelBackground: \"#ffffff\"\n  flowchart:\n    nodeSpacing: 36\n    rankSpacing: 44\n    padding: 12\n    htmlLabels: true\n    subGraphTitleMargin:\n      top: 8\n      bottom: 12\n    curve: basis\n---\nflowchart LR\n    subgraph live[\"逐行處理的 reference\"]\n        direction TB\n        A1[\"收到有效訊息\"] --> A2[\"stdin 仍開啟<br/>已能讀到訊息\"]\n        A2 --> A3[\"完成事件與 EOF<br/>最終三出口符合\"]\n    end\n    subgraph buffered[\"等待整段輸入的錯法\"]\n        direction TB\n        B1[\"收到同一有效訊息\"] --> B2[\"stdin 仍開啟<br/>觀察窗內沒有輸出\"]\n        B2 --> B3[\"完成事件與 EOF<br/>最終三出口相同\"]\n    end\n    live ~~~ buffered\n    classDef own fill:#d4edda,stroke:#2e7d32,color:#1f2933\n    classDef buy fill:#fff3cd,stroke:#b8860b,color:#1f2933\n    classDef bad fill:#ffe0e0,stroke:#c0392b,color:#1f2933\n    classDef human fill:#e3f2fd,stroke:#1565c0,color:#1f2933\n    class A2,A3,B3 own\n    class B2 bad\n"
+  }
+ ],
+ "tables": [
+  {
+   "file": "table-01.png",
+   "markdown": "| Oracle 來源 | 用途 | 盲點 |\n|---|---|---|\n| 依規格推導預期值 | 每個預期都說得出依據 | 未決行為推不出預期；推導本身也可能算錯 |\n| reference implementation | 能快速產生大量預期輸出 | 它的偶然選擇會被當成要求，它的 bug 也會變成標準 |\n| 舊版輸出（snapshot） | 保護既有的相容行為 | 連舊 bug 也一起鎖住；只保存一種合法表示 |\n| 人工判斷 | 能處理規格留白與語境 | 慢、難以重複；依據沒記下來，下次就無法核對 |\n"
+  },
+  {
+   "file": "table-02.png",
+   "markdown": "| 刻意錯法／案例 | 不同的出口 | reference | 刻意錯法 |\n|---|---|---|---|\n| malformed 後提早結束／`continue-after-malformed` | stdout | `\"after\\n\\n<!-- tokens: in 10 out 5 -->\\n\"` | `\"\"` |\n| 漏印 malformed 診斷／`false-text` | stderr | `\"[codex malformed event] line 1: text must be a string or null\\n\"` | `\"\"` |\n| 優先序錯誤／`explicit-failure-priority` | exit | `3` | `6` |\n"
+  },
+  {
+   "file": "table-03.png",
+   "markdown": "| 比對出口 | 能辨識哪些刻意錯法 | 仍會放行哪些錯法 |\n|---|---|---|\n| stdout | 非字串轉成字串、malformed 後提早結束 | 真假值誤判、優先序錯誤、漏印診斷、整段緩衝 |\n| stderr | 非字串轉成字串、真假值誤判、漏印診斷 | 提早結束、優先序錯誤、整段緩衝 |\n| exit | 非字串轉成字串、真假值誤判、優先序錯誤 | 提早結束、漏印診斷、整段緩衝 |\n| 三個出口的批次終態 | 前五種 | 整段緩衝 |\n"
+  },
+  {
+   "file": "table-04.png",
+   "markdown": "| 量尺 | 合法 CRLF | 合法 LF | 四種刻意錯法 | 這把量尺的問題 |\n|---|---|---|---|---|\n| 只要能解析 | 接受 | 接受 | 全部接受 | 太鬆 |\n| 與 CRLF 範本逐 byte 相同 | 接受 | 拒絕 | 全部拒絕 | 太嚴 |\n| 解析後核對 header 與有序 records | 接受 | 接受 | 全部拒絕 | 在這六份資料上符合預期 |\n"
+  },
+  {
+   "file": "table-05.png",
+   "markdown": "| 要求 | 可觀察義務 | Oracle 保留哪些自由 | 能分辨哪些已知錯法 | 仍未證明 |\n|---|---|---|---|---|\n| R05＋R03：非字串、非 null 的 `text` | `false` 不印出；stderr 恰有一則 line 1 診斷；後續事件照常處理 | REASON 用字不限 | 轉成 `False` 印出；把假值當成缺值；漏印診斷 | 沒有窮舉 JSON 型別、欄位與 Unicode 情況 |\n| R02＋R03：解碼後不是物件 | `[]` 之後的 `after` 與 token 註記仍會出現 | 主迴圈與 helper 結構不限 | 遇到 malformed 就結束 | 較長的事件串與多重 malformed 尚未全面覆蓋 |\n| R09＋R11＋R12：明確失敗優先 | 先出現 malformed、後出現根層 error，EOF 回傳 3 | 依判定順序，不依事件先後 | 診斷都正確，exit 卻回傳 6 | 只觀察了一種組合 |\n| R01：EOF 前輸出 | stdin 未關閉時，讀到第一則有效訊息 | 不限函式名稱與程式結構 | 先讀完整段輸入再處理 | 只測第一則；一秒不是延遲門檻 |\n| R02＋R03：空行計入行號 | 開頭插入兩個空行，stdout 與 exit 不變，行號由 1 變 3。 | 只約束指定觀察。 | 錯把關係寫成三個出口全不變 | 多處插入時，要逐一計算位移 |\n| R13：重複事件各自處理 | 片段送兩次，stdout 重複兩次，exit 為 0。 | 不得新增去重。 | 錯把關係寫成冪等。 | 不外推到需要去重的協定 |\n"
+  },
+  {
+   "file": "table-06.png",
+   "markdown": "| 觀察到的訊號 | 先確認什麼 | 動作 | 由誰接手 |\n|---|---|---|---|\n| 合法差異被拒絕（LF、REASON 改寫） | 契約是否允許這個差異 | 修 oracle、標版本、一致重評受影響的既有產物 | QA owner |\n| 關係或 property 拒絕了 reference | 核對條文、輸入域、reference 及環境 | 關係錯才修關係；reference 違約則修它，撤銷正對照身分 | QA owner 與實作者；歧義交規格 owner |\n| 可推導的預期值被違反（印出 `False`、刪除重複列、提早結束） | 推導是否不需要新假設 | 拒絕這份候選，不以其他測項抵銷。 | Reviewer 依既有核准流程處理。 |\n| 查過既有要求仍推不出預期值（例如 owner 決定前的 null 日期） | 缺哪項決定，是否真的未決 | 標為尚不能判定，提出問題 | 需求或規格 owner |\n| reference 自己也沒通過觀察 | 先核對 reference／fixture 版本與行為，再查環境、時序及工具 | 前提無效才記不能判定；依查明的原因修復後重測 | QA 與 harness owner；程式錯誤交實作者 |\n"
+  }
+ ]
+}

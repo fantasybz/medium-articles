@@ -1,0 +1,1080 @@
+{
+  "schema_version": 1,
+  "reviewed_at_utc": "2026-09-25T09:19:08.468123+00:00",
+  "reviewer": "Codex evidence lens /root/series_evidence_review",
+  "verdict": "EVIDENCE_READY_OVERVIEW_ONLY",
+  "overview_evidence_ready": true,
+  "series_ready": false,
+  "published": false,
+  "english_authorized_or_reviewed": false,
+  "scope": "真正全文證據審查：八節、表格、References、AI 協作、署名；先前 prefix 只作基礎，本輪新增後半並對照首尾。",
+  "manuscript": {
+    "path": "2026-11-same-spec-overview/article.md",
+    "sha256": "98381db29e1bd4c7323e6a0adda49550e8d9c271fcc4c31b4c0026a48dd14de7",
+    "bytes": 42284,
+    "line_count": 214
+  },
+  "reading": {
+    "all_lines_read": [
+      1,
+      214
+    ],
+    "initial_observed_sha256": "9bb547bf842c295afc8fb53f0e3db7e7d9fdf6f9cf87a52f0914d5fb97cc88c0",
+    "final_sha256": "98381db29e1bd4c7323e6a0adda49550e8d9c271fcc4c31b4c0026a48dd14de7",
+    "mid_review_edits_all_read_and_verified": true,
+    "entire_second_half_read": true,
+    "opening_and_conclusion_compared": true
+  },
+  "delta_chain": [
+    {
+      "path": "research/2026-10/same-spec-ten-runs/manuscripts/overview-language-delta.json",
+      "sha256": "f7ffbe23734bdaa85eb81a599b1e18d581adf615b6e3ffa251ea3728be64fd6e",
+      "before_sha256": "f70652654ebd1e0c2dddf05e01eb3208bf5852f75dfa4dc91e281697cc675583",
+      "after_sha256": "9bb547bf842c295afc8fb53f0e3db7e7d9fdf6f9cf87a52f0914d5fb97cc88c0",
+      "edit_records": 20,
+      "replacement_occurrences": 21,
+      "inverse_verified": true
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/manuscripts/overview-review-delta.json",
+      "sha256": "3e9d01c639a2d739e18c443b5960f30b207aa80d7a0129fe595cc2419b1780ea",
+      "before_sha256": "9bb547bf842c295afc8fb53f0e3db7e7d9fdf6f9cf87a52f0914d5fb97cc88c0",
+      "after_sha256": "98381db29e1bd4c7323e6a0adda49550e8d9c271fcc4c31b4c0026a48dd14de7",
+      "edit_records": 4,
+      "replacement_occurrences": 5,
+      "inverse_verified": true
+    }
+  ],
+  "inverse_and_forward_exact": true,
+  "prior_prefix_findings": [
+    {
+      "id": "OV-P01",
+      "severity": "minor",
+      "status": "resolved",
+      "lines": [
+        81,
+        105
+      ],
+      "evidence": "五秒寬限限定於 600 秒 timeout，CLI budget 門檻分開。"
+    },
+    {
+      "id": "OV-P02",
+      "severity": "minor",
+      "status": "resolved",
+      "lines": [
+        70,
+        72,
+        73
+      ],
+      "evidence": "A0/A 未包含內容精確指 B/C 追加段，未再概括 A 完全沒有理由。"
+    },
+    {
+      "id": "OV-P03",
+      "severity": "minor",
+      "status": "resolved",
+      "lines": [
+        79,
+        87
+      ],
+      "evidence": "只宣稱明確送出 packet 固定，保留 provider context 等未固定。"
+    },
+    {
+      "id": "OV-P-optional-boundary",
+      "severity": "optional",
+      "status": "resolved",
+      "lines": [
+        37,
+        105
+      ],
+      "evidence": "生成邊界改以 trace 中模型／工具設定是否符合封存條件說明。"
+    }
+  ],
+  "checks": [
+    {
+      "id": "OE01",
+      "lines": [
+        3,
+        9,
+        11,
+        13,
+        15,
+        172
+      ],
+      "topic": "真實起點、重現與結語",
+      "status": "pass",
+      "evidence": "固定 seed 的 []／null crash 與 numeric text 假成功有 baseline-reproduction 紀錄；研究代理操作與作者責任分開，沒有生產事故或人類親手執行的虛構。結尾正確區分兩行 numeric-text 輸入與第三節含有效文字的三行例示。",
+      "source_refs": [
+        "source/baseline-reproduction.json:8-19,43-48",
+        "source/seed/codex_jsonl.py",
+        "source/requirements.json:R03,R05,R08,R11"
+      ]
+    },
+    {
+      "id": "OE02",
+      "lines": [
+        17,
+        23,
+        25,
+        85,
+        191,
+        192,
+        204
+      ],
+      "topic": "前篇回扣與發布狀態",
+      "status": "pass",
+      "evidence": "Agentic 總論責任句、green 測試 N=1 句及 green 總論 c 類驗收句逐字有原文依據；後兩篇仍明示排程／尚待發布。本輪不是重跑工作坊 40 次。",
+      "source_refs": [
+        "2026-09-agentic-engineering-platform/article.md:103",
+        "2026-10-green-testing/article.md:495",
+        "2026-10-green-overview/article.md:59"
+      ]
+    },
+    {
+      "id": "OE03",
+      "lines": [
+        27,
+        29,
+        31,
+        35,
+        37,
+        105,
+        174
+      ],
+      "topic": "三類指標與平行終點",
+      "status": "pass",
+      "evidence": "驗收、結構、資源須分開記錄，但非統計獨立；cli_success 與 artifact_success 平行，accepted 是交集。表格沒有把 CLI 成功當作執行候選驗收的前置條件。",
+      "source_refs": [
+        "source/run_study.py:333-385",
+        "source/PROTOCOL.md:86-93"
+      ]
+    },
+    {
+      "id": "OE04",
+      "lines": [
+        39,
+        195
+      ],
+      "topic": "A2 研究引用",
+      "status": "pass",
+      "evidence": "v2 PDF 的 90 是跨條件總數；Table 9 的 Opus 4.7 xHigh base 六次皆 42 分。14 個功能條件各 1–3 分，42 代表全數首次達成；source files 15–22、CSS 174–468。單一任務、非隨機條件、作者未盲化、缺完整 transcripts 及跨 harness 限制保留，沒有用先例推定本輪效果。",
+      "source_refs": [
+        "2607.02436v2.txt:311-341,973-989,1111-1120,1142-1150",
+        "evidence-audit.md#A2"
+      ]
+    },
+    {
+      "id": "OE05",
+      "lines": [
+        43,
+        45,
+        47,
+        49,
+        53,
+        55,
+        56,
+        57,
+        58,
+        60,
+        172
+      ],
+      "topic": "shape、streaming 與 exit 3/6",
+      "status": "pass",
+      "evidence": "第 45 行明示 absence of explicit failure 才回傳 6；3→6→4→5→0 是條件優先序。三行例示沒有明確失敗，所以先前有效文字保持已輸出、最後 exit 6；有效 completion 不抹除 malformed。",
+      "source_refs": [
+        "source/requirements.json:R03,R05,R08,R10-R12",
+        "source/evaluator.py:307-316"
+      ]
+    },
+    {
+      "id": "OE06",
+      "lines": [
+        3,
+        62,
+        64,
+        68,
+        72,
+        74,
+        75,
+        77,
+        79,
+        134,
+        136,
+        168,
+        176
+      ],
+      "topic": "文件條件與 CLI 措辭限制",
+      "status": "pass",
+      "evidence": "A0/A 以共同 R IDs 為基準，沒有當作嚴格語義等價。A0 不需新增參數與 A/B/C 範圍之外的差別正確，B/C 前綴精確相符。103 項通過沒有被用來推定無影響；差異因果未辨識，原 packet、要求與結果不回寫。",
+      "source_refs": [
+        "source/specs/A0.md:7",
+        "source/specs/A.md:133",
+        "source/specs/B.md",
+        "source/specs/C.md",
+        "packet-wording-caveat.md:5-16"
+      ]
+    },
+    {
+      "id": "OE07",
+      "lines": [
+        19,
+        37,
+        79,
+        81,
+        83,
+        87,
+        105
+      ],
+      "topic": "生成設定、停止與排程",
+      "status": "pass",
+      "evidence": "高推理設定屬正式生成，max 屬寫作；同組 packet 固定不等於 provider 全部 context 固定。600 秒逾時才觸發 SIGTERM／最多五秒／SIGKILL，CLI USD 5 門檻另處理。區塊可重疊，不是同步配對。先生成全部候選後才外部驗收。",
+      "source_refs": [
+        "source/run_study.py:38-47,145-149,441-493",
+        "source/PROTOCOL.md:64-93",
+        "manifest.json"
+      ]
+    },
+    {
+      "id": "OE08",
+      "lines": [
+        91,
+        93,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        105
+      ],
+      "topic": "四十名額與四格",
+      "status": "pass",
+      "evidence": "由 records 直接重計，各組 10 名額且 CLI/artifact/accepted 皆 10；每組 true/true 10、其他三格 0。沒有缺候選、逾時、執行錯誤或記錄到的邊界違規，沒有擴增分母。",
+      "source_refs": [
+        "records.jsonl",
+        "manifest.json",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "OE09",
+      "lines": [
+        3,
+        107,
+        109,
+        153
+      ],
+      "topic": "Clopper–Pearson 與停止規則",
+      "status": "pass",
+      "evidence": "共同 Bernoulli 機率與獨立假設、長期涵蓋率與 exact 的邊界說明正確。獨立計算 0.025^(1/10)=0.6915028921812392；假設性 30/30 下界 0.8842966917779722，並非本輪新樣本。未將下界當可靠度保證，也未宣告等效或顯著性。",
+      "source_refs": [
+        "source/PROTOCOL.md:120-133",
+        "source/analyze.py:485-486"
+      ]
+    },
+    {
+      "id": "OE10",
+      "lines": [
+        64,
+        85,
+        111,
+        115,
+        140,
+        174
+      ],
+      "topic": "103 項有限驗收與重新驗收",
+      "status": "pass",
+      "evidence": "40 份 evaluation 各 103 通過，共 4,120 case outcomes，抽樣仍為 40 名額。main、CLI 參數與內部編碼缺口保留。40×103 重評一致、317 檔及 1,903 項稽核來自既有實際紀錄，不是新增樣本／真人盲審。",
+      "source_refs": [
+        "source/PROTOCOL.md:95-118",
+        "source/evaluator.py:319-349",
+        "public-rescore.json",
+        "formal-data-audit.md:3,11-14,25,39-58"
+      ]
+    },
+    {
+      "id": "OE11",
+      "lines": [
+        32,
+        35,
+        117,
+        126,
+        128
+      ],
+      "topic": "正規化 hash、cosine 與相依 pair",
+      "status": "pass",
+      "evidence": "hash 只處理指定識別字欄位；屬性、import 路徑、常數與樹狀順序仍保留，且不追蹤綁定。cosine 忽略順序、不是 tree-edit distance。40 normalized hashes 全不同；45 pair/組、180 total、每檔參與 9 pair。共同 seed 只作參照，沒有扣除或推定 96% 原碼保留。",
+      "source_refs": [
+        "source/analyze.py:258-279,475-489",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "OE12",
+      "lines": [
+        119,
+        121,
+        122,
+        123,
+        124,
+        128,
+        159,
+        161,
+        162,
+        163,
+        164,
+        166,
+        168
+      ],
+      "topic": "AST 與資源表數值",
+      "status": "pass",
+      "evidence": "四列 AST 表的六位小數逐一由 frozen summary 格式化一致；四列成本與三位小數耗時由 records 重計一致。A0 1.248397、A 1.382626、B 1.513502、C 1.547817，合計 USD 5.692342；B 耗時中位數約多三秒、cache read 皆 0 正確。",
+      "source_refs": [
+        "records.jsonl",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "OE13",
+      "lines": [
+        140,
+        146,
+        147,
+        148,
+        149,
+        151,
+        153,
+        166,
+        168,
+        174,
+        176
+      ],
+      "topic": "決策、成本與結論邊界",
+      "status": "pass",
+      "evidence": "決策表區分驗收失效與生成條件偏離；缺口保留、下一輪另訂協議，不覆寫原數值。費用只作觀測與下一輪生成預算粗估，每組均值 0.1248397–0.1547817 落在所列約 0.12–0.16 範圍；沒有帳單、人力 ROI、跨任務勝者或production授權結論。",
+      "source_refs": [
+        "source/PROTOCOL.md:73-93,120-149",
+        "records.jsonl",
+        "packet-wording-caveat.md"
+      ]
+    },
+    {
+      "id": "OE14",
+      "lines": [
+        210,
+        212
+      ],
+      "topic": "Claude max 主寫與 AI 協作",
+      "status": "pass",
+      "evidence": "head/tail invocation 均 requested_effort=max、assistant model為claude-opus-5-5；meta 都 exit 0、success=true、terminal_count=1。兩個原文 artifact hash 與assembly相符，按一個換行組合可精確復原組合hash。寫作請求未列入正式40名額或USD5.69；未冒充真人盲審。",
+      "source_refs": [
+        "overview-assembly.json",
+        "resume-overview-head/invocation.json",
+        "resume-overview-head/meta.json",
+        "resume-overview-tail/invocation.json",
+        "resume-overview-tail/meta.json"
+      ]
+    },
+    {
+      "id": "OE15",
+      "lines": [
+        5,
+        19,
+        180,
+        189,
+        190,
+        191,
+        192,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        200,
+        201,
+        202,
+        203,
+        204,
+        205,
+        206,
+        212
+      ],
+      "topic": "References 與本機狀態",
+      "status": "pass",
+      "evidence": "51 處本機相對連結全部存在；系列與研究附件仍明示本機／未公開。唯一外部研究引用的 v2 PDF 題名與URL正確。未把本機 link check 冒充遠端附件或 Medium 發布驗證。",
+      "source_refs": [
+        "local link inventory",
+        "2607.02436v2.pdf",
+        "recall-source-check.md"
+      ]
+    }
+  ],
+  "open_findings": [],
+  "open_counts": {
+    "blocker": 0,
+    "major": 0,
+    "minor": 0
+  },
+  "numeric_checks": {
+    "arms": [
+      {
+        "arm": "A0",
+        "planned": 10,
+        "recorded": 10,
+        "cli_success": 10,
+        "artifact_success": 10,
+        "accepted_completion": 10,
+        "four_cells": {
+          "true_true": 10,
+          "true_false": 0,
+          "false_true": 0,
+          "false_false": 0
+        },
+        "pair_count": 45,
+        "ast_table_exact_six_decimal_match": true,
+        "cost_and_wall_table_exact_match": true,
+        "cost_usd": 1.248397,
+        "mean_cost_usd": 0.1248397,
+        "wall_seconds_median": 37.27272933399945,
+        "cache_read_total": 0.0
+      },
+      {
+        "arm": "A",
+        "planned": 10,
+        "recorded": 10,
+        "cli_success": 10,
+        "artifact_success": 10,
+        "accepted_completion": 10,
+        "four_cells": {
+          "true_true": 10,
+          "true_false": 0,
+          "false_true": 0,
+          "false_false": 0
+        },
+        "pair_count": 45,
+        "ast_table_exact_six_decimal_match": true,
+        "cost_and_wall_table_exact_match": true,
+        "cost_usd": 1.382626,
+        "mean_cost_usd": 0.13826259999999999,
+        "wall_seconds_median": 37.30046502099867,
+        "cache_read_total": 0.0
+      },
+      {
+        "arm": "B",
+        "planned": 10,
+        "recorded": 10,
+        "cli_success": 10,
+        "artifact_success": 10,
+        "accepted_completion": 10,
+        "four_cells": {
+          "true_true": 10,
+          "true_false": 0,
+          "false_true": 0,
+          "false_false": 0
+        },
+        "pair_count": 45,
+        "ast_table_exact_six_decimal_match": true,
+        "cost_and_wall_table_exact_match": true,
+        "cost_usd": 1.513502,
+        "mean_cost_usd": 0.1513502,
+        "wall_seconds_median": 40.27672412499669,
+        "cache_read_total": 0.0
+      },
+      {
+        "arm": "C",
+        "planned": 10,
+        "recorded": 10,
+        "cli_success": 10,
+        "artifact_success": 10,
+        "accepted_completion": 10,
+        "four_cells": {
+          "true_true": 10,
+          "true_false": 0,
+          "false_true": 0,
+          "false_false": 0
+        },
+        "pair_count": 45,
+        "ast_table_exact_six_decimal_match": true,
+        "cost_and_wall_table_exact_match": true,
+        "cost_usd": 1.547817,
+        "mean_cost_usd": 0.1547817,
+        "wall_seconds_median": 37.16098322900507,
+        "cache_read_total": 0.0
+      }
+    ],
+    "cost_total_usd": 5.692342,
+    "candidate_count": 40,
+    "case_count_each": 103,
+    "case_outcomes": 4120,
+    "failed_cases": 0,
+    "pair_count": 180,
+    "distinct_normalized_ast_hashes": 40,
+    "cp_n10_all_success_lower": 0.6915028921812392,
+    "cp_n30_all_success_lower": 0.8842966917779722,
+    "n30_is_hypothetical_not_data": true
+  },
+  "frozen_integrity": {
+    "archive_path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/archive.json",
+    "archive_sha256": "534434650fbd4070f9304ba79bb58d61245fdb94a259af430ea9e5f8ae5c995a",
+    "targeted_files_checked": 55,
+    "mismatches": [],
+    "full_317_file_audit_repeated": false,
+    "sources": [
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/manifest.json",
+        "sha256": "ba30398118ecde62b2f682884c1e882b2864c22d70faf99549ceab0d7c0a55f2",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/records.jsonl",
+        "sha256": "2be5ed458de2e2defa2ab4f24d88f25bdd3b7340c9207915ab6aa0988c0db7f0",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json",
+        "sha256": "8198a4478b8158268298960576655d920db3b8d2dc2bd207348dcef8a346dfb9",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json",
+        "sha256": "32e0a0af2578564624b5a5b5f9d981e0dc296e6eb690b6598482cb809419a515",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+        "sha256": "a747ae3abd880f77227e7492e8a2e6d6346637a39b1e64366bc435dd772b4a10",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+        "sha256": "3ea6d57daae7dba9d3ceb6327607ee60ccaed3bd4193e5ec7c79441ad36bc247",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+        "sha256": "c10ef7256aadc46816e73b1bbaf7edc26b5d2719e687ff497ff5005062ff8a3b",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md",
+        "sha256": "19c404372f742c8f80165fdfea8df998bb29c3324f892433c8992e418e9c54af",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/evaluator.py",
+        "sha256": "443b47cc93ca1559293a6025472696eee8351a25cb8486e09ee682bcfd29508a",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/run_study.py",
+        "sha256": "2d0bd4bb0b0f02a9f12694fcf6867b8e663645cf943dc45f71f1fbfcaf6bfac8",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/analyze.py",
+        "sha256": "c5df73abb76fb4b36bfb63325524419f80ad1b4c7755f2036d8291ca086cb585",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/PROTOCOL.md",
+        "sha256": "94af80dc28a933e18e03c53deb088b9a22161c1d39c296a929efcef3ed977a58",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/sandbox.py",
+        "sha256": "50dbd5c92c39ef388090abe761e9d96527e3427c7ff3fea318865ecbdf73c523",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/baseline-reproduction.json",
+        "sha256": "50b4cf407ec4502e746fdc43ba4dd7b2c8b175444c21ed7a40a7ad85c5f6930f",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/seed/codex_jsonl.py",
+        "sha256": "4949ff55184cbfd3cbd0c8add632a6382ec4b5e6ec2240ca88018443370e6afb",
+        "matches_archive": true
+      }
+    ],
+    "evaluations": [
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-01-A/evaluation.json",
+        "sha256": "6909537f80d52ad6d5828d43ec561ae684ec585d4a18f7c4e29c5717a57c4bfa"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-01-A0/evaluation.json",
+        "sha256": "c2eb6310c2f91f35f1ae41199acd879650034e2ee3177ee976e9748d85349493"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-01-B/evaluation.json",
+        "sha256": "0ff3bdbb5f253ee8e4e45fad206d67381cc1061da7e6e5e50cd493eccd3c61e6"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-01-C/evaluation.json",
+        "sha256": "d7b0e8f8d7d007cc74aa08dfa4145c3cf833631b1add960e63b0673188e77362"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-02-A/evaluation.json",
+        "sha256": "f2b3c12efc163ec530e49744e3fc323f09f3aa6049f87a2c082733364a72599b"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-02-A0/evaluation.json",
+        "sha256": "ef2e43b88e8df8f8004cbd8e9d66d223140ebcc68bfb662f5fa16200a0222f96"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-02-B/evaluation.json",
+        "sha256": "869b302e038bc052da945a65cfae5293692ccc54d24f5be2a24b13da9bf18390"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-02-C/evaluation.json",
+        "sha256": "90a43d1e847b7329fe9487aefa7dc12a47ac9cc7ccfe933621dbb35b14ed9428"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-03-A/evaluation.json",
+        "sha256": "120b7218a01df0d0e2b9d079f2a7ca7df4f710a97da17b257a2ed6122130898b"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-03-A0/evaluation.json",
+        "sha256": "878d4dfb5f03bc1c8ff7ae1a70d62c35564a97f7126f7e56b701b84e0131f071"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-03-B/evaluation.json",
+        "sha256": "3302a249125abde62f94da7d797370214d9d50b8d4ad051c4639510e27861528"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-03-C/evaluation.json",
+        "sha256": "980f5955a9255fca2709bfe79484c8f6e958bfcecf0047a4fe84bb35ffd91e3d"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-04-A/evaluation.json",
+        "sha256": "e31e97661f7d6a109ba756a09d01dcdb941b929e2621a953d32dedab18236199"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-04-A0/evaluation.json",
+        "sha256": "e49ae8971f2769f2dae5bf3c855123e61076a2705c323ccea3a0db5cce59949a"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-04-B/evaluation.json",
+        "sha256": "874f21a5be4e25b18eb448c83d11dde9a40e739a988d402d9ebb3558e69206bd"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-04-C/evaluation.json",
+        "sha256": "3e5b5491cbb1a5177269f09dd180fca3cb2f63e25173f1eb80b0486fcbf36b9a"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-05-A/evaluation.json",
+        "sha256": "38b98ed435342a7f6f9350beb0a82f5954e1bfed60373dd9440ad77776b0f48f"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-05-A0/evaluation.json",
+        "sha256": "863b64920c8c4206841ddd6210011dc233cf90759098957f47339efe141b54ac"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-05-B/evaluation.json",
+        "sha256": "a638af5008cf4ae43f3fd427c47b5b72d0897e85516416ec89b68429512f5db4"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-05-C/evaluation.json",
+        "sha256": "6a7adc8f9cb075e33a317bc5efc37e991fa4cfa8082bd08a0c4941b85c44d661"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-06-A/evaluation.json",
+        "sha256": "981aa63c823910f2a94a61adc3951c3c07c926af614439ddb72b362c227b7af2"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-06-A0/evaluation.json",
+        "sha256": "e15595a8e70ee743a872c3410ac9aee296e42e80c3fc22c85618fd43e53cada1"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-06-B/evaluation.json",
+        "sha256": "4de5e396ab74d9c5c9d6aa11f06e051280433c93473dfe88d7daf703ffb98bc8"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-06-C/evaluation.json",
+        "sha256": "ff26fc0df6f88b3d1bb386491f1cb1929adf8bd8966714a45ef9a7b872836a24"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-07-A/evaluation.json",
+        "sha256": "e35227eb03a73be62aca155ebd24f9bdbf3287b9b472b64820208c6a44a44611"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-07-A0/evaluation.json",
+        "sha256": "75ff55a3fba308bcd408757985cf8acd63ed70c3e8e53f1592fc610b93774104"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-07-B/evaluation.json",
+        "sha256": "b1ec08fa8f2923bf36b6d7d386cd3e8982af53115090ffe85fa4e6f193d19095"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-07-C/evaluation.json",
+        "sha256": "625767f21adfdc5564fba43163244a5842ac57a5aeff8525e99fb156dbdc08b4"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-08-A/evaluation.json",
+        "sha256": "1f2bbc396f525637cd003dada9331732276786f31b9b6231a654c76d1576f187"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-08-A0/evaluation.json",
+        "sha256": "672265ddffb8ee902dcb5a54799e0c458600767365b051d6085da66e1ace5ffe"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-08-B/evaluation.json",
+        "sha256": "2e7e57607581c2e952040593e985e7b8f44d41af96510f5871a209704ce88420"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-08-C/evaluation.json",
+        "sha256": "ab112ce814763f59a7761aee61d206211bd2ed35b490ea5d17c7036a9ffcac23"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-09-A/evaluation.json",
+        "sha256": "005130ef7a3459ec9f9f16c7755c2277f77dfb9a6a6450b85fb342f90d365461"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-09-A0/evaluation.json",
+        "sha256": "3f893ad9e5ea90c58e57fac9be47c8ba5cd6ce3d28ebaaf4ddeacb8b358c3bbf"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-09-B/evaluation.json",
+        "sha256": "d6633920ea3b508eaa2909bb4570e37aa9d0cab21c69804851948fed7cee3267"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-09-C/evaluation.json",
+        "sha256": "60abaee7fef296a2b46cc5f5dc069cacd6480ea5e96ab7b5800175ebaf8d42d0"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-10-A/evaluation.json",
+        "sha256": "40572a18a7024b05068d9795f850e55a1b85878b301776cf7174db10b23f3858"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-10-A0/evaluation.json",
+        "sha256": "3a0aa411bcc7eba644997536a3f840f54897144af086fc96b924ca2324bb6a0a"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-10-B/evaluation.json",
+        "sha256": "03a220a88112fc33a58734a64de666681abfcf0d3c3b2914dfeaa3129c828e68"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-10-C/evaluation.json",
+        "sha256": "0dc26782a64bacbdb4eab91361fca30ee09c1d102c78a91f6c19de0217446095"
+      }
+    ]
+  },
+  "additional_sources": [
+    {
+      "path": ".context/same-spec-ten-runs/sources/2607.02436v2.pdf",
+      "sha256": "4c80ac39360e3141df3b6b000823d2b07e92b1e79702a03b24bb35c393fe874d"
+    },
+    {
+      "path": ".context/same-spec-ten-runs/sources/2607.02436v2.txt",
+      "sha256": "f3110591bb651b85bea92dec019e201ebc9a5acca60061a544e73b96559cd2fa"
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/evidence-audit.md",
+      "sha256": "e165f88daf73e3c4ed9fb94b697767f1197a03ceec105049018771aa1648eb86"
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/manuscripts/packet-wording-caveat.md",
+      "sha256": "96e7ab484df0564d3ddfb5396216c0c63da83e22bf47fa0c251ecf362bf60490"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/results/validation-2026-09-25/public-rescore.json",
+      "sha256": "83c55e0b00bacf039210ad5247a8f9eefde341ba650a75c2b65412afe6ebf258"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/results/validation-2026-09-25/formal-data-audit.md",
+      "sha256": "e2b00c994f62ef23b83feb70242a3c89b7ae76d7ec03f03ae282002da35da144"
+    },
+    {
+      "path": "2026-09-agentic-engineering-platform/article.md",
+      "sha256": "0034691d89e80455e67e6404e8a27e007c0ad77d3e03678b8439bdf1960310d9"
+    },
+    {
+      "path": "2026-10-green-testing/article.md",
+      "sha256": "38e8e543f750aff688eead1789a1fdfedf38b401173193496c917922806806b6"
+    },
+    {
+      "path": "2026-10-green-overview/article.md",
+      "sha256": "4c63c523cff51ae3d1e82555dbff5c884ef17abfa9412a4b4823c0aa84ac96a0"
+    },
+    {
+      "path": ".context/same-spec-ten-runs/manuscripts/evidence-overview-prefix.md",
+      "sha256": "24dad2855913f19f6d2c0d0daf65e2a79e3db2701c7de06081f678cd70576278"
+    },
+    {
+      "path": ".context/same-spec-ten-runs/manuscripts/recall-source-check.md",
+      "sha256": "4f124fd1f9f90ba9f8e161018902fe21c45391fcc5a9cb83906e85a4272473e4"
+    }
+  ],
+  "writer_provenance": {
+    "assembly_path": ".context/same-spec-ten-runs/manuscripts/overview-assembly.json",
+    "assembly_sha256": "1b6cc86429c25e9b52008b098aaecb2978707cf2de57bb194c2cc6ca86e03020",
+    "segments": [
+      {
+        "artifact_path": ".context/same-spec-ten-runs/manuscripts/resume-overview-head/artifact.md",
+        "artifact_sha256": "d0f00241b97680275a5ef17d30635fc37dd3878db3abca0eb232d3f876cbf622",
+        "invocation_path": ".context/same-spec-ten-runs/manuscripts/resume-overview-head/invocation.json",
+        "invocation_sha256": "1a602aafc1fdc337529bd935cc7a91b8e57779b74d545d8775e6b41c7afc8e2e",
+        "meta_path": ".context/same-spec-ten-runs/manuscripts/resume-overview-head/meta.json",
+        "meta_sha256": "d08ce35dd8195f5f8e83450cb13a84aa07cfb0535c8f14fd9a549056a939a4c7",
+        "requested_model": "claude-opus-5-5",
+        "requested_effort": "max",
+        "assistant_models": [
+          "claude-opus-5-5"
+        ],
+        "exit_code": 0,
+        "success": true,
+        "terminal_count": 1
+      },
+      {
+        "artifact_path": ".context/same-spec-ten-runs/manuscripts/resume-overview-tail/artifact.md",
+        "artifact_sha256": "94465ae8e9e86c6dad041471ec2947eeb666e08e885d58585b22ef81d0b50b73",
+        "invocation_path": ".context/same-spec-ten-runs/manuscripts/resume-overview-tail/invocation.json",
+        "invocation_sha256": "33c8256dc582ec056d37459f20d8aad38ada08f9b26c32d1138a7ffaaa14e3c0",
+        "meta_path": ".context/same-spec-ten-runs/manuscripts/resume-overview-tail/meta.json",
+        "meta_sha256": "80adc4dab647ec68e192b6bed98fb7553b74b83c225675cd7e62f3f5c8faeb5c",
+        "requested_model": "claude-opus-5-5",
+        "requested_effort": "max",
+        "assistant_models": [
+          "claude-opus-5-5"
+        ],
+        "exit_code": 0,
+        "success": true,
+        "terminal_count": 1
+      }
+    ],
+    "raw_join_separator": "\n",
+    "raw_join_sha256": "48ff923f3996d366491dd39dfb781b18cf85a0fc7702630d9abe599e9d0481c3",
+    "raw_join_verified": true,
+    "raw_response_read": false,
+    "thinking_text_read": false
+  },
+  "relative_links": {
+    "occurrences_checked": 51,
+    "checks": [
+      {
+        "target": "../2026-11-same-spec-spec/article.md",
+        "exists": true
+      },
+      {
+        "target": "../2026-11-same-spec-contract/article.md",
+        "exists": true
+      },
+      {
+        "target": "../2026-11-same-spec-variance/article.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/RESULTS.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/records.jsonl",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+        "exists": true
+      },
+      {
+        "target": "../2026-11-same-spec-spec/article.md",
+        "exists": true
+      },
+      {
+        "target": "../research/2026-10/same-spec-ten-runs/manuscripts/packet-wording-caveat.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/evaluator.py",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/PROTOCOL.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/manifest.json",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/records.jsonl",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/report.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/archive.json",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/RESULTS.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json",
+        "exists": true
+      },
+      {
+        "target": "../2026-11-same-spec-variance/article.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/evaluator.py",
+        "exists": true
+      },
+      {
+        "target": "../2026-11-same-spec-spec/article.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json",
+        "exists": true
+      },
+      {
+        "target": "../2026-11-same-spec-variance/article.md",
+        "exists": true
+      },
+      {
+        "target": "../2026-11-same-spec-spec/article.md",
+        "exists": true
+      },
+      {
+        "target": "../2026-11-same-spec-contract/article.md",
+        "exists": true
+      },
+      {
+        "target": "../2026-11-same-spec-variance/article.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/seed/codex_jsonl.py",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/RESULTS.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/records.jsonl",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/evaluator.py",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/PROTOCOL.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/manifest.json",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/report.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/archive.json",
+        "exists": true
+      },
+      {
+        "target": "../research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+        "exists": true
+      }
+    ],
+    "missing": [],
+    "remote_publication_verified": false
+  },
+  "new_model_samples": 0,
+  "candidate_executions": 0,
+  "fresh_web_queries": 0,
+  "manuscript_modified": false,
+  "prior_reviews_modified": false,
+  "frozen_data_modified": false,
+  "limitations": [
+    "僅總論證據通過，不是全系列 READY。",
+    "A0/A CLI 措辭影響未辨識；103 項有限驗收不能證明沒有影響。",
+    "沿用已核對的版本化外部來源與本機發布紀錄，未重做網路查證。",
+    "候選驗收與資料稽核沿用既有紀錄；本輪只有讀取與重算摘要，沒有執行候選。",
+    "不是 MCP 語文、圖表視覺、真人盲審或公開發布報告。"
+  ],
+  "markdown_report_sha256": "b1c2fdd7e5d1aec7db35383a2ff0ccb86f868f6cc686c647facaf108e4e8a269"
+}

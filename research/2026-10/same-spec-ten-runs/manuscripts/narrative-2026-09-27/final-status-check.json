@@ -1,0 +1,589 @@
+{
+  "checked_at": "2026-09-27T16:18:08.401281+00:00",
+  "index_local_links": [
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "narrative-revision-brief.md",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "narrative-2026-09-27/reader-reasoning-delta.json",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "narrative-2026-09-27/reader-reasoning-review-delta.json",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "writer-provenance.json",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "../../../../STYLE.md",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "../../style_brief.md",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "../../../2026-09/voice_brief.md",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "narrative-2026-09-27/paragraph-polish.json",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "narrative-2026-09-27/reader-review.md",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "narrative-2026-09-27/review-resolution.json",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "narrative-2026-09-27/reader-reasoning-review.md",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "narrative-2026-09-27/reader-reasoning-invocation.json",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "narrative-2026-09-27/reader-reasoning-resolution.json",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "../../../../2026-11-same-spec-overview/article.md",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "../../../../2026-11-same-spec-overview/publish/medium-paste.md",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "narrative-2026-09-27/overview-source-06.json",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "narrative-2026-09-27/overview-paste-03.json",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "../../../../2026-11-same-spec-spec/article.md",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "../../../../2026-11-same-spec-spec/publish/medium-paste.md",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "narrative-2026-09-27/spec-source-06.json",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "narrative-2026-09-27/spec-paste-03.json",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "../../../../2026-11-same-spec-contract/article.md",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "../../../../2026-11-same-spec-contract/publish/medium-paste.md",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "narrative-2026-09-27/contract-source-08.json",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "narrative-2026-09-27/contract-paste-04.json",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "../../../../2026-11-same-spec-variance/article.md",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "../../../../2026-11-same-spec-variance/publish/medium-paste.md",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "narrative-2026-09-27/variance-source-06.json",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "narrative-2026-09-27/variance-paste-03.json",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "narrative-2026-09-27/language-adjudication.json",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "narrative-2026-09-27/delivery-validation.json",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "target": "STATUS-2026-09-25.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "../README.md#articles",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "../2026-10-green-overview/article.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "../2026-10-green-testing/article.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "../2026-10-green-review/article.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "../2026-10-green-reliability/article.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "../PUBLISHING.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "../2026-11-same-spec-variance/article.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/2026-11-same-spec-ten-runs.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "experiments/same-spec-ten-runs/README.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/same-spec-ten-runs/review-resolution.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/2026-12-sre-for-agents.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/2026-12-sre-for-agents.figures.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/2026-12-sre-for-agents.publish.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/2026-11-same-spec-ten-runs.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/same-spec-ten-runs/review-resolution.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/same-spec-ten-runs/evidence-audit.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "experiments/same-spec-ten-runs/README.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "experiments/same-spec-ten-runs/RESULTS.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/2026-12-sre-for-agents.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/2026-12-sre-for-agents.publish.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/backlog.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/conference_digest.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-09/x_digest.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/x_digest.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-09/arxiv.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/arxiv.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/conference_digest.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/book_ai_agent_book.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/style_brief.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/backlog.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "README.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "README.md#待辦",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "../2026-10-green-overview/article.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "../2026-10-green-review/article.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/2026-12-sre-for-agents.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "README.md#待辦",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "../PUBLISHING.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-09/2026-11-same-spec-ten-runs.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-09/codex-review-2026-11-same-spec-ten-runs.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/backlog.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/2026-12-sre-for-agents.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-09/selection.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/selection.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/backlog.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-09/backlog.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/2026-11-same-spec-ten-runs.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/same-spec-ten-runs/evidence-audit.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "experiments/same-spec-ten-runs/README.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/2026-12-sre-for-agents.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/2026-12-sre-for-agents.figures.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-10/2026-12-sre-for-agents.publish.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-09/2026-10-agentic-green-is-not-done.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "../STYLE.md",
+      "exists": true
+    },
+    {
+      "from": "research/TOPICS.md",
+      "target": "2026-09/voice_brief.md",
+      "exists": true
+    },
+    {
+      "from": "research/README.md",
+      "target": "../README.md",
+      "exists": true
+    },
+    {
+      "from": "research/README.md",
+      "target": "TOPICS.md",
+      "exists": true
+    },
+    {
+      "from": "research/README.md",
+      "target": "../STYLE.md",
+      "exists": true
+    },
+    {
+      "from": "research/README.md",
+      "target": "../MERMAID.md",
+      "exists": true
+    },
+    {
+      "from": "research/README.md",
+      "target": "2026-09/",
+      "exists": true
+    },
+    {
+      "from": "research/README.md",
+      "target": "../MERMAID.md",
+      "exists": true
+    },
+    {
+      "from": "research/README.md",
+      "target": "../PUBLISHING.md",
+      "exists": true
+    },
+    {
+      "from": "research/README.md",
+      "target": "2026-09/voice_brief.history.md",
+      "exists": true
+    },
+    {
+      "from": "research/README.md",
+      "target": "../STYLE.md",
+      "exists": true
+    },
+    {
+      "from": "research/README.md",
+      "target": "2026-09/voice_brief.md",
+      "exists": true
+    },
+    {
+      "from": "research/README.md",
+      "target": "../MERMAID.md",
+      "exists": true
+    },
+    {
+      "from": "research/README.md",
+      "target": "../STYLE.md",
+      "exists": true
+    },
+    {
+      "from": "research/README.md",
+      "target": "2026-10/2026-11-same-spec-ten-runs.md",
+      "exists": true
+    },
+    {
+      "from": "research/README.md",
+      "target": "2026-10/same-spec-ten-runs/review-resolution.md",
+      "exists": true
+    },
+    {
+      "from": "research/README.md",
+      "target": "experiments/same-spec-ten-runs/README.md",
+      "exists": true
+    },
+    {
+      "from": "research/README.md",
+      "target": "experiments/same-spec-ten-runs/RESULTS.md",
+      "exists": true
+    },
+    {
+      "from": "research/README.md",
+      "target": "2026-10/same-spec-ten-runs/research-loop.md",
+      "exists": true
+    },
+    {
+      "from": "research/README.md",
+      "target": "../2026-11-same-spec-overview/article.md",
+      "exists": true
+    },
+    {
+      "from": "research/README.md",
+      "target": "../2026-11-same-spec-spec/article.md",
+      "exists": true
+    },
+    {
+      "from": "research/README.md",
+      "target": "../2026-11-same-spec-contract/article.md",
+      "exists": true
+    },
+    {
+      "from": "research/README.md",
+      "target": "../2026-11-same-spec-variance/article.md",
+      "exists": true
+    },
+    {
+      "from": "research/README.md",
+      "target": "2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "exists": true
+    },
+    {
+      "from": "research/README.md",
+      "target": "2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/selection.md",
+      "target": "2026-11-same-spec-ten-runs.md",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/selection.md",
+      "target": "../experiments/same-spec-ten-runs/RESULTS.md",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/selection.md",
+      "target": "same-spec-ten-runs/manuscripts/STATUS.md",
+      "exists": true
+    },
+    {
+      "from": "research/2026-10/selection.md",
+      "target": "same-spec-ten-runs/manuscripts/STATUS.md",
+      "exists": true
+    }
+  ],
+  "all_index_local_links_exist": true,
+  "git_diff_check_exit_code": 0,
+  "current_status_matches_final_validation": true,
+  "writer_provenance_matches_final_article_hashes": true,
+  "final_preview_visual_inspection": [
+    "contract-judgment-walkthrough.png: full line-by-line explanation including R12, three-output table legible",
+    "spec-R05-excerpts.png: A0 and A quotes followed by same-input comparison visible",
+    "spec-mobile-opening.png: title, TLDR and navigation readable without page overflow"
+  ]
+}

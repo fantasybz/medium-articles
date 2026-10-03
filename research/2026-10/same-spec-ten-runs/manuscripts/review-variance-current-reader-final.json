@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "review_type": "independent_reader_final_delta_closure",
+  "reviewed_at": "2026-09-25T09:04:41.033193+00:00",
+  "reviewer": "Codex independent reader sub-agent (AI)",
+  "verdict": "PASS_VARIANCE_READER_SCOPE",
+  "series_verdict": "NOT_ASSESSED_AS_A_COMPLETE_SERIES",
+  "series_ready": false,
+  "public_release_complete": false,
+  "article": {
+    "path": "2026-11-same-spec-variance/article.md",
+    "sha256": "3ee25eaa1ca3ae1f177403f1719eb833a5c07ecfa972d4189e2129ab2fff6b0d",
+    "line_count": 266
+  },
+  "previous_full_review": {
+    "path": "research/2026-10/same-spec-ten-runs/manuscripts/review-variance-current-reader.json",
+    "input_sha256": "26adde9c3e9578ec949dbdc10e3c23fcb5faa6b20673bd8edce1120607703386",
+    "included_full_read": true,
+    "included_second_half_reread": true,
+    "included_F2_visual_inspection": true
+  },
+  "delta_verification": {
+    "record": ".context/same-spec-ten-runs/manuscripts/variance-final-reader-delta.json",
+    "replacement_count": 1,
+    "replacement_targets_unique": true,
+    "changed_lines": [
+      79
+    ],
+    "reverse_replacement_sha256": "26adde9c3e9578ec949dbdc10e3c23fcb5faa6b20673bd8edce1120607703386",
+    "reverse_replacement_matches_prior_full_read": true,
+    "forward_replacement_byte_equal": true,
+    "only_declared_replacement": true,
+    "other_bytes_unchanged": true,
+    "F2_unchanged_sha256": "474f4ae875dcababaf7ffcddf501b2b7c49fa5d9ed0e80a4ac9a57a98f9084fb",
+    "prior_reports_sha256": {
+      "review-variance-current-reader.md": "e46a15adce17c097cca7105391e9b31a3acbb88941f7e91cc55746c4315937ce",
+      "review-variance-current-reader.json": "7aaf3cee3cd57788a0a60651d7ebeee67dfbc23aae2040cd8ce8c5cfa4c030bf"
+    }
+  },
+  "issue_resolution": {
+    "id": "VARIANCE-CURRENT-READER-01",
+    "severity": "minor",
+    "status": "RESOLVED",
+    "line": 79,
+    "reason": "已把問題明確歸於按失敗案例數比較時重複計入同一候選，以及各條要求的案例配置不同；不再暗示改變分母本身必然讓案例多的要求較容易失敗。與前文每條要求按 run 計數，以及後文本輪零失敗的結果一致。"
+  },
+  "findings": [],
+  "open_counts": {
+    "blocker": 0,
+    "major": 0,
+    "minor": 0
+  },
+  "reading_this_pass": {
+    "local_context_lines": [
+      75,
+      92
+    ],
+    "full_manuscript_not_reread_this_pass": true,
+    "unaffected_sections_inherited_from_previous_full_review": true
+  },
+  "scope": "原全文讀者複核，加上第 79 行唯一修訂的精確差異驗證與問題結案；未將本輪有界複核寫成再次從頭閱讀或重新執行其他檢查。",
+  "manuscript_modified": false,
+  "prior_reviews_modified": false,
+  "frozen_research_modified": false
+}
