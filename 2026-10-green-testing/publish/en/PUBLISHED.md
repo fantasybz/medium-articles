@@ -2,7 +2,7 @@
 
 **Title** Green Is Not Done, Part 1 — Reviewing the Tests an Agent Wrote: Loosened Assertions, Frozen Bugs and Mutation Score
 **Post ID** `51d001a6dcd5`（draft https://medium.com/p/51d001a6dcd5/edit；stable URL after publishing https://medium.com/p/51d001a6dcd5）
-**Schedule** 2026-10-15（四）09:00 GMT+8（2026-09-23 已重新讀取 Medium 排程確認）
+**Schedule** 2026-10-15（四）09:00 GMT+8（2026-10-03 已重新讀取 Medium 排程確認）
 **Built with** `./tools/medium_draft.sh 2026-10-green-testing en`, block-by-block verification clean
 
 ## Settings
@@ -143,3 +143,11 @@ Post ID、五個 Topics、訂閱通知設定與排程均保留。發布設定讀
 第四篇已接續排定中文 2026-11-03、英文 2026-11-05，皆為 09:00 GMT+8。本篇將其導覽改為「coming soon」，並移除內文的未排程說明；仍以篇名指引讀者，待第四篇實際上線後再回填連結。
 
 更新後從新分頁讀回，196 個文字區塊、26 個連結、8 張圖片、13 條分隔線皆與貼稿相符；連結順序與目的地、圖片槽位與識別碼也逐項核對。再次讀取發布設定，確認本篇原排程、Post ID、封面、Topics、預覽文字與通知設定均未改動。
+
+## Concept and narrative polish synchronized (2026-10-03)
+
+The author's requested pass covers the overview and all four parts in Chinese and English. It introduces important concepts through concrete examples and strengthens the progression from each article's question through its sections and paragraphs, including the later measurement, approval and handoff discussions. Research figures, code, diagrams, tables and source links are preserved.
+
+The existing scheduled draft was updated under the same Post ID. After saving, independent fresh navigation verified **197 text blocks, 26 links, 8 original images and 13 dividers** against the final publishing payload, with no image placeholders. Link destinations and order, image identifiers and positions all match.
+
+A further fresh settings read confirmed that the title, cover identifier and dimensions, topics, preview title and subtitle, notification setting and publication schedule exactly match the pre-update baseline. `isPublished: false`; the future schedule remains `2026-10-15T01:00:00Z`. The update did not publish the story early.
