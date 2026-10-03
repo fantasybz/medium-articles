@@ -3,7 +3,7 @@
 **標題** Green Is Not Done, Part 4 — A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score
 **Post ID** `20452944263b`
 **草稿網址** https://medium.com/p/20452944263b/edit
-**狀態** 已排程於 **2026-11-05（四）09:00 Asia/Taipei（GMT+8）** 發布；目前尚未發布（2026-09-28 重新讀回確認）。
+**狀態** 已排程於 **2026-11-05（四）09:00 Asia/Taipei（GMT+8）** 發布；目前尚未發布（2026-10-03 重新讀回確認）。
 **系列位置** 總論＋四部曲的第四篇〈付款實作篇〉。資料夾日期不代表發布日期。
 
 ## 設定
@@ -56,3 +56,11 @@
 ## 發布前與上線後的連結核對
 
 發布前確認總論與前三篇已上線；英文版也須確認中文版已於 11 月 3 日上線。若排程調整，連結須一併檢查。兩種語言實際上線後，再把既有文章的第四篇「即將發布」導覽換成正式連結，並於中文版補上英文版連結；排程成功不等同文章已公開。正文維持以篇名指涉，不以月份引導讀者。
+
+## Concept and narrative polish synchronized (2026-10-03)
+
+The author's requested pass covers the overview and all four parts in Chinese and English. It introduces important concepts through concrete examples and strengthens the progression from each article's question through its sections and paragraphs, including the later measurement, approval and handoff discussions. Research figures, code, diagrams, tables and source links are preserved.
+
+The existing scheduled draft was updated under the same Post ID. After saving, independent fresh navigation verified **146 text blocks, 25 links, 7 original images and 11 dividers** against the final publishing payload, with no image placeholders. Link destinations and order, image identifiers and positions all match.
+
+A further fresh settings read confirmed that the title, cover identifier and dimensions, topics, preview title and subtitle, notification setting and publication schedule exactly match the pre-update baseline. `isPublished: false`; the future schedule remains `2026-11-05T01:00:00Z`. The update did not publish the story early.
