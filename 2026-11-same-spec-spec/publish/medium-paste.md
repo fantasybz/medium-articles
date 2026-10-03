@@ -28,7 +28,7 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 
 > **TL;DR** — 「把輸入處理改得更穩健」指出了方向，卻還沒回答：沒有訊息、空白文字和錯誤型別，應不應該得到不同結果？本篇寫給文件作者與 Tech Lead，處理多寫一段文字之前的選擇。先找回既有要求；真正沒決定的事，交給有權決定的人；再區分必須遵守的規範、解釋規則的理由與例子、交稿前自查，以及可選的實作建議。文中會拆開正式研究的四份交代：A0 已包含完整目標，A 展開說明，B 增加理由與自查，C 再給一條可選寫法。它們有些差別只影響說明方式，有些卻改變了允許的範圍。四十份程式都通過檢查，仍不能因此替文件排名。讀完之後，你可以用具體輸入檢查一次改寫是否改了要求，將想增加的自查寫成可審查的修改卡，再決定哪些文字只服務這次工作、哪些需要長期維護。下一輪比較尚未執行，修改卡是提案，不是效果已成立的證明。
 
-> 系列導覽：[總論](../2026-11-same-spec-overview/article.md) → **規格篇（本篇）** → [契約篇](../2026-11-same-spec-contract/article.md) → [變異篇](../2026-11-same-spec-variance/article.md)（全系列尚未發布）
+> 系列導覽：[總論](https://medium.com/p/6986ee29219e) → **規格篇（本篇）** → 契約篇（即將發布） → 變異篇（即將發布）
 
 ## 一、「把輸入處理改得更穩健」，還沒回答哪些事
 
@@ -60,7 +60,7 @@ Leslie Lamport 在 2013 年的短文〈Why We Should Build Software Like We Buil
 
 從這兩點，我整理出一個文件作者可以直接使用的問題（這是我的推論，不是他的原文）：只看這份說明、不讀實作，呼叫端知不知道 `text: false` 最後會得到哪個 exit？如果答不出來，先查既有規範與相容責任。答案可能早已決定，只是這份說明漏寫了，這時應補回可追溯的要求；若答案真的尚未決定，才交給有權決定並承擔後果的需求 owner。兩種缺口不能都靠實作者猜測，也不能一概診斷成需求未決。
 
-在前一系列[《綠燈不是驗收》](../2026-10-green-overview/article.md)裡，我一直把產物和支持驗收的依據分開看。回到這支 parser，驗收之前還有一個要釐清的地方：哪些行為已經承諾，哪些仍只是實作者面對的選擇？本系列[總論](../2026-11-same-spec-overview/article.md)把判斷分成三層：需求是否已經決定、這份程式是否做到、這種交代方式是否值得反覆使用。本文把待驗收的程式稱為候選；後面討論文件修改時，也會反覆問「原本合格的候選，修改後還合格嗎？」
+在前一系列[《綠燈不是驗收》](https://medium.com/p/582f24223eea)裡，我一直把產物和支持驗收的依據分開看。回到這支 parser，驗收之前還有一個要釐清的地方：哪些行為已經承諾，哪些仍只是實作者面對的選擇？本系列[總論](https://medium.com/p/6986ee29219e)把判斷分成三層：需求是否已經決定、這份程式是否做到、這種交代方式是否值得反覆使用。本文把待驗收的程式稱為候選；後面討論文件修改時，也會反覆問「原本合格的候選，修改後還合格嗎？」
 
 本篇沿著一次文件修改往下走：先分清每句話的作用，再比較四份真實文件，接著把發現的問題寫成修改卡，最後決定保存與維護方式。正式研究的四份文件都已事先寫出行為目標，所以研究沒有量測需求探索的收益。它能幫我們看見的，是每份交代多了什麼，以及改寫是否夾帶了原本沒打算改的範圍。
 
@@ -141,7 +141,7 @@ EOF 時：
 
 四份文件各生成十份候選。同組十次收到的整包輸入（packet）完全相同，使用 `claude-opus-5-5`、high effort，也就是固定的推理投入設定；模型沒有工具，只能一次交付單一檔案。生成結束後，另一個驗收程式（grader）才檢查候選。102 個案例把完整輸入送完後比對結果，另 1 個 streaming probe 則在 EOF 前觀察訊息是否已送出，合計 103 項。四十份全部通過，操作條件也都成立。
 
-這個結果仍有很大的不確定性。假設各次彼此獨立、分布相同，並共享同一個成功機率，每組 10/10 的雙側 95% Clopper–Pearson 區間約為 69.15% 到 100%；它是按指定統計方法表示估計範圍，不是下一次一定成功的保證。十次全過，仍不足以替四份文件排序（正式結果見 [RESULTS.md](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/RESULTS.md)，推導與限制見本系列[總論](../2026-11-same-spec-overview/article.md)第六節）。
+這個結果仍有很大的不確定性。假設各次彼此獨立、分布相同，並共享同一個成功機率，每組 10/10 的雙側 95% Clopper–Pearson 區間約為 69.15% 到 100%；它是按指定統計方法表示估計範圍，不是下一次一定成功的保證。十次全過，仍不足以替四份文件排序（正式結果見 [RESULTS.md](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/RESULTS.md)，推導與限制見本系列[總論](https://medium.com/p/6986ee29219e)第六節）。
 
 設計本身也限制了能回答的問題。A 相對於 A0，同時增加展開說明、表格、理由與一處範圍說明；B 相對於 A，同時增加理由與自查。就像一次改了食譜中的兩項材料，成品不同時，不能只歸功於其中一項。B／C 原則上可以比較整段 pattern 的增量，仍不能拆出其中哪條建議有效，更不能從結果推測模型的內部想法。本輪四組全過，也沒有提供足以證明這些增量有效的結果。
 
@@ -417,14 +417,14 @@ Böckeler 用三個名稱區分規格的生命週期。**spec-first** 是這次�
 
 ### 系列文章
 
-本系列《同一份規格，跑十次》（全系列尚未發布）：
+本系列《同一份規格，跑十次》：
 
-- [同一份規格，跑十次：我們憑什麼把一種交代變成團隊預設？](../2026-11-same-spec-overview/article.md)
+- [同一份規格，跑十次：我們憑什麼把一種交代變成團隊預設？](https://medium.com/p/6986ee29219e)
 - **規格篇（本篇）**：同一份規格，跑十次（一）：規格篇—先決定要什麼，再決定怎麼交代
-- [同一份規格，跑十次（二）：契約篇—把要求變成驗收，中間還缺哪些判斷？](../2026-11-same-spec-contract/article.md)
-- [同一份規格，跑十次（三）：變異篇—十次都通過，下一筆證據該怎麼找？](../2026-11-same-spec-variance/article.md)
+- 同一份規格，跑十次（二）：契約篇—把要求變成驗收，中間還缺哪些判斷？（即將發布）
+- 同一份規格，跑十次（三）：變異篇—十次都通過，下一筆證據該怎麼找？（即將發布）
 
-前一個系列《綠燈不是驗收》（四篇已完成，尚未發布）：[總論](../2026-10-green-overview/article.md)、[測試篇](../2026-10-green-testing/article.md)、[Review 篇](../2026-10-green-review/article.md)、[可靠度篇](../2026-10-green-reliability/article.md)。
+前一個系列《綠燈不是驗收》：[總論](https://medium.com/p/582f24223eea)、[測試篇](https://medium.com/p/b01055139451)、[Review 篇](https://medium.com/p/ccbf0cbe2691)、[可靠度篇](https://medium.com/p/3c64a9622777)、[付款實作篇](https://medium.com/p/46377fd460fe)。
 
 Agentic Engineering 技術篇（已發布）：〈[Harness 藍圖—把系統變成 agent 讀得懂的地方](https://fantasybz.medium.com/f2a139f5b561)〉。
 
@@ -443,13 +443,13 @@ Agentic Engineering 技術篇（已發布）：〈[Harness 藍圖—把系統變
 11. Kiro — [Specs overview](https://kiro.dev/docs/specs/)，頁面標示 2026-08-27 更新，2026-09-28 存取；參照 requirements-first、design-first、bugfix 與 quick spec 路徑。〔第七節〕
 12. Anthropic — [Demystifying evals for AI agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)，2026-01-09；參照 Capability vs. regression evals 與 Step 7。〔第八節〕
 13. Kochi Chuang — [Harness 藍圖—把系統變成 agent 讀得懂的地方](https://fantasybz.medium.com/f2a139f5b561)，Agentic Engineering 技術篇。〔第十節〕
-14. 本系列研究附件（本機 repo 相對路徑；正式發文前會換成固定版本的公開入口）：[四份凍結 spec](https://github.com/fantasybz/medium-articles/tree/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs)〔第三至五節〕；[正式結果](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/RESULTS.md)〔第三節〕；[規格修改卡](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-change-card.md)〔第八、九節〕；[文件改動評估提案](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md)與[比較計畫範例](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md)〔第八節〕；[規格與契約基礎研究](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-foundations-research.md)〔第七節〕。
+14. 本系列研究附件（以下連結均指向公開 repo 的固定版本）：[四份凍結 spec](https://github.com/fantasybz/medium-articles/tree/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs)〔第三至五節〕；[正式結果](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/RESULTS.md)〔第三節〕；[規格修改卡](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-change-card.md)〔第八、九節〕；[文件改動評估提案](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md)與[比較計畫範例](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md)〔第八節〕；[規格與契約基礎研究](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-foundations-research.md)〔第七節〕。
 
 ### AI 協作說明
 
 - 正式研究的 40 份候選由 `claude-opus-5-5` 產生，設定為 high effort、CLI 2.1.282，無工具，一次生成。研究由 AI 代理協作設計與執行；我提出方向，並閱讀設計與報告。AI 協作不代表外部人員已獨立重現結果。
 - 本稿由 Claude Code（Opus 5.5，max effort）主寫，後續由 Codex 主代理逐段潤飾並核對事實。本稿以 max effort 主寫，與正式研究的 high effort 生成是不同流程。
 - 規格修改卡、第六節的假設錯法與推導、CSV 假設案例，以及寫作、審稿與事後重評等後設教學工作，都不計入正式研究的 40 個生成名額與 103 項檢查，也不計入四組合計約 USD 5.69 的生成費用估計。本文規劃的 P／Q 比較尚未執行。
-- 本稿的主寫、代理審稿、逐段潤飾與語言檢查紀錄，見 [STATUS.md](https://github.com/fantasybz/medium-articles/blob/organize-research-topics/research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md)。
+- 本稿的主寫、代理審稿、逐段潤飾與語言檢查紀錄，見 [STATUS.md](https://github.com/fantasybz/medium-articles/blob/main/research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md)。
 
 *Kochi Chuang（莊軻齊）｜Medium @fantasybz*

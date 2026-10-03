@@ -28,7 +28,7 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 
 > **TL;DR** — 團隊替 agent 補了一段交稿前自查，下一次修補就通過驗收。這段自查值得放進所有同類工作的預設範本嗎？本篇先拆開三個問題：該怎麼做是否已經決定、這份程式是否做到，以及新增自查能否讓之後的交付更好。每個問題需要不同的證據。需求沒決定，先找有權決定的人；檢查方式有錯，先修正判斷依據。這兩種工作都不必等待方法比較。真正需要比較的，是要求不變時，額外自查能否改善交付，以及改善是否足以抵銷新增費用與人工投入。本系列使用自己 repo 裡的一支事件處理工具作研究：四種交代各生成十份程式，四十份都通過 103 項檢查；這批結果仍不足以判定哪種交代較好。本文會先說明研究為何值得做，再用 CSV 匯出的例子，帶你判斷眼前該補需求、修驗收，還是另設比較。最後把一段自查整理成可審閱的提案，說清楚何時只能小範圍試行、何時才有理由採為預設，以及誰負責維護和重新檢視。
 
-> 系列導覽：**總論（本篇）** → [規格篇](../2026-11-same-spec-spec/article.md) → [契約篇](../2026-11-same-spec-contract/article.md) → [變異篇](../2026-11-same-spec-variance/article.md)（全系列尚未發布）
+> 系列導覽：**總論（本篇）** → 規格篇（即將發布） → 契約篇（即將發布） → 變異篇（即將發布）
 
 ## 一、工作坊那次落差之後，問題換了對象
 
@@ -360,14 +360,14 @@ QA lead 負責第二層：建立能拒絕已知錯法、也接受合法差異的
 
 ### 系列文章
 
-本系列《同一份規格，跑十次》（全系列尚未發布）：
+本系列《同一份規格，跑十次》：
 
 - **總論（本篇）**：同一份規格，跑十次：我們憑什麼把一種交代變成團隊預設？
-- [同一份規格，跑十次（一）：規格篇—先決定要什麼，再決定怎麼交代](../2026-11-same-spec-spec/article.md)
-- [同一份規格，跑十次（二）：契約篇—把要求變成驗收，中間還缺哪些判斷？](../2026-11-same-spec-contract/article.md)
-- [同一份規格，跑十次（三）：變異篇—十次都通過，下一筆證據該怎麼找？](../2026-11-same-spec-variance/article.md)
+- 同一份規格，跑十次（一）：規格篇—先決定要什麼，再決定怎麼交代（即將發布）
+- 同一份規格，跑十次（二）：契約篇—把要求變成驗收，中間還缺哪些判斷？（即將發布）
+- 同一份規格，跑十次（三）：變異篇—十次都通過，下一筆證據該怎麼找？（即將發布）
 
-前一個系列《綠燈不是驗收》（四篇已完成，尚未發布）：[總論](../2026-10-green-overview/article.md)、[測試篇](../2026-10-green-testing/article.md)、[Review 篇](../2026-10-green-review/article.md)、[可靠度篇](../2026-10-green-reliability/article.md)。
+前一個系列《綠燈不是驗收》：[總論](https://medium.com/p/582f24223eea)、[測試篇](https://medium.com/p/b01055139451)、[Review 篇](https://medium.com/p/ccbf0cbe2691)、[可靠度篇](https://medium.com/p/3c64a9622777)、[付款實作篇](https://medium.com/p/46377fd460fe)。
 
 Agentic Engineering 技術篇（已發布）：〈[Harness 藍圖—把系統變成 agent 讀得懂的地方](https://fantasybz.medium.com/f2a139f5b561)〉。
 
@@ -384,13 +384,13 @@ Agentic Engineering 技術篇（已發布）：〈[Harness 藍圖—把系統變
 9. METR — [2025 年 7 月的開發者隨機對照研究](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/)，2025-07-10；頁面已標示結果過時，本文參考其如何界定完成點。〔第九節〕
 10. METR — [2026 年 2 月的 uplift 研究更新](https://metr.org/blog/2026-02-24-uplift-update/)，2026-02-24；本文引用作者對選擇效應與工時歸屬問題的說明。〔第九節〕
 11. Kochi Chuang — [Harness 藍圖—把系統變成 agent 讀得懂的地方](https://fantasybz.medium.com/f2a139f5b561)，Agentic Engineering 技術篇。〔第二節〕
-12. 本系列研究附件（本機 repo 相對路徑；正式發文前會換成固定版本的公開入口）：[正式研究結果與封存入口](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/RESULTS.md)〔第六、七節〕；[文件改動評估提案](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md)〔第九節〕；[比較計畫範例](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md)〔第九、十節〕；CSV 教學重播的[程式](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv_transfer.py)、[結果檔](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer-results.json)與[自測](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/test_csv_transfer.py)〔第八節〕。
+12. 本系列研究附件（以下連結均指向公開 repo 的固定版本）：[正式研究結果與封存入口](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/RESULTS.md)〔第六、七節〕；[文件改動評估提案](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md)〔第九節〕；[比較計畫範例](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md)〔第九、十節〕；CSV 教學重播的[程式](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv_transfer.py)、[結果檔](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer-results.json)與[自測](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/test_csv_transfer.py)〔第八節〕。
 
 ### AI 協作說明
 
 - 正式研究的 40 份候選由 `claude-opus-5-5` 產生，設定為 high effort、CLI 2.1.282、無工具、一次生成。研究由 AI 代理協作設計與執行；我提出方向，並閱讀設計與報告。AI 協作不等於外部人員已獨立重現結果。
 - 本稿由 Claude Code（Opus 5.5，max effort）主寫，後續由 Codex 主代理逐段潤飾並核對事實。本稿的 max effort 主寫，與正式研究的 high effort 生成屬於不同流程。
 - CSV 教學重播、A0 兩份候選的靜態閱讀、事後重評，以及寫作與審稿過程，都不計入正式研究的 40 個生成名額、103 項檢查，也不計入 USD 5.69 的生成費用估計。文中提案與比較計畫均尚未執行。
-- 本稿的主寫、代理審稿、逐段潤飾與語言檢查紀錄，見 [STATUS.md](https://github.com/fantasybz/medium-articles/blob/organize-research-topics/research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md)。
+- 本稿的主寫、代理審稿、逐段潤飾與語言檢查紀錄，見 [STATUS.md](https://github.com/fantasybz/medium-articles/blob/main/research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md)。
 
 *Kochi Chuang（莊軻齊）｜Medium @fantasybz*

@@ -2,7 +2,7 @@
 
 > **TL;DR** — 一支工具把數字 `123` 當成審查文字，最後還回報成功。修補後，四十份程式全部通過檢查；但這次的綠燈，又看得見哪些錯誤？本篇寫給 QA、驗收工具作者與程式審查者，處理從一句要求到一個檢查之間的判斷。先用三行輸入，逐步算出應有的正常輸出、診斷與結束狀態；再放進幾份刻意改錯的程式，看量尺會不會漏掉錯誤，也會不會錯怪合法的寫法。讀者會看到：只查最後結果，可能漏掉「過程中就該送出」的訊息；只要求格式相同，也可能錯拒內容正確的 CSV。最後將要求、推導與尚未涵蓋的部分寫成義務表，讓下一位接手者知道，眼前的紅燈該修檢查、拒絕程式，還是請負責人補上一項尚未決定的要求。文中用來教學的刻意錯法與 CSV 重播，都在研究結束後才建立，不增加正式研究的模型樣本。
 
-> 系列導覽：[總論](../2026-11-same-spec-overview/article.md) → [規格篇](../2026-11-same-spec-spec/article.md) → **契約篇（本篇）** → [變異篇](../2026-11-same-spec-variance/article.md)（全系列尚未發布）
+> 系列導覽：[總論](https://medium.com/p/6986ee29219e) → [規格篇](https://medium.com/p/fc5ed5fce443) → **契約篇（本篇）** → 變異篇（即將發布）
 
 ## 一、兩盞綠燈，各自省略了什麼
 
@@ -519,7 +519,7 @@ reviewer 用這張表判斷綠燈的範圍。若候選改動落在「仍未證�
 
 前面九節都在處理同一件事：oracle 要看見什麼，才能判斷一份候選。隔離、凍結與版本管理放在這之後談，是因為它們要防止候選取得答案，也要讓每次判定能追溯到所用的量尺。先知道量尺要守住什麼，才知道哪些東西必須隔開。
 
-第一件事是來源隔離。產生候選的一方若讀得到預期值或 grader，通過驗收就可能只是抄到答案。可以使用工具的 agent 工作階段（session），甚至可能修改測試本身；《綠燈不是驗收》的〈[測試篇](../2026-10-green-testing/article.md)〉處理的就是這類情況。正式研究的模型沒有工具，只能一次交付單一檔案。這界定生成階段能取得的資訊，仍要配合封存的輸入與操作紀錄核對。
+第一件事是來源隔離。產生候選的一方若讀得到預期值或 grader，通過驗收就可能只是抄到答案。可以使用工具的 agent 工作階段（session），甚至可能修改測試本身；《綠燈不是驗收》的〈[測試篇](https://medium.com/p/b01055139451)〉處理的就是這類情況。正式研究的模型沒有工具，只能一次交付單一檔案。這界定生成階段能取得的資訊，仍要配合封存的輸入與操作紀錄核對。
 
 外部驗收時，候選程式另受 macOS Seatbelt 的權限限制。研究實際嘗試了三件越界操作：讀取受保護的測試檔、寫入檔案、在本機開啟網路監聽，三項都遭拒絕。那個測試讀取限制的檔案叫 oracle canary，不是真正的 grader。這三項探測只能說明測過的通道；也不能用執行時的限制，反推生成端從未看過答案。
 
@@ -602,14 +602,14 @@ owner 回答之後，才推導預期值、更新 oracle 版本並重評。如果
 
 ### 系列文章
 
-本系列《同一份規格，跑十次》（全系列尚未發布）：
+本系列《同一份規格，跑十次》：
 
-- [同一份規格，跑十次：我們憑什麼把一種交代變成團隊預設？](../2026-11-same-spec-overview/article.md)
-- [同一份規格，跑十次（一）：規格篇—先決定要什麼，再決定怎麼交代](../2026-11-same-spec-spec/article.md)
+- [同一份規格，跑十次：我們憑什麼把一種交代變成團隊預設？](https://medium.com/p/6986ee29219e)
+- [同一份規格，跑十次（一）：規格篇—先決定要什麼，再決定怎麼交代](https://medium.com/p/fc5ed5fce443)
 - **契約篇（本篇）**：同一份規格，跑十次（二）：契約篇—把要求變成驗收，中間還缺哪些判斷？
-- [同一份規格，跑十次（三）：變異篇—十次都通過，下一筆證據該怎麼找？](../2026-11-same-spec-variance/article.md)
+- 同一份規格，跑十次（三）：變異篇—十次都通過，下一筆證據該怎麼找？（即將發布）
 
-前一個系列《綠燈不是驗收》（四篇已完成，尚未發布）：[總論](../2026-10-green-overview/article.md)、[測試篇](../2026-10-green-testing/article.md)、[Review 篇](../2026-10-green-review/article.md)、[可靠度篇](../2026-10-green-reliability/article.md)。
+前一個系列《綠燈不是驗收》：[總論](https://medium.com/p/582f24223eea)、[測試篇](https://medium.com/p/b01055139451)、[Review 篇](https://medium.com/p/ccbf0cbe2691)、[可靠度篇](https://medium.com/p/3c64a9622777)、[付款實作篇](https://medium.com/p/46377fd460fe)。
 
 ### References
 
@@ -625,13 +625,13 @@ owner 回答之後，才推導預期值、更新 oracle 版本並重評。如果
 10. arXiv 2609.11076v1 — [SaltBench](https://arxiv.org/html/2609.11076v1)；參照 §2.1、§3.1–3.6 與 §8。〔第十、十一節〕
 11. Anthropic — [Demystifying evals for AI agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)，2026-01-09；參照 Capability vs. regression evals。〔第十節〕
 12. Matt Wynne, Cucumber — [Introducing Example Mapping](https://cucumber.io/blog/bdd/example-mapping-introduction/)，2015-12-08；參照 Known unknowns。〔第十一節〕
-13. 本系列研究附件（本機 repo 相對路徑；正式發文前會換成固定版本的公開入口）：[R01–R13 凍結原文](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json)〔第三節〕；[契約教學 workbench 說明](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/README.md)、[實際輸出紀錄](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/observed-results.json)與[結果摘要](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/RESULTS.md)〔第三至七、十節〕；[初版 workbench 紀錄](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/runs/initial-results.json)〔第七節〕；[CSV 教學重播說明](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer.md)、[結果檔](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer-results.json)與[自測](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/test_csv_transfer.py)〔第八節〕；[驗收義務表與空白範本](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/obligations.md)〔第九節〕；[正式執行 manifest](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/manifest.json)與[凍結結果摘要](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json)〔第一、五、十節〕。
+13. 本系列研究附件（以下連結均指向公開 repo 的固定版本）：[R01–R13 凍結原文](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json)〔第三節〕；[契約教學 workbench 說明](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/README.md)、[實際輸出紀錄](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/observed-results.json)與[結果摘要](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/RESULTS.md)〔第三至七、十節〕；[初版 workbench 紀錄](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/runs/initial-results.json)〔第七節〕；[CSV 教學重播說明](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer.md)、[結果檔](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer-results.json)與[自測](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/test_csv_transfer.py)〔第八節〕；[驗收義務表與空白範本](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/obligations.md)〔第九節〕；[正式執行 manifest](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/manifest.json)與[凍結結果摘要](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json)〔第一、五、十節〕。
 
 ### AI 協作說明
 
 - 正式研究的 40 份候選由 `claude-opus-5-5` 產生，使用 high effort 與 CLI 2.1.282；生成時不提供工具，每份候選都是一次生成完成。每份候選接受 102 個批次案例與 1 個 EOF 前 probe 的檢查。研究由 AI 代理協作設計與執行；我提出研究方向，並閱讀設計與報告。AI 協作不等於外部人員已獨立重現結果。
 - 契約教學 workbench（8 份 fixture、26 項自我檢查、3 項 oracle 單元測試）與 CSV 教學重播（11 項自測），都是 2026-09-28 研究完成後新增的後設教學，由 AI 代理協作建立並重播。它們沒有呼叫模型，不計入正式研究的 40 個生成名額、103 項檢查，也不計入約 USD 5.69 的 CLI 牌價生成費用估計。stderr 比對示意經審稿發現 CR 誤收後修訂，並另做有限的固定字串查核；property 與 CSV 示意本身未執行，查核均不加入原實驗或 workbench 的計數。
 - 本稿由 Claude Code（Opus 5.5，max effort）主寫，後續由 Codex 主代理逐段潤飾並核對事實。以 max effort 主寫本稿，與正式研究以 high effort 生成候選，屬於不同流程；寫作、審稿與事後重評都不計入正式樣本或生成費用。
-- 本輪寫作、逐段修訂、語言與發布包檢查紀錄見 [STATUS.md](https://github.com/fantasybz/medium-articles/blob/organize-research-topics/research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md)。
+- 本輪寫作、逐段修訂、語言與發布包檢查紀錄見 [STATUS.md](https://github.com/fantasybz/medium-articles/blob/main/research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md)。
 
 *Kochi Chuang（莊軻齊）｜Medium @fantasybz*
