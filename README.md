@@ -19,7 +19,7 @@ Medium articles by [@fantasybz](https://medium.com/@fantasybz) — long-form pos
 
 「同一份規格，跑十次」已依十月份《綠燈不是驗收》的論證與敘事基準全面重寫：[總論](2026-11-same-spec-overview/article.md)、[規格篇](2026-11-same-spec-spec/article.md)、[契約篇](2026-11-same-spec-contract/article.md)、[變異篇](2026-11-same-spec-variance/article.md)。四篇由 Claude Code Opus 5.5 `max` 主寫；10/03 再依作者試讀意見，由 Codex 主代理補足概念例子、逐段主軸與銜接。最新正文與貼稿均通過 strict zh-TW MCP 及本機發布包檢查，全系列尚未發布。見[讀者回饋修訂](research/2026-10/same-spec-ten-runs/readability-2026-10-03/README.md)、[研究背景](research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/README.md)與[成稿狀態](research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md)。
 
-四份實驗規格的原文與比較另見 [A0／A／B／C 全文與逐行差異導讀](research/experiments/same-spec-ten-runs/SPECS.md)，包含三組 diff 與完整 task packet。總論、規格篇與變異篇已補上明顯入口，最新版本驗證見[全文入口修訂紀錄](research/2026-10/same-spec-ten-runs/spec-access-2026-10-03.md)。
+四份實驗規格的原文與比較另見 [A0／A／B／C 全文與逐行差異導讀](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/SPECS.md)，包含三組 diff 與完整 task packet。總論、規格篇與變異篇已補上明顯入口，最新版本與公開連結驗證見[公開附件紀錄](research/2026-10/same-spec-ten-runs/public-links-2026-10-03.md)。
 
 ## Structure
 

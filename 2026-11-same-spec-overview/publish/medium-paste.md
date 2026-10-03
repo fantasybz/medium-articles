@@ -142,7 +142,7 @@ Birgitta Böckeler 分析幾種由規格引導開發的工具時，區分了兩�
 
 研究準備了四份交代，共用同一個 seed，以及十三條要求 R01–R13。A0 有 936 個英文字詞，內容精簡，但已經包含 R01–R13 的完整目標，不是只有一句概述想完成工作的 user story。A 有 1,655 詞，逐項展開要求，附上固定輸出與表格，部分條文也說明了理由。B 有 1,923 詞，由 A 全文加上集中說明的理由與六組交稿前自查組成。C 有 2,223 詞，由 B 全文加上一段可選的實作安排建議，稱為 pattern 組成。詞數依空白切分，包含標題與程式區塊，不含起始程式碼。它也不是 token 數；token 是模型處理文字時使用的切分單位，和按空白計算英文字詞是兩種計數。
 
-四份實際使用的英文 spec 全文可直接閱讀：[A0 精簡版](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md)、[A 展開版](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md)、[B 加理由與自查](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md)、[C 加可選實作建議](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md)。[全文與逐行差異導讀](../research/experiments/same-spec-ten-runs/SPECS.md)整理了閱讀順序，也指出 A0 與 A 另有一處 CLI 選項的範圍差異；篇幅之外，仍要核對措辭是否改了要求。
+四份實際使用的英文 spec 全文可直接閱讀：[A0 精簡版](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md)、[A 展開版](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md)、[B 加理由與自查](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md)、[C 加可選實作建議](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md)。[全文與逐行差異導讀](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/SPECS.md)整理了閱讀順序，也指出 A0 與 A 另有一處 CLI 選項的範圍差異；篇幅之外，仍要核對措辭是否改了要求。
 
 研究把一次送給模型的任務說明與起始程式碼合稱為 packet，也就是整包輸入。四份 spec 分別放進各組 packet，作為其中的規格部分。每組有十份候選，組內十次收到的整包文字完全相同；四組之間則各不相同。所以研究並不是把同一份 prompt 執行四十次。四十個名額事先排定，沒有重試、修復、替補或事後追加樣本；全部生成完成後，才進入共同的外部驗收。
 
@@ -180,7 +180,7 @@ Birgitta Böckeler 分析幾種由規格引導開發的工具時，區分了兩�
 
 還有些條件無法完全固定。供應商內部帶給模型的上下文、控制輸出抽樣的 temperature 與 random seed，以及完整的作業系統狀態，都不在本研究可鎖定的範圍。計畫在執行前已於本機封存，但未向第三方預先登記；不能把本機紀錄當成第三方預註冊。
 
-隔離機制另用三項越界探測，確認嘗試讀取 oracle 檔案、寫入檔案與綁定本機網路位址 localhost 會遭拒絕，仍不能證明所有通道都已封住。正式執行前用來試走流程的兩次先導試行（pilot），以及檢查停止路徑的探測，也不計入正式資料。細節可在[正式研究結果](../research/experiments/same-spec-ten-runs/RESULTS.md)核對。這些限制共同劃出結論的範圍：本輪提供這四份交代所產生的候選，滿足既定 103 項檢查的結果；它沒有替「哪種交代值得成為預設」作出答案。接下來要看的，是全數通過之後，這批程式還能提供什麼資訊。
+隔離機制另用三項越界探測，確認嘗試讀取 oracle 檔案、寫入檔案與綁定本機網路位址 localhost 會遭拒絕，仍不能證明所有通道都已封住。正式執行前用來試走流程的兩次先導試行（pilot），以及檢查停止路徑的探測，也不計入正式資料。細節可在[正式研究結果](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/RESULTS.md)核對。這些限制共同劃出結論的範圍：本輪提供這四份交代所產生的候選，滿足既定 103 項檢查的結果；它沒有替「哪種交代值得成為預設」作出答案。接下來要看的，是全數通過之後，這批程式還能提供什麼資訊。
 
 ## 七、全部通過之後：合法差異、上限與回歸資產
 
@@ -256,7 +256,7 @@ name,date,note
 
 這不只是 CSV 會遇到的問題。EvalPlus 在 164 個 HumanEval Python 函式任務、26 個模型上擴充測試，找出了原有測試沒有辨識出的錯誤，甚至改變了模型之間的排序。同一批程式放在保護力不同的驗收下，得到了不同的判斷。這項研究也用前置條件檢查（precondition assertions）界定哪些輸入在題目承諾處理的範圍內，因為測試輸入同樣必須遵守契約，不能拿契約未定義的輸入，處罰不同但合理的實作（[EvalPlus, arXiv 2305.01210v3](https://arxiv.org/html/2305.01210v3)，§2.3、§3）。HumanEval 的小函式不等於 repo 裡的 agent 工作，增加測試也不能證明程式完整正確。這項研究提醒的是順序：比較任何交代方式之前，先確認量尺能拒絕已知錯法，也不會誤拒合法差異。
 
-這次重播可以自行核對。[csv_transfer.py](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv_transfer.py) 會產生六份輸出，並執行三種判斷；[結果檔](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer-results.json) 保存每份輸出的 bytes 與 SHA-256；[自測](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/test_csv_transfer.py) 共 11 項，在 CPython 3.14.5 上全數通過。這次重播沒有驗證日期格式轉換、其他 CSV dialect 或整套匯出工具；這 11 項也不屬於正式研究的 40 個名額或 103 項檢查。
+這次重播可以自行核對。[csv_transfer.py](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv_transfer.py) 會產生六份輸出，並執行三種判斷；[結果檔](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer-results.json) 保存每份輸出的 bytes 與 SHA-256；[自測](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/test_csv_transfer.py) 共 11 項，在 CPython 3.14.5 上全數通過。這次重播沒有驗證日期格式轉換、其他 CSV dialect 或整套匯出工具；這 11 項也不屬於正式研究的 40 個名額或 103 項檢查。
 
 走完這一遍，CSV 案例先補好了前兩層缺口：owner 決定政策，QA 修好 oracle，再回到候選的驗收與原本的核准流程。團隊只要處理這次匯出工具的修補，沒有要把額外自查推成預設，就不必走向方法比較。圖中最後一個「否」，因此成為有理由的結案。
 
@@ -266,7 +266,7 @@ name,date,note
 
 下面以 parser 為背景示範。先用白話說這份提案：P 組照完整規格工作；Q 組收到同一份規格，另加事前核定的自查。我們想知道，多這一段自查，是否讓合格交付增加，又增加多少人的工作。
 
-這裡要把歷史事實和下一輪設計分開：原本四十次，是無工具的一次生成；下一輪則規劃讓 agent 在固定預算內使用工具、自行檢查與修正。從領到任務到這次交付結束的整段工作，稱為一個 session；中途改了幾次程式，仍是同一次工作。這個比較**目前尚未執行**。下面的 YAML 只是把提案寫成欄位紀錄，不是貼上就能啟動實驗的設定檔；先看為何比較、改了什麼，再看如何記錄與決定。完整版本與可填寫範本見[文件改動評估提案](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md)。
+這裡要把歷史事實和下一輪設計分開：原本四十次，是無工具的一次生成；下一輪則規劃讓 agent 在固定預算內使用工具、自行檢查與修正。從領到任務到這次交付結束的整段工作，稱為一個 session；中途改了幾次程式，仍是同一次工作。這個比較**目前尚未執行**。下面的 YAML 只是把提案寫成欄位紀錄，不是貼上就能啟動實驗的設定檔；先看為何比較、改了什麼，再看如何記錄與決定。完整版本與可填寫範本見[文件改動評估提案](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md)。
 
 ```yaml
 # 文件改動評估提案（設計範例，尚未執行；欄位節錄，全文見附件）
@@ -288,7 +288,7 @@ next_decision: 達預定名額或成本／日期界線時依事前規則檢視�
 
 介入條件只保留一個新增成分。原研究的 B 同時加入集中理由與六組自查；即使 B 表現較好，也無法判斷是哪一段發揮了作用。所以 Q 只在 P 上加入六點自查，不帶 B 的集中理由，也不帶 C 的 pattern。
 
-不過，parser 的六題含有 EOF、token 與錯誤事件規則，不能直接貼到其他工具。跨任務比較前，還要固定[自查改寫政策](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/self-check-transfer-policy.md)：每道自查只對應該任務 P 已揭露的要求，沒有對應就依事前規則標成不適用，不用 Q 偷偷新增義務。各 task 都要先核對 P、Q 的差異並封存，同題同條件的重複使用相同文字。這樣比較的是改寫政策的整體效果，把每條自查對應到各題要求的人工整理工作，以及後續維護，也須計入成本。全體任務的映射與輸入文件尚未完成，所以提案仍不能直接交給執行器。
+不過，parser 的六題含有 EOF、token 與錯誤事件規則，不能直接貼到其他工具。跨任務比較前，還要固定[自查改寫政策](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/self-check-transfer-policy.md)：每道自查只對應該任務 P 已揭露的要求，沒有對應就依事前規則標成不適用，不用 Q 偷偷新增義務。各 task 都要先核對 P、Q 的差異並封存，同題同條件的重複使用相同文字。這樣比較的是改寫政策的整體效果，把每條自查對應到各題要求的人工整理工作，以及後續維護，也須計入成本。全體任務的映射與輸入文件尚未完成，所以提案仍不能直接交給執行器。
 
 交付政策改成可以使用工具的 session，是為了貼近團隊打算採用的工作流程；原研究只量測無工具的一次生成，不能替這個流程背書。這裡的「相同工具」，指相同的可用工具、權限與預算，不是要求 P 與 Q 必須做出完全相同的工具呼叫序列。自查如果讓 agent 多執行幾次公開檢查，這很可能就是它發揮作用的途徑，應該記錄下來，不必事先排除。但即使保留了工具呼叫與執行過程的紀錄（trace），也不能從中讀出模型的心理成因。
 
@@ -318,7 +318,7 @@ next_decision: 達預定名額或成本／日期界線時依事前規則檢視�
 
 人力是另一項必須另外成立的條件。假設提案要求，每份最終合格交付新增的人工時間，區間上界不能超過 2 分鐘。如果效果區間是 [+6, +9]，人工時間上界是 1.8 分鐘，其他事前設定的成本條件也成立，才支持採用。如果人工時間上界是 2.4 分鐘，就還不能確認人力符合上限。如果人工時間下界已經超過 2 分鐘，表示人力負擔超出上限，目前不採用；但這不能用來說明文件沒有改善效果。這些人工時間數字同樣只是示例。
 
-還有一條界線要分清。單份候選若違反保序、保留重複列這類已約定的要求，就拒絕那一份，不能用其他項目的得分抵銷。方法比較則要如實保存每次試行的通過與失敗，不能在事後另外加上「觀測必須零失敗」的門檻。至於越權、驗收被改動、補救負擔超出可承擔範圍等方法層級的必要條件與暫停規則，owner 要在看到結果之前另外定好，而且不能被平均改善抵銷。分派細節、停止規則與空白範本，請見[比較計畫範例](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md)。
+還有一條界線要分清。單份候選若違反保序、保留重複列這類已約定的要求，就拒絕那一份，不能用其他項目的得分抵銷。方法比較則要如實保存每次試行的通過與失敗，不能在事後另外加上「觀測必須零失敗」的門檻。至於越權、驗收被改動、補救負擔超出可承擔範圍等方法層級的必要條件與暫停規則，owner 要在看到結果之前另外定好，而且不能被平均改善抵銷。分派細節、停止規則與空白範本，請見[比較計畫範例](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md)。
 
 ## 十、三種出口：先試走流程、小範圍試行，或採為預設
 
@@ -384,13 +384,13 @@ Agentic Engineering 技術篇（已發布）：〈[Harness 藍圖—把系統變
 9. METR — [2025 年 7 月的開發者隨機對照研究](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/)，2025-07-10；頁面已標示結果過時，本文參考其如何界定完成點。〔第九節〕
 10. METR — [2026 年 2 月的 uplift 研究更新](https://metr.org/blog/2026-02-24-uplift-update/)，2026-02-24；本文引用作者對選擇效應與工時歸屬問題的說明。〔第九節〕
 11. Kochi Chuang — [Harness 藍圖—把系統變成 agent 讀得懂的地方](https://fantasybz.medium.com/f2a139f5b561)，Agentic Engineering 技術篇。〔第二節〕
-12. 本系列研究附件（本機 repo 相對路徑；正式發文前會換成固定版本的公開入口）：[正式研究結果與封存入口](../research/experiments/same-spec-ten-runs/RESULTS.md)〔第六、七節〕；[文件改動評估提案](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md)〔第九節〕；[比較計畫範例](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md)〔第九、十節〕；CSV 教學重播的[程式](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv_transfer.py)、[結果檔](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer-results.json)與[自測](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/test_csv_transfer.py)〔第八節〕。
+12. 本系列研究附件（本機 repo 相對路徑；正式發文前會換成固定版本的公開入口）：[正式研究結果與封存入口](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/RESULTS.md)〔第六、七節〕；[文件改動評估提案](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md)〔第九節〕；[比較計畫範例](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md)〔第九、十節〕；CSV 教學重播的[程式](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv_transfer.py)、[結果檔](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer-results.json)與[自測](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/test_csv_transfer.py)〔第八節〕。
 
 ### AI 協作說明
 
 - 正式研究的 40 份候選由 `claude-opus-5-5` 產生，設定為 high effort、CLI 2.1.282、無工具、一次生成。研究由 AI 代理協作設計與執行；我提出方向，並閱讀設計與報告。AI 協作不等於外部人員已獨立重現結果。
 - 本稿由 Claude Code（Opus 5.5，max effort）主寫，後續由 Codex 主代理逐段潤飾並核對事實。本稿的 max effort 主寫，與正式研究的 high effort 生成屬於不同流程。
 - CSV 教學重播、A0 兩份候選的靜態閱讀、事後重評，以及寫作與審稿過程，都不計入正式研究的 40 個生成名額、103 項檢查，也不計入 USD 5.69 的生成費用估計。文中提案與比較計畫均尚未執行。
-- 本稿的主寫、代理審稿、逐段潤飾與語言檢查紀錄，見 [STATUS.md](../research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md)。
+- 本稿的主寫、代理審稿、逐段潤飾與語言檢查紀錄，見 [STATUS.md](https://github.com/fantasybz/medium-articles/blob/organize-research-topics/research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md)。
 
 *Kochi Chuang（莊軻齊）｜Medium @fantasybz*

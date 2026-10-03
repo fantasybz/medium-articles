@@ -29,7 +29,7 @@
 
 省略其中任何一步，綠燈就可能代表別的意思；紅燈也可能錯怪合法的候選。全文沿這六個判斷往下走：先推一題答案，再查量尺的盲點，最後把推導與缺口交給下一位接手者。
 
-為了讓這些判斷可以重做，研究完成後另外建立了[教學 workbench](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/README.md)，也就是一組可重播的程式、輸入與檢查。裡面有一份在指定案例上已核對答案的參考實作（reference），六份刻意改錯的版本，以及一份只改診斷用字的合法版本。這八份固定供測試使用的程式，後文稱為 fixture。它們沒有呼叫模型，也不替正式研究增加樣本。
+為了讓這些判斷可以重做，研究完成後另外建立了[教學 workbench](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/README.md)，也就是一組可重播的程式、輸入與檢查。裡面有一份在指定案例上已核對答案的參考實作（reference），六份刻意改錯的版本，以及一份只改診斷用字的合法版本。這八份固定供測試使用的程式，後文稱為 fixture。它們沒有呼叫模型，也不替正式研究增加樣本。
 
 ## 二、oracle：誰依什麼判斷對錯，又會在哪裡看錯
 
@@ -66,7 +66,7 @@ HumanEval 以小函式為主，與 repo 裡的工作相距很遠，測試多了�
 
 ## 三、先讀規則，再推一次：`false` 之後還有 `after`
 
-這一節請你自己推導一次預期值。先讀幾條規則；R02、R03 等是要求編號，讓每一步都有原文可查。讀下面這張清單時，先記住兩件事：壞資料要留下診斷，後面的好資料仍要處理。其中「實體行號」從實際輸入逐行數，空行也占一號；flush 則是立即把已寫出的資料送給呼叫端，不留在程式緩衝區。以下是本節要用的六條規則；凍結的原文見 [R01–R13](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json)。
+這一節請你自己推導一次預期值。先讀幾條規則；R02、R03 等是要求編號，讓每一步都有原文可查。讀下面這張清單時，先記住兩件事：壞資料要留下診斷，後面的好資料仍要處理。其中「實體行號」從實際輸入逐行數，空行也占一號；flush 則是立即把已寫出的資料送給呼叫端，不留在程式緩衝區。以下是本節要用的六條規則；凍結的原文見 [R01–R13](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json)。
 
 - **R02**：每行先解碼成 JSON。空行與無法解碼的文字會直接略過，但仍計入實體行號。解碼後若不是物件（例如 `[]`），就算 malformed。
 - **R03**：每個 malformed 行都要在 stderr 留下恰好一則診斷，格式為 `[codex malformed event] line N: REASON`。N 是實體行號，REASON 是非空的單行原因。之後程式繼續讀下一行，這一行不產生其他效果（`turn.failed` 另有例外，本文用不到）。
@@ -407,7 +407,7 @@ oracle 本身也是程式，也可能寫錯。拿它判斷候選之前，我會�
 
 前一節擴大的是「拿什麼輸入來問」。這一節回頭檢查「問的人會不會判錯」；兩者要一起做，新增案例才有意義。
 
-workbench 的演進，正好說明第一種輸入為什麼不能省略。初版只有 reference 與六種錯法，共 7 份 fixture、23 項自我檢查。它能檢查 oracle 是否拒絕這些錯法，卻缺少一份用字不同的合法實作，無法確認 oracle 會不會誤拒。後來的版本加入合法的 REASON 改寫，重新執行後共有 26 項檢查。這份正對照能用來檢查 oracle 是否太嚴。兩版紀錄都[保留在附件](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/runs/initial-results.json)裡，但不相加成新的研究樣本。
+workbench 的演進，正好說明第一種輸入為什麼不能省略。初版只有 reference 與六種錯法，共 7 份 fixture、23 項自我檢查。它能檢查 oracle 是否拒絕這些錯法，卻缺少一份用字不同的合法實作，無法確認 oracle 會不會誤拒。後來的版本加入合法的 REASON 改寫，重新執行後共有 26 項檢查。這份正對照能用來檢查 oracle 是否太嚴。兩版紀錄都[保留在附件](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/runs/initial-results.json)裡，但不相加成新的研究樣本。
 
 workbench 另外有 3 項 oracle 單元測試，直接檢查比對規則本身。它們確認 oracle 會接受合法的診斷用字差異，也會拒絕缺行、多行、空原因、錯行號，以及任何一個出口的錯誤。
 
@@ -435,7 +435,7 @@ PIT 也把結果分成變化未被測試攔下的 Survived、沒被執行到的 
 
 ## 八、換一個任務：CSV 匯出的語義 oracle
 
-沿著同一套判斷換個任務，較容易看出哪些步驟能沿用、哪些要重做。下面沿用總論的 CSV 假設案例，照前面的六個判斷走一次。這是教學假設，不是作者 repo 裡的第二個正式研究任務。[教學重播](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer.md)只使用固定資料與 Python 標準函式庫，沒有發出模型請求。
+沿著同一套判斷換個任務，較容易看出哪些步驟能沿用、哪些要重做。下面沿用總論的 CSV 假設案例，照前面的六個判斷走一次。這是教學假設，不是作者 repo 裡的第二個正式研究任務。[教學重播](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer.md)只使用固定資料與 Python 標準函式庫，沒有發出模型請求。
 
 **要求與決定。** CSV 匯出工具新增了日期欄格式化，呼叫端要求保留輸入列的順序與重複列。先查既有契約，若 null 日期的處理政策確實尚未決定，就交給 owner，測試作者不能替它選答案。假設 owner 決定 null 日期輸出空欄，並與負責驗收的人（QA owner）確認三個格式條件：標題列（header）固定為 `name,date,note`；每筆資料紀錄（record）可以用 LF 或 CRLF 結束；前者是一個換行字元，後者先用 CR 將游標移回行首，再加上 LF 換行字元；欄位內容中的逗號與換行都要保留。
 
@@ -492,7 +492,7 @@ def semantic_ok(data: bytes) -> bool:
 
 ## 九、義務表：把推導、缺口與 owner 交給下一位接手者
 
-前面的推導如果只留在寫測試的人腦中，下一位接手者只看得到一排通過的案例名稱。義務表的用途，就是把這些判斷寫下來。下表節錄自附件的[已填範例](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/obligations.md)。閱讀時，請沿同一列往右看：先由要求推出可觀察的結果，再看 oracle 保留了哪些自由、能分辨哪些已知錯法。最右欄最重要，它記下這一列通過之後，仍然沒有被證明的事。
+前面的推導如果只留在寫測試的人腦中，下一位接手者只看得到一排通過的案例名稱。義務表的用途，就是把這些判斷寫下來。下表節錄自附件的[已填範例](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/obligations.md)。閱讀時，請沿同一列往右看：先由要求推出可觀察的結果，再看 oracle 保留了哪些自由、能分辨哪些已知錯法。最右欄最重要，它記下這一列通過之後，仍然沒有被證明的事。
 
 | 要求 | 可觀察義務 | Oracle 保留哪些自由 | 能分辨哪些已知錯法 | 仍未證明 |
 |---|---|---|---|---|
@@ -625,13 +625,13 @@ owner 回答之後，才推導預期值、更新 oracle 版本並重評。如果
 10. arXiv 2609.11076v1 — [SaltBench](https://arxiv.org/html/2609.11076v1)；參照 §2.1、§3.1–3.6 與 §8。〔第十、十一節〕
 11. Anthropic — [Demystifying evals for AI agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)，2026-01-09；參照 Capability vs. regression evals。〔第十節〕
 12. Matt Wynne, Cucumber — [Introducing Example Mapping](https://cucumber.io/blog/bdd/example-mapping-introduction/)，2015-12-08；參照 Known unknowns。〔第十一節〕
-13. 本系列研究附件（本機 repo 相對路徑；正式發文前會換成固定版本的公開入口）：[R01–R13 凍結原文](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json)〔第三節〕；[契約教學 workbench 說明](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/README.md)、[實際輸出紀錄](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/observed-results.json)與[結果摘要](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/RESULTS.md)〔第三至七、十節〕；[初版 workbench 紀錄](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/runs/initial-results.json)〔第七節〕；[CSV 教學重播說明](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer.md)、[結果檔](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer-results.json)與[自測](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/test_csv_transfer.py)〔第八節〕；[驗收義務表與空白範本](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/obligations.md)〔第九節〕；[正式執行 manifest](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/manifest.json)與[凍結結果摘要](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json)〔第一、五、十節〕。
+13. 本系列研究附件（本機 repo 相對路徑；正式發文前會換成固定版本的公開入口）：[R01–R13 凍結原文](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json)〔第三節〕；[契約教學 workbench 說明](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/README.md)、[實際輸出紀錄](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/observed-results.json)與[結果摘要](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/RESULTS.md)〔第三至七、十節〕；[初版 workbench 紀錄](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/runs/initial-results.json)〔第七節〕；[CSV 教學重播說明](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer.md)、[結果檔](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer-results.json)與[自測](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/test_csv_transfer.py)〔第八節〕；[驗收義務表與空白範本](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/obligations.md)〔第九節〕；[正式執行 manifest](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/manifest.json)與[凍結結果摘要](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json)〔第一、五、十節〕。
 
 ### AI 協作說明
 
 - 正式研究的 40 份候選由 `claude-opus-5-5` 產生，使用 high effort 與 CLI 2.1.282；生成時不提供工具，每份候選都是一次生成完成。每份候選接受 102 個批次案例與 1 個 EOF 前 probe 的檢查。研究由 AI 代理協作設計與執行；我提出研究方向，並閱讀設計與報告。AI 協作不等於外部人員已獨立重現結果。
 - 契約教學 workbench（8 份 fixture、26 項自我檢查、3 項 oracle 單元測試）與 CSV 教學重播（11 項自測），都是 2026-09-28 研究完成後新增的後設教學，由 AI 代理協作建立並重播。它們沒有呼叫模型，不計入正式研究的 40 個生成名額、103 項檢查，也不計入約 USD 5.69 的 CLI 牌價生成費用估計。stderr 比對示意經審稿發現 CR 誤收後修訂，並另做有限的固定字串查核；property 與 CSV 示意本身未執行，查核均不加入原實驗或 workbench 的計數。
 - 本稿由 Claude Code（Opus 5.5，max effort）主寫，後續由 Codex 主代理逐段潤飾並核對事實。以 max effort 主寫本稿，與正式研究以 high effort 生成候選，屬於不同流程；寫作、審稿與事後重評都不計入正式樣本或生成費用。
-- 本輪寫作、逐段修訂、語言與發布包檢查紀錄見 [STATUS.md](../research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md)。
+- 本輪寫作、逐段修訂、語言與發布包檢查紀錄見 [STATUS.md](https://github.com/fantasybz/medium-articles/blob/organize-research-topics/research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md)。
 
 *Kochi Chuang（莊軻齊）｜Medium @fantasybz*

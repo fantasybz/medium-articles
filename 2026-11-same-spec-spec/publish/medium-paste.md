@@ -92,9 +92,9 @@ RFC 2119 為這類差別定義了 MUST、SHOULD、MAY：MUST 表示必須，MAY 
 
 正式研究準備了四份交代，共用同一份起始程式碼與十三條要求 R01–R13，並在生成之前固定版本；這就是本篇所說的「凍結」。以後引用結果時，必須能找到當時那份文字，不能改了文件，卻當成原來受測的版本。
 
-**四份英文 spec 全文：[A0：精簡版](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md)、[A：展開版](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md)、[B：A 加理由與自查](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md)、[C：B 加可選實作建議](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md)。** 這些連結指向實驗當時使用的原文；下文的表格與節譯只幫助導讀。
+**四份英文 spec 全文：[A0：精簡版](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md)、[A：展開版](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md)、[B：A 加理由與自查](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md)、[C：B 加可選實作建議](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md)。** 這些連結指向實驗當時使用的原文；下文的表格與節譯只幫助導讀。
 
-想一邊讀、一邊對照，可以開啟[全文與逐行差異導讀](../research/experiments/same-spec-ten-runs/SPECS.md)。先按 R01–R13 比較 A0 與 A，再看 B、C 各自追加的章節，比從頭重讀四份文件容易找到差別。導讀也提供三組逐行差異，以及包含起始程式碼的完整任務輸入。A0 與 A 另有一處 CLI 選項的範圍差異，第五節會仔細說明，不能先把它們當成意思完全相同、只差長短的兩份文件。
+想一邊讀、一邊對照，可以開啟[全文與逐行差異導讀](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/SPECS.md)。先按 R01–R13 比較 A0 與 A，再看 B、C 各自追加的章節，比從頭重讀四份文件容易找到差別。導讀也提供三組逐行差異，以及包含起始程式碼的完整任務輸入。A0 與 A 另有一處 CLI 選項的範圍差異，第五節會仔細說明，不能先把它們當成意思完全相同、只差長短的兩份文件。
 
 下表先整理四份文件的輪廓。英文詞數按空白切分，包含標題與程式區塊，不含起始程式碼，也不是模型處理文字所用的 token 數。第四欄則把新增內容對應到前一節的分類；其中 pattern 只是建議如何安排實作的文字，稍後會看到原文節譯。
 
@@ -141,7 +141,7 @@ EOF 時：
 
 四份文件各生成十份候選。同組十次收到的整包輸入（packet）完全相同，使用 `claude-opus-5-5`、high effort，也就是固定的推理投入設定；模型沒有工具，只能一次交付單一檔案。生成結束後，另一個驗收程式（grader）才檢查候選。102 個案例把完整輸入送完後比對結果，另 1 個 streaming probe 則在 EOF 前觀察訊息是否已送出，合計 103 項。四十份全部通過，操作條件也都成立。
 
-這個結果仍有很大的不確定性。假設各次彼此獨立、分布相同，並共享同一個成功機率，每組 10/10 的雙側 95% Clopper–Pearson 區間約為 69.15% 到 100%；它是按指定統計方法表示估計範圍，不是下一次一定成功的保證。十次全過，仍不足以替四份文件排序（正式結果見 [RESULTS.md](../research/experiments/same-spec-ten-runs/RESULTS.md)，推導與限制見本系列[總論](../2026-11-same-spec-overview/article.md)第六節）。
+這個結果仍有很大的不確定性。假設各次彼此獨立、分布相同，並共享同一個成功機率，每組 10/10 的雙側 95% Clopper–Pearson 區間約為 69.15% 到 100%；它是按指定統計方法表示估計範圍，不是下一次一定成功的保證。十次全過，仍不足以替四份文件排序（正式結果見 [RESULTS.md](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/RESULTS.md)，推導與限制見本系列[總論](../2026-11-same-spec-overview/article.md)第六節）。
 
 設計本身也限制了能回答的問題。A 相對於 A0，同時增加展開說明、表格、理由與一處範圍說明；B 相對於 A，同時增加理由與自查。就像一次改了食譜中的兩項材料，成品不同時，不能只歸功於其中一項。B／C 原則上可以比較整段 pattern 的增量，仍不能拆出其中哪條建議有效，更不能從結果推測模型的內部想法。本輪四組全過，也沒有提供足以證明這些增量有效的結果。
 
@@ -155,7 +155,7 @@ EOF 時：
 
 用一個輸入示範這些規則如何串起來。第一行是 `text` 為 `false` 的 agent message，第二行是一個有效的完成事件。第一行屬於 malformed，所以輸出一則診斷，不算發言；第二行有效，因此印出用量註記，並記為一次完成。到了 EOF，沒有明確失敗，但有 malformed，所以依 R11 得到 exit 6；R12 規定 exit 6 不附結尾摘要。
 
-四份文件對這個輸入的要求相同：B、C 在 R05 逐字保留 A；我逐句對照 A0 與 A 的 R05，也沒有找到任何差異會讓某份候選在其中一份文件下合法、在另一份文件下不合法（[A 原文](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md)）。
+四份文件對這個輸入的要求相同：B、C 在 R05 逐字保留 A；我逐句對照 A0 與 A 的 R05，也沒有找到任何差異會讓某份候選在其中一份文件下合法、在另一份文件下不合法（[A 原文](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md)）。
 
 既然合法行為相同，差別在哪裡？下表只比較與 R05 有關的文字。第二欄是我的節譯，必要時保留簡短原文；第三欄套用第二節的分類。請看第四欄：四列都沒有改變合法集合，改變的是實作者在哪裡、以什麼形式被提醒。其中 trim 指刪除空白，normalize 指改成某種統一表示，CJK 指中日韓文字；這些詞出現在原文，是為了限制實作者不要擅自整理本應原樣保留的內容。
 
@@ -266,11 +266,11 @@ Birgitta Böckeler 在 2025 年 9 月試用幾種 spec-driven development 工具
 
 對文件作者的意義是：如果只缺一個空值政策，先把這個問題交給 owner，不必為了流程完整就先生成整套文件。Böckeler 的少量試用早於上述文件版本，不能直接拿來評斷那些版本的工具；工具提供路徑，也不代表模型一定照做，或替團隊完成了產品決定。應從缺口選入口，不能從入口名稱倒推工作已經做完。
 
-綜合來看，我的判斷是：多寫一段文字之前，先用診斷表確認缺口屬於哪一種。行為還沒有決定，就進行探索並找 owner。要求可以機械判定時，先考慮把它寫成檢查；這可能比多寫一段文字更直接，但這只是推論，本輪沒有比較兩者。若想以「改善交付」為理由新增可選文字，就在要求已定後，提出它可能影響哪個可觀察動作的假說，並用下一節的修改卡接受審查。記錄必要的行為與相容要求，本來就是文件的責任，不必等待這項效益比較。相關方法來源與限制，整理在[規格與契約基礎研究](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-foundations-research.md)。
+綜合來看，我的判斷是：多寫一段文字之前，先用診斷表確認缺口屬於哪一種。行為還沒有決定，就進行探索並找 owner。要求可以機械判定時，先考慮把它寫成檢查；這可能比多寫一段文字更直接，但這只是推論，本輪沒有比較兩者。若想以「改善交付」為理由新增可選文字，就在要求已定後，提出它可能影響哪個可觀察動作的假說，並用下一節的修改卡接受審查。記錄必要的行為與相容要求，本來就是文件的責任，不必等待這項效益比較。相關方法來源與限制，整理在[規格與契約基礎研究](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-foundations-research.md)。
 
 ## 八、規格修改卡：把「只加六點自查」寫成可以被審的改動
 
-規格修改卡是寫給 Tech Lead 審查的。它把「多加一段文字」寫成一項改動，並交代範圍、預期作用、反例與撤回條件。下面以 parser 為背景填一張卡。先說清楚這張卡的性質：R05 是已封存的真實要求；卡中的錯法來自第六節那份假設候選，正式 40 份裡沒有出現；卡中提出的比較也尚未執行。卡片全文與空白範本見附件的[規格修改卡](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-change-card.md)。
+規格修改卡是寫給 Tech Lead 審查的。它把「多加一段文字」寫成一項改動，並交代範圍、預期作用、反例與撤回條件。下面以 parser 為背景填一張卡。先說清楚這張卡的性質：R05 是已封存的真實要求；卡中的錯法來自第六節那份假設候選，正式 40 份裡沒有出現；卡中提出的比較也尚未執行。卡片全文與空白範本見附件的[規格修改卡](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-change-card.md)。
 
 先用一句話讀這張卡：P 是原本的展開規格，Q 是同一份規格加上六題自查；想知道這個新增部分是否值得。下面用 YAML 排列，是為了讓 reviewer 逐欄核對原因、改動、驗收和責任，不是可直接執行的設定檔。
 
@@ -299,7 +299,7 @@ disposition: 保留／撤回／修改／仍未定，附證據版本、理由、�
 
 第二個審查重點，是這次只改一件事。原研究的 B 同時加入集中理由與自查，所以就算 B 表現較好，也無法知道是哪一部分發揮了作用。這張卡只在 P 上加入六題自查的英文原文，不帶 B 的兩段理由，也不帶 C 的 pattern；R01–R13 仍然是完整契約。除了這六題，P 與 Q 的其他條件都要相同，包括既有的理由、例子與可選寫法，以及 seed、工具權限、預算與停止條件。兩份完整 packet 仍待建立與封存。如果有人想知道「只加一段解釋 truthiness 的理由」有沒有用，就要另寫一張卡，另外建立一組 P 與 Q。兩種介入都可能有幫助，也都需要閱讀與維護成本，應各自用對應的證據判斷。
 
-跨到其他任務時，還要先固定[自查改寫政策](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/self-check-transfer-policy.md)。Parser 的六題包含 EOF、token 與錯誤事件要求，不能照貼到 CSV 或其他工具。例如，CSV 只要求交出完整檔案時，就不能沿用「EOF 前必須讀到訊息」這道 parser 問題。每道自查只能指回該任務 P 已有的要求；六個位置依事前規則改寫，無對應義務的位置標成不適用，不另加問題湊滿六題。未決政策先交 owner，補進共同 P 後才建立 Q。改寫者只能用 P 與兩條件共同可見的起始 repo 資訊，不能取用隱藏 grader、參考修補，或依正式題的結果調整 Q；否則即使沒有新增要求，也可能只讓 Q 得到答案線索。
+跨到其他任務時，還要先固定[自查改寫政策](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/self-check-transfer-policy.md)。Parser 的六題包含 EOF、token 與錯誤事件要求，不能照貼到 CSV 或其他工具。例如，CSV 只要求交出完整檔案時，就不能沿用「EOF 前必須讀到訊息」這道 parser 問題。每道自查只能指回該任務 P 已有的要求；六個位置依事前規則改寫，無對應義務的位置標成不適用，不另加問題湊滿六題。未決政策先交 owner，補進共同 P 後才建立 Q。改寫者只能用 P 與兩條件共同可見的起始 repo 資訊，不能取用隱藏 grader、參考修補，或依正式題的結果調整 Q；否則即使沒有新增要求，也可能只讓 Q 得到答案線索。
 
 各任務的 P、Q 要核對差異並封存，同題同條件的重複使用相同文字。這樣比較的是改寫政策的整體效果，把自查對應到各題要求的整理工作、審查與維護，都要計入成本。目前全體任務映射與輸入文件尚未完成，所以不能把這張卡直接當成可執行的跨任務方案。
 
@@ -319,7 +319,7 @@ disposition: 保留／撤回／修改／仍未定，附證據版本、理由、�
 
 卡片填完後，還不能直接開始比較。建立 P 與 Q 之前，要先確認驗收能抓到想研究的錯法，同時接受合法寫法；再核對這個 parser 的兩份 packet 只差原六題自查；其他任務則依核定政策檢查其自查區段，並保存完整輸入，並計算版本指紋（hash），避免把後來改過的文字和原結果混在一起。先用少數任務試走流程的 pilot 若發現要求或預期值本身有問題，應先修正，再另立版本。正式比較開始後，要依預定規則保存每個名額；不能在看到不理想的結果後修改清單、補跑或挑選樣本。
 
-下一輪的設計也和正式研究不同：它規劃的是可以使用工具的有限 session。agent 可以在 session 內執行公開檢查並自行修正，session 結束後才進行外部驗收，也不另開 session 替補。一道題目、每次排定工作與 session 該怎麼計數，以及人工觀測如何安排，交由〈變異篇〉處理；完整提案與比較計畫，請見附件的[文件改動評估提案](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md)與[比較計畫範例](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md)。
+下一輪的設計也和正式研究不同：它規劃的是可以使用工具的有限 session。agent 可以在 session 內執行公開檢查並自行修正，session 結束後才進行外部驗收，也不另開 session 替補。一道題目、每次排定工作與 session 該怎麼計數，以及人工觀測如何安排，交由〈變異篇〉處理；完整提案與比較計畫，請見附件的[文件改動評估提案](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md)與[比較計畫範例](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md)。
 
 修改卡先把比較的承諾寫清楚；真正結果出來之後，才輪到最後的處置欄。即使 Q 的合格率較高，也要看差距的不確定性，是否足以支持它超過事前訂下的實務門檻，以及新增的人工與費用能否接受。如果兩組仍然全部通過，Anthropic 的 eval 實務文章有一句話可以參考：「An eval at 100% tracks regressions but provides no signal for improvement.」（[Demystifying evals for AI agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)，Step 7）。
 
@@ -329,7 +329,7 @@ disposition: 保留／撤回／修改／仍未定，附證據版本、理由、�
 
 ## 九、換到 CSV 匯出：同一張卡怎麼用
 
-修改卡已經說清楚「為什麼改、只改哪裡、拿什麼判斷」，接下來要確認它能否離開 parser 仍然有用。以下換成 CSV，也就是以逗號分隔欄位的文字表格；例如一筆資料依序放姓名、日期與備註。這是假設需求，不是 repo 原有功能，也沒有新的模型生成。系列已用固定資料實際重播三種判斷方式，但沒有驗證完整的日期轉換功能；此節先看文件作者如何處理未決政策。教學程式與結果見 [CSV 重播紀錄](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer.md)。
+修改卡已經說清楚「為什麼改、只改哪裡、拿什麼判斷」，接下來要確認它能否離開 parser 仍然有用。以下換成 CSV，也就是以逗號分隔欄位的文字表格；例如一筆資料依序放姓名、日期與備註。這是假設需求，不是 repo 原有功能，也沒有新的模型生成。系列已用固定資料實際重播三種判斷方式，但沒有驗證完整的日期轉換功能；此節先看文件作者如何處理未決政策。教學程式與結果見 [CSV 重播紀錄](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer.md)。
 
 假設某個 CSV 匯出工具要新增日期欄格式化，呼叫端已要求保留輸入列序與重複列。三筆資料中，第一筆姓名是 `王,小明`，日期為 null，備註含換行；後面兩筆都是「李」、日期為 2026-09-28、備註為空，內容完全相同。依既有要求，`王,小明` 必須排第一，兩筆「李」都要保留。團隊還沒決定的是空日期政策，也要確認 null、空字串與欄位缺少是否應區分。
 
@@ -443,13 +443,13 @@ Agentic Engineering 技術篇（已發布）：〈[Harness 藍圖—把系統變
 11. Kiro — [Specs overview](https://kiro.dev/docs/specs/)，頁面標示 2026-08-27 更新，2026-09-28 存取；參照 requirements-first、design-first、bugfix 與 quick spec 路徑。〔第七節〕
 12. Anthropic — [Demystifying evals for AI agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)，2026-01-09；參照 Capability vs. regression evals 與 Step 7。〔第八節〕
 13. Kochi Chuang — [Harness 藍圖—把系統變成 agent 讀得懂的地方](https://fantasybz.medium.com/f2a139f5b561)，Agentic Engineering 技術篇。〔第十節〕
-14. 本系列研究附件（本機 repo 相對路徑；正式發文前會換成固定版本的公開入口）：[四份凍結 spec](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/)〔第三至五節〕；[正式結果](../research/experiments/same-spec-ten-runs/RESULTS.md)〔第三節〕；[規格修改卡](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-change-card.md)〔第八、九節〕；[文件改動評估提案](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md)與[比較計畫範例](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md)〔第八節〕；[規格與契約基礎研究](../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-foundations-research.md)〔第七節〕。
+14. 本系列研究附件（本機 repo 相對路徑；正式發文前會換成固定版本的公開入口）：[四份凍結 spec](https://github.com/fantasybz/medium-articles/tree/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs)〔第三至五節〕；[正式結果](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/RESULTS.md)〔第三節〕；[規格修改卡](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-change-card.md)〔第八、九節〕；[文件改動評估提案](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md)與[比較計畫範例](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md)〔第八節〕；[規格與契約基礎研究](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-foundations-research.md)〔第七節〕。
 
 ### AI 協作說明
 
 - 正式研究的 40 份候選由 `claude-opus-5-5` 產生，設定為 high effort、CLI 2.1.282，無工具，一次生成。研究由 AI 代理協作設計與執行；我提出方向，並閱讀設計與報告。AI 協作不代表外部人員已獨立重現結果。
 - 本稿由 Claude Code（Opus 5.5，max effort）主寫，後續由 Codex 主代理逐段潤飾並核對事實。本稿以 max effort 主寫，與正式研究的 high effort 生成是不同流程。
 - 規格修改卡、第六節的假設錯法與推導、CSV 假設案例，以及寫作、審稿與事後重評等後設教學工作，都不計入正式研究的 40 個生成名額與 103 項檢查，也不計入四組合計約 USD 5.69 的生成費用估計。本文規劃的 P／Q 比較尚未執行。
-- 本稿的主寫、代理審稿、逐段潤飾與語言檢查紀錄，見 [STATUS.md](../research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md)。
+- 本稿的主寫、代理審稿、逐段潤飾與語言檢查紀錄，見 [STATUS.md](https://github.com/fantasybz/medium-articles/blob/organize-research-topics/research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md)。
 
 *Kochi Chuang（莊軻齊）｜Medium @fantasybz*
