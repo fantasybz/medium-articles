@@ -551,3 +551,20 @@ python3 tools/medium_patch.py subst " — — " " — "
 
 見 [README.md](README.md) 的文章表，以及各篇的 `publish/PUBLISHED.md`
 （英文版另有 `publish/en/PUBLISHED.md`）。
+
+### 2026-10-04：「同一份規格，跑十次」接續排程
+
+| 篇目 | 中文排程（臺北時間） | Medium 草稿 | 英文規劃，尚未排程 |
+|---|---|---|---|
+| 總論 | 2026-11-10（二）09:00 | [檢視草稿](https://medium.com/p/6986ee29219e/edit) | 2026-11-12（四）09:00 |
+| 規格篇 | 2026-11-17（二）09:00 | [檢視草稿](https://medium.com/p/fc5ed5fce443/edit) | 2026-11-19（四）09:00 |
+| 契約篇 | 2026-11-24（二）09:00 | [檢視草稿](https://medium.com/p/f7684c057c0e/edit) | 2026-11-26（四）09:00 |
+| 變異篇 | 2026-12-01（二）09:00 | [檢視草稿](https://medium.com/p/785ace43b955/edit) | 2026-12-03（四）09:00 |
+
+前系列最後一篇英文付款案例維持 2026-11-05 09:00，新系列從 11/10 開始。四篇中文已在 Medium 排程並從新分頁核對全文與設定，均為 `isPublished: false`；英文主寫請求遇 Claude 週額度限制，四個英文日期僅為規劃，尚未建立草稿或排程。維持作者指定的 Claude Code max，重置後完成主寫、逐段潤飾與對照，再沿用本流程。詳細版本、驗證與待辦見[發布紀錄](research/2026-10/same-spec-ten-runs/publication-2026-10-04.md)。
+
+四篇的五個 Topics 與訂閱通知沿用十月系列。封面依序為 `diagram-01.png`、`table-03.png`、`diagram-01.png`、`table-03.png`；規格與變異篇沒有流程圖，選用與主軸直接相關的比較表。實際圖檔識別碼與尺寸記於各篇發布紀錄。
+
+本次預設 headed profile 曾因資料庫鎖定及 macOS bootstrap 錯誤無法啟動；改用本工作目錄的 `CHROMIUM_PROFILE` 與 `BROWSE_STATE_FILE` 後正常。Medium 主題選項需等待選取狀態與儲存完成，再填下一個；畫面參照可能隨重新算繪變動，使用剛觀察到的完整選項文字定位，再從新分頁驗證。
+
+`verify_draft.py` 的連結檢查只比數量；本次另按順序比較每個目的地。Medium 的 `/r/?url=` 包裝只在網域、路徑與單一 `url` 參數均符合時解開；程式區塊另逐字比較縮排，不沿用正文比對時的空白正規化。

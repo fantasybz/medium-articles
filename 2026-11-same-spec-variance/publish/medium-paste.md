@@ -28,11 +28,11 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 
 > **TL;DR** — 四種交代各跑十次，四十份程式全部通過檢查。接下來該多跑幾次、換一批任務、補強驗收，還是找人實際接手？這些做法都要花錢，回答的卻是不同問題。本篇寫給設計評估的人與工程主管，從「下一筆證據要改變哪個決定」往回推。先分清同題重複、文件改寫、換任務與環境，再看十次全過為什麼還不能證明四種交代一樣好。接著用「三次全都成功」與「三次裡挑一份成功」的例子，說明成功率必須連同使用方式一起讀。後半部回到實務：兩份都通過的程式該怎麼讀、舊結果怎麼保存，以及新比較要記哪些工作與人工成本。下一輪 P／Q 設計比較的是共同要求加不加可選自查，仍未執行；288 個名額只是預算草案。已決定的必要行為照樣要遵守，但若要把額外自查設為團隊預設，現有資料還不夠。
 
-> 系列導覽：[總論](../2026-11-same-spec-overview/article.md) → [規格篇](../2026-11-same-spec-spec/article.md) → [契約篇](../2026-11-same-spec-contract/article.md) → **變異篇（本篇）**（全系列尚未發布）
+> 系列導覽：[總論](https://medium.com/p/6986ee29219e) → [規格篇](https://medium.com/p/fc5ed5fce443) → [契約篇](https://medium.com/p/f7684c057c0e) → **變異篇（本篇）**
 
 ## 一、四組都十次全過，下一筆預算要花在哪裡？
 
-假設團隊修補一支 Python 工具，交稿前多加六題自查。下一份程式通過了，有人於是提議：以後同類工作都附上這六題。這是〈[總論](../2026-11-same-spec-overview/article.md)〉第二節的假設情境。真正值得追問的地方在下一次派工：這六題會持續幫忙，還是只是與這次成功一起出現？
+假設團隊修補一支 Python 工具，交稿前多加六題自查。下一份程式通過了，有人於是提議：以後同類工作都附上這六題。這是〈[總論](https://medium.com/p/6986ee29219e)〉第二節的假設情境。真正值得追問的地方在下一次派工：這六題會持續幫忙，還是只是與這次成功一起出現？
 
 總論把問題拆成三層。需求先由有權決定的人（owner）確認；每份待驗收的程式，也就是候選，再依那些要求檢查。本篇接手第三層：要求已經清楚、也能驗收之後，新增的自查是否值得反覆使用？必要行為與相容規則原本就必須記錄、驗收，不必等待平均收益的證明。需要比較的，是要求不變時額外附上的可選自查。
 
@@ -40,7 +40,7 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 
 本系列的正式研究已經交出一批結果。一支逐行讀取工作紀錄的工具，其修補任務，四種交代各生成十份候選，四十份全部通過 103 項共同檢查。沒有任何候選在已知檢查上出錯，這讓人放心；可是四組都是 10/10，比較也就失去了區分力。接下來很容易出現幾種提議：同一題再重複三十次、換一批更難的題目、把驗收做得更嚴，或者找人讀程式，並記錄審查花了多少時間。每一種提議都要花錢，但它們買到的證據不同，能回答的問題也不同。
 
-《綠燈不是驗收》系列的〈[可靠度篇](../2026-10-green-reliability/article.md)〉（尚未發布）處理過相近的決定：一類任務要累積多少證據，才能放寬 agent 的授權。那篇關心多次交付是否都能成功，以及人工複核要保留多少預算；其中 pass^k 的讀法，第四節會用例子重說一次。本系列把對象換成一段交代：它值不值得跟著之後的每一次派工。對象雖然換了，分母的紀律同樣重要。哪些觀測彼此獨立、哪些只是同一題的重複、哪些其實屬於另一種工作流程，都會影響一個數字能支持多大的結論。
+《綠燈不是驗收》系列的〈[可靠度篇](https://medium.com/p/3c64a9622777)〉處理過相近的決定：一類任務要累積多少證據，才能放寬 agent 的授權。那篇關心多次交付是否都能成功，以及人工複核要保留多少預算；其中 pass^k 的讀法，第四節會用例子重說一次。本系列把對象換成一段交代：它值不值得跟著之後的每一次派工。對象雖然換了，分母的紀律同樣重要。哪些觀測彼此獨立、哪些只是同一題的重複、哪些其實屬於另一種工作流程，都會影響一個數字能支持多大的結論。
 
 本文先確認「這次改了什麼」，再解讀四組全過的結果。接著把同一個成功率放進兩種工作方式，看看數字為什麼會變；再看總成功率相同時，失敗落在哪些任務上。這些判斷會帶到下一筆預算的選擇，最後落在一張尚未執行的比較卡：寫清楚怎麼派工、怎麼計數、怎麼記人工時間，以及何時採用。
 
@@ -401,14 +401,14 @@ reviewer 的分派與閱讀順序也要事先安排；能遮蔽的 P／Q 標籤�
 
 ### 系列文章
 
-本系列《同一份規格，跑十次》（全系列尚未發布）：
+本系列《同一份規格，跑十次》：
 
-- [同一份規格，跑十次：我們憑什麼把一種交代變成團隊預設？](../2026-11-same-spec-overview/article.md)
-- [同一份規格，跑十次（一）：規格篇—先決定要什麼，再決定怎麼交代](../2026-11-same-spec-spec/article.md)
-- [同一份規格，跑十次（二）：契約篇—把要求變成驗收，中間還缺哪些判斷？](../2026-11-same-spec-contract/article.md)
+- [同一份規格，跑十次：我們憑什麼把一種交代變成團隊預設？](https://medium.com/p/6986ee29219e)
+- [同一份規格，跑十次（一）：規格篇—先決定要什麼，再決定怎麼交代](https://medium.com/p/fc5ed5fce443)
+- [同一份規格，跑十次（二）：契約篇—把要求變成驗收，中間還缺哪些判斷？](https://medium.com/p/f7684c057c0e)
 - **變異篇（本篇）**：同一份規格，跑十次（三）：變異篇—十次都通過，下一筆證據該怎麼找？
 
-前一個系列《綠燈不是驗收》（四篇已完成，尚未發布）：[總論](../2026-10-green-overview/article.md)、[測試篇](../2026-10-green-testing/article.md)、[Review 篇](../2026-10-green-review/article.md)、[可靠度篇](../2026-10-green-reliability/article.md)。
+前一個系列《綠燈不是驗收》：[總論](https://medium.com/p/582f24223eea)、[測試篇](https://medium.com/p/b01055139451)、[Review 篇](https://medium.com/p/ccbf0cbe2691)、[可靠度篇](https://medium.com/p/3c64a9622777)、[付款實作篇](https://medium.com/p/46377fd460fe)。
 
 ### References
 
@@ -424,13 +424,13 @@ reviewer 的分派與閱讀順序也要事先安排；能遮蔽的 P／Q 標籤�
 10. NIST/SEMATECH — [e-Handbook of Statistical Methods, §5.3.3.2](https://www.itl.nist.gov/div898/handbook/pri/section3/pri332.htm)，未標發布日期，2026-09-28 查閱。〔第九節〕
 11. METR — [2026 年 2 月的 uplift 研究更新](https://metr.org/blog/2026-02-24-uplift-update/)，2026-02-24；引用作者對選擇效應與工時歸屬的說明。〔第九、十節〕
 12. METR — [2025 年 7 月的開發者隨機對照研究](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/)，2025-07-10；頁面已標示結果過時，本文參考其如何界定完成點。〔第十節〕
-13. 本系列研究附件（本機 repo 相對路徑；正式發文前會換成固定版本的公開入口）：[正式研究結果與封存入口](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/RESULTS.md)〔第三、七節〕；[兩份 A0 候選的靜態閱讀](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/static-review-walkthrough.md)與[契約教學 workbench](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/README.md)〔第七、八節〕；[比較計畫範例](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md)〔第九至十一節〕；[跨任務自查改寫政策](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/self-check-transfer-policy.md)〔第九至十一節〕；[文件改動評估提案](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md)〔第九節〕；[來源台帳](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/reliability-source-ledger.json)〔第九節〕。
+13. 本系列研究附件（以下連結均指向公開 repo 的固定版本）：[正式研究結果與封存入口](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/RESULTS.md)〔第三、七節〕；[兩份 A0 候選的靜態閱讀](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/static-review-walkthrough.md)與[契約教學 workbench](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/README.md)〔第七、八節〕；[比較計畫範例](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md)〔第九至十一節〕；[跨任務自查改寫政策](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/self-check-transfer-policy.md)〔第九至十一節〕；[文件改動評估提案](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md)〔第九節〕；[來源台帳](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/reliability-source-ledger.json)〔第九節〕。
 
 ### AI 協作說明
 
 - 正式研究的 40 份候選由 `claude-opus-5-5` 產生，設定為 high effort、CLI 2.1.282、無工具、一次生成。研究由 AI 代理協作設計與執行；我提出方向，並閱讀設計與報告。AI 協作不等於外部人員已獨立重現結果。
 - 本稿由 Claude Code（Opus 5.5，max effort）主寫，後續由 Codex 主代理逐段潤飾並核對事實。本稿的 max effort 主寫，與正式研究的 high effort 生成屬於不同流程。
 - A0 兩份候選的靜態閱讀、教學 workbench 與 CSV 重播、事後重評，以及後設教學、寫作與審稿過程，都不計入正式研究的 40 個生成名額與 103 項檢查，也不計入約 USD 5.69 的生成費用估計。文中的 p=0.8 例子、X／Y 例子與 288 個名額的精度估算都是假設計算；比較卡與決策紀錄中的 P／Q 比較尚未執行，跨任務映射與封存尚未全部完成。
-- 逐段修訂、證據審查與語言檢查的紀錄見 [STATUS.md](https://github.com/fantasybz/medium-articles/blob/organize-research-topics/research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md)。各項檢查依實際完成狀態記錄，不等於真人已獨立審查。
+- 逐段修訂、證據審查與語言檢查的紀錄見 [STATUS.md](https://github.com/fantasybz/medium-articles/blob/main/research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md)。各項檢查依實際完成狀態記錄，不等於真人已獨立審查。
 
 *Kochi Chuang（莊軻齊）｜Medium @fantasybz*

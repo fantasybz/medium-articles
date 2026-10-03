@@ -1,23 +1,23 @@
 # 研究與主題總覽
 
-整理日期：2026-10-03。依本工作區的選題、大綱、摘要與發布紀錄整理；主題庫的研究訊號主要截至 2026-09-15，Medium 排程依 2026-09-23 的核對紀錄，規格變異系列進度則更新至 10/03 的讀者回饋修訂。本頁整理既有規劃與完成紀錄，外部來源的內容與版本仍以各份研究紀錄的查閱日期為準。
+整理日期：2026-10-04。主題庫的研究訊號主要截至 2026-09-15；系列進度依最新 main 的發布紀錄與本次 Medium 讀回更新。「同一份規格，跑十次」四篇中文已排程，英文主寫遇 Claude 週額度限制，尚未成稿。各份研究紀錄均附查閱日期；外部來源的內容與版本以該日期為準。
 
-目前有 **3 個系列已有中文正文**（一個已發布、一個已排程、一個待校閱）、**1 個系列已有大綱、尚待成稿**，以及 **14 個編號主題**（9 個候選、4 個觀察中、1 個單篇插曲）。正文已產出不等於作者已認可或已發布。另有 3 個未編號插曲、1 則貼文草稿，以及 3 個較小的研究方向。候選主題的時間都是原計畫的最早下限，尚未排程。
+目前有 **3 個系列已有中文正文**（一個已發布、兩個已排程；規格變異系列的英文版仍待完成）、**1 個系列已有大綱、尚待成稿**，以及 **14 個編號主題**（9 個候選、4 個觀察中、1 個單篇插曲）。另有 3 個未編號插曲、1 則貼文草稿，以及 3 個較小的研究方向。候選主題的月份是原計畫的最早下限，尚未排程；已排程也不等於已公開。
 
 ## 系列與進度
 
-四個系列的順序是：先建立組織與 harness，再驗證 agent 的產出，接著量測同一份規格的實作變異，最後處理 production 營運與追責。每個系列原則上都是「總論 + 三篇深掘」，各有中英文版。
+四個系列的順序是：先建立組織與 harness，再驗證 agent 的產出，接著量測同一份規格的實作變異，最後處理 production 營運與追責。各系列篇數依材料決定：《綠燈不是驗收》已擴為總論與四篇，其他系列目前採總論與三篇；中英文的完成狀態分開記錄。
 
-| 系列 | 核心問題與四篇結構 | 工作區可確認的進度 | 接續入口 |
+| 系列 | 核心問題與篇章 | 工作區可確認的進度 | 接續入口 |
 |---|---|---|---|
 | Agentic Engineering | 誰來做、系統怎麼建、如何營運？總論／組織／Harness／Eval 與單位經濟 | 四篇中英版，共八篇，均有正式發布紀錄；首次發布在 2026-09-01～09-05 | [文章清單](../README.md#articles) |
-| 綠燈不是驗收 | 怎麼知道 agent 做對了？總論／測試／Review／可靠度 | 四篇中英正文與發布包齊全；八篇已排程於 2026-10-06～10-29；研究 README 的發布前待辦仍未勾選，完成證據待核對 | [總論](../2026-10-green-overview/article.md)、[測試篇](../2026-10-green-testing/article.md)、[Review 篇](../2026-10-green-review/article.md)、[可靠度篇](../2026-10-green-reliability/article.md)；排程見 [PUBLISHING.md](../PUBLISHING.md) |
-| 同一份規格，跑十次 | 分開量測驗收、實作差異與成本；總論／規格／契約／變異 | 2026-09-25 完成真實 repo 的 40 次正式量測，四組各 10/10 通過；9/28 依作者要求再次全面重寫，新四篇中文正文已全部安裝，由 Claude Code Opus 5.5 `max` 主寫。10/03 再由 Codex 主代理依試讀意見補概念例子、段落主軸與銜接，完成最新語言及發布包檢查；尚未發布 | [總論](../2026-11-same-spec-overview/article.md)、[規格篇](../2026-11-same-spec-spec/article.md)、[契約篇](../2026-11-same-spec-contract/article.md)、[變異篇](../2026-11-same-spec-variance/article.md)；[成稿狀態](2026-10/same-spec-ten-runs/manuscripts/STATUS.md)、[本輪研究與重寫](2026-10/same-spec-ten-runs/rebuild-2026-09-28/README.md)、[實驗入口](experiments/same-spec-ten-runs/README.md) |
+| 綠燈不是驗收 | 怎麼知道 agent 做對了？總論／測試／Review／可靠度／付款實作 | 五篇中英正文與發布包齊全，十份已排程於 2026-10-06～11-05；付款實作篇已納入主系列 | [總論](../2026-10-green-overview/article.md)、[測試篇](../2026-10-green-testing/article.md)、[Review 篇](../2026-10-green-review/article.md)、[可靠度篇](../2026-10-green-reliability/article.md)、[付款實作篇](../2026-10-green-payment/article.md)；[發布佇列](../PUBLISHING.md) |
+| 同一份規格，跑十次 | 規範、驗收與方法比較各缺什麼證據？總論／規格／契約／變異 | 40 次正式生成、四篇 Claude Code max 中文主稿與後續潤飾已完成。10/04 合併 main，四篇中文已排程於 11/10～12/01，遠端全文與設定已核對。英文版因 Claude 週額度限制尚未成稿或排程 | [四篇原稿](../README.md#articles)、[發布核對](2026-10/same-spec-ten-runs/publication-2026-10-04.md)、[成稿狀態](2026-10/same-spec-ten-runs/manuscripts/STATUS.md)、[實驗入口](experiments/same-spec-ten-runs/README.md) |
 | 把 Agent 當 Production Workload：Agent 的 SRE | 如何觀測、維持可靠度並追責？總論／觀測／可靠／應變與追責 | 原規劃 2026-12；2026-09-15 已重切大綱，本工作區未見系列正文、真實 trace 或 ledger 實作成果 | [新版大綱](2026-10/2026-12-sre-for-agents.md)、[新版圖稿](2026-10/2026-12-sre-for-agents.figures.md)、[發布與推廣計畫](2026-10/2026-12-sre-for-agents.publish.md) |
 
 **目錄月份不能拿來判定發布狀態。** `2026-10-agentic-harness-blueprint/` 與 `2026-11-agentic-eval-economics/` 都屬於已在 9 月發布的第一個系列；`research/2026-10/` 則是 9 月中做的期中研究加圈。正式發布與排程以各篇 `PUBLISHED.md` 和 `PUBLISHING.md` 為準。
 
-## 待校閱與尚待成稿系列的後續工作
+## 已排程與尚待成稿系列的後續工作
 
 ### 同一份規格，跑十次
 
@@ -30,10 +30,10 @@
 | 可執行實驗 | [研究程式與協議](experiments/same-spec-ten-runs/README.md)固定來源 commit、四份以共同規範為基準的文件、外部評測、隔離 probe、完整名額與分析程式 |
 | Pilot | 2 次已完成，均通過 103 個驗收檢查；與正式 40 次完全分開，不當成介入效果 |
 | 正式測量 | 40 次完成；四組各 10/10 通過、各 10 種正規化 AST；各組 95% 區間 69.15%–100%，不構成等效或高可靠度證據。見[正式結果](experiments/same-spec-ten-runs/RESULTS.md) |
-| 中文全文 | 9/28 四篇由 Claude Code Opus 5.5 `max` 主寫；10/03 由 Codex 主代理再依試讀意見修訂概念引介、逐段主軸與系列承接。最新八份正文／貼稿的 strict zh-TW MCP 均為 0 錯誤、0 警告，發布包已同步。本輪沒有新增獨立代理審查，英文版與發布尚未完成。見[修訂紀錄](2026-10/same-spec-ten-runs/readability-2026-10-03/README.md)與[成稿狀態](2026-10/same-spec-ten-runs/manuscripts/STATUS.md) |
+| 中文全文與發布 | 9/28 Claude Code Opus 5.5 max 主寫、10/03 依試讀意見潤飾。10/04 最新八份正文／貼稿通過 strict zh-TW MCP，0 錯誤、0 警告；四篇中文已建立 Medium 排程並核對全文、連結與 29 張圖。英文版維持 max 主寫，尚待額度重置後續作 |
 | 解釋範圍 | 真實 repo 的單檔、tool-free 生成案例；不推論 native skills／完整 agent loop、人類維護成本或 production 擴權 |
 
-原研究排程保留在歷史檔；正式 40 次的完成證據以研究協議、名額與結果紀錄為準。接下來由作者校閱，英文版及發布另行安排，尚未承諾 Medium 發布日期。
+原研究排程保留在歷史檔；正式 40 次的完成證據以研究設計、名額與結果紀錄為準。中文已排程為 11/10、11/17、11/24、12/01，每週二臺北時間 09:00；英文規劃為同週四，但尚未建立 Medium 草稿與排程。各項完成證據與待辦見[10/04 發布紀錄](2026-10/same-spec-ten-runs/publication-2026-10-04.md)。
 
 ### 把 Agent 當 Production Workload：Agent 的 SRE
 
@@ -135,13 +135,13 @@
 
 以下保留既有規劃的日期，並更新已完成工作的狀態。活動與投稿時間在採取行動前仍要重查；本次只更新主題索引，不代表已完成其他系列的研究、實驗、發文或社群分享。
 
-**優先核對已排程文章的發布前待辦。** [研究 README](README.md#待辦)的 approval gate 實測、課程／社團引用同意、英文 critic 等仍未勾選。最新[總論](../2026-10-green-overview/article.md)與 [Review 篇](../2026-10-green-review/article.md)仍明示核准機制未在生產 repo 實測；發布紀錄另有後續中英精修。這些資訊不足以把整組待辦判成已完成或全未完成，應逐項補上結果位置與日期，再回填狀態；首篇排程為 10/06。
+**已完成與尚未實作的待辦分開看。** 最新 [研究 README](README.md#%E5%BE%85%E8%BE%A6)已記錄英文複核等完成證據；總論與 Review 篇均標示核准機制的實測範圍；文章完成，不代表已在 production 實測。各篇上線前確認前篇狀態，上線後回填系列與英文版連結。
 
 | 原期限／窗口 | 接續工作與完成證據 | 依據 |
 |---|---|---|
 | 9 月底 | 確認 Amsterdam 原始材料的位置；定 A1～A3 欄位，讀 2607.03691、2608.26218、2609.01931 全文，將補證據清單定版 | [SRE 大綱](2026-10/2026-12-sre-for-agents.md) §4、§6 |
 | 10/06 起，各篇上線前 | 核對上述發布前待辦；上線後依每篇日期回填系列連結、英文版連結與成效 | [研究待辦](README.md#待辦)、[發布佇列](../PUBLISHING.md) |
-| 正式研究已完成；校閱與發布另排 | 2026-09-25 已完成 40 次正式量測；9/28 全面重寫後，10/03 再完成概念引介與段落連貫修訂、最新語言檢查與本機發布包。接續為作者校閱、英文版與發布安排，不再把原 10/06 的 40／50 次實驗規劃列為待執行 | [正式結果](experiments/same-spec-ten-runs/RESULTS.md)、[成稿狀態](2026-10/same-spec-ten-runs/manuscripts/STATUS.md) |
+| 中文 11/10～12/01；英文待完成 | 40 次正式量測與四篇中文已完成，10/04 合併 main 並完成中文排程。接續完成四篇 Claude max 英文主稿、逐段潤飾、圖表與 Medium 排程；不把原 10/06 的 40／50 次實驗規劃列為待執行 | [正式結果](experiments/same-spec-ten-runs/RESULTS.md)、[發布紀錄](2026-10/same-spec-ten-runs/publication-2026-10-04.md) |
 | 10 月（SRE 原規劃） | SRE 儀表化仍待執行；依原計畫保留 run metadata、成本、介入與獨立驗證結果，建立真實 trace、可查詢 ledger 與 revert 基線。規格變異的正式 40 次已完成，不等於這些 SRE 證據也已取得 | [SRE 大綱](2026-10/2026-12-sre-for-agents.md) |
 | 10/15（監看項目） | 原 backlog 列 Open Source AI Week 投件截止，關聯 #14 與插曲；是否投稿尚未決定，先確認機會與期限 | [backlog 會議與日期表](2026-10/backlog.md) |
 | 10/31 | 檢查是否已取得真實 run trace 與可查詢的 ledger，依原退場條件決定 SRE 系列範圍 | [SRE 大綱](2026-10/2026-12-sre-for-agents.md) §6 |
@@ -154,9 +154,9 @@
 |---|---|---|
 | 查三個後續系列為什麼入選 | [2026-09 selection](2026-09/selection.md) + [期中增修](2026-10/selection.md) | 初次評分、反方意見與原排序保留；期中沒有重新選題 |
 | 查目前候選與升級條件 | [2026-10 backlog](2026-10/backlog.md) | [2026-09 backlog](2026-09/backlog.md)供比較變動，不把兩份當成兩套主題庫 |
-| 校閱規格變異系列 | [成稿狀態](2026-10/same-spec-ten-runs/manuscripts/STATUS.md) + [本輪重寫計畫](2026-10/same-spec-ten-runs/rebuild-2026-09-28/rewrite-plan.md) + [正式結果](experiments/same-spec-ten-runs/RESULTS.md) | 正式結果與可查核附件已取得，四篇新中文正文待校閱；英文版與發布另排，不擴大為 native Skill 或真人成本結論 |
+| 接續規格變異系列 | [成稿狀態](2026-10/same-spec-ten-runs/manuscripts/STATUS.md)、[發布紀錄](2026-10/same-spec-ten-runs/publication-2026-10-04.md)、[正式結果](experiments/same-spec-ten-runs/RESULTS.md) | 中文四篇已排程；英文仍待 Claude max 主寫與發布。既有正式結果不擴大為 native Skill 或真人成本結論 |
 | 撰寫 Agent SRE 系列 | [2026-10 大綱](2026-10/2026-12-sre-for-agents.md)、[圖稿](2026-10/2026-12-sre-for-agents.figures.md)、[推廣計畫](2026-10/2026-12-sre-for-agents.publish.md) | `2026-09/` 同名大綱與圖稿是重切前版本，只供追溯 |
-| 查「綠燈不是驗收」的內容與進度 | 根目錄四篇 `article.md`／`article.en.md`、各篇發布紀錄 | [原研究大綱](2026-09/2026-10-agentic-green-is-not-done.md)供追溯；標題與排程採成稿及發布紀錄 |
+| 查「綠燈不是驗收」的內容與進度 | 根目錄五篇 `article.md`／`article.en.md`、各篇發布紀錄 | [原研究大綱](2026-09/2026-10-agentic-green-is-not-done.md)供追溯；標題與排程採成稿及發布紀錄 |
 | 執行後續撰稿與潤稿 | [STYLE.md](../STYLE.md)、當期 `style_brief.md`、[現行聲音手冊](2026-09/voice_brief.md) | 歷史字數目標與 voice-pass workflows 不取代作者後來確認的標準 |
 
 後續更新先寫回對應的選題、大綱、backlog 或發布紀錄，再同步本頁的狀態與入口。實驗完成要附結果位置，來源補齊要附查閱日期；私人摘要與原始貼文仍依 `.gitignore` 留在本機。
