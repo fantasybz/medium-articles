@@ -28,7 +28,7 @@
   },
   {
    "file": "table-03.png",
-   "markdown": "| 項目 | 我的建議值 | 備註 |\n|---|---|---|\n| mutation score（agent 改動行） | ≥ 70% 才進 review | 先報告一個月，再阻擋 |\n| 受影響子集的執行時間 | < 10 分鐘才開 mutation | 超過的 repo 先裝前三道 check |\n| assertion-change diff | 移除與停用一律阻擋；強度下降、精度放寬阻擋 | 其餘既有斷言變更標 `needs-human-test-review` |\n| red-then-green | 只對修改既有行為的 PR | 分類來源不是 PR 作者 |\n"
+   "markdown": "| 項目 | 我的建議值 | 備註 |\n|---|---|---|\n| mutation score（agent 改動行） | ≥ 70% 起始參考；關鍵約束另審 | 先報告一個月，再阻擋 |\n| 受影響子集的執行時間 | < 10 分鐘才開 mutation | 超過的 repo 先裝前三道 check |\n| assertion-change diff | 移除與停用一律阻擋；強度下降、精度放寬阻擋 | 其餘既有斷言變更標 `needs-human-test-review` |\n| red-then-green | 只對修改既有行為的 PR | 分類來源不是 PR 作者 |\n"
   },
   {
    "file": "table-04.png",

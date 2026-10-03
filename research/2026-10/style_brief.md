@@ -10,21 +10,37 @@
 - Traditional Chinese (Taiwan usage), English technical terms untranslated (agent, harness, eval, gate, constraint tests, mutation score). A full English edition ships as a separate, cross-linked story. Audience: Engineering VPs, EMs, Staff engineers, platform/SRE/QA leads in Taiwan, plus English-speaking peers.
 
 ## Series architecture (the shape, with the October numbers)
-- One theme = **總論 + 三部曲**. October 「綠燈不是驗收」: 總論 (three gates, anti-patterns, VP decision, 90-day blueprint) → 測試篇 (assertion-change diff, red-then-green, mutation score) → Review 篇 (triage matrix, reviewer fleet, closed-loop ban) → 可靠度篇 (constraint pass rate, pass^k, oversight budget).
+- Current architecture: **總論 + 四部曲** for 「綠燈不是驗收」. 總論 (three gates, anti-patterns, VP decision, 90-day blueprint) → 測試篇 (assertion-change diff, red-then-green, mutation score) → Review 篇 (triage matrix, reviewer fleet, closed-loop ban) → 可靠度篇 (constraint pass rate, pass^k, oversight budget) → 付款實作篇 (one tea purchase connecting review selection, constraint tests, mutation evidence and decisions). Series length follows the material; it is not a universal four-part template.
 - **Length snapshot after the 09-08 polish (historical)**: 總論 ≈ 10,000 CJK chars / 12 sections / 18 figures (10 mermaid + 8 tables); each part ≈ 7,600–8,000 chars / 6–9 sections / 7–8 figures (4 mermaid + 3–4 tables；可靠度篇只有 6 節）. Targets were 3,600 and 1,800–2,300; the drafts run 2.8–4× that and **the author accepted the overrun**. Earlier long articles also attracted completed reads; this does not establish length as their cause. Those targets are historical planning estimates, not a sentence-compression budget or a minimum to pad toward; retain necessary explanation and narrative.
 - Opening: `# Title` → `> **TL;DR** — ...` (360–730 chars: symptoms → one-line thesis → what each gate measures → the disagreeable claims → one sourced number with its domain → what the tail delivers) → `> 系列導覽：…` with **本篇** bolded and unpublished siblings 「（即將發布）」/"(coming soon)". Name related series explicitly instead of identifying them only as 「上一季」.
-- Chinese-numeral sections (`## 一、…`), 6–12 per piece (總論 12; 測試篇 9; Review 篇 8; 可靠度篇 6); the last is 結語 / 結語與交接, returning to the opening question or documented experience before a hand-off; a blockquote is optional.
+- Chinese-numeral sections (`## 一、…`), 6–12 per piece (總論 12; 測試篇 9; Review 篇 8; 可靠度篇 6; 付款實作篇 10); the last is 結語 / 結語與交接, returning to the opening question or documented experience before a hand-off; a blockquote is optional.
 - Tail: `### 系列文章` → `### References` (numbered, `org — [title](url)`, each with a 〔第 N 節〕 back-pointer) → `### AI 協作說明` → italic signature.
 
 ## Rhetorical moves that recur
-- Opens with the question the reader is actually asking (§一〈「AI 說沒問題」之後，我該相信什麼？〉), answered by a bolded one-liner. Anti-patterns named before prescriptions (「八個反模式」); decision artefacts everywhere (triage matrices, gate tables with exit criteria, a 90-day plan with 退出條件); cross-references so the four read as one product.
+- Opens with the question the reader is actually asking (§一〈「AI 說沒問題」之後，我該相信什麼？〉), answered by a bolded one-liner. Anti-patterns named before prescriptions (「八個反模式」); decision artefacts everywhere (triage matrices, gate tables with exit criteria, a 90-day plan with 退出條件); cross-references so the series reads as a connected whole.
 - Numbers ship with sample size and domain: 「34% 的綠燈修補違反 reviewer 約束」 carries 「SWE-Gate 在 75 個 Python repo、303 個任務上量測到」. Vendor- or organiser-reported figures say so; his own are 「我的建議值（不是業界標準）」.
-- **書錨 opening (new, 總論 §二).** A named book carries the thesis before any data: 「書錨：Bach 的 testing 與 checking」 says who Bach is, quotes two verbatim lines, **states the limit honestly** (「先說限制：這本書我還沒讀完」), then derives the series' vocabulary from it (evidence classes a / b / c, reused by all four).
+- **書錨 opening (new, 總論 §二).** A named book carries the thesis before any data: 「書錨：Bach 的 testing 與 checking」 says who Bach is, quotes two verbatim lines, **states the limit honestly** (「先說限制：這本書我還沒讀完」), then derives the series' vocabulary from it (evidence classes a / b / c, reused across the series).
 - **Before/After config blocks (new).** Short, paired, concrete: `# Before：指示（agent 讀完，什麼都沒有變）` vs the executable rule; `# Before：同一個 runner、同一個 session 審自己` vs the fleet config. Always 「指示 → 可執行的檢查」.
 - **The 「設計規格，非現成工具」 label (new).** Any YAML/CODEOWNERS/policy block not run in production says so in its first comment line — `reviewer-fleet.yaml（設計規格，非現成工具）`, `CODEOWNERS（設計草稿，未在生產 repo 實測…）` — and the prose repeats it plus how he will verify.
 - **Reader roles (new).** Each piece names the person it changes, in a section title: 總論 「如果我是 Engineering VP / QA lead，我會怎麼決策」; 測試篇 「Tester 的角色：從打勾機器到 test-suite reviewer」; Review 篇 assigns fleet roles (verifier / falsifier / architect); 可靠度篇 speaks to whoever signs off autonomy.
 - First-hand evidence gets its own section (「第一手實例：測試全綠，replay 從未執行」): his own workshop A/B run, mechanism named.
 - **Voice rules re-established by the 2026-09-08 polish** (the eight September stories were republished in place — `repub`, no re-notify, +2–4 min; PUBLISHING.md 〈目前的發布佇列〉, `voice_brief.md`): it **added sentences rather than cutting them**. Introduce what each figure or table is meant to clarify, explain new terms, and distinguish the author's judgment from findings. Do not require an identical lead-in, first-person marker or 「不是 A，而是 B」 closing in every section. The old punctuation measurements describe that revision, not quotas for future prose: the polish cut the October four from 5.4–7.5 dashes per 1,000 prose chars to 1.2–2.2 (2.04 / 1.16 / 2.12 / 2.20), and September 總論 now sits at 2.08 (dashes 29 → 22).
+
+## 判斷過程的深度（2026-09-28 補強）
+
+作者再次要求補足「讀者理解判斷所需的過程」。依 [STYLE.md](../../STYLE.md)，潤稿應從重要結論往前追查：觀察是什麼、依據哪條要求、為何選這個情境與驗證方式、結果支持什麼決定；再交代下一份證據與接手責任。付款實作篇以 M5 的變異、實際失敗斷言、逐項測試對照與 Review 補件條件展開，不只報告 85.7%／100%。
+
+篇幅增加應用來補推論、反例與交接，不靠重複警語或硬湊字數。後半部、圖表解讀、操作說明與英文版使用相同標準；敘事溫度來自讀者能理解當事人與團隊面對的問題，不能靠虛構經驗補足。
+
+作者亦要求第四篇結尾與前三篇同樣完整：以關鍵證據帶出判斷如何改變，接回系列共同問題，再寫清楚對使用者、接手同事與讀者下一步的意義。給論述與情緒足夠的收束空間，不以短摘要或口號匆促結尾，也不重複整篇程序來增加篇幅。
+
+## 概念引入與論述連貫（作者確認，2026-10-03）
+
+《綠燈不是驗收》總論與四篇、中英文共十份稿件，先確認每篇要回答的問題，再逐節展開；每個段落都應讓問題更清楚、補上一份理由或證據，或說明這如何改變判斷。段落交接要承接前文留下的疑問，不靠標題與「接著」維持表面的順序。尤其檢查後半部的規則、指標與導入建議，是否仍能回到本篇主軸。
+
+重要術語第一次出現時，用讀者容易想像的小例子建立意思。例如先說明「同一瓶茶重送付款請求，應拿到同一筆結果」，再介紹 idempotency；先說「故意移除重複付款檢查，看看測試會不會失敗」，再介紹 mutation。例子與定義一起保留邊界，不暗示教學程式已解決真實金流的並行與持久化問題。
+
+優先沿用同一情境，避免術語表、例子堆疊與每節重複摘要。每篇可獨立閱讀，關鍵概念就在需要它的地方說明；已在本篇建立的意思不必重新解釋。英文保留同樣的理解過程。後續文章依 [STYLE.md](../../STYLE.md) 沿用這項標準。
 
 ## 作者確認的共用標準（2026-09-23）
 
@@ -69,6 +85,6 @@
 - **Length after the polish did not hurt**: every story gained 2–4 min on 09-08 and completion held (zh 38% → 35% on small numbers; Part 1 en rose to 44%). Lifetime leaders are still long pieces — 與不確定性共舞 (619 / 98), Dual-Layer Test Guardrails EN (507 / 33), 《建築的永恆之道》 (245 / 125, 51%), 觀測的修復之道 (90 / 21) — plus evergreen notes (敏捷測試 3,000 views). The back catalogue gained ~a dozen views and **no** new reads; all 21 September reads were the series. Monthly block for 2026-09: 267 / 82 / 21, +2 followers, +2 subscribers (39 / 13 on 09-05).
 
 ## Implications for the next themes
-- Keep the 總論+三部曲 shape, the 書錨 opening, the decision-artefact density and the labelled-artefact honesty. Length is not the problem; missing 導讀句 and role statements are.
+- Keep an overview plus focused parts, with the number of parts determined by the material; retain the 書錨 opening, decision-artefact density and labelled-artefact honesty. Length is not the problem; missing 導讀句 and role statements are.
 - **December re-cut** (`selection.md` §1): the spine moves from 「把 harness 裝上儀表」 to **flight recorder / accountability**, carried by 「trace 是除錯用的，ledger 才是證據用的」. Only **three artefacts** ship — A1 trace schema + OTel Collector config, A2 `agent-slo.yaml`, A3 a ≤ 50-line ledger-backed `attest verify` check; runbook/postmortem templates and the K8s capacity table drop to sketches. Hard exit: no real run trace and queryable ledger by 10/31 → three pieces. Tokyo forces three corrections: AAIF now has an observability WG and a new **agents accountability** WG, so 「沒人在講」 goes; `org.*` names only; every Tokyo number labelled self-reported.
 - **November backlog** (`selection.md` §3, `backlog.md`): the variance outline is unchanged this cycle. The first-hand gap: 「same prompt, same model, same harness，兩次結果完全不同」 was said on stage (`2VPr7` slide 2) yet **no speaker reported a run-to-run distribution for one spec** — say so, and say why. Supporting material: the GEPA/SkillOpt null whose gain cannot be separated from run-to-run variance (2609.12742), the vendor `plugin eval` (paired arms, three runs, 2-of-3 majority) as a miniature pass^k, and the Haiku-gate angle (variance across models, not runs).

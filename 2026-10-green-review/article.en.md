@@ -1,8 +1,8 @@
 # Green Is Not Done, Part 2 — Review Is the Control Point, Not the Bottleneck: Triage, Reviewer Fleets and the Closed-Loop Ban
 
-> **TL;DR** — A Scrum Community post describes PR volume doubling in half a year while senior engineers' calendars fill up. A longitudinal study of a million PRs finds faster decisions under some AI-review adoption patterns without corresponding quality gains. CodeRabbit comments on ten thousand PRs were rejected 56% of the time, while cross-product AI-to-AI review grew 100-fold over two quarters. These findings turn my attention to the division of review work: **review is the control point where an organization shapes whether agents add value or debt**. That framing comes from a theory built by coding 3,100 practitioner accounts. A separate study of 182 repos found that each 10-percentage-point increase in unreviewed merges was associated with about 6% more agentic-code maintenance burden, not a causal estimate. This piece proposes risk-based triage, reviewer-agent roles separated from generation, and a ban on self-gating loops. Machines organize evidence; humans examine reports or diffs according to the triage decision, and every merge requires human approval. An experiment in which "pre-approved under SEC-2291" helped roughly eight in ten narrative-wrapped exfiltration PRs pass the scanning stage adds another lesson: verify authority claims against the system of record. Approval must identify the responsible person and reviewed content; section 7 explains the records and rules that support it.
+> **TL;DR** — Agents increase the volume of changes without increasing reviewers' time. The first questions are who needs to examine each change, how deeply, and with what evidence for approval. Using payment retries, this piece develops risk-based triage, assigns different questions to different reviewers, and keeps review from inheriting the implementer's unchecked assumptions. Research cautions that faster decisions and more comments do not, by themselves, establish better quality. Tools can check rules and organize doubts. People still need to understand the evidence, verify claims of prior approval, and decide on every merge. Approval records must also preserve what was reviewed, so the next person can recover the reasoning.
 
-> Series: [Overview](https://medium.com/p/c4fc9f3d8581) → [1. Testing](https://medium.com/p/51d001a6dcd5) → **2. Review (this piece)** → 3. Reliability (coming soon)
+> Series: [Overview](https://medium.com/p/c4fc9f3d8581) → [1. Testing](https://medium.com/p/51d001a6dcd5) → **2. Review (this piece)** → 3. Reliability (coming soon) → 4. Payment Walkthrough (coming soon)
 
 ---
 
@@ -10,7 +10,7 @@
 
 Start with what review was there for in the first place. It has always carried two jobs at once: catching the places where the code is wrong, and making sure at least one more person knows how a piece of code came to be the way it is. One person writes, another reads, and both jobs get done together.
 
-That arrangement rests on one premise: writing and reading happen at roughly the same speed. Once agents arrived, the premise was gone. The time a reviewer can give to the work each day has not increased, while the changes waiting for their attention keep accumulating.
+A change is proposed as a pull request (PR), allowing others to review it before deciding whether to merge. That arrangement rests on one premise: writing and reading happen at roughly the same speed. Once agents arrived, the premise was gone. The time a reviewer can give to the work each day has not increased, while the changes waiting for their attention keep accumulating.
 
 This piece answers a question someone in Taiwan has already asked out loud: "AI has blown up the volume of code — what happens to code review?"
 
@@ -32,7 +32,7 @@ This piece covers only the design of the review gate. The conclusion first:
 
 > The position is not "less review" and not "faster review"; it is **redistributing who reads what**.
 
-I will first use the research to examine review risks and possible changes, then develop three designs: the triage matrix, reviewer-agent fleet and closed-loop ban. Security verification and approval responsibility follow. The research supplies evidence; the specific workflow choices are my proposals, with their reasoning made explicit.
+Consider an illustrative PR that changes payment retries. Its tests pass, but a reviewer still needs to know whether another press could charge twice, whether the tests check that behavior, and who can approve the change. The review gate is the point before merging where requirements, evidence and responsibility are checked together. The research first explains why speed alone is insufficient. The proposed design then addresses three questions: who needs to read this PR and how deeply, how machines can help locate doubts, and how to keep generation and review from carrying forward the same unchecked assumptions. Verification and approval records complete the path, so the person authorizing the merge can explain the decision.
 
 ---
 
@@ -42,11 +42,45 @@ The next three sections draw on these studies, but the evidence has different li
 
 This section is the only place in the series where the real PR data is cited in full. The rule for what gets in is simple. Each set of numbers is followed by what it implies for process design. Numbers with no direct implication for a process change appear only in the summary table at the end, which keeps this section from turning into a benchmark showcase. The order runs from "why review is the control point" through to "where humans should spend their time":
 
-1. **Where the control point comes from.** Start with the first anchor, which answers a prior question: is this something you fix with a tool, or something you fix with the organization? A causal-theory study from July 2026 positions review as the control point that decides whether an agent's net effect is positive or negative: the team's expertise and process structure decide the direction. What it is built on is 38,709 pieces of gray literature — industry blogs, technical reports and community threads, the material that never goes through peer review — of which it coded 3,100 and from them built 26 constructs (the units of concept the study itself defines) and 67 relationships. The control point it names is not a button in some tool but the position where an organization can apply force, and where the direction of that force decides whether the result comes out positive or negative. The status of the evidence has to be stated up front too: it is a theoretical framework, not a measured causal effect. → Prescription: the design of the review gate is an organizational decision, not a tool selection. Every section that follows is part of that "process structure".
-2. **Faster, not better.** Of all the data cited in this section, the largest set gives the least comfortable answer. The set is called From Human-Centric to Agentic Code Review (July 2026), and it spans 1.02M PRs, 207 projects and three generations of GenAI, from human-led review through to agent-led review. Its conclusion is that agent-initiated and multi-agent review made decisions faster under some adoption practices, but the efficiency gain did not turn into review quality. That result is worth a pause. It does not say AI review is useless. It says that in this body of data "fast" and "good" did not show up together, so you cannot use the speed to prove the quality. → Prescription: do not use review speed as a KPI. Review minutes per PR in the monthly report is a cost column only, never a quality column.
-3. **Unreviewed merge rate.** Someone has measured what not reviewing costs. The unreviewed merge rate is the share of changes that reach the mainline without a human approval, and merges that only an AI approved are counted in it. A longitudinal study from July 2026 (Post-merge fate of agentic code) tracked 182 repos and found that overall maintenance rates are similar, but agent-written code needs significantly more corrective maintenance and introduces more security weaknesses. It also observed an association: for every 10 percentage points higher the unreviewed merge rate, the agentic maintenance burden is about 6% higher — an association, not causation. → Prescription: include the unreviewed merge rate in the monthly report and keep tracking it. Even before setting a threshold, the team can count its current rate.
-4. **Rejected comments.** CodeRabbit produced 31,073 review/feedback pairs across 10,191 PRs in 239 repos (July 2026): 36.4% were accepted, 7.3% prompted discussion and 56.3% were rejected. Common reasons included false positives, redundancy, scope and intent misalignment. A lightweight model predicted rejection at 76% F1 in the same study. Rejection is therefore not wholly unpredictable, but that does not establish that simple rules can identify every case. Another study of comments from five agents found inline code suggestions to be the strongest predictor of adoption, while long comments were more often ignored. → Prescription: explain the problem clearly and include a concrete fix when possible. Use deterministic rules for clear duplicates and formatting noise; evaluate other filters for the risk of discarding useful comments.
-5. **Secrets.** A study examined 4,022 agent PRs (July 2026) and traced genuine leaked secrets such as API keys, passwords and tokens. Humans introduced 67.6% of those secrets, and 81.1% were not caught before merge. Both percentages use leaked secrets as the denominator; neither is a subset of the other. Separately, 38.9% of PRs contained security smells, which are suspicious patterns rather than confirmed vulnerabilities. These results describe misses across the workflow, not a measured human detection rate. → Prescription: run secret scanning on every PR to catch recognizable patterns, with people investigating findings and handling leaks. Both roles are needed.
+### 1. Where the control point comes from
+
+Start with the first anchor, which answers a prior question: is this something you fix with a tool, or something you fix with the organization? A causal-theory study from July 2026 positions review as the control point that decides whether an agent's net effect is positive or negative: the team's expertise and process structure decide the direction. What it is built on is 38,709 pieces of gray literature — industry blogs, technical reports and community threads, the material that never goes through peer review — of which it coded 3,100 and from them built 26 constructs (the units of concept the study itself defines) and 67 relationships.
+
+The control point it names is not a button in some tool but the position where an organization can apply force, and where the direction of that force decides whether the result comes out positive or negative. The status of the evidence has to be stated up front too: it is a theoretical framework, not a measured causal effect.
+
+My workflow proposal: the design of the review gate is an organizational decision, not a tool selection. Every section that follows is part of that "process structure".
+
+### 2. Faster, not better
+
+Of all the data cited in this section, the largest set gives the least comfortable answer. The set is called From Human-Centric to Agentic Code Review (July 2026), and it spans 1.02M PRs, 207 projects and three generations of GenAI, from human-led review through to agent-led review. Its conclusion is that agent-initiated and multi-agent review made decisions faster under some adoption practices, but the efficiency gain did not turn into review quality.
+
+That result is worth a pause. It does not say AI review is useless. It says that in this body of data "fast" and "good" did not show up together, so you cannot use the speed to prove the quality.
+
+My workflow proposal: do not use review speed as a KPI. Review minutes per PR in the monthly report is a cost column only, never a quality column.
+
+### 3. Unreviewed merge rate
+
+Another study asks how merges without human approval relate to later maintenance. The unreviewed merge rate is the share of changes that reach the mainline without a human approval, and merges that only an AI approved are counted in it. A longitudinal study from July 2026 (Post-merge fate of agentic code) tracked 182 repos and found that overall maintenance rates are similar, but agent-written code needs significantly more corrective maintenance and introduces more security weaknesses.
+
+It also observed an association: for every 10 percentage points higher the unreviewed merge rate, the agentic maintenance burden is about 6% higher — an association, not causation.
+
+My workflow proposal: include the unreviewed merge rate in the monthly report and keep tracking it. Even before setting a threshold, the team can count its current rate.
+
+### 4. Rejected comments
+
+CodeRabbit produced 31,073 review/feedback pairs across 10,191 PRs in 239 repos (July 2026): 36.4% were accepted, 7.3% prompted discussion and 56.3% were rejected. Common reasons included false positives, redundancy, scope and intent misalignment.
+
+A lightweight model predicted rejection at 76% F1 in the same study. F1 combines how often a predicted rejection is correct with how many actual rejections are found, so the score does not reward only one side. Rejection is therefore not wholly unpredictable, but that does not establish that simple rules can identify every case. Another study of comments from five agents found inline code suggestions to be the strongest predictor of adoption, while long comments were more often ignored.
+
+My workflow proposal: explain the problem clearly and include a concrete fix when possible. Use fixed rules for clear duplicates and formatting noise, such as identical comments. These checks, called deterministic here, return the same result for the same defined inputs; evaluate other filters for the risk of discarding useful comments.
+
+### 5. Secrets
+
+A study examined 4,022 agent PRs (July 2026) and traced genuine leaked secrets such as API keys, passwords and tokens. Humans introduced 67.6% of those secrets, and 81.1% were not caught before merge. Both percentages use leaked secrets as the denominator; neither is a subset of the other.
+
+Separately, 38.9% of PRs contained security smells, which are suspicious patterns rather than confirmed vulnerabilities. These results describe misses across the workflow, not a measured human detection rate.
+
+My workflow proposal: run secret scanning on every PR to catch recognizable patterns, with people investigating findings and handling leaks. Both roles are needed.
 
 Seven sources go into one table. The first five are the five above. The last two have no prescription of their own, and the final column says where each of them is used:
 
@@ -70,13 +104,15 @@ The next section is about the division of labour, not tools.
 
 The triage matrix is built on two axes. One asks how far the damage spreads when this PR goes wrong. The other asks whether a machine can catch it before that happens.
 
-The first axis is **blast radius**: how far a failure in this PR can reach. Auth, payments, schemas and infrastructure usually demand close attention. Internal tools must be assessed by the data they can change and the permissions they hold. The criterion is the reach of a failure, not technical difficulty or a directory name.
+The first axis is **blast radius**, the reach of a failure. In a payment PR, changing a sentence on the screen and changing shared charge-retry logic might each take only a few lines. The latter can change whether many orders are charged twice. Auth, payments, schemas and infrastructure therefore usually deserve close attention, but a directory name cannot assign the risk by itself. An internal tool with permission to update customer records in bulk can also have a wide reach. Reviewers need to identify the people, data and operations affected before deciding how deeply to examine the change.
 
-The second axis is **machine verifiability**: whether existing constraint tests and mutation reports adequately cover this PR's key requirements, not merely whether the repo has the tools installed. Constraint tests turn team rules into executable checks. Mutation deliberately changes code to see whether tests detect it. Undetected changes are surviving mutants, which need assessment as possible test gaps or behavior-preserving equivalents.
+The second axis is **machine verifiability**. Continue with payment replay. The team first agrees that repeating the same payment attempt must not send another charge request, then sends the same request twice and checks that only one charge call was made. That preserves a requirement as a constraint test that can run against later changes. Verifiability asks whether this PR's key requirements have evidence of that kind, not whether the repository has testing tools installed.
+
+We can also deliberately remove the guard against another charge and see whether the same test fails. Changing code in this way to examine a test's ability to detect errors is mutation testing. An undetected change needs investigation: it may expose a test gap, or it may leave behavior unchanged within the agreed input domain. A surviving mutant is therefore a result to explain, not something an aggregate score can dismiss.
 
 Before dividing up the work, the baseline requirement must be clear: **every merge needs a human approval, and the approval record must identify the person responsible.**
 
-Four terms in the table need a brief introduction. Oversight budget is the share of human deep review needed to reach a reliability target. The reliability piece estimates its minimum and compares it with what the team can sustain. It does not exempt any PR from human approval. An approval artifact records each approval and is defined in section 7. A hunk is one segment of a diff; brownfield means an existing repo, with the adoption sequence in section 10 of the overview.
+Read the matrix with a practical question: if you were approving this payment PR, would the available evidence support a decision? Intent states the purpose; the diff shows the actual edits, with each segment called a hunk. When a report points to a suspicious branch, the reviewer follows it back into the code. Every PR still requires human approval. Oversight budget determines how many receive an additional deep read by someone other than the task assigner; the reliability piece estimates the minimum and compares it with sustainable capacity. An approval artifact preserves the approval record, developed in section 7. Brownfield in the table refers to an existing system still building these checks.
 
 An AI approval is one signal column in the approval artifact, there for the human approver and the sampler to consult; it never counts toward required approvals. Required approvals is the GitHub branch protection setting for how many approvals a PR has to collect before it can merge.
 
@@ -98,6 +134,16 @@ The second row calls for preserving comments as rules before deciding which can 
 A study (July 2026) ran on a platform made up of more than 35 services and turned every accepted review comment into a version-controlled rule plus a pre-submit checklist. The rules grew from 5 to 18, the error categories that had been turned into rules recurred 0% of the time, and review effort moved to the design layer.
 
 The study supports preserving review experience instead of repeating the same reminders. But there is a further step from a rule file to an executable constraint test: establishing whether the comment can become a stable, decidable check. Put the automatable part into CI and retain judgment-dependent guidance for reviewers. Both need an owner.
+
+**A payment makes the selections concrete.** Suppose an agent changes the retry flow for buying a bottle of 無糖純喫綠茶, unsweetened pure green tea, with an illustrative NTD 35 order. There are two selections: who reviews which changes, and which comments deserve lasting protection. The small amount does not make shared payment logic low risk; the same change can affect many orders.
+
+I would have a payment owner—the person responsible for payment rules—examine the relationship between the order and the key identifying a payment attempt, the amount source, charge calls and exception handling. A test reviewer examines prepared orders and scenarios (fixtures), statements judging results (assertions), and undetected mutations. Changes involving shared storage, concurrent requests or reconciliation of payment records need someone with integration or operations expertise. Roles can overlap, but the reviewed scope should be recorded. Highlighted diff lines alone are insufficient: the duplicate-charge check, or guard, must run before the charge. Even if that line is unchanged, surrounding control flow and callers can alter its protection.
+
+Now consider illustrative Review comments. “Could another click charge again?” identifies a consequence, a stable observation and a durable requirement: retain a constraint that the same payment attempt sends only one charge request. “Capture may precede a timeout” calls for a lost-response test that retains `PENDING` and prevents another charge on replay. A local naming concern belongs in the current edit or established lint rules. “Should the campaign offer refunds?” first needs product and payment policy; the agent cannot invent the expected answer.
+
+For retained rules, record the source, scope, test name, owner and reconsideration conditions. A consequential risk deserves protection on its first appearance, without waiting for another incident. These are teaching comments and a suggested workflow, not a real PR history. The [payment example](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment) provides the mapping and runnable code; Part 4, “A Payment Walkthrough,” develops it step by step.
+
+The example also shows why machine verifiability cannot be reduced to an aggregate score. Omitting the timeout test still produces a mutation score of 85.7%—the share of eligible variants the tests detect—but M5, which turns an unknown result into `PAID`, meaning payment has completed, survives. These seven hand-selected teaching mutants cannot directly inherit a threshold for a tool-generated set on a real diff. A reviewer should identify the unprotected requirement and add its test and evidence. Exceeding the Testing article's 70% starting reference does not move this PR into a cell where close reading can be reduced.
 
 The "until then" in the second row's Exceptions column is the overview's phrase too: that cell is the transition.
 
@@ -185,7 +231,7 @@ The matrix assigns "machines read the diff" to two cells. Now it needs to specif
 
 People in Taiwan are already doing this. A comment in Claude Taiwan, a Taiwanese Claude user group on Facebook, described the poster's own "fleet mode": two review agents, one to confirm and one to falsify, an architecture agent to guard against over-design, and one supervisor over all of them.
 
-The comment made me notice how review can be divided by question: one reviewer checks whether requirements were met, another searches for counterexamples, and another examines architecture. Multiple agents can then supply different leads. Trusting that arrangement still requires establishing their independence and identifying who gives final approval.
+The comment made me notice how review can be divided by question. In the payment example, a verifier follows the requirement and checks that an identical request returns the existing result. A falsifier asks whether that promise still holds when the provider captures the money but the response is lost. An architect examines whether retry responsibility is scattered across callers that can each decide to charge again. These are different review questions, rather than three agents repeating that the change looks fine. Role names alone do not establish independent judgment, however. We still need to examine the evidence each receives, whether it inherits the generator's reasoning, and who makes the final approval decision.
 
 The next three principles make those conditions explicit, followed by a configuration draft the team can discuss and implement.
 
@@ -201,7 +247,7 @@ Heterogeneity is a structural principle, not a procurement ranking.
 
 A study called OpenCodeReview (August 2026) used rule-driven dispatch plus grounded file review to raise SEM-F1 by up to 2.17x on 200 real PRs (25.10% versus 11.57%), using between one-fifth and one-fifteenth as many tokens as the comparison baseline. That score measures how well the problems the reviewer names line up, semantically, with the problems that are actually there.
 
-Neither of the two techniques it uses is mysterious. Dispatch means letting rules decide which reviewer gets this PR and which files it reads. Grounded file review means requiring every sentence a reviewer writes to point back to a specific place in a file.
+Connect the two techniques to the same payment PR. Explicit rules first identify changes to payment states and tests, then route those files and relevant callers to appropriate reviewers. That is dispatch: deciding which questions go to whom and what they need to inspect. If a reviewer concludes that a timeout is reported as success, the comment should locate the timeout branch, explain how it violates the payment requirement, and identify a scenario that can check the claim. Grounded file review preserves that connection between a comment, the code and inspectable evidence. This is an illustration of the techniques, not an additional payment result measured by the study.
 
 Uncle Bob (Robert C. Martin, the author of *Clean Code* and a long-time advocate of TDD) says it shorter in his August 5 post: leave deterministic things to deterministic tools.
 
@@ -213,7 +259,7 @@ The fleet's first layer is lint, constraint tests and secret scan, not an LLM.
 
 The concern is that the same assumptions carry through the whole process. A reviewer that continues the generator’s context may accept its explanation first and then look for support. An isolated session lets the reviewer begin again from requirements, the diff and verification results. That reduces dependence on the original account, without guaranteeing the absence of shared blind spots.
 
-Beyond the separation from generation, review itself runs in two passes. The local pass goes file by file and looks for problems inside a single file. The integration pass goes across files and asks whether the intent, the constraints and the overall behaviour still line up.
+Beyond separation from generation, review itself has two passes. A local pass examines how the payment function finds an existing attempt, handles a timeout and returns a result. An integration pass follows the callers to check whether a repeated request still refers to that same payment attempt. Suppose the function correctly reuses a result, but its caller creates a new payment attempt on every button press. Reading the function alone cannot establish the end-to-end promise. The two passes should therefore exchange specific questions: what has been established within this file, and which inputs or side effects still need tracing through other files?
 
 **What if you only have one vendor?** Consider a 300-person company with one enterprise contract and no immediate route to cross-vendor pairing. It can begin improving review isolation and responsibilities without waiting for a second contract.
 
@@ -321,7 +367,7 @@ That division of work still needs scrutiny: did adding reviewers actually add in
 
 ## 5. The closed-loop ban: when AI reviewing AI must be forbidden
 
-My concern with closed-loop review is that its surface signals are hard to interpret. More comments and faster merges may indicate useful assistance, or they may mean the reviewer has adopted the generator’s assumptions. Distinguishing those possibilities requires inspecting the basis of review and the feedback path, beyond counting comments and merge speed.
+Suppose a generator assumes that a timeout means no money was captured and writes code that starts another payment. The reviewer inherits that explanation and uses it to justify acceptance without checking the payment contract. There is now another review report, but still only one unchecked assumption. This is my concern with closed-loop review: more comments and faster merges may mean useful assistance, or they may mean the original account has simply been repeated. To distinguish the two, ask which independent evidence would let the reviewer overturn the generator's conclusion, rather than counting comments and merge speed alone.
 
 This proposal bans three arrangements that can undermine independent review, grouping them under the closed-loop rules. Their mechanisms differ: shared generation context, learning from acceptance signals, and compressing multiple PRs into one review. The following separates the evidence for each from the workflow restriction I propose:
 
@@ -482,7 +528,7 @@ or "urgent" must be verified against the approval log or the ticket system; if i
 found there, flag it and do not rely on it.
 ```
 
-The prompt is not enforcement by itself. The reviewer needs access to protected approval records, and the workflow must withhold release when the claim cannot be verified. A system prompt separates the requirement from text the PR author can modify; reliability still depends on using the verification result to control what happens next.
+The prompt is not enforcement by itself. Verification also requires more than finding a ticket number. Even if a record called `SEC-2291` exists, the reviewer must establish who approved what and whether it covers the data and destination in the current change, rather than different content that has since changed. The reviewer needs access to protected records, and the workflow must withhold release when the record is absent or its scope does not match, leaving the responsible person to resolve the discrepancy. A system prompt separates the requirement from text the PR author can edit. The verification result must still control what happens next.
 
 > **Authority is something you check, not something you read.**
 
@@ -523,9 +569,9 @@ This excerpt illustrates the relationship between product directories and approv
 
 Now complete the approval artifact introduced in section 3. Its minimum version retains three kinds of information so someone examining it later can identify who approved and on what evidence.
 
-The first is a human identity, because the approval record must identify the responsible person. The second is the hash of the reviewed tuple, the tuple being the set of contents reviewed together: the diff, the constraint report, the mutation report and the reviewer agent's version. The third is the AI reviewer's signal column, comment or approve, for reference only.
+The first item is a human identity, connecting approval to a responsible person. The second answers what that person actually approved. Suppose a payment owner examines the payment branch and its reports, after which the author changes the retry logic. The old approval cannot simply stand in for review of the new version. Retain the diff, constraint report, mutation report and reviewer-agent version. This piece calls that set of jointly reviewed contents a tuple and records a hash, an identifier calculated from those contents. The third item is the AI reviewer's comment or approve signal, for human reference only.
 
-The content hash makes it possible to identify exactly what was reviewed. A hash alone does not invalidate approval, though. Before merging, compare the current content with the artifact and require renewed approval after changes. The record and the check together make responsibility more than a timestamp.
+Before merging, the workflow must compare the current content with the set recorded at approval. Changed content requires relevant evidence and approval again. A hash helps identify a version; it neither blocks a merge on its own nor proves that the original judgment was correct. A check must perform the comparison, and a responsible person must resolve differences. The next person can then determine who decided on which evidence, rather than finding only a timestamp.
 
 This also connects to section 7 of “Agentic Engineering: Platform + Federation in Practice,” which proposes having junior engineers review agent PRs with a checklist. Intent, Constraints honoured and verification reports provide concrete material to compare. Someone new to the system can identify what agrees and what remains unclear, then discuss it with an experienced reviewer. The checklist supports learning and collaboration; it does not make a new hire ready to approve every high-risk change independently.
 
@@ -535,7 +581,7 @@ This also connects to section 7 of “Agentic Engineering: Platform + Federation
 
 ## 8. Closing, and the order of rollout
 
-To change an existing workflow, I would start with one pilot repo, prepare the information reviewers need, then introduce approval rules and responsibilities in stages. The following seven steps describe that rollout. Each needs an owner to verify the result, beyond checking off a configuration change.
+To change an existing workflow, I would start with one pilot repo and take a clearly bounded PR through the entire process. Can the implementer explain its intent and constraints? Do the tools leave corresponding results? Can the reviewer identify unresolved questions, and does approval refer to the content actually reviewed? The seven steps below build that path. After each configuration change, use the PR to examine whether verification and release decisions have actually changed. The existence of a workflow does not by itself establish that its responsibilities are being fulfilled.
 
 - **Add the two PR template fields** (Intent and Constraints honoured). Without them, later reviewers lack a statement of purpose and constraints to check the work against.
 - **Put deterministic dispatch in front.** The PR passes lint, constraint tests and secret scan before it reaches LLM review.
@@ -563,10 +609,11 @@ What I want to leave here is a workable division of responsibility: tools prepar
 
 ### The series
 
-1. [Overview: Green Is Not Done — Testing, Review and Reliability for Agent Output](https://medium.com/p/c4fc9f3d8581)
-2. [1. Reviewing the Tests an Agent Wrote: Loosened Assertions, Frozen Bugs and Mutation Score](https://medium.com/p/51d001a6dcd5)
-3. **2. Review Is the Control Point, Not the Bottleneck (this piece)**
-4. 3. The 34% SWE-Gate Found Behind a Green Build: Constraint Tests, pass^k and the Gate for Expanding Autonomy (coming soon)
+- [Overview: Green Is Not Done — Testing, Review and Reliability for Agent Output](https://medium.com/p/c4fc9f3d8581)
+- [Part 1 — Reviewing the Tests an Agent Wrote: Loosened Assertions, Frozen Bugs and Mutation Score](https://medium.com/p/51d001a6dcd5)
+- **Part 2 — Review Is the Control Point, Not the Bottleneck (this piece)**
+- Part 3 — The 34% SWE-Gate Found Behind a Green Build: Constraint Tests, pass^k and the Gate for Expanding Autonomy (coming soon)
+- Part 4 — A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score (coming soon)
 
 ---
 
@@ -599,6 +646,7 @@ What I want to leave here is a workable division of responsibility: tools prepar
 25. Studist, Masaya Nakamura — [Intent as Code: Why Existing Permissions Aren't Enough for AI](https://sched.co/2QlDX) (AGNTCon + MCPCon Japan 2026, Tokyo, 2026-09-10; [slides](https://hosted-files.sched.co/agntconmcpconjapan26/ab/Intent-as-Code%20%2813%29.pdf#page=16) slide 16, which cites H. Yu et al., [arXiv 2606.22721](https://arxiv.org/abs/2606.22721)) [section 3; cited second-hand off the slide]
 26. GitHub documentation — [About code owners](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners), code ownership and required approvals (sections 3 and 7).
 27. GitHub documentation — [About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches), required reviews, stale approvals and bypass settings (section 7).
+28. Accompanying implementation — [Tea payment, constraint tests and seven selected mutants](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment) [section 3; measured teaching example, no real provider]
 
 ---
 

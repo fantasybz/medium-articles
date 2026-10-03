@@ -28,7 +28,7 @@
   },
   {
    "file": "table-03.png",
-   "markdown": "| Item | My recommended value | Notes |\n|---|---|---|\n| Mutation score (agent-changed lines) | ≥ 70% before entering review | Report for a month, then block |\n| Run time of the affected subset | < 10 minutes before turning mutation on | Repos over that install the first three checks first |\n| assertion-change diff | Removal and disabling always block; strength drops and precision relaxations block | Other changes to existing assertions get `needs-human-test-review` |\n| red-then-green | Only for PRs that change existing behavior | The classification doesn't come from the PR author |\n"
+   "markdown": "| Item | My recommended value | Notes |\n|---|---|---|\n| Mutation score (agent-changed lines) | ≥ 70% starting reference; review critical constraints separately | Report for a month, then block |\n| Run time of the affected subset | < 10 minutes before turning mutation on | Repos over that install the first three checks first |\n| assertion-change diff | Removal and disabling always block; strength drops and precision relaxations block | Other changes to existing assertions get `needs-human-test-review` |\n| red-then-green | Only for PRs that change existing behavior | The classification doesn't come from the PR author |\n"
   },
   {
    "file": "table-04.png",

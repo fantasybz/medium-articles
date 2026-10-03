@@ -1,14 +1,14 @@
 # Green Is Not Done, Part 3 — The 34% SWE-Gate Found Behind a Green Build: Constraint Tests, pass^k and the Gate for Expanding Autonomy
 
-> **TL;DR** — The final part of the trilogy asks what evidence should guide expanded agent authority. Across 75 Python repos and 303 patch tasks, SWE-Gate found that 221 of 644 patches passing functional tests (34%) violated a constraint a reviewer had actually added. That gap leads to three metrics. **Constraint pass rate** is the share of functionally passing PRs that also pass all constraint tests. **pass^k** is the share of cases in a task set that pass all k runs, reported separately from single-attempt success rate, pass@1. **Oversight budget** addresses the human work still needed: in READY's clinical-audit case, systems only 0.3 percentage points apart in accuracy differed by nearly 10 percentage points in review requirements. Those staffing figures cannot transfer directly to code review. This piece borrows the idea of working backward from a reliability target, using a simplified model to estimate a review minimum and compare it with actual review and sustainable capacity. These results join test effectiveness and existing operating conditions in the monthly leadership report and the G2 authority decision. pass@1 alone does not decide expansion.
+> **TL;DR** — Approving one change does not yet answer whether agents should take on more work of that kind. In Python repair tasks, SWE-Gate found that 34% of functionally passing patches still violated constraints reviewers had raised. This piece first turns requirements worth preserving into executable checks, then has an agent independently attempt the same set of tasks several times. Average success and the share of cases succeeding every time answer different questions. A worked example then estimates how much human review a reliability target requires and whether the team can sustain it. Finally, a monthly report is read against the authority gate, checking the metrics, history and staffing evidence together. Each result has a defined scope; one high score cannot authorize expansion.
 
-> Series: [Overview](https://medium.com/p/c4fc9f3d8581) → [1. Testing](https://medium.com/p/51d001a6dcd5) → [2. Review](https://medium.com/p/4d36d0f2f9c1) → **3. Reliability (this piece)**
+> Series: [Overview](https://medium.com/p/c4fc9f3d8581) → [1. Testing](https://medium.com/p/51d001a6dcd5) → [2. Review](https://medium.com/p/4d36d0f2f9c1) → **3. Reliability (this piece)** → 4. Payment Walkthrough (coming soon)
 
 ---
 
 ## 1. The 34% SWE-Gate measured
 
-The overview separated the problems a green build does not cover into three layers. This piece starts with one of them: passing functional tests does not mean meeting the team's constraints. When requirements a reviewer has already raised are absent from the functional tests, a green build cannot answer those questions. The numbers cited in the overview make that gap concrete. SWE-Gate is a benchmark paper, and what it measures is exactly what a green build covers. It did one extra thing: it did not only ask whether the functional tests passed. It also pulled out what the reviewers had actually asked for on those PRs, turned each of those asks into an executable check, and ran them as a separate pass.
+Start with an illustrative situation: an agent repairs a data-fetching feature, and tests confirm that the returned content is correct. A reviewer then notices that it constructs its own HTTP client, the component sending network requests, instead of using the team's required shared entry point. Completing the feature and honoring that requirement are separate questions to check. A constraint here is a requirement the team has made explicit and expects later changes to preserve. It may concern an implementation choice, or it may itself be functional behavior, such as preventing duplicate payment. SWE-Gate is a study evaluating agents against benchmark tasks that checks more than functional test results: it turns requirements reviewers actually raised on PRs into executable checks and evaluates them separately. Its figures below concern its Python repair tasks, not measured results from this illustration.
 
 The 34% is what SWE-Gate (September 2026) measured on 75 Python repos and 303 patch tasks. Of the 644 patches that passed the functional tests, 221 violated one of those constraints. In plain language: one in every three green patches violates a constraint the reviewer cared about.
 
@@ -34,7 +34,7 @@ This piece deals with only two of those layers. One is the reviewer constraints,
 
 ## 2. Writing review constraints as executable constraint tests
 
-The last section said one in every three green patches violates a constraint the reviewer cared about. This section is the most direct answer to that: write those constraints as checks CI can run. Checks like these have a name — constraint tests. They do not verify that the functionality is right, which is what functional tests are for. They verify one thing only: whether this PR stepped on a rule the team has already stated out loud.
+The last section described SWE-Gate's finding that roughly one-third of green patches violated constraints reviewers cared about. The direct response is to turn requirements worth retaining into constraint tests, run by the CI process that automatically checks changes. The name describes their source and protective responsibility, not a technology mutually exclusive with functional testing. “Do not charge the same payment twice” is both functional behavior and a constraint a reviewer can choose to maintain. For example, a unit test can check replay within an isolated payment function. An integration test can then examine the flow together with storage and the payment-provider connection. Both protect the same constraint at different scopes.
 
 What does a constraint look like? Think of it first as the things a team says over and over but should not have to rely on a person to remember every time. The seven categories below illustrate how review requirements can become constraint tests; they are not a complete taxonomy; for SWE-NFI's 92 rules and SWE-Gate's comment taxonomy, the papers themselves are the authority:
 
@@ -48,11 +48,13 @@ What does a constraint look like? Think of it first as the things a team says ov
 | Security | No writes to env, no disabling TLS verification | AST and secret scan |
 | Architecture rules | Layer dependency direction; aggregates must extend EventSourcedAggregate | Import graph, inheritance check |
 
-The rightmost column shows that lockfile diffs, AST analysis and import graphs let us start with existing tools. Each example still needs a defined scope. A static rule for "no database calls inside loops" may recognize certain patterns without covering every indirect call. Establishing what a check can see tells us which remaining questions need another owner.
+Follow the reuse row first. If the rule requires the shared HTTP client, a checker can parse code into an abstract syntax tree, or AST, locate direct `HttpClient(...)` calls, and return the file and line to the implementer. It examines the calls in selected code, rather than accepting a comment that says reuse is complete. Other rows have their own observable objects: a lockfile diff reveals dependency changes, while an import graph shows dependencies between modules. Each check still covers only defined patterns and scope. A scan for database calls directly inside a loop may miss indirect calls. Establishing what the check can see is what lets the team assign the remaining questions to someone else.
 
 The process has four steps: review comment → rule → constraint test → CI. The rule-file approach comes from a July 2026 study that preserved accepted comments in version control for later work, also discussed in section 3 of the review piece. Before implementing a constraint test, establish whether a comment is a general rule or a one-off exception and whether it can become a stable check. Acceptance once does not settle its scope forever.
 
 The rules file records two kinds of thing. The first is provenance: each rule records its source PR and date, and a rule that has not fired in six months gets reviewed for expiry. The second is responsibility, which is why there are two more fields — owner (who maintains this rule) and expiry (the date it comes up for review). Even a rule that was once useful can grow outdated without someone to maintain it and a time to revisit it. These two fields tell the team who should return to check when that time comes.
+
+Six months is a reminder to reconsider, not a reason to delete the rule. A payment safety constraint may have gone a long time without failure because its protection remains effective. Retention depends on whether the business contract, implementation or risk has changed.
 
 Now that the rules have an owner, the next question is whether the agent can change them. Section 2 of the overview splits evidence into three classes: the first is what the agent says, the second is the tests the agent wrote itself, and the third is the tests the agent cannot change. What lands here is that third class, and the mechanism has three parts.
 
@@ -60,7 +62,7 @@ CODEOWNERS assigns review responsibility but needs merge rules to enforce it. Fi
 
 The agent can propose changes on a branch but cannot approve and merge them itself. When evaluating a PR, obtain constraints and verification code from a protected version and use them against the candidate code. A PR must not rewrite its checker and then cite that checker's green result as proof of compliance. That is the independence "cannot change unilaterally" needs to preserve.
 
-Walk an illustrative comment through those four steps. The PR number, dates and accounts below are examples too. Before, it is the comment a human has to repeat every time: "Please don't `new HttpClient` directly here, use `clients.http()`." It only ever covers the one PR in front of it, and once it has been said it is gone. After, the comment becomes three arrangements: CI runs a check, a maintainer owns the rule, and permissions restrict who can approve changes.
+Use the HTTP-client situation to connect the four steps. Suppose the team keeps connection timeouts and retry settings in `clients.http()` so they can be maintained in one place. A reviewer therefore asks: "Please don't `new HttpClient` directly here; use `clients.http()`." This is the teaching assumption for the example; its PR number, dates and accounts are illustrative too. Before, the requirement remains in that comment, leaving someone to recognize the same issue next time. After, CI checks the selected direct-construction pattern, a maintainer owns the rule, and permissions restrict who can approve changes to it. The protection concerns the team's agreed shared-entry-point requirement. The fact that someone once wrote a comment does not permanently prohibit a technique by itself.
 
 First is the test file. This minimal illustration checks direct `HttpClient(...)` calls in changed Python files. It does not cover aliases, attribute calls or dynamic construction. A production implementation must also handle deleted files, git-command failures and the diff baseline. The excerpt is not a complete security boundary:
 
@@ -161,9 +163,17 @@ flowchart TB
 
 The dashed line gives people a chance to reconsider a rule. Two years later, a once-prohibited approach may have a different implementation. If all that remains is a failed check, without its rationale or owner, the next person cannot easily decide whether the code or the rule needs changing. Expiry preserves the opportunity to ask that question.
 
+**Now consider a payment constraint that needs behavioral execution.** Suppose the illustrative order is a bottle of 無糖純喫綠茶, unsweetened pure green tea, for NTD 35. A reviewer points out that a screen timeout may follow a capture, so replay must not simply start another charge. After agreeing on the requirement, retain its source, payment owner, replay scope and a condition to reconsider it when the provider contract changes. The comments and price are teaching inputs, not an actual incident or product price.
+
+Scanning for a `PENDING` string would not verify this rule. In the accompanying [payment example](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment), `FakeGateway` records a capture and raises a timeout. The test replays the same order and key through `Checkout.pay()`, checking that the result remains `PENDING`, has no payment ID, and leaves only one provider call and one capture. The fake deliberately does not deduplicate, so it cannot hide a missing application guard. The full tests also cover a timeout before capture and another connection error.
+
+This Review concern is worth retaining because its consequence is clear, its expected result is decidable, it applies to future changes and someone maintains it. Naming preferences do not each need a behavior test; unsettled refund policy first needs a requirement decision. Part 4, “A Payment Walkthrough,” connects these selections to nine payment tests and seven selected mutants.
+
+The denominators must remain distinct. Detecting 7/7 selected mutants is this suite's mutation score within the example, not an agent's constraint pass rate or pass^k. Constraint pass rate counts candidate patches that pass all applicable constraints among those passing functional checks. Pass^k needs multiple independent agent attempts on fixed tasks. Rerunning the same unit tests five times does not produce the five agent outcomes the next section measures.
+
 Constraints can come from different sources. This piece mainly draws on **review history**: a problem occurred, and the team decided to preserve the resulting requirement. Another source is the **spec**, the contract agreed before implementation begins. Both can become checks, but reconsidering them requires returning to their respective basis.
 
-The team that raised a review constraint maintains it and checks at expiry whether its rationale still holds. A spec-derived constraint should be reconsidered with requirement changes by the people responsible for the spec. Sharing a CI pipeline does not remove the need to retain source and owner. Those records let rules evolve and let someone explain why they remain.
+The team that raised a review constraint maintains it and revisits its rationale at expiry. People responsible for a specification reconsider its constraints alongside requirement changes. Sharing a CI pipeline does not make source and owner less important. At this point, the team can explain which requirements check one candidate implementation. It still cannot say how often the agent will produce a conforming implementation in later work. That requires a different unit of observation: keep the task and acceptance requirements fixed, have the agent complete it independently from the same starting point several times, and compare the resulting outputs. The next section develops that evidence from repeated attempts.
 
 ---
 
@@ -171,11 +181,11 @@ The team that raised a review constraint maintains it and checks at expiry wheth
 
 The last section was about whether the rules got kept. This one is about something else: do the same thing again, and will it still come out right? Capability and reliability are two numbers, and plenty of teams collapse them into one, so let me pin the definitions down first.
 
-Use the definitions from section 8 of the overview: run each golden-set case k times. These are representative acceptance cases chosen by the team. Start each attempt independently from the same initial state, fixing the model, harness version and scoring rules. Record the case-set version for comparisons across months so changes remain interpretable.
+First establish what one case means. It can consist of a repair task, an initial repository state and acceptance requirements: for example, asking an agent to repair retry logic while preserving the team's agreed constraints. The golden set is the collection of acceptance cases chosen to represent the work under consideration for broader authority. Running each case k times means having the agent independently produce an output from the same initial state each time, not running one implementation's tests k times. Fix the model, the harness version—the tools and environment used for execution—and the scoring rules. Record the case-set version for comparisons across months so changes remain interpretable.
 
-**pass@1 is the single-attempt success rate, estimated from the k repeated runs.** Per case, it is the number of passes out of k divided by k. The question it answers is whether the agent can do this on average.
+**pass@1 is the single-attempt success rate, estimated from the k repeated runs.** Take an illustrative case attempted independently five times, with four successes. Its estimate is 4/5, or 80%. It captures the share of attempts that meet the success criteria; the following discussion explains aggregation across cases.
 
-**pass^k is the share of cases that succeed in all k attempts.** Any failed attempt excludes that case from the all-pass count. It describes consistency over these cases and these k runs, not a guarantee that the next run will succeed.
+**pass^k instead counts cases that succeed in every one of their k attempts.** The case with four successes and one failure does not count among the cases passing all five. Its average can look reasonable while still exposing a failure that matters. Divide the number of all-pass cases by the total number of cases to obtain pass^k. It describes consistency across this set and these k attempts, not a guarantee of success on the next run.
 
 Keep each case's results before computing aggregate metrics. With equal attempts per case, averaging per-case pass@1 gives the same value as pooling all runs. But pass^k needs to know which successes and failures belong to the same case. A total success count cannot distinguish a few cases that always fail from occasional failures spread across cases, and those patterns call for different interventions.
 
@@ -271,7 +281,9 @@ READY (September 2026) offers a useful starting point. This enterprise-agent dep
 
 I borrow the concept, not the numbers. READY uses a clinical audit workflow rather than code and estimates human effort for the system and review policy. The model below only illustrates the connection between accuracy, review effectiveness and a reliability target. It neither reproduces READY's method nor explains the ranking reversal between those two systems. Section 8 of the overview gives the full figures and domain.
 
-**My simplified model, not READY's method**, starts with three assumptions: deep reads are randomly sampled within a stratum; detected errors can be successfully corrected before release; and review does not turn correct results into incorrect ones. Let p be success before deep review, r the share deeply reviewed, and c the probability that deep review successfully corrects an existing error. Success after review is p + (1 − p) · r · c. Requiring it to reach T gives:
+**My simplified model, not READY's method**, begins with three assumptions: deep reads are randomly sampled within a stratum; detected errors can be successfully corrected before release; and review does not turn correct results into incorrect ones. Think in counts first. Suppose ninety of every hundred candidate outputs are correct on average. Randomly reviewing half would encounter five of the ten errors on average. If deep review successfully corrects 60% of those, it adds three correct outputs, giving an expected total of ninety-three. These are expectations under the model, not measurements or a promise that each batch will contain exactly three corrections.
+
+In the general expression, p is success before deep review, while 1 − p is the original error share. The reviewed share is r, and c is the probability that deep review successfully corrects an existing error. The additional success share is therefore (1 − p) · r · c. Add it to p to obtain p + (1 − p) · r · c. Requiring that result to reach the reliability target T and solving for r gives:
 
 > r ≥ (T − p) / ((1 − p) · c)
 
@@ -363,7 +375,7 @@ oversight:                  # simplified model, computed per stratum
     r: 0.75                 # ceil to whole %: (0.95 - 0.91) / (0.09 * 0.60)
 ```
 
-All numbers in this report are illustrative. The upper part shows measurement fields; the lower part shows a stratified calculation. The given p, T and c yield r_min of approximately 0.7407, so scheduling in whole percentages rounds upward to 0.75. Keep the required share, actual share and sustainable ceiling separate so the report shows both whether capacity is sufficient and whether review actually meets the requirement.
+All numbers in this report are illustrative. Start with its lower half. The given p, T and c yield r_min of approximately 0.7407. Scheduling in whole percentages rounds actual deep review, r, up to 0.75, while sustainable capacity, r_budget, is 0.80. Under these assumptions, the requirement fits within the budget and the allocation meets the requirement. Both judgments are necessary. Adequate capacity without actual review still leaves work undone; a high promised review share that the team cannot sustain cannot support expansion either. This interprets only the month's staffing fields. It does not establish that the full authority gate in the next section has passed.
 
 Set the reliability target, estimate the review required, then check whether staffing can sustain it. If it cannot, narrow authority, improve the system or add capacity. Do not conceal the gap behind a more convenient sampling percentage.
 
@@ -377,7 +389,7 @@ The operations piece's G2 had three original conditions: retry rate (the share o
 
 A threshold should consider stability as well as attainment. Each condition below requires two consecutive months of evidence: some require sustained attainment, while others also require violations or the required review share not to rise. If violations have already fallen to 2%, the gate should not demand another reduction every month. A healthy steady state needs a path through the gate too.
 
-The small-sample rule matches section 3: below 30 golden-set cases, report pass^5 as a trend and optionally attach a Wilson confidence interval to show uncertainty, but do not use it as an authority gate. Under this proposal, wait for at least 30 cases and two consecutive qualifying months. Attaching an interval does not itself satisfy that requirement.
+The small-sample rule matches section 3: below 30 golden-set cases, report pass^5 as a trend and optionally attach a Wilson confidence interval to show uncertainty. For example, observing the same 60% all-pass share generally leaves more uncertainty with fewer cases than with many. The interval expresses that sampling uncertainty alongside the estimate. Still, do not use pass^5 as an authority gate at that sample size. Under this proposal, wait for at least 30 cases and two consecutive qualifying months. Attaching an interval does not itself satisfy that requirement.
 
 The four additions assess repeat-run consistency, constraint violations, test effectiveness and review capacity. The third uses the testing piece’s mutation score, the share of valid mutations detected by tests. Placing them together gives each risk its own basis for judgment:
 
@@ -428,11 +440,11 @@ gates:
 
 `on_fail: hold` means no expansion when a condition fails. This YAML still needs an evaluator, trustworthy measurement inputs and protection against unauthorized policy changes before it becomes an enforced gate. A file makes criteria reviewable and traceable; the file alone cannot block a bad decision.
 
-Three safeguards sit alongside this gate. First, at G3, the last scaling gate in the operations piece, retain a frozen holdout eval isolated from routine development and self-improvement. Evaluation may present the task to the agent, but an independent evaluation process keeps the answer key and scoring assets away from it. Repeatedly feeding results back must not turn the holdout into a practice set.
+Three safeguards sit alongside this gate to address blind spots that can remain after the monthly conditions are met. The first belongs at G3, the final scaling gate in the operations piece: retain another set of acceptance tasks outside routine tuning. If every failure leads to changes tested on the same cases, rising scores may increasingly reflect familiarity with that set. The retained cases check whether improvement extends beyond repeatedly practiced examples. This is a frozen holdout eval. Evaluation may present the task to the agent, but an independent process keeps answer keys and scoring assets away from it. Repeated feedback must not turn the holdout into another practice set.
 
 Why lock it down that hard? A September 2026 study documents a case from a production self-improvement loop: the agent found a cached answer key, scored 100%, and its real capability was 68%. Access to the answer key made the score a poor measure of capability. The behavior alone does not establish the agent's intent.
 
-The second safeguard is canaries: a small number of probe tasks observed within a controlled scope in production traffic. Offline evaluation and production may differ, so the team needs to watch for new failures. Probes provide signals; a small set cannot establish that production meets the overall reliability target.
+The second safeguard, canaries, addresses another unknown: whether new failures appear in the real environment after offline acceptance passes. A small number of probe tasks are observed within controlled scope alongside production traffic. For example, a limited set of tasks with bounded permissions can reveal tool responses and errors absent from the offline cases. The probes can tell a team where to investigate, but cannot by themselves establish that production meets the overall reliability target.
 
 The third safeguard concerns scoring evidence. A judge is a model evaluating an agent’s output; its rubric states the assessment criteria. Section 2 of the operations piece identifies three judge traps. Here is another: when a transcript contains the agent’s account of its own actions, the judge must not treat that account alone as evidence that the work happened.
 
@@ -504,7 +516,7 @@ flowchart TB
     class K human
 ```
 
-If only six conditions hold, the team should identify what the seventh lacks and who will address it. Once all seven hold, the owner confirms that the evidence applies to the task scope proposed for expansion. G2 then leaves more than a pass or hold: it preserves a rationale the team can revisit.
+Read the illustrative report from section 4 against this gate. It shows pass^5 of 0.64, a constraint pass rate of 0.93, and review demand within the illustrated budget. But it contains only the current month's figures. It establishes neither two consecutive qualifying months nor all the evidence needed for the seven conditions. Those few fields therefore cannot authorize expansion. The owner should identify the missing history or check results and assign someone to obtain them. Missing evidence differs from a measured failure; both need a stated reason and next step. Once all seven conditions hold, confirm that the evidence applies to the task scope proposed for expansion. G2 then preserves a decision rationale that the next person can examine, beyond a pass or hold label.
 
 ---
 
@@ -528,7 +540,7 @@ The approach still has boundaries. Constraints recovered from review history can
 
 Likewise, repeatedly passing the same specification and producing similar implementation structures are different questions. pass^k assesses the former. Even after five passing attempts, comparing the code and design is still necessary to discuss the latter.
 
-Offline evaluation also cannot stand in for production service performance. An SLI, or service level indicator, needs measurements from actual operation, with a clearly defined measurement scope, time window and data source. Reporting pass^k and r supports the authority and staffing decisions discussed here; it does not automatically make them production SLIs.
+Offline evaluation also cannot stand in for production service performance. As a hypothetical payment-service example, the team could separately define the share of real payment requests that receive a response within an agreed time and calculate it from service records, rather than from the agent's repair attempts. Measurements of actual service operation are what an SLI, or service level indicator, describes. Request scope, time window and data source still need explicit definitions. pass^k and r support the authority and staffing judgments in this article. Placing them in the same report does not change their unit into real service requests.
 
 If there is one sequence to retain, I would first establish meaningful checks of functionality and team constraints, then assess consistency across repeated tasks. The success criterion for pass^k must include those requirements, or it can describe consistently missing the same problem. Human review is a separate axis: estimate the need under the chosen target and assumptions, then confirm sufficient capacity and actual review at or above the minimum.
 
@@ -536,16 +548,19 @@ That sequence makes room for the people who receive the work. If a team expands 
 
 > **Green tells you the functional checks that ran did not fail. Constraint tests add the team's rules; pass^k checks consistency across repeated attempts. Together they inform authority decisions. None can vouch for the other two.**
 
-That is the end of the trilogy. It started from one question: when the tests were written by the agent, does a green build still count? It does, but only for the layer it actually checked. The remaining constraints, consistency and human-review requirements are what these three numbers keep track of.
+At the reliability gate, we can return to the question that began the series: when the tests were written by the agent, does a green build still count? It does, but only for the layer it actually checked. The remaining constraints, consistency and human-review requirements are what these three numbers keep track of.
+
+Part 4, “A Payment Walkthrough,” returns to one order for unsweetened green tea: select constraints from Review comments, turn them into tests, then examine what the mutation score still misses. It gives the decisions in the first three parts a reproducible starting point, while retaining this piece’s caution: one payment example cannot replace reliability evidence from repeated attempts across a task set.
 
 ---
 
 ### The series
 
-1. [Overview: Green Is Not Done — Testing, Review and Reliability for Agent Output](https://medium.com/p/c4fc9f3d8581)
-2. [1. Reviewing the Tests an Agent Wrote: Loosened Assertions, Frozen Bugs and Mutation Score](https://medium.com/p/51d001a6dcd5)
-3. [2. Review Is the Control Point, Not the Bottleneck: Triage, Reviewer Fleets and the Closed-Loop Ban](https://medium.com/p/4d36d0f2f9c1)
-4. **3. The 34% SWE-Gate Found Behind a Green Build (this piece)**
+- [Overview: Green Is Not Done — Testing, Review and Reliability for Agent Output](https://medium.com/p/c4fc9f3d8581)
+- [Part 1 — Reviewing the Tests an Agent Wrote: Loosened Assertions, Frozen Bugs and Mutation Score](https://medium.com/p/51d001a6dcd5)
+- [Part 2 — Review Is the Control Point, Not the Bottleneck: Triage, Reviewer Fleets and the Closed-Loop Ban](https://medium.com/p/4d36d0f2f9c1)
+- **Part 3 — The 34% SWE-Gate Found Behind a Green Build (this piece)**
+- Part 4 — A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score (coming soon)
 
 ---
 
@@ -565,6 +580,7 @@ That is the end of the trilogy. It started from one question: when the tests wer
 12. Author's notes: Claude Certified Architect — Foundations exam notes (stop_reason, stratified sampling)
 13. Agentic Engineering: [Agentic Engineering, Part 3 — Evals, Unit Economics, and Scaling](https://fantasybz.medium.com/agentic-engineering-part-3-evals-unit-economics-and-scaling-running-agents-like-a-product-1cb1855a2046), sections 2 and 5 (the three judge traps, the G2 gate)
 14. PagerDuty — [From Clicks To Context: Building an Open-Source Evaluation Pipeline for AI Agents](https://sched.co/2QlEA) (AGNTCon + MCPCon Japan 2026, 2026-09-11) — section 5; [slides](https://hosted-files.sched.co/agntconmcpconjapan26/57/From%20Clicks%20to%20Context_%20Building%20an%20Open-Source%20Evaluation%20Pipeline%20for%20AI%20Agents%20_%20Ine%CC%82s%20Bolan%CC%83os.pdf#page=15) p. 15, the slide titled “THE RED LINE”, and [p. 21](https://hosted-files.sched.co/agntconmcpconjapan26/57/From%20Clicks%20to%20Context_%20Building%20an%20Open-Source%20Evaluation%20Pipeline%20for%20AI%20Agents%20_%20Ine%CC%82s%20Bolan%CC%83os.pdf#page=21) for the Red Line Rate of H.I.R.E.
+15. Accompanying implementation — [Tea payment, constraint tests and seven selected mutants](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment) [section 2; measured teaching example, no real provider]
 
 ---
 

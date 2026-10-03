@@ -1,8 +1,8 @@
 # Green Is Not Done, Part 1 — Reviewing the Tests an Agent Wrote: Loosened Assertions, Frozen Bugs and Mutation Score
 
-> **TL;DR** — The overview argues that when an agent writes both code and tests, and those tests have not been independently reviewed, green is insufficient for acceptance. This piece develops the test gate. Tests record the agent's understanding of the requirements, so they need review too. Four common risks are weakened assertions, existing bugs recorded as golden outputs, tests that fail to detect faults or exercise the wrong path, and coverage mistaken for quality. Human inspection alone is unreliable: in an experiment with 86 developers, accuracy on incorrect LLM-written assertions was only 49%, without lower confidence. **Assertion-change diff, red-then-green and diff-scoped mutation score** help identify these risks, each with costs and limits. The piece ends with a ten-question checklist and my workshop example of "all tests green, replay never executed." That example made the remaining task clear: beyond test effectiveness, someone must establish whether the implementation answers the original requirement.
+> **TL;DR** — If a payment were charged twice, would the tests still be green? Reviewing an agent’s tests starts with questions like this: what do they treat as correct, and which errors can they actually detect? This piece first identifies weakened tests, existing bugs treated as expected answers, and requirements left untested. It then explains how to compare assertions before and after a change, make new tests reproduce old bugs, and deliberately break code to assess fault detection. These methods produce leads for human investigation; someone still needs to check requirement completeness. A workshop example and ten-question checklist bring that judgment back to an actual test suite.
 
-> Series: [Overview](https://medium.com/p/c4fc9f3d8581) → **1. Testing (this piece)** → 2. Review (coming soon) → 3. Reliability (coming soon)
+> Series: [Overview](https://medium.com/p/c4fc9f3d8581) → **1. Testing (this piece)** → 2. Review (coming soon) → 3. Reliability (coming soon) → 4. Payment Walkthrough (coming soon)
 
 ---
 
@@ -10,13 +10,13 @@
 
 James Bach is the author of the Context-Driven Testing and Rapid Software Testing methodologies. The overview borrowed his language to separate two things that usually get mixed together: checking is comparing an answer against a rule you already know, and testing is a person judging whether the thing is any good.
 
-On that distinction, CI performs checking. An agent saying "all tests passed" is reporting a result that still needs to be checked against execution records. Deciding whether those checks are sufficient for acceptance remains a matter of the human judgment involved in testing.
+A test confirming that a payment produced one charge is checking. Asking what happens when the customer presses again after the screen stops responding may uncover a new test scenario. CI is the workflow that runs these checks automatically. An agent saying “all tests passed” still needs to be checked against execution records; deciding whether the executed checks support acceptance needs human judgment.
 
 The overview also put the first number on that line. SWE-Gate is a benchmark that, on patching tasks across a set of Python repos, runs a patch's functional tests separately from the constraints its reviewer stated. Among the patches that passed the functional tests, 34% violated a constraint. A green build does not cover those requirements the reviewer actually cares about.
 
-That is one layer a green build does not cover. This piece is about the layer in front of it: whether the tests themselves are any good. That is the first of the three gates, the test gate. The three gates are the three deep dives in this series — the test gate here, the review gate next, the reliability gate in the Reliability piece.
+That is one layer a green build does not cover. This piece is about the layer in front of it: whether the tests themselves are any good. That is the first of the three gates, the test gate. The first three parts develop one gate each: the test gate here, the review gate in the Review piece, and the reliability gate in the Reliability piece. Part 4, “A Payment Walkthrough,” uses one order to carry those decisions into code and tests.
 
-For the three-way split (the overview sorts evidence into three categories: the agent's statements, agent-written tests, and team-owned tests), and the promotion rule for when an agent-written test becomes the team's test, see section 2 of the overview; it isn't repeated here.
+This piece keeps the overview’s distinction between responsibility for evidence: an agent’s claim, tests it has written, and tests the team has reviewed and committed to maintaining are different things. Agent-written tests become team-owned acceptance evidence after effectiveness checks and human approval to merge. Section 2 of the overview develops the protection mechanisms; this piece focuses on establishing whether the tests deserve that trust.
 
 First, why tests need review more than code does. Scrum Community in Taiwan reshared a line from Lada Kesseler, short enough to be a slogan, to the effect of "I trust the tests an AI writes even less than the code it writes."
 
@@ -24,13 +24,13 @@ The reason is direct: tests are the agent's acceptance criteria for itself, and 
 
 There is a second reason tests need review more than code does. Bach says a tester's core skill is rapid learning. In the agent era that has a concrete form: reading the tests an agent left behind tells you faster than reading its code what it understood and what it didn't.
 
-The reason is that tests are the agent's translation of the requirements. The code only tells you what it did; the tests tell you what it thought the requirements were. Where the translation is wrong, the assertions, the fixtures (the data and environment set up before a test runs) and the test names give it away first.
+Tests are the agent’s translation of requirements. Suppose retries must not create another charge, but the test only requires a nonempty response. The gap is visible. The statement that judges the result is an assertion; the order, payment records and environment prepared before the test are its fixtures. Looking at what the test prepares and what it verifies helps the reviewer find omissions in the agent’s understanding.
 
 Back to Lada Kesseler's line. It leans toward trusting less; where the question actually caught fire in Taiwan was on DevOps Taiwan, and what burned there was the position leaning the other way. Uncle Bob (Robert C. Martin) is TDD's main popularizer, and he holds that you don't read the agent's code; you look only at the tests and the quality metrics. Someone posted that position, the thread ran long, and someone half-jokingly asked him to list every test that ought to be run.
 
 He did list them ([2026-07-26](https://x.com/unclebobmartin/status/2081332683582427641)): agents write quickly, so spend the saved time on unit, acceptance, property, torture, mutation and QA testing. Property testing checks expected properties using generated inputs; torture testing pushes inputs, load or concurrency beyond normal conditions to find where the system fails. Each has its place. This piece concentrates on mutation because it directly asks whether existing tests can detect deliberately introduced changes in the code.
 
-I want to respond to that discussion by going beyond a list of test types and explaining three checks and their thresholds. The order is: where agent-written tests go wrong, why human eyes don't catch it, mutation as the threshold and the three checks on the diff, why coverage can't be that threshold, an example from my own implementation to draw their boundaries, and the ten-question checklist a tester works from. Before the checks, though, it helps to know what each of them is there to stop.
+I want to take that discussion one step further. Knowing a test’s category does not tell us whether to trust it. First identify how it could lose its protective value, then make those gaps visible in reports. The rest of this piece follows that question: recognize risks, evaluate tests, find the tools’ limits, and decide what a person still needs to investigate.
 
 ---
 
@@ -38,7 +38,9 @@ I want to respond to that discussion by going beyond a list of test types and ex
 
 Agent-written tests can lose their protective value in different ways. This piece groups four useful starting points for inspection: weakened assertions, existing bugs recorded as golden files, tests unable to distinguish faults, and coverage mistaken for quality. This is a starting point for investigation, not an exhaustive taxonomy.
 
-On CI all four look identical, because all four are green. The table names the check for each; how each is built waits for the reference implementation. The mutant the table mentions is a copy of the code deliberately broken; the mutation-testing section covers it:
+A hypothetical payment makes the distinctions concrete. Changing “exactly one charge” to “at least one charge” weakens an assertion. Saving the current, incorrect two-charge output as the expected answer freezes the bug. A saved output used for later comparison is a snapshot or golden file. A test can also set up a substitute, or mock, that always returns success, then merely verify that preset response without examining payment behavior. Coverage records where the code executed; it does not establish whether the charge count was correct.
+
+All four situations can produce a green result. The table pairs symptoms with checks. A mutant is a deliberately modified program used to challenge the tests; section 4 develops the method. “Reward” means the success feedback an agent receives: if green is all that earns it, fixing the program and weakening the answer may receive the same feedback.
 
 | Pattern | Symptom | Why agents do this | How to detect it |
 |---|---|---|---|
@@ -149,9 +151,9 @@ The "human eyes" column has one thing in common all the way down: not one of tho
 
 ## 4. Mutation testing: a gate, not a ritual
 
-Mutation testing deliberately changes code, for example by replacing an operator, changing a constant or reversing a condition, then runs the tests. A failing test has caught, or "killed," the mutant. Otherwise the mutant survives. Survival may reveal a test gap, or it may mean the change did not alter observable behavior; it needs interpretation. Mutation score is the share of scored mutants killed by the tests.
+Suppose there is already a test saying that a retry must not create another charge. How do we know it works? Temporarily remove duplicate-charge prevention and run the test. If it fails because of that change, we have concrete evidence that it can detect this fault. **Mutation testing** makes this systematic: alter operators, constants or conditions and run tests against each variant. Each modified program is a mutant. A detected mutant is usually called “killed”; otherwise it survives. Mutation score is the share of scored mutants the tests detect.
 
-What it does to your tests is the same idea chaos engineering applies to production: break the thing yourself once, and see whether the alarm goes off. The only difference is that here what gets broken is the code, and what should go off is the tests.
+Think of checking whether an alarm will sound. Here the alarm is the test, the introduced fault is a code mutation, and the exercise stays in the test environment. If the alarm stays silent, investigate whether the test missed something or the modification made no observable difference. Survival alone does not establish a missing test.
 
 Mutation as a gate isn't my idea first. Uncle Bob's gate combination is coverage, CRAP score and mutation tests. CRAP score — Change Risk Anti-Patterns — folds complexity and coverage into one number, and a function that is both complex and untested scores highest.
 
@@ -163,7 +165,7 @@ This piece doesn't go that far. The Review piece will argue that humans still ha
 
 Mutation testing is not new, but execution cost remains an adoption concern. Generating N mutants means repeatedly running tests against those variants. Test selection can reduce the scope of each run, but it does not remove that cost.
 
-Agents make tests arrive faster and individual manual inspection harder to sustain, increasing the need to assess test effectiveness. One way to control cost is **diff-scoped mutation** over the agent's changes, reducing the mutants generated and executed. Scope restriction did not begin with agents and does not guarantee low cost; the runtime of the affected tests still determines whether it is practical.
+Agents make tests arrive faster and individual manual inspection harder to sustain, increasing the need to assess effectiveness. If a PR changes only a few lines of payment retry logic, generate variants for those changes first instead of challenging the entire system every time. This is **diff-scoped mutation**: restricting mutation to the change under review. The affected tests may still involve other modules, so a smaller mutation scope does not guarantee a cheap run. Their runtime determines whether it is practical. This approach also predates agents.
 
 Section 10 of the overview said the value of a verification tool is set by its reach. Diff-scoped mutation's reach is exactly the lines the agent just changed.
 
@@ -181,9 +183,29 @@ The second time was Uncle Bob's August 17 experiment (the negative test experime
 
 These discussions bring me back to one question: a process can have the right shape while its protective value remains unexamined. Telling an agent to run mutation and keep adding tests until it reaches 100% can encourage tests tailored too closely to the mutation operators. Those tests are not necessarily tautologies, but they may still miss requirements that were never implemented.
 
-The gate version starts with CI listing surviving mutants, then distinguishes test gaps from equivalent mutants. Equivalent mutants preserve observable behavior, so tests cannot distinguish them from the original. Exclude confirmed equivalents with a recorded reason, have the agent add tests for the remaining gaps, and reserve human attention for cases requiring judgment. That avoids handing every entire report back to a reviewer.
+The gate version starts with CI listing surviving mutants, then distinguishes their causes. For integer inputs, for example, replacing “greater than zero” with “greater than or equal to one” leaves the result unchanged. Such an **equivalent mutant** is not a missed fault: a behavioral test cannot distinguish it from the original. Exclude confirmed equivalents with a recorded reason. For changes that do alter behavior, investigate whether a test is missing or the requirement needs clarification, and give confirmed gaps to the agent to address.
 
-The threshold is my recommended value, not an industry standard: mutation score on the agent's changed lines ≥ 70% before the PR enters review, with a month of reports before the gate begins blocking PRs that fall short. The number draws on Uncle Bob’s practice and my initial estimate. It still needs calibration against my own pilot data; it is not a validated universal threshold.
+The threshold is my recommendation, not an industry standard: start with a mutation score of ≥ 70% on agent-changed lines as a pre-merge reference, reporting for a month before blocking PRs that fall short. The number draws on Uncle Bob's practice and my initial estimate. It needs calibration against my own pilot data, rather than being a validated universal threshold. Review can establish specifications and select tests earlier; even an above-threshold score still needs examination of critical risks.
+
+**A payment makes the percentage’s limits visible.** The method now has a reproducible example: the accompanying [runnable example](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment) buys a bottle of 無糖純喫綠茶, unsweetened pure green tea, at an illustrative NTD 35. Tests use a fake payment provider whose responses we control; no card is actually charged. It records a capture, then simulates a timeout. Without a definitive answer, the application must retain `PENDING`, meaning the outcome awaits confirmation, rather than declare success. The reviewer retains “unknown must not appear successful; retry must not charge again” as a constraint test, a repeatable check of that agreement. It also protects functional behavior; the names are not mutually exclusive.
+
+The test calls `Checkout.pay()` twice with the same order and key, an identifier for the same payment attempt. It checks that the result remains `PENDING`, carries no payment ID indicating success, and makes only one provider call. The full version also covers timeout before capture, so “unknown” does not become “definitely charged.” These agreed expected results form the test oracle, its basis for judging correctness. The implementation must not calculate its own answer key.
+
+M5 deliberately breaks that branch:
+
+```python
+# Original payment code
+except TimeoutError:
+    receipt = replace(receipt, status="PENDING")
+
+# M5: the intentionally incorrect variant
+except TimeoutError:
+    receipt = replace(receipt, status="PAID")
+```
+
+The experiment keeps seven hand-seeded, executable, non-equivalent mutants, with no exclusions. Two happy-path tests detect 2/7, or 28.6%. Adding the other constraints but omitting the timeout test detects 6/7, or 85.7%, while M5 survives. Restoring that test brings the nine-test suite to 7/7, or 100.0%. Each selection first passes on the original program, then runs against every mutant.
+
+The 70% comparison is illustrative; seven hand-selected mutants cannot directly inherit a threshold for tool-generated mutants on a real diff. Even though 85.7% exceeds 70%, it cannot justify approving this payment change: a critical constraint remains unprotected. The 100% result only describes these seven mutants. It does not verify real providers, concurrency or restarts. The demo uses sequential calls and a fake provider in one process. “Part 4 — A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score” develops the code, Review selections and denominator in full.
 
 On tooling, the JVM has PIT, JS and TS have Stryker, Python has mutmut. How far each can be confined to the diff varies, so check how your stack does it before you start.
 
@@ -191,7 +213,7 @@ Put this section's two thresholds next to the thresholds for the other two check
 
 | Item | My recommended value | Notes |
 |---|---|---|
-| Mutation score (agent-changed lines) | ≥ 70% before entering review | Report for a month, then block |
+| Mutation score (agent-changed lines) | ≥ 70% starting reference; review critical constraints separately | Report for a month, then block |
 | Run time of the affected subset | < 10 minutes before turning mutation on | Repos over that install the first three checks first |
 | assertion-change diff | Removal and disabling always block; strength drops and precision relaxations block | Other changes to existing assertions get `needs-human-test-review` |
 | red-then-green | Only for PRs that change existing behavior | The classification doesn't come from the PR author |
@@ -202,11 +224,11 @@ The easiest thing to skip in that table is the first row of the notes column: pr
 
 ## 5. Three checks on the diff: a reference implementation
 
-The earlier sections explained the reasoning. This one turns it into checks that CI can execute. Each check addresses a different problem, and each has conditions to confirm before adopting it.
+The payment example shows how to interpret a score. Now we need a way to make such evidence available on each PR. This section puts three checks into one CI workflow: can new tests reproduce the old problem, have existing tests become less demanding, and is the changed code effectively protected? A diff is the comparison between old and new code; the designs below use it to set their inspection scope.
 
 All three are automated checks in CI. Start by establishing the first two, then add the more expensive mutation check.
 
-**Check 1: red-then-green.** This one asks the most basic question there is: would this new test have failed while the bug was still there? If it would, it has earned the right to claim it catches that bug.
+**Check 1: red-then-green.** Suppose the old program charges twice on a retry and the new test requires one charge. Run that same test on the old version: it should fail, or go red. Run it after the repair: it should pass, or go green. This establishes that the test distinguishes the bug from the repair, rather than merely happening to pass on the new version.
 
 The scope comes first. The red-then-green gate proposed here applies to changes to existing behavior: bug fixes and behavior changes. A feature PR may depend on classes or interfaces absent from the base branch, producing a loading failure rather than the intended behavioral difference.
 
@@ -220,7 +242,7 @@ There are three sources for the classification, taken in order. The first is the
 
 The first two sources must be maintained by people or protected harness configuration, so the agent cannot change its own classification. The third is only a conservative fallback when task metadata is absent: it detects changes to existing files, not whether the requirement is complete. A fix that only adds files can still escape it, so classifications need spot checks.
 
-The CI job checks out the tests the PR added onto the base branch and runs them once. The output falls into three classes.
+A CI job, one unit of work in the automated workflow, pairs the new tests with the base branch, the reference version before this change is merged, and executes them in isolation. Results fall into three classes:
 
 a) The test does not fail. Flag it `test-never-fails`; this is the only class that receives that flag.
 
@@ -277,7 +299,7 @@ The three outcomes mean different things. No failure calls for investigating the
 
 **Check 2: assertion-change diff.** This one handles a quieter risk: the test file is still there, the test name hasn't changed, but the assertion that used to catch the bug has been weakened. CI is still all green, and on the diff it's just a few interleaved red and green lines.
 
-When an existing assertion is modified, don't ask the agent why yet. Grade it into four classes first:
+Think of assertion strength through a payment receipt. Checking the whole receipt for equality demands more than checking that it contains one field. Asking only whether a response exists, a truthy check, may leave both amount and status unverified. Compare what the assertions actually check before applying the four categories below; the agent’s explanation of its change is not enough:
 
 - a) **A step down the strength ladder**: equality → containment → truthy. Block the PR.
 - b) **Count or precision relaxed**: call count, tolerance, timeout. Block the PR.
@@ -424,7 +446,7 @@ Across 8 frontier models, reward hacking fell from 23.6% to 5.3%; the paper sepa
 
 The last two figures make the approach worth trying: in the tested setting, most reports involved no hacking, and more defects were identified. It does not guarantee future honesty. It gives the agent a usable route for raising a problem that can be checked. Introducing it has two parts.
 
-**Step one: register the tool in the harness.** Its call format is:
+**Step one: register the tool in the harness.** The harness manages the agent’s tools and workflow. Registration makes “ask a person to check this test” an action the agent can actually take. If the specification permits a 30-second wait but the test allows only 3 seconds, for example, the agent should submit both pieces of evidence. The format below passes the test location, reason and evidence to the person taking over:
 
 ```json
 {
@@ -452,7 +474,7 @@ Recording current behavior has a purpose, such as establishing characterization 
 
 ## 6. Coverage is an assertion that can be edited away
 
-Even as these reports become available, a team may still reach first for the familiar coverage percentage. To judge whether it supports the current PR, start by asking what it measures: the entire repo, or the code that actually changed?
+The previous section made reports explain what tests can detect, but a team may still reach first for coverage. In the payment example, a test can execute the entire charging function without ever checking the number of charges. That is coverage’s boundary: it records which lines executed. To use it for the current PR, also establish whether its denominator covers the whole repo or the code that actually changed.
 
 One study (Test Coverage of Agentic PRs) measured 4,882 agent PRs, and the question it asked is a narrow one: do the repo's existing tests run through the executable lines the agent changed? In Java the answer is only 61.5%, and in Python only 27.0%.
 
@@ -484,13 +506,13 @@ This August, at the pattern-language workshop run by Teddy Chen (author of the T
 
 Below I'll stay with Approach A, because that's where the problem worth talking about is. Judged only by the delivery checklist, Approach A looked reassuring: 25 files, zero compiler warnings, 5 tests all green, clean layering, complete Javadoc.
 
-The problem was the path the tests took. The spec asked for event sourcing: the aggregate doesn't store its state directly. It stores only the events that happened, and the state is replayed back from them one at a time when it's needed.
+The problem was the path the tests took. The specification called for event sourcing: retain the events that happened and reconstruct state from them in order when needed. In this product requirement, having a product object already in memory is different from rebuilding that same product using only stored events. The latter exercises replay. Testing only the former leaves the specification’s actual question unanswered.
 
 Approach A's Product wasn't event sourcing at all. It didn't extend `EventSourcedAggregate`, and the tests called `getDomainEvents()` to read events straight from the in-memory aggregate, never going through the replay path.
 
 My note at the time: A's 10/16 (10 of the 16 items on the workshop's compliance checklist) wasn't "nearly there"; it was "hasn't blown up yet at a toy scale with a single InMemory use case".
 
-There was another gap unrelated to replay: the tests lacked `@DirtiesContext`. Spring uses that annotation to remove a contaminated test context from the cache so later tests can rebuild it. If tests alter shared state without appropriate reset or isolation, they can interfere with one another. Retrying until green does not resolve that issue, which is why section 8 asks how flaky tests are handled.
+There was another gap unrelated to replay: the tests lacked `@DirtiesContext`. Spring uses that annotation to remove a contaminated test context from the cache so later tests can rebuild it. Think of data left by one test affecting the next: unchanged code may then pass on one run and fail on another, producing a flaky test. Whether this annotation is needed depends on shared state and isolation, but retrying until green does not identify the interference. Section 8 returns to that question.
 
 This example illustrates a green build that has not met acceptance requirements, with tests following a different path from the spec. But the evidence here is one implementation from Approach A: N equals 1, and the measurement is compliance. Understanding variation across repeated attempts on the same spec requires a separate experiment; this result cannot establish it.
 
@@ -564,7 +586,7 @@ Thanks to Teddy's workshop, a gap that is easy to leave as an abstract idea beca
 
 The workshop example gives the following checklist a purpose: helping testers find questions worth pursuing in the reports, then return to the requirements. It provides a reading order, not a substitute for checking that tests and implementation agree. Some questions still require opening both and reading closely.
 
-Ten questions for reviewing a test suite an agent wrote:
+Use the checklist to follow one thread: where did this answer come from, how does the test detect code that violates it, and what does the report still leave out? For payment, start with the agreement that one purchase must not be charged twice, inspect retry cases and mutation results, then ask whether concurrency and restarts have separate evidence. These ten questions make that reading path concrete:
 
 | # | Question | Matching check or field |
 |---|---|---|
@@ -601,10 +623,11 @@ Reviewing the test suite this way gives the team firmer ground for the next ques
 
 ### The series
 
-1. [Overview: Green Is Not Done — Testing, Review and Reliability for Agent Output](https://medium.com/p/c4fc9f3d8581)
-2. **1. Testing (this piece)**
-3. 2. Review: Review Is the Control Point, Not the Bottleneck — Triage, Reviewer Fleets and the Closed-Loop Ban (coming soon)
-4. 3. Reliability: The 34% SWE-Gate Found Behind a Green Build — Constraint Tests, pass^k and the Gate for Expanding Autonomy (coming soon)
+- [Overview: Green Is Not Done — Testing, Review and Reliability for Agent Output](https://medium.com/p/c4fc9f3d8581)
+- **Part 1 — Testing (this piece)**
+- Part 2 — Review: Review Is the Control Point, Not the Bottleneck — Triage, Reviewer Fleets and the Closed-Loop Ban (coming soon)
+- Part 3 — Reliability: The 34% SWE-Gate Found Behind a Green Build — Constraint Tests, pass^k and the Gate for Expanding Autonomy (coming soon)
+- Part 4 — A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score (coming soon)
 
 ---
 
@@ -623,6 +646,7 @@ Reviewing the test suite this way gives the team firmer ground for the next ques
 11. Bojie Li, *AI Agents in Depth: Design Principles and Engineering Practice* v2.0 — [Chapter 7, Evaluating Agents](https://bojieli.github.io/ai-agent-book/book-en/chapter7/) (2026-09-06; §7.5.2, the coding-agent failure-attribution table). Section 2.
 12. Quartic.ai — [Letting an Agent Upgrade Production Kubernetes — Without Getting Paged at 3 AM](https://sched.co/2QlD9) (AGNTCon + MCPCon Japan 2026, 2026-09-10; [slides](https://hosted-files.sched.co/agntconmcpconjapan26/d9/AGNTCon-MCPCon-Japan-2026_Abhijeet_Sanskar_final.pdf#page=29), slide 29). Section 5.
 13. Spring Framework documentation — [@DirtiesContext](https://docs.spring.io/spring-framework/reference/testing/annotations/integration-spring/annotation-dirtiescontext.html), explaining context invalidation, removal and rebuilding (section 7).
+14. Accompanying implementation — [Tea payment, constraint tests and seven selected mutants](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment) [section 4; measured teaching example, no real provider]
 
 ---
 
