@@ -1,0 +1,185 @@
+{
+  "configuration": {
+    "content_type": "markdown",
+    "fix_mode": "none",
+    "profile": "strict",
+    "translationese_domain": "technical",
+    "detect_ai": true,
+    "ai_threshold": "low",
+    "detect_translationese": true,
+    "consistency": true,
+    "detect_style": true,
+    "explain": true,
+    "include_stats": true,
+    "include_telemetry": true,
+    "verify": true,
+    "max_errors": 0,
+    "max_warnings": 0,
+    "output": "full",
+    "glossary": {
+      "proper_nouns": [
+        "插圖標記"
+      ]
+    }
+  },
+  "adjudication": "Initial 圖標 match crossed the word boundary in 插圖標記 (image slot marker), not the UI icon term. Preserve phrase and exempt only this exact expression.",
+  "response": {
+    "accepted": false,
+    "text": "已有的科學 PNG 可在文章中獨立一行寫成 `![圖說](figures/F2.png)`，原檔放在\n文章資料夾內。`article_to_paste.py` 會產生 `asset-01.png` 插圖標記，把圖說保留成\n正文段落（含圖說內的連結），並在 `figures.json` 的 `assets` 記錄來源路徑與 SHA-256。\n`render_images.sh` 核對來源後原樣複製到該語言包的 `images/`，不重新繪圖；\n複製後的雜湊證據寫入 `publish/.rendered-assets.json`（英文包在 `publish/en/`）。\n來源只接受文章目錄內的 `.png`，拒絕網址、`..`、symlink 與缺檔，並檢查 PNG 簽名與\nIHDR 尺寸；這不是完整的 PNG 解碼驗證。來源變動時先重新執行 converter，再執行 renderer。\n每行只放一張圖，圖外的連結與文字另起一行。\n這些步驟只建立本機發布工件，不會開啟 Medium。\n",
+    "issues": [
+      {
+        "offset": 168,
+        "length": 6,
+        "line": 2,
+        "col": 50,
+        "found": "圖標",
+        "suggestions": [
+          "圖示"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "warning",
+        "context": "@domain UI",
+        "english": "icon",
+        "anchor_match": false,
+        "explanation": "'圖標' is a mainland Chinese term for 'icon'; Taiwan uses '圖示'. Context: @domain UI",
+        "anchor_provenance": {
+          "anchor_en": "icon",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'圖標' is a mainland Chinese term for 'icon'; Taiwan uses '圖示'. Context: @domain UI",
+          "domain": "UI",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      }
+    ],
+    "applied_fixes": 0,
+    "summary": {
+      "errors": 0,
+      "warnings": 1,
+      "info": 0
+    },
+    "gate": {
+      "enabled": true,
+      "max_errors": 0,
+      "residual_errors": 0,
+      "max_warnings": 0,
+      "residual_warnings": 1
+    },
+    "profile": "strict",
+    "political_stance": "roc_centric",
+    "detected_script": "traditional",
+    "s2t_applied": false,
+    "trace": {
+      "trace_id": "f6bfe32ea3b81ca3921842613189cd73",
+      "ruleset_hash": "3a6a5eecb12ada10725c0167434703c0f713136adad683257ee436f4b1ca8038",
+      "input_hash": "b67c81edf449c9db131ebbcdaf8a6ae3850edbabf60e07dc5f5c490ebfa90edb",
+      "timestamp": "2026-09-25T06:01:39.752Z",
+      "tool": "zhtw",
+      "issue_count": 1
+    },
+    "verify": {
+      "api_ok": true,
+      "matched": 0,
+      "unmatched": 1,
+      "no_english": 0
+    },
+    "coverage": {
+      "rules_checked": 1803,
+      "rules_matched": 1
+    },
+    "oral_density": 0,
+    "translationese_signature": {
+      "score": 0,
+      "markers": [
+        {
+          "signal": "被動語態",
+          "count": 0,
+          "density": 0,
+          "threshold": 6
+        },
+        {
+          "signal": "的字鏈",
+          "count": 1,
+          "density": 1,
+          "threshold": 5
+        },
+        {
+          "signal": "弱動詞分解",
+          "count": 0,
+          "density": 0,
+          "threshold": 4
+        },
+        {
+          "signal": "代詞密度",
+          "count": 0,
+          "density": 0,
+          "threshold": 6
+        },
+        {
+          "signal": "翻譯腔偵測",
+          "count": 0,
+          "density": 0,
+          "threshold": 7
+        }
+      ],
+      "top_signals": [],
+      "max_de_chain": 1,
+      "domain": "technical"
+    },
+    "style_scorecard": {
+      "style_scores": {
+        "translationese": 0,
+        "consistency": 1
+      },
+      "top_issues_per_axis": {
+        "ai": [],
+        "translationese": [],
+        "consistency": [
+          {
+            "line": 2,
+            "col": 50,
+            "found": "圖標",
+            "severity": "warning",
+            "rule_type": "cross_strait",
+            "context": "@domain UI"
+          }
+        ]
+      }
+    },
+    "telemetry": {
+      "estimated_tokens_per_1k_chars": 0,
+      "estimated_llm_token_share": 0,
+      "estimated_tokens_per_ambiguous_term": null,
+      "cache_hit_count": 0,
+      "cache_miss_count": 0,
+      "tier2_local_resolutions": 0,
+      "raw": {
+        "input_chars": 448,
+        "rule_hits": 1,
+        "ambiguous_terms": 0,
+        "llm_round_trips": 0,
+        "estimated_prompt_tokens": 0,
+        "estimated_completion_tokens": 0,
+        "final_fixes": 0
+      }
+    },
+    "summary_metrics": {
+      "deterministic_fixes": 1,
+      "heuristic_fixes": 0,
+      "llm_judged_fixes": 0,
+      "unresolved": 0,
+      "llm_calls": 0,
+      "llm_tokens": 0,
+      "confidence_distribution": {
+        "high": 1,
+        "medium": 0,
+        "low": 0
+      }
+    }
+  }
+}

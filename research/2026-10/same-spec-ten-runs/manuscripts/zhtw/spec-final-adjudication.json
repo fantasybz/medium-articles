@@ -1,0 +1,547 @@
+{
+  "piece": "spec",
+  "reviewed_at": "2026-09-25T09:27:20.634646+00:00",
+  "reviewer": "Codex root contextual editorial review",
+  "scope": "Actual final source and paste MCP reports; all retained info items adjudicated individually. This does not claim zero prompts or human review.",
+  "configuration": "strict; ai_threshold=low; technical translationese; consistency; style; explain; verify; max_errors=0; max_warnings=0; no automatic fix",
+  "checks": [
+    {
+      "report": "zhtw/spec-full-06.json",
+      "input_path": "2026-11-same-spec-spec/article.md",
+      "input_sha256": "2d773424ecd438e28d771ff36a747975103ff22a3b9c95e2880c036228f41f65",
+      "summary": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 29
+      },
+      "issues": [
+        {
+          "issue_index": 0,
+          "line": 3,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "bbf6b87119d769cd36502c7e729970cf6b489e54de022c53811e8855aec882e4"
+        },
+        {
+          "issue_index": 1,
+          "line": 3,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "bbf6b87119d769cd36502c7e729970cf6b489e54de022c53811e8855aec882e4"
+        },
+        {
+          "issue_index": 2,
+          "line": 30,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "316fe0798d59912b2b16067ae4b46aad23092fb044310443b8d5d181b3adbb54"
+        },
+        {
+          "issue_index": 3,
+          "line": 38,
+          "rule_type": "cross_strait",
+          "found": "代碼",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 exit code 的數值代碼，不是 source code。",
+          "source_line_sha256": "8aa073737a44c41b1eda0c440612998c6f40de053b3d49eb2e57d1bd647d40fc"
+        },
+        {
+          "issue_index": 4,
+          "line": 47,
+          "rule_type": "repetition",
+          "found": "有有",
+          "disposition": "contextually_retained",
+          "reason": "保留：「有有效的完成事件」中前者是存在判斷、後者屬「有效」，不是重字。",
+          "source_line_sha256": "3da0bbe6c796bed16ef3777ecf791ca8b8efb4e42a91385f8453aee672b1acc2"
+        },
+        {
+          "issue_index": 5,
+          "line": 82,
+          "rule_type": "cross_strait",
+          "found": "類型",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指事件種類／分類，不是把程式語言的型別誤譯為類型。",
+          "source_line_sha256": "f4080935734b6170714b5194d9c7a526389c72414437f8a9f635ea4dd9816a63"
+        },
+        {
+          "issue_index": 6,
+          "line": 92,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "4c6bd2dc916eb303cef2a0d7607ee9be7844148f70f58aa0859c5b6bbb34fb56"
+        },
+        {
+          "issue_index": 7,
+          "line": 92,
+          "rule_type": "translationese",
+          "found": "若",
+          "disposition": "contextually_retained",
+          "reason": "保留：上一句先交代本輪封存限制，後句明確以前置「若」說明下一輪修正條件。",
+          "source_line_sha256": "4c6bd2dc916eb303cef2a0d7607ee9be7844148f70f58aa0859c5b6bbb34fb56"
+        },
+        {
+          "issue_index": 8,
+          "line": 94,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "45f483136da48e31fb99e256281e19736650a5f4a5d22fdce15622c238c0fa45"
+        },
+        {
+          "issue_index": 9,
+          "line": 94,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "45f483136da48e31fb99e256281e19736650a5f4a5d22fdce15622c238c0fa45"
+        },
+        {
+          "issue_index": 10,
+          "line": 115,
+          "rule_type": "ai_style",
+          "found": "不只是理由或寫法，而是",
+          "disposition": "contextually_retained",
+          "reason": "保留：區分必要資訊與篇幅／非規範指引，對應本節具體研究混淆，並非空泛反轉句。",
+          "source_line_sha256": "2ad12671b0f98e1c2db814be430af0aa905de6ca695116a9dc28a51245de3b68"
+        },
+        {
+          "issue_index": 11,
+          "line": 115,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "2ad12671b0f98e1c2db814be430af0aa905de6ca695116a9dc28a51245de3b68"
+        },
+        {
+          "issue_index": 12,
+          "line": 117,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "afd5f0e5e51b4bccc16abf893bbecc0e9e636eceef2b35bbac6b7ee96cd3804e"
+        },
+        {
+          "issue_index": 13,
+          "line": 117,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "afd5f0e5e51b4bccc16abf893bbecc0e9e636eceef2b35bbac6b7ee96cd3804e"
+        },
+        {
+          "issue_index": 14,
+          "line": 119,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "6fa66619407cca7a4a1a745188b54940158d7be4b9641a4bf09ff850be55b23a"
+        },
+        {
+          "issue_index": 15,
+          "line": 121,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "458396fa51defb28cfad9bd2483da4a8e930330e116f8e6ae778c1ce6d099839"
+        },
+        {
+          "issue_index": 16,
+          "line": 133,
+          "rule_type": "punctuation",
+          "found": "?",
+          "disposition": "contextually_retained",
+          "reason": "保留：出現在正式英文論文題名 Can your AI agent be cheaper?，維持來源原字。",
+          "source_line_sha256": "904f282e3582f8c7a0de0d97d796abd5fd1a7d7c0e59e313596498337a210370"
+        },
+        {
+          "issue_index": 17,
+          "line": 135,
+          "rule_type": "ai_style",
+          "found": "不只是字數，而是",
+          "disposition": "contextually_retained",
+          "reason": "保留：區分必要資訊與篇幅／非規範指引，對應本節具體研究混淆，並非空泛反轉句。",
+          "source_line_sha256": "b8d86f4c6e9ac80cd5478d2034524995c7de20e10f3e5caea3c0d2660f039591"
+        },
+        {
+          "issue_index": 18,
+          "line": 155,
+          "rule_type": "repetition",
+          "found": "會不會不",
+          "disposition": "contextually_retained",
+          "reason": "保留：「會不會不同」是完整問句，並非重複輸入。",
+          "source_line_sha256": "67cbf6c6834a89f135f9640ebfe941725caa6018ecb65ce37c7dd7f33b82ba88"
+        },
+        {
+          "issue_index": 19,
+          "line": 157,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "afe944a06cc4381103559ab8ba275db5e3d20f54934ba70246618fdb9789fb66"
+        },
+        {
+          "issue_index": 20,
+          "line": 159,
+          "rule_type": "translationese",
+          "found": "我在「綠燈不是驗收」系列的〈綠燈不是驗收（三）可靠度篇：SWE-Gate 量測到的 34%—constraint tests、pass^k 與授權擴張的閘門〉（已完成，尚待發布）寫過：「需求一開始就有歧義，CI 不會因為多了幾條規則，自動知道哪一種行為才是團隊想要的。",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列名、已完成但未發布狀態與原文引述各有功能；題名中的數字不是本句日期，並無冗餘時態。",
+          "source_line_sha256": "1a955dd3b3cd4fa9df7b6ce1e4eb4d4934d04dfdce16d457281868fd45d56e8b"
+        },
+        {
+          "issue_index": 21,
+          "line": 180,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "968946e0a4f9829a20ed7df06027f0f737c7cbd9bd6a6ce50f9674d083723929"
+        },
+        {
+          "issue_index": 22,
+          "line": 181,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "18a13988229c9fab6594ec10d54f7113977085f1ef17b38d09f99f8f7c59582c"
+        },
+        {
+          "issue_index": 23,
+          "line": 182,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "8f463a878f8a72e939fa60ea712d020d2f32da31ce352e73b6b04a1ef0f9b439"
+        },
+        {
+          "issue_index": 24,
+          "line": 182,
+          "rule_type": "punctuation",
+          "found": "?",
+          "disposition": "contextually_retained",
+          "reason": "保留：出現在正式英文論文題名 Can your AI agent be cheaper?，維持來源原字。",
+          "source_line_sha256": "8f463a878f8a72e939fa60ea712d020d2f32da31ce352e73b6b04a1ef0f9b439"
+        },
+        {
+          "issue_index": 25,
+          "line": 183,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "b1d77af310b490477d5118ac7777c559e482e5e768537b1d79e60fa5062ac28c"
+        },
+        {
+          "issue_index": 26,
+          "line": 184,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "1e39a1229ec2c67cdde1960b36e90a29dbd318d69c0c9bc10508c9902fadc6c9"
+        },
+        {
+          "issue_index": 27,
+          "line": 185,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "96144d11f2c3b2df89024acd33286e903dcd9b669b7470feee670f298bff2bba"
+        },
+        {
+          "issue_index": 28,
+          "line": 186,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "494f2040bb466e851b7f2f27ed06113c3d7793a7711a2b472c4514c147bd573d"
+        }
+      ]
+    },
+    {
+      "report": "zhtw/spec-paste-03.json",
+      "input_path": "2026-11-same-spec-spec/publish/medium-paste.md",
+      "input_sha256": "d2ac465f386e37c91e6ba75ffa1c69400ce4fe372d5ede0d41707124aa4c1ae8",
+      "summary": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 28
+      },
+      "issues": [
+        {
+          "issue_index": 0,
+          "line": 29,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "bbf6b87119d769cd36502c7e729970cf6b489e54de022c53811e8855aec882e4"
+        },
+        {
+          "issue_index": 1,
+          "line": 29,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "bbf6b87119d769cd36502c7e729970cf6b489e54de022c53811e8855aec882e4"
+        },
+        {
+          "issue_index": 2,
+          "line": 56,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "316fe0798d59912b2b16067ae4b46aad23092fb044310443b8d5d181b3adbb54"
+        },
+        {
+          "issue_index": 3,
+          "line": 64,
+          "rule_type": "cross_strait",
+          "found": "代碼",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 exit code 的數值代碼，不是 source code。",
+          "source_line_sha256": "8aa073737a44c41b1eda0c440612998c6f40de053b3d49eb2e57d1bd647d40fc"
+        },
+        {
+          "issue_index": 4,
+          "line": 88,
+          "rule_type": "cross_strait",
+          "found": "類型",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指事件種類／分類，不是把程式語言的型別誤譯為類型。",
+          "source_line_sha256": "f4080935734b6170714b5194d9c7a526389c72414437f8a9f635ea4dd9816a63"
+        },
+        {
+          "issue_index": 5,
+          "line": 98,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "4c6bd2dc916eb303cef2a0d7607ee9be7844148f70f58aa0859c5b6bbb34fb56"
+        },
+        {
+          "issue_index": 6,
+          "line": 98,
+          "rule_type": "translationese",
+          "found": "若",
+          "disposition": "contextually_retained",
+          "reason": "保留：上一句先交代本輪封存限制，後句明確以前置「若」說明下一輪修正條件。",
+          "source_line_sha256": "4c6bd2dc916eb303cef2a0d7607ee9be7844148f70f58aa0859c5b6bbb34fb56"
+        },
+        {
+          "issue_index": 7,
+          "line": 100,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "45f483136da48e31fb99e256281e19736650a5f4a5d22fdce15622c238c0fa45"
+        },
+        {
+          "issue_index": 8,
+          "line": 100,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "45f483136da48e31fb99e256281e19736650a5f4a5d22fdce15622c238c0fa45"
+        },
+        {
+          "issue_index": 9,
+          "line": 116,
+          "rule_type": "ai_style",
+          "found": "不只是理由或寫法，而是",
+          "disposition": "contextually_retained",
+          "reason": "保留：區分必要資訊與篇幅／非規範指引，對應本節具體研究混淆，並非空泛反轉句。",
+          "source_line_sha256": "2ad12671b0f98e1c2db814be430af0aa905de6ca695116a9dc28a51245de3b68"
+        },
+        {
+          "issue_index": 10,
+          "line": 116,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "2ad12671b0f98e1c2db814be430af0aa905de6ca695116a9dc28a51245de3b68"
+        },
+        {
+          "issue_index": 11,
+          "line": 118,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "afd5f0e5e51b4bccc16abf893bbecc0e9e636eceef2b35bbac6b7ee96cd3804e"
+        },
+        {
+          "issue_index": 12,
+          "line": 118,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "afd5f0e5e51b4bccc16abf893bbecc0e9e636eceef2b35bbac6b7ee96cd3804e"
+        },
+        {
+          "issue_index": 13,
+          "line": 120,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "6fa66619407cca7a4a1a745188b54940158d7be4b9641a4bf09ff850be55b23a"
+        },
+        {
+          "issue_index": 14,
+          "line": 122,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "458396fa51defb28cfad9bd2483da4a8e930330e116f8e6ae778c1ce6d099839"
+        },
+        {
+          "issue_index": 15,
+          "line": 134,
+          "rule_type": "punctuation",
+          "found": "?",
+          "disposition": "contextually_retained",
+          "reason": "保留：出現在正式英文論文題名 Can your AI agent be cheaper?，維持來源原字。",
+          "source_line_sha256": "904f282e3582f8c7a0de0d97d796abd5fd1a7d7c0e59e313596498337a210370"
+        },
+        {
+          "issue_index": 16,
+          "line": 136,
+          "rule_type": "ai_style",
+          "found": "不只是字數，而是",
+          "disposition": "contextually_retained",
+          "reason": "保留：區分必要資訊與篇幅／非規範指引，對應本節具體研究混淆，並非空泛反轉句。",
+          "source_line_sha256": "b8d86f4c6e9ac80cd5478d2034524995c7de20e10f3e5caea3c0d2660f039591"
+        },
+        {
+          "issue_index": 17,
+          "line": 156,
+          "rule_type": "repetition",
+          "found": "會不會不",
+          "disposition": "contextually_retained",
+          "reason": "保留：「會不會不同」是完整問句，並非重複輸入。",
+          "source_line_sha256": "67cbf6c6834a89f135f9640ebfe941725caa6018ecb65ce37c7dd7f33b82ba88"
+        },
+        {
+          "issue_index": 18,
+          "line": 158,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "afe944a06cc4381103559ab8ba275db5e3d20f54934ba70246618fdb9789fb66"
+        },
+        {
+          "issue_index": 19,
+          "line": 160,
+          "rule_type": "translationese",
+          "found": "我在「綠燈不是驗收」系列的〈綠燈不是驗收（三）可靠度篇：SWE-Gate 量測到的 34%—constraint tests、pass^k 與授權擴張的閘門〉（已完成，尚待發布）寫過：「需求一開始就有歧義，CI 不會因為多了幾條規則，自動知道哪一種行為才是團隊想要的。",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列名、已完成但未發布狀態與原文引述各有功能；題名中的數字不是本句日期，並無冗餘時態。",
+          "source_line_sha256": "1a955dd3b3cd4fa9df7b6ce1e4eb4d4934d04dfdce16d457281868fd45d56e8b"
+        },
+        {
+          "issue_index": 20,
+          "line": 181,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "968946e0a4f9829a20ed7df06027f0f737c7cbd9bd6a6ce50f9674d083723929"
+        },
+        {
+          "issue_index": 21,
+          "line": 182,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "18a13988229c9fab6594ec10d54f7113977085f1ef17b38d09f99f8f7c59582c"
+        },
+        {
+          "issue_index": 22,
+          "line": 183,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "8f463a878f8a72e939fa60ea712d020d2f32da31ce352e73b6b04a1ef0f9b439"
+        },
+        {
+          "issue_index": 23,
+          "line": 183,
+          "rule_type": "punctuation",
+          "found": "?",
+          "disposition": "contextually_retained",
+          "reason": "保留：出現在正式英文論文題名 Can your AI agent be cheaper?，維持來源原字。",
+          "source_line_sha256": "8f463a878f8a72e939fa60ea712d020d2f32da31ce352e73b6b04a1ef0f9b439"
+        },
+        {
+          "issue_index": 24,
+          "line": 184,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "b1d77af310b490477d5118ac7777c559e482e5e768537b1d79e60fa5062ac28c"
+        },
+        {
+          "issue_index": 25,
+          "line": 185,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "1e39a1229ec2c67cdde1960b36e90a29dbd318d69c0c9bc10508c9902fadc6c9"
+        },
+        {
+          "issue_index": 26,
+          "line": 186,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "96144d11f2c3b2df89024acd33286e903dcd9b669b7470feee670f298bff2bba"
+        },
+        {
+          "issue_index": 27,
+          "line": 187,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "494f2040bb466e851b7f2f27ed06113c3d7793a7711a2b472c4514c147bd573d"
+        }
+      ]
+    }
+  ],
+  "earlier_rounds": "All original MCP reports are retained. Real wording issues were revised in the root polish/delta records; output was rerun after final modifications."
+}

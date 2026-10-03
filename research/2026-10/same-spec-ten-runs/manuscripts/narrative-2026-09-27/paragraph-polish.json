@@ -1,0 +1,1776 @@
+{
+  "reviewer": "Codex root",
+  "whole_series_reread": true,
+  "pieces": [
+    {
+      "piece": "overview",
+      "article_sha256": "51a2be2e1614c965743386f06d913492c999786e852c2fc213f7e3947edbfeeb",
+      "method": "Manual contextual paragraph edit and continuous reread, including latter half and conclusion; these block hashes index the reviewed version, not an automated quality score.",
+      "notes": [
+        "第一節僅使用既有工作坊紀錄；N=1 是追問的理由，不當成變異證據。",
+        "第二節把單次與重複觀察的差別說清楚，再提出三個問題與真實 parser 選題理由。",
+        "第三節定義要求／文件／指令包；四份內容摘要與 C helper 例外對照凍結文件。",
+        "第四節按生成、外部驗收與平行判定說明，保留未固定條件。",
+        "第五節先讀驗收再讀資源，明示費用合計與中位數用途，區間與 AST 限制緊鄰結論。",
+        "第六節建議與研究發現分開，後三篇各接下一個讀者問題；參考資料、發布狀態與 AI 協作說明一致。"
+      ],
+      "blocks": [
+        {
+          "block": 1,
+          "section": "opening",
+          "sha256": "80e9e9e72c218a6f22745bcdac333662bd93cf28f7c3d258fcd3eedddce701ae"
+        },
+        {
+          "block": 2,
+          "section": "opening",
+          "sha256": "f6a2ecf213ab481f64b15c07b4cb9201c8666e7170fdf45a981ba65c3c3368bf"
+        },
+        {
+          "block": 3,
+          "section": "opening",
+          "sha256": "33e8f6cf91a3f0d45ca17d956ba01eac0b8b6d13a32a7278a9835b9d3c0fa004"
+        },
+        {
+          "block": 4,
+          "section": "opening",
+          "sha256": "6119fca19c0dd028254ccaa0ec85845dd1fd6acf24a2090abc8f2bae0fbf324d"
+        },
+        {
+          "block": 5,
+          "section": "## 一、一次綠燈，留下了下一次的問題",
+          "sha256": "2c52e2314816c6c22dab15f7e38ab32b9dd4fd246e04f3d24feb5df209b9b14d"
+        },
+        {
+          "block": 6,
+          "section": "## 一、一次綠燈，留下了下一次的問題",
+          "sha256": "088a05fcba95123d38fba7126b27bad11384048abdcbd68ba8ff54a3bbbac6f9"
+        },
+        {
+          "block": 7,
+          "section": "## 一、一次綠燈，留下了下一次的問題",
+          "sha256": "f78286814c7ee01ee05c0f51719d5d91c91b67fecf5b6df30794cc56c09efddd"
+        },
+        {
+          "block": 8,
+          "section": "## 一、一次綠燈，留下了下一次的問題",
+          "sha256": "5e4876a676da620dce83d70a61cd019e6d25181b803b26e75f43bd06cfacfc6d"
+        },
+        {
+          "block": 9,
+          "section": "## 一、一次綠燈，留下了下一次的問題",
+          "sha256": "05b9264f3aca9c79fa56b20059f2d49f34f6090f04be724134c536fa7da5f5b9"
+        },
+        {
+          "block": 10,
+          "section": "## 一、一次綠燈，留下了下一次的問題",
+          "sha256": "6adfec12cf83d2a754864e0a0da9dd3bd30b1b8538f4c61afc302d69b0c85098"
+        },
+        {
+          "block": 11,
+          "section": "## 二、把交代補長之前，先問清楚三件事",
+          "sha256": "55eafc33e4f59af52561738f862bbeb667f3e9824b3c90be51ed05e1ee6aed93"
+        },
+        {
+          "block": 12,
+          "section": "## 二、把交代補長之前，先問清楚三件事",
+          "sha256": "f3fa3a1c6db0f91517e568e195f3c2d3e4326a479d5e8c7f4a189759a4d22ab8"
+        },
+        {
+          "block": 13,
+          "section": "## 二、把交代補長之前，先問清楚三件事",
+          "sha256": "42d211c6be5c05460efa577618e47c19057775ba40519d45290fd29f89050789"
+        },
+        {
+          "block": 14,
+          "section": "## 二、把交代補長之前，先問清楚三件事",
+          "sha256": "b15a023a1d4f6a8f5b7d75a94d959506adfd105b150298dd5b339bf77e77ef0c"
+        },
+        {
+          "block": 15,
+          "section": "## 二、把交代補長之前，先問清楚三件事",
+          "sha256": "4664a06e8779ab3fd3dd069cbbbf2e331baaf5f103e427be973641f40ff6a86d"
+        },
+        {
+          "block": 16,
+          "section": "## 二、把交代補長之前，先問清楚三件事",
+          "sha256": "3e226a52898a3b0401dd33ad705d6c6f82850b89cdef2f6cb04e08defc588c75"
+        },
+        {
+          "block": 17,
+          "section": "## 二、把交代補長之前，先問清楚三件事",
+          "sha256": "8d2ab64535a3d28ec1249d4423b119d7d818fde544e763c2588b455270f0d639"
+        },
+        {
+          "block": 18,
+          "section": "## 二、把交代補長之前，先問清楚三件事",
+          "sha256": "3c09dbafafc1d93ef4322fba834383d72cec7e9facadf191190d4e0f4efd3f2e"
+        },
+        {
+          "block": 19,
+          "section": "## 二、把交代補長之前，先問清楚三件事",
+          "sha256": "032a3176c4a6c2ff1c4f501831cc0346da8a9b7aa3b40811a33b9ebb99caacd1"
+        },
+        {
+          "block": 20,
+          "section": "## 二、把交代補長之前，先問清楚三件事",
+          "sha256": "50ce356da851984739368f5bf866b34bfb7a74aa381eef9229f62ccabb6e53da"
+        },
+        {
+          "block": 21,
+          "section": "## 二、把交代補長之前，先問清楚三件事",
+          "sha256": "c45d9d5df8d1271077f3cbee68d7b17a1792ede68e9f2b1eda8b7863552f6bdd"
+        },
+        {
+          "block": 22,
+          "section": "## 二、把交代補長之前，先問清楚三件事",
+          "sha256": "6387e9e7815aeac55857681a49d38a037366596fe59641e077aaa883e3dc41b7"
+        },
+        {
+          "block": 23,
+          "section": "## 三、同一個修補，寫成四份交代",
+          "sha256": "ee1df0a62fb5dee6acb32304919255f0833db3ee78e0a53a3a5c79b3feaf239a"
+        },
+        {
+          "block": 24,
+          "section": "## 三、同一個修補，寫成四份交代",
+          "sha256": "c673a52d3f9ce1c982a681abc8f64437c7d3f4751dfda4e159c2bcb2b11113c8"
+        },
+        {
+          "block": 25,
+          "section": "## 三、同一個修補，寫成四份交代",
+          "sha256": "77346d1e23a1f3e3a093de9c12b6392b360c2ec6b4e44fa74aaca905b039cf15"
+        },
+        {
+          "block": 26,
+          "section": "## 三、同一個修補，寫成四份交代",
+          "sha256": "a4ee9376b72e8fbbd7f6a0d04e0ce9c904d91a2f971386d31965015b590927dc"
+        },
+        {
+          "block": 27,
+          "section": "## 三、同一個修補，寫成四份交代",
+          "sha256": "46891afce13eada00eeefa9e24634e7e45686d0f52306221d2a335248336a81c"
+        },
+        {
+          "block": 28,
+          "section": "## 三、同一個修補，寫成四份交代",
+          "sha256": "265191c5723ad55858ebb2b07a8d6f3ae698cdeed30854ab53a34e684abd62e5"
+        },
+        {
+          "block": 29,
+          "section": "## 三、同一個修補，寫成四份交代",
+          "sha256": "c2e567e68b67e91307113bf3efba828588c10418b8b6aa506307084cc9301485"
+        },
+        {
+          "block": 30,
+          "section": "## 三、同一個修補，寫成四份交代",
+          "sha256": "8fa3300400d18d069e41173946fc53fdebc7e81131012ff3854c9bd266cffe39"
+        },
+        {
+          "block": 31,
+          "section": "## 三、同一個修補，寫成四份交代",
+          "sha256": "7d6ea88b82bf31e04e80d01afb9f996d66186d63fe04c720d7ccb2d5df909eb2"
+        },
+        {
+          "block": 32,
+          "section": "## 四、每份交代生成十次，全部交回後再驗收",
+          "sha256": "f35feacd018d82bb3edaba04a2d5d844b4881cbfefeb095e41148e595b8f863a"
+        },
+        {
+          "block": 33,
+          "section": "## 四、每份交代生成十次，全部交回後再驗收",
+          "sha256": "ee3b057f700cbc542c310b2a33c82b4b34febeb3a800f8ffa7727d347c117825"
+        },
+        {
+          "block": 34,
+          "section": "## 四、每份交代生成十次，全部交回後再驗收",
+          "sha256": "9fe7776b77407d02011ca0aec3f508d142a26657473bc26d31e4882a46cf1903"
+        },
+        {
+          "block": 35,
+          "section": "## 四、每份交代生成十次，全部交回後再驗收",
+          "sha256": "acc4408343cfafba69ffcdbb75317642c0d1fd4578176866e286e332c8b41de2"
+        },
+        {
+          "block": 36,
+          "section": "## 四、每份交代生成十次，全部交回後再驗收",
+          "sha256": "f46a68e128345f00391b39521395c4d422679747a53af0779ff4ee13e208cecf"
+        },
+        {
+          "block": 37,
+          "section": "## 四、每份交代生成十次，全部交回後再驗收",
+          "sha256": "e0d1b1aafc037a1c78dd6a561a6018c8a276f17ea3a2a54b99fe0029f473455b"
+        },
+        {
+          "block": 38,
+          "section": "## 四、每份交代生成十次，全部交回後再驗收",
+          "sha256": "dcecdda02f00500706c459122725994fbd00333fdbbc2e2b13916a5ca93d4cb3"
+        },
+        {
+          "block": 39,
+          "section": "## 四、每份交代生成十次，全部交回後再驗收",
+          "sha256": "3e21ac4e23ce17a11b123a6e24ab9908f2f54affe08d5a8d5d0f7e94851b4c00"
+        },
+        {
+          "block": 40,
+          "section": "## 五、四十份都通過之後，三個問題的答案",
+          "sha256": "d4d7414ae5c974f4748e077404a3fb02af0e5d7b6d4b6e8b03fcd42799e9f32a"
+        },
+        {
+          "block": 41,
+          "section": "## 五、四十份都通過之後，三個問題的答案",
+          "sha256": "ab3fc04d4762ac7b3dd5e5e91afe8490cf23a73655dd6f05de8748788469ad62"
+        },
+        {
+          "block": 42,
+          "section": "## 五、四十份都通過之後，三個問題的答案",
+          "sha256": "d547ce3c67633b857f4291ad67df8df4d6c1df9c9d5138f94dc540c3cb1632a6"
+        },
+        {
+          "block": 43,
+          "section": "## 五、四十份都通過之後，三個問題的答案",
+          "sha256": "ed1d224fe802885bf23e52fe551d7a142ddb70c1df673a15f2b646ff9a3f6683"
+        },
+        {
+          "block": 44,
+          "section": "## 五、四十份都通過之後，三個問題的答案",
+          "sha256": "6cdfe9ecbbab46e9509d2f720cd253b1eb19f80d81d4562e8baa7d3be5be3a6e"
+        },
+        {
+          "block": 45,
+          "section": "## 五、四十份都通過之後，三個問題的答案",
+          "sha256": "5b7aa824f7f41ef0d24d2732ed5ea9ea11d9cb6cc452d510520795340ce0c79c"
+        },
+        {
+          "block": 46,
+          "section": "## 五、四十份都通過之後，三個問題的答案",
+          "sha256": "9ee5294bd31e9bfe095cb00c16e413b8e1d29e481135d0aee5eb3bdc0d06b284"
+        },
+        {
+          "block": 47,
+          "section": "## 五、四十份都通過之後，三個問題的答案",
+          "sha256": "c5562bcc1104334f95a4fe77b77aa202a92a481098c888416564bbe251329438"
+        },
+        {
+          "block": 48,
+          "section": "## 五、四十份都通過之後，三個問題的答案",
+          "sha256": "019669b40aed63cf4977802ea11da38c7853868ecee836c54fb61a68f98eea25"
+        },
+        {
+          "block": 49,
+          "section": "## 五、四十份都通過之後，三個問題的答案",
+          "sha256": "6e13d9ea976cc10ea0e0a943a60fd8bf9ae01c621d25f9d821141ced6389373f"
+        },
+        {
+          "block": 50,
+          "section": "## 五、四十份都通過之後，三個問題的答案",
+          "sha256": "1ac4e271f1327e66b42217720746f7ff20f620ca7fb482d1f6420b5c20ce6dfa"
+        },
+        {
+          "block": 51,
+          "section": "## 五、四十份都通過之後，三個問題的答案",
+          "sha256": "7ad4292f677e9137c4bced164db359cd7c906644c10495000cdd95a084391d82"
+        },
+        {
+          "block": 52,
+          "section": "## 六、接下來可以做什麼，以及後面三篇要看什麼",
+          "sha256": "9dd0a3eac3b543547d29517a2060922e4e563e8da3d0ccbf0f655022d95f4b80"
+        },
+        {
+          "block": 53,
+          "section": "## 六、接下來可以做什麼，以及後面三篇要看什麼",
+          "sha256": "191fe10aaef9b595edc96568f6cf40d3d749c26e177579e78c32ff738d593a66"
+        },
+        {
+          "block": 54,
+          "section": "## 六、接下來可以做什麼，以及後面三篇要看什麼",
+          "sha256": "142495573eee2ad3b464befd4979b50cfff8d87add09bd3ee0ab47ba7af60249"
+        },
+        {
+          "block": 55,
+          "section": "## 六、接下來可以做什麼，以及後面三篇要看什麼",
+          "sha256": "79e524e4cec2af3ff56d2fe4ac163b3eb243b8f325da4e49487099f710395d2b"
+        },
+        {
+          "block": 56,
+          "section": "## 六、接下來可以做什麼，以及後面三篇要看什麼",
+          "sha256": "ff48081f7203193e3a3c74345af0c996b6ae197752ea4f4a3856c201a9141500"
+        },
+        {
+          "block": 57,
+          "section": "## 六、接下來可以做什麼，以及後面三篇要看什麼",
+          "sha256": "e0287f0f5630a9005698f741104ffd38c0e5936f526576f8bfd6b25e593c9f16"
+        },
+        {
+          "block": 58,
+          "section": "## 六、接下來可以做什麼，以及後面三篇要看什麼",
+          "sha256": "8db4b2bc49187834537e9c302cf0564d36ddf41b75802707fa1ae16ad4e2e977"
+        },
+        {
+          "block": 59,
+          "section": "## 六、接下來可以做什麼，以及後面三篇要看什麼",
+          "sha256": "5374979509d64b18b2f2dad9481963b255e380cc03773c3855c20a97a9bfaafb"
+        },
+        {
+          "block": 60,
+          "section": "## 六、接下來可以做什麼，以及後面三篇要看什麼",
+          "sha256": "0ae3aaad55ab72373779294668d1fe27b62fc3ecedf0d2298ade25bd618a0825"
+        },
+        {
+          "block": 61,
+          "section": "## 六、接下來可以做什麼，以及後面三篇要看什麼",
+          "sha256": "9889ef60ca222ac4b5681c5fa2d6971b4bd49c66a29324a77f59b8e3e1bd5c1e"
+        },
+        {
+          "block": 62,
+          "section": "## 六、接下來可以做什麼，以及後面三篇要看什麼",
+          "sha256": "b22d0695f2f896ac421916e15f10c0c3826d70fb09e31babcb766119490650fc"
+        },
+        {
+          "block": 63,
+          "section": "## 六、接下來可以做什麼，以及後面三篇要看什麼",
+          "sha256": "79575f1d151da8482240aa1de4540ad3f852eea90e6b4fbbb2814be9c5cdcb42"
+        },
+        {
+          "block": 64,
+          "section": "## 六、接下來可以做什麼，以及後面三篇要看什麼",
+          "sha256": "3489a398dd45893ac5eb0f35a4df748376a445f17fdbc854e3ee92a5a75ed485"
+        },
+        {
+          "block": 65,
+          "section": "## 六、接下來可以做什麼，以及後面三篇要看什麼",
+          "sha256": "a91e8030e0a5006f7999857da11199c3100888605b293629c098adc8971f0cd0"
+        },
+        {
+          "block": 66,
+          "section": "## 六、接下來可以做什麼，以及後面三篇要看什麼",
+          "sha256": "8639801239ba61a9aaad2a1c45b7f896ec17314115eb1ff3e45d80a2e409a4b7"
+        },
+        {
+          "block": 67,
+          "section": "## 六、接下來可以做什麼，以及後面三篇要看什麼",
+          "sha256": "081a9cfad510bb0c852819f27011975b4b288fdac035b236b2595831d5ed3bef"
+        },
+        {
+          "block": 68,
+          "section": "## 六、接下來可以做什麼，以及後面三篇要看什麼",
+          "sha256": "36bdb8fb0806e5b748ebc58c714bd7f2a3fbdfe14dd8ac60292d5cb7d8dcd362"
+        },
+        {
+          "block": 69,
+          "section": "## 六、接下來可以做什麼，以及後面三篇要看什麼",
+          "sha256": "24563bef83fd4815585d825157a8f492eb9f85ba447856f969135585e3d17498"
+        }
+      ]
+    },
+    {
+      "piece": "spec",
+      "article_sha256": "fa9a3fd288d3143e52bfde0f234de345f9bbe707592a5847b0c740743b6f01da",
+      "method": "Manual contextual paragraph edit and continuous reread, including latter half and conclusion; these block hashes index the reviewed version, not an automated quality score.",
+      "notes": [
+        "第一節連到 Agentic golden tasks，將增加文字的維護負擔轉成可以觀察的問題。",
+        "第二節以真實 parser 的輸入、輸出、相容責任引入要求；先解釋 malformed 再用詞。",
+        "第三節按 A0→A→B→C 展示真實節譯；相同 null／false／空白輸入讓讀者自己核對 R05 展開與新增的差別。篇幅有明確計數方法。",
+        "第四節用 exit 優先序、逐欄 null、CLI 範圍強度說明怎樣判斷規格等價，沒有假稱完全等價。",
+        "第五節以明標假設的錯型例區分規格缺漏與實作判斷錯誤；不推測模型是否漏讀，不宣稱 B 已有效。費用與未量測工時分開。",
+        "第六節清楚區分行為要求與可選寫法，自查不是驗收證據，接向同一 R05 驗收例。"
+      ],
+      "blocks": [
+        {
+          "block": 1,
+          "section": "opening",
+          "sha256": "bc95e83a5ff1bbb156ca6f859227fa2f6edc58a12a76227fff90310cadc5f96d"
+        },
+        {
+          "block": 2,
+          "section": "opening",
+          "sha256": "6e30c8e68147054850a75584a55fea5c791cea82d174f2f9a68c3d53efc2fa56"
+        },
+        {
+          "block": 3,
+          "section": "opening",
+          "sha256": "d3086c811d72a839515c9b002ceb925d6aa05f9ad892d5abdc52272ffa1a2a04"
+        },
+        {
+          "block": 4,
+          "section": "## 一、把文件補長之前，先說清楚想讓它幫什麼",
+          "sha256": "84280812b478e9d3c60a084399592dd78b6fdcbe3a2380e2fecf97ba86cbd2e0"
+        },
+        {
+          "block": 5,
+          "section": "## 一、把文件補長之前，先說清楚想讓它幫什麼",
+          "sha256": "01c498246aeb8171aab362cca077d6bc1866dd0239f771fb08fbbdef20a0b023"
+        },
+        {
+          "block": 6,
+          "section": "## 一、把文件補長之前，先說清楚想讓它幫什麼",
+          "sha256": "d523cc7e062e8cb7463019cfb8ad545ab382c01040043f1714b69a9c4911c892"
+        },
+        {
+          "block": 7,
+          "section": "## 一、把文件補長之前，先說清楚想讓它幫什麼",
+          "sha256": "c4a6579219191253e898a055da6d82a8db91917d3b8b52cdff337859d49ccda6"
+        },
+        {
+          "block": 8,
+          "section": "## 一、把文件補長之前，先說清楚想讓它幫什麼",
+          "sha256": "b1933ca937a1186be4156c883fc6a29124816cc441157761fa7a9f1e985dede2"
+        },
+        {
+          "block": 9,
+          "section": "## 一、把文件補長之前，先說清楚想讓它幫什麼",
+          "sha256": "7cc9fcb104e39b15c4d62d1eb63730ab3cb0031edb1997824e82c7255b76ed8b"
+        },
+        {
+          "block": 10,
+          "section": "## 二、一個型別修補，要修什麼、又要保留什麼",
+          "sha256": "78ec7000274284d54f13bf2a6c6185e678b910391183621937464b2cc17ba221"
+        },
+        {
+          "block": 11,
+          "section": "## 二、一個型別修補，要修什麼、又要保留什麼",
+          "sha256": "1bc394aabd9390eb88e100798f73e0af3da7a2a0ee2b66a30e31e3fd2774d0ca"
+        },
+        {
+          "block": 12,
+          "section": "## 二、一個型別修補，要修什麼、又要保留什麼",
+          "sha256": "2bcae0e74af5cd6eb2b88cf9712a5bd5ae31897257a3f1ca593dc3a042635b60"
+        },
+        {
+          "block": 13,
+          "section": "## 二、一個型別修補，要修什麼、又要保留什麼",
+          "sha256": "34b2c95fe2f4ced99fdb9ffe968305113cdf25a27f01ea2cd947922cf4f636b3"
+        },
+        {
+          "block": 14,
+          "section": "## 二、一個型別修補，要修什麼、又要保留什麼",
+          "sha256": "9c51b218cea10c858b05fa87c49bf2aaa7a697554bdda5efb43aaebcb8faab70"
+        },
+        {
+          "block": 15,
+          "section": "## 二、一個型別修補，要修什麼、又要保留什麼",
+          "sha256": "bfed779121bb9931f83c09de020d200460a7c0ea7c616eb27f85face6f7bdfef"
+        },
+        {
+          "block": 16,
+          "section": "## 二、一個型別修補，要修什麼、又要保留什麼",
+          "sha256": "92352f40e576db4905fc16caafff5b44f9f899dc9ceb61cdf6facf54ec8b1080"
+        },
+        {
+          "block": 17,
+          "section": "## 二、一個型別修補，要修什麼、又要保留什麼",
+          "sha256": "a8c667dd4a6afc8b75a6afdb64540c9fa6853b0ec12bae25e5bedb1bbebaa4cb"
+        },
+        {
+          "block": 18,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "51522aed2f9f3dedd3ee49edabac7dad74bf49a3ecf60fa416977f235757adca"
+        },
+        {
+          "block": 19,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "7ae9409a4b983fb56f0e02a488ef50bc8b1d2ee5a8d3aaa44696d8d8f0f0e756"
+        },
+        {
+          "block": 20,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "393f30c01739a4311018190ce7cb931c8125655c4e91334175cb39bee2398207"
+        },
+        {
+          "block": 21,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "152d356f5751c089d2c71f43167000590a509f5b3338de8cb81f5ea8906d0f7d"
+        },
+        {
+          "block": 22,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "8004bdb8f8ba5c66c5698d0efe5c97d621bacb69c4309db3604ce2a03e405f14"
+        },
+        {
+          "block": 23,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "44a85a5acc347ab465d800ed25eae53a280febb92bfcd5d6232c3a1c88ad1132"
+        },
+        {
+          "block": 24,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "205260f2e333d0fa158b9f5e1c6ac9efbadd82e89e61b173b1ce0c90b4967ea5"
+        },
+        {
+          "block": 25,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "85535af7848917deb0615cb28bc215f29172cae1e0235fca03cc65c2e52621d2"
+        },
+        {
+          "block": 26,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "32d21f109b86ec466477442cb695c9f35f9373a0190ef263d679267dd136f2a2"
+        },
+        {
+          "block": 27,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "dc3ae01aea54b3d73a708bf11c891b0dd113308b9cafa9cbc2bcdfe888ed5f70"
+        },
+        {
+          "block": 28,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "2d9b530e6652027f3fa8e2dc92430acffe124d50feeb28afacd1fe524287192b"
+        },
+        {
+          "block": 29,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "6c27de065c9b90dafa3b4f9afe92d87d40e823e0b631456b259787ab91b8953f"
+        },
+        {
+          "block": 30,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "1bfb79debdab4eb1017ca1fe05b1314811da46ed5fd1aba7c423c1b08274daa5"
+        },
+        {
+          "block": 31,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "5c8ed5544b81967210afcf4663f5026274f122873b3f26eaf9b6d74fbe76ce65"
+        },
+        {
+          "block": 32,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "955397c1a1e300bf356d96e87fd8a208244f652e77bd17b3c700661cdb49a5c1"
+        },
+        {
+          "block": 33,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "4a7e2d49710461d87cd4cb5b816c3902afe915c16667ccdebc71dbd912d5effe"
+        },
+        {
+          "block": 34,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "4829770d3ed5e9adb98abea6678980793048616030eda7404b2bdd3c68b7e3d4"
+        },
+        {
+          "block": 35,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "1ebddbe40eff9918970f7547a95ac2651e0e7b5e8097a38e9db15c4c445da5ec"
+        },
+        {
+          "block": 36,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "be9594f2ec7d2ddbe78870b30a71c04a7bec2bc2c3f490dc2bce82cf1538cec8"
+        },
+        {
+          "block": 37,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "fe7df7136f3190cbeb9c06285e519a23b0f1d16b8674519084d32d831e312b7c"
+        },
+        {
+          "block": 38,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "3705b8d729a77ecc9c92c0edb95664d6455c3ad8dc5a2096dbbd7ed9f2146045"
+        },
+        {
+          "block": 39,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "0342d3452b189df2f7dc1e0608bdd2dea848f92bc0cb75c169b1800c33737897"
+        },
+        {
+          "block": 40,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "5a5ea9f90c419a6ad270414b662708ec5c56fb1b3363ceee534e3a3efe3ff794"
+        },
+        {
+          "block": 41,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "e72c7ac10dcd6203341c8052d89c0800915874ceba985a06973741137120f6ac"
+        },
+        {
+          "block": 42,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "78b7674cadfad09cc7fbd40780d08ce4e62871c026361dc84cab36da70a73ad8"
+        },
+        {
+          "block": 43,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "bb8825be04392a9f0c924dfd2d43f656f6d289a05c14b589dd6f680471d21af6"
+        },
+        {
+          "block": 44,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "0d7e902064cfeb213c19ff8888e4944bf9dd10511f58de5900107811898d38b1"
+        },
+        {
+          "block": 45,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "338e6e5bf19d1ed1059393ca8ceade1a4bcd0c5ca3c8fed610fca46318a8deb0"
+        },
+        {
+          "block": 46,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "c7b0e71030820bd83dbcda0fbf908938551444662105d4d8d1de957796543273"
+        },
+        {
+          "block": 47,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "709e63ca76f1e7f243e07e6ef10c5bdf2723912622fd90d1f487cf8fdb46c646"
+        },
+        {
+          "block": 48,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "f472bc78fa6d04915ab6496ac6177774364aa762afda8f26630eb2ce7fbd5bd6"
+        },
+        {
+          "block": 49,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "3c4cf94c9cb697de434e1478902093ce5282a51f1a985f7547b572f939446735"
+        },
+        {
+          "block": 50,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "0cb778ffd1864054395f0bf350daa5e7e5d854726494b4061e5bdd12782f9375"
+        },
+        {
+          "block": 51,
+          "section": "## 三、同一條 R05，在四份文件裡怎麼寫",
+          "sha256": "8eec434124c84fb872a2da4204aab74fea42acdf595cd16409ae8486dd265bb5"
+        },
+        {
+          "block": 52,
+          "section": "## 四、公平比較之前，得逐項核對要求",
+          "sha256": "af25797f5d4c1e2489e529508ca4b30bb012cb56294b06ab22f8469f1cb1bcfb"
+        },
+        {
+          "block": 53,
+          "section": "## 四、公平比較之前，得逐項核對要求",
+          "sha256": "24122c65cb17fe11aca4ada87d5c68ec03b197c2943f61135852e60d96d5c6d5"
+        },
+        {
+          "block": 54,
+          "section": "## 四、公平比較之前，得逐項核對要求",
+          "sha256": "4c80c8abb9bacf90755bbfb582bb1f0d6561d4f3df991d5ce02fe5e8c7460da1"
+        },
+        {
+          "block": 55,
+          "section": "## 四、公平比較之前，得逐項核對要求",
+          "sha256": "2fd6346cbd99bdafeeba395f766c8b2a45e521cb2f6f4bbb6cb2f21cfd2fc1f1"
+        },
+        {
+          "block": 56,
+          "section": "## 四、公平比較之前，得逐項核對要求",
+          "sha256": "7e9739850baaa9dff65558dbcf93547156957489ed342096456adea81378758d"
+        },
+        {
+          "block": 57,
+          "section": "## 四、公平比較之前，得逐項核對要求",
+          "sha256": "c8a2867e1f580eb39109f9c547b80f73d51902a30790341d04498bb0a1fc4326"
+        },
+        {
+          "block": 58,
+          "section": "## 四、公平比較之前，得逐項核對要求",
+          "sha256": "ed437e7d716c41a2c6ec90a8e02ce266457b73532a313e44fe5ceb8c4ee2a7db"
+        },
+        {
+          "block": 59,
+          "section": "## 四、公平比較之前，得逐項核對要求",
+          "sha256": "2799d637a3e86629d1ac203f01c30addb9182d2e320cf50b3deed4f0ef3af671"
+        },
+        {
+          "block": 60,
+          "section": "## 四、公平比較之前，得逐項核對要求",
+          "sha256": "41352ad10edb473ece03c35bcb31f2360a5cd2153e0752eb4b3d156c32d1d3f9"
+        },
+        {
+          "block": 61,
+          "section": "## 四、公平比較之前，得逐項核對要求",
+          "sha256": "eb8a67ba10be61c39521d77241fdfa8fd8abf26ce805d6d708cf1c5d58f42554"
+        },
+        {
+          "block": 62,
+          "section": "## 五、多寫的那一段，要對應一個想解決的問題",
+          "sha256": "10c8cf91db0386539249e92898669c9d12ba82b7301eda7b985846cfbbbffa78"
+        },
+        {
+          "block": 63,
+          "section": "## 五、多寫的那一段，要對應一個想解決的問題",
+          "sha256": "c0d0fd001e628b76bd03a45fb7c504460817e5ccade79dcd1ed4cabafa09b143"
+        },
+        {
+          "block": 64,
+          "section": "## 五、多寫的那一段，要對應一個想解決的問題",
+          "sha256": "b7f4b5d3c3cd08825947f69f3a1257b72bfdbfe4a978664223994e2468d42c35"
+        },
+        {
+          "block": 65,
+          "section": "## 五、多寫的那一段，要對應一個想解決的問題",
+          "sha256": "0445ffa3bf3757ebf72faaab9fc0f4d56b437467deba0444c538ca43627005db"
+        },
+        {
+          "block": 66,
+          "section": "## 五、多寫的那一段，要對應一個想解決的問題",
+          "sha256": "677855dd0f946bd5828bb08de0b37d1ac07b1cdeb67ed2d93a519a39f068ab25"
+        },
+        {
+          "block": 67,
+          "section": "## 五、多寫的那一段，要對應一個想解決的問題",
+          "sha256": "6b0afcb60fb34ea26495237e17136217c5a284eb8e03f2ce65ad143634d6326c"
+        },
+        {
+          "block": 68,
+          "section": "## 五、多寫的那一段，要對應一個想解決的問題",
+          "sha256": "fc6afeea1cf08558bf93e9bf41a5a3b986da0cd17bf436228e4b4325c982e46f"
+        },
+        {
+          "block": 69,
+          "section": "## 五、多寫的那一段，要對應一個想解決的問題",
+          "sha256": "ffe20a62e259bc44b93bc7663a9772901feb5087c279b41069d7a2d30cdddc68"
+        },
+        {
+          "block": 70,
+          "section": "## 五、多寫的那一段，要對應一個想解決的問題",
+          "sha256": "5c909807e68aef5319e7425a78b9056145682c0a905e2769dd86e799e47dda26"
+        },
+        {
+          "block": 71,
+          "section": "## 五、多寫的那一段，要對應一個想解決的問題",
+          "sha256": "d1f8df24976da20d4cb7889ae4b6ba0eb62a00c7ef510daabf05ebebb13aef2a"
+        },
+        {
+          "block": 72,
+          "section": "## 五、多寫的那一段，要對應一個想解決的問題",
+          "sha256": "75fc3a14f1b8bccfdf740c4ae15385da52c5339c2c23a6cb64f4546183c5a808"
+        },
+        {
+          "block": 73,
+          "section": "## 六、規格把選擇說清楚，驗收才有依據",
+          "sha256": "eda9ca0a5ae54c9f9ffe90199c7a05a7875ed3cf3dec6e75a22e4d7a29ade6fb"
+        },
+        {
+          "block": 74,
+          "section": "## 六、規格把選擇說清楚，驗收才有依據",
+          "sha256": "e2744b76409caa0c52a92d51ce033ed1bf59ca24e049993cc1143cd96191dba2"
+        },
+        {
+          "block": 75,
+          "section": "## 六、規格把選擇說清楚，驗收才有依據",
+          "sha256": "28aefeb41f981ed35a6ceb3dedbbe9629cdfa6acdf1a9e340a97a426bab904d9"
+        },
+        {
+          "block": 76,
+          "section": "## 六、規格把選擇說清楚，驗收才有依據",
+          "sha256": "836ca7fc0e1bf151ddf5092e7b0b41dc21ee47c7af89b4033bc1dc9d0f0e8af0"
+        },
+        {
+          "block": 77,
+          "section": "## 六、規格把選擇說清楚，驗收才有依據",
+          "sha256": "9a2f3f36792e9a7473081529825f8ca9de8f81deab414a22a3687e172564960a"
+        },
+        {
+          "block": 78,
+          "section": "## 六、規格把選擇說清楚，驗收才有依據",
+          "sha256": "0ae3aaad55ab72373779294668d1fe27b62fc3ecedf0d2298ade25bd618a0825"
+        },
+        {
+          "block": 79,
+          "section": "## 六、規格把選擇說清楚，驗收才有依據",
+          "sha256": "4488d6027a749b8175abd60ace3941c693942bae6905ee0bdcde173dcf952a2d"
+        },
+        {
+          "block": 80,
+          "section": "## 六、規格把選擇說清楚，驗收才有依據",
+          "sha256": "e8615ff7533ca73809150aae92e391d8d4c094c5559b2578777b6e845d82f7c4"
+        },
+        {
+          "block": 81,
+          "section": "## 六、規格把選擇說清楚，驗收才有依據",
+          "sha256": "79575f1d151da8482240aa1de4540ad3f852eea90e6b4fbbb2814be9c5cdcb42"
+        },
+        {
+          "block": 82,
+          "section": "## 六、規格把選擇說清楚，驗收才有依據",
+          "sha256": "c4ae7aaecb79bc79dca0ea253c3f96d697766827692dc765787003ab11a9f690"
+        },
+        {
+          "block": 83,
+          "section": "## 六、規格把選擇說清楚，驗收才有依據",
+          "sha256": "91d2446134bb55d1a8105f2967b5858fc17d9150cc81d99c7d797493f20a3a97"
+        },
+        {
+          "block": 84,
+          "section": "## 六、規格把選擇說清楚，驗收才有依據",
+          "sha256": "8639801239ba61a9aaad2a1c45b7f896ec17314115eb1ff3e45d80a2e409a4b7"
+        },
+        {
+          "block": 85,
+          "section": "## 六、規格把選擇說清楚，驗收才有依據",
+          "sha256": "faa268f0bdcb27e292e1eea42a299f6f8eb9bc9ef80d20386396dff3a051d3d8"
+        },
+        {
+          "block": 86,
+          "section": "## 六、規格把選擇說清楚，驗收才有依據",
+          "sha256": "440e95874e9b92f41fddfdcea46401ab369a55141d949850e5a24bd832faf6fb"
+        },
+        {
+          "block": 87,
+          "section": "## 六、規格把選擇說清楚，驗收才有依據",
+          "sha256": "24563bef83fd4815585d825157a8f492eb9f85ba447856f969135585e3d17498"
+        }
+      ]
+    },
+    {
+      "piece": "contract",
+      "article_sha256": "59984f65fcdd0adb2ffe37eefb9d58b127e8bc8d1748583542bcafca34241ab2",
+      "method": "Manual contextual paragraph edit and continuous reread, including latter half and conclusion; these block hashes index the reviewed version, not an automated quality score.",
+      "notes": [
+        "第一節縮短前情，先交代誰判斷、依據什麼；自我宣稱與外部執行結果分清楚。",
+        "第二節從兩行輸入依 R05、R03、R08、R11、R12 推出三出口；三種錯法是教學假設，turn.failed 的 null／false 例用相同 exit 說明診斷不能省。",
+        "第三節由終態比對看不到時間引出 streaming probe，清楚界定僅第一訊息一個觀察點。",
+        "第四節交代答案、候選介面、生成與驗收先後；F1 圖例、停止路徑與平行 success 欄位解釋完整。",
+        "第五節先說 evaluator 的失效情境再說已知答案測試、沙箱 probes 與重評能排除到哪裡；三種失敗分類不混層。",
+        "第六節回收 R05 到外部證據的過程，後續維護建議含來源、要求、版本化重評與涵蓋限制。"
+      ],
+      "blocks": [
+        {
+          "block": 1,
+          "section": "opening",
+          "sha256": "3fabe1f6c83c215f51eb4aac003bbfa54adb0fae2b16aa0496c61d36b1ea6145"
+        },
+        {
+          "block": 2,
+          "section": "opening",
+          "sha256": "7b9d1a49e05fb0064551b951784866b04dd43cc1e50b4673cc6adef69bd70f18"
+        },
+        {
+          "block": 3,
+          "section": "opening",
+          "sha256": "09aae19c390769cf6bffd60232f3639b830bbba666618d51e0b41a9a02d79ead"
+        },
+        {
+          "block": 4,
+          "section": "## 一、四份交代寫好之後，還需要外部的判斷",
+          "sha256": "f216dca58a11fbf2bb881b2b9f46ae186467dbf2afc4c8c99a32e579561796c3"
+        },
+        {
+          "block": 5,
+          "section": "## 一、四份交代寫好之後，還需要外部的判斷",
+          "sha256": "a02b9c45ed01dd76f2c20ac44fd708229087b4389cf9b4ccc2626f695be61abe"
+        },
+        {
+          "block": 6,
+          "section": "## 一、四份交代寫好之後，還需要外部的判斷",
+          "sha256": "8a78d5a15523304a56d39a360e35e91960692df9a085be0cbb262e3f4467e93f"
+        },
+        {
+          "block": 7,
+          "section": "## 一、四份交代寫好之後，還需要外部的判斷",
+          "sha256": "f5c989e904883e3b3525142e50f127e2d575785fe647a913e92e98cad766fe58"
+        },
+        {
+          "block": 8,
+          "section": "## 一、四份交代寫好之後，還需要外部的判斷",
+          "sha256": "a968804f5e0beb72a66e1b5d4ec46a5fd5722579092c17c11272eb98f749d45c"
+        },
+        {
+          "block": 9,
+          "section": "## 一、四份交代寫好之後，還需要外部的判斷",
+          "sha256": "3d13794a95b54015149f2e28cdfe401ac49ec9715d4701a97e49de70a91923e0"
+        },
+        {
+          "block": 10,
+          "section": "## 一、四份交代寫好之後，還需要外部的判斷",
+          "sha256": "9c80f5aff44f43f9d9eec2058a220caa99721cb9eadc88457b6b0cdc60c63525"
+        },
+        {
+          "block": 11,
+          "section": "## 二、把 123 這個例子拆成三個觀察",
+          "sha256": "2e40f1d73c2bfefc13841146db7e3fbbdefb37bcf531d36cba6f6a4e14243a27"
+        },
+        {
+          "block": 12,
+          "section": "## 二、把 123 這個例子拆成三個觀察",
+          "sha256": "e1efc092cf985c1217163d59ec331ce3e1fbb755a7eb89af9ecd4b880a7de616"
+        },
+        {
+          "block": 13,
+          "section": "## 二、把 123 這個例子拆成三個觀察",
+          "sha256": "03e317ab8a78fd751d3a4aef4bba7e5ed81ae56a70c2e4a413d27bc2a1ce2e95"
+        },
+        {
+          "block": 14,
+          "section": "## 二、把 123 這個例子拆成三個觀察",
+          "sha256": "78a5b2b5078a7cdf4394ec6989ba85fb552bd5bcc3e3d4bbf565ad7dc54709c9"
+        },
+        {
+          "block": 15,
+          "section": "## 二、把 123 這個例子拆成三個觀察",
+          "sha256": "04457ce4cc40122a38ece691b28a3cdb771a9dc89db3046df8e9b3412cf3ffb4"
+        },
+        {
+          "block": 16,
+          "section": "## 二、把 123 這個例子拆成三個觀察",
+          "sha256": "36c2b926cc69e1278bc0b27202e174cb31390ba16537eca4298a8750ddeba450"
+        },
+        {
+          "block": 17,
+          "section": "## 二、把 123 這個例子拆成三個觀察",
+          "sha256": "02ab5195ebf1abcbd0706709cd6bae4099af67536325d35290f41d8c53148ad6"
+        },
+        {
+          "block": 18,
+          "section": "## 二、把 123 這個例子拆成三個觀察",
+          "sha256": "6cd75a63cfc96def41d312a9c15a9381ba2d37f59e831535521cbb380eb52073"
+        },
+        {
+          "block": 19,
+          "section": "## 二、把 123 這個例子拆成三個觀察",
+          "sha256": "a4726d9d37bdcce11165d7bf6c427f01c6d955431288d5c4f10a0032ca69285c"
+        },
+        {
+          "block": 20,
+          "section": "## 二、把 123 這個例子拆成三個觀察",
+          "sha256": "48bddaf91b0607b392de738fa66d7a2d10b08dab506b47782ccfeb82143fe337"
+        },
+        {
+          "block": 21,
+          "section": "## 二、把 123 這個例子拆成三個觀察",
+          "sha256": "8d6218b651dda28dd182c3c6290309449489797a22a5ecab0277eb3154074653"
+        },
+        {
+          "block": 22,
+          "section": "## 二、把 123 這個例子拆成三個觀察",
+          "sha256": "d2ea0def49bed7889aeb8d2163a40ee9449d1bc961f6bba58c7a1d3f97223f7a"
+        },
+        {
+          "block": 23,
+          "section": "## 二、把 123 這個例子拆成三個觀察",
+          "sha256": "b370e65f030977dd3e05fb66c404742ca46793369d3cd38178009f1585238be0"
+        },
+        {
+          "block": 24,
+          "section": "## 二、把 123 這個例子拆成三個觀察",
+          "sha256": "5785f7a719419c30556ecc3c6e7dbe44d4f0fbbb51cbeb81476227575353868e"
+        },
+        {
+          "block": 25,
+          "section": "## 二、把 123 這個例子拆成三個觀察",
+          "sha256": "27e68244e1d625a32766ba3a7aae2a71584772a022227d6270dc4d37224e0337"
+        },
+        {
+          "block": 26,
+          "section": "## 二、把 123 這個例子拆成三個觀察",
+          "sha256": "380e6de0320bc134252626bae2a9b888c476957b5f5c5007e10b426952766554"
+        },
+        {
+          "block": 27,
+          "section": "## 二、把 123 這個例子拆成三個觀察",
+          "sha256": "d10e175dcf0165179f0871004f40b9e1f10e71221d8313fba24d0a1838b85274"
+        },
+        {
+          "block": 28,
+          "section": "## 二、把 123 這個例子拆成三個觀察",
+          "sha256": "a064ba7c7eec18e086406c5b098599e4f31036ab720b41f409eb51d3cb2cee63"
+        },
+        {
+          "block": 29,
+          "section": "## 二、把 123 這個例子拆成三個觀察",
+          "sha256": "149916aa6c60f646b01ca0777cd1ac80cda87f25bb62957ed4056f491036659d"
+        },
+        {
+          "block": 30,
+          "section": "## 二、把 123 這個例子拆成三個觀察",
+          "sha256": "0aa8d49e7a18c27bfad22c6ec8d9dd5bcaa99863a8a3b015138cad3b7397af8c"
+        },
+        {
+          "block": 31,
+          "section": "## 二、把 123 這個例子拆成三個觀察",
+          "sha256": "98be7dedf1f4ef885f6e1c4a736c54d4b3a828fe44f5101a2ae7a3ff8a26761d"
+        },
+        {
+          "block": 32,
+          "section": "## 二、把 123 這個例子拆成三個觀察",
+          "sha256": "abb90f817f2cd2d0d800b613421be5a7c239def84cff2a79da81c1bbe949154a"
+        },
+        {
+          "block": 33,
+          "section": "## 三、內容對了，還要看輸出出現的時間",
+          "sha256": "c7a6b895fa191d333499c0ed63378961bbf4ce78dbbe7a53b9f688b6d0cd574c"
+        },
+        {
+          "block": 34,
+          "section": "## 三、內容對了，還要看輸出出現的時間",
+          "sha256": "641651a2016b17bbe6c6f078bfb3a33f7e34a3be9807fff2fe888c39acef7bf7"
+        },
+        {
+          "block": 35,
+          "section": "## 三、內容對了，還要看輸出出現的時間",
+          "sha256": "1d42f671802e1dd8811854b03b01767ea18c8cc44b2cccdb8deb34b152f13802"
+        },
+        {
+          "block": 36,
+          "section": "## 三、內容對了，還要看輸出出現的時間",
+          "sha256": "200706a25235506e55960e70ec7ec17a38d722180afcf9845605494b1b8223d2"
+        },
+        {
+          "block": 37,
+          "section": "## 三、內容對了，還要看輸出出現的時間",
+          "sha256": "e6bd867e280a7eecc5af1f01f03580733dc7e0254e708069a5dfc7d93656e53d"
+        },
+        {
+          "block": 38,
+          "section": "## 三、內容對了，還要看輸出出現的時間",
+          "sha256": "22a6fc433b0e4a53e4e25c38d199dab18340fbdb2b0ad3c4f8fd7c5faabd5320"
+        },
+        {
+          "block": 39,
+          "section": "## 四、答案由外部 driver 保管",
+          "sha256": "42315c123d9f14e2f4b532891d2b8a49bf7fc564faede73eaa73c6b144f85b05"
+        },
+        {
+          "block": 40,
+          "section": "## 四、答案由外部 driver 保管",
+          "sha256": "aa787efbf95a88c7e1921ce6137786a2f5b8ce3e1c3e6f4a58ba9b3982fcdcac"
+        },
+        {
+          "block": 41,
+          "section": "## 四、答案由外部 driver 保管",
+          "sha256": "b42709440e48e0dc4cf462c1e01566ec02bd5937d93ce3995a50de1960848ac0"
+        },
+        {
+          "block": 42,
+          "section": "## 四、答案由外部 driver 保管",
+          "sha256": "c24c4b2c3c4dac9ae810101309c9380e8dadc7eab7b98cc26d4a877d4c4216b3"
+        },
+        {
+          "block": 43,
+          "section": "## 四、答案由外部 driver 保管",
+          "sha256": "9049124b30ac94cc9627e2dde655fbf1274abb5fd5f5ad01cd57b91f92045be2"
+        },
+        {
+          "block": 44,
+          "section": "## 四、答案由外部 driver 保管",
+          "sha256": "1cd72e108569e08ed6c63c724b3b852a2193071764441ca9fc1d13fa22f4e7c8"
+        },
+        {
+          "block": 45,
+          "section": "## 四、答案由外部 driver 保管",
+          "sha256": "7abd93afd112e9e52bb7ed90a60f38e235ef77f65d1bd222fea11bfaf9a4201c"
+        },
+        {
+          "block": 46,
+          "section": "## 四、答案由外部 driver 保管",
+          "sha256": "ed124c3808e51fedc7905a519ca3447bd40c6b2fdac7f2da8fabb7d2b9a4bf88"
+        },
+        {
+          "block": 47,
+          "section": "## 四、答案由外部 driver 保管",
+          "sha256": "f1ac9c3850d2071ded43058641ba80364530cff9debf37a5ab7a04403d673410"
+        },
+        {
+          "block": 48,
+          "section": "## 四、答案由外部 driver 保管",
+          "sha256": "235e1e4b6b5ca67c34dad4675b008e1744b4a71a07f8bb8111bc763f59c4c13d"
+        },
+        {
+          "block": 49,
+          "section": "## 四、答案由外部 driver 保管",
+          "sha256": "87dd012bf528e0d4f0f630a0f85b83a8b318acac760ad6ec4fffacdb2ddd29c9"
+        },
+        {
+          "block": 50,
+          "section": "## 四、答案由外部 driver 保管",
+          "sha256": "cacc2d101704d4829fe4dfb923118b536daa1951fa5936077c317fc555881df8"
+        },
+        {
+          "block": 51,
+          "section": "## 四、答案由外部 driver 保管",
+          "sha256": "1fcdc030d7ab7af1f0b83c13549ef8bad9a91158979b17c3c8f432b9c420c10d"
+        },
+        {
+          "block": 52,
+          "section": "## 五、驗收工具本身也要經得起檢查",
+          "sha256": "e28aadf0d983185f583a55077a1ff8df6f9b09174168f00bd5e06439a970eb39"
+        },
+        {
+          "block": 53,
+          "section": "## 五、驗收工具本身也要經得起檢查",
+          "sha256": "d068664c9641b267642432ade251b8ae37756cf2c8f254b5bd5d40d10ad99389"
+        },
+        {
+          "block": 54,
+          "section": "## 五、驗收工具本身也要經得起檢查",
+          "sha256": "427f42b675e31fcb73f4cc5b970e4564a6249de07eb5a391d8cf9332522a1f8d"
+        },
+        {
+          "block": 55,
+          "section": "## 五、驗收工具本身也要經得起檢查",
+          "sha256": "291099da140eb7d35f66a900d95e4269c0010aba37697eb31464c9ddff4acc8b"
+        },
+        {
+          "block": 56,
+          "section": "## 五、驗收工具本身也要經得起檢查",
+          "sha256": "1ba89513121f3899be4e0393382f193120c279375b6d953694ec9c8d08e3eb49"
+        },
+        {
+          "block": 57,
+          "section": "## 五、驗收工具本身也要經得起檢查",
+          "sha256": "2dee60b2e5bb9960445a81c8d744949452f2e5fcc7f105579300975cb079c3e6"
+        },
+        {
+          "block": 58,
+          "section": "## 五、驗收工具本身也要經得起檢查",
+          "sha256": "b23bccd9f059475e1601f2046ceffe22917edddd789fa81c1e4f04687ff27102"
+        },
+        {
+          "block": 59,
+          "section": "## 五、驗收工具本身也要經得起檢查",
+          "sha256": "d523a62ab04140e4f05a090b81dcde7c381bc7db3ccd0112f11c033917fefe69"
+        },
+        {
+          "block": 60,
+          "section": "## 五、驗收工具本身也要經得起檢查",
+          "sha256": "3821cdac777bda357380571aebd4a8360197486751a7a99572c858e6d343f384"
+        },
+        {
+          "block": 61,
+          "section": "## 六、規格裡的一句話如何成為證據",
+          "sha256": "fee0762de54ca884eed58df3947d66f82dc0ed6e80f58ec5b03a65ee135eaf5e"
+        },
+        {
+          "block": 62,
+          "section": "## 六、規格裡的一句話如何成為證據",
+          "sha256": "540bc1fc5b2b991db7f1227546ec71bdf4a5670fce9ebd4c5cd4dce2da53fae1"
+        },
+        {
+          "block": 63,
+          "section": "## 六、規格裡的一句話如何成為證據",
+          "sha256": "7e80aa083268c579c5f5905492e7dbde752c4227975d5425aae8e0da32452e8a"
+        },
+        {
+          "block": 64,
+          "section": "## 六、規格裡的一句話如何成為證據",
+          "sha256": "9f96e97a7590825089f2bcda5291438072d6941b59f5ab2b6e26e9fb46a3691e"
+        },
+        {
+          "block": 65,
+          "section": "## 六、規格裡的一句話如何成為證據",
+          "sha256": "d24f2f3e2a51269b8a68b63ffee41db974d2ea9c8d7040774b318c98c8ecc7c2"
+        },
+        {
+          "block": 66,
+          "section": "## 六、規格裡的一句話如何成為證據",
+          "sha256": "a027dc5ad24799da47d1b456cefa09f15960e04d043a2d40db1d664aa722d84a"
+        },
+        {
+          "block": 67,
+          "section": "## 六、規格裡的一句話如何成為證據",
+          "sha256": "bafcdc5c72daf6acbd0a877fc4c20332dc022d65e9afaa51b9c12f4792e6f8a3"
+        },
+        {
+          "block": 68,
+          "section": "## 六、規格裡的一句話如何成為證據",
+          "sha256": "0020e396067e920c86b0f6adf321e6b2a25a28bcff28d990d204f07a150eb92c"
+        },
+        {
+          "block": 69,
+          "section": "## 六、規格裡的一句話如何成為證據",
+          "sha256": "0ae3aaad55ab72373779294668d1fe27b62fc3ecedf0d2298ade25bd618a0825"
+        },
+        {
+          "block": 70,
+          "section": "## 六、規格裡的一句話如何成為證據",
+          "sha256": "3da9b86a9261f1cbaf0c7912fdc21e2d735f91b236488a3524d30f0d41519f49"
+        },
+        {
+          "block": 71,
+          "section": "## 六、規格裡的一句話如何成為證據",
+          "sha256": "da1f13098cd20d38c375d126aa0b11ab3d3c928dfaa7716392abc19c8e5f711a"
+        },
+        {
+          "block": 72,
+          "section": "## 六、規格裡的一句話如何成為證據",
+          "sha256": "79575f1d151da8482240aa1de4540ad3f852eea90e6b4fbbb2814be9c5cdcb42"
+        },
+        {
+          "block": 73,
+          "section": "## 六、規格裡的一句話如何成為證據",
+          "sha256": "3bd565e6dc128c6c61bb610c1c2a5b9693f527feef1b21495e23030f9e9406c0"
+        },
+        {
+          "block": 74,
+          "section": "## 六、規格裡的一句話如何成為證據",
+          "sha256": "8639801239ba61a9aaad2a1c45b7f896ec17314115eb1ff3e45d80a2e409a4b7"
+        },
+        {
+          "block": 75,
+          "section": "## 六、規格裡的一句話如何成為證據",
+          "sha256": "88307917a2fa582ff34e77f34195f2a1d4ee6f46ce4b52dd0c6803f5f10281e5"
+        },
+        {
+          "block": 76,
+          "section": "## 六、規格裡的一句話如何成為證據",
+          "sha256": "328d6019089c62ba0e34b8925feca574f847ac33477992e629fc75eb82fb0024"
+        },
+        {
+          "block": 77,
+          "section": "## 六、規格裡的一句話如何成為證據",
+          "sha256": "24563bef83fd4815585d825157a8f492eb9f85ba447856f969135585e3d17498"
+        }
+      ]
+    },
+    {
+      "piece": "variance",
+      "article_sha256": "75ece93803dabeac4d578611deacea4629a8740bd59e1ba69cf203a11c53365a",
+      "method": "Manual contextual paragraph edit and continuous reread, including latter half and conclusion; these block hashes index the reviewed version, not an automated quality score.",
+      "notes": [
+        "第一節用契約篇 123 缺陷接入四十份結果，三個研究問題與總論一致。",
+        "第二節先說預先排定分母，再用假設 80% 的十次成功機率解釋不確定性；CP 區間的頻率學派意義、獨立同分布假設、排程限制保留。",
+        "第三節先讀實際 A0 pair 狀態與分派，再解釋 hash 常數例與 cosine 二維簡化例；0.99 不是原碼重合率，180 pairs 非獨立樣本。",
+        "第四節先解釋計價與 wall time，再用中位數和最大值示範怎麼讀；USD 5 明示每名額門檻，不與整批費用混淆。",
+        "第五節逐一回答三個問題；將真人 review 工時與具體原因記錄接到維護判斷，避免由結構指標直接判品質。",
+        "第六節將本輪觀察、方法與後續問題分開，沒有把全數通過推成等效或泛化承諾；References 與 AI 說明完整。"
+      ],
+      "blocks": [
+        {
+          "block": 1,
+          "section": "opening",
+          "sha256": "9f7ecc355d6996a1c49160042a2d872f415a884f08386efd7e587ac9c15b9da9"
+        },
+        {
+          "block": 2,
+          "section": "opening",
+          "sha256": "5ec194a5652f67d9434106b14f8fc5f7d0d9f7be997b396be3941c3d81282b1e"
+        },
+        {
+          "block": 3,
+          "section": "opening",
+          "sha256": "426a958359771c0af03a710db68f5499531d87d665f80ef715cc860a06aa5ae2"
+        },
+        {
+          "block": 4,
+          "section": "opening",
+          "sha256": "cb3f91d54eee30e53e35b2b99905f70f169ed549fd78909d3dac2defc9ed8d3b"
+        },
+        {
+          "block": 5,
+          "section": "## 一、四份交代各生成十次，全部通過之後",
+          "sha256": "df781f1a31319e51b0c915798ad02dcb3ae5d21537717c92554f3a34dbc1220e"
+        },
+        {
+          "block": 6,
+          "section": "## 一、四份交代各生成十次，全部通過之後",
+          "sha256": "da6b205663e7201ee36625d2564424bb80a53609f807383b7d359e8e1909e199"
+        },
+        {
+          "block": 7,
+          "section": "## 一、四份交代各生成十次，全部通過之後",
+          "sha256": "0ed00bb2f7ddbee6ac435e312f46672517198de355511e33b799b3550339d19b"
+        },
+        {
+          "block": 8,
+          "section": "## 一、四份交代各生成十次，全部通過之後",
+          "sha256": "e125445c0ea3c2ea822df02ce3d72ebb93c82ea3d37360ae1b0ce5425c11092b"
+        },
+        {
+          "block": 9,
+          "section": "## 一、四份交代各生成十次，全部通過之後",
+          "sha256": "1d6a1748a253cd733109c6e327306d8d7c2b8525e5f1908f09bc24f203058b2d"
+        },
+        {
+          "block": 10,
+          "section": "## 一、四份交代各生成十次，全部通過之後",
+          "sha256": "7b77a677ebbe2c5e863f90fdc5079e2bc83e4af0873ec902e1e584c5e53c3034"
+        },
+        {
+          "block": 11,
+          "section": "## 一、四份交代各生成十次，全部通過之後",
+          "sha256": "82e3b2a6a5c39d8f58444d9df00edb485ad239b77767509cbacb4c571a37f24f"
+        },
+        {
+          "block": 12,
+          "section": "## 一、四份交代各生成十次，全部通過之後",
+          "sha256": "55fa4a84c3039ee2dd2f5cee5cb57b55835f475295ae76c754870665c510a4a3"
+        },
+        {
+          "block": 13,
+          "section": "## 一、四份交代各生成十次，全部通過之後",
+          "sha256": "cb3f91d54eee30e53e35b2b99905f70f169ed549fd78909d3dac2defc9ed8d3b"
+        },
+        {
+          "block": 14,
+          "section": "## 二、每一個 10/10 的分母，以及它撐得起的判斷",
+          "sha256": "5cca9bf78fd7f51b9b71e340c5623e30e7a371553a1ce1f29e6a802c041d7a7e"
+        },
+        {
+          "block": 15,
+          "section": "## 二、每一個 10/10 的分母，以及它撐得起的判斷",
+          "sha256": "2b79e4035a499802a6b7a02d0c72c83ad3c8d1cd2ecc290fc471a4b5ab7d02c1"
+        },
+        {
+          "block": 16,
+          "section": "## 二、每一個 10/10 的分母，以及它撐得起的判斷",
+          "sha256": "35933a5f38bcae5742eb6b87082bde77fd2542a3d26bdd487e9e7b9cda920a53"
+        },
+        {
+          "block": 17,
+          "section": "## 二、每一個 10/10 的分母，以及它撐得起的判斷",
+          "sha256": "9500d9cd6c37d72bfa7048304ea5119882abe1a3fab46c5f9ac5e630e5dcad30"
+        },
+        {
+          "block": 18,
+          "section": "## 二、每一個 10/10 的分母，以及它撐得起的判斷",
+          "sha256": "7294fd04ec898ea15ef0e08f66bac6f66a4286a8fd168d0c9da5a347c9de369e"
+        },
+        {
+          "block": 19,
+          "section": "## 二、每一個 10/10 的分母，以及它撐得起的判斷",
+          "sha256": "ddfd65fe94d15c95460c55d72a1b8d0e96b310fa5efa8cd9ed4198518e6ecb96"
+        },
+        {
+          "block": 20,
+          "section": "## 二、每一個 10/10 的分母，以及它撐得起的判斷",
+          "sha256": "dd5bc764166c94f7536bcbebc1e5555d73791979d0c6d141a79703e47494c2e3"
+        },
+        {
+          "block": 21,
+          "section": "## 二、每一個 10/10 的分母，以及它撐得起的判斷",
+          "sha256": "b5196a878616ecfcef015287c6350208ca40f006ab0ad7076cfc3a13478cb614"
+        },
+        {
+          "block": 22,
+          "section": "## 二、每一個 10/10 的分母，以及它撐得起的判斷",
+          "sha256": "54275489830eb670c26c6666d20fcaf8c3935a93d98ca076bd1720d370dd66ee"
+        },
+        {
+          "block": 23,
+          "section": "## 二、每一個 10/10 的分母，以及它撐得起的判斷",
+          "sha256": "d6f89e78466fc69617052bcda0fb1e708b2f89032c04b16cb9a8a0e96da6578a"
+        },
+        {
+          "block": 24,
+          "section": "## 二、每一個 10/10 的分母，以及它撐得起的判斷",
+          "sha256": "be9e5cc957e09cf48dd95a87e7dcbddb4f765fd95428cd824bb7ea57c7e26cf0"
+        },
+        {
+          "block": 25,
+          "section": "## 二、每一個 10/10 的分母，以及它撐得起的判斷",
+          "sha256": "2c82a241e49d0928886edccbf2defd5972a25dc4a3a0e45a9266f4bce4fdd1a7"
+        },
+        {
+          "block": 26,
+          "section": "## 二、每一個 10/10 的分母，以及它撐得起的判斷",
+          "sha256": "0e7361314e0f07ed78803b39086ed87addbb2da833a2255eaf0176e4512132bd"
+        },
+        {
+          "block": 27,
+          "section": "## 二、每一個 10/10 的分母，以及它撐得起的判斷",
+          "sha256": "cb3f91d54eee30e53e35b2b99905f70f169ed549fd78909d3dac2defc9ed8d3b"
+        },
+        {
+          "block": 28,
+          "section": "## 三、先看兩份通過的程式，再談如何描述差異",
+          "sha256": "be3ad00494cd26ba2390791b34375c9bac54862db1e604e9ff32437598f52ca3"
+        },
+        {
+          "block": 29,
+          "section": "## 三、先看兩份通過的程式，再談如何描述差異",
+          "sha256": "1d5e102414e27db47b49bc0534736c30773692f7b37c2c02f7d6276715deca0c"
+        },
+        {
+          "block": 30,
+          "section": "## 三、先看兩份通過的程式，再談如何描述差異",
+          "sha256": "b6553f2b2de15e717b4feb245749f334beee0eefc964f784e43c2b141b9cc535"
+        },
+        {
+          "block": 31,
+          "section": "## 三、先看兩份通過的程式，再談如何描述差異",
+          "sha256": "5b97fd7bb2b31936d2c005a36a6bfa779bcf958108e3e64d1597da08ba6671e6"
+        },
+        {
+          "block": 32,
+          "section": "## 三、先看兩份通過的程式，再談如何描述差異",
+          "sha256": "adc55f5477a18e6bf0c5485018490bcb6d4a09a0f6cd26846caa0ba1220e335d"
+        },
+        {
+          "block": 33,
+          "section": "## 三、先看兩份通過的程式，再談如何描述差異",
+          "sha256": "0987607b6eb01d1ac5d832b532b928445c832ac112dedc7ec2156dbd788cab84"
+        },
+        {
+          "block": 34,
+          "section": "## 三、先看兩份通過的程式，再談如何描述差異",
+          "sha256": "d9784f93f834bbb2f4d33078ebb6c01e3e1abc80c576aa515bedc78c9de599ab"
+        },
+        {
+          "block": 35,
+          "section": "## 三、先看兩份通過的程式，再談如何描述差異",
+          "sha256": "230d8a4860a324edb602d5fb864fe6f0b16ac8880468e1504a9f335e171c5297"
+        },
+        {
+          "block": 36,
+          "section": "## 三、先看兩份通過的程式，再談如何描述差異",
+          "sha256": "d77eb6d51feaf063a56561e36e135f2ec9d02059702a812a4a902b6ad70d2d96"
+        },
+        {
+          "block": 37,
+          "section": "## 三、先看兩份通過的程式，再談如何描述差異",
+          "sha256": "ee762e0ab5f9ef22c3d6cac42988375b959506582e182247f43923c77ca2e4c1"
+        },
+        {
+          "block": 38,
+          "section": "## 三、先看兩份通過的程式，再談如何描述差異",
+          "sha256": "5a1317b4111499f1d8a5d0239a0635271fbcaa16c8989e949dc18a5cea42c107"
+        },
+        {
+          "block": 39,
+          "section": "## 三、先看兩份通過的程式，再談如何描述差異",
+          "sha256": "b99e3be71610b08a7be5d3ee406b2bde4cc488150577b37776dcffeea7f51c47"
+        },
+        {
+          "block": 40,
+          "section": "## 三、先看兩份通過的程式，再談如何描述差異",
+          "sha256": "3be8da5cc6a62681ea454af2a5cdb2c3899768c2204b4d56a873b127614620bd"
+        },
+        {
+          "block": 41,
+          "section": "## 三、先看兩份通過的程式，再談如何描述差異",
+          "sha256": "faafe04260bf46330352aa32037363a631ffd8faa286aa7589da5b055515e0e2"
+        },
+        {
+          "block": 42,
+          "section": "## 三、先看兩份通過的程式，再談如何描述差異",
+          "sha256": "0a26c64e38912f7ef9051216cd758e34cfbb0c2fef41942783ce8c944d127705"
+        },
+        {
+          "block": 43,
+          "section": "## 三、先看兩份通過的程式，再談如何描述差異",
+          "sha256": "1b46a47244984f1d98cda1a48de5718a35cab897fc3919f30da4c04e0815058e"
+        },
+        {
+          "block": 44,
+          "section": "## 三、先看兩份通過的程式，再談如何描述差異",
+          "sha256": "078567aa5dd9ac784f03d03eca30e8e38b3019b3c7e98edad1267f07ffe2dea1"
+        },
+        {
+          "block": 45,
+          "section": "## 三、先看兩份通過的程式，再談如何描述差異",
+          "sha256": "817159bbbcaa502ff0b589fbb9268c69a285fe20728e2dce35b2884693b82dc5"
+        },
+        {
+          "block": 46,
+          "section": "## 三、先看兩份通過的程式，再談如何描述差異",
+          "sha256": "fb0bd528e43c65a69c81477e5e61479697bbf3ac3eb2b4f00a33bf0b2d1a0a7e"
+        },
+        {
+          "block": 47,
+          "section": "## 三、先看兩份通過的程式，再談如何描述差異",
+          "sha256": "fa546c952d5530bf48a790c5a7c0db3c78b70e92abb39287d2329c3712df6553"
+        },
+        {
+          "block": 48,
+          "section": "## 三、先看兩份通過的程式，再談如何描述差異",
+          "sha256": "c66cd49d2164c2ba7700c0005b4499d0bdfd4ec9ca27fc242c12c44818be1a33"
+        },
+        {
+          "block": 49,
+          "section": "## 三、先看兩份通過的程式，再談如何描述差異",
+          "sha256": "8f519a725f2b90573152173aaccaa3e69cc0b48a601c9fa3c992924b6948ae50"
+        },
+        {
+          "block": 50,
+          "section": "## 三、先看兩份通過的程式，再談如何描述差異",
+          "sha256": "4f44bb7d774d5eb212e7a47a92e16137580b68b2ec5bc18c98ba2e470cf40766"
+        },
+        {
+          "block": 51,
+          "section": "## 三、先看兩份通過的程式，再談如何描述差異",
+          "sha256": "cb3f91d54eee30e53e35b2b99905f70f169ed549fd78909d3dac2defc9ed8d3b"
+        },
+        {
+          "block": 52,
+          "section": "## 四、同一份交代，每次花的錢與時間也會浮動",
+          "sha256": "0193a767e2c246ad54b42c09c6ec799ad4a6093b5aa40d690f4b7500231c3211"
+        },
+        {
+          "block": 53,
+          "section": "## 四、同一份交代，每次花的錢與時間也會浮動",
+          "sha256": "36e2ce128e95aed3988b923ea86b7dbb88a6d54898cda6da83b61e70997291aa"
+        },
+        {
+          "block": 54,
+          "section": "## 四、同一份交代，每次花的錢與時間也會浮動",
+          "sha256": "d200e66ec0b0abcb5f91bc00219a4f72ca3309f5595baea9fde5fc43be24392a"
+        },
+        {
+          "block": 55,
+          "section": "## 四、同一份交代，每次花的錢與時間也會浮動",
+          "sha256": "c8b2480b6f85b74eb852143676733927abe6fddacc81e7d6f80e7367305d20da"
+        },
+        {
+          "block": 56,
+          "section": "## 四、同一份交代，每次花的錢與時間也會浮動",
+          "sha256": "ed3c9536133f48b5840ffd39e607222218b20eaffef15316bdcaa427b8b81ece"
+        },
+        {
+          "block": 57,
+          "section": "## 四、同一份交代，每次花的錢與時間也會浮動",
+          "sha256": "d8ce47c8e297914680e73437e8c830b27c7a554063a049763ce23f5b2573b62f"
+        },
+        {
+          "block": 58,
+          "section": "## 四、同一份交代，每次花的錢與時間也會浮動",
+          "sha256": "5f42fa75b9367ea0a85d91920ff46e3a70924a7a3bcd672f267ee67dcadb2a86"
+        },
+        {
+          "block": 59,
+          "section": "## 四、同一份交代，每次花的錢與時間也會浮動",
+          "sha256": "a2d7be23286fddca632fe8c48bc13ec0f8845fc41d89458f928d5a48fffab7c0"
+        },
+        {
+          "block": 60,
+          "section": "## 四、同一份交代，每次花的錢與時間也會浮動",
+          "sha256": "a2574cb3a7816787ee4ec35aad2a84cb970997a7585bcde15cce2b73a6eec256"
+        },
+        {
+          "block": 61,
+          "section": "## 四、同一份交代，每次花的錢與時間也會浮動",
+          "sha256": "5fde622a3587b6582cf98885699a06a1e6063fc87a526dc63e96aea88e92485d"
+        },
+        {
+          "block": 62,
+          "section": "## 四、同一份交代，每次花的錢與時間也會浮動",
+          "sha256": "847e45e48dc69f4a830db3457a83cdbf3f5dd911a0826af45dbd0bdb8f90c812"
+        },
+        {
+          "block": 63,
+          "section": "## 四、同一份交代，每次花的錢與時間也會浮動",
+          "sha256": "780a8279566f4e70e277b45facd9476d3e74a7b8be641ec0992b21dd15062e76"
+        },
+        {
+          "block": 64,
+          "section": "## 四、同一份交代，每次花的錢與時間也會浮動",
+          "sha256": "dd6d64bd4b35230276c3ea8dee21bfe702705bf30803eff09c5ba4ff1ab914c2"
+        },
+        {
+          "block": 65,
+          "section": "## 四、同一份交代，每次花的錢與時間也會浮動",
+          "sha256": "cb3f91d54eee30e53e35b2b99905f70f169ed549fd78909d3dac2defc9ed8d3b"
+        },
+        {
+          "block": 66,
+          "section": "## 五、回到三個研究問題：答案與下一步安排",
+          "sha256": "6639243aa2997a4ea8fb92df67d63ca19adcfb24db73595bd357caa0ddbfc606"
+        },
+        {
+          "block": 67,
+          "section": "## 五、回到三個研究問題：答案與下一步安排",
+          "sha256": "e5494fb6f17de68dc96d57a888138f695a83b0e46e84c2f17cd386500623af2c"
+        },
+        {
+          "block": 68,
+          "section": "## 五、回到三個研究問題：答案與下一步安排",
+          "sha256": "993c1f6822f92d8760714ca6e3a1198fe2be092b966a1f50be04ec44d2dbb6b1"
+        },
+        {
+          "block": 69,
+          "section": "## 五、回到三個研究問題：答案與下一步安排",
+          "sha256": "4a73e98258445ef622b84bb595bea9a1254828cc7f157ebcabcefb7687305c1c"
+        },
+        {
+          "block": 70,
+          "section": "## 五、回到三個研究問題：答案與下一步安排",
+          "sha256": "feeddf8e0307dcfc98f3b236159f4745c7daf9140dd29ad7c73b238e7c389d14"
+        },
+        {
+          "block": 71,
+          "section": "## 五、回到三個研究問題：答案與下一步安排",
+          "sha256": "6ae01ca963db3c1df6cbdc57216d54c85a00da72a83d8e4b30460ec79b56c19b"
+        },
+        {
+          "block": 72,
+          "section": "## 五、回到三個研究問題：答案與下一步安排",
+          "sha256": "0d17c3a25983c4669686f34e13bc48c0f74e00bb2376172bf4d81902d3b79a13"
+        },
+        {
+          "block": 73,
+          "section": "## 五、回到三個研究問題：答案與下一步安排",
+          "sha256": "b5d702ac4a71d99d32caf30742416c633b4255aa5c2cdb4468d6f78d47c5dd7d"
+        },
+        {
+          "block": 74,
+          "section": "## 五、回到三個研究問題：答案與下一步安排",
+          "sha256": "338178a91d36e8eb4cd0e55f84e53c07ff39271a1e0e17ce262a5a0cafbe8a67"
+        },
+        {
+          "block": 75,
+          "section": "## 五、回到三個研究問題：答案與下一步安排",
+          "sha256": "a32ff153d162be94c5fc3e588daf647bdb9e615183eabe3fcd2c3ac996bdca0e"
+        },
+        {
+          "block": 76,
+          "section": "## 五、回到三個研究問題：答案與下一步安排",
+          "sha256": "989a562da32cbbbd9502417a87254a0527a4ad3ac018310d6e43e3ae76ec9bb3"
+        },
+        {
+          "block": 77,
+          "section": "## 五、回到三個研究問題：答案與下一步安排",
+          "sha256": "0f9025ceb3d52b9a512190ae14059086b817222a7f6506097f34ea1db614725c"
+        },
+        {
+          "block": 78,
+          "section": "## 五、回到三個研究問題：答案與下一步安排",
+          "sha256": "8bdf7efe6c51e8c4e5022f0c20213d2f5dba3e96afc66ba24815846df247b750"
+        },
+        {
+          "block": 79,
+          "section": "## 五、回到三個研究問題：答案與下一步安排",
+          "sha256": "e06005b5ea167d65f151e9bbfe0881bce9147511e7514d1e899dcbf6d71aca57"
+        },
+        {
+          "block": 80,
+          "section": "## 五、回到三個研究問題：答案與下一步安排",
+          "sha256": "a07133df4401bf430779bec25ad36987dd9766d08bc42a4d7952e1bdc546a8c3"
+        },
+        {
+          "block": 81,
+          "section": "## 五、回到三個研究問題：答案與下一步安排",
+          "sha256": "be29ea362cf62b2a6183c70e51143dd98ccd944feb382ea2ad8735a4a0415fa6"
+        },
+        {
+          "block": 82,
+          "section": "## 五、回到三個研究問題：答案與下一步安排",
+          "sha256": "aadd6abb08dfb071273c96ffa3239b72b45d492b7e71fbeeac31ab1aec8a23cd"
+        },
+        {
+          "block": 83,
+          "section": "## 五、回到三個研究問題：答案與下一步安排",
+          "sha256": "014cf49c8f22930e187b20dcbba8dd871bdb9bf430b40055dbb84846625a7bd2"
+        },
+        {
+          "block": 84,
+          "section": "## 五、回到三個研究問題：答案與下一步安排",
+          "sha256": "9ef76fb7bc2b381089af4b721bae097074bf6081e96a8076f599299451c88d77"
+        },
+        {
+          "block": 85,
+          "section": "## 五、回到三個研究問題：答案與下一步安排",
+          "sha256": "cb3f91d54eee30e53e35b2b99905f70f169ed549fd78909d3dac2defc9ed8d3b"
+        },
+        {
+          "block": 86,
+          "section": "## 六、從一次綠燈到四十次通過：已經知道的，與還要學的",
+          "sha256": "53cb3a15957bf01c3f3ee30ac61ad06b83b4537528c3aa60650ff906b0ec518d"
+        },
+        {
+          "block": 87,
+          "section": "## 六、從一次綠燈到四十次通過：已經知道的，與還要學的",
+          "sha256": "43bda0ccb97a88d52c3475ece317f7e3a64603995f47b122cc6b7a901193415d"
+        },
+        {
+          "block": 88,
+          "section": "## 六、從一次綠燈到四十次通過：已經知道的，與還要學的",
+          "sha256": "6606160ad221e6c162a1d0daf8b36dd85f86b47c506f74ba89fc4e88f2e0a9fb"
+        },
+        {
+          "block": 89,
+          "section": "## 六、從一次綠燈到四十次通過：已經知道的，與還要學的",
+          "sha256": "dd60b495ffcfc499e9acd992aa5b84887aa37859c02770609854d87de6917024"
+        },
+        {
+          "block": 90,
+          "section": "## 六、從一次綠燈到四十次通過：已經知道的，與還要學的",
+          "sha256": "7aacf7c23f1f658cb2c539f122e7d1d05b540d08350a01815686fe0e42637f5b"
+        },
+        {
+          "block": 91,
+          "section": "## 六、從一次綠燈到四十次通過：已經知道的，與還要學的",
+          "sha256": "c3b82df2d52ca65b1519967a4ab69ee1259ea89c89f70883fd1c19143e12833b"
+        },
+        {
+          "block": 92,
+          "section": "## 六、從一次綠燈到四十次通過：已經知道的，與還要學的",
+          "sha256": "09026a7005fc540662062df7cebbba38a6c2cd4c6722fe918e1f94754081daa5"
+        },
+        {
+          "block": 93,
+          "section": "## 六、從一次綠燈到四十次通過：已經知道的，與還要學的",
+          "sha256": "4711992efbc86b37092efff359851aac8cc5f706f22c567f995a8405f580ed89"
+        },
+        {
+          "block": 94,
+          "section": "## 六、從一次綠燈到四十次通過：已經知道的，與還要學的",
+          "sha256": "f8397e006be2cbe22e43c69fc3ec51821540c20ae1c9c68f43d0e4c37117a6de"
+        },
+        {
+          "block": 95,
+          "section": "## 六、從一次綠燈到四十次通過：已經知道的，與還要學的",
+          "sha256": "922fca76c411c9632060437c15d8a61d7d86ff92f638c77dc286f8fe0feebb84"
+        },
+        {
+          "block": 96,
+          "section": "## 六、從一次綠燈到四十次通過：已經知道的，與還要學的",
+          "sha256": "cb3f91d54eee30e53e35b2b99905f70f169ed549fd78909d3dac2defc9ed8d3b"
+        },
+        {
+          "block": 97,
+          "section": "## 六、從一次綠燈到四十次通過：已經知道的，與還要學的",
+          "sha256": "0ae3aaad55ab72373779294668d1fe27b62fc3ecedf0d2298ade25bd618a0825"
+        },
+        {
+          "block": 98,
+          "section": "## 六、從一次綠燈到四十次通過：已經知道的，與還要學的",
+          "sha256": "dbca6a49203b6e633c76f894af5fb1dd65f6da11e9fcacf7147f56a69d6e592e"
+        },
+        {
+          "block": 99,
+          "section": "## 六、從一次綠燈到四十次通過：已經知道的，與還要學的",
+          "sha256": "1ff4ac13d0a7f913a7fdbd411b8288e99016bcaffd59838b5e48d3c89aeb3422"
+        },
+        {
+          "block": 100,
+          "section": "## 六、從一次綠燈到四十次通過：已經知道的，與還要學的",
+          "sha256": "cb3f91d54eee30e53e35b2b99905f70f169ed549fd78909d3dac2defc9ed8d3b"
+        },
+        {
+          "block": 101,
+          "section": "## 六、從一次綠燈到四十次通過：已經知道的，與還要學的",
+          "sha256": "79575f1d151da8482240aa1de4540ad3f852eea90e6b4fbbb2814be9c5cdcb42"
+        },
+        {
+          "block": 102,
+          "section": "## 六、從一次綠燈到四十次通過：已經知道的，與還要學的",
+          "sha256": "feb4570a0a7c3be80517c7e19c472f4bd9cba1e4f0895bf33e1b211554960366"
+        },
+        {
+          "block": 103,
+          "section": "## 六、從一次綠燈到四十次通過：已經知道的，與還要學的",
+          "sha256": "6eb0da3d772d5e307ebea36be9eaa8a3c543b536d972d70dc1e7894de1d6fefd"
+        },
+        {
+          "block": 104,
+          "section": "## 六、從一次綠燈到四十次通過：已經知道的，與還要學的",
+          "sha256": "cb3f91d54eee30e53e35b2b99905f70f169ed549fd78909d3dac2defc9ed8d3b"
+        },
+        {
+          "block": 105,
+          "section": "## 六、從一次綠燈到四十次通過：已經知道的，與還要學的",
+          "sha256": "8639801239ba61a9aaad2a1c45b7f896ec17314115eb1ff3e45d80a2e409a4b7"
+        },
+        {
+          "block": 106,
+          "section": "## 六、從一次綠燈到四十次通過：已經知道的，與還要學的",
+          "sha256": "7f2f06b20d7d80aff7b6ece1786678a7580801b08cb2fa4fbf392f289973faf2"
+        },
+        {
+          "block": 107,
+          "section": "## 六、從一次綠燈到四十次通過：已經知道的，與還要學的",
+          "sha256": "7a80e54d56fac9e0b206c4d1dbc959b1979d678cf024a827cbb22c53f4a6006e"
+        },
+        {
+          "block": 108,
+          "section": "## 六、從一次綠燈到四十次通過：已經知道的，與還要學的",
+          "sha256": "cb3f91d54eee30e53e35b2b99905f70f169ed549fd78909d3dac2defc9ed8d3b"
+        },
+        {
+          "block": 109,
+          "section": "## 六、從一次綠燈到四十次通過：已經知道的，與還要學的",
+          "sha256": "f1d40cc66071972e7260454fd3c56e211cefe539ad30b1ccc87e896bf66ecce0"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "review_type": "independent_reader_full_manuscript",
+  "reviewed_at": "2026-09-25T09:17:47.777966+00:00",
+  "reviewer": "Codex independent reader sub-agent (AI)",
+  "verdict": "ONE_MINOR_READER_CLARIFICATION",
+  "series_verdict": "NOT_ASSESSED_AS_A_COMPLETE_SERIES",
+  "series_ready": false,
+  "public_release_complete": false,
+  "article": {
+    "path": "2026-11-same-spec-contract/article.md",
+    "sha256": "d7d1244e859d407fe54b19510311d4100cd370dcd9ceb71df48cd0dc151cca76",
+    "line_count": 291
+  },
+  "instructions_applied": [
+    "STYLE.md",
+    "research/2026-10/style_brief.md",
+    "research/2026-09/voice_brief.md"
+  ],
+  "reading": {
+    "entire_manuscript_read": true,
+    "entire_manuscript_lines": [
+      1,
+      291
+    ],
+    "separate_second_half_reread": true,
+    "second_half_reread_lines": [
+      189,
+      291
+    ],
+    "opening_tldr_conclusion_compared": true,
+    "tables_code_references_disclosure_read": true,
+    "F1_source_and_explanation_read_lines": [
+      108,
+      166
+    ],
+    "F1_visual_inspection": {
+      "path": "2026-11-same-spec-contract/publish/images/diagram-01.png",
+      "sha256": "0922df2a26985690da3f98940ea4791bd78e667864190a8166d2e4ebc3c4760a",
+      "method": "view_image"
+    }
+  },
+  "findings": [
+    {
+      "id": "CONTRACT-READER-01",
+      "severity": "minor",
+      "status": "OPEN",
+      "lines": [
+        172,
+        187
+      ],
+      "title": "外部控制規則的安排，被寫成無條件的不可存取保證",
+      "quotes": [
+        "也碰不到 evaluator 的來源",
+        "確保的是候選改不了這些規則"
+      ],
+      "reason": "第三節應區分外部 driver 保存規則、候選輸入介面不提供答案的配置，以及實際經過 probe 驗證的保護範圍。碰不到與確保改不了，語氣強於第四節的三項 probe 與未測 OS／IPC 管道限制。",
+      "suggested_revisions": [
+        {
+          "line": 172,
+          "suggestion": "規則與比對邏輯由外部 driver 控制，不透過候選的輸入介面提供。"
+        },
+        {
+          "line": 187,
+          "suggestion": "這個安排把規則的控制留在外部 driver；候選的存取受到哪些限制，仍要對照隔離設定與實際 probe。"
+        }
+      ],
+      "impact": "收準主張，不要求追加實驗或改動結果。"
+    }
+  ],
+  "open_counts": {
+    "blocker": 0,
+    "major": 0,
+    "minor": 1
+  },
+  "section_assessments": [
+    {
+      "section": "一",
+      "lines": [
+        7,
+        76
+      ],
+      "result": "PASS",
+      "reason": "parser 三種輸出有用途說明；hello／帶引號字串、空行實體行號、text 錯型、token 註記與 exit 6 可以逐行跟讀。turn.failed 的 null fallback、錯型與明確失敗優先序有對照。示例沒有冒充凍結案例。"
+    },
+    {
+      "section": "二",
+      "lines": [
+        78,
+        100
+      ],
+      "result": "PASS",
+      "reason": "CLI exit code 與候選案例 exit code 分開，cli_success／artifact_success 是平行判定，accepted 是交集；逾時寬限例子具體。正式 40 個名額、pilot／probe 與小樣本區間未混用。"
+    },
+    {
+      "section": "三與F1",
+      "lines": [
+        102,
+        187
+      ],
+      "result": "MINOR_QUALIFICATION",
+      "reason": "F1 將生成與後續驗收分開，圖前後解說與流程一致，未把三 success 畫成漏斗。需求表有來源 ID、REASON 自由範圍與例示身分。第 172、187 行的隔離語氣需收準。"
+    },
+    {
+      "section": "四",
+      "lines": [
+        189,
+        205
+      ],
+      "result": "PASS",
+      "reason": "provider context、OS 後補記、Haiku 不明用途、三項 probe 範圍、事後重評不能追認隔離與 SaltBench 歷史限制均有完整敘述。工具 83 項測試不充當模型樣本。"
+    },
+    {
+      "section": "五",
+      "lines": [
+        207,
+        239
+      ],
+      "result": "PASS",
+      "reason": "批次比對最終輸出與 EOF 前讀取分開，驗收不限定必須呼叫 flush；只測第一則 agent 訊息的範圍有保留。null／false 明說各作獨立輸入，讀者能理解 stderr 有別而 exit code 同為 3。未逐一檢查 main()、CLI 參數與內部策略，也保留 CLI 措辭限制。"
+    },
+    {
+      "section": "六與尾段",
+      "lines": [
+        241,
+        291
+      ],
+      "result": "PASS",
+      "reason": "結語回到 JSON 解碼與 exit 0，規格來源、未覆蓋要求、修改 evaluator 後的 amendment 重評與已有凍結重評分開。模型家族、缺少真人資料、本機稿與尚待發布狀態讀到最後；沒有用全數通過宣告全部品質。"
+    }
+  ],
+  "scope_limits": [
+    "這是本篇獨立 AI 讀者複核，不是真人盲審，不宣告全系列 READY。",
+    "未重做來源全文查核、模型實驗或 zh-TW MCP。",
+    "原全文與第二次後半部閱讀都發生在 d7d1244e… 版本；主代理隨後的修訂另以 final closure 追蹤。"
+  ],
+  "manuscript_modified": false,
+  "frozen_research_modified": false
+}

@@ -1,0 +1,1197 @@
+{
+  "schema_version": 1,
+  "scope": "post-study trusted-fixture teaching; not formal N=40 or the 103-check suite",
+  "generated_at_utc": "2026-09-27T16:56:39.024333+00:00",
+  "environment": {
+    "python": "3.14.5 (main, May 10 2026, 10:21:34) [Clang 21.0.0 (clang-2100.0.123.102)]",
+    "implementation": "CPython",
+    "system": "Darwin",
+    "release": "25.6.0",
+    "machine": "arm64",
+    "stdlib_only": true,
+    "execution": "isolated Python mode (-I -B), trusted fixtures, no OS sandbox",
+    "security_claim": "none; Python -I is not an OS sandbox"
+  },
+  "workbench_sha256": "7c7ecdfae88789976bb4e17b35dbacd22e43d69dc2a1d3c4cd87c3c6fd0c149a",
+  "source_sha256_before": {
+    "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/tests/fixtures/parser_reference.py": "aad3638eecf746ee473893d805e0734f68dd2a861f4de25be7831da390db1c9f",
+    "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/tests/test_task_evaluator.py": "e6ff5eaa2fa043aa4a95a1fadf32bab7df7cc388905b9d81912278a05e82c952",
+    "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json": "32e0a0af2578564624b5a5b5f9d981e0dc296e6eb690b6598482cb809419a515",
+    "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/evaluator.py": "443b47cc93ca1559293a6025472696eee8351a25cb8486e09ee682bcfd29508a"
+  },
+  "source_sha256_after": {
+    "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/tests/fixtures/parser_reference.py": "aad3638eecf746ee473893d805e0734f68dd2a861f4de25be7831da390db1c9f",
+    "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/tests/test_task_evaluator.py": "e6ff5eaa2fa043aa4a95a1fadf32bab7df7cc388905b9d81912278a05e82c952",
+    "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json": "32e0a0af2578564624b5a5b5f9d981e0dc296e6eb690b6598482cb809419a515",
+    "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/evaluator.py": "443b47cc93ca1559293a6025472696eee8351a25cb8486e09ee682bcfd29508a"
+  },
+  "fixtures": {
+    "reference": {
+      "sha256": "aad3638eecf746ee473893d805e0734f68dd2a861f4de25be7831da390db1c9f",
+      "syntax_valid": true,
+      "derivation": "exact pinned reference fixture"
+    },
+    "coerce-nontext": {
+      "sha256": "5d7f27f46064207a13ba9fe31d6e88ba52bc710bac4217289bdd84dcabd4a590",
+      "syntax_valid": true,
+      "derivation": {
+        "name": "coerce-nontext",
+        "purpose": "把非字串轉成文字；false 被印成 False，R05 遭到改變。",
+        "origin": "凍結 test_task_evaluator.py 的 coerce-nontext-agent 變異方式；改用 false 作教學輸入。",
+        "before": "raise MalformedEvent(field + \" must be a string or null\")",
+        "after": "return str(value)",
+        "witness": "false-text",
+        "expected_mismatches": [
+          "stdout",
+          "stderr",
+          "returncode"
+        ]
+      }
+    },
+    "false-as-absent": {
+      "sha256": "f404a88f6f519ead75fcf8113bdf4c831dd930e8e00cb59c27a0c902d99cdfb9",
+      "syntax_valid": true,
+      "derivation": {
+        "name": "false-as-absent",
+        "purpose": "用 Python 真假值判斷，把 false 靜默當作沒有訊息。",
+        "origin": "依 R05 自寫的教學錯法；不是正式候選。",
+        "before": "if value is None or value == \"\":",
+        "after": "if not value:",
+        "witness": "false-text",
+        "expected_mismatches": [
+          "stderr",
+          "returncode"
+        ]
+      }
+    },
+    "stop-after-malformed": {
+      "sha256": "329ed636b8aa61d36dcedcf08a50098dad33e44c88e0419c367664e322908187",
+      "syntax_valid": true,
+      "derivation": {
+        "name": "stop-after-malformed",
+        "purpose": "遇到壞事件就結束，漏處理後續有效訊息與完成事件。",
+        "origin": "凍結 test_task_evaluator.py 的 stop-reading-after-malformed 變異方式。",
+        "before": "        except MalformedEvent as exc:\n            malformed = True\n            bad(line_number, str(exc))",
+        "after": "        except MalformedEvent as exc:\n            malformed = True\n            bad(line_number, str(exc))\n            return 6",
+        "witness": "continue-after-malformed",
+        "expected_mismatches": [
+          "stdout"
+        ]
+      }
+    },
+    "wrong-priority": {
+      "sha256": "b583fc37538450a844a04b743ca5ca8cc53c1bcec66c1af68eb2e5280dc4568b",
+      "syntax_valid": true,
+      "derivation": {
+        "name": "wrong-priority",
+        "purpose": "已有明確失敗時，仍讓 malformed 決定 exit 6。保留診斷以單獨展示 exit 錯誤。",
+        "origin": "依 R11 自寫；與凍結 malformed-before-remote-error 為同類失效，但此變異只改 return。",
+        "before": "        return 3\n    if malformed:",
+        "after": "        return 6 if malformed else 3\n    if malformed:",
+        "witness": "explicit-failure-priority",
+        "expected_mismatches": [
+          "returncode"
+        ]
+      }
+    },
+    "omit-malformed-diagnostic": {
+      "sha256": "4ed416058659c31ae9064559289ad72837f1a1e5d1225038ded0ea44761272b5",
+      "syntax_valid": true,
+      "derivation": {
+        "name": "omit-malformed-diagnostic",
+        "purpose": "保留 malformed 狀態與 exit 6，卻完全沒有 R03 診斷。",
+        "origin": "依 R03 自寫的教學錯法；只改已知 fixture 的 bad 函式。",
+        "before": "    print(f\"[codex malformed event] line {line_number}: {reason}\",\n          file=sys.stderr, flush=True)",
+        "after": "    return None  # 故意漏掉診斷；僅供教學",
+        "witness": "false-text",
+        "expected_mismatches": [
+          "stderr"
+        ]
+      }
+    },
+    "buffer-until-eof": {
+      "sha256": "c6ca8a0e6aed233b6a5edfff9dc3eb900183c6ecede4a8af2ffc024058780eb2",
+      "syntax_valid": true,
+      "derivation": {
+        "name": "buffer-until-eof",
+        "purpose": "先讀完整個 stdin 才處理；終態三出口相同，EOF 前沒有有效訊息。",
+        "origin": "凍結 test_task_evaluator.py 的 whole_input_buffering 變異方式。",
+        "before": "for line_number, line in enumerate(sys.stdin, 1):",
+        "after": "for line_number, line in enumerate(sys.stdin.read().splitlines(True), 1):",
+        "witness": "stream-before-eof",
+        "expected_mismatches": []
+      }
+    }
+  },
+  "batch": {
+    "reference": {
+      "happy": {
+        "requirements": [
+          "R05",
+          "R08",
+          "R11"
+        ],
+        "input": "{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"ok\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+        "expected": {
+          "stdout": "ok\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": [],
+          "returncode": 0
+        },
+        "actual": {
+          "stdout": "ok\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": "",
+          "returncode": 0
+        },
+        "grade": {
+          "passed": true,
+          "channels": {
+            "stdout": true,
+            "stderr": true,
+            "returncode": true
+          },
+          "mismatches": []
+        }
+      },
+      "false-text": {
+        "requirements": [
+          "R03",
+          "R05",
+          "R08",
+          "R11"
+        ],
+        "input": "{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": false}}\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+        "expected": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": [
+            1
+          ],
+          "returncode": 6
+        },
+        "actual": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": "[codex malformed event] line 1: text must be a string or null\n",
+          "returncode": 6
+        },
+        "grade": {
+          "passed": true,
+          "channels": {
+            "stdout": true,
+            "stderr": true,
+            "returncode": true
+          },
+          "mismatches": []
+        }
+      },
+      "continue-after-malformed": {
+        "requirements": [
+          "R02",
+          "R03",
+          "R05",
+          "R08",
+          "R11"
+        ],
+        "input": "[]\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+        "expected": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": [
+            1
+          ],
+          "returncode": 6
+        },
+        "actual": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": "[codex malformed event] line 1: event must be an object\n",
+          "returncode": 6
+        },
+        "grade": {
+          "passed": true,
+          "channels": {
+            "stdout": true,
+            "stderr": true,
+            "returncode": true
+          },
+          "mismatches": []
+        }
+      },
+      "explicit-failure-priority": {
+        "requirements": [
+          "R03",
+          "R09",
+          "R11",
+          "R12"
+        ],
+        "input": "[]\n{\"type\": \"error\", \"message\": \"refused\"}\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+        "expected": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": [
+            1,
+            "[codex error] refused\n",
+            "[codex] the turn failed (reason above); no review was produced.\n"
+          ],
+          "returncode": 3
+        },
+        "actual": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": "[codex malformed event] line 1: event must be an object\n[codex error] refused\n[codex] the turn failed (reason above); no review was produced.\n",
+          "returncode": 3
+        },
+        "grade": {
+          "passed": true,
+          "channels": {
+            "stdout": true,
+            "stderr": true,
+            "returncode": true
+          },
+          "mismatches": []
+        }
+      }
+    },
+    "coerce-nontext": {
+      "happy": {
+        "requirements": [
+          "R05",
+          "R08",
+          "R11"
+        ],
+        "input": "{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"ok\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+        "expected": {
+          "stdout": "ok\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": [],
+          "returncode": 0
+        },
+        "actual": {
+          "stdout": "ok\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": "",
+          "returncode": 0
+        },
+        "grade": {
+          "passed": true,
+          "channels": {
+            "stdout": true,
+            "stderr": true,
+            "returncode": true
+          },
+          "mismatches": []
+        }
+      },
+      "false-text": {
+        "requirements": [
+          "R03",
+          "R05",
+          "R08",
+          "R11"
+        ],
+        "input": "{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": false}}\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+        "expected": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": [
+            1
+          ],
+          "returncode": 6
+        },
+        "actual": {
+          "stdout": "False\nafter\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": "",
+          "returncode": 0
+        },
+        "grade": {
+          "passed": false,
+          "channels": {
+            "stdout": false,
+            "stderr": false,
+            "returncode": false
+          },
+          "mismatches": [
+            "stdout",
+            "stderr",
+            "returncode"
+          ]
+        }
+      },
+      "continue-after-malformed": {
+        "requirements": [
+          "R02",
+          "R03",
+          "R05",
+          "R08",
+          "R11"
+        ],
+        "input": "[]\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+        "expected": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": [
+            1
+          ],
+          "returncode": 6
+        },
+        "actual": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": "[codex malformed event] line 1: event must be an object\n",
+          "returncode": 6
+        },
+        "grade": {
+          "passed": true,
+          "channels": {
+            "stdout": true,
+            "stderr": true,
+            "returncode": true
+          },
+          "mismatches": []
+        }
+      },
+      "explicit-failure-priority": {
+        "requirements": [
+          "R03",
+          "R09",
+          "R11",
+          "R12"
+        ],
+        "input": "[]\n{\"type\": \"error\", \"message\": \"refused\"}\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+        "expected": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": [
+            1,
+            "[codex error] refused\n",
+            "[codex] the turn failed (reason above); no review was produced.\n"
+          ],
+          "returncode": 3
+        },
+        "actual": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": "[codex malformed event] line 1: event must be an object\n[codex error] refused\n[codex] the turn failed (reason above); no review was produced.\n",
+          "returncode": 3
+        },
+        "grade": {
+          "passed": true,
+          "channels": {
+            "stdout": true,
+            "stderr": true,
+            "returncode": true
+          },
+          "mismatches": []
+        }
+      }
+    },
+    "false-as-absent": {
+      "happy": {
+        "requirements": [
+          "R05",
+          "R08",
+          "R11"
+        ],
+        "input": "{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"ok\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+        "expected": {
+          "stdout": "ok\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": [],
+          "returncode": 0
+        },
+        "actual": {
+          "stdout": "ok\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": "",
+          "returncode": 0
+        },
+        "grade": {
+          "passed": true,
+          "channels": {
+            "stdout": true,
+            "stderr": true,
+            "returncode": true
+          },
+          "mismatches": []
+        }
+      },
+      "false-text": {
+        "requirements": [
+          "R03",
+          "R05",
+          "R08",
+          "R11"
+        ],
+        "input": "{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": false}}\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+        "expected": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": [
+            1
+          ],
+          "returncode": 6
+        },
+        "actual": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": "",
+          "returncode": 0
+        },
+        "grade": {
+          "passed": false,
+          "channels": {
+            "stdout": true,
+            "stderr": false,
+            "returncode": false
+          },
+          "mismatches": [
+            "stderr",
+            "returncode"
+          ]
+        }
+      },
+      "continue-after-malformed": {
+        "requirements": [
+          "R02",
+          "R03",
+          "R05",
+          "R08",
+          "R11"
+        ],
+        "input": "[]\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+        "expected": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": [
+            1
+          ],
+          "returncode": 6
+        },
+        "actual": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": "[codex malformed event] line 1: event must be an object\n",
+          "returncode": 6
+        },
+        "grade": {
+          "passed": true,
+          "channels": {
+            "stdout": true,
+            "stderr": true,
+            "returncode": true
+          },
+          "mismatches": []
+        }
+      },
+      "explicit-failure-priority": {
+        "requirements": [
+          "R03",
+          "R09",
+          "R11",
+          "R12"
+        ],
+        "input": "[]\n{\"type\": \"error\", \"message\": \"refused\"}\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+        "expected": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": [
+            1,
+            "[codex error] refused\n",
+            "[codex] the turn failed (reason above); no review was produced.\n"
+          ],
+          "returncode": 3
+        },
+        "actual": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": "[codex malformed event] line 1: event must be an object\n[codex error] refused\n[codex] the turn failed (reason above); no review was produced.\n",
+          "returncode": 3
+        },
+        "grade": {
+          "passed": true,
+          "channels": {
+            "stdout": true,
+            "stderr": true,
+            "returncode": true
+          },
+          "mismatches": []
+        }
+      }
+    },
+    "stop-after-malformed": {
+      "happy": {
+        "requirements": [
+          "R05",
+          "R08",
+          "R11"
+        ],
+        "input": "{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"ok\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+        "expected": {
+          "stdout": "ok\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": [],
+          "returncode": 0
+        },
+        "actual": {
+          "stdout": "ok\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": "",
+          "returncode": 0
+        },
+        "grade": {
+          "passed": true,
+          "channels": {
+            "stdout": true,
+            "stderr": true,
+            "returncode": true
+          },
+          "mismatches": []
+        }
+      },
+      "false-text": {
+        "requirements": [
+          "R03",
+          "R05",
+          "R08",
+          "R11"
+        ],
+        "input": "{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": false}}\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+        "expected": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": [
+            1
+          ],
+          "returncode": 6
+        },
+        "actual": {
+          "stdout": "",
+          "stderr": "[codex malformed event] line 1: text must be a string or null\n",
+          "returncode": 6
+        },
+        "grade": {
+          "passed": false,
+          "channels": {
+            "stdout": false,
+            "stderr": true,
+            "returncode": true
+          },
+          "mismatches": [
+            "stdout"
+          ]
+        }
+      },
+      "continue-after-malformed": {
+        "requirements": [
+          "R02",
+          "R03",
+          "R05",
+          "R08",
+          "R11"
+        ],
+        "input": "[]\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+        "expected": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": [
+            1
+          ],
+          "returncode": 6
+        },
+        "actual": {
+          "stdout": "",
+          "stderr": "[codex malformed event] line 1: event must be an object\n",
+          "returncode": 6
+        },
+        "grade": {
+          "passed": false,
+          "channels": {
+            "stdout": false,
+            "stderr": true,
+            "returncode": true
+          },
+          "mismatches": [
+            "stdout"
+          ]
+        }
+      },
+      "explicit-failure-priority": {
+        "requirements": [
+          "R03",
+          "R09",
+          "R11",
+          "R12"
+        ],
+        "input": "[]\n{\"type\": \"error\", \"message\": \"refused\"}\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+        "expected": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": [
+            1,
+            "[codex error] refused\n",
+            "[codex] the turn failed (reason above); no review was produced.\n"
+          ],
+          "returncode": 3
+        },
+        "actual": {
+          "stdout": "",
+          "stderr": "[codex malformed event] line 1: event must be an object\n",
+          "returncode": 6
+        },
+        "grade": {
+          "passed": false,
+          "channels": {
+            "stdout": false,
+            "stderr": false,
+            "returncode": false
+          },
+          "mismatches": [
+            "stdout",
+            "stderr",
+            "returncode"
+          ]
+        }
+      }
+    },
+    "wrong-priority": {
+      "happy": {
+        "requirements": [
+          "R05",
+          "R08",
+          "R11"
+        ],
+        "input": "{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"ok\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+        "expected": {
+          "stdout": "ok\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": [],
+          "returncode": 0
+        },
+        "actual": {
+          "stdout": "ok\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": "",
+          "returncode": 0
+        },
+        "grade": {
+          "passed": true,
+          "channels": {
+            "stdout": true,
+            "stderr": true,
+            "returncode": true
+          },
+          "mismatches": []
+        }
+      },
+      "false-text": {
+        "requirements": [
+          "R03",
+          "R05",
+          "R08",
+          "R11"
+        ],
+        "input": "{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": false}}\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+        "expected": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": [
+            1
+          ],
+          "returncode": 6
+        },
+        "actual": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": "[codex malformed event] line 1: text must be a string or null\n",
+          "returncode": 6
+        },
+        "grade": {
+          "passed": true,
+          "channels": {
+            "stdout": true,
+            "stderr": true,
+            "returncode": true
+          },
+          "mismatches": []
+        }
+      },
+      "continue-after-malformed": {
+        "requirements": [
+          "R02",
+          "R03",
+          "R05",
+          "R08",
+          "R11"
+        ],
+        "input": "[]\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+        "expected": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": [
+            1
+          ],
+          "returncode": 6
+        },
+        "actual": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": "[codex malformed event] line 1: event must be an object\n",
+          "returncode": 6
+        },
+        "grade": {
+          "passed": true,
+          "channels": {
+            "stdout": true,
+            "stderr": true,
+            "returncode": true
+          },
+          "mismatches": []
+        }
+      },
+      "explicit-failure-priority": {
+        "requirements": [
+          "R03",
+          "R09",
+          "R11",
+          "R12"
+        ],
+        "input": "[]\n{\"type\": \"error\", \"message\": \"refused\"}\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+        "expected": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": [
+            1,
+            "[codex error] refused\n",
+            "[codex] the turn failed (reason above); no review was produced.\n"
+          ],
+          "returncode": 3
+        },
+        "actual": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": "[codex malformed event] line 1: event must be an object\n[codex error] refused\n[codex] the turn failed (reason above); no review was produced.\n",
+          "returncode": 6
+        },
+        "grade": {
+          "passed": false,
+          "channels": {
+            "stdout": true,
+            "stderr": true,
+            "returncode": false
+          },
+          "mismatches": [
+            "returncode"
+          ]
+        }
+      }
+    },
+    "omit-malformed-diagnostic": {
+      "happy": {
+        "requirements": [
+          "R05",
+          "R08",
+          "R11"
+        ],
+        "input": "{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"ok\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+        "expected": {
+          "stdout": "ok\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": [],
+          "returncode": 0
+        },
+        "actual": {
+          "stdout": "ok\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": "",
+          "returncode": 0
+        },
+        "grade": {
+          "passed": true,
+          "channels": {
+            "stdout": true,
+            "stderr": true,
+            "returncode": true
+          },
+          "mismatches": []
+        }
+      },
+      "false-text": {
+        "requirements": [
+          "R03",
+          "R05",
+          "R08",
+          "R11"
+        ],
+        "input": "{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": false}}\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+        "expected": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": [
+            1
+          ],
+          "returncode": 6
+        },
+        "actual": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": "",
+          "returncode": 6
+        },
+        "grade": {
+          "passed": false,
+          "channels": {
+            "stdout": true,
+            "stderr": false,
+            "returncode": true
+          },
+          "mismatches": [
+            "stderr"
+          ]
+        }
+      },
+      "continue-after-malformed": {
+        "requirements": [
+          "R02",
+          "R03",
+          "R05",
+          "R08",
+          "R11"
+        ],
+        "input": "[]\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+        "expected": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": [
+            1
+          ],
+          "returncode": 6
+        },
+        "actual": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": "",
+          "returncode": 6
+        },
+        "grade": {
+          "passed": false,
+          "channels": {
+            "stdout": true,
+            "stderr": false,
+            "returncode": true
+          },
+          "mismatches": [
+            "stderr"
+          ]
+        }
+      },
+      "explicit-failure-priority": {
+        "requirements": [
+          "R03",
+          "R09",
+          "R11",
+          "R12"
+        ],
+        "input": "[]\n{\"type\": \"error\", \"message\": \"refused\"}\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+        "expected": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": [
+            1,
+            "[codex error] refused\n",
+            "[codex] the turn failed (reason above); no review was produced.\n"
+          ],
+          "returncode": 3
+        },
+        "actual": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": "[codex error] refused\n[codex] the turn failed (reason above); no review was produced.\n",
+          "returncode": 3
+        },
+        "grade": {
+          "passed": false,
+          "channels": {
+            "stdout": true,
+            "stderr": false,
+            "returncode": true
+          },
+          "mismatches": [
+            "stderr"
+          ]
+        }
+      }
+    },
+    "buffer-until-eof": {
+      "happy": {
+        "requirements": [
+          "R05",
+          "R08",
+          "R11"
+        ],
+        "input": "{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"ok\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+        "expected": {
+          "stdout": "ok\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": [],
+          "returncode": 0
+        },
+        "actual": {
+          "stdout": "ok\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": "",
+          "returncode": 0
+        },
+        "grade": {
+          "passed": true,
+          "channels": {
+            "stdout": true,
+            "stderr": true,
+            "returncode": true
+          },
+          "mismatches": []
+        }
+      },
+      "false-text": {
+        "requirements": [
+          "R03",
+          "R05",
+          "R08",
+          "R11"
+        ],
+        "input": "{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": false}}\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+        "expected": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": [
+            1
+          ],
+          "returncode": 6
+        },
+        "actual": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": "[codex malformed event] line 1: text must be a string or null\n",
+          "returncode": 6
+        },
+        "grade": {
+          "passed": true,
+          "channels": {
+            "stdout": true,
+            "stderr": true,
+            "returncode": true
+          },
+          "mismatches": []
+        }
+      },
+      "continue-after-malformed": {
+        "requirements": [
+          "R02",
+          "R03",
+          "R05",
+          "R08",
+          "R11"
+        ],
+        "input": "[]\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+        "expected": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": [
+            1
+          ],
+          "returncode": 6
+        },
+        "actual": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": "[codex malformed event] line 1: event must be an object\n",
+          "returncode": 6
+        },
+        "grade": {
+          "passed": true,
+          "channels": {
+            "stdout": true,
+            "stderr": true,
+            "returncode": true
+          },
+          "mismatches": []
+        }
+      },
+      "explicit-failure-priority": {
+        "requirements": [
+          "R03",
+          "R09",
+          "R11",
+          "R12"
+        ],
+        "input": "[]\n{\"type\": \"error\", \"message\": \"refused\"}\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+        "expected": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": [
+            1,
+            "[codex error] refused\n",
+            "[codex] the turn failed (reason above); no review was produced.\n"
+          ],
+          "returncode": 3
+        },
+        "actual": {
+          "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+          "stderr": "[codex malformed event] line 1: event must be an object\n[codex error] refused\n[codex] the turn failed (reason above); no review was produced.\n",
+          "returncode": 3
+        },
+        "grade": {
+          "passed": true,
+          "channels": {
+            "stdout": true,
+            "stderr": true,
+            "returncode": true
+          },
+          "mismatches": []
+        }
+      }
+    }
+  },
+  "streaming": {
+    "reference": {
+      "input_prefix": "{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"stream-before-eof\"}}\n",
+      "input_after_observation": "{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+      "observation_window_seconds": 1.0,
+      "elapsed_to_pre_eof_observation_seconds": 0.018878,
+      "observed_before_eof": true,
+      "early_stdout": "stream-before-eof\n",
+      "terminal": {
+        "stdout": "stream-before-eof\n\n<!-- tokens: in 10 out 5 -->\n",
+        "stderr": "",
+        "returncode": 0
+      },
+      "terminal_grade": {
+        "passed": true,
+        "channels": {
+          "stdout": true,
+          "stderr": true,
+          "returncode": true
+        },
+        "mismatches": []
+      }
+    },
+    "buffer-until-eof": {
+      "input_prefix": "{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"stream-before-eof\"}}\n",
+      "input_after_observation": "{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+      "observation_window_seconds": 1.0,
+      "elapsed_to_pre_eof_observation_seconds": 1.010116,
+      "observed_before_eof": false,
+      "early_stdout": "",
+      "terminal": {
+        "stdout": "stream-before-eof\n\n<!-- tokens: in 10 out 5 -->\n",
+        "stderr": "",
+        "returncode": 0
+      },
+      "terminal_grade": {
+        "passed": true,
+        "channels": {
+          "stdout": true,
+          "stderr": true,
+          "returncode": true
+        },
+        "mismatches": []
+      }
+    }
+  },
+  "metamorphic": {
+    "blank_lines": {
+      "requirements": [
+        "R02",
+        "R03"
+      ],
+      "base_input": "{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": false}}\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+      "transformed_input": "\n\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": false}}\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+      "base": {
+        "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+        "stderr": "[codex malformed event] line 1: text must be a string or null\n",
+        "returncode": 6
+      },
+      "transformed": {
+        "stdout": "after\n\n<!-- tokens: in 10 out 5 -->\n",
+        "stderr": "[codex malformed event] line 3: text must be a string or null\n",
+        "returncode": 6
+      },
+      "invalid_relation": "三個出口完全不變",
+      "valid_relation": "stdout 與 exit 不變；各 malformed 實體行號增加 2"
+    },
+    "duplicate_events": {
+      "requirements": [
+        "R05",
+        "R08",
+        "R13"
+      ],
+      "base_input": "{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"same\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+      "transformed_input": "{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"same\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"same\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+      "base": {
+        "stdout": "same\n\n<!-- tokens: in 10 out 5 -->\n",
+        "stderr": "",
+        "returncode": 0
+      },
+      "transformed": {
+        "stdout": "same\n\n<!-- tokens: in 10 out 5 -->\nsame\n\n<!-- tokens: in 10 out 5 -->\n",
+        "stderr": "",
+        "returncode": 0
+      },
+      "invalid_relation": "重複同一事件片段不改變輸出（冪等）",
+      "valid_relation": "本例的 stdout 片段重複兩次；exit 0 與空 stderr 不變"
+    }
+  },
+  "checks": [
+    {
+      "name": "reference: happy path 通過",
+      "passed": true
+    },
+    {
+      "name": "coerce-nontext: happy path 通過",
+      "passed": true
+    },
+    {
+      "name": "false-as-absent: happy path 通過",
+      "passed": true
+    },
+    {
+      "name": "stop-after-malformed: happy path 通過",
+      "passed": true
+    },
+    {
+      "name": "wrong-priority: happy path 通過",
+      "passed": true
+    },
+    {
+      "name": "omit-malformed-diagnostic: happy path 通過",
+      "passed": true
+    },
+    {
+      "name": "buffer-until-eof: happy path 通過",
+      "passed": true
+    },
+    {
+      "name": "reference 通過全部四個教學批次案例",
+      "passed": true
+    },
+    {
+      "name": "coerce-nontext: 指定錯誤出口被辨識",
+      "passed": true
+    },
+    {
+      "name": "false-as-absent: 指定錯誤出口被辨識",
+      "passed": true
+    },
+    {
+      "name": "stop-after-malformed: 指定錯誤出口被辨識",
+      "passed": true
+    },
+    {
+      "name": "wrong-priority: 指定錯誤出口被辨識",
+      "passed": true
+    },
+    {
+      "name": "omit-malformed-diagnostic: 指定錯誤出口被辨識",
+      "passed": true
+    },
+    {
+      "name": "buffer-until-eof 通過全部四個批次終態檢查",
+      "passed": true
+    },
+    {
+      "name": "reference 在 EOF 前輸出有效訊息",
+      "passed": true
+    },
+    {
+      "name": "buffer-until-eof 在觀察窗內沒有 EOF 前輸出",
+      "passed": true
+    },
+    {
+      "name": "streaming 兩份 fixture 的終態三出口都正確",
+      "passed": true
+    },
+    {
+      "name": "streaming 兩份 fixture 的終態完全相同",
+      "passed": true
+    },
+    {
+      "name": "插空行前後都符合各自契約預期值",
+      "passed": true
+    },
+    {
+      "name": "插入兩空行：stdout／exit 不變，stderr 實體行號由 1 變 3",
+      "passed": true
+    },
+    {
+      "name": "重複事件前後都符合 R13 預期值",
+      "passed": true
+    },
+    {
+      "name": "重複事件不是冪等：stdout 重複，exit 與 stderr 不變",
+      "passed": true
+    },
+    {
+      "name": "凍結來源 SHA 在執行前後相同",
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "limits": [
+    "只有已知 reference 與六個單點教學錯法，無任何新模型生成。",
+    "不估算 mutation score、模型通過率或錯法在正式候選中的頻率。",
+    "streaming 只測第一則有效訊息，觀察窗受本機排程影響。",
+    "三出口分別比對；不觀察 stdout 與 stderr 之間的全域交錯順序。",
+    "未呼叫正式 evaluator、未執行正式候選、未更改 Seatbelt。",
+    "reference 本身為 AI 撰寫的工具 fixture，不是人工 baseline 或完整正確性證明。"
+  ]
+}

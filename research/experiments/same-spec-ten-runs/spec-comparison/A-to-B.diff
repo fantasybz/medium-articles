@@ -1,0 +1,23 @@
+--- A.md
++++ B.md
+@@ -131,3 +131,20 @@
+ This change validates value types; it does not introduce a protocol state machine or a strict mode. Do not add uniqueness or sequence checks. Identical repeated agent messages are each emitted and count separately. Multiple valid turn.completed events each produce their own token comment. Continue dispatching events after completion, including messages and errors.
+ 
+ Keep the earlier compatibility rules for extra fields, unknown string event/item types, missing optional values, blank lines and undecodable text. Rejecting duplicate terminals, suppressing duplicated text, enforcing terminal ordering, changing the shell wrapper or adding CLI options is outside this task.
++
++## Non-normative rationale and checklist (B)
++
++R01–R13 above remain the entire contract. This section adds no requirement and does not prescribe a class layout or helper names.
++
++JSON decoding guarantees a JSON value, not an object or the nested types the parser expects. Python truthiness also differs from the contract: 0, false and empty containers must be diagnosed in selected fields even though the old truthiness check skipped them. Presence, null, empty string and wrong type therefore deserve separate consideration. Checking all usage values before output avoids printing a token comment for a malformed completion.
++
++It is useful to distinguish per-event validation from final run status. A bad event should not erase prior streamed content or stop a later remote refusal from being observed. In particular, turn.failed expresses failure even when its attached message is malformed. Unknown string event types, on the other hand, remain an extension point and do not require inspecting unfamiliar payloads.
++
++Possible self-review questions, referring only to the published contract:
++
++- R01–R03: Does output arrive before EOF, and do malformed diagnostics use physical line numbers while ignored text remains silent?
++- R04–R08: Are missing, null, empty and wrong-type values distinguished for each field according to its own rules?
++- R08: Are bool, float and negative token values rejected before a token comment appears?
++- R09–R10: Is top-level error's legacy str conversion retained, and can malformed turn.failed still produce exit 3?
++- R11–R12: Does final precedence remain 3, then 6, then 4, then 5, then 0 with unchanged legacy summaries?
++- R13: Do repeated messages/completions and unknown string types remain accepted without new sequence rules?

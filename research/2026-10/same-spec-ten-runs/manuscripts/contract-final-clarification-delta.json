@@ -1,0 +1,12 @@
+{
+  "article": "2026-11-same-spec-contract/article.md",
+  "before_sha256": "8103c4371c1d944cb7f9da326caad25060dce523438c3ca6c48bf9eb46ec5b92",
+  "after_sha256": "416476b5ade3ded365cd3faff9477d666175ceb5154eddffc75ed18a8da18def",
+  "edits": [
+    {
+      "before": "案例與比對邏輯由外部 driver 控制，不透過候選的輸入介面提供。",
+      "after": "整份案例集、預期結果與比對邏輯由外部 driver 控制，不透過候選的輸入介面提供。"
+    }
+  ],
+  "reason": "Reader delta clarification: whole suite stays with driver, while a candidate still receives its individual JSONL input."
+}

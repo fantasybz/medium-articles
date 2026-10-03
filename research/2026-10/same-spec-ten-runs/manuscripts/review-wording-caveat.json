@@ -1,0 +1,306 @@
+{
+  "schema_version": 1,
+  "reviewed_at_utc": "2026-09-25T08:36:36.345685+00:00",
+  "reviewer": "Codex evidence lens /root/series_evidence_review",
+  "verdict": "CAVEAT_AND_PRIOR_FIXES_VERIFIED",
+  "scope": "新增措辭限制與規格前半部修正；變異篇全文只檢查與補記的語義一致性，既有證據審查作基礎。不是規格全文／全系列 READY。",
+  "series_ready": false,
+  "spec_full_text_ready": false,
+  "published": false,
+  "reviewed_files": {
+    "spec_prefix": {
+      "path": ".context/same-spec-ten-runs/manuscripts/spec-edited-prefix.md",
+      "sha256": "9c9a41d4a9b3df43e9cb8410628a624ad895c43ed726511a64e8a4a29b0eae54",
+      "line_count": 112
+    },
+    "caveat": {
+      "path": "research/2026-10/same-spec-ten-runs/manuscripts/packet-wording-caveat.md",
+      "sha256": "96e7ab484df0564d3ddfb5396216c0c63da83e22bf47fa0c251ecf362bf60490",
+      "line_count": 18
+    },
+    "results": {
+      "path": "research/experiments/same-spec-ten-runs/RESULTS.md",
+      "sha256": "aa7d79489df2b0f457dc9d97bfd00547a58820a450b0fdae354bde98e38f9764",
+      "line_count": 79
+    },
+    "variance": {
+      "path": "2026-11-same-spec-variance/article.md",
+      "sha256": "5117ed22f1f93b6c5f8c094259addb87cb3b255f4f1d589ce213ccfecc24139a",
+      "line_count": 264
+    }
+  },
+  "resolved_prior_findings": [
+    {
+      "id": "E-P01",
+      "status": "resolved",
+      "file": "spec_prefix",
+      "lines": [
+        75,
+        80
+      ],
+      "evidence": "R10 明寫 error 非 null 且非物件、message 非 null 且非字串；與 R10 原規格和既有 null 例外段落一致。"
+    },
+    {
+      "id": "E-P02",
+      "status": "resolved",
+      "file": "spec_prefix",
+      "lines": [
+        28,
+        86,
+        88,
+        96,
+        100,
+        101
+      ],
+      "evidence": "區分共同規範基準與已證語義等價；具體指出 A0 不需新增 CLI 參數、A/B/C 列為範圍之外，影響未辨識，保留 frozen packet。"
+    },
+    {
+      "id": "E-P03",
+      "status": "resolved",
+      "file": "spec_prefix",
+      "lines": [
+        38
+      ],
+      "evidence": "舊行為改成未記錄 agent 發言，truthiness 與修補後 R05 非空字串判準分開。"
+    },
+    {
+      "id": "E-P-optional-R03",
+      "status": "resolved",
+      "file": "spec_prefix",
+      "lines": [
+        68
+      ],
+      "evidence": "turn.failed 的例外明確指失敗狀態與 stderr 診斷，沒有暗示可計入 stdout、完成或發言。"
+    },
+    {
+      "id": "E-P-optional-pattern",
+      "status": "resolved",
+      "file": "spec_prefix",
+      "lines": [
+        109
+      ],
+      "evidence": "C pattern 摘要已保留 malformed turn.failed 的失敗訊號。"
+    },
+    {
+      "id": "WC-01",
+      "status": "resolved",
+      "file": "spec_prefix",
+      "lines": [
+        98,
+        102,
+        103
+      ],
+      "evidence": "本輪指出的 B/C 表格局部歧義已修正為「追加段不增要求；繼承 A 的措辭限制」，前綴欄改為 B 以 A 全文開頭、C 以 B 全文開頭。與第 88、96 行一致。"
+    }
+  ],
+  "checks": [
+    {
+      "id": "W01",
+      "status": "pass",
+      "file": "caveat",
+      "lines": [
+        3,
+        5,
+        9,
+        10
+      ],
+      "evidence": "定位為成稿後限制，不追認為預先登錄，也不修改 frozen 要求／評分。A0 原句與 A/R13 的分拆引文準確，B/C 繼承範圍清楚。"
+    },
+    {
+      "id": "W02",
+      "status": "pass",
+      "file": "caveat",
+      "lines": [
+        12,
+        14,
+        16,
+        18
+      ],
+      "evidence": "影響是否存在未辨識；既不推定造成結果差異，也不以全數通過推定沒有影響。保留原始觀測，不估計排除差異後的純措辭效果，下一輪另訂版本，沒有冒充真人盲審。"
+    },
+    {
+      "id": "W03",
+      "status": "pass",
+      "file": "results",
+      "lines": [
+        7,
+        79
+      ],
+      "evidence": "開頭補上 CLI 措辭限制；結語改為共同 R01–R13 基準，沒有宣稱語義等價。"
+    },
+    {
+      "id": "W04",
+      "status": "pass",
+      "file": "variance",
+      "lines": [
+        17,
+        28,
+        30
+      ],
+      "evidence": "同步改為共同規範基準；具體指出 A0 與 A/B/C 差異，分布僅屬這四份實際 packet，不是純措辭效果。"
+    },
+    {
+      "id": "W05",
+      "status": "pass",
+      "file": "variance",
+      "lines": [
+        3,
+        67,
+        89,
+        91,
+        177,
+        179,
+        195,
+        203,
+        215,
+        219,
+        221,
+        225
+      ],
+      "evidence": "全文讀取未找到與補記矛盾的 purity 或已證規範等價主張。TL;DR 同一規格指各固定組內重複；結果等效性未證明與文字語義未證等價是兩項不同限制。成本段仍只描述 observed order，結語未因補記改判組別優劣。"
+    },
+    {
+      "id": "W06",
+      "status": "pass",
+      "evidence": "變異篇四張表及第二節至文末逐 byte 不變；新補記未改原數值。RESULTS 的 12 個組別表格列與 USD 總額仍符合 frozen summary。"
+    },
+    {
+      "id": "W07",
+      "status": "pass",
+      "evidence": "重新核對 archive 索引 317 份檔案 hash 全部相符，summary hash 仍是原值；沒有新模型請求或候選執行。"
+    },
+    {
+      "id": "W08",
+      "status": "pass",
+      "evidence": "補記、RESULTS、變異篇的本機相對連結皆存在；這不是遠端發布驗證。"
+    },
+    {
+      "id": "W09",
+      "status": "pass",
+      "file": "spec_prefix",
+      "lines": [
+        98,
+        102,
+        103
+      ],
+      "evidence": "本輪指出的 B/C 表格局部歧義已修正為「追加段不增要求；繼承 A 的措辭限制」，前綴欄改為 B 以 A 全文開頭、C 以 B 全文開頭。與第 88、96 行一致。"
+    }
+  ],
+  "open_findings": [],
+  "open_counts": {
+    "blocker": 0,
+    "major": 0,
+    "minor": 0
+  },
+  "variance_delta": {
+    "previous_reviewed_sha256": "1cf47ca478afca22ff028c285c4d0550a844e4794886b7e345fa122a27cac800",
+    "previous_text_recovery": "research/2026-10/same-spec-ten-runs/manuscripts/zhtw/variance-pass-04.json#response.text",
+    "tables_byte_identical": true,
+    "section_two_to_end_byte_identical": true,
+    "tldr_byte_identical": true,
+    "changed_passages": [
+      17,
+      28,
+      30
+    ]
+  },
+  "frozen_integrity": {
+    "archive_path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/archive.json",
+    "indexed_files_checked": 317,
+    "mismatches": [],
+    "summary_sha256": "8198a4478b8158268298960576655d920db3b8d2dc2bd207348dcef8a346dfb9",
+    "manifest_sha256": "ba30398118ecde62b2f682884c1e882b2864c22d70faf99549ceab0d7c0a55f2"
+  },
+  "results_numeric_checks": [
+    {
+      "arm": "A",
+      "table_index": 1,
+      "matches_frozen_summary": true
+    },
+    {
+      "arm": "A",
+      "table_index": 2,
+      "matches_frozen_summary": true
+    },
+    {
+      "arm": "A",
+      "table_index": 3,
+      "matches_frozen_summary": true
+    },
+    {
+      "arm": "A0",
+      "table_index": 1,
+      "matches_frozen_summary": true
+    },
+    {
+      "arm": "A0",
+      "table_index": 2,
+      "matches_frozen_summary": true
+    },
+    {
+      "arm": "A0",
+      "table_index": 3,
+      "matches_frozen_summary": true
+    },
+    {
+      "arm": "B",
+      "table_index": 1,
+      "matches_frozen_summary": true
+    },
+    {
+      "arm": "B",
+      "table_index": 2,
+      "matches_frozen_summary": true
+    },
+    {
+      "arm": "B",
+      "table_index": 3,
+      "matches_frozen_summary": true
+    },
+    {
+      "arm": "C",
+      "table_index": 1,
+      "matches_frozen_summary": true
+    },
+    {
+      "arm": "C",
+      "table_index": 2,
+      "matches_frozen_summary": true
+    },
+    {
+      "arm": "C",
+      "table_index": 3,
+      "matches_frozen_summary": true
+    }
+  ],
+  "relative_link_checks": [
+    {
+      "path": "research/2026-10/same-spec-ten-runs/manuscripts/packet-wording-caveat.md",
+      "relative_links_checked": 5,
+      "missing": []
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/RESULTS.md",
+      "relative_links_checked": 13,
+      "missing": []
+    },
+    {
+      "path": "2026-11-same-spec-variance/article.md",
+      "relative_links_checked": 15,
+      "missing": []
+    }
+  ],
+  "prior_evidence_review": {
+    "path": "research/2026-10/same-spec-ten-runs/manuscripts/review-evidence-followup.json",
+    "sha256": "a630b844da1ac0172c65bcf09a8d1dadf37ba76ed66c4ed267cff1b4a80a867d"
+  },
+  "new_model_samples": 0,
+  "candidate_executions": 0,
+  "limitations": [
+    "規格尾段不在本輪範圍。",
+    "沒有重新查核第三方論文，沒有做新增模型生成或候選重評。",
+    "沒有把 AI 複核改稱真人盲審。",
+    "本次非 zh-TW MCP 檢查報告；用語品質依主代理的獨立 MCP 紀錄。"
+  ],
+  "markdown_report_sha256": "327b4a33d02496b851790d8cfdf51f742743c13f48162ed24a128f567dad9aa0"
+}

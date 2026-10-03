@@ -1,0 +1,42 @@
+---
+config:
+  theme: base
+  themeVariables:
+    fontSize: 16px
+    primaryColor: "#f8f9fa"
+    primaryTextColor: "#1f2933"
+    primaryBorderColor: "#6b7280"
+    lineColor: "#6b7280"
+    secondaryColor: "#f8f9fa"
+    tertiaryColor: "#ffffff"
+    clusterBkg: "#ffffff"
+    clusterBorder: "#9ca3af"
+    edgeLabelBackground: "#ffffff"
+  flowchart:
+    nodeSpacing: 36
+    rankSpacing: 44
+    padding: 12
+    htmlLabels: true
+    subGraphTitleMargin:
+      top: 8
+      bottom: 12
+    curve: basis
+---
+flowchart LR
+    subgraph live["逐行處理的 reference"]
+        direction TB
+        A1["收到有效訊息"] --> A2["stdin 仍開啟<br/>已能讀到訊息"]
+        A2 --> A3["完成事件與 EOF<br/>最終三出口符合"]
+    end
+    subgraph buffered["等待整段輸入的錯法"]
+        direction TB
+        B1["收到同一有效訊息"] --> B2["stdin 仍開啟<br/>觀察窗內沒有輸出"]
+        B2 --> B3["完成事件與 EOF<br/>最終三出口相同"]
+    end
+    live ~~~ buffered
+    classDef own fill:#d4edda,stroke:#2e7d32,color:#1f2933
+    classDef buy fill:#fff3cd,stroke:#b8860b,color:#1f2933
+    classDef bad fill:#ffe0e0,stroke:#c0392b,color:#1f2933
+    classDef human fill:#e3f2fd,stroke:#1565c0,color:#1f2933
+    class A2,A3,B3 own
+    class B2 bad

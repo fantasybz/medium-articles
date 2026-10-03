@@ -106,6 +106,16 @@ cookie 值貼進 repo。**
 順序因此天然正確：figure 落在它原本 📌 標記的位置，最後再由 `verify_draft.py`
 用 graf index 驗一次。
 
+已有的科學 PNG 可在文章中獨立一行寫成 `![圖說](figures/F2.png)`，原檔放在
+文章資料夾內。`article_to_paste.py` 會產生 `asset-01.png` 插圖標記，把圖說保留成
+正文段落（含圖說內的連結），並在 `figures.json` 的 `assets` 記錄來源路徑與 SHA-256。
+`render_images.sh` 核對來源後原樣複製到該語言包的 `images/`，不重新繪圖；
+複製後的雜湊證據寫入 `publish/.rendered-assets.json`（英文包在 `publish/en/`）。
+來源只接受文章目錄內的 `.png`，拒絕網址、`..`、symlink 與缺檔，並檢查 PNG 簽名與
+IHDR 尺寸；這不是完整的 PNG 解碼驗證。來源變動時先重新執行 converter，再執行 renderer。
+每行只放一張圖，圖外的連結與文字另起一行。
+這些步驟只建立本機發布工件，不會開啟 Medium。
+
 ---
 
 ## 改已發布的文章

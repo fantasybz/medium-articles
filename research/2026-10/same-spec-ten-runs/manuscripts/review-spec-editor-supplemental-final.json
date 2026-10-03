@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-09-25",
+  "reviewer": "Codex independent editorial sub-agent (AI): series_editor_review",
+  "lens": "editor_supplemental_language_delta",
+  "verdict": "PASS_SPEC_EDITORIAL",
+  "series_verdict": "NOT_FULLY_REVIEWED",
+  "series_ready": false,
+  "public_release_complete": false,
+  "input": {
+    "path": "2026-11-same-spec-spec/article.md",
+    "sha256": "2d773424ecd438e28d771ff36a747975103ff22a3b9c95e2880c036228f41f65",
+    "line_count": 194
+  },
+  "previous_editorial_final": {
+    "path": "research/2026-10/same-spec-ten-runs/manuscripts/review-spec-editor-final.md",
+    "input_sha256": "3d4fa69b2fb198aee8b75f01be21712c0482589f773b80873375d82d627a37ca",
+    "verdict": "PASS_SPEC_EDITORIAL"
+  },
+  "previous_full_review": {
+    "path": "research/2026-10/same-spec-ten-runs/manuscripts/review-spec-editor.md",
+    "input_sha256": "829017b621e70355979aa9ad6dc8830842fed52c74f00c95bbae53e52cedb8e6",
+    "complete_manuscript_read": true,
+    "continuous_second_half_reread": true
+  },
+  "delta_chain": [
+    {
+      "path": "research/2026-10/same-spec-ten-runs/manuscripts/spec-final-language-delta.json",
+      "before_sha256": "3d4fa69b2fb198aee8b75f01be21712c0482589f773b80873375d82d627a37ca",
+      "after_sha256": "55b1b472694d6e8e48a4c4137b3738b66488c0b7fc5c8c15e36e3a814d49ed55",
+      "replacement_count": 1,
+      "checks": [
+        {
+          "count": 1,
+          "after_occurrences": 1,
+          "current_lines": [
+            155
+          ]
+        }
+      ],
+      "exact_reverse_hash_match": true
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/manuscripts/spec-final-polish-delta.json",
+      "before_sha256": "55b1b472694d6e8e48a4c4137b3738b66488c0b7fc5c8c15e36e3a814d49ed55",
+      "after_sha256": "2d773424ecd438e28d771ff36a747975103ff22a3b9c95e2880c036228f41f65",
+      "replacement_count": 1,
+      "checks": [
+        {
+          "count": 1,
+          "after_occurrences": 1,
+          "current_lines": [
+            92
+          ]
+        }
+      ],
+      "exact_reverse_hash_match": true
+    }
+  ],
+  "reconstructed_previous_matches_editorial_final": true,
+  "only_declared_replacements": true,
+  "semantic_review": [
+    {
+      "line": 155,
+      "result": "pass",
+      "reason": "本篇提供保留明確主詞與原交付內容，省去的是名詞化連接，不是實質主張。"
+    },
+    {
+      "line": 92,
+      "result": "pass",
+      "reason": "改以核對結果作主詞，直接說不足以證明嚴格等價；與前後的共同規範、措辭強度差異、無法辨識影響一致，沒有增減證據結論。"
+    }
+  ],
+  "substantive_claims_changed": false,
+  "new_issues": [],
+  "open_counts": {
+    "blocker": 0,
+    "major": 0,
+    "minor": 0
+  },
+  "mcp_invoked_this_review": false,
+  "rendered_images_checked_this_review": false,
+  "manuscript_modified": false,
+  "prior_reviews_modified": false,
+  "frozen_data_modified": false,
+  "scope": "Supplemental two-sentence language delta closure; exact reverse chain preserves the prior full review and final editorial decision. Previous evidence reports remain untouched."
+}

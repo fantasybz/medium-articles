@@ -1,0 +1,88 @@
+{
+  "article": "2026-11-same-spec-contract/article.md",
+  "before_sha256": "6f6c03c137fad291a6ac3e6fd8399089a3a68a5cd8d4cf1aa2f599937ae94e26",
+  "after_sha256": "d7d1244e859d407fe54b19510311d4100cd370dcd9ceb71df48cd0dc151cca76",
+  "reason": "Root contextual paragraph edits following actual strict zh-TW findings; preserved method, normative examples and F1.",
+  "edits": [
+    {
+      "before": "有提供的 token 數必須是大於或等於 0 的整數",
+      "after": "若有提供 token 數，必須是整數且大於或等於 0",
+      "count": 1
+    },
+    {
+      "before": "這次的受控條件只保留了文件那一半的文字部分",
+      "after": "這次採受控條件，只保留文件中的文字指引",
+      "count": 1
+    },
+    {
+      "before": "reviewer agent 艦隊與閉環禁令〉把 PR template 的「Constraints honoured」欄看成 PR 作者的陳述",
+      "after": "reviewer agent 艦隊與閉環禁令〉談到 PR template 時，把「Constraints honoured」欄看成 PR 作者的陳述",
+      "count": 1
+    },
+    {
+      "before": "兩種算法會得到不同的結果",
+      "after": "兩種計算方式會得到不同的結果",
+      "count": 1
+    },
+    {
+      "before": "讓之後維護的人不必依賴寫檢查的人記得當初的判斷",
+      "after": "之後接手維護的人才能查到依據，不必指望原作者記得每個判斷",
+      "count": 1
+    },
+    {
+      "before": "其他 OS 資源與行程間通訊（IPC）的管道沒有對應的 probe",
+      "after": "至於其他 OS 資源與行程間通訊（IPC）管道，本輪沒有設計 probe",
+      "count": 1
+    },
+    {
+      "before": "事後的重評無法替原本的執行補上隔離證明",
+      "after": "事後重評無法替原本那次執行補上隔離證明",
+      "count": 1
+    },
+    {
+      "before": "仍然只能依據 launch preflight 的三項 probe 與凍結的沙箱設定判斷",
+      "after": "仍然只能依據 launch preflight 三項 probe，以及當時凍結的沙箱設定判斷",
+      "count": 1
+    },
+    {
+      "before": "這 83 項的分母是研究工具的各種行為",
+      "after": "這 83 項統計的是研究工具測試案例",
+      "count": 1
+    },
+    {
+      "before": "| 規格涉及的行為 | 103 項中的處理 |",
+      "after": "| 規格涉及哪些行為 | 套件如何檢查 |",
+      "count": 1
+    },
+    {
+      "before": "| 所有額外的 CLI 參數 |",
+      "after": "| 所有額外 CLI 參數 |",
+      "count": 1
+    },
+    {
+      "before": "| 候選內部的每一種編碼策略 |",
+      "after": "| 候選內部每一種編碼策略 |",
+      "count": 1
+    },
+    {
+      "before": "exit 6 與 malformed 的判定則是新的決定",
+      "after": "exit 6 與 malformed 判定則是這次新增的決定",
+      "count": 1
+    },
+    {
+      "before": "最後用修正後的 evaluator 對所有封存的候選一致重評",
+      "after": "最後以修正後的 evaluator，對所有封存候選一致重評",
+      "count": 1
+    },
+    {
+      "before": "第五節的措辭差異屬於比較上的方法限制",
+      "after": "第五節發現的措辭差異，屬於組間比較的方法限制",
+      "count": 1
+    },
+    {
+      "before": "以及 §3.2 的 file-reading 工具限制與 §8 缺少 build provenance receipt 的說明",
+      "after": "並對照 §3.2 記載的 file-reading 工具限制，以及 §8 缺少 build provenance receipt 的說明",
+      "count": 1
+    }
+  ]
+}

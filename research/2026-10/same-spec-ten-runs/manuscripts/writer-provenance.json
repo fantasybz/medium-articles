@@ -1,0 +1,1023 @@
+{
+  "recorded_at": "2026-09-27T16:17:28.531504+00:00",
+  "scope": "Principal prose writing; separate from the forty frozen formal model runs",
+  "principal_writer": "Claude Code",
+  "requested_model": "claude-opus-5-5",
+  "requested_effort": "max",
+  "attempts": [
+    {
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "cli_version": "2.1.282 (Claude Code)",
+      "prompt_sha256": "bc5855ad9796c401436bf1b68354e58a4e5f0943963ac30ce3ff2617cc37c717",
+      "system_sha256": "303e8d9dd4a9e3745cf935bf4cf5c9aa6ef5c31df08641fdaa8fc356995cd3d9",
+      "started_at": "2026-09-25T05:21:51.423367+00:00",
+      "finished_at": "2026-09-25T05:40:45.600641+00:00",
+      "output_token_setting": 128000,
+      "timeout_seconds": 3600,
+      "exit_code": 1,
+      "is_error": true,
+      "subtype": "success",
+      "assistant_models": [
+        "<synthetic>",
+        "claude-opus-5-5"
+      ],
+      "success": false,
+      "elapsed_seconds": 1134.264,
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 90618,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 128000,
+        "output_tokens_details": {
+          "thinking_tokens": 128000
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 90618,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "not_available",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 128000,
+            "cache_read_input_tokens": 0,
+            "cache_creation_input_tokens": 90618,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 90618
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard"
+      },
+      "total_cost_usd": 3.3666719999999994,
+      "num_turns": 2,
+      "attempt": "draft-contract",
+      "invocation_sha256": "247bf5ccc28e1bc118e8f39f63011de7f0d22b5a5965918f6bd95bf39b5eb7ff",
+      "status": "ended_without_complete_artifact",
+      "revision": "2026-09-25"
+    },
+    {
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "cli_version": "2.1.282 (Claude Code)",
+      "prompt_sha256": "a4ae0b5d7a6aaacd515f57b6397ef7fb01f184957b83df10b44cf2627b4149de",
+      "system_sha256": "303e8d9dd4a9e3745cf935bf4cf5c9aa6ef5c31df08641fdaa8fc356995cd3d9",
+      "started_at": "2026-09-25T05:21:51.423322+00:00",
+      "finished_at": "2026-09-25T05:40:57.159503+00:00",
+      "output_token_setting": 128000,
+      "timeout_seconds": 3600,
+      "exit_code": 1,
+      "is_error": true,
+      "subtype": "success",
+      "assistant_models": [
+        "<synthetic>",
+        "claude-opus-5-5"
+      ],
+      "success": false,
+      "elapsed_seconds": 1145.823,
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 83488,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 128000,
+        "output_tokens_details": {
+          "thinking_tokens": 128000
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 83488,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "not_available",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 128000,
+            "cache_read_input_tokens": 0,
+            "cache_creation_input_tokens": 83488,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 83488
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard"
+      },
+      "total_cost_usd": 3.302415,
+      "num_turns": 2,
+      "attempt": "draft-overview",
+      "invocation_sha256": "e2a880ae2317f35cd44b6c9c62c323819544a5f2e332cb173bf666ae299ea2bc",
+      "status": "ended_without_complete_artifact",
+      "revision": "2026-09-25"
+    },
+    {
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "cli_version": "2.1.282 (Claude Code)",
+      "prompt_sha256": "ab4c960c7491500380ba2754ea17d3d0257dc09e57001260925918bffd9a8180",
+      "system_sha256": "303e8d9dd4a9e3745cf935bf4cf5c9aa6ef5c31df08641fdaa8fc356995cd3d9",
+      "started_at": "2026-09-25T05:21:51.423186+00:00",
+      "finished_at": "2026-09-25T05:40:40.547678+00:00",
+      "output_token_setting": 128000,
+      "timeout_seconds": 3600,
+      "exit_code": 1,
+      "is_error": true,
+      "subtype": "success",
+      "assistant_models": [
+        "<synthetic>",
+        "claude-opus-5-5"
+      ],
+      "success": false,
+      "elapsed_seconds": 1129.21,
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 77684,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 128000,
+        "output_tokens_details": {
+          "thinking_tokens": 119017
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 77684,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "not_available",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 128000,
+            "cache_read_input_tokens": 0,
+            "cache_creation_input_tokens": 77684,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 77684
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard"
+      },
+      "total_cost_usd": 3.2514819999999998,
+      "num_turns": 2,
+      "attempt": "draft-spec",
+      "invocation_sha256": "fe89b63c64794587edfdcaa364b578c32004492259dd9139f47ed6a89481cc01",
+      "status": "ended_without_complete_artifact",
+      "partial_file_sha256": "62e8df2d9d00c668830c279f8af6bd626570427a4206bbc0dc6004b16e41ff84",
+      "revision": "2026-09-25"
+    },
+    {
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "cli_version": "2.1.282 (Claude Code)",
+      "prompt_sha256": "bae68b306662e70691bacf6b75ba43dbf344b9aaa7548b7144fe2e62d37da39a",
+      "system_sha256": "303e8d9dd4a9e3745cf935bf4cf5c9aa6ef5c31df08641fdaa8fc356995cd3d9",
+      "started_at": "2026-09-25T05:21:51.422939+00:00",
+      "finished_at": "2026-09-25T05:40:03.940935+00:00",
+      "output_token_setting": 128000,
+      "timeout_seconds": 3600,
+      "exit_code": 0,
+      "is_error": false,
+      "subtype": "success",
+      "assistant_models": [
+        "claude-opus-5-5"
+      ],
+      "success": true,
+      "elapsed_seconds": 1092.601,
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 88445,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 124690,
+        "output_tokens_details": {
+          "thinking_tokens": 109860
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 88445,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "not_available",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 124690,
+            "cache_read_input_tokens": 0,
+            "cache_creation_input_tokens": 88445,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 88445
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard"
+      },
+      "total_cost_usd": 3.2813199999999996,
+      "artifact_sha256": "10f2baf37137360f244a133ccca05f3f982ae828ac256188df3dcf433428b1e4",
+      "num_turns": 1,
+      "attempt": "draft-variance",
+      "invocation_sha256": "6330959ec228331ec5466347843bc08f1d895ba10ca099142a442b56c9bc3f08",
+      "status": "completed",
+      "artifact_file_sha256": "10f2baf37137360f244a133ccca05f3f982ae828ac256188df3dcf433428b1e4",
+      "revision": "2026-09-25"
+    },
+    {
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "cli_version": "2.1.282 (Claude Code)",
+      "prompt_sha256": "85c536d08160b7f3474e1dd042c4a5fd2112ce9cee468481b92f7afcfe4c4b72",
+      "system_sha256": "5ed82b3ea7862e17ca5787216054d52b4d30fcb5f11776abe344ec7b6157af62",
+      "started_at": "2026-09-25T08:27:23.202896+00:00",
+      "finished_at": "2026-09-25T08:46:47.810501+00:00",
+      "output_token_setting": 65536,
+      "timeout_seconds": 1800,
+      "exit_code": 0,
+      "is_error": false,
+      "subtype": "success",
+      "assistant_models": [
+        "claude-opus-5-5"
+      ],
+      "success": true,
+      "elapsed_seconds": 1164.597,
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 32200,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 127026,
+        "output_tokens_details": {
+          "thinking_tokens": 117956
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 32200,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "not_available",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 61490,
+            "cache_read_input_tokens": 0,
+            "cache_creation_input_tokens": 16131,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 16131
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard"
+      },
+      "total_cost_usd": 2.812967,
+      "artifact_sha256": "23d3292fc8b01bc1d5b97ea674d10d1231b7ab0d5da49461ff45d5209c432279",
+      "characters": 11477,
+      "num_turns": 2,
+      "attempt": "resume-contract-head",
+      "invocation_sha256": "43c21ed6f9565d345eb09e884d0c2c9c31797486a3923e8d40250c3f000e53db",
+      "status": "completed",
+      "artifact_file_sha256": "23d3292fc8b01bc1d5b97ea674d10d1231b7ab0d5da49461ff45d5209c432279",
+      "revision": "2026-09-25"
+    },
+    {
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "cli_version": "2.1.282 (Claude Code)",
+      "prompt_sha256": "48b58849e4638f289550721ce61b2ceb6e244d93d5a4f4d268f37a30e6de7cc8",
+      "system_sha256": "5ed82b3ea7862e17ca5787216054d52b4d30fcb5f11776abe344ec7b6157af62",
+      "started_at": "2026-09-25T08:47:53.737614+00:00",
+      "finished_at": "2026-09-25T09:06:57.656376+00:00",
+      "output_token_setting": 65536,
+      "timeout_seconds": 1800,
+      "exit_code": 0,
+      "is_error": false,
+      "subtype": "success",
+      "assistant_models": [
+        "claude-opus-5-5"
+      ],
+      "success": true,
+      "elapsed_seconds": 1143.911,
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 55508,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 125164,
+        "output_tokens_details": {
+          "thinking_tokens": 116944
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 55508,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "not_available",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 59628,
+            "cache_read_input_tokens": 0,
+            "cache_creation_input_tokens": 27785,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 27785
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard"
+      },
+      "total_cost_usd": 2.973296,
+      "artifact_sha256": "25f0a08fd8dc6828fbc6ddd21cfe986872ad7d1bf430dca2efe6c43ad6f8b4e9",
+      "characters": 10617,
+      "num_turns": 2,
+      "attempt": "resume-contract-tail",
+      "invocation_sha256": "a092810d036bd0407f368cb19b50cb8d3c6da30bb60df9ee760d7949cf486880",
+      "status": "completed",
+      "artifact_file_sha256": "25f0a08fd8dc6828fbc6ddd21cfe986872ad7d1bf430dca2efe6c43ad6f8b4e9",
+      "revision": "2026-09-25"
+    },
+    {
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "cli_version": "2.1.282 (Claude Code)",
+      "prompt_sha256": "22ec7f6aa8a4614e15f6f05064489e33374f67ad697b79bfcf139c644901f188",
+      "system_sha256": "5ed82b3ea7862e17ca5787216054d52b4d30fcb5f11776abe344ec7b6157af62",
+      "started_at": "2026-09-25T08:27:23.202896+00:00",
+      "finished_at": "2026-09-25T08:43:14.461244+00:00",
+      "output_token_setting": 65536,
+      "timeout_seconds": 1800,
+      "exit_code": 0,
+      "is_error": false,
+      "subtype": "success",
+      "assistant_models": [
+        "claude-opus-5-5"
+      ],
+      "success": true,
+      "elapsed_seconds": 951.248,
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 26622,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 100560,
+        "output_tokens_details": {
+          "thinking_tokens": 92700
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 26622,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "not_available",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 35024,
+            "cache_read_input_tokens": 0,
+            "cache_creation_input_tokens": 13342,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 13342
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard"
+      },
+      "total_cost_usd": 2.237071,
+      "artifact_sha256": "d0f00241b97680275a5ef17d30635fc37dd3878db3abca0eb232d3f876cbf622",
+      "characters": 9226,
+      "num_turns": 2,
+      "attempt": "resume-overview-head",
+      "invocation_sha256": "1a602aafc1fdc337529bd935cc7a91b8e57779b74d545d8775e6b41c7afc8e2e",
+      "status": "completed",
+      "artifact_file_sha256": "d0f00241b97680275a5ef17d30635fc37dd3878db3abca0eb232d3f876cbf622",
+      "revision": "2026-09-25"
+    },
+    {
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "cli_version": "2.1.282 (Claude Code)",
+      "prompt_sha256": "5adb4c28820496d39b00393e0ec6a735db67846466ee45c6ca23ff279b09a46d",
+      "system_sha256": "5ed82b3ea7862e17ca5787216054d52b4d30fcb5f11776abe344ec7b6157af62",
+      "started_at": "2026-09-25T08:43:34.698924+00:00",
+      "finished_at": "2026-09-25T09:02:45.160795+00:00",
+      "output_token_setting": 65536,
+      "timeout_seconds": 1800,
+      "exit_code": 0,
+      "is_error": false,
+      "subtype": "success",
+      "assistant_models": [
+        "claude-opus-5-5"
+      ],
+      "success": true,
+      "elapsed_seconds": 1150.454,
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 42208,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 129476,
+        "output_tokens_details": {
+          "thinking_tokens": 120645
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 42208,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "not_available",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 63940,
+            "cache_read_input_tokens": 0,
+            "cache_creation_input_tokens": 21135,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 21135
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard"
+      },
+      "total_cost_usd": 2.947351,
+      "artifact_sha256": "94465ae8e9e86c6dad041471ec2947eeb666e08e885d58585b22ef81d0b50b73",
+      "characters": 10948,
+      "num_turns": 2,
+      "attempt": "resume-overview-tail",
+      "invocation_sha256": "33c8256dc582ec056d37459f20d8aad38ada08f9b26c32d1138a7ffaaa14e3c0",
+      "status": "completed",
+      "artifact_file_sha256": "94465ae8e9e86c6dad041471ec2947eeb666e08e885d58585b22ef81d0b50b73",
+      "revision": "2026-09-25"
+    },
+    {
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "cli_version": "2.1.282 (Claude Code)",
+      "prompt_sha256": "54f0c033881d738b3eb208d45de43cdcd545d39434099080ef5499b9ff3c3812",
+      "system_sha256": "5ed82b3ea7862e17ca5787216054d52b4d30fcb5f11776abe344ec7b6157af62",
+      "started_at": "2026-09-25T08:19:18.905076+00:00",
+      "finished_at": "2026-09-25T08:36:40.442955+00:00",
+      "output_token_setting": 65536,
+      "timeout_seconds": 1800,
+      "exit_code": 0,
+      "is_error": false,
+      "subtype": "success",
+      "assistant_models": [
+        "claude-opus-5-5"
+      ],
+      "success": true,
+      "elapsed_seconds": 1041.528,
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 51050,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 116569,
+        "output_tokens_details": {
+          "thinking_tokens": 111796
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 51050,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "not_available",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 51033,
+            "cache_read_input_tokens": 0,
+            "cache_creation_input_tokens": 25556,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 25556
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard"
+      },
+      "total_cost_usd": 2.764073,
+      "artifact_sha256": "8213c88063712e7040c7d5558d13659b07e2a2f11a961c8dd0d086726640cff5",
+      "characters": 5390,
+      "num_turns": 2,
+      "attempt": "resume-spec-tail",
+      "invocation_sha256": "58ea68e25ddc577f941121ee36add031e92cad07fe68a804b586c7b72dcc364d",
+      "status": "completed",
+      "artifact_file_sha256": "8213c88063712e7040c7d5558d13659b07e2a2f11a961c8dd0d086726640cff5",
+      "revision": "2026-09-25"
+    },
+    {
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "cli_version": "2.1.283 (Claude Code)",
+      "prompt_sha256": "3d099e2fd9bd8103c5a56d2852a2c667aeb67ae07b6597a64ca923816da65923",
+      "system_sha256": "5ed82b3ea7862e17ca5787216054d52b4d30fcb5f11776abe344ec7b6157af62",
+      "started_at": "2026-09-27T14:58:45.269016+00:00",
+      "finished_at": "2026-09-27T14:58:47.947100+00:00",
+      "output_token_setting": 65536,
+      "timeout_seconds": 1800,
+      "exit_code": 1,
+      "assistant_models": [
+        "<synthetic>"
+      ],
+      "success": false,
+      "is_error": true,
+      "subtype": "success",
+      "elapsed_seconds": 2.677,
+      "num_turns": 1,
+      "attempt": "narrative-overview-2026-09-27",
+      "revision": "2026-09-27",
+      "purpose": "principal narrative rewrite",
+      "status": "session quota blocked; no prose used"
+    },
+    {
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "cli_version": "2.1.283 (Claude Code)",
+      "prompt_sha256": "43b6eb81cad73773be366e5998573ab2abf6a17b685f9650564547d2000f370f",
+      "system_sha256": "5ed82b3ea7862e17ca5787216054d52b4d30fcb5f11776abe344ec7b6157af62",
+      "started_at": "2026-09-27T14:58:45.269048+00:00",
+      "finished_at": "2026-09-27T14:58:47.955884+00:00",
+      "output_token_setting": 65536,
+      "timeout_seconds": 1800,
+      "exit_code": 1,
+      "assistant_models": [
+        "<synthetic>"
+      ],
+      "success": false,
+      "is_error": true,
+      "subtype": "success",
+      "elapsed_seconds": 2.686,
+      "num_turns": 1,
+      "attempt": "narrative-spec-2026-09-27",
+      "revision": "2026-09-27",
+      "purpose": "principal narrative rewrite",
+      "status": "session quota blocked; no prose used"
+    },
+    {
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "cli_version": "2.1.283 (Claude Code)",
+      "prompt_sha256": "6c2ba333967f3f00021c9fef72f4d2b4ad645cb84baa68fca26615aa23ae2276",
+      "system_sha256": "5ed82b3ea7862e17ca5787216054d52b4d30fcb5f11776abe344ec7b6157af62",
+      "started_at": "2026-09-27T14:58:45.269047+00:00",
+      "finished_at": "2026-09-27T14:58:47.968292+00:00",
+      "output_token_setting": 65536,
+      "timeout_seconds": 1800,
+      "exit_code": 1,
+      "assistant_models": [
+        "<synthetic>"
+      ],
+      "success": false,
+      "is_error": true,
+      "subtype": "success",
+      "elapsed_seconds": 2.699,
+      "num_turns": 1,
+      "attempt": "narrative-contract-2026-09-27",
+      "revision": "2026-09-27",
+      "purpose": "principal narrative rewrite",
+      "status": "session quota blocked; no prose used"
+    },
+    {
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "cli_version": "2.1.283 (Claude Code)",
+      "prompt_sha256": "91c2e33fe9786f114952763be0f4fedeadcc5c15d9cf8b271ac5521738bba5bc",
+      "system_sha256": "5ed82b3ea7862e17ca5787216054d52b4d30fcb5f11776abe344ec7b6157af62",
+      "started_at": "2026-09-27T14:58:45.269050+00:00",
+      "finished_at": "2026-09-27T14:58:48.129162+00:00",
+      "output_token_setting": 65536,
+      "timeout_seconds": 1800,
+      "exit_code": 1,
+      "assistant_models": [
+        "<synthetic>"
+      ],
+      "success": false,
+      "is_error": true,
+      "subtype": "success",
+      "elapsed_seconds": 2.859,
+      "num_turns": 1,
+      "attempt": "narrative-variance-2026-09-27",
+      "revision": "2026-09-27",
+      "purpose": "principal narrative rewrite",
+      "status": "session quota blocked; no prose used"
+    },
+    {
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "cli_version": "2.1.283 (Claude Code)",
+      "prompt_sha256": "30cc116465e4f6671ee67372197dbeaf44047589c65426626f36094f1b0a4aa8",
+      "system_sha256": "5ed82b3ea7862e17ca5787216054d52b4d30fcb5f11776abe344ec7b6157af62",
+      "started_at": "2026-09-27T15:11:49.316125+00:00",
+      "finished_at": "2026-09-27T15:32:30.700581+00:00",
+      "output_token_setting": 65536,
+      "timeout_seconds": 1800,
+      "exit_code": 0,
+      "assistant_models": [
+        "claude-opus-5-5"
+      ],
+      "success": true,
+      "is_error": false,
+      "subtype": "success",
+      "elapsed_seconds": 1241.382,
+      "artifact_sha256": "93ce65b02bb5b57f71ade9d5d2b188f63a1e0f5bc1445fe701b229ee2d5243a1",
+      "characters": 11136,
+      "num_turns": 3,
+      "attempt": "narrative-max-resume-overview-2026-09-27",
+      "revision": "2026-09-27",
+      "purpose": "principal narrative rewrite",
+      "status": "completed",
+      "artifact_file_sha256": "93ce65b02bb5b57f71ade9d5d2b188f63a1e0f5bc1445fe701b229ee2d5243a1"
+    },
+    {
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "cli_version": "2.1.283 (Claude Code)",
+      "prompt_sha256": "d1a9dc3f789d499a698b3362129bb40e29e68ea608f55bcb655567fa8089c08b",
+      "system_sha256": "5ed82b3ea7862e17ca5787216054d52b4d30fcb5f11776abe344ec7b6157af62",
+      "started_at": "2026-09-27T15:11:49.316100+00:00",
+      "finished_at": "2026-09-27T15:27:03.400783+00:00",
+      "output_token_setting": 65536,
+      "timeout_seconds": 1800,
+      "exit_code": 0,
+      "assistant_models": [
+        "claude-opus-5-5"
+      ],
+      "success": true,
+      "is_error": false,
+      "subtype": "success",
+      "elapsed_seconds": 914.083,
+      "artifact_sha256": "888c76b4b003d8c6cf557c47d7edd2686095db9add91f46216abe8e124bebee2",
+      "characters": 14093,
+      "num_turns": 2,
+      "attempt": "narrative-max-resume-spec-2026-09-27",
+      "revision": "2026-09-27",
+      "purpose": "principal narrative rewrite",
+      "status": "completed",
+      "artifact_file_sha256": "888c76b4b003d8c6cf557c47d7edd2686095db9add91f46216abe8e124bebee2"
+    },
+    {
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "cli_version": "2.1.283 (Claude Code)",
+      "prompt_sha256": "e40da2302419dde180d05bf89d36cca31ee65948db31cff05aea18e693c664f6",
+      "system_sha256": "5ed82b3ea7862e17ca5787216054d52b4d30fcb5f11776abe344ec7b6157af62",
+      "started_at": "2026-09-27T15:11:49.316107+00:00",
+      "finished_at": "2026-09-27T15:30:54.679284+00:00",
+      "output_token_setting": 65536,
+      "timeout_seconds": 1800,
+      "exit_code": 0,
+      "assistant_models": [
+        "claude-opus-5-5"
+      ],
+      "success": true,
+      "is_error": false,
+      "subtype": "success",
+      "elapsed_seconds": 1145.361,
+      "artifact_sha256": "afd974e1dc8ae5bbc7d57c25a500b7badbd79bac80bfc4bef322022a68a7d92c",
+      "characters": 18560,
+      "num_turns": 2,
+      "attempt": "narrative-max-resume-contract-2026-09-27",
+      "revision": "2026-09-27",
+      "purpose": "principal narrative rewrite",
+      "status": "completed",
+      "artifact_file_sha256": "afd974e1dc8ae5bbc7d57c25a500b7badbd79bac80bfc4bef322022a68a7d92c"
+    },
+    {
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "cli_version": "2.1.283 (Claude Code)",
+      "prompt_sha256": "432017e0849c9bc4c97af827cc6674aff35fa5b24fbab19f84e7f46bc8e68aa4",
+      "system_sha256": "5ed82b3ea7862e17ca5787216054d52b4d30fcb5f11776abe344ec7b6157af62",
+      "started_at": "2026-09-27T15:11:49.316097+00:00",
+      "finished_at": "2026-09-27T15:31:09.168049+00:00",
+      "output_token_setting": 65536,
+      "timeout_seconds": 1800,
+      "exit_code": 0,
+      "assistant_models": [
+        "claude-opus-5-5"
+      ],
+      "success": true,
+      "is_error": false,
+      "subtype": "success",
+      "elapsed_seconds": 1159.85,
+      "artifact_sha256": "6ec560055e69adfb55bf0e9cbc368171ecf7470c805b467378d28307787f066c",
+      "characters": 3556,
+      "num_turns": 3,
+      "attempt": "narrative-max-resume-variance-2026-09-27",
+      "revision": "2026-09-27",
+      "purpose": "principal narrative rewrite",
+      "status": "completed",
+      "artifact_file_sha256": "6ec560055e69adfb55bf0e9cbc368171ecf7470c805b467378d28307787f066c"
+    }
+  ],
+  "all_four_principal_manuscripts_complete": true,
+  "notes": [
+    "The four new manuscripts were written by actual Claude Code claude-opus-5-5 at max effort, CLI 2.1.283. Formal experiment remains high effort, CLI 2.1.282.",
+    "The initial four new attempts were session-quota blocked. Root prepared structural drafts while blocked; these were editorial inputs for the fresh overview/spec max requests, not replacement principal manuscripts.",
+    "For overview and variance the terminal result contains only the last continuation fragment. Complete manuscripts concatenate final-prose text blocks exactly; the original terminal artifact and hashes are retained separately.",
+    "Output-token setting applies per response; automatic CLI continuation can make total invocation usage larger.",
+    "Response JSONL contains private reasoning and remains only in gitignored .context. Only final text blocks were used; no reasoning is published.",
+    "Codex root edits every section for narrative, factual limits, paragraph transitions, citations and zh-TW style. Writing and editorial review requests add no formal experiment samples or study cost."
+  ],
+  "historical_2026_09_25": {
+    "recorded_at": "2026-09-25T09:27:20.634646+00:00",
+    "user_choice": "Continue with Claude max after session reset",
+    "reset_reported": "2026-09-25 16:10 Asia/Taipei",
+    "reset_verified": "Actual resumed CLI requests returned rate_limit status allowed",
+    "assemblies": {
+      "overview": {
+        "source_segments": [
+          {
+            "path": ".context/same-spec-ten-runs/manuscripts/resume-overview-head/artifact.md",
+            "sha256": "d0f00241b97680275a5ef17d30635fc37dd3878db3abca0eb232d3f876cbf622"
+          },
+          {
+            "path": ".context/same-spec-ten-runs/manuscripts/resume-overview-tail/artifact.md",
+            "sha256": "94465ae8e9e86c6dad041471ec2947eeb666e08e885d58585b22ef81d0b50b73"
+          }
+        ],
+        "unmodified_composite_sha256": "48ff923f3996d366491dd39dfb781b18cf85a0fc7702630d9abe599e9d0481c3",
+        "first_edited_article_sha256": "f70652654ebd1e0c2dddf05e01eb3208bf5852f75dfa4dc91e281697cc675583",
+        "assembly_record_sha256": "1b6cc86429c25e9b52008b098aaecb2978707cf2de57bb194c2cc6ca86e03020",
+        "article_sha256_at_2026_09_25_completion": "98381db29e1bd4c7323e6a0adda49550e8d9c271fcc4c31b4c0026a48dd14de7"
+      },
+      "spec": {
+        "source_segments": [
+          {
+            "path": ".context/same-spec-ten-runs/manuscripts/resume-spec-tail/prefix.md",
+            "sha256": "bc062efda0e9071c9763574797fd262da15d1f148e7d9b2b87d45d338117ae90",
+            "origin": "draft-spec partial text, trailing incomplete paragraph removed"
+          },
+          {
+            "path": ".context/same-spec-ten-runs/manuscripts/resume-spec-tail/artifact.md",
+            "sha256": "8213c88063712e7040c7d5558d13659b07e2a2f11a961c8dd0d086726640cff5",
+            "origin": "completed max continuation"
+          }
+        ],
+        "unmodified_composite_sha256": "ea582c917e1555c78373a0a5b2593784aaf2119ac8a75cb3299f5f0d608f5a8a",
+        "first_edited_article_sha256": "c7aa15f8b6f13451e7260f0c3e2565203e3c2a6d7f22fabe209cd1ffb563105a",
+        "assembly_record_sha256": "1ff8b80a9d2346935eb0a49a5529f40059038510e9fe1cd0eb43a2506250deba",
+        "article_sha256_at_2026_09_25_completion": "2d773424ecd438e28d771ff36a747975103ff22a3b9c95e2880c036228f41f65"
+      },
+      "contract": {
+        "source_segments": [
+          {
+            "path": ".context/same-spec-ten-runs/manuscripts/resume-contract-head/artifact.md",
+            "sha256": "23d3292fc8b01bc1d5b97ea674d10d1231b7ab0d5da49461ff45d5209c432279"
+          },
+          {
+            "path": ".context/same-spec-ten-runs/manuscripts/resume-contract-tail/artifact.md",
+            "sha256": "25f0a08fd8dc6828fbc6ddd21cfe986872ad7d1bf430dca2efe6c43ad6f8b4e9"
+          }
+        ],
+        "unmodified_composite_sha256": "ddceb2a648ea56a3a6fbebfc3bcb9b9c861308ade0c986324c7e779ff8a5f80a",
+        "first_edited_article_sha256": "6f6c03c137fad291a6ac3e6fd8399089a3a68a5cd8d4cf1aa2f599937ae94e26",
+        "assembly_record_sha256": "d79b1b0affa1a2f47a00926c9e2a3aa104ab75b71b74697782e6dbca0870751e",
+        "article_sha256_at_2026_09_25_completion": "6f99865b86beabc93adfa6ca61a2e8cd826cf926eb9b4afbfca7a149f81019cc"
+      },
+      "variance": {
+        "source_segments": [
+          {
+            "path": ".context/same-spec-ten-runs/manuscripts/draft-variance/artifact.md",
+            "sha256": "10f2baf37137360f244a133ccca05f3f982ae828ac256188df3dcf433428b1e4"
+          }
+        ],
+        "unmodified_composite_sha256": "10f2baf37137360f244a133ccca05f3f982ae828ac256188df3dcf433428b1e4",
+        "article_sha256_at_2026_09_25_completion": "3ee25eaa1ca3ae1f177403f1719eb833a5c07ecfa972d4189e2129ab2fff6b0d"
+      }
+    }
+  },
+  "current_revision": "2026-09-27 narrative rewrite",
+  "user_choice": "User confirmed Claude Code max available; all four new max requests completed.",
+  "assemblies": {
+    "overview": {
+      "source_segments": [
+        {
+          "path": ".context/same-spec-ten-runs/manuscripts/narrative-max-resume-overview-2026-09-27/complete.md",
+          "sha256": "0ca82c7c417f249370f11f4b64899cb5047b414b89cb6db6d0145a0d820ae1ed"
+        }
+      ],
+      "unmodified_principal_sha256": "0ca82c7c417f249370f11f4b64899cb5047b414b89cb6db6d0145a0d820ae1ed",
+      "current_article_sha256": "51a2be2e1614c965743386f06d913492c999786e852c2fc213f7e3947edbfeeb",
+      "continuation_assembly": {
+        "method": "Exact concatenation of final-prose text blocks across CLI automatic continuation. No reasoning blocks used.",
+        "block_sha256": [
+          "0c3fb86abe19461f1269ff254c4c21e96257e0e425afa6bbf6984c198f01d28b",
+          "461974254e79b17c669195df54ca7939b151cbc04a7a7373d4f1f23f80734db2"
+        ],
+        "complete_sha256": "0ca82c7c417f249370f11f4b64899cb5047b414b89cb6db6d0145a0d820ae1ed",
+        "terminal_result_is_last_block_only": true
+      },
+      "root_edit_records": [
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/overview-C-helper-delta.json",
+          "sha256": "de54dfab62512aacb53c04d43237291555a851d140f2af1f6ca19ec55079dea3"
+        },
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/overview-language-delta-02.json",
+          "sha256": "37ee05ecf5b1bdfd0d98aa8e1146d5269a1e223dde85d69b861b4a7abbb19747"
+        },
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/overview-motivation-delta.json",
+          "sha256": "ee1e7793f3dafda9762827ab9892ea85bb1bdd551da0949eab4e8748a63fd03e"
+        },
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/overview-pack-clarity-delta.json",
+          "sha256": "15326b6613797bd5779d6ccf3d68a9b51695763e176dfd1816083e39219a1692"
+        },
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/overview-reader-delta.json",
+          "sha256": "3b9d1607ac57c3b8dbb3cdbacaa39391df1c169ca45cc0e6b892be2f415f943f"
+        },
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/overview-reader-reasoning-delta.json",
+          "sha256": "a90932753f8c1da112386a925006d789de188354d562ef175e953937ed068831"
+        },
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/overview-reader-smoothing-delta.json",
+          "sha256": "f8e341c8ae9045f4e3bce34844aab5e8e6bbbd4330b3ce3519c76a0c69c4616c"
+        },
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/overview-reasoning-review-delta.json",
+          "sha256": "cb880f345a55fc4de197d16229281b214d28458259050bbe2b2f136f58db1b8e"
+        },
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/overview-root-polish-01.json",
+          "sha256": "12c2bf1be15dd0a94ca94bcf855608ac9bd8d35d89600ea44878c5b30b2ef77e"
+        }
+      ]
+    },
+    "spec": {
+      "source_segments": [
+        {
+          "path": ".context/same-spec-ten-runs/manuscripts/narrative-max-resume-spec-2026-09-27/artifact.md",
+          "sha256": "888c76b4b003d8c6cf557c47d7edd2686095db9add91f46216abe8e124bebee2"
+        }
+      ],
+      "unmodified_principal_sha256": "888c76b4b003d8c6cf557c47d7edd2686095db9add91f46216abe8e124bebee2",
+      "current_article_sha256": "fa9a3fd288d3143e52bfde0f234de345f9bbe707592a5847b0c740743b6f01da",
+      "root_edit_records": [
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/spec-language-delta-01.json",
+          "sha256": "621d7cf37de8138785ba34b531337071acacfd0c23c92687799db52329b17575"
+        },
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/spec-language-delta-02.json",
+          "sha256": "ac8f822a9a33f1bbcee67e1918ee3c665d08129197cb380d70326d1fbd0eb61c"
+        },
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/spec-pack-clarity-delta.json",
+          "sha256": "645877a58776740d7b4802f1026dc62b035812f7b9e726998aa77127d2c65415"
+        },
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/spec-reader-delta.json",
+          "sha256": "980ff64a5baca152e53a04d24ec4b6a029f9b9141853ed56cb75e661fc14e5b9"
+        },
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/spec-reader-reasoning-delta.json",
+          "sha256": "8592a79edb73ef9f811f57b59abe6cf89df810691f67082af23d8f250ffda229"
+        },
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/spec-reasoning-review-delta.json",
+          "sha256": "88ec06e899bf79e082bfcba51b61db8796c31fa22b6c7ae716b6ead30465ee52"
+        },
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/spec-root-polish-01.json",
+          "sha256": "14dac1223c5792c333a3f73f66c4c23a84190f830565e8e64b441f6923c981c6"
+        }
+      ]
+    },
+    "contract": {
+      "source_segments": [
+        {
+          "path": ".context/same-spec-ten-runs/manuscripts/narrative-max-resume-contract-2026-09-27/artifact.md",
+          "sha256": "afd974e1dc8ae5bbc7d57c25a500b7badbd79bac80bfc4bef322022a68a7d92c"
+        }
+      ],
+      "unmodified_principal_sha256": "afd974e1dc8ae5bbc7d57c25a500b7badbd79bac80bfc4bef322022a68a7d92c",
+      "current_article_sha256": "59984f65fcdd0adb2ffe37eefb9d58b127e8bc8d1748583542bcafca34241ab2",
+      "root_edit_records": [
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/contract-language-delta-02.json",
+          "sha256": "f87519a225ebe0aa10601629a79f19d5876a3433cfc04496739ce7c5735c2fde"
+        },
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/contract-pack-clarity-delta.json",
+          "sha256": "76e9fcfe9efaf8091c32aeac91c41ca603bfe44a003156b830f1fc9d8da10a1f"
+        },
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/contract-reader-delta.json",
+          "sha256": "f1839af3457c04c81172d847f766210edc226f36d0d697cdff550af8eb1efc29"
+        },
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/contract-reader-reasoning-delta.json",
+          "sha256": "defea666805224b15a3591a65114abe31ba9cb9522488f6237d7c774d8a75049"
+        },
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/contract-reader-smoothing-delta.json",
+          "sha256": "0d20ddef1d039d87c8c3044e02e8fe754e5da0bab4c1ab64b496fa66be52a418"
+        },
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/contract-reasoning-review-delta.json",
+          "sha256": "6ceb8d6c6d4efba4e5d9f1cdd11dd8dfa91e044200c235239350feb0cf1486f2"
+        },
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/contract-root-polish-01.json",
+          "sha256": "87f6cec181fcc2f6ca3261a1b9ef21d016064502ca5b99c354e70204e4917805"
+        }
+      ]
+    },
+    "variance": {
+      "source_segments": [
+        {
+          "path": ".context/same-spec-ten-runs/manuscripts/narrative-max-resume-variance-2026-09-27/complete.md",
+          "sha256": "5439c618265c0e243c2812215ef676b9ef03a5b19f70a132ce84d95276e4ebe7"
+        }
+      ],
+      "unmodified_principal_sha256": "5439c618265c0e243c2812215ef676b9ef03a5b19f70a132ce84d95276e4ebe7",
+      "current_article_sha256": "75ece93803dabeac4d578611deacea4629a8740bd59e1ba69cf203a11c53365a",
+      "continuation_assembly": {
+        "method": "Exact concatenation of final-prose text blocks across CLI automatic continuation; first block ends mid-link, second continues the same link. No reasoning blocks used.",
+        "block_sha256": [
+          "6cbb2d212c9f9d82db93c8c882ea0b956d04a369003f0bc995e239f21c65469c",
+          "56e96ba791d6707a027da234e6052a7b97409c2f0947b2a224ba225c8334e3e0"
+        ],
+        "complete_sha256": "5439c618265c0e243c2812215ef676b9ef03a5b19f70a132ce84d95276e4ebe7",
+        "terminal_result_is_last_block_only": true
+      },
+      "root_edit_records": [
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/variance-cosine-clarity-delta.json",
+          "sha256": "8a450073717f23385f2b339c8d62c6ceb8fc043def5840cf84716c83edfea11e"
+        },
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/variance-language-delta-02.json",
+          "sha256": "71cb6a2e1682e0daea2e139f69042727f48d557bf7eafb43e535f06c9a41618c"
+        },
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/variance-reader-delta.json",
+          "sha256": "308e1706687d23ad300c65834fe3e9f37e666a48f4300a4ba25b3c747aa0d88f"
+        },
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/variance-reader-reasoning-delta.json",
+          "sha256": "d2bcaf72d4e7d711195a37c6621689ee75db8028ae176b376642f96bd41c0ae6"
+        },
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/variance-reader-smoothing-delta.json",
+          "sha256": "44f669d163271be34b5b43933dd27d58431600eb7be8120e8cdfd93998f024b8"
+        },
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/variance-reasoning-review-delta.json",
+          "sha256": "f0b404b5572353bd296a60978dc38da766d45b1f5211e3d1ad90aa4692f57976"
+        },
+        {
+          "private_path": "/Users/kochi.chuang/conductor/workspaces/medium-articles/surabaya-v1/.context/same-spec-ten-runs/manuscripts/narrative-2026-09-27/variance-root-polish-01.json",
+          "sha256": "6ee0c70f369b142dc1fce8493b49794591c87e8e990e75a809e4af63f0328a2f"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "scope": "teaching oracle unit tests only",
+  "command": "python3 -B -m unittest discover -s research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench -p 'test_workbench.py' -v",
+  "exit_code": 0,
+  "tests_run": 3,
+  "result": "OK",
+  "test_source_sha256": "20746b5bb8c6f4974219642abc171ad227b0788c5df27dc895569ea57c44cb72",
+  "workbench_sha256": "2ef3e7c87fb9f62e06f82911055af8e7d277dec2225a0a8ebdca589826a645b9",
+  "associated_workbench_at_utc": "2026-09-27T17:02:45.623214+00:00",
+  "note": "時間欄取關聯工作台執行紀錄；不是單元測試的獨立精確起訖時間。"
+}

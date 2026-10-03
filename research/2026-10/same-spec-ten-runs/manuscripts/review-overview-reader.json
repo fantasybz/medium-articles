@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "review_type": "independent_reader_full_manuscript",
+  "reviewed_at": "2026-09-25T09:10:26.433480+00:00",
+  "reviewer": "Codex independent reader sub-agent (AI)",
+  "verdict": "TWO_MINOR_READER_CLARIFICATIONS",
+  "series_verdict": "NOT_ASSESSED_AS_A_COMPLETE_SERIES",
+  "series_ready": false,
+  "public_release_complete": false,
+  "article": {
+    "path": "2026-11-same-spec-overview/article.md",
+    "sha256": "f70652654ebd1e0c2dddf05e01eb3208bf5852f75dfa4dc91e281697cc675583",
+    "line_count": 214
+  },
+  "instructions_applied": [
+    "STYLE.md",
+    "research/2026-10/style_brief.md",
+    "research/2026-09/voice_brief.md"
+  ],
+  "reading": {
+    "entire_manuscript_read": true,
+    "entire_manuscript_lines": [
+      1,
+      214
+    ],
+    "first_full_read_sha256": "f70652654ebd1e0c2dddf05e01eb3208bf5852f75dfa4dc91e281697cc675583",
+    "opening_tldr_conclusion_compared": true,
+    "tables_references_disclosure_read": true,
+    "additional_second_half_reread_lines": [
+      89,
+      214
+    ],
+    "additional_second_half_observed_sha256": "9bb547bf842c295afc8fb53f0e3db7e7d9fdf6f9cf87a52f0914d5fb97cc88c0",
+    "concurrent_edit_note": "原全文已讀完。另讀後半部時主代理已完成 language delta f706→9bb547；本報告依主代理指示仍綁原全文版本，待最終修訂以 exact delta 結案。"
+  },
+  "findings": [
+    {
+      "id": "OVERVIEW-READER-01",
+      "severity": "minor",
+      "status": "OPEN",
+      "line": 149,
+      "title": "決策表把執行條件越界等同於驗收紀錄失真",
+      "quote": "| 評估器故障或生成邊界失效 | 未出現 | 驗收結果本身不可信 |",
+      "reason": "前文已把 cli_success 與 artifact_success 建立為平行判定。生成時使用了不符封存設定的模型或工具，不必然使候選之後的外部驗收紀錄本身失真；受影響的是能否當作正常主要終點，以及能否按照原文件條件解讀整輪結果。決策表把兩種失效一律寫成驗收結果不可信，容易讓技術主管把前面的區分重新合併。",
+      "suggested_replacement": "將第三格改為「執行條件或驗收程序偏離計畫，不能照原設計解讀全輪結果」。停止、保留名額並依 amendment 處理的下一步可保留。",
+      "impact": "修正解讀範圍即可，不改任何本輪計數。"
+    },
+    {
+      "id": "OVERVIEW-READER-02",
+      "severity": "minor",
+      "status": "OPEN",
+      "lines": [
+        32,
+        35,
+        117
+      ],
+      "title": "中心指標 AST 尚缺一次基本定義",
+      "quote": "本研究用兩個指標描述結構。identifier-normalized AST hash 的做法是：先把候選解析成 AST，把識別字名稱正規化，再計算 hash。",
+      "reason": "總論面向工程主管與 QA，AST 是用來區分結構與品質的核心概念；文中從第二節表格一路使用到第六節，卻沒有展開名稱或說明它為什麼是一棵樹。對不熟 parser 的讀者，後文節點、順序與 hash 的精細限制會缺少共同起點。",
+      "suggested_replacement": "在第二節首次正文解說結構時，補一句「AST（抽象語法樹）是把程式解析後得到的樹狀表示，用節點描述條件判斷、函式呼叫等語法。」之後沿用 AST 即可。",
+      "impact": "只補理解核心指標所需的背景，不需擴寫指標或重複解釋全部技術名詞。"
+    }
+  ],
+  "open_counts": {
+    "blocker": 0,
+    "major": 0,
+    "minor": 2
+  },
+  "checks": [
+    {
+      "topic": "真實任務與示例",
+      "lines": [
+        9,
+        19
+      ],
+      "result": "PASS",
+      "reason": "先交代 parser 在研究流程中的用途，再說明 text:123 與 root 非物件兩種缺陷；重現與假設情境分開，也明說沒有對應生產事故。"
+    },
+    {
+      "topic": "三類結果與兩個平行判定",
+      "lines": [
+        21,
+        39
+      ],
+      "result": "PASS_WITH_LATER_TABLE_CLARIFICATION",
+      "reason": "驗收、結構、資源分開，CLI 與 artifact 的交集說明清楚；第 149 行需避免把生成設定越界直接寫成所有驗收不可信。"
+    },
+    {
+      "topic": "103 項有限驗收與規格範圍",
+      "lines": [
+        41,
+        64
+      ],
+      "result": "PASS",
+      "reason": "形狀、streaming 與 exit precedence 用三行例子一起呈現；明說 main()、額外 CLI 參數與內部策略未逐一檢查，不把 103 項通過當成整份規格證明。"
+    },
+    {
+      "topic": "A0／A 差異與控制條件",
+      "lines": [
+        62,
+        87
+      ],
+      "result": "PASS",
+      "reason": "共同 R01–R13 不被當成嚴格等價證明，B／C 追加內容和原生 Skill 分開；執行前本機封存、工具自由度與 provider 未固定條件都有交代。"
+    },
+    {
+      "topic": "全數名額與統計分母",
+      "lines": [
+        89,
+        111
+      ],
+      "result": "PASS",
+      "reason": "40 個名額全部保留，CLI／artifact 可各自成立，accepted 是交集；4,120 項 case outcome、重評、工具 probe 與正式模型樣本的分母不混用。信賴區間與非等效解釋完整。"
+    },
+    {
+      "topic": "結構與品質",
+      "lines": [
+        113,
+        136
+      ],
+      "result": "PASS_WITH_AST_DEFINITION_NEEDED",
+      "reason": "cosine、hash、pair 相依性與 seed 參照的限制清楚，沒有把 0.96 當成原碼保留比例或把 A0 值較低寫成品質較差。需要補一次 AST 的基本定義；CLI 措辭差異的詳述未變成事後改寫實驗。"
+    },
+    {
+      "topic": "主管決策與資源",
+      "lines": [
+        138,
+        168
+      ],
+      "result": "PASS_WITH_TABLE_CLARIFICATION",
+      "reason": "實際出現與假設情境分開，另訂研究、保留原始紀錄與增加多種任務的理由具體；牌價估計、人類工時與跨任務推論分開。第 149 行的證據範圍需微調。"
+    },
+    {
+      "topic": "結語與前後一致",
+      "lines": [
+        170,
+        176
+      ],
+      "result": "PASS",
+      "reason": "先明說回到開場的兩行輸入，再以如果像第三節的例子引入其他有效文字，不把兩行與三行情境混成同一段重現。結尾保留有限驗收、結構非品質、成本非工時、措辭差異與樣本限制。"
+    },
+    {
+      "topic": "系列 recall 與發布狀態",
+      "lines": [
+        17,
+        214
+      ],
+      "result": "PASS",
+      "reason": "已發布 Agentic 總論具篇名與網址，綠燈系列 recall 以完整篇名與尚待發布狀態識別；本系列本機導覽與 AI 協作揭露均讀到末尾，未把資料或本文寫成已公開。"
+    }
+  ],
+  "scope_limits": [
+    "本輪是獨立 AI 讀者複核，不是真人盲審。",
+    "未重做來源全文查核、模型實驗或 zh-TW MCP 檢查。",
+    "本報告不宣告全系列 READY；正在完成的兄弟稿件連結不列 finding。"
+  ],
+  "manuscript_modified": false,
+  "frozen_research_modified": false
+}

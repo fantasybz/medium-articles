@@ -1,0 +1,139 @@
+{
+  "reviewed_utc": "2026-09-27T17:08:03.506892+00:00",
+  "files": [
+    {
+      "file": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-foundations-research.md",
+      "sha256": "eecf7b9e5f45f81e6b219552c16fba378ba55e81dce92d09057de343eaa37ddf",
+      "mcp_summary": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 19
+      },
+      "accepted": true,
+      "all_local_links_resolve": true,
+      "trailing_whitespace": false
+    },
+    {
+      "file": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-change-card.md",
+      "sha256": "19ab3ed8c3f909abb6e3d6202c3c037c382ed3dfb55082c34e3000f9166e0369",
+      "mcp_summary": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 5
+      },
+      "accepted": true,
+      "all_local_links_resolve": true,
+      "trailing_whitespace": false
+    }
+  ],
+  "mcp_config": {
+    "content_type": "markdown",
+    "fix_mode": "none",
+    "fix_output": "search_replace",
+    "profile": "strict",
+    "translationese_domain": "technical",
+    "detect_ai": true,
+    "ai_threshold": "low",
+    "detect_translationese": true,
+    "consistency": true,
+    "detect_style": true,
+    "explain": true,
+    "include_stats": true,
+    "include_telemetry": true,
+    "verify": true,
+    "max_errors": 0,
+    "max_warnings": 0,
+    "output": "full",
+    "ignore_terms": [
+      "通過"
+    ],
+    "glossary": {
+      "proper_nouns": [
+        "不變量"
+      ]
+    }
+  },
+  "manual_info_disposition": [
+    {
+      "finding": "Repeated structured source-card lists and bold field labels",
+      "decision": "retain",
+      "reason": "This is a source ledger and planning artifact; consistent parallel fields support verification and reuse, not article narrative."
+    },
+    {
+      "finding": "作出的選擇 / 作出決定",
+      "decision": "retain",
+      "reason": "These refer to explicit choices assigned to responsible people; the surrounding text states who decides and what changes."
+    },
+    {
+      "finding": "Three parallel compatibility/freedom/question fields",
+      "decision": "retain",
+      "reason": "Distinct required contract fields, not decorative tricolon."
+    },
+    {
+      "finding": "通過",
+      "decision": "retain",
+      "reason": "Means passing checks, not via/through."
+    },
+    {
+      "finding": "json filename casing",
+      "decision": "retain",
+      "reason": "Exact existing source-ledger filename."
+    },
+    {
+      "finding": "Zheng Zheng",
+      "decision": "retain",
+      "reason": "Verified author name."
+    },
+    {
+      "finding": "Whitespace around English term and Chinese punctuation",
+      "decision": "retain",
+      "reason": "Mixed-language source title / technical layout; no missing sentence logic."
+    },
+    {
+      "finding": "若 in fault-matrix cell",
+      "decision": "retain",
+      "reason": "Condition explicitly limits flush-related rejection to observable EOF-before output failure, rather than requiring a particular API call."
+    },
+    {
+      "finding": "擁有需求、介面或相容責任的人",
+      "decision": "retain",
+      "reason": "Names decision authority; not substituting a vague copula."
+    }
+  ],
+  "scope": "Editorial research report and specification change card; no assertion about series articles or executed intervention effect.",
+  "revision_history": [
+    {
+      "reviewed_utc": "2026-09-27T17:08:03.506892+00:00",
+      "change": "Align primary card with document-change proposal and comparison plan: expanded specification versus identical specification plus six checklist questions only. Rationale-only intervention retained as a short alternative, not the main comparison.",
+      "previous_card": {
+        "file": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-change-card.md",
+        "sha256": "e0326766965e5fcb03689ae1eedc1f2b7115071b05694d300a53756df3ffca9d",
+        "mcp_summary": {
+          "errors": 0,
+          "warnings": 0,
+          "info": 4
+        },
+        "accepted": true,
+        "all_local_links_resolve": true,
+        "trailing_whitespace": false
+      }
+    }
+  ],
+  "spec_card_alignment": {
+    "baseline_P": "expanded specification",
+    "intervention_Q": "identical specification plus six self-review questions, without B rationale paragraphs",
+    "relation_to_formal_AB": "Formal B adds rationale and checklist together; historical A/B results do not isolate checklist effect",
+    "checklist_source": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+    "checklist_source_sha256": "c10ef7256aadc46816e73b1bbaf7edc26b5d2719e687ff497ff5005062ff8a3b",
+    "six_question_block_sha256": "0a524448d049cca731bf7d9a90b2c63ae84066e793de458b89f37b27831a30b1",
+    "question_count": 6,
+    "walkthrough": "Second question, R04-R08, applied to R05",
+    "candidate_false_failure": "hypothetical; not observed in formal forty candidates",
+    "R09_risk": "hypothetical overgeneralized checklist wording; actual fourth question preserves legacy str conversion",
+    "new_packets_or_comparison_executed": false,
+    "aligned_documents": [
+      "document-change-proposal.md",
+      "comparison-plan-example.md"
+    ]
+  }
+}

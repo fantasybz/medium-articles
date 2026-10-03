@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-09-25",
+  "reviewer": "Codex independent senior technical editor sub-agent (AI)",
+  "lens": "editor_followup",
+  "verdict": "PASS_VARIANCE_EDITORIAL",
+  "series_verdict": "NOT_FULLY_REVIEWED",
+  "series_ready": false,
+  "public_release_complete": false,
+  "scope": "Full revised variance manuscript only, including E01–E07, new teaching example, recalls, and continuous second-half review.",
+  "input": {
+    "path": "2026-11-same-spec-variance/article.md",
+    "sha256": "ce383be20445328cec4a509e8ce7f519b94e9fe99b2fd927e494ffc4661c3587",
+    "line_count": 262,
+    "fully_read": true,
+    "second_half_read_through_signature": true
+  },
+  "prior_review": {
+    "path": "research/2026-10/same-spec-ten-runs/manuscripts/review-editor.md",
+    "input_sha256": "10f2baf37137360f244a133ccca05f3f982ae828ac256188df3dcf433428b1e4",
+    "modified": false
+  },
+  "resolutions": [
+    {"id": "E01", "original_severity": "major", "status": "resolved", "current_lines": [49, 61], "verification": "Separate endpoints and their intersection are described without a sequential-filter claim; CLI-false/artifact-true remains explicit."},
+    {"id": "E02", "original_severity": "major", "status": "resolved", "current_lines": [122, 122], "verification": "Cosine supports similar node-type proportions only; retained code and original-tree retention are explicitly unmeasured."},
+    {"id": "E03", "original_severity": "major", "status": "resolved", "current_lines": [120, 120], "verification": "The comparison is limited to 180 within-arm pairs and excludes uncomputed cross-arm pairs."},
+    {"id": "E04", "original_severity": "minor", "status": "resolved", "current_lines": [181, 183], "verification": "The prose explains that all formal generation costs belong to accepted slots rather than equating cost and count."},
+    {"id": "E05", "original_severity": "minor", "status": "resolved", "current_lines": [238, 245], "verification": "Relative research links exist, requirements point to frozen source, and unpublished remote attachments are disclosed at lines 152 and 238."},
+    {"id": "E06", "original_severity": "minor", "status": "resolved", "current_lines": [43, 43], "verification": "The formal-cohort-only statement is limited to the four arms' acceptance, structural, and resource results."},
+    {"id": "E07", "original_severity": "minor", "status": "resolved", "current_lines": [126, 126], "verification": "AST is described as the chosen structural descriptor, not the only possible way to observe single-file differences."}
+  ],
+  "new_issues": [],
+  "open_counts": {"blocker": 0, "major": 0, "minor": 0},
+  "checks": {
+    "new_example_lines": [128, 150],
+    "new_example_posthoc_status_explicit": true,
+    "new_example_not_representative_explicit": true,
+    "candidate_excerpt_matches_local_source": true,
+    "candidate_sources": [
+      "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-01-A0/candidate/codex_jsonl.py",
+      "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-02-A0/candidate/codex_jsonl.py"
+    ],
+    "recall_sources_checked": [
+      {"path": "2026-09-agentic-org-design/article.md", "line": 233},
+      {"path": "2026-10-green-reliability/article.md", "line": 529}
+    ],
+    "reliability_article_unpublished_status_explicit": true,
+    "local_links_checked": 14,
+    "local_links_missing": 0,
+    "required_tail_sections": true,
+    "chinese_numbered_sections": 7,
+    "table_columns": [2, 5, 4, 5],
+    "tables_at_most_five_columns": true,
+    "mermaid_count": 0,
+    "unapproved_mermaid": false,
+    "f2_prior_visual_inspection_retained": true,
+    "invented_firsthand_experience_found": false,
+    "cross_article_overlap": "deferred_until_all_four_complete",
+    "external_evidence_reverified": false,
+    "full_data_audit_repeated": false,
+    "zhtw_tool_completion_claimed_by_this_review": false,
+    "manuscript_modified": false
+  },
+  "remaining_work_outside_editorial_pass": [
+    "Finish and review the other three complete manuscripts, then compare series division and repetition.",
+    "Provide stable, publicly accessible research attachments and complete the publishing workflow before public release."
+  ]
+}

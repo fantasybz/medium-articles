@@ -1,0 +1,1674 @@
+{
+  "schema_version": 1,
+  "task_id": "codex-jsonl-type-safety-v1",
+  "candidate_sha256": "47c52b711a6a5d1374d9ac09b7474d5dfe5832568b8a4183eeeab5d8ea447573",
+  "evaluator_sha256": "443b47cc93ca1559293a6025472696eee8351a25cb8486e09ee682bcfd29508a",
+  "requirements_sha256": "32e0a0af2578564624b5a5b5f9d981e0dc296e6eb690b6598482cb809419a515",
+  "sandbox": {
+    "sandbox": "macos-seatbelt-v1",
+    "read_denied": true,
+    "write_denied": true,
+    "network_denied": true
+  },
+  "case_count": 103,
+  "passed_count": 103,
+  "failed_count": 0,
+  "passed": true,
+  "all_passed": true,
+  "failed_requirements": [],
+  "requirement_coverage": {
+    "R01": [
+      "legacy-multiple-messages",
+      "legacy-cjk-c-locale",
+      "compat-unicode-command-characters",
+      "compat-extra-fields",
+      "streaming-before-eof"
+    ],
+    "R05": [
+      "legacy-multiple-messages",
+      "legacy-cjk-c-locale",
+      "legacy-ignored-lines-and-types",
+      "legacy-empty-text-is-not-speech",
+      "compat-duplicate-messages-and-completions",
+      "compat-whitespace-text",
+      "compat-embedded-newline",
+      "compat-optional-null-empty",
+      "wrong-agent_message-number",
+      "wrong-agent_message-zero",
+      "wrong-agent_message-bool",
+      "wrong-agent_message-list",
+      "wrong-agent_message-object"
+    ],
+    "R08": [
+      "legacy-multiple-messages",
+      "legacy-missing-usage",
+      "legacy-completed-silent",
+      "compat-duplicate-messages-and-completions",
+      "compat-optional-null-empty",
+      "wrong-usage-null",
+      "wrong-usage-list",
+      "wrong-usage-number",
+      "wrong-usage-string",
+      "wrong-usage-bool",
+      "wrong-input_tokens-null",
+      "wrong-input_tokens-negative",
+      "wrong-input_tokens-bool",
+      "wrong-input_tokens-float",
+      "wrong-input_tokens-string",
+      "wrong-input_tokens-list",
+      "wrong-input_tokens-object",
+      "wrong-output_tokens-null",
+      "wrong-output_tokens-negative",
+      "wrong-output_tokens-bool",
+      "wrong-output_tokens-float",
+      "wrong-output_tokens-string",
+      "wrong-output_tokens-list",
+      "wrong-output_tokens-object",
+      "wrong-both-token-fields-one-diagnostic",
+      "valid-zero-and-large-tokens"
+    ],
+    "R06": [
+      "legacy-command-truncation",
+      "legacy-ignored-lines-and-types",
+      "legacy-command-is-not-speech",
+      "legacy-incomplete-command",
+      "compat-unicode-command-characters",
+      "compat-optional-null-empty",
+      "wrong-command_execution-number",
+      "wrong-command_execution-zero",
+      "wrong-command_execution-bool",
+      "wrong-command_execution-list",
+      "wrong-command_execution-object"
+    ],
+    "R02": [
+      "legacy-ignored-lines-and-types",
+      "compat-unknown-payloads-not-inspected",
+      "wrong-root-null",
+      "wrong-root-list",
+      "wrong-root-number",
+      "wrong-root-string",
+      "wrong-root-bool",
+      "wrong-event-type-null",
+      "wrong-event-type-number",
+      "wrong-event-type-list",
+      "wrong-event-type-bool",
+      "physical-line-numbers-and-continuation"
+    ],
+    "R04": [
+      "legacy-ignored-lines-and-types",
+      "compat-unknown-payloads-not-inspected",
+      "compat-optional-null-empty",
+      "wrong-item-envelope-null",
+      "wrong-item-envelope-list",
+      "wrong-item-envelope-number",
+      "wrong-item-envelope-string",
+      "wrong-item-envelope-bool",
+      "wrong-item-type-null",
+      "wrong-item-type-number",
+      "wrong-item-type-list",
+      "wrong-item-type-bool"
+    ],
+    "R13": [
+      "legacy-ignored-lines-and-types",
+      "compat-duplicate-messages-and-completions",
+      "compat-error-after-completion",
+      "compat-unknown-payloads-not-inspected",
+      "compat-extra-fields"
+    ],
+    "R07": [
+      "legacy-item-error",
+      "compat-optional-null-empty",
+      "wrong-error-number",
+      "wrong-error-zero",
+      "wrong-error-bool",
+      "wrong-error-list",
+      "wrong-error-object"
+    ],
+    "R11": [
+      "legacy-item-error",
+      "legacy-turn-failed",
+      "legacy-turn-failed-missing",
+      "legacy-error-before-completion",
+      "legacy-missing-completion",
+      "legacy-empty-input",
+      "legacy-completed-silent",
+      "legacy-command-is-not-speech",
+      "legacy-empty-text-is-not-speech",
+      "legacy-error-outranks-silence",
+      "legacy-incomplete-command",
+      "compat-error-after-completion",
+      "compat-turn-failed-null",
+      "compat-turn-failed-empty-object",
+      "compat-turn-failed-null-message",
+      "compat-turn-failed-empty-message",
+      "compat-top-error-converts-null",
+      "compat-top-error-converts-number",
+      "compat-top-error-converts-list",
+      "compat-top-error-converts-object",
+      "compat-top-error-converts-bool",
+      "compat-top-error-missing-message",
+      "wrong-root-null",
+      "wrong-root-list",
+      "wrong-root-number",
+      "wrong-root-string",
+      "wrong-root-bool",
+      "wrong-failed-error-envelope-number",
+      "wrong-failed-error-envelope-false",
+      "wrong-failed-error-envelope-list",
+      "wrong-failed-error-envelope-string",
+      "wrong-failed-message-number",
+      "wrong-failed-message-zero",
+      "wrong-failed-message-bool",
+      "wrong-failed-message-list",
+      "wrong-failed-message-object",
+      "physical-line-numbers-and-continuation",
+      "malformed-outranks-disconnect",
+      "malformed-outranks-silence",
+      "later-error-outranks-malformed",
+      "earlier-error-outranks-malformed"
+    ],
+    "R10": [
+      "legacy-turn-failed",
+      "legacy-turn-failed-missing",
+      "compat-turn-failed-null",
+      "compat-turn-failed-empty-object",
+      "compat-turn-failed-null-message",
+      "compat-turn-failed-empty-message",
+      "wrong-failed-error-envelope-number",
+      "wrong-failed-error-envelope-false",
+      "wrong-failed-error-envelope-list",
+      "wrong-failed-error-envelope-string",
+      "wrong-failed-message-number",
+      "wrong-failed-message-zero",
+      "wrong-failed-message-bool",
+      "wrong-failed-message-list",
+      "wrong-failed-message-object"
+    ],
+    "R12": [
+      "legacy-turn-failed",
+      "legacy-turn-failed-missing",
+      "legacy-error-before-completion",
+      "legacy-missing-completion",
+      "legacy-empty-input",
+      "legacy-completed-silent",
+      "legacy-command-is-not-speech",
+      "legacy-empty-text-is-not-speech",
+      "legacy-error-outranks-silence",
+      "legacy-incomplete-command",
+      "compat-turn-failed-null",
+      "compat-turn-failed-empty-object",
+      "compat-turn-failed-null-message",
+      "compat-turn-failed-empty-message",
+      "compat-top-error-converts-null",
+      "compat-top-error-converts-number",
+      "compat-top-error-converts-list",
+      "compat-top-error-converts-object",
+      "compat-top-error-converts-bool",
+      "later-error-outranks-malformed",
+      "earlier-error-outranks-malformed"
+    ],
+    "R09": [
+      "legacy-error-before-completion",
+      "legacy-error-outranks-silence",
+      "compat-error-after-completion",
+      "compat-top-error-converts-null",
+      "compat-top-error-converts-number",
+      "compat-top-error-converts-list",
+      "compat-top-error-converts-object",
+      "compat-top-error-converts-bool",
+      "compat-top-error-missing-message",
+      "later-error-outranks-malformed",
+      "earlier-error-outranks-malformed"
+    ],
+    "R03": [
+      "wrong-root-null",
+      "wrong-root-list",
+      "wrong-root-number",
+      "wrong-root-string",
+      "wrong-root-bool",
+      "wrong-event-type-null",
+      "wrong-event-type-number",
+      "wrong-event-type-list",
+      "wrong-event-type-bool",
+      "wrong-item-envelope-null",
+      "wrong-item-envelope-list",
+      "wrong-item-envelope-number",
+      "wrong-item-envelope-string",
+      "wrong-item-envelope-bool",
+      "wrong-item-type-null",
+      "wrong-item-type-number",
+      "wrong-item-type-list",
+      "wrong-item-type-bool",
+      "wrong-agent_message-number",
+      "wrong-agent_message-zero",
+      "wrong-agent_message-bool",
+      "wrong-agent_message-list",
+      "wrong-agent_message-object",
+      "wrong-command_execution-number",
+      "wrong-command_execution-zero",
+      "wrong-command_execution-bool",
+      "wrong-command_execution-list",
+      "wrong-command_execution-object",
+      "wrong-error-number",
+      "wrong-error-zero",
+      "wrong-error-bool",
+      "wrong-error-list",
+      "wrong-error-object",
+      "wrong-usage-null",
+      "wrong-usage-list",
+      "wrong-usage-number",
+      "wrong-usage-string",
+      "wrong-usage-bool",
+      "wrong-input_tokens-null",
+      "wrong-input_tokens-negative",
+      "wrong-input_tokens-bool",
+      "wrong-input_tokens-float",
+      "wrong-input_tokens-string",
+      "wrong-input_tokens-list",
+      "wrong-input_tokens-object",
+      "wrong-output_tokens-null",
+      "wrong-output_tokens-negative",
+      "wrong-output_tokens-bool",
+      "wrong-output_tokens-float",
+      "wrong-output_tokens-string",
+      "wrong-output_tokens-list",
+      "wrong-output_tokens-object",
+      "wrong-both-token-fields-one-diagnostic",
+      "wrong-failed-error-envelope-number",
+      "wrong-failed-error-envelope-false",
+      "wrong-failed-error-envelope-list",
+      "wrong-failed-error-envelope-string",
+      "wrong-failed-message-number",
+      "wrong-failed-message-zero",
+      "wrong-failed-message-bool",
+      "wrong-failed-message-list",
+      "wrong-failed-message-object",
+      "physical-line-numbers-and-continuation",
+      "malformed-outranks-disconnect",
+      "malformed-outranks-silence",
+      "later-error-outranks-malformed",
+      "earlier-error-outranks-malformed"
+    ]
+  },
+  "cases": [
+    {
+      "case_id": "legacy-multiple-messages",
+      "requirements": [
+        "R01",
+        "R05",
+        "R08"
+      ],
+      "group": "legacy",
+      "passed": true,
+      "returncode": 0,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041944
+    },
+    {
+      "case_id": "legacy-cjk-c-locale",
+      "requirements": [
+        "R01",
+        "R05"
+      ],
+      "group": "legacy",
+      "passed": true,
+      "returncode": 0,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": true,
+      "duration_seconds": 0.076208
+    },
+    {
+      "case_id": "legacy-command-truncation",
+      "requirements": [
+        "R06"
+      ],
+      "group": "legacy",
+      "passed": true,
+      "returncode": 0,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.042041
+    },
+    {
+      "case_id": "legacy-ignored-lines-and-types",
+      "requirements": [
+        "R02",
+        "R04",
+        "R05",
+        "R06",
+        "R13"
+      ],
+      "group": "legacy",
+      "passed": true,
+      "returncode": 0,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041842
+    },
+    {
+      "case_id": "legacy-missing-usage",
+      "requirements": [
+        "R08"
+      ],
+      "group": "legacy",
+      "passed": true,
+      "returncode": 0,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.04181
+    },
+    {
+      "case_id": "legacy-item-error",
+      "requirements": [
+        "R07",
+        "R11"
+      ],
+      "group": "legacy",
+      "passed": true,
+      "returncode": 0,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.039082
+    },
+    {
+      "case_id": "legacy-turn-failed",
+      "requirements": [
+        "R10",
+        "R11",
+        "R12"
+      ],
+      "group": "legacy",
+      "passed": true,
+      "returncode": 3,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041268
+    },
+    {
+      "case_id": "legacy-turn-failed-missing",
+      "requirements": [
+        "R10",
+        "R11",
+        "R12"
+      ],
+      "group": "legacy",
+      "passed": true,
+      "returncode": 3,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.039728
+    },
+    {
+      "case_id": "legacy-error-before-completion",
+      "requirements": [
+        "R09",
+        "R11",
+        "R12"
+      ],
+      "group": "legacy",
+      "passed": true,
+      "returncode": 3,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041989
+    },
+    {
+      "case_id": "legacy-missing-completion",
+      "requirements": [
+        "R11",
+        "R12"
+      ],
+      "group": "legacy",
+      "passed": true,
+      "returncode": 4,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.042532
+    },
+    {
+      "case_id": "legacy-empty-input",
+      "requirements": [
+        "R11",
+        "R12"
+      ],
+      "group": "legacy",
+      "passed": true,
+      "returncode": 4,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.042221
+    },
+    {
+      "case_id": "legacy-completed-silent",
+      "requirements": [
+        "R08",
+        "R11",
+        "R12"
+      ],
+      "group": "legacy",
+      "passed": true,
+      "returncode": 5,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.039501
+    },
+    {
+      "case_id": "legacy-command-is-not-speech",
+      "requirements": [
+        "R06",
+        "R11",
+        "R12"
+      ],
+      "group": "legacy",
+      "passed": true,
+      "returncode": 5,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041892
+    },
+    {
+      "case_id": "legacy-empty-text-is-not-speech",
+      "requirements": [
+        "R05",
+        "R11",
+        "R12"
+      ],
+      "group": "legacy",
+      "passed": true,
+      "returncode": 5,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041701
+    },
+    {
+      "case_id": "legacy-error-outranks-silence",
+      "requirements": [
+        "R09",
+        "R11",
+        "R12"
+      ],
+      "group": "legacy",
+      "passed": true,
+      "returncode": 3,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.042136
+    },
+    {
+      "case_id": "legacy-incomplete-command",
+      "requirements": [
+        "R06",
+        "R11",
+        "R12"
+      ],
+      "group": "legacy",
+      "passed": true,
+      "returncode": 4,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041154
+    },
+    {
+      "case_id": "compat-duplicate-messages-and-completions",
+      "requirements": [
+        "R05",
+        "R08",
+        "R13"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 0,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.03953
+    },
+    {
+      "case_id": "compat-error-after-completion",
+      "requirements": [
+        "R09",
+        "R11",
+        "R13"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 3,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.042005
+    },
+    {
+      "case_id": "compat-whitespace-text",
+      "requirements": [
+        "R05"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 0,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.039613
+    },
+    {
+      "case_id": "compat-embedded-newline",
+      "requirements": [
+        "R05"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 0,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.038675
+    },
+    {
+      "case_id": "compat-unicode-command-characters",
+      "requirements": [
+        "R01",
+        "R06"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 0,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.040013
+    },
+    {
+      "case_id": "compat-unknown-payloads-not-inspected",
+      "requirements": [
+        "R02",
+        "R04",
+        "R13"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 0,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041683
+    },
+    {
+      "case_id": "compat-extra-fields",
+      "requirements": [
+        "R01",
+        "R13"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 0,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.042026
+    },
+    {
+      "case_id": "compat-optional-null-empty",
+      "requirements": [
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 0,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041866
+    },
+    {
+      "case_id": "compat-turn-failed-null",
+      "requirements": [
+        "R10",
+        "R11",
+        "R12"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 3,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041295
+    },
+    {
+      "case_id": "compat-turn-failed-empty-object",
+      "requirements": [
+        "R10",
+        "R11",
+        "R12"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 3,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.040233
+    },
+    {
+      "case_id": "compat-turn-failed-null-message",
+      "requirements": [
+        "R10",
+        "R11",
+        "R12"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 3,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041711
+    },
+    {
+      "case_id": "compat-turn-failed-empty-message",
+      "requirements": [
+        "R10",
+        "R11",
+        "R12"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 3,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.074968
+    },
+    {
+      "case_id": "compat-top-error-converts-null",
+      "requirements": [
+        "R09",
+        "R11",
+        "R12"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 3,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.07512
+    },
+    {
+      "case_id": "compat-top-error-converts-number",
+      "requirements": [
+        "R09",
+        "R11",
+        "R12"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 3,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.078364
+    },
+    {
+      "case_id": "compat-top-error-converts-list",
+      "requirements": [
+        "R09",
+        "R11",
+        "R12"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 3,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.07623
+    },
+    {
+      "case_id": "compat-top-error-converts-object",
+      "requirements": [
+        "R09",
+        "R11",
+        "R12"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 3,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.042408
+    },
+    {
+      "case_id": "compat-top-error-converts-bool",
+      "requirements": [
+        "R09",
+        "R11",
+        "R12"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 3,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.040219
+    },
+    {
+      "case_id": "compat-top-error-missing-message",
+      "requirements": [
+        "R09",
+        "R11"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 3,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041973
+    },
+    {
+      "case_id": "wrong-root-null",
+      "requirements": [
+        "R02",
+        "R03",
+        "R11"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041503
+    },
+    {
+      "case_id": "wrong-root-list",
+      "requirements": [
+        "R02",
+        "R03",
+        "R11"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.040966
+    },
+    {
+      "case_id": "wrong-root-number",
+      "requirements": [
+        "R02",
+        "R03",
+        "R11"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041645
+    },
+    {
+      "case_id": "wrong-root-string",
+      "requirements": [
+        "R02",
+        "R03",
+        "R11"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.042275
+    },
+    {
+      "case_id": "wrong-root-bool",
+      "requirements": [
+        "R02",
+        "R03",
+        "R11"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.038237
+    },
+    {
+      "case_id": "wrong-event-type-null",
+      "requirements": [
+        "R02",
+        "R03"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041735
+    },
+    {
+      "case_id": "wrong-event-type-number",
+      "requirements": [
+        "R02",
+        "R03"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041852
+    },
+    {
+      "case_id": "wrong-event-type-list",
+      "requirements": [
+        "R02",
+        "R03"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.040876
+    },
+    {
+      "case_id": "wrong-event-type-bool",
+      "requirements": [
+        "R02",
+        "R03"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.042031
+    },
+    {
+      "case_id": "wrong-item-envelope-null",
+      "requirements": [
+        "R03",
+        "R04"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041548
+    },
+    {
+      "case_id": "wrong-item-envelope-list",
+      "requirements": [
+        "R03",
+        "R04"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.039443
+    },
+    {
+      "case_id": "wrong-item-envelope-number",
+      "requirements": [
+        "R03",
+        "R04"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.042204
+    },
+    {
+      "case_id": "wrong-item-envelope-string",
+      "requirements": [
+        "R03",
+        "R04"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041662
+    },
+    {
+      "case_id": "wrong-item-envelope-bool",
+      "requirements": [
+        "R03",
+        "R04"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.042005
+    },
+    {
+      "case_id": "wrong-item-type-null",
+      "requirements": [
+        "R03",
+        "R04"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041848
+    },
+    {
+      "case_id": "wrong-item-type-number",
+      "requirements": [
+        "R03",
+        "R04"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.040587
+    },
+    {
+      "case_id": "wrong-item-type-list",
+      "requirements": [
+        "R03",
+        "R04"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.039975
+    },
+    {
+      "case_id": "wrong-item-type-bool",
+      "requirements": [
+        "R03",
+        "R04"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.042095
+    },
+    {
+      "case_id": "wrong-agent_message-number",
+      "requirements": [
+        "R03",
+        "R05"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.038862
+    },
+    {
+      "case_id": "wrong-agent_message-zero",
+      "requirements": [
+        "R03",
+        "R05"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.03953
+    },
+    {
+      "case_id": "wrong-agent_message-bool",
+      "requirements": [
+        "R03",
+        "R05"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.037756
+    },
+    {
+      "case_id": "wrong-agent_message-list",
+      "requirements": [
+        "R03",
+        "R05"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041677
+    },
+    {
+      "case_id": "wrong-agent_message-object",
+      "requirements": [
+        "R03",
+        "R05"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.037131
+    },
+    {
+      "case_id": "wrong-command_execution-number",
+      "requirements": [
+        "R03",
+        "R06"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041596
+    },
+    {
+      "case_id": "wrong-command_execution-zero",
+      "requirements": [
+        "R03",
+        "R06"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.040598
+    },
+    {
+      "case_id": "wrong-command_execution-bool",
+      "requirements": [
+        "R03",
+        "R06"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041013
+    },
+    {
+      "case_id": "wrong-command_execution-list",
+      "requirements": [
+        "R03",
+        "R06"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.040452
+    },
+    {
+      "case_id": "wrong-command_execution-object",
+      "requirements": [
+        "R03",
+        "R06"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.038993
+    },
+    {
+      "case_id": "wrong-error-number",
+      "requirements": [
+        "R03",
+        "R07"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.04099
+    },
+    {
+      "case_id": "wrong-error-zero",
+      "requirements": [
+        "R03",
+        "R07"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.040266
+    },
+    {
+      "case_id": "wrong-error-bool",
+      "requirements": [
+        "R03",
+        "R07"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.040821
+    },
+    {
+      "case_id": "wrong-error-list",
+      "requirements": [
+        "R03",
+        "R07"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041569
+    },
+    {
+      "case_id": "wrong-error-object",
+      "requirements": [
+        "R03",
+        "R07"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.040936
+    },
+    {
+      "case_id": "wrong-usage-null",
+      "requirements": [
+        "R03",
+        "R08"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041382
+    },
+    {
+      "case_id": "wrong-usage-list",
+      "requirements": [
+        "R03",
+        "R08"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.042058
+    },
+    {
+      "case_id": "wrong-usage-number",
+      "requirements": [
+        "R03",
+        "R08"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.039461
+    },
+    {
+      "case_id": "wrong-usage-string",
+      "requirements": [
+        "R03",
+        "R08"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.039185
+    },
+    {
+      "case_id": "wrong-usage-bool",
+      "requirements": [
+        "R03",
+        "R08"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.04155
+    },
+    {
+      "case_id": "wrong-input_tokens-null",
+      "requirements": [
+        "R03",
+        "R08"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.038561
+    },
+    {
+      "case_id": "wrong-input_tokens-negative",
+      "requirements": [
+        "R03",
+        "R08"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041936
+    },
+    {
+      "case_id": "wrong-input_tokens-bool",
+      "requirements": [
+        "R03",
+        "R08"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.038697
+    },
+    {
+      "case_id": "wrong-input_tokens-float",
+      "requirements": [
+        "R03",
+        "R08"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041771
+    },
+    {
+      "case_id": "wrong-input_tokens-string",
+      "requirements": [
+        "R03",
+        "R08"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041623
+    },
+    {
+      "case_id": "wrong-input_tokens-list",
+      "requirements": [
+        "R03",
+        "R08"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.042313
+    },
+    {
+      "case_id": "wrong-input_tokens-object",
+      "requirements": [
+        "R03",
+        "R08"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041088
+    },
+    {
+      "case_id": "wrong-output_tokens-null",
+      "requirements": [
+        "R03",
+        "R08"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.042261
+    },
+    {
+      "case_id": "wrong-output_tokens-negative",
+      "requirements": [
+        "R03",
+        "R08"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041951
+    },
+    {
+      "case_id": "wrong-output_tokens-bool",
+      "requirements": [
+        "R03",
+        "R08"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.042444
+    },
+    {
+      "case_id": "wrong-output_tokens-float",
+      "requirements": [
+        "R03",
+        "R08"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.079237
+    },
+    {
+      "case_id": "wrong-output_tokens-string",
+      "requirements": [
+        "R03",
+        "R08"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.040883
+    },
+    {
+      "case_id": "wrong-output_tokens-list",
+      "requirements": [
+        "R03",
+        "R08"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.038713
+    },
+    {
+      "case_id": "wrong-output_tokens-object",
+      "requirements": [
+        "R03",
+        "R08"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.039669
+    },
+    {
+      "case_id": "wrong-both-token-fields-one-diagnostic",
+      "requirements": [
+        "R03",
+        "R08"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041193
+    },
+    {
+      "case_id": "valid-zero-and-large-tokens",
+      "requirements": [
+        "R08"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 0,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.04027
+    },
+    {
+      "case_id": "wrong-failed-error-envelope-number",
+      "requirements": [
+        "R03",
+        "R10",
+        "R11"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 3,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041396
+    },
+    {
+      "case_id": "wrong-failed-error-envelope-false",
+      "requirements": [
+        "R03",
+        "R10",
+        "R11"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 3,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041889
+    },
+    {
+      "case_id": "wrong-failed-error-envelope-list",
+      "requirements": [
+        "R03",
+        "R10",
+        "R11"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 3,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041318
+    },
+    {
+      "case_id": "wrong-failed-error-envelope-string",
+      "requirements": [
+        "R03",
+        "R10",
+        "R11"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 3,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.039936
+    },
+    {
+      "case_id": "wrong-failed-message-number",
+      "requirements": [
+        "R03",
+        "R10",
+        "R11"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 3,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041541
+    },
+    {
+      "case_id": "wrong-failed-message-zero",
+      "requirements": [
+        "R03",
+        "R10",
+        "R11"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 3,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.040409
+    },
+    {
+      "case_id": "wrong-failed-message-bool",
+      "requirements": [
+        "R03",
+        "R10",
+        "R11"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 3,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.039321
+    },
+    {
+      "case_id": "wrong-failed-message-list",
+      "requirements": [
+        "R03",
+        "R10",
+        "R11"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 3,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.04001
+    },
+    {
+      "case_id": "wrong-failed-message-object",
+      "requirements": [
+        "R03",
+        "R10",
+        "R11"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 3,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041788
+    },
+    {
+      "case_id": "physical-line-numbers-and-continuation",
+      "requirements": [
+        "R02",
+        "R03",
+        "R11"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.040133
+    },
+    {
+      "case_id": "malformed-outranks-disconnect",
+      "requirements": [
+        "R03",
+        "R11"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.039111
+    },
+    {
+      "case_id": "malformed-outranks-silence",
+      "requirements": [
+        "R03",
+        "R11"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 6,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041777
+    },
+    {
+      "case_id": "later-error-outranks-malformed",
+      "requirements": [
+        "R03",
+        "R09",
+        "R11",
+        "R12"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 3,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.03993
+    },
+    {
+      "case_id": "earlier-error-outranks-malformed",
+      "requirements": [
+        "R03",
+        "R09",
+        "R11",
+        "R12"
+      ],
+      "group": "hardening",
+      "passed": true,
+      "returncode": 3,
+      "sandbox": "macos-seatbelt-v1",
+      "c_locale": false,
+      "duration_seconds": 0.041133
+    },
+    {
+      "case_id": "streaming-before-eof",
+      "requirements": [
+        "R01"
+      ],
+      "group": "streaming",
+      "passed": true,
+      "observed_before_eof": true,
+      "early_stdout": "stream-before-eof\n",
+      "returncode": 0,
+      "sandbox": "macos-seatbelt-v1"
+    }
+  ]
+}

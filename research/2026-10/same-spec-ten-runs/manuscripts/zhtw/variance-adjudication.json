@@ -1,0 +1,803 @@
+{
+  "recorded_at": "2026-09-25T05:59:30.706408+00:00",
+  "initial_issue_count": 87,
+  "initial_summary": {
+    "errors": 2,
+    "warnings": 63,
+    "info": 22,
+    "tier2_gray_zone": 3
+  },
+  "decisions": [
+    {
+      "line": 3,
+      "col": 14,
+      "found": " ",
+      "rule_type": "punctuation",
+      "severity": "info",
+      "disposition": "retain_repository_style",
+      "reason": "Spacing around the TL;DR or reference separator follows the shared article template."
+    },
+    {
+      "line": 3,
+      "col": 36,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 3,
+      "col": 232,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 9,
+      "col": 11,
+      "found": "協議",
+      "rule_type": "cross_strait",
+      "severity": "error",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Research protocol agreed before execution, not a network protocol."
+    },
+    {
+      "line": 13,
+      "col": 37,
+      "found": "協議",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Research protocol agreed before execution, not a network protocol."
+    },
+    {
+      "line": 17,
+      "col": 127,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 26,
+      "col": 93,
+      "found": "修補後的 parser 要在 stderr 留下一行帶實體行號的診斷",
+      "rule_type": "translationese",
+      "severity": "warning",
+      "disposition": "revised_in_context",
+      "reason": "Sentence or term revised after semantic review; no automatic replacement was applied."
+    },
+    {
+      "line": 36,
+      "col": 45,
+      "found": "程序",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "revised_in_context",
+      "reason": "Sentence or term revised after semantic review; no automatic replacement was applied."
+    },
+    {
+      "line": 41,
+      "col": 54,
+      "found": "服務端",
+      "rule_type": "cross_strait",
+      "severity": "info",
+      "disposition": "revised_in_context",
+      "reason": "Sentence or term revised after semantic review; no automatic replacement was applied."
+    },
+    {
+      "line": 43,
+      "col": 83,
+      "found": "服務端",
+      "rule_type": "cross_strait",
+      "severity": "info",
+      "disposition": "revised_in_context",
+      "reason": "Sentence or term revised after semantic review; no automatic replacement was applied."
+    },
+    {
+      "line": 49,
+      "col": 135,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 55,
+      "col": 26,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 59,
+      "col": 131,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 61,
+      "col": 1,
+      "found": "協議",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Research protocol agreed before execution, not a network protocol."
+    },
+    {
+      "line": 61,
+      "col": 31,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 63,
+      "col": 157,
+      "found": "至少 95% 的區間會包含真正的通過率",
+      "rule_type": "translationese",
+      "severity": "warning",
+      "disposition": "revised_in_context",
+      "reason": "Sentence or term revised after semantic review; no automatic replacement was applied."
+    },
+    {
+      "line": 63,
+      "col": 173,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 63,
+      "col": 234,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 63,
+      "col": 268,
+      "found": "服務端",
+      "rule_type": "cross_strait",
+      "severity": "info",
+      "disposition": "revised_in_context",
+      "reason": "Sentence or term revised after semantic review; no automatic replacement was applied."
+    },
+    {
+      "line": 65,
+      "col": 73,
+      "found": "協議",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Research protocol agreed before execution, not a network protocol."
+    },
+    {
+      "line": 71,
+      "col": 88,
+      "found": "這些觀察支持的是已受測的通道與本輪紀錄",
+      "rule_type": "translationese",
+      "severity": "warning",
+      "disposition": "revised_in_context",
+      "reason": "Sentence or term revised after semantic review; no automatic replacement was applied."
+    },
+    {
+      "line": 77,
+      "col": 96,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 77,
+      "col": 157,
+      "found": "是一個",
+      "rule_type": "translationese",
+      "severity": "info",
+      "disposition": "retain_needed_count",
+      "reason": "The sentence distinguishes one affected run from multiple failed cases; removing 一個 loses the count."
+    },
+    {
+      "line": 79,
+      "col": 30,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 83,
+      "col": 101,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 85,
+      "col": 96,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 87,
+      "col": 135,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 89,
+      "col": 33,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 89,
+      "col": 126,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 89,
+      "col": 164,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 93,
+      "col": 11,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "error",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 95,
+      "col": 5,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 95,
+      "col": 213,
+      "found": "原始碼",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "revised_in_context",
+      "reason": "Sentence or term revised after semantic review; no automatic replacement was applied."
+    },
+    {
+      "line": 95,
+      "col": 231,
+      "found": "類型",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "revised_in_context",
+      "reason": "Sentence or term revised after semantic review; no automatic replacement was applied."
+    },
+    {
+      "line": 101,
+      "col": 192,
+      "found": "維度",
+      "rule_type": "ai_style",
+      "severity": "info",
+      "disposition": "retain_mathematical_usage",
+      "reason": "Describes whether a plot axis encodes another measured dimension."
+    },
+    {
+      "line": 116,
+      "col": 12,
+      "found": "R03 容許 malformed 診斷裡的 REASON 使用任何非空的單行說明",
+      "rule_type": "translationese",
+      "severity": "warning",
+      "disposition": "revised_in_context",
+      "reason": "Sentence or term revised after semantic review; no automatic replacement was applied."
+    },
+    {
+      "line": 116,
+      "col": 134,
+      "found": "原始碼",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "revised_in_context",
+      "reason": "Sentence or term revised after semantic review; no automatic replacement was applied."
+    },
+    {
+      "line": 120,
+      "col": 151,
+      "found": "原始碼",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "revised_in_context",
+      "reason": "Sentence or term revised after semantic review; no automatic replacement was applied."
+    },
+    {
+      "line": 124,
+      "col": 3,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 124,
+      "col": 216,
+      "found": "類體",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "revised_in_context",
+      "reason": "Sentence or term revised after semantic review; no automatic replacement was applied."
+    },
+    {
+      "line": 124,
+      "col": 306,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 124,
+      "col": 359,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 126,
+      "col": 33,
+      "found": "原始碼",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "revised_in_context",
+      "reason": "Sentence or term revised after semantic review; no automatic replacement was applied."
+    },
+    {
+      "line": 148,
+      "col": 132,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 150,
+      "col": 41,
+      "found": "逐 pair 的數值也保留在文末連結的",
+      "rule_type": "translationese",
+      "severity": "warning",
+      "disposition": "revised_in_context",
+      "reason": "Sentence or term revised after semantic review; no automatic replacement was applied."
+    },
+    {
+      "line": 152,
+      "col": 69,
+      "found": "也不能把較高的相似度換算成較低的維護成本",
+      "rule_type": "translationese",
+      "severity": "warning",
+      "disposition": "revised_in_context",
+      "reason": "Sentence or term revised after semantic review; no automatic replacement was applied."
+    },
+    {
+      "line": 154,
+      "col": 33,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 154,
+      "col": 105,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 171,
+      "col": 390,
+      "found": "拿一次 demo 的花費估整批工作的預算",
+      "rule_type": "translationese",
+      "severity": "warning",
+      "disposition": "revised_in_context",
+      "reason": "Sentence or term revised after semantic review; no automatic replacement was applied."
+    },
+    {
+      "line": 173,
+      "col": 84,
+      "found": "A 52,202、B 57,749、C 64,234",
+      "rule_type": "ai_style",
+      "severity": "info",
+      "disposition": "retain_factual_enumeration",
+      "reason": "These are observed token counts for named arms, not rhetorical tricolon filler."
+    },
+    {
+      "line": 173,
+      "col": 154,
+      "found": "前綴",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "revised_in_context",
+      "reason": "Sentence or term revised after semantic review; no automatic replacement was applied."
+    },
+    {
+      "line": 173,
+      "col": 173,
+      "found": "前綴",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "revised_in_context",
+      "reason": "Sentence or term revised after semantic review; no automatic replacement was applied."
+    },
+    {
+      "line": 175,
+      "col": 46,
+      "found": "更重要的是",
+      "rule_type": "ai_style",
+      "severity": "info",
+      "disposition": "revised_in_context",
+      "reason": "Sentence or term revised after semantic review; no automatic replacement was applied."
+    },
+    {
+      "line": 175,
+      "col": 52,
+      "found": "協議",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Research protocol agreed before execution, not a network protocol."
+    },
+    {
+      "line": 179,
+      "col": 366,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 181,
+      "col": 10,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 193,
+      "col": 8,
+      "found": "服務端",
+      "rule_type": "cross_strait",
+      "severity": "info",
+      "disposition": "revised_in_context",
+      "reason": "Sentence or term revised after semantic review; no automatic replacement was applied."
+    },
+    {
+      "line": 193,
+      "col": 12,
+      "found": "封存與 hash 固定的是我們送出的內容",
+      "rule_type": "translationese",
+      "severity": "warning",
+      "disposition": "revised_in_context",
+      "reason": "Sentence or term revised after semantic review; no automatic replacement was applied."
+    },
+    {
+      "line": 193,
+      "col": 37,
+      "found": "服務端",
+      "rule_type": "cross_strait",
+      "severity": "info",
+      "disposition": "revised_in_context",
+      "reason": "Sentence or term revised after semantic review; no automatic replacement was applied."
+    },
+    {
+      "line": 193,
+      "col": 134,
+      "found": "依賴",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "revised_in_context",
+      "reason": "Sentence or term revised after semantic review; no automatic replacement was applied."
+    },
+    {
+      "line": 199,
+      "col": 65,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 201,
+      "col": 350,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 203,
+      "col": 165,
+      "found": "Claude 的各次參與不能當成不同模型家族的驗證",
+      "rule_type": "translationese",
+      "severity": "warning",
+      "disposition": "revised_in_context",
+      "reason": "Sentence or term revised after semantic review; no automatic replacement was applied."
+    },
+    {
+      "line": 213,
+      "col": 164,
+      "found": "協議",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Research protocol agreed before execution, not a network protocol."
+    },
+    {
+      "line": 215,
+      "col": 49,
+      "found": "一次性",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "revised_in_context",
+      "reason": "Sentence or term revised after semantic review; no automatic replacement was applied."
+    },
+    {
+      "line": 215,
+      "col": 56,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 215,
+      "col": 164,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 217,
+      "col": 133,
+      "found": "如果文件寫法的差異真的會影響你的投入",
+      "rule_type": "translationese",
+      "severity": "warning",
+      "disposition": "revised_in_context",
+      "reason": "Sentence or term revised after semantic review; no automatic replacement was applied."
+    },
+    {
+      "line": 217,
+      "col": 184,
+      "found": "協議",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Research protocol agreed before execution, not a network protocol."
+    },
+    {
+      "line": 219,
+      "col": 72,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 219,
+      "col": 183,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 221,
+      "col": 37,
+      "found": "通過",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Every occurrence means passing acceptance or success probability; replacing it with 透過 changes the meaning."
+    },
+    {
+      "line": 236,
+      "col": 1,
+      "found": "以下研究資料的相對連結指向本稿所附的",
+      "rule_type": "translationese",
+      "severity": "warning",
+      "disposition": "revised_in_context",
+      "reason": "Sentence or term revised after semantic review; no automatic replacement was applied."
+    },
+    {
+      "line": 238,
+      "col": 10,
+      "found": " ",
+      "rule_type": "punctuation",
+      "severity": "info",
+      "disposition": "retain_repository_style",
+      "reason": "Spacing around the TL;DR or reference separator follows the shared article template."
+    },
+    {
+      "line": 239,
+      "col": 10,
+      "found": " ",
+      "rule_type": "punctuation",
+      "severity": "info",
+      "disposition": "retain_repository_style",
+      "reason": "Spacing around the TL;DR or reference separator follows the shared article template."
+    },
+    {
+      "line": 240,
+      "col": 10,
+      "found": " ",
+      "rule_type": "punctuation",
+      "severity": "info",
+      "disposition": "retain_repository_style",
+      "reason": "Spacing around the TL;DR or reference separator follows the shared article template."
+    },
+    {
+      "line": 241,
+      "col": 10,
+      "found": " ",
+      "rule_type": "punctuation",
+      "severity": "info",
+      "disposition": "retain_repository_style",
+      "reason": "Spacing around the TL;DR or reference separator follows the shared article template."
+    },
+    {
+      "line": 242,
+      "col": 10,
+      "found": " ",
+      "rule_type": "punctuation",
+      "severity": "info",
+      "disposition": "retain_repository_style",
+      "reason": "Spacing around the TL;DR or reference separator follows the shared article template."
+    },
+    {
+      "line": 243,
+      "col": 10,
+      "found": " ",
+      "rule_type": "punctuation",
+      "severity": "info",
+      "disposition": "retain_repository_style",
+      "reason": "Spacing around the TL;DR or reference separator follows the shared article template."
+    },
+    {
+      "line": 244,
+      "col": 16,
+      "found": " ",
+      "rule_type": "punctuation",
+      "severity": "info",
+      "disposition": "retain_repository_style",
+      "reason": "Spacing around the TL;DR or reference separator follows the shared article template."
+    },
+    {
+      "line": 246,
+      "col": 15,
+      "found": " ",
+      "rule_type": "punctuation",
+      "severity": "info",
+      "disposition": "retain_repository_style",
+      "reason": "Spacing around the TL;DR or reference separator follows the shared article template."
+    },
+    {
+      "line": 247,
+      "col": 42,
+      "found": " ",
+      "rule_type": "punctuation",
+      "severity": "info",
+      "disposition": "retain_repository_style",
+      "reason": "Spacing around the TL;DR or reference separator follows the shared article template."
+    },
+    {
+      "line": 248,
+      "col": 28,
+      "found": " ",
+      "rule_type": "punctuation",
+      "severity": "info",
+      "disposition": "retain_repository_style",
+      "reason": "Spacing around the TL;DR or reference separator follows the shared article template."
+    },
+    {
+      "line": 249,
+      "col": 28,
+      "found": " ",
+      "rule_type": "punctuation",
+      "severity": "info",
+      "disposition": "retain_repository_style",
+      "reason": "Spacing around the TL;DR or reference separator follows the shared article template."
+    },
+    {
+      "line": 250,
+      "col": 11,
+      "found": " ",
+      "rule_type": "punctuation",
+      "severity": "info",
+      "disposition": "retain_repository_style",
+      "reason": "Spacing around the TL;DR or reference separator follows the shared article template."
+    },
+    {
+      "line": 256,
+      "col": 110,
+      "found": "協議",
+      "rule_type": "cross_strait",
+      "severity": "warning",
+      "disposition": "retain_contextual_false_positive",
+      "reason": "Research protocol agreed before execution, not a network protocol."
+    },
+    {
+      "line": 256,
+      "col": 353,
+      "found": "台灣",
+      "rule_type": "variant",
+      "severity": "warning",
+      "disposition": "revised_in_context",
+      "reason": "Sentence or term revised after semantic review; no automatic replacement was applied."
+    }
+  ],
+  "final_file_sha256": "1cf47ca478afca22ff028c285c4d0550a844e4794886b7e345fa122a27cac800",
+  "final_summary": {
+    "errors": 0,
+    "warnings": 0,
+    "info": 58
+  },
+  "accepted": true,
+  "retained_info": "False positives for 通過 and 協議 remain visible as info; other info cover a needed count, a plot dimension, exact resource enumeration and template spacing. No error/warning remains."
+}

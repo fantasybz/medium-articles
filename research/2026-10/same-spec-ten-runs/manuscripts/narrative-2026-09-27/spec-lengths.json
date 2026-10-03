@@ -1,0 +1,33 @@
+{
+  "method": "Python str.split() over exact frozen UTF-8 text; includes headings and code, excludes common seed, not model-token counts. Descriptive writing-stage calculation; no new model runs.",
+  "files": [
+    {
+      "arm": "A0",
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+      "sha256": "a747ae3abd880f77227e7492e8a2e6d6346637a39b1e64366bc435dd772b4a10",
+      "whitespace_split_count": 936,
+      "characters": 6275
+    },
+    {
+      "arm": "A",
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+      "sha256": "3ea6d57daae7dba9d3ceb6327607ee60ccaed3bd4193e5ec7c79441ad36bc247",
+      "whitespace_split_count": 1655,
+      "characters": 10513
+    },
+    {
+      "arm": "B",
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+      "sha256": "c10ef7256aadc46816e73b1bbaf7edc26b5d2719e687ff497ff5005062ff8a3b",
+      "whitespace_split_count": 1923,
+      "characters": 12274
+    },
+    {
+      "arm": "C",
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md",
+      "sha256": "19c404372f742c8f80165fdfea8df998bb29c3324f892433c8992e418e9c54af",
+      "whitespace_split_count": 2223,
+      "characters": 14344
+    }
+  ]
+}

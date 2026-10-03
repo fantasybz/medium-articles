@@ -1,0 +1,29 @@
+--- B.md
++++ C.md
+@@ -148,3 +148,26 @@
+ - R09–R10: Is top-level error's legacy str conversion retained, and can malformed turn.failed still produce exit 3?
+ - R11–R12: Does final precedence remain 3, then 6, then 4, then 5, then 0 with unchanged legacy summaries?
+ - R13: Do repeated messages/completions and unknown string types remain accepted without new sequence rules?
++
++## Non-normative implementation pattern (C)
++
++This is an optional plain-text implementation pattern, not a runtime skill, installed plugin, hook or tool invocation. R01–R13 are unchanged. Any implementation meeting the same contract is acceptable.
++
++One possible design keeps the original streaming loop and separates a line's validation result from the accumulated flags:
++
++```text
++for physical_line_number, raw_line in stdin:
++    strip and try JSON decoding
++    validate root and the recognized event's relevant fields
++    emit one malformed diagnostic if needed
++    otherwise emit that event's legacy stdout/stderr
++    retain explicit turn.failed even when its diagnostic fields are malformed
++at EOF:
++    choose 3 > 6 > 4 > 5 > 0 and the matching legacy summary
++```
++
++A helper for optional text can distinguish absent/null/empty from wrong-type values, but top-level error must retain its separate str conversion rather than sharing that stricter helper. Another helper can validate a usage mapping and return either both integer counts or a single validation problem, avoiding partial event output. Python bool is a subclass of int, so an exact type check or an explicit bool exclusion can express the token rule.
++
++An event handler can return a small result describing stdout/stderr output, whether an agent spoke, whether a valid turn completed, and whether remote failure occurred. Alternatively, retaining the existing branch structure with local validation is equally acceptable. Either approach should preserve flushing and avoid buffering the stream. Validation errors can be reported through one common function taking the physical line number and a short explanation, so a line with multiple invalid fields still receives exactly one malformed diagnostic.
++
++The malformed flag and explicit-failure flag are independent. Checking the explicit-failure flag first at EOF preserves remote error visibility even when malformed data occurred earlier or within turn.failed itself. Unknown string types should return without inspecting fields whose schema is not known.

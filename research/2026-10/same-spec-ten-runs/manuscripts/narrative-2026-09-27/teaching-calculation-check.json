@@ -1,0 +1,17 @@
+{
+  "checked_at": "2026-09-27T16:14:07.169316+00:00",
+  "scope": "Hypothetical explanatory calculations only; no new experiment observations",
+  "probability_p80_ten_successes": 0.10737418240000006,
+  "two_sided_95_CP_lower_10_of_10": 0.6915028921812392,
+  "cosine_example_vectors": [
+    [
+      2,
+      4
+    ],
+    [
+      4,
+      8
+    ]
+  ],
+  "cosine": 0.9999999999999998
+}

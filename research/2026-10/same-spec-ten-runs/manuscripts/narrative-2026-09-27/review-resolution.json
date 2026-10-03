@@ -1,0 +1,52 @@
+{
+  "review_report": "reader-review.md",
+  "invocation": "reader-invocation.json",
+  "resolved_by": "Codex root",
+  "checked_at": "2026-09-27T16:14:07.169316+00:00",
+  "scope": "Claude reviewed the version recorded in invocation metadata. Root applied and reread subsequent edits; this is not a claim that Claude approved final hashes.",
+  "final_article_sha256": {
+    "overview": "51a2be2e1614c965743386f06d913492c999786e852c2fc213f7e3947edbfeeb",
+    "spec": "fa9a3fd288d3143e52bfde0f234de345f9bbe707592a5847b0c740743b6f01da",
+    "contract": "59984f65fcdd0adb2ffe37eefb9d58b127e8bc8d1748583542bcafca34241ab2",
+    "variance": "75ece93803dabeac4d578611deacea4629a8740bd59e1ba69cf203a11c53365a"
+  },
+  "open_major": 0,
+  "open_minor": 0,
+  "items": [
+    {
+      "id": 1,
+      "status": "resolved",
+      "action": "總論保留可獨立閱讀的總覽並加閱讀指引；契約篇縮短前情，變異篇從 123 缺陷接入結果；CLI 措辭完整對照集中在規格篇第四節，其餘篇保留帶連結的限制。"
+    },
+    {
+      "id": 2,
+      "status": "resolved",
+      "action": "總論第三節定義要求、文件、指令包；正文與 References 區分 R01–R13 與 A0–C，明示組內同一份不等於跨組四十次同文。"
+    },
+    {
+      "id": 3,
+      "status": "resolved",
+      "action": "總論與變異篇補常數可改變 hash；變異篇以 REASON 假設例說明，並將狀態與流程差異限於實際閱讀的 A0 pair。版本核對使用原檔 hash。"
+    },
+    {
+      "id": 4,
+      "status": "resolved",
+      "action": "規格篇第三節表列凍結文件 936／1,655／1,923／2,223 英文詞；註明空白切詞、含標題程式碼、不含 seed、不是 tokens，計數來源另存 spec-lengths.json。"
+    },
+    {
+      "id": 5,
+      "status": "resolved",
+      "action": "契約篇第四節增加綠、黃、灰、紅圖例與虛線說明；核准的 Mermaid 保持原樣。"
+    },
+    {
+      "id": 6,
+      "status": "resolved",
+      "action": "變異篇第五節把費用寫成 A0 到 C 的觀察排序；第六節將平行欄位移出新增發現，說明方法設計與本輪三欄一致各代表什麼。"
+    },
+    {
+      "id": "navigation",
+      "status": "resolved",
+      "action": "四篇導覽統一箭頭，已完成未發布的 Green 系列均連到 repo 稿件，已發布 Agentic 文章保留核對過的 Medium 連結。"
+    }
+  ]
+}

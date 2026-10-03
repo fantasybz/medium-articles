@@ -18,6 +18,10 @@ Medium articles by [@fantasybz](https://medium.com/@fantasybz) — long-form pos
 | 2026-10 | [綠燈不是驗收（三）可靠度篇：SWE-Gate 量測到的 34%—constraint tests、pass^k 與授權擴張的閘門](2026-10-green-reliability/article.md) | [EN](2026-10-green-reliability/article.en.md) | 已排程 10/27（二）09:00 發布；英文版已排程 10/29（四）09:00（GMT+8）；佇列見 [PUBLISHING.md](PUBLISHING.md) | [PUBLISHED.md](2026-10-green-reliability/publish/PUBLISHED.md) |
 | 2026-11 | [綠燈不是驗收（四）付款實作篇：買一瓶無糖純喫綠茶，從 Review 約束走到 mutation score](2026-10-green-payment/article.md) | [EN](2026-10-green-payment/article.en.md) | [中文版](https://medium.com/p/46377fd460fe/edit)已排程 11/03（二）09:00 發布；[英文版](https://medium.com/p/20452944263b/edit)已排程 11/05（四）09:00 發布（GMT+8）；佇列見 [PUBLISHING.md](PUBLISHING.md) | [中](2026-10-green-payment/publish/PUBLISHED.md)／[EN](2026-10-green-payment/publish/en/PUBLISHED.md) |
 
+「同一份規格，跑十次」已依十月份《綠燈不是驗收》的論證與敘事基準全面重寫：[總論](2026-11-same-spec-overview/article.md)、[規格篇](2026-11-same-spec-spec/article.md)、[契約篇](2026-11-same-spec-contract/article.md)、[變異篇](2026-11-same-spec-variance/article.md)。四篇由 Claude Code Opus 5.5 `max` 主寫；10/03 再依作者試讀意見，由 Codex 主代理補足概念例子、逐段主軸與銜接。最新正文與貼稿均通過 strict zh-TW MCP 及本機發布包檢查，全系列尚未發布。見[讀者回饋修訂](research/2026-10/same-spec-ten-runs/readability-2026-10-03/README.md)、[研究背景](research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/README.md)與[成稿狀態](research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md)。
+
+四份實驗規格的原文與比較另見 [A0／A／B／C 全文與逐行差異導讀](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/SPECS.md)，包含三組 diff 與完整 task packet。總論、規格篇與變異篇已補上明顯入口，最新版本與公開連結驗證見[公開附件紀錄](research/2026-10/same-spec-ten-runs/public-links-2026-10-03.md)。
+
 ## Structure
 
 每篇文章一個資料夾：
@@ -38,6 +42,8 @@ YYYY-MM-slug/
 ```
 
 ## Research loop
+
+先看 [研究與主題總覽](research/TOPICS.md)：已發布／已排程系列、待研究大綱、14 個編號主題與其他構想、素材索引，以及接續工作。
 
 下個月寫什麼，由 [research/](research/README.md) 的每月迴圈決定：收集 X / Facebook /
 LinkedIn / Medium stats / arXiv / Notion 的訊號 → 四份 digest（哪幾份進 git、哪幾份只留本機，見

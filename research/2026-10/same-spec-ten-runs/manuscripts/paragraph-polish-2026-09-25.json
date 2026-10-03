@@ -1,0 +1,1852 @@
+{
+  "reviewer": "Codex root",
+  "recorded_at": "2026-09-25T09:31:19.067365+00:00",
+  "method": "Contextual paragraph-by-paragraph editorial review; no bulk synonym substitution",
+  "pieces": [
+    {
+      "piece": "overview",
+      "article_sha256": "98381db29e1bd4c7323e6a0adda49550e8d9c271fcc4c31b4c0026a48dd14de7",
+      "root_scope": "Read principal head/tail in full, revised paragraphs in context, reread latter half through conclusion/references/disclosure, then reconciled independent reviews and actual zh-TW findings. Block hashes are an index of this manual work, not an automated quality judgment.",
+      "style_sources": [
+        "STYLE.md",
+        "research/2026-10/style_brief.md",
+        "research/2026-09/voice_brief.md"
+      ],
+      "checks": [
+        "complete actions and clear actor/object",
+        "neighboring paragraphs and causal scope",
+        "real experience only; published/unpublished recalls distinguished",
+        "figures introduced and interpreted",
+        "all denominators, method limits and final claims aligned",
+        "whole article, including second half and tail"
+      ],
+      "blocks": [
+        {
+          "block": 1,
+          "section": "opening",
+          "sha256": "7d0fcb13f7d6e768964075808c31694f4417aa42232d652055cf0a63b0b85917"
+        },
+        {
+          "block": 2,
+          "section": "opening",
+          "sha256": "959b841c7f7a6474a0dd605ec03d2313f9d68b198d864ae457f0232bf9cadee6"
+        },
+        {
+          "block": 3,
+          "section": "opening",
+          "sha256": "8b657a831b0bc5aa012d663008ba80c4ceb4a90a289938381f9c884ddb52c6c2"
+        },
+        {
+          "block": 4,
+          "section": "## 一、審查檔案有內容，為什麼仍然不能當作審查完成",
+          "sha256": "f4a3e27df2bea010ee18c632873a5888d5d0ee1ce6478966a928c82e3062e6a6"
+        },
+        {
+          "block": 5,
+          "section": "## 一、審查檔案有內容，為什麼仍然不能當作審查完成",
+          "sha256": "3946f5a38eabc8b54485399e50059f45eddb96f13befb0bc4b5129c8e55a442a"
+        },
+        {
+          "block": 6,
+          "section": "## 一、審查檔案有內容，為什麼仍然不能當作審查完成",
+          "sha256": "b2fe37b967df3c8648290bb0a6f35da755526721442bcecd41699c9b87c39c86"
+        },
+        {
+          "block": 7,
+          "section": "## 一、審查檔案有內容，為什麼仍然不能當作審查完成",
+          "sha256": "33e5b5555ab0f86197b14cfab52a384a0d0160e4a66e8f33916a3715649fed68"
+        },
+        {
+          "block": 8,
+          "section": "## 一、審查檔案有內容，為什麼仍然不能當作審查完成",
+          "sha256": "7f8e4e1193d299581be3624931d5ac6ac4f487a31468f946b8f5539b3a3191dc"
+        },
+        {
+          "block": 9,
+          "section": "## 一、審查檔案有內容，為什麼仍然不能當作審查完成",
+          "sha256": "92ab2d7db0b5269b629eec2bd871702eccea23b31f1734711a98bfd386662d7a"
+        },
+        {
+          "block": 10,
+          "section": "## 一、審查檔案有內容，為什麼仍然不能當作審查完成",
+          "sha256": "64f85c24b4d5b42f985df2d81330bac3ab511ed797c7e69f9d8e5f3ffdcc5660"
+        },
+        {
+          "block": 11,
+          "section": "## 二、同一個 task 有三種「不同」",
+          "sha256": "e771927b5789fc0cd71d0a2bea881682e548031ddfe9992ff78127ba0d409976"
+        },
+        {
+          "block": 12,
+          "section": "## 二、同一個 task 有三種「不同」",
+          "sha256": "f439030eeb9badb879cdd8e1e9497c0443ebfb3019e871a22baca88d5c19ce23"
+        },
+        {
+          "block": 13,
+          "section": "## 二、同一個 task 有三種「不同」",
+          "sha256": "3873fbac5f0aedf36e65197e613f3437f617d39d10e3cec9ba0e14e47457f1ea"
+        },
+        {
+          "block": 14,
+          "section": "## 二、同一個 task 有三種「不同」",
+          "sha256": "0cf400fdad75baf509691d935bf0b122c8064e9d8b4c78bb6b883b914102eb2a"
+        },
+        {
+          "block": 15,
+          "section": "## 二、同一個 task 有三種「不同」",
+          "sha256": "00c28af43d2e8483ed239c133737c7722413dc39c1aacfcdd853c7ba32893b77"
+        },
+        {
+          "block": 16,
+          "section": "## 二、同一個 task 有三種「不同」",
+          "sha256": "0b52e356f38051d5f058d8c7cbe9078db7a105b1a265fa2e0c1fff3824621170"
+        },
+        {
+          "block": 17,
+          "section": "## 二、同一個 task 有三種「不同」",
+          "sha256": "dea011d9a295e7f5e20591181dd70dd21faaebb0aea867835ca7cf4c9b380abf"
+        },
+        {
+          "block": 18,
+          "section": "## 二、同一個 task 有三種「不同」",
+          "sha256": "63f562f9c461fbfdc6d5ec7645db0e9037bc5fad95385352af31d674b7be962a"
+        },
+        {
+          "block": 19,
+          "section": "## 三、先把規格中的判斷寫完整",
+          "sha256": "8cb30c5191acd715be7c900c30ea1becfa94f2696bc31c6c55dbc94766995766"
+        },
+        {
+          "block": 20,
+          "section": "## 三、先把規格中的判斷寫完整",
+          "sha256": "b5bc89364be0b5a6fcd9b90b9e797157b9bf7f6f8b3d7a3723969b8a877ac394"
+        },
+        {
+          "block": 21,
+          "section": "## 三、先把規格中的判斷寫完整",
+          "sha256": "3db8ae9edfa09414e41ad8c74f2d49c1da008f10500b1a9a64d4e08e9de8d4dc"
+        },
+        {
+          "block": 22,
+          "section": "## 三、先把規格中的判斷寫完整",
+          "sha256": "97c82f510ba5b7005598bc4c72d2a64d3c543c2a29ffa48fe9ed6723bf33d121"
+        },
+        {
+          "block": 23,
+          "section": "## 三、先把規格中的判斷寫完整",
+          "sha256": "3648b5e2fd0b1f6a22ca42fd85bfc493c1ea656523640a70df6f853e87243d80"
+        },
+        {
+          "block": 24,
+          "section": "## 三、先把規格中的判斷寫完整",
+          "sha256": "76032b7d3ddec88137d0b399348eac87714ec9774609250feea7c7267f8e128e"
+        },
+        {
+          "block": 25,
+          "section": "## 三、先把規格中的判斷寫完整",
+          "sha256": "e23611dd20f90fd3d816ebca32d1a50f27f4531fdd80b4a03da0c66210c8cf9b"
+        },
+        {
+          "block": 26,
+          "section": "## 三、先把規格中的判斷寫完整",
+          "sha256": "fc1c1760383943ca02cea572c2af38210639cfd40c322b03e2a5d24cb0263529"
+        },
+        {
+          "block": 27,
+          "section": "## 三、先把規格中的判斷寫完整",
+          "sha256": "6ba00b748f3c929e29bc812a7b75fd40a6106d3e08bbbae8a562c24c22299129"
+        },
+        {
+          "block": 28,
+          "section": "## 三、先把規格中的判斷寫完整",
+          "sha256": "e2d72a70bd31ad5f176eb51ba18b331bc63e6c24551d35911dc8e841175610c8"
+        },
+        {
+          "block": 29,
+          "section": "## 四、四組比較到底動了什麼",
+          "sha256": "13b7c1a56194a01c67f3ae303cbe6641c568faad1a41566d059e8b963a808ba3"
+        },
+        {
+          "block": 30,
+          "section": "## 四、四組比較到底動了什麼",
+          "sha256": "34e2b91ca7029bea1cd46ad2f819a97d01a976bbeecb9aca0dadb0c4f1aab3ec"
+        },
+        {
+          "block": 31,
+          "section": "## 四、四組比較到底動了什麼",
+          "sha256": "9efbd351c5b10ea020cc5a8211c0795cb111b3593fe16084040523aac7c23665"
+        },
+        {
+          "block": 32,
+          "section": "## 四、四組比較到底動了什麼",
+          "sha256": "fe555b6d298df12e616241dab7145e3728be499b3538ed4e2ac23693c4f57211"
+        },
+        {
+          "block": 33,
+          "section": "## 四、四組比較到底動了什麼",
+          "sha256": "8abd7f46c7e85448fc6824b2b1c4ecf5958b2fdc2d6ef134a3aaffae103a115a"
+        },
+        {
+          "block": 34,
+          "section": "## 四、四組比較到底動了什麼",
+          "sha256": "3f29f37f45e5cb2802421e7d2606e28cbfd8803291b5cf333d70b74e38e3653b"
+        },
+        {
+          "block": 35,
+          "section": "## 四、四組比較到底動了什麼",
+          "sha256": "b0609e1dfb9ac0813280c6cc42e70ed44d5823676f996bf2e8d57c746dd5bfbc"
+        },
+        {
+          "block": 36,
+          "section": "## 四、四組比較到底動了什麼",
+          "sha256": "33027d6d03da654ea7ae1f471ea5fc4fb241d4533bc3d0fe20e3e687927bd842"
+        },
+        {
+          "block": 37,
+          "section": "## 四、四組比較到底動了什麼",
+          "sha256": "407c7817a0fe674e88ff500ea0cf090953210e3e4b18d596e75c5b28f3844d51"
+        },
+        {
+          "block": 38,
+          "section": "## 五、每一個名額都要留下結果",
+          "sha256": "6e8ccf035560299e35d456f61a03b352d1570e944c1e43221bd8713e964f78ab"
+        },
+        {
+          "block": 39,
+          "section": "## 五、每一個名額都要留下結果",
+          "sha256": "eb31c6d61ccea27c72064758bafcaf71aae6589f12eda2b08ed20b0155dafd7c"
+        },
+        {
+          "block": 40,
+          "section": "## 五、每一個名額都要留下結果",
+          "sha256": "5f8e216fbf8d567b98dfca2e6fcaeca59eb2cd4c1b960bbb8ccda4ccca362e67"
+        },
+        {
+          "block": 41,
+          "section": "## 五、每一個名額都要留下結果",
+          "sha256": "4247a44414b5d90cf53d18315392012333b8c865e9796eb09dd9a4cea66eeb34"
+        },
+        {
+          "block": 42,
+          "section": "## 五、每一個名額都要留下結果",
+          "sha256": "d00e17fa44d1005cfd3f28b97d173b91d93fc5aad41c6662abfe166b67415b6f"
+        },
+        {
+          "block": 43,
+          "section": "## 五、每一個名額都要留下結果",
+          "sha256": "3bcbdfc26658ecd842752b784e738963f22a0c519c959d42eb266ddcf0904a1e"
+        },
+        {
+          "block": 44,
+          "section": "## 五、每一個名額都要留下結果",
+          "sha256": "f8b1384073a80796cda5b9cc56c5a5f02d020106e7c0ae27b9c16d7acf96a158"
+        },
+        {
+          "block": 45,
+          "section": "## 六、兩份程式長得不同，接下來檢查什麼",
+          "sha256": "64a8903967859f72292d9a0e0d17dc54649e50a3813fd8a797a481187dbfeb3a"
+        },
+        {
+          "block": 46,
+          "section": "## 六、兩份程式長得不同，接下來檢查什麼",
+          "sha256": "5389fe4bd9beb55ae668bf371b9646fbdd9a7457a9b2f93c1feb52e884a34e86"
+        },
+        {
+          "block": 47,
+          "section": "## 六、兩份程式長得不同，接下來檢查什麼",
+          "sha256": "25c45a9b4814dbb0c7820d1cfe3cf7d25c651f2393782553078b4d5f95b41a66"
+        },
+        {
+          "block": 48,
+          "section": "## 六、兩份程式長得不同，接下來檢查什麼",
+          "sha256": "77d398a527020dfef7830faa9d23de057342d2653d5d6287a782e3586241b69e"
+        },
+        {
+          "block": 49,
+          "section": "## 六、兩份程式長得不同，接下來檢查什麼",
+          "sha256": "afd35ed70986af8173fea6899869ab28da647171651e4cc09093b2336e4bee62"
+        },
+        {
+          "block": 50,
+          "section": "## 六、兩份程式長得不同，接下來檢查什麼",
+          "sha256": "e320f917e463a0c8c99183048c30834183e0c8152c22c42967de7be24539a2c1"
+        },
+        {
+          "block": 51,
+          "section": "## 六、兩份程式長得不同，接下來檢查什麼",
+          "sha256": "e7d6ec19f6489ca642ad9ada0876f826dd87b09437871da65217a12de331d358"
+        },
+        {
+          "block": 52,
+          "section": "## 六、兩份程式長得不同，接下來檢查什麼",
+          "sha256": "fc43907e87026ad1e255cc51aaa5e1a25e5eeb01e83b9fe37aaf2f2f4b9a2c25"
+        },
+        {
+          "block": 53,
+          "section": "## 六、兩份程式長得不同，接下來檢查什麼",
+          "sha256": "0f63a3e7b4436198ac6ae7b9ab67443e1f4116e1ac48b535a722790ed03ea5fa"
+        },
+        {
+          "block": 54,
+          "section": "## 六、兩份程式長得不同，接下來檢查什麼",
+          "sha256": "61b68ec707bc3f8244bfa9adc13100948aebfe06eb64db972dad4b11567b4065"
+        },
+        {
+          "block": 55,
+          "section": "## 七、如果我是工程主管，我會如何使用這份證據",
+          "sha256": "31fa00b6fef7718c2f09a68b17f21c6aa1d999d6e293fdbb08be102f4ada72c9"
+        },
+        {
+          "block": 56,
+          "section": "## 七、如果我是工程主管，我會如何使用這份證據",
+          "sha256": "3f7ebb3ce339900c21048ce934840eb98af31210b6f834705da9dd3b1f63bb40"
+        },
+        {
+          "block": 57,
+          "section": "## 七、如果我是工程主管，我會如何使用這份證據",
+          "sha256": "06fcfee71af94daf9fe2231e75190032ac78c1cc9f416b2a85684165473a14a9"
+        },
+        {
+          "block": 58,
+          "section": "## 七、如果我是工程主管，我會如何使用這份證據",
+          "sha256": "781230e01b48b274500024d28038a6ca4779fd201b9980c2db5412a18200694b"
+        },
+        {
+          "block": 59,
+          "section": "## 七、如果我是工程主管，我會如何使用這份證據",
+          "sha256": "8b197fed3641b9c629571a8a5342af1f4559b10c440b850787f192349454576c"
+        },
+        {
+          "block": 60,
+          "section": "## 七、如果我是工程主管，我會如何使用這份證據",
+          "sha256": "25fc25d9caad42c3544ff0461cd810688a29158c8baf01fa28ab3a9360090a6e"
+        },
+        {
+          "block": 61,
+          "section": "## 七、如果我是工程主管，我會如何使用這份證據",
+          "sha256": "af3d85c9ec36be59d06c19ef4a0a5b9de1791670dacf53d0d001a7ece0f7a87e"
+        },
+        {
+          "block": 62,
+          "section": "## 七、如果我是工程主管，我會如何使用這份證據",
+          "sha256": "b9ddba1776f30fd2f8ed07c1dc5a2c9f0ce413c4efb2e9ae62e0079654d9da5c"
+        },
+        {
+          "block": 63,
+          "section": "## 七、如果我是工程主管，我會如何使用這份證據",
+          "sha256": "154c1da5f99edf6a15a5da76e7a388271edecaf97f808223647fdd6b9ffc9a40"
+        },
+        {
+          "block": 64,
+          "section": "## 七、如果我是工程主管，我會如何使用這份證據",
+          "sha256": "3581d8b791d62bbda75de067dd3a2d26d0b741c9fbaefa83aff82df9aaee2187"
+        },
+        {
+          "block": 65,
+          "section": "## 七、如果我是工程主管，我會如何使用這份證據",
+          "sha256": "e646a63eb97efc2e3cb3d6880bd64182fc8dc246f0d0c03d0b35221beee7f442"
+        },
+        {
+          "block": 66,
+          "section": "## 八、結語回到 parser 的 exit code",
+          "sha256": "185180dc4da758e916376f9e69b6be30c88f9ac7e83583a2cfd1348685c5a813"
+        },
+        {
+          "block": 67,
+          "section": "## 八、結語回到 parser 的 exit code",
+          "sha256": "fd94094c390ad398e0b0a177b42d1ae6ac32949ec81f5b6343c5e11f6458854d"
+        },
+        {
+          "block": 68,
+          "section": "## 八、結語回到 parser 的 exit code",
+          "sha256": "3ae2e04616e5d396ca89378df249a39eb1d419dbff83fb4e7c47d25f42c3f1f3"
+        },
+        {
+          "block": 69,
+          "section": "## 八、結語回到 parser 的 exit code",
+          "sha256": "2775cf61c55886d7dd51e7468d8b43a44ab3b2e80a09a2c618bac089fbc67b6b"
+        },
+        {
+          "block": 70,
+          "section": "## 八、結語回到 parser 的 exit code",
+          "sha256": "0ae3aaad55ab72373779294668d1fe27b62fc3ecedf0d2298ade25bd618a0825"
+        },
+        {
+          "block": 71,
+          "section": "## 八、結語回到 parser 的 exit code",
+          "sha256": "2c0c3cf8f9987e5a91849e87e9254d620480f65b4a1b6214526775f99e411f92"
+        },
+        {
+          "block": 72,
+          "section": "## 八、結語回到 parser 的 exit code",
+          "sha256": "84123807490bbee8636124d6cbf6ca62a7c2098aefa2a9d88bfda3127583ba40"
+        },
+        {
+          "block": 73,
+          "section": "## 八、結語回到 parser 的 exit code",
+          "sha256": "79575f1d151da8482240aa1de4540ad3f852eea90e6b4fbbb2814be9c5cdcb42"
+        },
+        {
+          "block": 74,
+          "section": "## 八、結語回到 parser 的 exit code",
+          "sha256": "b67c4877709b9f55b0741c8a736fc146cc9738cf85c4fe0a28ce9cd3e5333f2d"
+        },
+        {
+          "block": 75,
+          "section": "## 八、結語回到 parser 的 exit code",
+          "sha256": "8639801239ba61a9aaad2a1c45b7f896ec17314115eb1ff3e45d80a2e409a4b7"
+        },
+        {
+          "block": 76,
+          "section": "## 八、結語回到 parser 的 exit code",
+          "sha256": "1b50331058cdaf0d0dcb07965d392f3025b0d79205843421a556e3016015eb52"
+        },
+        {
+          "block": 77,
+          "section": "## 八、結語回到 parser 的 exit code",
+          "sha256": "72db048dbbaa9ea40eaf98295f371ed19479fc61dc8564e4deaecbaa2d3f9ecf"
+        },
+        {
+          "block": 78,
+          "section": "## 八、結語回到 parser 的 exit code",
+          "sha256": "24563bef83fd4815585d825157a8f492eb9f85ba447856f969135585e3d17498"
+        }
+      ]
+    },
+    {
+      "piece": "spec",
+      "article_sha256": "2d773424ecd438e28d771ff36a747975103ff22a3b9c95e2880c036228f41f65",
+      "root_scope": "Read principal head/tail in full, revised paragraphs in context, reread latter half through conclusion/references/disclosure, then reconciled independent reviews and actual zh-TW findings. Block hashes are an index of this manual work, not an automated quality judgment.",
+      "style_sources": [
+        "STYLE.md",
+        "research/2026-10/style_brief.md",
+        "research/2026-09/voice_brief.md"
+      ],
+      "checks": [
+        "complete actions and clear actor/object",
+        "neighboring paragraphs and causal scope",
+        "real experience only; published/unpublished recalls distinguished",
+        "figures introduced and interpreted",
+        "all denominators, method limits and final claims aligned",
+        "whole article, including second half and tail"
+      ],
+      "blocks": [
+        {
+          "block": 1,
+          "section": "opening",
+          "sha256": "49b248af7dc8d703d4ddcca9906f3c8a18b01eef62bc2f95c2e3a11434bffbc3"
+        },
+        {
+          "block": 2,
+          "section": "opening",
+          "sha256": "bbf6b87119d769cd36502c7e729970cf6b489e54de022c53811e8855aec882e4"
+        },
+        {
+          "block": 3,
+          "section": "opening",
+          "sha256": "366c051b1fefc01caefc13e75fb285b3786188dc867722ad1f06caf6ac0651c9"
+        },
+        {
+          "block": 4,
+          "section": "opening",
+          "sha256": "cb3f91d54eee30e53e35b2b99905f70f169ed549fd78909d3dac2defc9ed8d3b"
+        },
+        {
+          "block": 5,
+          "section": "## 一、從真實 bug 寫出可驗收的目標",
+          "sha256": "80ef2b7ab3887b8827a74c2b4d5c560f6eac9b361c3b831671f0a8d0847b4b13"
+        },
+        {
+          "block": 6,
+          "section": "## 一、從真實 bug 寫出可驗收的目標",
+          "sha256": "380b9697f694b92f15d3d00b4930e5c6dd934cf990d3043f5e65f75e88a7cc23"
+        },
+        {
+          "block": 7,
+          "section": "## 一、從真實 bug 寫出可驗收的目標",
+          "sha256": "44e47c599472d02ff94deba42883e4d4b373facbe84b3bd7572b0025146c3eea"
+        },
+        {
+          "block": 8,
+          "section": "## 一、從真實 bug 寫出可驗收的目標",
+          "sha256": "93c65ec37061782fb31813f584faadc7b7d04657306db91553dba66c20964eb0"
+        },
+        {
+          "block": 9,
+          "section": "## 一、從真實 bug 寫出可驗收的目標",
+          "sha256": "c1d067a6a1e8117a09f5de58e5710b6fe035ab0d1d795ed2c410b5e86be63054"
+        },
+        {
+          "block": 10,
+          "section": "## 一、從真實 bug 寫出可驗收的目標",
+          "sha256": "f0f6b386f65db2df4448a1c3f7ed200514afbb39173296e5ac076ec792e005f0"
+        },
+        {
+          "block": 11,
+          "section": "## 一、從真實 bug 寫出可驗收的目標",
+          "sha256": "99753f22c43160cf8c65541846b133de9681243dfd21dfdfc0fb8904cc233df2"
+        },
+        {
+          "block": 12,
+          "section": "## 一、從真實 bug 寫出可驗收的目標",
+          "sha256": "cef287c627a17ead0c0cc222e0a9806aa9a5f17c9a5402ce785fce9b65af013d"
+        },
+        {
+          "block": 13,
+          "section": "## 一、從真實 bug 寫出可驗收的目標",
+          "sha256": "473c232e099eb52b716ea0f6948b88e92953691c48ae8c5b4600285561d2c679"
+        },
+        {
+          "block": 14,
+          "section": "## 一、從真實 bug 寫出可驗收的目標",
+          "sha256": "316fe0798d59912b2b16067ae4b46aad23092fb044310443b8d5d181b3adbb54"
+        },
+        {
+          "block": 15,
+          "section": "## 一、從真實 bug 寫出可驗收的目標",
+          "sha256": "cb3f91d54eee30e53e35b2b99905f70f169ed549fd78909d3dac2defc9ed8d3b"
+        },
+        {
+          "block": 16,
+          "section": "## 二、exit code 是行為契約的一部分",
+          "sha256": "d1ab8c22f25f114dec46873671702eb92bc7d4310c04721e8b5c69bee053e7e8"
+        },
+        {
+          "block": 17,
+          "section": "## 二、exit code 是行為契約的一部分",
+          "sha256": "f96f88cfcf9b866d64b24ffd16d4ec02773a257443ab91580ee45d35f65b49b3"
+        },
+        {
+          "block": 18,
+          "section": "## 二、exit code 是行為契約的一部分",
+          "sha256": "8aa073737a44c41b1eda0c440612998c6f40de053b3d49eb2e57d1bd647d40fc"
+        },
+        {
+          "block": 19,
+          "section": "## 二、exit code 是行為契約的一部分",
+          "sha256": "124e88a5a66be541441fcead04064198251de83a7086a77924ec5410146edf73"
+        },
+        {
+          "block": 20,
+          "section": "## 二、exit code 是行為契約的一部分",
+          "sha256": "9896d4910e25d700cb289d5678edd814f883236ad9b95a925aeac98c2459c8cc"
+        },
+        {
+          "block": 21,
+          "section": "## 二、exit code 是行為契約的一部分",
+          "sha256": "4d76d3b61fe08f29222047a07931936427e7223fbbd5802b5210a127f312ab5b"
+        },
+        {
+          "block": 22,
+          "section": "## 二、exit code 是行為契約的一部分",
+          "sha256": "5869ef3ac5f4504b4ce0e2eccdff7e80931500f8af90beca17da573d0b8857d5"
+        },
+        {
+          "block": 23,
+          "section": "## 二、exit code 是行為契約的一部分",
+          "sha256": "44924edabfbb1d7788738380534e3786e8908d1ed4faef24f5f16fd6e0824796"
+        },
+        {
+          "block": 24,
+          "section": "## 二、exit code 是行為契約的一部分",
+          "sha256": "cb3f91d54eee30e53e35b2b99905f70f169ed549fd78909d3dac2defc9ed8d3b"
+        },
+        {
+          "block": 25,
+          "section": "## 三、給規格作者：A0 可以短，但不能少掉要求",
+          "sha256": "ba19e0c68b907206650d844f7809d58c65c3d935a7e2edd5689c16bb5506d90e"
+        },
+        {
+          "block": 26,
+          "section": "## 三、給規格作者：A0 可以短，但不能少掉要求",
+          "sha256": "66d44bf6712204d0ff275fe9512c67a147a2ab6801b2e9e6627f61b9b2be2a44"
+        },
+        {
+          "block": 27,
+          "section": "## 三、給規格作者：A0 可以短，但不能少掉要求",
+          "sha256": "b57529619ed79434a89243fdf7c23c234986dbd93235bfce85a7f53f813b4ca0"
+        },
+        {
+          "block": 28,
+          "section": "## 三、給規格作者：A0 可以短，但不能少掉要求",
+          "sha256": "32806a6a931c525bc5f7a54de4d717f095b42f0f9980d3c1cfa18c8a54ddd2b3"
+        },
+        {
+          "block": 29,
+          "section": "## 三、給規格作者：A0 可以短，但不能少掉要求",
+          "sha256": "62c66c489fbcf959a416f936d2c566a87a407b398f36465c17fa05c030e6072c"
+        },
+        {
+          "block": 30,
+          "section": "## 三、給規格作者：A0 可以短，但不能少掉要求",
+          "sha256": "f4080935734b6170714b5194d9c7a526389c72414437f8a9f635ea4dd9816a63"
+        },
+        {
+          "block": 31,
+          "section": "## 三、給規格作者：A0 可以短，但不能少掉要求",
+          "sha256": "e5cdce97d24c4615f98327da248044f2e69640363935f33b2bb55117ccbdaced"
+        },
+        {
+          "block": 32,
+          "section": "## 三、給規格作者：A0 可以短，但不能少掉要求",
+          "sha256": "0a1f94deb254382b1ae6baf6876a4eeac7e938d794f2e82885fdd2d3bc09de7e"
+        },
+        {
+          "block": 33,
+          "section": "## 三、給規格作者：A0 可以短，但不能少掉要求",
+          "sha256": "33cecdec82bfc733d4c13b4febe9e37df7ea1d245c1bac8cce3fb9b7a661179e"
+        },
+        {
+          "block": 34,
+          "section": "## 三、給規格作者：A0 可以短，但不能少掉要求",
+          "sha256": "ab9398cc3359f1fb328cba6044f504249cea8efd471d8cf8a61e94379e879639"
+        },
+        {
+          "block": 35,
+          "section": "## 三、給規格作者：A0 可以短，但不能少掉要求",
+          "sha256": "4c6bd2dc916eb303cef2a0d7607ee9be7844148f70f58aa0859c5b6bbb34fb56"
+        },
+        {
+          "block": 36,
+          "section": "## 三、給規格作者：A0 可以短，但不能少掉要求",
+          "sha256": "45f483136da48e31fb99e256281e19736650a5f4a5d22fdce15622c238c0fa45"
+        },
+        {
+          "block": 37,
+          "section": "## 三、給規格作者：A0 可以短，但不能少掉要求",
+          "sha256": "cb3f91d54eee30e53e35b2b99905f70f169ed549fd78909d3dac2defc9ed8d3b"
+        },
+        {
+          "block": 38,
+          "section": "## 四、rationale 與 pattern 分別加了什麼",
+          "sha256": "5293803e0e16838b51d3908fa8d6b13599d7049836c3964023de49e41d0742d2"
+        },
+        {
+          "block": 39,
+          "section": "## 四、rationale 與 pattern 分別加了什麼",
+          "sha256": "b6cdadd4c12077c5a0c0e4433a185011168dc3f432e30c2f4dce6b1c510ef5c6"
+        },
+        {
+          "block": 40,
+          "section": "## 四、rationale 與 pattern 分別加了什麼",
+          "sha256": "0211e75adc31aec27a84820cda220472615fe6ce28bc0be8170629c8d2bb32c1"
+        },
+        {
+          "block": 41,
+          "section": "## 四、rationale 與 pattern 分別加了什麼",
+          "sha256": "bb5b1f3860688809792a1d10e5b8cc9add783e22c88d880cdba6851553ca4f57"
+        },
+        {
+          "block": 42,
+          "section": "## 四、rationale 與 pattern 分別加了什麼",
+          "sha256": "665ceec15ebc9b5fc0b120254cfd1489f357ea498c062ceb1545a2d39f6d5f8c"
+        },
+        {
+          "block": 43,
+          "section": "## 四、rationale 與 pattern 分別加了什麼",
+          "sha256": "8550b7ed91ce68565c0c8e71a40e4a806c71d7bb87db135591009f1d6a8d0e6f"
+        },
+        {
+          "block": 44,
+          "section": "## 四、rationale 與 pattern 分別加了什麼",
+          "sha256": "2ad12671b0f98e1c2db814be430af0aa905de6ca695116a9dc28a51245de3b68"
+        },
+        {
+          "block": 45,
+          "section": "## 四、rationale 與 pattern 分別加了什麼",
+          "sha256": "afd5f0e5e51b4bccc16abf893bbecc0e9e636eceef2b35bbac6b7ee96cd3804e"
+        },
+        {
+          "block": 46,
+          "section": "## 四、rationale 與 pattern 分別加了什麼",
+          "sha256": "6fa66619407cca7a4a1a745188b54940158d7be4b9641a4bf09ff850be55b23a"
+        },
+        {
+          "block": 47,
+          "section": "## 四、rationale 與 pattern 分別加了什麼",
+          "sha256": "458396fa51defb28cfad9bd2483da4a8e930330e116f8e6ae778c1ce6d099839"
+        },
+        {
+          "block": 48,
+          "section": "## 四、rationale 與 pattern 分別加了什麼",
+          "sha256": "c42eadc511e83890c2e1479f598fa9413c4f06001552b6ccda278a78fb055026"
+        },
+        {
+          "block": 49,
+          "section": "## 四、rationale 與 pattern 分別加了什麼",
+          "sha256": "cfd242886af7267fabdb77fafd99b1eabc40b54d3228d499fde9582efec09ee5"
+        },
+        {
+          "block": 50,
+          "section": "## 四、rationale 與 pattern 分別加了什麼",
+          "sha256": "cb3f91d54eee30e53e35b2b99905f70f169ed549fd78909d3dac2defc9ed8d3b"
+        },
+        {
+          "block": 51,
+          "section": "## 五、規格也有維護成本，但本輪沒有量人時",
+          "sha256": "5b1a465bc8db681714406d77a5af3cf69124f18550a7bfbb4e079b04b62cb01b"
+        },
+        {
+          "block": 52,
+          "section": "## 五、規格也有維護成本，但本輪沒有量人時",
+          "sha256": "664b0d78146a129b97d38bb15882c5b3757a350e47f264cd8643388c9ed1c5dc"
+        },
+        {
+          "block": 53,
+          "section": "## 五、規格也有維護成本，但本輪沒有量人時",
+          "sha256": "904f282e3582f8c7a0de0d97d796abd5fd1a7d7c0e59e313596498337a210370"
+        },
+        {
+          "block": 54,
+          "section": "## 五、規格也有維護成本，但本輪沒有量人時",
+          "sha256": "b8d86f4c6e9ac80cd5478d2034524995c7de20e10f3e5caea3c0d2660f039591"
+        },
+        {
+          "block": 55,
+          "section": "## 五、規格也有維護成本，但本輪沒有量人時",
+          "sha256": "1eda3b526546c583bfe1111c9c90f8a8f790bcfef6362dbf57e78963d849a17a"
+        },
+        {
+          "block": 56,
+          "section": "## 五、規格也有維護成本，但本輪沒有量人時",
+          "sha256": "cc87721e2445b4f331fa67cae82bc73d1502c6d5976138b6aba4291250aee209"
+        },
+        {
+          "block": 57,
+          "section": "## 五、規格也有維護成本，但本輪沒有量人時",
+          "sha256": "dabb6a0005873c5fdd76d8da95605dba190967bf7d0b15d5835c7f7f706230e1"
+        },
+        {
+          "block": 58,
+          "section": "## 五、規格也有維護成本，但本輪沒有量人時",
+          "sha256": "fc29d018c97910aeb94c904c639d3d0a7676cc13d25c431d0564e2c2cc2d89d9"
+        },
+        {
+          "block": 59,
+          "section": "## 五、規格也有維護成本，但本輪沒有量人時",
+          "sha256": "08eeedd110965bb8ca989098abf97571860a2647ab36350ea2ea6a06b269cda4"
+        },
+        {
+          "block": 60,
+          "section": "## 五、規格也有維護成本，但本輪沒有量人時",
+          "sha256": "4cc7726a545e0646094c3e82e34736e69cbe4ec26b0e7c6801b91acc2254ebab"
+        },
+        {
+          "block": 61,
+          "section": "## 五、規格也有維護成本，但本輪沒有量人時",
+          "sha256": "401cffa5d1810a37ce86895effa15ba224ab5e743d0273653eaeb6f11abbc463"
+        },
+        {
+          "block": 62,
+          "section": "## 五、規格也有維護成本，但本輪沒有量人時",
+          "sha256": "cb3f91d54eee30e53e35b2b99905f70f169ed549fd78909d3dac2defc9ed8d3b"
+        },
+        {
+          "block": 63,
+          "section": "## 六、結語：先守住可比較，再談哪一組較好",
+          "sha256": "1bef37fedce8faf1f88dc0bdf4f06b296c8e7aa7d29900ec2916046b2523c587"
+        },
+        {
+          "block": 64,
+          "section": "## 六、結語：先守住可比較，再談哪一組較好",
+          "sha256": "67cbf6c6834a89f135f9640ebfe941725caa6018ecb65ce37c7dd7f33b82ba88"
+        },
+        {
+          "block": 65,
+          "section": "## 六、結語：先守住可比較，再談哪一組較好",
+          "sha256": "afe944a06cc4381103559ab8ba275db5e3d20f54934ba70246618fdb9789fb66"
+        },
+        {
+          "block": 66,
+          "section": "## 六、結語：先守住可比較，再談哪一組較好",
+          "sha256": "1a955dd3b3cd4fa9df7b6ce1e4eb4d4934d04dfdce16d457281868fd45d56e8b"
+        },
+        {
+          "block": 67,
+          "section": "## 六、結語：先守住可比較，再談哪一組較好",
+          "sha256": "b42403c3950c620d7b0204be5a1e55d84904fef286c7cf4c16699bd21b73c8ae"
+        },
+        {
+          "block": 68,
+          "section": "## 六、結語：先守住可比較，再談哪一組較好",
+          "sha256": "df80c4cae87d0fa079f272e3dc38e9e8db2239085ef74e24ca72d686f6437eca"
+        },
+        {
+          "block": 69,
+          "section": "## 六、結語：先守住可比較，再談哪一組較好",
+          "sha256": "cb3f91d54eee30e53e35b2b99905f70f169ed549fd78909d3dac2defc9ed8d3b"
+        },
+        {
+          "block": 70,
+          "section": "## 六、結語：先守住可比較，再談哪一組較好",
+          "sha256": "0ae3aaad55ab72373779294668d1fe27b62fc3ecedf0d2298ade25bd618a0825"
+        },
+        {
+          "block": 71,
+          "section": "## 六、結語：先守住可比較，再談哪一組較好",
+          "sha256": "dbca6a49203b6e633c76f894af5fb1dd65f6da11e9fcacf7147f56a69d6e592e"
+        },
+        {
+          "block": 72,
+          "section": "## 六、結語：先守住可比較，再談哪一組較好",
+          "sha256": "715316d68ffe40136e5df0f57971046288026c8306c281d79ffc55e3060de4c7"
+        },
+        {
+          "block": 73,
+          "section": "## 六、結語：先守住可比較，再談哪一組較好",
+          "sha256": "79575f1d151da8482240aa1de4540ad3f852eea90e6b4fbbb2814be9c5cdcb42"
+        },
+        {
+          "block": 74,
+          "section": "## 六、結語：先守住可比較，再談哪一組較好",
+          "sha256": "85c366d267c721235c752d21ac9de71372b898021a34b8433554d0012c546183"
+        },
+        {
+          "block": 75,
+          "section": "## 六、結語：先守住可比較，再談哪一組較好",
+          "sha256": "4b988a7dc8d708397fac146768452811d8f217339c4523fab3b0c599c3e3bd71"
+        },
+        {
+          "block": 76,
+          "section": "## 六、結語：先守住可比較，再談哪一組較好",
+          "sha256": "8639801239ba61a9aaad2a1c45b7f896ec17314115eb1ff3e45d80a2e409a4b7"
+        },
+        {
+          "block": 77,
+          "section": "## 六、結語：先守住可比較，再談哪一組較好",
+          "sha256": "6c2c2802a89fa794b5613160357cd837e18ee572dd683f815f83a3e1ae2e594e"
+        },
+        {
+          "block": 78,
+          "section": "## 六、結語：先守住可比較，再談哪一組較好",
+          "sha256": "808120bef71ed70807d47c5ebd4d96d3629efa2bf5d361ef42c51eaea266b52b"
+        },
+        {
+          "block": 79,
+          "section": "## 六、結語：先守住可比較，再談哪一組較好",
+          "sha256": "24563bef83fd4815585d825157a8f492eb9f85ba447856f969135585e3d17498"
+        }
+      ]
+    },
+    {
+      "piece": "contract",
+      "article_sha256": "6f99865b86beabc93adfa6ca61a2e8cd826cf926eb9b4afbfca7a149f81019cc",
+      "root_scope": "Read principal head/tail in full, revised paragraphs in context, reread latter half through conclusion/references/disclosure, then reconciled independent reviews and actual zh-TW findings. Block hashes are an index of this manual work, not an automated quality judgment.",
+      "style_sources": [
+        "STYLE.md",
+        "research/2026-10/style_brief.md",
+        "research/2026-09/voice_brief.md"
+      ],
+      "checks": [
+        "complete actions and clear actor/object",
+        "neighboring paragraphs and causal scope",
+        "real experience only; published/unpublished recalls distinguished",
+        "figures introduced and interpreted",
+        "all denominators, method limits and final claims aligned",
+        "whole article, including second half and tail"
+      ],
+      "blocks": [
+        {
+          "block": 1,
+          "section": "opening",
+          "sha256": "390f06a7c126065607a2ae7df807fbfc662c8329f950373a386086adf18dcfe8"
+        },
+        {
+          "block": 2,
+          "section": "opening",
+          "sha256": "13528c384afbc4ef69a6889518d06428b6c6165b0399fa1bc4fa2d2d8c452923"
+        },
+        {
+          "block": 3,
+          "section": "opening",
+          "sha256": "e26559d0196500044061ea2e08c9cf6b4417b024322492ffaf2b52a2484b7ad8"
+        },
+        {
+          "block": 4,
+          "section": "## 一、JSON 解碼成功之後，還有 shape 與語義",
+          "sha256": "d9d16472f835b6f4b6950f93da56353d4d0ad05b94c36d6c3020b6f59db0c152"
+        },
+        {
+          "block": 5,
+          "section": "## 一、JSON 解碼成功之後，還有 shape 與語義",
+          "sha256": "eabd982e2068056be6946fd516488362a4b50d3454cd877234c4ef21926d95f4"
+        },
+        {
+          "block": 6,
+          "section": "## 一、JSON 解碼成功之後，還有 shape 與語義",
+          "sha256": "f6de96c6cf0f8d2257d198ddca971a57444ac9d3a8d8704de09adf4f2d2ef4ff"
+        },
+        {
+          "block": 7,
+          "section": "## 一、JSON 解碼成功之後，還有 shape 與語義",
+          "sha256": "6fdd66d941d1460ccadd3e951091e44ebb3c6d50de9f06a7ddd641f0424edfa9"
+        },
+        {
+          "block": 8,
+          "section": "## 一、JSON 解碼成功之後，還有 shape 與語義",
+          "sha256": "81b1d96c1ad3d7ccc67cf63840fc83aa955017d250c7578a6cf9da2c099f47fd"
+        },
+        {
+          "block": 9,
+          "section": "## 一、JSON 解碼成功之後，還有 shape 與語義",
+          "sha256": "fa77231df2b011cc466aec91e514b4d43557d246b9abd344b121e1643462bf78"
+        },
+        {
+          "block": 10,
+          "section": "## 一、JSON 解碼成功之後，還有 shape 與語義",
+          "sha256": "60f4446b0e6c7f73f8966c530acb69bd4a8208195465d0ed49e0c2867f199951"
+        },
+        {
+          "block": 11,
+          "section": "## 一、JSON 解碼成功之後，還有 shape 與語義",
+          "sha256": "da6e387a9caae40b9a9cca8b3957b5df4f64266cbd1d3876f14a0a407ea80030"
+        },
+        {
+          "block": 12,
+          "section": "## 一、JSON 解碼成功之後，還有 shape 與語義",
+          "sha256": "9793d7a743a3907d1d06b5e709cb346c5ff6f60abd9bbd80e346d1583358ae08"
+        },
+        {
+          "block": 13,
+          "section": "## 一、JSON 解碼成功之後，還有 shape 與語義",
+          "sha256": "76949eac1100398011812cd9a53d1590997d1c1d5ef835214bbe8e6332df9823"
+        },
+        {
+          "block": 14,
+          "section": "## 一、JSON 解碼成功之後，還有 shape 與語義",
+          "sha256": "c86e835379d8edb4e2c903827ad77f8b91fe7006572f1debb30311ea75a6acf8"
+        },
+        {
+          "block": 15,
+          "section": "## 一、JSON 解碼成功之後，還有 shape 與語義",
+          "sha256": "68a1d796cb6c85ebd4ee327ee680a3addb946cd3742414260d89eeedf87cf392"
+        },
+        {
+          "block": 16,
+          "section": "## 一、JSON 解碼成功之後，還有 shape 與語義",
+          "sha256": "b178ebd610bde73d1646c21b16cfd6e253dcb7a925a00a2ff4768de177dfb2bb"
+        },
+        {
+          "block": 17,
+          "section": "## 一、JSON 解碼成功之後，還有 shape 與語義",
+          "sha256": "3aebea0e0a07db312995f887400ae05e98bcf749b6cd2c322015f6719faefcac"
+        },
+        {
+          "block": 18,
+          "section": "## 一、JSON 解碼成功之後，還有 shape 與語義",
+          "sha256": "19c8b3db0e3fe0b6d7b5f869f72df8b2e6a163146bd903e0f03aa8418fb5e5d9"
+        },
+        {
+          "block": 19,
+          "section": "## 一、JSON 解碼成功之後，還有 shape 與語義",
+          "sha256": "17e52eaaaea9fb490fdc3d571397f304b96514aebcda69079e5a09ac1d6054c3"
+        },
+        {
+          "block": 20,
+          "section": "## 一、JSON 解碼成功之後，還有 shape 與語義",
+          "sha256": "4bea2b058ded774c4bdd0cdd38384b358d074537e9717c8b066f612cfe5cfff5"
+        },
+        {
+          "block": 21,
+          "section": "## 一、JSON 解碼成功之後，還有 shape 與語義",
+          "sha256": "face598923a8203fe63625d77cd26c8b3ec0b2115218bc7585778119471a6064"
+        },
+        {
+          "block": 22,
+          "section": "## 一、JSON 解碼成功之後，還有 shape 與語義",
+          "sha256": "d6433c6d15ea42efe809d7ee310b8159b87f0ff9c42e28b2edc93ac5f1572a86"
+        },
+        {
+          "block": 23,
+          "section": "## 一、JSON 解碼成功之後，還有 shape 與語義",
+          "sha256": "d2ee161cabdc49aff7694631ce8569a31339509b68dc372cb6affc41affc0c54"
+        },
+        {
+          "block": 24,
+          "section": "## 一、JSON 解碼成功之後，還有 shape 與語義",
+          "sha256": "0aa8d49e7a18c27bfad22c6ec8d9dd5bcaa99863a8a3b015138cad3b7397af8c"
+        },
+        {
+          "block": 25,
+          "section": "## 一、JSON 解碼成功之後，還有 shape 與語義",
+          "sha256": "ec5bd4ba21387771ecaa98689df5f8cfd304eb054fddd954b969804ab28f2e25"
+        },
+        {
+          "block": 26,
+          "section": "## 一、JSON 解碼成功之後，還有 shape 與語義",
+          "sha256": "0418adde58ddff37ff30946080ff17410e325a33118ae2bdb93d225e7fab6be8"
+        },
+        {
+          "block": 27,
+          "section": "## 一、JSON 解碼成功之後，還有 shape 與語義",
+          "sha256": "eff89e33e6d86bbbd4e978b05b2ea21001b338a12b572f4feb90c55597ea61f5"
+        },
+        {
+          "block": 28,
+          "section": "## 二、三個 success 欄位各自回答不同問題",
+          "sha256": "f472359659d4d19c0e6164a131ba6a604839809a385ba05a280d7d07f8db9ec4"
+        },
+        {
+          "block": 29,
+          "section": "## 二、三個 success 欄位各自回答不同問題",
+          "sha256": "45ef7e22882f5f21ee11ef025d34bbf761964b063c9890549cc76ea46870da50"
+        },
+        {
+          "block": 30,
+          "section": "## 二、三個 success 欄位各自回答不同問題",
+          "sha256": "dda4ade37d0b07dc111155fe24f22e484d5edd845dbc46256e630fc6e493d7ac"
+        },
+        {
+          "block": 31,
+          "section": "## 二、三個 success 欄位各自回答不同問題",
+          "sha256": "b2468acce51aa9db1a455d9592c8c839819aaee727d43941a971722a1330df7b"
+        },
+        {
+          "block": 32,
+          "section": "## 二、三個 success 欄位各自回答不同問題",
+          "sha256": "9b91edfd192ebccd4ee6b193d185fefc85c5b868775039f6271dd1b9c52f3efb"
+        },
+        {
+          "block": 33,
+          "section": "## 二、三個 success 欄位各自回答不同問題",
+          "sha256": "539a1809f3a258708c698f766ed9bb300dd34d10cdbdf7c323f9c677cb1f8215"
+        },
+        {
+          "block": 34,
+          "section": "## 二、三個 success 欄位各自回答不同問題",
+          "sha256": "7f69f949f08c495f6cbd537b6a6f1128079389ce0931769b430bc3c90c6cb8d4"
+        },
+        {
+          "block": 35,
+          "section": "## 二、三個 success 欄位各自回答不同問題",
+          "sha256": "44fe70d1fd365eb2f1f335be79be9fd8dcb4dd06a527756dabc45dda7cd26dca"
+        },
+        {
+          "block": 36,
+          "section": "## 二、三個 success 欄位各自回答不同問題",
+          "sha256": "394fc401cc56e06a19252ccaa3afcec527d75ff5d8306d07e12af243fa6868a7"
+        },
+        {
+          "block": 37,
+          "section": "## 二、三個 success 欄位各自回答不同問題",
+          "sha256": "3e1840d178d989c0de0316024abb2ecee562f4c774e3277a7d649efd235645b3"
+        },
+        {
+          "block": 38,
+          "section": "## 三、給測試工程師：讓 evaluator 保有自己的規則",
+          "sha256": "78827252cb191abfa7992c4f41605282e490fb3089a7562086fd6a81a493267e"
+        },
+        {
+          "block": 39,
+          "section": "## 三、給測試工程師：讓 evaluator 保有自己的規則",
+          "sha256": "f3ff6b9080606cc56ca2c7c35d3885b90116a47d027dcd15fbd06434e1ec33a3"
+        },
+        {
+          "block": 40,
+          "section": "## 三、給測試工程師：讓 evaluator 保有自己的規則",
+          "sha256": "30ccf50a82b03c76cf6ee33bb062b4c19dae412886976c14f1d6dd46a374fce8"
+        },
+        {
+          "block": 41,
+          "section": "## 三、給測試工程師：讓 evaluator 保有自己的規則",
+          "sha256": "36f1d45c32e498f127f8229d8d844a251ac84959776c67f30439dcddaf6a426a"
+        },
+        {
+          "block": 42,
+          "section": "## 三、給測試工程師：讓 evaluator 保有自己的規則",
+          "sha256": "9049124b30ac94cc9627e2dde655fbf1274abb5fd5f5ad01cd57b91f92045be2"
+        },
+        {
+          "block": 43,
+          "section": "## 三、給測試工程師：讓 evaluator 保有自己的規則",
+          "sha256": "e632aad545847ff24115709f8b0587f3134974689f73056ac217c39fc9037db5"
+        },
+        {
+          "block": 44,
+          "section": "## 三、給測試工程師：讓 evaluator 保有自己的規則",
+          "sha256": "29d9df50c3e8feb481a0d17a1847e6a4892571d721d2273a6f223865061a854c"
+        },
+        {
+          "block": 45,
+          "section": "## 三、給測試工程師：讓 evaluator 保有自己的規則",
+          "sha256": "ba840ded74a7b6094d5c7ec929b19fe4d0d16f16e9b179d2105ec6190dfc994d"
+        },
+        {
+          "block": 46,
+          "section": "## 三、給測試工程師：讓 evaluator 保有自己的規則",
+          "sha256": "7a1a64f99fcef07a8a82acd10e701500a366152cca632e7ab5534fd1c9f83b55"
+        },
+        {
+          "block": 47,
+          "section": "## 三、給測試工程師：讓 evaluator 保有自己的規則",
+          "sha256": "998f4a65952c4d927f46ed6f5d767358d2e1de87a1d53f03c531f11466262a1e"
+        },
+        {
+          "block": 48,
+          "section": "## 三、給測試工程師：讓 evaluator 保有自己的規則",
+          "sha256": "9f44aa2277ac1ba40cec943c95be85562e3542b40063291874ebee607826d013"
+        },
+        {
+          "block": 49,
+          "section": "## 三、給測試工程師：讓 evaluator 保有自己的規則",
+          "sha256": "434d7c09db6f91a08993aea845a251d1f529f8848411918855b7264a4a56ceb7"
+        },
+        {
+          "block": 50,
+          "section": "## 三、給測試工程師：讓 evaluator 保有自己的規則",
+          "sha256": "19210658d0740e2e43eaa5fc9881d58642dec12a4a70a551d460add1a3608042"
+        },
+        {
+          "block": 51,
+          "section": "## 三、給測試工程師：讓 evaluator 保有自己的規則",
+          "sha256": "39d4c4e93fa288ad527ea28f6d6a2a48f48c3adc292bc1c94db2ca00d68b24bd"
+        },
+        {
+          "block": 52,
+          "section": "## 四、隔離要有 probe，驗收工具也要有反例",
+          "sha256": "d2cf19d2424fb155d3b37e34ee4527534ad02a169a4ee5704d6d0edcf44adc3e"
+        },
+        {
+          "block": 53,
+          "section": "## 四、隔離要有 probe，驗收工具也要有反例",
+          "sha256": "3248f1e023539b47aa81f05a0c680ff49d0b0f25fa952794a2ee15ce195c055a"
+        },
+        {
+          "block": 54,
+          "section": "## 四、隔離要有 probe，驗收工具也要有反例",
+          "sha256": "843cf82e7ba267223076c3433f2258f3c17e833ba6711306f5135bc4c10dd93d"
+        },
+        {
+          "block": 55,
+          "section": "## 四、隔離要有 probe，驗收工具也要有反例",
+          "sha256": "e5f0e8c482396768c1c957943a9291d63a6ae9e633221bf8aef272e0f28c62e9"
+        },
+        {
+          "block": 56,
+          "section": "## 四、隔離要有 probe，驗收工具也要有反例",
+          "sha256": "74ef04ab79b8d8a1b8b42779148ac324827deb6da468aa4d265695eea495c7f5"
+        },
+        {
+          "block": 57,
+          "section": "## 四、隔離要有 probe，驗收工具也要有反例",
+          "sha256": "4f052927caf369bb4cc22911dee6f30283a426989b50177740002a6a2e97d77d"
+        },
+        {
+          "block": 58,
+          "section": "## 四、隔離要有 probe，驗收工具也要有反例",
+          "sha256": "dccd527d9635946bfaaaa2daa40e5c1c96fa090ffb0b3bcbfcd239578b0a4446"
+        },
+        {
+          "block": 59,
+          "section": "## 四、隔離要有 probe，驗收工具也要有反例",
+          "sha256": "226ad057bc8fb0b267dc34356ec1a44ccca35145ae3f439a6410e34544b89497"
+        },
+        {
+          "block": 60,
+          "section": "## 四、隔離要有 probe，驗收工具也要有反例",
+          "sha256": "59ba7af36eabbbfbb2c3cd2df0061d4e8b8eade75e94c3599c09461994fafa10"
+        },
+        {
+          "block": 61,
+          "section": "## 四、隔離要有 probe，驗收工具也要有反例",
+          "sha256": "08c65763b1edaf540057383ca46d580425e6a7e9114d2373f44256059073e385"
+        },
+        {
+          "block": 62,
+          "section": "## 五、保留 streaming 的行為，還要檢查輸出何時出現",
+          "sha256": "0a458ec179db72355d7fa70a57af64648b8fc198168cd14b67efba8462afa770"
+        },
+        {
+          "block": 63,
+          "section": "## 五、保留 streaming 的行為，還要檢查輸出何時出現",
+          "sha256": "b840988afdb4b5336a86ab324759ba4d957cdffa9e6ddab575825355d4bdd394"
+        },
+        {
+          "block": 64,
+          "section": "## 五、保留 streaming 的行為，還要檢查輸出何時出現",
+          "sha256": "a36e1898cd3e0b005c5f6ee85dcc419d378a4c00b30e654b6e48245cd868c6ba"
+        },
+        {
+          "block": 65,
+          "section": "## 五、保留 streaming 的行為，還要檢查輸出何時出現",
+          "sha256": "e83528d69e867029cba470d2cfb0d1c896581541d7b788952fb1687b2d184906"
+        },
+        {
+          "block": 66,
+          "section": "## 五、保留 streaming 的行為，還要檢查輸出何時出現",
+          "sha256": "0a3ca245b0157edd3984faf2ed5ec7d19630b0a5034c30f93a936c7408a8a47a"
+        },
+        {
+          "block": 67,
+          "section": "## 五、保留 streaming 的行為，還要檢查輸出何時出現",
+          "sha256": "380e6de0320bc134252626bae2a9b888c476957b5f5c5007e10b426952766554"
+        },
+        {
+          "block": 68,
+          "section": "## 五、保留 streaming 的行為，還要檢查輸出何時出現",
+          "sha256": "e91ae4bef988cc75a6159d6f6baeb0eea89d80517187f3abf0b8c22fb6185a88"
+        },
+        {
+          "block": 69,
+          "section": "## 五、保留 streaming 的行為，還要檢查輸出何時出現",
+          "sha256": "5600199be1997aed2a696e0dee40b522ca4565e249f2d419d91061a05e2da9f0"
+        },
+        {
+          "block": 70,
+          "section": "## 五、保留 streaming 的行為，還要檢查輸出何時出現",
+          "sha256": "52da42c2df16053b7f230a1710c9f7745d9b6b886b63a379da9d9ee86cd3095b"
+        },
+        {
+          "block": 71,
+          "section": "## 五、保留 streaming 的行為，還要檢查輸出何時出現",
+          "sha256": "8138b416dd4c4e2ec67450e2f30f4ea2c501ceca3ab7220f7a34871a06ed6e12"
+        },
+        {
+          "block": 72,
+          "section": "## 五、保留 streaming 的行為，還要檢查輸出何時出現",
+          "sha256": "7dfbe751c21367145c4939a9aa1bb6875b720b184c44258c1effe316ab5b5e14"
+        },
+        {
+          "block": 73,
+          "section": "## 五、保留 streaming 的行為，還要檢查輸出何時出現",
+          "sha256": "0f13431f0c251ed859f5bb97f2469c57fb3159942f42f2c6557ae939353d9a73"
+        },
+        {
+          "block": 74,
+          "section": "## 六、結語：通過契約檢查，仍有尚未評估的品質",
+          "sha256": "520dd4fc498ddaa94cc0c1191ca52ed1e450035af508cb9b50a583bff137fe56"
+        },
+        {
+          "block": 75,
+          "section": "## 六、結語：通過契約檢查，仍有尚未評估的品質",
+          "sha256": "a360148f42ab0b086601983063b5db9b657f503941267edf7c70524f24bfd3d9"
+        },
+        {
+          "block": 76,
+          "section": "## 六、結語：通過契約檢查，仍有尚未評估的品質",
+          "sha256": "9e4dca1dce3654fab298df29df91b2ddf972f4963435dc695619bf9ada481cf6"
+        },
+        {
+          "block": 77,
+          "section": "## 六、結語：通過契約檢查，仍有尚未評估的品質",
+          "sha256": "79cc51b8c797aed43d9903f6958cfcc8fb56ffc73a2589359be2092146e16ec2"
+        },
+        {
+          "block": 78,
+          "section": "## 六、結語：通過契約檢查，仍有尚未評估的品質",
+          "sha256": "51670979122ea09d581bd3f808443f23f7f97883b8c40cdfbe5ddf686660c07f"
+        },
+        {
+          "block": 79,
+          "section": "## 六、結語：通過契約檢查，仍有尚未評估的品質",
+          "sha256": "e88b832ac6a1e01eaee13d7d0a1d4dc9aa56db7c7699d2cbc43c1a50e90d1d82"
+        },
+        {
+          "block": 80,
+          "section": "## 六、結語：通過契約檢查，仍有尚未評估的品質",
+          "sha256": "2a00d4e1d715a0523508e2f24601e93ad59ee06b11ed31883251036ef7af3db0"
+        },
+        {
+          "block": 81,
+          "section": "## 六、結語：通過契約檢查，仍有尚未評估的品質",
+          "sha256": "0ae3aaad55ab72373779294668d1fe27b62fc3ecedf0d2298ade25bd618a0825"
+        },
+        {
+          "block": 82,
+          "section": "## 六、結語：通過契約檢查，仍有尚未評估的品質",
+          "sha256": "9406a7c99b055d80ae6ffac09c8db0a30f2368043e8ee46a4dece59a47d4526b"
+        },
+        {
+          "block": 83,
+          "section": "## 六、結語：通過契約檢查，仍有尚未評估的品質",
+          "sha256": "03189ef9c89f287fc7402f535b21357271c26319fb988533349b4341ee018644"
+        },
+        {
+          "block": 84,
+          "section": "## 六、結語：通過契約檢查，仍有尚未評估的品質",
+          "sha256": "79575f1d151da8482240aa1de4540ad3f852eea90e6b4fbbb2814be9c5cdcb42"
+        },
+        {
+          "block": 85,
+          "section": "## 六、結語：通過契約檢查，仍有尚未評估的品質",
+          "sha256": "2abc1e0557e12c7717dd2243162e738d75a4d66febeb00528cb7252b76df13d0"
+        },
+        {
+          "block": 86,
+          "section": "## 六、結語：通過契約檢查，仍有尚未評估的品質",
+          "sha256": "8639801239ba61a9aaad2a1c45b7f896ec17314115eb1ff3e45d80a2e409a4b7"
+        },
+        {
+          "block": 87,
+          "section": "## 六、結語：通過契約檢查，仍有尚未評估的品質",
+          "sha256": "f5890979ea5b7823336e256ddd5a220b7219a1df952adc9b8da7f465447470a7"
+        },
+        {
+          "block": 88,
+          "section": "## 六、結語：通過契約檢查，仍有尚未評估的品質",
+          "sha256": "c5ab06c28643d667ae92b1144ad0a10d2aee4a82448e7eee237b0235732bfbc7"
+        },
+        {
+          "block": 89,
+          "section": "## 六、結語：通過契約檢查，仍有尚未評估的品質",
+          "sha256": "24563bef83fd4815585d825157a8f492eb9f85ba447856f969135585e3d17498"
+        }
+      ]
+    },
+    {
+      "piece": "variance",
+      "article_sha256": "3ee25eaa1ca3ae1f177403f1719eb833a5c07ecfa972d4189e2129ab2fff6b0d",
+      "root_scope": "Read principal head/tail in full, revised paragraphs in context, reread latter half through conclusion/references/disclosure, then reconciled independent reviews and actual zh-TW findings. Block hashes are an index of this manual work, not an automated quality judgment.",
+      "style_sources": [
+        "STYLE.md",
+        "research/2026-10/style_brief.md",
+        "research/2026-09/voice_brief.md"
+      ],
+      "checks": [
+        "complete actions and clear actor/object",
+        "neighboring paragraphs and causal scope",
+        "real experience only; published/unpublished recalls distinguished",
+        "figures introduced and interpreted",
+        "all denominators, method limits and final claims aligned",
+        "whole article, including second half and tail"
+      ],
+      "blocks": [
+        {
+          "block": 1,
+          "section": "opening",
+          "sha256": "3950fb6402d8bc44b51b93e66cf822e29e1ca5dc58bf9db2c6f58e3f13d014ca"
+        },
+        {
+          "block": 2,
+          "section": "opening",
+          "sha256": "b68bab2bf53bb8a2b884fcd94258f1840d64fe44cc12468df1d009d3816a09ba"
+        },
+        {
+          "block": 3,
+          "section": "opening",
+          "sha256": "be59c3a84449ad395c06e7c836a1c846cd503c7f63a5dd705d7a2a6d4c1439cd"
+        },
+        {
+          "block": 4,
+          "section": "opening",
+          "sha256": "cb3f91d54eee30e53e35b2b99905f70f169ed549fd78909d3dac2defc9ed8d3b"
+        },
+        {
+          "block": 5,
+          "section": "## 一、先攤開研究協議，再讀四個 10/10",
+          "sha256": "d73832e3aa3f008dfd326a224c28e50f48e2ec86cc82d79834991a25ea67c0f3"
+        },
+        {
+          "block": 6,
+          "section": "## 一、先攤開研究協議，再讀四個 10/10",
+          "sha256": "00770268124bae5960282c4db3fbe97e9bfec08b1a6f257c35527c7b6f460b85"
+        },
+        {
+          "block": 7,
+          "section": "## 一、先攤開研究協議，再讀四個 10/10",
+          "sha256": "a28f33b307cd5a29085ee073eecc5dd448c2bfdadbcbfd7055fa00893c2e910b"
+        },
+        {
+          "block": 8,
+          "section": "## 一、先攤開研究協議，再讀四個 10/10",
+          "sha256": "70cb2f74ef44e7a2df24da448de28655b468d3e8ccb04e5676c1fd85d8bcac87"
+        },
+        {
+          "block": 9,
+          "section": "## 一、先攤開研究協議，再讀四個 10/10",
+          "sha256": "2efd0a14fa470eff8948083f5e82d3c467fd241723bfacf19dab1cc5f4a68195"
+        },
+        {
+          "block": 10,
+          "section": "## 一、先攤開研究協議，再讀四個 10/10",
+          "sha256": "8e0519046014ece00b898712456e0514f7548c993d20fff8ffc7aab6e3fb8b64"
+        },
+        {
+          "block": 11,
+          "section": "## 一、先攤開研究協議，再讀四個 10/10",
+          "sha256": "7c6e78b3ea54da20f51e1be80b400c769e7e59a01e79afdce2f9b555bde413ec"
+        },
+        {
+          "block": 12,
+          "section": "## 一、先攤開研究協議，再讀四個 10/10",
+          "sha256": "82766a2d4b153295784fe0b42257df4a3de05d6506248874c5c321bc44581841"
+        },
+        {
+          "block": 13,
+          "section": "## 一、先攤開研究協議，再讀四個 10/10",
+          "sha256": "f67acada78e3696f84ce5a57ce3f1495643133c2949da76aa68056e184e01295"
+        },
+        {
+          "block": 14,
+          "section": "## 一、先攤開研究協議，再讀四個 10/10",
+          "sha256": "194cecf1ab3d1539ed41b53977b0c75fa0f83c424381ccf129ec07369ecf84b0"
+        },
+        {
+          "block": 15,
+          "section": "## 一、先攤開研究協議，再讀四個 10/10",
+          "sha256": "eeadf1e38ba081f55ffb7a83a5b203cbf969ba6b1023d123bba8434c9b7773f4"
+        },
+        {
+          "block": 16,
+          "section": "## 一、先攤開研究協議，再讀四個 10/10",
+          "sha256": "59c336d2ea6d6e9767b2662096ba720594da57a4ad52e2879020107cba940c41"
+        },
+        {
+          "block": 17,
+          "section": "## 一、先攤開研究協議，再讀四個 10/10",
+          "sha256": "fbee1e3005b529c2b631e459b18e89e6d2ba10e7c34e1f57ad18098d6bd00149"
+        },
+        {
+          "block": 18,
+          "section": "## 一、先攤開研究協議，再讀四個 10/10",
+          "sha256": "d5119179bb30853dc10001f6b290a0be3efafef4677d6a2db80bd0bd39f10295"
+        },
+        {
+          "block": 19,
+          "section": "## 一、先攤開研究協議，再讀四個 10/10",
+          "sha256": "cb3f91d54eee30e53e35b2b99905f70f169ed549fd78909d3dac2defc9ed8d3b"
+        },
+        {
+          "block": 20,
+          "section": "## 二、給研究結果的簽核者：四十個名額都有下落",
+          "sha256": "dc555a4b94e59a4276ac86c89fe2248f98a4c795c4034a64481f66084c8c0220"
+        },
+        {
+          "block": 21,
+          "section": "## 二、給研究結果的簽核者：四十個名額都有下落",
+          "sha256": "1dccb15038b5306b9955c9ba532fda87d12482296520a4af90947b75cb7c52cb"
+        },
+        {
+          "block": 22,
+          "section": "## 二、給研究結果的簽核者：四十個名額都有下落",
+          "sha256": "38acda5c128cd767e37f6844b82ee2130fd4b6afe191af4e6042a33a6411c2fd"
+        },
+        {
+          "block": 23,
+          "section": "## 二、給研究結果的簽核者：四十個名額都有下落",
+          "sha256": "56115e5e605ad4402aa8b190e3e6bc6718dcd97d89361d8da0be0f983969a842"
+        },
+        {
+          "block": 24,
+          "section": "## 二、給研究結果的簽核者：四十個名額都有下落",
+          "sha256": "51deaf495f045ad95ddc0180bbf8a23c2cb0975a0d9c24b4979844facf2d6a98"
+        },
+        {
+          "block": 25,
+          "section": "## 二、給研究結果的簽核者：四十個名額都有下落",
+          "sha256": "d00a147f958b1456dd8bdbb2370e393c1a7f29b82c16d225baebed2d8002a69d"
+        },
+        {
+          "block": 26,
+          "section": "## 二、給研究結果的簽核者：四十個名額都有下落",
+          "sha256": "0fe92f85fe79300bcc4a888684dd66257faa96aae774a14d002774274554e4c2"
+        },
+        {
+          "block": 27,
+          "section": "## 二、給研究結果的簽核者：四十個名額都有下落",
+          "sha256": "a28b39422fcffbc7424e4041905c51eff6c5865c51b380cd00f0b74a739fc5eb"
+        },
+        {
+          "block": 28,
+          "section": "## 二、給研究結果的簽核者：四十個名額都有下落",
+          "sha256": "6ae157a8a9a5ab222534741c8d78774760f25fc4f00f9e51a65a0caa976a5fef"
+        },
+        {
+          "block": 29,
+          "section": "## 二、給研究結果的簽核者：四十個名額都有下落",
+          "sha256": "0f0ce16daab1ff57dc90c87372350b37c6d6a7fe2ce66fdb42b1d34058a757f0"
+        },
+        {
+          "block": 30,
+          "section": "## 二、給研究結果的簽核者：四十個名額都有下落",
+          "sha256": "cb3f91d54eee30e53e35b2b99905f70f169ed549fd78909d3dac2defc9ed8d3b"
+        },
+        {
+          "block": 31,
+          "section": "## 三、哪一條 parser 契約最常失敗？這次沒有任何一條",
+          "sha256": "e579829b3125e53383777c22e08c868dcfb5ebfdbe0dc3cdd7bf59e35a324a9f"
+        },
+        {
+          "block": 32,
+          "section": "## 三、哪一條 parser 契約最常失敗？這次沒有任何一條",
+          "sha256": "fe3fc4509e460e8806f10a00ee0a8e73ed10459b61c8ca5c26e1ce655b995dad"
+        },
+        {
+          "block": 33,
+          "section": "## 三、哪一條 parser 契約最常失敗？這次沒有任何一條",
+          "sha256": "e3b97a91920bf016985f0887ecdc2e6cad49086152713aafa3d9690871819310"
+        },
+        {
+          "block": 34,
+          "section": "## 三、哪一條 parser 契約最常失敗？這次沒有任何一條",
+          "sha256": "b4a0623c72552677fee4c3a2a9b28324131185db54c3de43403104d34778ffd5"
+        },
+        {
+          "block": 35,
+          "section": "## 三、哪一條 parser 契約最常失敗？這次沒有任何一條",
+          "sha256": "30f2821f775afef2a65e6fa48f7bdcd106d86feec849a51daf25d99c31ea2d65"
+        },
+        {
+          "block": 36,
+          "section": "## 三、哪一條 parser 契約最常失敗？這次沒有任何一條",
+          "sha256": "22fa5b94a948e1f8084c32d6b7c53b5881cfd4bb827b018e049cdf2006125f06"
+        },
+        {
+          "block": 37,
+          "section": "## 三、哪一條 parser 契約最常失敗？這次沒有任何一條",
+          "sha256": "fe820725720d2b0a266977a5ba3fb85a06e3395576755339b0bd2c5fa34c864d"
+        },
+        {
+          "block": 38,
+          "section": "## 三、哪一條 parser 契約最常失敗？這次沒有任何一條",
+          "sha256": "b6c5ce2bde2b8d736c1c074aa75e9f72e347c9faf26c28908fd8b53258d5fa60"
+        },
+        {
+          "block": 39,
+          "section": "## 三、哪一條 parser 契約最常失敗？這次沒有任何一條",
+          "sha256": "cb3f91d54eee30e53e35b2b99905f70f169ed549fd78909d3dac2defc9ed8d3b"
+        },
+        {
+          "block": 40,
+          "section": "## 四、十份程式都通過驗收，卻沒有兩份相同",
+          "sha256": "75250ac761fb88e635693e309b8105b1e09fbe8f4105077a2177a0ac60f0cb3f"
+        },
+        {
+          "block": 41,
+          "section": "## 四、十份程式都通過驗收，卻沒有兩份相同",
+          "sha256": "a1ca76021e7e568ee98de56f463d94819638fef9b45b88ffd8bcb7f5610b3e46"
+        },
+        {
+          "block": 42,
+          "section": "## 四、十份程式都通過驗收，卻沒有兩份相同",
+          "sha256": "3b4a045a9b4433edbe631d4e8e77a2f4ef5b2107535cd58520aa98646eabab2a"
+        },
+        {
+          "block": 43,
+          "section": "## 四、十份程式都通過驗收，卻沒有兩份相同",
+          "sha256": "1b952eefe8d6bcc0a6cf2360efd3625de347347b0c977be655055d2b1724f58c"
+        },
+        {
+          "block": 44,
+          "section": "## 四、十份程式都通過驗收，卻沒有兩份相同",
+          "sha256": "6a5cee13cf6a2beb07d95f43d2df76f04c80c1256e250a23ea56e599ae875850"
+        },
+        {
+          "block": 45,
+          "section": "## 四、十份程式都通過驗收，卻沒有兩份相同",
+          "sha256": "c9c97a115e5a264358a23da2be2c773fc945a22d0d5d71044defd80a904f39fc"
+        },
+        {
+          "block": 46,
+          "section": "## 四、十份程式都通過驗收，卻沒有兩份相同",
+          "sha256": "0a26c64e38912f7ef9051216cd758e34cfbb0c2fef41942783ce8c944d127705"
+        },
+        {
+          "block": 47,
+          "section": "## 四、十份程式都通過驗收，卻沒有兩份相同",
+          "sha256": "f0b1224a5fc87fe66d4e8864a36d137f2f4fc4828292c6325ea878d59fdd4da4"
+        },
+        {
+          "block": 48,
+          "section": "## 四、十份程式都通過驗收，卻沒有兩份相同",
+          "sha256": "078567aa5dd9ac784f03d03eca30e8e38b3019b3c7e98edad1267f07ffe2dea1"
+        },
+        {
+          "block": 49,
+          "section": "## 四、十份程式都通過驗收，卻沒有兩份相同",
+          "sha256": "ce461a94789470fbcbfc7ec8e6e00fe4eb3fb2236b06fca95d469f1c033045a2"
+        },
+        {
+          "block": 50,
+          "section": "## 四、十份程式都通過驗收，卻沒有兩份相同",
+          "sha256": "fcb01c29adb3b1a5a05cbb999fce8e434863ee885a6416a655cc37e97505980f"
+        },
+        {
+          "block": 51,
+          "section": "## 四、十份程式都通過驗收，卻沒有兩份相同",
+          "sha256": "3e3bca7aac3bdd33b35c27915d5cb4d4d7b16eaf95d453af4c2d8458422ce62f"
+        },
+        {
+          "block": 52,
+          "section": "## 四、十份程式都通過驗收，卻沒有兩份相同",
+          "sha256": "c49085919d6d6b6db80b30e90aaa21fe3b35f5d788b009d1b457090361bf715e"
+        },
+        {
+          "block": 53,
+          "section": "## 四、十份程式都通過驗收，卻沒有兩份相同",
+          "sha256": "6dd2de79018b0e65c7f9d2e4fa5718fff89eeb1dd3b72ac45312b21b2be4fd6e"
+        },
+        {
+          "block": 54,
+          "section": "## 四、十份程式都通過驗收，卻沒有兩份相同",
+          "sha256": "4f77e069ea839115ffe24cf0d618f34f26ea0e85c0d17201f296191762e88da8"
+        },
+        {
+          "block": 55,
+          "section": "## 四、十份程式都通過驗收，卻沒有兩份相同",
+          "sha256": "d103eaca4b5de4308c516174a8f8c77c6290abf8fb89b27333bc4e57e71dc2f9"
+        },
+        {
+          "block": 56,
+          "section": "## 四、十份程式都通過驗收，卻沒有兩份相同",
+          "sha256": "2ed442121225ee9a15e2fd5dd239098475cc547e3c096925ae1e94314c8b5cd5"
+        },
+        {
+          "block": 57,
+          "section": "## 四、十份程式都通過驗收，卻沒有兩份相同",
+          "sha256": "adc55f5477a18e6bf0c5485018490bcb6d4a09a0f6cd26846caa0ba1220e335d"
+        },
+        {
+          "block": 58,
+          "section": "## 四、十份程式都通過驗收，卻沒有兩份相同",
+          "sha256": "9241113b8b27dc893fa739b2fa0cc5d2be1764259b9c036420c1be345a38164e"
+        },
+        {
+          "block": 59,
+          "section": "## 四、十份程式都通過驗收，卻沒有兩份相同",
+          "sha256": "d9784f93f834bbb2f4d33078ebb6c01e3e1abc80c576aa515bedc78c9de599ab"
+        },
+        {
+          "block": 60,
+          "section": "## 四、十份程式都通過驗收，卻沒有兩份相同",
+          "sha256": "986247347615d640f67150bdd0180c49a4b6ffd85057735169bc5786b18ea61d"
+        },
+        {
+          "block": 61,
+          "section": "## 四、十份程式都通過驗收，卻沒有兩份相同",
+          "sha256": "9da78734c224ac26dad3ccda38c39d8d7300e2fe0ea65db201ab89d915caef70"
+        },
+        {
+          "block": 62,
+          "section": "## 四、十份程式都通過驗收，卻沒有兩份相同",
+          "sha256": "b214ccf08c8babb485b00f0b54f9b1bada4702608b2e071555434f72ecd2a878"
+        },
+        {
+          "block": 63,
+          "section": "## 四、十份程式都通過驗收，卻沒有兩份相同",
+          "sha256": "cd5308572e53b58a21390f9f9465d882e96b2f8116006f7243cc5490b58858c1"
+        },
+        {
+          "block": 64,
+          "section": "## 四、十份程式都通過驗收，卻沒有兩份相同",
+          "sha256": "cb3f91d54eee30e53e35b2b99905f70f169ed549fd78909d3dac2defc9ed8d3b"
+        },
+        {
+          "block": 65,
+          "section": "## 五、資源使用要和交付結果放在一起讀",
+          "sha256": "e016731a8b7ba34dc9bae6dbc46ef697a86289fadd85bab9d275bfb0768045df"
+        },
+        {
+          "block": 66,
+          "section": "## 五、資源使用要和交付結果放在一起讀",
+          "sha256": "8c5e72eb15c4acea99d4b859a322158d9297e2ed4c6bbde38ec6eb36257fe024"
+        },
+        {
+          "block": 67,
+          "section": "## 五、資源使用要和交付結果放在一起讀",
+          "sha256": "d200e66ec0b0abcb5f91bc00219a4f72ca3309f5595baea9fde5fc43be24392a"
+        },
+        {
+          "block": 68,
+          "section": "## 五、資源使用要和交付結果放在一起讀",
+          "sha256": "fd21c8df25e6d418bf5c559dc1650ff3ecceba5e438734fcecb0bb25ef8b3f88"
+        },
+        {
+          "block": 69,
+          "section": "## 五、資源使用要和交付結果放在一起讀",
+          "sha256": "3f33a98ef0f499c9f10fd8172ae2e14ec2f0f5b63afb7d29b3c51cb205a20cd6"
+        },
+        {
+          "block": 70,
+          "section": "## 五、資源使用要和交付結果放在一起讀",
+          "sha256": "c205c8870e81ef6d8a7dbde509e55e0cc64ce85a14db1cc93d924f89e5638381"
+        },
+        {
+          "block": 71,
+          "section": "## 五、資源使用要和交付結果放在一起讀",
+          "sha256": "3d8a81df7ba1c34740000f5d18c9a0c107c043929f55bd8a7c2029e7433bf286"
+        },
+        {
+          "block": 72,
+          "section": "## 五、資源使用要和交付結果放在一起讀",
+          "sha256": "8b4ebffe29e1bac4998ec4e012d9225738a7d5c89fdcf48217c1f235473cacc4"
+        },
+        {
+          "block": 73,
+          "section": "## 五、資源使用要和交付結果放在一起讀",
+          "sha256": "b08ecdbb890b4f502a6f58f67cf8366046b91d9c146f5d55c8974b04ce049c88"
+        },
+        {
+          "block": 74,
+          "section": "## 五、資源使用要和交付結果放在一起讀",
+          "sha256": "88dd31be1691f2f50073ceaf9e925674f8a2cccdf0afe07900726a15641a993a"
+        },
+        {
+          "block": 75,
+          "section": "## 五、資源使用要和交付結果放在一起讀",
+          "sha256": "d486bcdfc0cd19c7bddcada2b541053578d90e8fa68a16ac171e37f16034cb4c"
+        },
+        {
+          "block": 76,
+          "section": "## 五、資源使用要和交付結果放在一起讀",
+          "sha256": "cb3f91d54eee30e53e35b2b99905f70f169ed549fd78909d3dac2defc9ed8d3b"
+        },
+        {
+          "block": 77,
+          "section": "## 六、這個小實驗沒有回答的問題",
+          "sha256": "6ad35b5c4b427953c388d6924780ba67cdc040115b70898b6016d3a624e40aaa"
+        },
+        {
+          "block": 78,
+          "section": "## 六、這個小實驗沒有回答的問題",
+          "sha256": "2dde2f06d10a10be36c157c88c8543bee75b59e8480712b2bcbf3f35bf2d6376"
+        },
+        {
+          "block": 79,
+          "section": "## 六、這個小實驗沒有回答的問題",
+          "sha256": "cf6645f41b42c3bca3ddca1eda5393fd9d6312dcbaec91d2add4bf254b7424f2"
+        },
+        {
+          "block": 80,
+          "section": "## 六、這個小實驗沒有回答的問題",
+          "sha256": "8f5be133fe58f6d6815a56fc1cd7587895147fb712e35dacf38931c5db73c979"
+        },
+        {
+          "block": 81,
+          "section": "## 六、這個小實驗沒有回答的問題",
+          "sha256": "2eb12c3cfb1bc9b7d28237b71a53f1b58044c3dd2dbc93442c46eb615e7122bb"
+        },
+        {
+          "block": 82,
+          "section": "## 六、這個小實驗沒有回答的問題",
+          "sha256": "99dd535a4b2b93adac0648ca9efdb00b78acb214b2d48f4cfa906005ee279731"
+        },
+        {
+          "block": 83,
+          "section": "## 六、這個小實驗沒有回答的問題",
+          "sha256": "5f2b59c1d72e259e8d1c2653dfacf0fe524f67931cc45d5c8298ab553a88f7b4"
+        },
+        {
+          "block": 84,
+          "section": "## 六、這個小實驗沒有回答的問題",
+          "sha256": "ae27d8baef94a200f7f9dfeb7c23a064addb893037b5de1635d56f0bac5d9dd9"
+        },
+        {
+          "block": 85,
+          "section": "## 六、這個小實驗沒有回答的問題",
+          "sha256": "154ae550afc36f1c9299dc83f92d5e7152e22ea6457366c6125bd4e492cfdaa7"
+        },
+        {
+          "block": 86,
+          "section": "## 六、這個小實驗沒有回答的問題",
+          "sha256": "2344b13b430009151f735924213c1db9f926c99cddcca46564db65a1dc2ad969"
+        },
+        {
+          "block": 87,
+          "section": "## 六、這個小實驗沒有回答的問題",
+          "sha256": "cb3f91d54eee30e53e35b2b99905f70f169ed549fd78909d3dac2defc9ed8d3b"
+        },
+        {
+          "block": 88,
+          "section": "## 七、結語：回到四十筆 accepted，決定下一步",
+          "sha256": "bd129fa32d668a256899ce34c20b9c8c68e97a811a01986486bf8af2dc198eaa"
+        },
+        {
+          "block": 89,
+          "section": "## 七、結語：回到四十筆 accepted，決定下一步",
+          "sha256": "311d9b9f87f63183a6067ce1974aa63296aa3e0cbb7915ce64c63dd2fb4b104b"
+        },
+        {
+          "block": 90,
+          "section": "## 七、結語：回到四十筆 accepted，決定下一步",
+          "sha256": "e986bb55937e86cf7d45fb1a6b451c046ff30ac10dad8c066ad16529d21b0def"
+        },
+        {
+          "block": 91,
+          "section": "## 七、結語：回到四十筆 accepted，決定下一步",
+          "sha256": "bc65e2c6101daf4d789241760a19cf259be5d70de69415252474c7d3a9dfbed2"
+        },
+        {
+          "block": 92,
+          "section": "## 七、結語：回到四十筆 accepted，決定下一步",
+          "sha256": "8b1fc4a2ed7d7f5af4ba61f7e38b76d6e035f64cd653589dd63d7e6a48e3dfe4"
+        },
+        {
+          "block": 93,
+          "section": "## 七、結語：回到四十筆 accepted，決定下一步",
+          "sha256": "49f4f35f162fcd68acb0697e05f101e6b9507dace057916a369192a76e2d39f8"
+        },
+        {
+          "block": 94,
+          "section": "## 七、結語：回到四十筆 accepted，決定下一步",
+          "sha256": "7354abffd28631a2c3ce2a556f8bd903f17df079d5d406a2d30315c91234ef9a"
+        },
+        {
+          "block": 95,
+          "section": "## 七、結語：回到四十筆 accepted，決定下一步",
+          "sha256": "cb3f91d54eee30e53e35b2b99905f70f169ed549fd78909d3dac2defc9ed8d3b"
+        },
+        {
+          "block": 96,
+          "section": "## 七、結語：回到四十筆 accepted，決定下一步",
+          "sha256": "0ae3aaad55ab72373779294668d1fe27b62fc3ecedf0d2298ade25bd618a0825"
+        },
+        {
+          "block": 97,
+          "section": "## 七、結語：回到四十筆 accepted，決定下一步",
+          "sha256": "dbca6a49203b6e633c76f894af5fb1dd65f6da11e9fcacf7147f56a69d6e592e"
+        },
+        {
+          "block": 98,
+          "section": "## 七、結語：回到四十筆 accepted，決定下一步",
+          "sha256": "b26f5d26e212376ab7c4b3b04b50a8f9d407bcb3674bf90e71b3a0b991bf2ab1"
+        },
+        {
+          "block": 99,
+          "section": "## 七、結語：回到四十筆 accepted，決定下一步",
+          "sha256": "cb3f91d54eee30e53e35b2b99905f70f169ed549fd78909d3dac2defc9ed8d3b"
+        },
+        {
+          "block": 100,
+          "section": "## 七、結語：回到四十筆 accepted，決定下一步",
+          "sha256": "79575f1d151da8482240aa1de4540ad3f852eea90e6b4fbbb2814be9c5cdcb42"
+        },
+        {
+          "block": 101,
+          "section": "## 七、結語：回到四十筆 accepted，決定下一步",
+          "sha256": "a11d51872f1a9d41b5d14689710ef6273ac63332e6481001434fe784d92aed6b"
+        },
+        {
+          "block": 102,
+          "section": "## 七、結語：回到四十筆 accepted，決定下一步",
+          "sha256": "a8d23724a3f2975b0954f623d9e014f325539f439c70f333dcec47d4bd80fa9d"
+        },
+        {
+          "block": 103,
+          "section": "## 七、結語：回到四十筆 accepted，決定下一步",
+          "sha256": "cb3f91d54eee30e53e35b2b99905f70f169ed549fd78909d3dac2defc9ed8d3b"
+        },
+        {
+          "block": 104,
+          "section": "## 七、結語：回到四十筆 accepted，決定下一步",
+          "sha256": "8639801239ba61a9aaad2a1c45b7f896ec17314115eb1ff3e45d80a2e409a4b7"
+        },
+        {
+          "block": 105,
+          "section": "## 七、結語：回到四十筆 accepted，決定下一步",
+          "sha256": "ec06d9100d5081dc7390314ae5d9c37d6a398d8cd9be8c1d86ace15164e16d91"
+        },
+        {
+          "block": 106,
+          "section": "## 七、結語：回到四十筆 accepted，決定下一步",
+          "sha256": "cb3f91d54eee30e53e35b2b99905f70f169ed549fd78909d3dac2defc9ed8d3b"
+        },
+        {
+          "block": 107,
+          "section": "## 七、結語：回到四十筆 accepted，決定下一步",
+          "sha256": "35a9b9fe678ce6fcf3afcba73949457bcb914a9a0093e828e18a20a5a6f0b459"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+[
+  {
+    "url": "https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html",
+    "accessed_at": "2026-09-27T16:46:21.607361+00:00",
+    "cache_path": ".context/same-spec-ten-runs/research-rebuild-2026-09-28/sources-root/fowler-sdd-tools.txt",
+    "cache_sha256": "8690a7d5f1ac056cb7023a7b575e2d977a09311081df69e938b4051537297779",
+    "chars": 20118,
+    "source_id": "T1",
+    "evidence_type": "primary practitioner analysis",
+    "not_efficacy_study": true
+  },
+  {
+    "url": "https://github.com/github/spec-kit",
+    "final_url": "https://github.com/github/spec-kit",
+    "accessed_at": "2026-09-27T16:44:26.592743+00:00",
+    "cache_path": ".context/same-spec-ten-runs/research-rebuild-2026-09-28/sources-root/spec-kit.txt",
+    "cache_sha256": "febf0a198ea562e9ed4fe4c92d98f2c5eeeecd2d1981d5a4e43624399d0c89c3",
+    "chars": 9145,
+    "source_id": "T2",
+    "evidence_type": "official product documentation",
+    "not_efficacy_study": true
+  },
+  {
+    "url": "https://kiro.dev/docs/specs/",
+    "final_url": "https://kiro.dev/docs/specs/",
+    "accessed_at": "2026-09-27T16:44:15.937289+00:00",
+    "cache_path": ".context/same-spec-ten-runs/research-rebuild-2026-09-28/sources-root/kiro-specs.txt",
+    "cache_sha256": "b13bbdcedebf994df26035e4e9a37b5bcd2433acc8442741a2324ce9b3fcfce9",
+    "chars": 6669,
+    "source_id": "T3",
+    "evidence_type": "official product documentation",
+    "not_efficacy_study": true
+  },
+  {
+    "url": "https://kiro.dev/docs/specs/correctness/",
+    "accessed_at": "2026-09-27T16:46:22.255451+00:00",
+    "cache_path": ".context/same-spec-ten-runs/research-rebuild-2026-09-28/sources-root/kiro-correctness.txt",
+    "cache_sha256": "7f83fc2a437e67ff15a16fb5061364b725cf7f05fadb0dab73cca4c14bf79980",
+    "chars": 8819,
+    "source_id": "T4",
+    "evidence_type": "official product documentation",
+    "not_efficacy_study": true
+  },
+  {
+    "url": "https://kiro.dev/docs/specs/bugfix-specs/",
+    "accessed_at": "2026-09-27T16:46:22.733314+00:00",
+    "cache_path": ".context/same-spec-ten-runs/research-rebuild-2026-09-28/sources-root/kiro-bugfix.txt",
+    "cache_sha256": "035831b2a7760d20d33efdb4ff2799655aa8963cd98047d4106d0de2f26aadc2",
+    "chars": 8611,
+    "source_id": "T5",
+    "evidence_type": "official product documentation",
+    "not_efficacy_study": true
+  }
+]

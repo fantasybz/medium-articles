@@ -1,0 +1,151 @@
+--- A0.md
++++ A.md
+@@ -1,55 +1,133 @@
+-# Harden the repository's Codex JSONL review parser (compact specification)
++# Harden the repository's Codex JSONL review parser (expanded specification)
+ 
+-Modify only the supplied `codex_jsonl.py`, copied unchanged from medium-articles commit `37f6c0ce9b536f95132d5e01a387f380bbb9639c`. Fix valid-JSON wrong-type crashes and prevent non-text values from becoming a successful review. The requirements below are the complete contract. This is a maintenance task; preserve the existing permissive stream behavior.
++Modify only the supplied `codex_jsonl.py`, copied unchanged from medium-articles commit `37f6c0ce9b536f95132d5e01a387f380bbb9639c`. The repository uses this parser to turn Codex JSONL output into a review while keeping diagnostics separate. Valid JSON with unexpected types currently can crash the parser, and a numeric agent text can be mistaken for a successful review. Fix these defects while preserving the existing permissive streaming behavior. The following requirements are the complete contract; evaluation adds no additional requirements.
+ 
+ ### R01 — Artifact and CLI
+ 
+-Submit one regular file, `codex_jsonl.py`, not a symlink, using Python's standard library. Keep its CLI/main entrypoint. Read stdin as UTF-8 JSONL, emit review content on UTF-8 stdout, diagnostics on stderr, and retain flushing so valid output appears before stdin EOF. Do not buffer the full input before processing lines. CJK must survive a C locale. No new CLI arguments or external dependencies are required. Extra fields in objects are ignored.
++The candidate artifact is exactly one regular Python file, `codex_jsonl.py`, not a symlink. Retain the current command-line/main entrypoint and use only the standard library. No new arguments or dependencies are required, and the shell wrapper is outside this change.
++
++Read a sequence of lines from stdin as UTF-8 and write review content to UTF-8 stdout. Diagnostics belong on stderr. The parser must continue processing incrementally: it must not read or buffer the complete input before producing output. Flush output for each emitted message, comment or diagnostic so it is visible before stdin EOF. CJK text must survive even when the process locale is C.
++
++Object schemas are open with respect to unrelated extra fields. Ignore fields not described below rather than rejecting their presence.
+ 
+ ### R02 — Lines and event dispatch
+ 
+-Count physical input lines starting at 1, including blank and non-JSON lines. Strip each line as before. Blank lines and text that cannot be decoded as JSON are silently skipped. A decoded non-object (array, null, string, number or boolean) is malformed. A root object with no `type` is ignored; a provided non-string `type` is malformed. Unknown string event types are ignored without validating their payload. Recognized types are `item.completed`, `turn.completed`, `turn.failed`, `error`.
++The physical first line of input is line 1. Count every physical line, including blank lines and ignored non-JSON lines, so diagnostics point to the actual input location. Strip each line as the original parser does. Skip an empty line silently. If decoding a nonempty line as JSON fails, skip that text silently as well; this existing tolerance is intentionally retained.
++
++A successfully decoded JSON value must be an object. Arrays, null, strings, numbers and booleans are malformed events under R03. Within a root object, an absent `type` means an ignored unknown event. If `type` is supplied, it must be a string; null, booleans, numeric values and containers are malformed.
++
++Dispatch the recognized string values `item.completed`, `turn.completed`, `turn.failed` and `error` according to R04–R10. An unrecognized **string** event type is ignored, and none of its payload fields are validated. This distinction keeps unknown event extensions compatible while making structurally wrong event types visible.
+ 
+ ### R03 — Malformed event handling
+ 
+-For each malformed line, emit exactly one stderr line `[codex malformed event] line N: REASON\n`, where N is its physical line number and REASON is any nonempty single-line explanation. Remember the malformed condition and continue reading; never raise a traceback or stop processing later events. The malformed event on that line contributes no stdout and does not count as a completed turn or agent message. The one exception to dropping semantic effects is `turn.failed`: it always records explicit failure and emits its legacy failure diagnostic, as in R10. Do not add a new end-of-stream summary for malformed events.
++Each malformed input line contributes exactly one stderr diagnostic with this shape:
++
++```text
++[codex malformed event] line N: REASON
++```
++
++Terminate the diagnostic with one newline. N is the physical, one-based line number from R02. REASON can be any nonempty explanation on a single line; its wording is not prescribed. Multiple wrong fields on the same line still produce only one malformed-event diagnostic.
++
++Record that a malformed event was encountered, then continue processing subsequent input lines. It must not raise a traceback, terminate the read loop, or hide later remote errors. Except for the explicit-failure effect of a turn.failed event described in R10, drop only that line's malformed event: it emits no stdout, contributes no spoken-agent count, and contributes no completed-turn count. Validate the relevant fields before producing that event's ordinary output.
++
++The malformed flag affects final exit-code precedence (R11). Do not add a new summary for exit 6: the per-line diagnostics are the explanation. Existing failure summaries in R12 still apply when an explicit remote failure wins with exit 3.
+ 
+ ### R04 — Completed-item envelope
+ 
+-For `item.completed`, missing `item` means `{}` (ignore it); provided `item` must be an object, so null is malformed. Missing item `type` is ignored; provided item `type` must be a string. Unknown string item types are ignored without inspecting their other fields. Recognized item types are `agent_message`, `command_execution`, `error`.
++For an `item.completed` event, the nested `item` field behaves as follows:
++
++| Input | Behavior |
++|---|---|
++| `item` missing | Treat as `{}`; ignore the item |
++| `item` is an object | Inspect its type |
++| `item` is null or any other non-object | Malformed event |
++
++Within an item object, a missing `type` is ignored. A provided `type` must be a string; a provided null or other non-string is malformed. Recognized item types are `agent_message`, `command_execution` and `error`. Unknown string item types are ignored without checking text, command, message or any other payload field.
+ 
+ ### R05 — Agent text
+ 
+-For an agent_message, missing `text`, null and empty string mean no message and produce nothing. A provided non-string/non-null text is malformed, including 0, false and empty arrays/objects. A nonempty string is printed unchanged plus one newline, flushed, and counts as a spoken agent message. Do not strip the message; whitespace-only strings remain valid for legacy compatibility.
++For an agent_message item, absent `text`, null and the empty string mean there is no spoken message. They emit no output and do not count toward the spoken-agent count. Every other provided non-string value is malformed, even if it is false-like in Python: this includes 0, false, empty arrays and empty objects.
++
++For a nonempty string, print the string unchanged followed by the newline added by print, and flush stdout. Count it as one spoken message. Do not trim or normalize it. For compatibility, a string containing only whitespace is still a nonempty string, and embedded newlines or CJK characters remain intact.
+ 
+ ### R06 — Command comment
+ 
+-For command_execution, missing `command`, null and empty string are ignored. Any other provided non-string is malformed. A nonempty string produces exactly `<!-- codex ran: S -->\n` on stdout, flushed, where S is its first 160 characters (not bytes). This is not an agent message.
++For a command_execution item, missing command, null and empty string produce no output. Every other provided non-string command is malformed.
++
++For a nonempty string, take its first 160 characters using character indexing, not byte truncation. Emit exactly `<!-- codex ran: S -->` followed by one newline on stdout, substituting the truncated string for S, and flush. This output is a diagnostic HTML comment in the review stream; it does not count as a spoken agent message.
+ 
+ ### R07 — Item error diagnostic
+ 
+-For item type error, missing `message`, null and empty string are ignored. Any other provided non-string is malformed. A nonempty string emits exactly `[codex item error] MESSAGE\n` on stderr, flushed. Item errors do not set the explicit turn-failure flag and do not count as agent messages.
++For an item whose type is error, missing message, null and empty string produce no output. Every other provided non-string message is malformed.
++
++For a nonempty string, emit exactly `[codex item error] MESSAGE` plus a newline on stderr, substituting the unchanged string, and flush. This preserves the old distinction between an item error and a failed turn: an item error does **not** set the explicit remote-failure flag. It is also not an agent message.
+ 
+ ### R08 — Completed turn and usage
+ 
+-For `turn.completed`, missing `usage` means `{}`; provided usage must be an object, so null is malformed. Inside usage, missing `input_tokens` or `output_tokens` defaults to 0. Each provided token value must be an integer >=0, excluding booleans; floats, strings, null, containers and negative integers are malformed. Ignore other usage fields. Validate the entire usage before counting the completion or printing. A valid event counts as one completed turn and emits exactly `\n<!-- tokens: in I out O -->\n` on stdout, flushed.
++A missing `usage` on turn.completed is equivalent to an empty object. A supplied usage value must be an object: null and all other non-object values are malformed. Ignore unrelated fields inside the usage object.
++
++Only input_tokens and output_tokens are interpreted. Each missing field defaults independently to integer zero. If either field is present, its value must be an integer greater than or equal to zero. Booleans are not integers for this contract. A float remains invalid even if numerically integral. Strings, null, containers and negative integers are invalid too.
++
++Validate the entire usage object before counting the completed turn or writing its token comment. A valid turn.completed contributes one completed turn and emits exactly a leading newline, `<!-- tokens: in I out O -->`, and a trailing newline on stdout, flushed, where I/O are the validated counts. A malformed usage must not produce a partial token comment or count as a valid completion.
+ 
+ ### R09 — Top-level error
+ 
+-A root `error` event always sets explicit failure and prints exactly `[codex error] M\n` to stderr, flushed. M is `str(event.get("message", ""))`, preserving the old conversion for every JSON value (including null/numbers/containers); no message-type restriction is added for this event.
++A top-level event of type error always marks the run as an explicit remote failure. Preserve the old conversion rule exactly: obtain `event.get("message", "")`, convert it with Python str, and emit `[codex error] M` plus one newline to stderr, flushed.
++
++Unlike item errors and failed-turn nested messages, this event imposes no message-type constraint. Null, numbers, booleans, arrays and objects are all converted using the legacy str rule; they are not malformed merely because of the message value. An absent message converts the default empty string.
+ 
+ ### R10 — Failed turn
+ 
+-A `turn.failed` event always sets explicit failure. Missing `error` or null uses message `no message`. A provided non-null error must be an object. Inside it, missing/null/empty-string `message` uses `no message`; a nonempty string is used unchanged. A provided non-string/non-null message, or a non-object/non-null error, is malformed: emit the R03 line first, then use `no message`. Always emit `[codex turn FAILED] MESSAGE\n` on stderr, flushed, including malformed failed-turn events.
++Every turn.failed event marks explicit failure, even if its nested diagnostic fields have a wrong type. Read its error field using these rules:
++
++| Input | Message/handling |
++|---|---|
++| error missing or null | Use `no message` |
++| error is an object | Read its message as below |
++| error is any other value | Mark malformed, use `no message` |
++
++Within an error object, absent message, null or empty string uses `no message`. A nonempty string is used unchanged. Every provided non-string/non-null message is malformed, including 0, false, empty arrays and empty objects; use `no message` as the fallback.
++
++If malformed, emit the R03 line first. Then, for every turn.failed event, emit `[codex turn FAILED] MESSAGE` plus one newline to stderr, flushed. This means a malformed failed-turn event has both its line-level malformed diagnostic and the legacy failure diagnostic. Its explicit-failure flag still outranks malformed status at EOF.
+ 
+ ### R11 — Exit-code precedence
+ 
+-After EOF choose exactly: 3 if any explicit failure; else 6 if any malformed event; else 4 if no valid completed turn; else 5 if no actual nonempty string agent message; else 0. Continue processing after any error so later explicit failure outranks earlier malformed events. The exit-6 condition never turns previously printed streaming content into a success.
++After all input has been consumed, choose the first applicable row:
++
++| Priority | Condition | Exit |
++|---|---|---:|
++| 1 | Any top-level error or turn.failed event | 3 |
++| 2 | Otherwise, any malformed event | 6 |
++| 3 | Otherwise, no valid turn.completed | 4 |
++| 4 | Otherwise, no nonempty string agent message | 5 |
++| 5 | Otherwise | 0 |
++
++These flags reflect the full stream. Do not exit early when malformed input is seen, because an explicit remote failure later in the stream must still return 3. Likewise, an error after a completed turn must be recognized. Streaming stdout already produced is retained; the nonzero exit tells the existing caller that it is not a valid completed review.
+ 
+ ### R12 — Legacy end diagnostics
+ 
+-For exit 3 append exactly `[codex] the turn failed (reason above); no review was produced.\n` to stderr. For exit 4 append exactly `[codex] no turn.completed event: possible mid-stream disconnect.\n`. For exit 5 append exactly `[codex] the turn completed without an agent message; no review was produced.\n`. Exit 0 and exit 6 have no end summary. Existing valid output and diagnostic text must otherwise stay unchanged.
++For exit 3, append this exact stderr line:
++
++```text
++[codex] the turn failed (reason above); no review was produced.
++```
++
++For exit 4, append this exact stderr line:
++
++```text
++[codex] no turn.completed event: possible mid-stream disconnect.
++```
++
++For exit 5, append this exact stderr line:
++
++```text
++[codex] the turn completed without an agent message; no review was produced.
++```
++
++Each line ends with a newline. Exits 0 and 6 have no end-of-stream summary. Apart from the new malformed diagnostics, preserve the existing valid output and legacy diagnostic text.
+ 
+ ### R13 — Preserve permissive stream behavior
+ 
+-Do not add sequence, uniqueness or terminal-state validation. Repeated identical agent messages are printed/count separately. Multiple valid turn.completed events each print their own token comment. Events after a completed turn are still processed. Extra fields, unknown string event/item types, blank lines and non-JSON text retain the compatibility rules above. This task does not add a strict mode, reject duplicate terminals, or change the shell wrapper.
++This change validates value types; it does not introduce a protocol state machine or a strict mode. Do not add uniqueness or sequence checks. Identical repeated agent messages are each emitted and count separately. Multiple valid turn.completed events each produce their own token comment. Continue dispatching events after completion, including messages and errors.
++
++Keep the earlier compatibility rules for extra fields, unknown string event/item types, missing optional values, blank lines and undecodable text. Rejecting duplicate terminals, suppressing duplicated text, enforcing terminal ordering, changing the shell wrapper or adding CLI options is outside this task.

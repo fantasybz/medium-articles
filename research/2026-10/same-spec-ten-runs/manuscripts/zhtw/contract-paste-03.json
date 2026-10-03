@@ -1,0 +1,1154 @@
+{
+  "input_path": "2026-11-same-spec-contract/publish/medium-paste.md",
+  "file_sha256": "17be29204516cb8c6b02d87080b4bf687a85981fee639f5f2452de3fd358436d",
+  "configuration": {
+    "content_type": "markdown",
+    "fix_mode": "none",
+    "fix_output": "search_replace",
+    "profile": "strict",
+    "translationese_domain": "technical",
+    "detect_ai": true,
+    "ai_threshold": "low",
+    "detect_translationese": true,
+    "consistency": true,
+    "detect_style": true,
+    "explain": true,
+    "include_stats": true,
+    "include_telemetry": true,
+    "verify": true,
+    "max_errors": 0,
+    "max_warnings": 0,
+    "output": "full",
+    "ignore_terms": [
+      "通過"
+    ]
+  },
+  "response": {
+    "accepted": true,
+    "text": "<!--\nMedium 發布指南（此註解區塊不要貼進 Medium）\n\n自動化：`./tools/medium_draft.sh <article-dir>` 會建好草稿並比對內容，停在發布前一步。\n細節見 repo 根目錄的 PUBLISHING.md。以下是手動流程與發布後必做的收尾。\n\n【系列狀態】以各篇 publish/PUBLISHED.md 為準。Medium 限制同一作者 24 小時內最多發布或排程 2 篇，\n見 PUBLISHING.md 的〈發文數量上限〉。\n\n【手動流程】\n1. 開新 story：https://medium.com/new-story\n2. 貼上下方內容（從標題那行開始，不含本註解）。\n3. 看到 📌【在此插入…】的行：刪掉該行，按 + 插入同目錄 images/ 裡對應的 PNG。\n4. code block：在 Medium 選取後按 ``` 轉成 code block。\n5. 封面圖選流程圖，不要選表格截圖（縮到卡片尺寸看不清）。\n6. Tags 建議：AI, Software Engineering, Engineering Management, Agentic AI, DevOps\n\n【發布後收尾—不做的話系列會斷】\n7. 記下本篇 Medium URL，補進 repo 的 README 索引與 publish/PUBLISHED.md。\n8. 把本篇兩處的系列連結換成真正的 Medium URL：\n   (a) 開頭「系列導覽」那一行\n   (b) 文末「系列文章」清單\n   （尚未發布的篇在這裡是純文字「（即將發布）」，不是相對路徑；上線後換成真正的 URL）\n9. 回頭編輯已發布的其他篇，把指向本篇的連結補上。\n-->\n\n# 同一份規格，跑十次（二）：契約篇—由外部驗收每一份候選 parser\n\n> **TL;DR** — 修補對象是 `medium-articles` repo 的研究工具 `codex_jsonl.py`，來源固定在 commit `37f6c0ce9b536f95132d5e01a387f380bbb9639c`。舊碼讀到合法 JSON `[]` 或 `null` 會 crash。`text` 為 `123` 的訊息如果接上有效的 `turn.completed`，舊碼則會印出 `123` 並以 exit 0 結束。這是可重現的缺陷，沒有對應的生產事故。R01–R13 是四份指令包 A0、A、B、C 的共同規範基準；A0／A 仍有一處 CLI 範圍措辭差異，並未證明語義完全等價。四組都由 `claude-opus-5-5` 以 effort high 在無工具、單檔、一次生成的條件下，每組生成 10 份候選。40 個預先排定的名額全數保留，沒有重試或替補。所有生成結束後，外部 driver 才以凍結的 evaluator 對每份候選執行 102 個批次案例與 1 個 EOF 前 streaming probe，並把 CLI 完成、候選通過與兩者交集分開記錄。四組都是 10/10，雙側 95% Clopper–Pearson 區間為 69.15%–100%。這個結果只涵蓋 103 項有限檢查，不能證明全規格品質，也選不出較可靠的一組。本篇說明這份契約如何落實到外部驗收：先分清 shape 與語義，再分開三個 success 欄位，讓 evaluator 在候選之外保存規則，最後檢查隔離與 streaming 行為。\n\n> 系列導覽：[總論](../2026-11-same-spec-overview/article.md)（本機稿／尚未發布）｜[規格篇](../2026-11-same-spec-spec/article.md)（本機稿／尚未發布）｜**契約篇（本篇，本機稿／尚未發布）**｜[變異篇](../2026-11-same-spec-variance/article.md)（本機稿／尚未發布）\n\n## 一、JSON 解碼成功之後，還有 shape 與語義\n\n我的 `medium-articles` repo 裡有一個研究工具 `codex_jsonl.py`。它從 stdin 逐行讀取 Codex 輸出的 JSONL 事件，把 agent 的訊息當成 review 內容寫到 stdout，把診斷寫到 stderr，最後用 exit code 告訴外層的 shell wrapper，這一輪事件串是否符合既定的完成條件。舊碼會略過空行與無法解碼的文字。對於解碼成功的內容，舊碼直接假設拿到的是 object，接著呼叫 `.get()` 讀取欄位。\n\n這個假設在兩種輸入下會出錯。第一種是合法但不是 object 的 JSON：一行 `[]` 或 `null` 可以順利解碼，下一步的 `.get()` 卻讓整個程式 crash，後面的事件都沒有機會處理。第二種比較不容易察覺。假設 `agent_message` 的 `text` 是數字 `123`，後面再接一個有效的 `turn.completed`，舊碼會把 `123` 印到 stdout，並以 exit 0 結束。只看 exit code，這一輪就是一次成功的 review，但事件裡其實沒有任何一段文字訊息。兩個問題都能用固定輸入重現，並沒有對應的生產事故。它們指向同一個盲點：解碼成功只說明這一行是 JSON，沒有說明它的 shape，也沒有說明它在事件語義上是否成立。\n\n面對這種盲點，最直覺的修法是 fail closed，也就是遇到任何沒預期到的輸入就報錯，以非 0 結束。我對這個口號的保留在於，它沒有說清楚要關上哪些門。舊 parser 本來就會略過無法解碼的文字，忽略未知的事件類型與沒有 `type` 的 object，也不檢查事件順序。如果把這些一律當成錯誤，現在能正常產出 review 的事件串也可能一起退化成失敗。這次的修補要求因此逐項寫出相容行為：哪些輸入沿用舊的略過或忽略，哪些合法 JSON 改判為 malformed，以及 malformed 之後要做什麼、不做什麼。要求全文見 repo 隨稿資料中的 [requirements.json](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json)。\n\n先看一段依照 R02 到 R12 寫成的示意輸入。它不是從凍結套件原樣取出的案例，只是把幾種情況放進同一段事件串，方便對照：\n\n```text\n{\"type\":\"item.completed\",\"item\":{\"type\":\"agent_message\",\"text\":\"第 12 行缺少錯誤處理。\"}}\nhello\n\n[]\n\"hello\"\n{\"type\":\"item.completed\",\"item\":{\"type\":\"agent_message\",\"text\":123}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":120,\"output_tokens\":45}}\n```\n\n依照規格，這段輸入在 stdout 應該得到：\n\n```text\n第 12 行缺少錯誤處理。\n\n<!-- tokens: in 120 out 45 -->\n```\n\nstderr 則是三行 malformed 診斷，其中 REASON 可以是任何非空的單行說明（R03）。exit code 是 6，沒有結尾總結：\n\n```text\n[codex malformed event] line 4: REASON\n[codex malformed event] line 5: REASON\n[codex malformed event] line 6: REASON\n```\n\n逐行來看，第 2 行 `hello` 無法解碼成 JSON，第 3 行是空行，兩者都照舊靜默略過，但仍然計入實體行號（R02）。第 4 行 `[]` 和第 5 行 `\"hello\"` 都能順利解碼，只是解碼結果不是 object，因此各自標記一次 malformed。`hello` 和 `\"hello\"` 在人眼裡只差一對引號，卻落在規格的兩側。第 6 行是 object，事件與 item 類型也都認得，問題出在 `text` 的型別。`text` 缺漏、為 null 或空字串，只代表這個事件沒有訊息，不產生任何輸出。數字（包括 0）、布林值（包括 false）、陣列或 object（包括空的）則算 malformed（R05）。malformed 的那一行不寫 stdout，也不計入 agent message。\n\n舊碼處理這段輸入時，讀到第 4 行就會 crash。若只把第 6 行與第 7 行交給舊碼，就重現了前面說的第二個缺陷。依照新規格，同樣這兩行會得到一則 malformed 診斷、一段 token 註記，以及 exit 6。\n\n示例中還有一個細節：第 1 行的訊息在讀到後面的 malformed 之前，就已經 flush 到 stdout，parser 無法收回。規格讓這段輸出照常保留，改由 exit 6 告訴 wrapper 這段事件串有異常。R11 也明寫，exit 6 不會讓先前印出的內容變成一次成功。\n\nEOF 之後，exit code 依固定的優先次序決定。有明確失敗就是 3；沒有明確失敗但出現 malformed，就是 6；兩者都沒有，但沒有有效的 completed turn，就是 4；有 completed turn，卻沒有實際的非空字串 agent message，就是 5；以上都不成立才是 0。3→6→4→5→0 是檢查的先後，和數字大小無關。上面的例子同時有 completed turn 與有效訊息，決定結果的是 malformed，所以得到 6。\n\n把幾種常見情況依規格分開，大致如下表。其中 `future.event` 只是示意用的未知類型。\n\n📌【在此插入表 table-01.png】\n\n最後一列說明了已知事件的欄位要怎麼判斷。R08 規定，`usage` 缺漏時視為 `{}`，缺少的 `input_tokens` 或 `output_tokens` 以 0 計算。若有提供 token 數，必須是整數且大於或等於 0；布林值、浮點數、字串、null、容器與負整數都算 malformed。程式要先驗證完整個 `usage`，才能把這個事件計入 completed turn 或輸出內容，所以只要一個欄位不合法，這個事件就不會留下 token 註記。\n\n`turn.failed` 是最需要逐項寫清楚的已知事件。`{\"type\":\"turn.failed\",\"error\":null}` 是合法輸入：規格要求以 `no message` 作為訊息，在 stderr 輸出 `[codex turn FAILED] no message`，同時記錄明確失敗，但不產生 malformed 診斷。`error` 缺漏，或 `error` 裡的 `message` 缺漏、為 null、為空字串，也都走同一個 fallback。只有兩種情況算 malformed：`error` 有提供，值不是 null 也不是 object；或者 `message` 有提供，值不是 null 也不是字串。即使在這兩種情況下，`turn.failed` 仍是 R03 唯一保留語義效果的例外：程式先輸出 malformed 診斷，再以 `no message` 輸出失敗診斷，並記錄明確失敗（R10）。單獨一行 `{\"type\":\"turn.failed\",\"error\":\"rate limit\"}`，會在 stderr 依序得到：\n\n```text\n[codex malformed event] line 1: REASON\n[codex turn FAILED] no message\n[codex] the turn failed (reason above); no review was produced.\n```\n\n這個例子的 exit code 是 3。字串 `\"rate limit\"` 看起來帶著有用的資訊，規格仍然不去猜它的意思，只使用 `no message`。失敗本身則一定留下紀錄，而且優先於 malformed 的 6。\n\n相容規範也涵蓋一些看起來可以順手改善的地方。只含空白的 agent 訊息仍算有效訊息，必須原樣輸出（R05）。如果事件串裡唯一的訊息只含空白，候選卻自行 strip，原本以 exit 0 結束的事件串就會變成 exit 5。根層的 `error` 事件沿用舊的 `str(event.get(\"message\", \"\"))` 轉換，不增加型別限制（R09），所以 `message` 為 null 時，診斷就是 `[codex error] None`。這些行為稱不上漂亮，卻是規格明文保留的舊契約。\n\n整理起來，這份契約對每一行輸入依序問三件事：能不能解碼成 JSON，解碼後的 shape 對不對，以及欄位內容在這個事件類型下是否成立。每一個答案都有寫明的後果，fail closed 只描述得了其中一種。規格寫到這個程度，才能逐條轉成 expected stdout、stderr 與 exit code。接下來的問題是，驗收要把哪一個結果當成「成功」。\n\n## 二、三個 success 欄位各自回答不同問題\n\n`codex_jsonl.py` 本身就是一個替 exit code 把關的程式，而這項研究的外層還有好幾個 exit code。生成階段有 Claude Code CLI（版本 2.1.282）自己的結束狀態；候選檔寫出來之後，每個驗收案例又會得到候選 parser 的 stdout、stderr 與 exit code。候選在某個案例回傳 3 或 6，可能正好符合規格要求；CLI 回傳 0，也只說明生成行程正常結束。若把任何一個 0 直接讀成「parser 正確」，外層的綠燈就會蓋掉內層的失敗。這和 `text` 為 `123` 時舊碼仍回傳 exit 0，是同一類問題。\n\n研究的 protocol 因此把判定拆成三個欄位，並把第三個固定為主要終點：\n\n📌【在此插入表 table-02.png】\n\n其中的 streaming probe 檢查有效輸出是否在 stdin 結束之前就已出現，它的執行方式與涵蓋範圍會在後文另外說明。\n\n這張表很容易被讀成漏斗：CLI 成功才去驗候選，候選通過才算完成。實際的判定是平行的：`cli_success` 與 `artifact_success` 各自對同一個名額下判斷，`accepted_completion` 只取兩者的交集。這樣設計的原因是，停止條件本身就可能讓兩個欄位分開。每個名額設有 600 秒時間上限。到點時，runner 先要求行程停止，保留最多 5 秒停機寬限，再強制終止尚未結束的行程。CLI 另設牌價 USD 5 的停止門檻。實測低預算的 probe 會先超過設定金額才停止，所以 USD 5 只是停止門檻，並非硬性的金額上限。因時間上限而停止的名額，可能在寬限期間留下合法候選。這時名額的 `cli_success` 為假，候選仍然可以受驗，甚至通過。反過來，CLI 正常完成，也可能留下不合規定或沒有通過案例的候選。\n\n若只記錄交集，這兩種情況都會變成同一個「失敗」，但它們需要不同的處理。前一種情況要回頭檢查 runner 的停止路徑與預算設定，後一種要回頭看規格與候選本身。所以每一組都保留 CLI × artifact 的四格計數，交集只是其中一格。\n\n正式 40 次的結果很單純。四組的四格計數都是「true／true：10，其餘三格：0」，沒有 timeout、operational error、boundary violation，也沒有缺少的候選。40 個預先排定的名額全部保留，沒有 retry、替補或事後追加；原始的 2 次 pilot 與另外 4 次停止路徑 probe，都排除在正式資料之外。三個欄位在這一輪完全一致。正因為三個欄位分開記錄，這個一致才是可以查核的觀察，沒有被漏斗結構預先藏掉。逐名額的判定保留在隨稿的 [records.jsonl](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/records.jsonl) 與 [summary.json](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json)，整體結果見 [RESULTS.md](../research/experiments/same-spec-ten-runs/RESULTS.md)。\n\n每組 10/10 對應的雙側 95% Clopper–Pearson 區間是 69.15%–100%。這個頻率信賴區間建立在「各名額獨立，且共享同一個成功機率」的 Bernoulli 假設上：依同樣程序反覆建構的區間，長期至少有 95% 會涵蓋真值。它不表示真值有 95% 的機率落在這個範圍，也不能當成可靠度的保證下限。provider 漂移或名額之間的相依性，也不會因為採用 exact interval 而消失。四組結果相同，不足以判定四組等效，更選不出哪一組較可靠。\n\n三個欄位解決的是「成功」要怎麼定義。`artifact_success` 依賴的 103 項檢查還有另一個前提：檢查規則必須由外部 driver 保存，並限制候選讀取或改動。\n\n## 三、給測試工程師：讓 evaluator 保有自己的規則\n\n〈[Agentic Engineering 三部曲（二）：Harness 藍圖—把系統變成 agent 讀得懂的地方](https://fantasybz.medium.com/agentic-engineering-三部曲-二-harness-藍圖-把系統變成-agent-讀得懂的地方-f2a139f5b561)〉談到「可約束」階段時，把文件和 CI 的工作分開：AGENTS.md 交代規則、原因與驗證指令，讓 agent 在修改前就知道限制；CI 則在違規時拒絕合併。這次採受控條件，只保留文件中的文字指引。packet 可以交代規則，B 與 C 也附上非規範的 rationale 說明原因，驗證指令這一項卻派不上用場，因為生成模型沒有工具，只能一次提交候選，沒有辦法執行任何命令。B 與 C 附上的 self-check，也只能讓模型在生成時自行對照。本輪由生成之外的 evaluator，依凍結檢查判定候選是否符合要求；檢查沒有涵蓋的部分仍須明列。\n\n對測試工程師來說，第一件事是分清楚每一方拿得到什麼。生成時，模型只收到凍結的 packet。同一組的 10 次生成收到逐 byte 相同的內容；四組以共同 R01–R13 為基準，文字不同，四份規格見隨稿的 [A0](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md)、[A](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md)、[B](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md) 與 [C](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md)。跨組核對包含 script 檢查全文包含關係、requirement IDs 與 hash，以及 AI 語義審查，仍不構成語義等價證明。成稿時另找到 CLI 範圍的措辭差異：A0 說不需新增 CLI 參數，A／B／C 另把新增 CLI 選項列為範圍之外。這項差異是否影響實作，本輪沒有辨識，詳見[補記](../research/2026-10/same-spec-ten-runs/manuscripts/packet-wording-caveat.md)。模型只能提交一個檔案 `codex_jsonl.py`，必須是一般檔案而非 symlink，並且只使用 Python 標準函式庫（R01）。\n\n驗收時，外部 driver 保存三樣東西：每個案例的 JSONL 輸入、該案例預期的 stdout／stderr／exit code，以及凍結的 evaluator 本身。候選 process 每次執行只取得該案例的 JSONL 輸入，從 stdin 讀入，看不到 expected 結果，也看不到其他案例。「hidden suite」的範圍也要說清楚：oracle 從未交給候選，但事件輸入一定會被執行中的候選讀到，因為 parser 的工作就是讀它。隱藏的範圍只包括整份套件與正確答案，單一案例的輸入不在其中。此外，driver 在 40 個名額全部生成結束後才開始統一驗收，驗收結果沒有機會回饋到任何一次生成。下圖把生成與驗收分成兩個階段；先看左側如何保留生成紀錄，再看右側哪些資料留在 driver、哪些送進候選。\n\n📌【在此插入圖 diagram-01.png】\n\n所有生成結束後才統一驗收，所以評分不會回饋到較晚的生成名額。圖中的隔離是本輪採用的本機限制；它能保護哪些路徑，仍要對照下一節的實際 probe，不能從一個沙箱節點推成所有通道都已驗證。\n\n驗收也不執行候選修改過的測試腳本。候選只能交出一個檔案，本來就改不到 driver 的案例；檔案裡即使附上自測，或在註解裡寫明已逐項符合 R01–R13，驗收也不採用。「綠燈不是驗收」系列已經完成，目前排程中、尚待發布。其中〈綠燈不是驗收（二）Review 篇：Review 是控制點，不是瓶頸—分流、reviewer agent 艦隊與閉環禁令〉談到 PR template 時，把「Constraints honoured」欄看成 PR 作者的陳述，只能當作核對的起點。候選檔裡的自我宣稱也是同樣性質，判定仍要回到外部案例的實際輸出。\n\n來源保護分成兩段。第一段在生成之前：requirements、四份規格、protocol 與 evaluator 都已完成本機封存並記錄 hash，凍結的 [evaluator.py](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/evaluator.py) 與 [PROTOCOL.md](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/PROTOCOL.md) 都在 repo 隨稿資料裡。這是研究者自己在執行前做的封存，並非第三方預註冊。第二段在驗收之中：候選 process 在 macOS Seatbelt 沙箱裡執行，每份候選在驗收前後的 hash 都相同，表示執行案例沒有改動受檢的那份檔案。沙箱的讀、寫與網路限制如何事先驗證，留到下一節說明。正式結束後，[archive.json](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/archive.json) 列出的 317 個公開檔案 hash 都再核對過；40 份候選也在全新的空白工作目錄重新評分，40 × 103 項 case outcome 與原紀錄完全一致。這次稽核由 AI 代理完成，並非真人盲審。重新評分沒有新的模型請求，確認的是驗收可以重現，樣本數仍然是 40。\n\n這裡分開的是規則的控制與候選的執行：整份案例集、預期結果與比對邏輯由外部 driver 控制，不透過候選的輸入介面提供。這種分離並不代表人或模型彼此獨立。協助定規格的研究代理也參與了 evaluator 撰寫，研究設計、執行與資料分析都有 AI 工具協作，生成模型與參與審查的 Claude 也屬於同一個模型家族。若規格漏寫了某個行為，evaluator 很可能跟著漏掉，這個風險無法靠隔離消除。\n\n同系列的〈綠燈不是驗收（三）可靠度篇：SWE-Gate 量測到的 34%—constraint tests、pass^k 與授權擴張的閘門〉，把約束的來源分成兩種。從 review 歷史回收的約束，由提出要求的團隊維護；實作前就約定的 spec 約束，則由負責規格的人隨需求變更一併檢視。這次的 R01–R13 全部屬於後者，所以每一項驗收案例都應該能回到某一條 requirement，expected 結果也應該能從那條 normative text 推出來。下表用幾個依規格寫成的示意案例說明這種對照方式，它們同樣不是從凍結套件原樣取出的案例。\n\n📌【在此插入表 table-03.png】\n\n表格裡的 stderr 大多是固定字句，因為 R12 要求既有的診斷文字保持不變；malformed 診斷則只能寫成格式。R03 規定每個 malformed 行恰好一則診斷，開頭格式與實體行號固定，REASON 只需要是非空的單行說明。對照表若把 REASON 寫成特定字句，就等於替候選加上規格沒有的要求。第一列也值得留意：`command` 的截斷以字元計算，並非 byte，換成中文命令時，兩種計算方式會得到不同的結果。exit code 則要依 R11 的優先次序整體決定，不能讓各條要求各自判斷。\n\n對照表的另一個用途是保留來源。每一列都標出 requirement ID，需求變更時，負責規格的人可以找出受影響的 expected 結果重新推導。驗收若暴露出規格沒有說清楚的地方，也要回到規格的 owner 處理，不能由寫 evaluator 的人在比對邏輯裡悄悄補上。這次兩個角色由同一組研究代理協作承擔，每一項檢查的依據就更需要寫進 requirement 文字，之後接手維護的人才能查到依據，不必指望原作者記得每個判斷。\n\n這份對照也有它的邊界。凍結套件由 102 個批次案例與 1 個 EOF 前 streaming probe 組成，沒有逐一檢查字面上的 `main()`、所有額外的 CLI 參數，也沒有檢查候選內部採用的每一種編碼策略。R01 列出的要求，因此並非每一句都對應到一個案例。這個安排把規則的控制留在外部 driver。案例涵蓋多少行為，要看案例本身；候選的存取受到哪些限制，則要對照隔離設定與實際 probe。後者正是下一節要處理的問題。\n\n## 四、隔離要有 probe，驗收工具也要有反例\n\n第三節把判定規則留在 evaluator 手上，這個安排還有兩個前提。生成時，研究方提供的任務資料必須來自凍結的 packet；驗收時，driver 只把當次案例的 JSONL 輸入送進候選，保留 expected 結果與完整套件。「無工具」和「沙箱」都很容易寫進 protocol。要判斷這兩個前提是否成立，得分別回答兩個問題：各自擋住了什麼，以及有哪些紀錄證明真的擋住了。\n\n先看生成階段。每個名額都以無工具、單檔、一次生成的方式呼叫 CLI。模型不能讀取 repo，也不能執行命令，只能依據 packet 寫出一份 `codex_jsonl.py`。不過，只關掉工具還不夠，因為 Claude Code 預設會載入使用者層級的指引與設定。這些內容若混進請求，同組 10 份 packet 即使逐 byte 相同，也只能說明研究者提供的那一段輸入相同。所以，生成時明確關閉工具與 slash commands、指定空的 MCP 設定，並停用設定來源的載入，避免本機指引與 Skill 混入。生成邊界是否完整，是 `cli_success` 的判定條件之一。正式 40 次都沒有 boundary violation，事後的獨立資料稽核也逐一核對了模型邊界。\n\n這些設定只管得到 CLI 這一端。provider 端看不見的 context、sampling 的 seed 與 temperature、服務本身的實作，以及完整的 OS 狀態，這一輪都沒有固定。計費紀錄就留下一個例子：`modelUsage` 的明細出現了 Haiku，候選生成的 assistant 訊息裡卻沒有它，這份 trace 無法說明它在 CLI 內部做了什麼。OS 版本 macOS 26.6.2／arm64 則是在生成開始後才補記的，不能倒寫成凍結前就固定的版本。因此，對生成階段能主張的是：明確送出的 packet，以及封存紀錄列出的模型、effort 與 CLI 開關均已固定，也留下了紀錄。至於整個請求的每一部分是否都在研究者掌握之中，這一輪無法回答。\n\n候選的執行屬於另一個階段，隔離方式也不同。所有生成結束後，driver 才把每份候選放進 macOS Seatbelt 沙箱執行。正式驗收期間沒有看到越界，不能反過來證明沙箱有效，所以正式開始前先做了 probe。source 與 packet 的本機封存時間記錄為 2026-09-25 04:24:12 UTC，封存清單見 [manifest.json](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/manifest.json)。04:24:22 UTC，launch preflight 接著執行三項正式 probe：讀取 oracle 檔案、寫入檔案，以及在 localhost 綁定網路埠。三項都確實被拒絕，紀錄保存在 [launch-preflight.json](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/launch-preflight.json)；沙箱實作是凍結 source 裡的 [sandbox.py](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/sandbox.py)。這三項 probe 分別檢查讀取答案、改動檔案與使用網路三種越界，證明凍結的沙箱設定在正式開始前拒絕了這三種操作。至於其他 OS 資源與行程間通訊（IPC）管道，本輪沒有設計 probe，所以這一輪不能宣稱候選與主機完全隔離。\n\n隔離證據能說到哪裡，可以對照 SaltBench（[arXiv:2609.11076v1](https://arxiv.org/html/2609.11076v1)）。它的 protocol 有幾項值得借用的做法：凍結之後只以 append-only 的 amendment 修改，由獨立的 referee 判定結果，用 breach probe 實際測試隔離，並把不同的結束方式分成不同的 termination class。同一篇論文也記下了這些做法的歷史限制。§3.2 提到，作者後來才發現 file-reading 工具不受 subprocess 沙箱的 path deny 保護；先前沒有看到讀取事件，並不代表當時具備保護。§8 則說明，那份價格 matrix 的所有 cell 都缺少各自的 build provenance receipt。後來補上的控制，只能說明補上之後的狀態，無法替原本的 run 追認完全隔離。\n\n套回這次研究，有兩條界線要守住。第一，沒有看到越界事件，不等於有保護。生成 trace 裡沒有越界，這項紀錄說明的是實際發生了什麼；至於擋得住什麼，要看明確關閉了哪些設定，以及這些設定沒有涵蓋哪些部分。候選階段有三項 probe 支撐，三項之外的管道只能列為未檢查。第二，事後重評無法替原本那次執行補上隔離證明。第三節提到的全新目錄重評，說明驗收可以重現。正式執行當時的隔離程度，仍然只能依據 launch preflight 三項 probe，以及當時凍結的沙箱設定判斷。\n\n驗收工具自己也需要反例。四組都是 10/10 時，一個不論收到什麼都回答「通過」的 evaluator，也會交出同樣的表格。只看 40 個正式結果，排除不了這種可能；要排除它，得先讓研究工具面對答案已知的候選。工具測試要求正確的參考實作通過、刻意破壞語義的實作被拒絕，也檢查候選執行逾時時，評估器是否留下 timeout 紀錄。這裡的逾時指候選執行案例超過時限，和生成階段的 600 秒停止門檻是兩回事。\n\n隔離則由前面的三項 preflight probe 另外驗證。讀取 oracle、寫入檔案與綁定網路埠被拒絕，各自有紀錄；這不代表 evaluator 能把每一種候選越界都辨識成獨立的失敗類別。批次案例的凍結評分函式將失敗記為 timeout、output_limit 或 mismatch；生成紀錄中的 boundary_violation，則屬於模型、工具與 trace 的另一層核對。SaltBench 區分 termination class 的方法提醒我，要先說清楚分類發生在哪一層，以及實際觀察了什麼。遇到候選 timeout，要檢查候選行為與執行環境；遇到輸出 mismatch，則要回到規格、expected 結果與實際輸出核對，不能直接假定候選的語義一定有錯。\n\n這些 fixture 檢查驗證的是研究工具本身。正式開始前，研究工具的 83 項測試全部通過。這 83 項統計的是研究工具測試案例，和每份候選要通過的 102 個批次案例加 1 個 streaming probe 不同，也和 40 次生成不同。83 項通過不會增加任何模型樣本；反過來，四組 10/10 也無法證明研究工具沒有缺陷。兩類證據分別回答不同的問題：前者回答研究工具能不能分辨對錯，後者回答候選在這套工具下表現如何。\n\n## 五、保留 streaming 的行為，還要檢查輸出何時出現\n\n在第一節的示例裡，parser 還沒讀到後面的 malformed，第 1 行的訊息就已經寫到 stdout。這是規格刻意保留的串流行為：parser 讀到有效的 agent 訊息，就寫到 stdout 並 flush，外層的 wrapper 不必等整段事件串結束，就看得到 review 的內容。驗收這項要求時，批次案例幫不上忙。\n\n批次案例的做法，是把整段 JSONL 一次寫進候選的 stdin 並關閉 stdin，等 process 結束後再比對結果。每個案例比對 stdout、stderr 與 exit code，也記錄是否逾時等欄位。假設有一份實作先把 stdin 全部讀完才開始處理，或者從不 flush，那麼 stdout 接到 pipe 時，Python 會以區塊緩衝，輸出可能要等緩衝區滿或程式結束才出現。只要最後的內容與順序正確，批次比對就分不出這份實作和逐行輸出的實作有什麼不同。\n\n所以凍結套件另外設了 1 個 EOF 前 streaming probe。driver 先送出一行有效的 agent 訊息；在還沒送出結束這一輪的事件、也還沒關閉 stdin 的時候，就要求從候選的 stdout 讀到這則訊息。讀到之後，driver 才送出後續內容。先讀完 stdin 才處理的實作，在這一步等不到任何輸出。若沿用 Python 對 pipe 的預設緩衝，卻忘了 flush，訊息也會停在緩衝區裡。這項 probe 會拒絕上述延後輸出的行為；候選也可以採用其他方式及時寫出訊息，驗收不限定必須呼叫哪個函式。把完整串流一次送進去、等 EOF 後才比對 stdout，只能確認結果對不對；這項 probe 另外檢查結果在什麼時候出現。\n\n批次比對的價值，則在於同時比對三個輸出。第一節提過，`text` 為 0 或 false 算 malformed；R10 對 `turn.failed` 的 `error` 也劃了類似的邊界。下面兩行同樣是依規格寫成的示意，不是從凍結套件原樣取出的案例：\n\n```text\n{\"type\":\"turn.failed\",\"error\":null}\n{\"type\":\"turn.failed\",\"error\":false}\n```\n\n把兩行各自當成一段完整的輸入。前者走合法的 fallback，stderr 只有 `[codex turn FAILED] no message` 與 exit 3 的總結。後者的 `error` 有提供，值卻既不是 null 也不是 object，所以在這兩行之前會多一則 malformed 診斷。兩者的 stdout 相同，exit code 也都是 3，因為明確失敗優先於 malformed。假設有一份實作寫成 `error = event.get(\"error\") or {}`，false 就會和 null 一樣走 fallback，少掉那一則診斷。反過來，把 null 也當成 malformed 的實作，則會多出一則。這兩種錯誤都不改變 exit code，只有比對 stderr 才看得出來；只看 exit code 的驗收，會讓兩者都過關。\n\n103 項檢查的涵蓋範圍，可以整理成下表。逐項設計見凍結的 [evaluator.py](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/evaluator.py)。表中標為「未逐一檢查」的項目，表示凍結套件沒有為它設計專門的檢查。\n\n📌【在此插入表 table-04.png】\n\n表的前三列反映了套件的觀察面：它把候選當成一個 process，餵進 stdin，讀取 stdout 與 stderr，再取得 exit code。程式裡有沒有一個叫 `main()` 的函式，從這個觀察面看不到。候選多接受或拒絕了哪些 CLI 參數、內部如何處理編碼，套件也沒有逐一檢查。streaming 只有一項 probe，確認的是第一則 agent 訊息能在 EOF 之前讀到；其他類型的輸出是否同樣即時，並沒有各自的 probe。\n\n沒有檢查的 CLI 參數，正好碰上成稿階段找到的一項比較限制。四組以共同的 R01–R13 為規範基準，但 [A0](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md) 的 R01 寫的是「No new CLI arguments or external dependencies are required.」，意思是不需要新增參數。[A](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md) 的 R13 則另外把「adding CLI options」列為「outside this task」；B 與 C 以 A 的全文開頭，也繼承了這句話。「不需要」與「不在範圍內」的約束強度不同。這項差異是否影響了候選，本輪沒有辨識。凍結的 evaluator 沒有逐一檢查額外的 CLI 選項，所以即使 103 項全數通過，也無法說明四組處理 CLI 參數的方式沒有差別。這項限制記錄在[措辭差異補記](../research/2026-10/same-spec-ten-runs/manuscripts/packet-wording-caveat.md)，凍結的 packet、requirements、候選與原始結果都保持原樣。\n\n所以，「103 項通過」的意思，是每份候選在 103 個已定義的觀察點上都符合規格。串流行為只有一個觀察點；有幾項要求完全沒有觀察點，其中一項還牽涉到組間的措辭差異。把這些邊界寫清楚，讀者才能判斷這組 10/10 可以拿來回答哪些問題。\n\n## 六、結語：通過契約檢查，仍有尚未評估的品質\n\n這篇從一個很小的缺陷談起：一行 `null` 順利解碼，下一步卻讓 parser crash；一個數字 `text` 通過 JSON 解碼，最後還換到 exit 0。解碼成功只說明語法成立，shape 與語義要另外判斷。驗收結果也有同樣的層次。四組都是 10/10，說明每份候選都通過了凍結的 103 項檢查；至於這份契約是否已經涵蓋 parser 所有值得在意的品質，這個結果回答不了。\n\n我認為，要讓一份契約能持續維護，每條規範都應能找到來源，以及用來驗收的案例。尚無案例的要求，也要列為涵蓋缺口，不能讓一個通過率把它藏起來。這次的相容規範有明確的來源，就是固定 commit 裡的舊碼。`[codex error] None` 這種不好看的診斷之所以保留，是因為規格選擇沿用舊碼的轉換。exit 6 與 malformed 判定則是這次新增的決定，來源是負責規格的人，改動的理由也應該寫在規格裡。需求再變動時，負責的人要能從來源說明為什麼改，也要指出哪些 expected 結果必須跟著重新推導。\n\nevaluator 本身也可能有缺陷。若之後發現缺陷，處理順序應該固定：先保留原本的紀錄與 evaluator 版本，再以版本化的 amendment 說明改了什麼、為什麼改，最後以修正後的 evaluator，對所有封存候選一致重評，並把新舊結果一起報告。只挑某一組重評，或只把比對邏輯修到某一組過關，都會讓組間比較失去依據。SaltBench 只以 append-only 的方式修改 protocol，也是為了讓每次修改都留下痕跡，讓原來的判定仍然查得到。\n\n這一輪已經做過一次全量重評。40 份候選以封存包內的凍結程式重新驗收，40 × 103 項 case outcome 與原紀錄完全一致，見 [public-rescore.json](../research/experiments/same-spec-ten-runs/results/validation-2026-09-25/public-rescore.json)。這個結果說明同一份有限的 oracle 可以重現；它沒有新增模型樣本，也沒有換上新的 oracle。第五節發現的措辭差異，屬於組間比較的方法限制，沒有改變要求或評分方式，所以只以補記保留，沒有列為 amendment。\n\n這份契約也還缺少幾種檢驗。40 份候選都由同一個模型生成，研究審查與資料稽核由 AI 代理完成，其中參與審查的 Claude 和生成模型屬於同一家族。這一輪沒有用其他模型家族生成候選，也沒有真人盲審。這些缺口不影響 103 項檢查的紀錄，但限制了這份紀錄能回答的問題。\n\n契約處理的，是候選行為是否符合已經寫下的規則。四份 packet 如何以共同規範為基準，以及措辭仍差在哪裡，是[規格篇](../2026-11-same-spec-spec/article.md)討論的輸入問題；四組候選在結構與資源上如何分布，則要看[變異篇](../2026-11-same-spec-variance/article.md)保留的完整資料。回到 `codex_jsonl.py`：它用 exit code 讓外層知道事件串是否符合既定的完成條件。研究外層的每一個「通過」，也應該讓讀者知道它檢查了哪些行為，又有哪些行為還沒有檢查。\n\n### 系列文章\n\n「同一份規格，跑十次」系列共四篇，目前都是本機稿，尚未發布：\n\n- [總論](../2026-11-same-spec-overview/article.md)：研究問題、設計與整體結果。\n- [規格篇](../2026-11-same-spec-spec/article.md)：同一組 R01–R13 如何寫成 A0、A、B、C 四份指令包。\n- **契約篇（本篇）**：〈同一份規格，跑十次（二）：契約篇—由外部驗收每一份候選 parser〉。\n- [變異篇](../2026-11-same-spec-variance/article.md)：四組候選的結構差異與資源紀錄。\n\n### References\n\n1. Kochi Chuang，`fantasybz/medium-articles` repo，[`codex_jsonl.py` 封存起點](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/seed/codex_jsonl.py)，commit `37f6c0ce9b536f95132d5e01a387f380bbb9639c`。修補任務的來源檔案，版本紀錄見第 6 項〈版本與完整性〉。〔第一、六節〕\n2. 凍結 requirements：[requirements.json](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json)。R01–R13 的規範全文，repo 隨稿資料。〔第一、三、五、六節〕\n3. 凍結 protocol：[PROTOCOL.md](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/PROTOCOL.md)。三個 success 欄位與主要終點的定義，描述執行前狀態。〔第二、三節〕\n4. 正式名額台帳：[records.jsonl](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/records.jsonl)。40 個預先排定名額的逐名額判定。〔第二節〕\n5. 可回算摘要：[summary.json](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json)。四格計數、區間與逐候選數值。〔第二節〕\n6. 正式研究結果：[RESULTS.md](../research/experiments/same-spec-ten-runs/RESULTS.md)。驗收結果、版本與完整性、未固定項目、研究工具測試、資料稽核與重評摘要。〔第二、三、四、六節〕\n7. Kochi Chuang，[〈Agentic Engineering 三部曲（二）：Harness 藍圖—把系統變成 agent 讀得懂的地方〉](https://fantasybz.medium.com/agentic-engineering-三部曲-二-harness-藍圖-把系統變成-agent-讀得懂的地方-f2a139f5b561)，Medium，已發布。〔第三節〕\n8. 四份凍結規格：[A0.md](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md)、[A.md](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md)、[B.md](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md)、[C.md](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md)。〔第三、五節〕\n9. Kochi Chuang，〈綠燈不是驗收（二）Review 篇：Review 是控制點，不是瓶頸—分流、reviewer agent 艦隊與閉環禁令〉。已完成，排程中，尚待發布，目前沒有公開連結。〔第三節〕\n10. 凍結 evaluator：[evaluator.py](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/evaluator.py)。102 個批次案例與 1 個 EOF 前 streaming probe 的實作。〔第三、五節〕\n11. 供公開重現的封存索引：[archive.json](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/archive.json)。317 個公開檔案的 hash。〔第三節〕\n12. 依公開重現包執行的重評結果：[public-rescore.json](../research/experiments/same-spec-ten-runs/results/validation-2026-09-25/public-rescore.json)。40 份候選在全新空白工作目錄重新驗收，40 × 103 項 case outcome 與原紀錄一致。〔第三、四、六節〕\n13. Kochi Chuang，〈綠燈不是驗收（三）可靠度篇：SWE-Gate 量測到的 34%—constraint tests、pass^k 與授權擴張的閘門〉。已完成，排程中，尚待發布，目前沒有公開連結。〔第三節〕\n14. 本機封存清單：[manifest.json](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/manifest.json)。source、packet 與排定名額的封存紀錄。〔第四節〕\n15. 正式前隔離 probe：[launch-preflight.json](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/launch-preflight.json)。2026-09-25T04:24:22 UTC 的 oracle-file read、file write 與 localhost network bind 拒絕紀錄。〔第四節〕\n16. 凍結沙箱實作：[sandbox.py](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/sandbox.py)。候選執行階段使用的 macOS Seatbelt 設定。〔第四節〕\n17. SaltBench，[arXiv:2609.11076v1](https://arxiv.org/html/2609.11076v1)（HTML 全文，2026-09-25 存取）。本篇引用其 freeze、append-only amendment、獨立 referee、breach probe 與 termination class 等方法，並對照 §3.2 記載的 file-reading 工具限制，以及 §8 缺少 build provenance receipt 的說明。〔第四、六節〕\n18. 成稿階段補記：[packet-wording-caveat.md](../research/2026-10/same-spec-ten-runs/manuscripts/packet-wording-caveat.md)。A0 與 A 對 CLI 參數範圍的措辭差異。〔第五、六節〕\n\n### AI 協作說明\n\n本系列的研究方向由筆者提出，正式任務取自筆者的文章 repo，由 AI 代理協作選題、設計與執行。研究中的四十次候選生成使用 `claude-opus-5-5` 與 high effort。本篇主稿則由 Claude Code 以 max effort 分段撰寫，寫作請求與正式生成分開，不計入正式樣本與生成成本。\n\n研究設計在正式執行前，經過 Claude（xhigh）與 Codex（gpt-5.5，xhigh）的審查與複核。正式資料的獨立稽核與全量重評由 AI 代理執行。文稿由 Codex 主代理依共用寫作標準逐段潤飾，並安排證據、編輯與讀者三種角度的複核，以及 zh-TW MCP 嚴格檢查；各階段實際狀態與回報保留在[品質紀錄](../research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md)。候選生成、Claude 審查與主稿撰寫屬於同一模型家族，沒有真人盲審或外部重現。文責由筆者自負。\n\n*Kochi Chuang（莊軻齊）｜Medium @fantasybz*\n",
+    "issues": [
+      {
+        "offset": 1519,
+        "length": 1,
+        "line": 29,
+        "col": 14,
+        "found": " ",
+        "suggestions": [
+          ""
+        ],
+        "rule_type": "punctuation",
+        "severity": "info",
+        "context": "全形標點與其他字元之間不加空格",
+        "explanation": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+        "explain_meta": {
+          "rationale": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 2391,
+        "length": 6,
+        "line": 29,
+        "col": 490,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 5107,
+        "length": 4,
+        "line": 39,
+        "col": 295,
+        "found": "json",
+        "suggestions": [
+          "JSON"
+        ],
+        "rule_type": "case",
+        "severity": "info",
+        "explanation": "'json' has incorrect casing; standard form: JSON.",
+        "explain_meta": {
+          "rationale": "'json' has incorrect casing; standard form: JSON.",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 10685,
+        "length": 9,
+        "line": 99,
+        "col": 21,
+        "found": "是一個",
+        "suggestions": [
+          "是"
+        ],
+        "rule_type": "translationese",
+        "severity": "info",
+        "context": "翻譯腔 Y1: 繫詞+量詞膨脹（是一個/名/位…的…），建議刪除繫詞+量詞",
+        "explanation": "'是一個' — 翻譯腔 Y1: 繫詞+量詞膨脹（是一個/名/位…的…），建議刪除繫詞+量詞. Suggested rewrite: 是.",
+        "explain_meta": {
+          "rationale": "'是一個' — 翻譯腔 Y1: 繫詞+量詞膨脹（是一個/名/位…的…），建議刪除繫詞+量詞. Suggested rewrite: 是.",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 11615,
+        "length": 6,
+        "line": 107,
+        "col": 27,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 12335,
+        "length": 6,
+        "line": 107,
+        "col": 341,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 12411,
+        "length": 6,
+        "line": 107,
+        "col": 369,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 13411,
+        "length": 4,
+        "line": 111,
+        "col": 354,
+        "found": "json",
+        "suggestions": [
+          "JSON"
+        ],
+        "rule_type": "case",
+        "severity": "info",
+        "explanation": "'json' has incorrect casing; standard form: JSON.",
+        "explain_meta": {
+          "rationale": "'json' has incorrect casing; standard form: JSON.",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 19060,
+        "length": 4,
+        "line": 131,
+        "col": 450,
+        "found": "json",
+        "suggestions": [
+          "JSON"
+        ],
+        "rule_type": "case",
+        "severity": "info",
+        "explanation": "'json' has incorrect casing; standard form: JSON.",
+        "explain_meta": {
+          "rationale": "'json' has incorrect casing; standard form: JSON.",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 24717,
+        "length": 4,
+        "line": 153,
+        "col": 175,
+        "found": "json",
+        "suggestions": [
+          "JSON"
+        ],
+        "rule_type": "case",
+        "severity": "info",
+        "explanation": "'json' has incorrect casing; standard form: JSON.",
+        "explain_meta": {
+          "rationale": "'json' has incorrect casing; standard form: JSON.",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 24983,
+        "length": 6,
+        "line": 153,
+        "col": 359,
+        "found": "保存",
+        "suggestions": [
+          "儲存"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain UI。tw 日常亦用「保存」(保存食物、保存文化)，僅 IT 存檔語境改「儲存」 [tier2: suppressed (score=0.18)]",
+        "english": "save",
+        "context_clues": [
+          "檔案",
+          "存檔",
+          "按鈕",
+          "草稿",
+          "備份"
+        ],
+        "anchor_match": false,
+        "explanation": "'保存' is a mainland Chinese term for 'save'; Taiwan uses '儲存'. Context: @domain UI。tw 日常亦用「保存」(保存食物、保存文化)，僅 IT 存檔語境改「儲存」 [tier2: suppressed (score=0.18)]",
+        "anchor_provenance": {
+          "anchor_en": "save",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'保存' is a mainland Chinese term for 'save'; Taiwan uses '儲存'. Context: @domain UI。tw 日常亦用「保存」(保存食物、保存文化)，僅 IT 存檔語境改「儲存」 [tier2: suppressed (score=0.18)]",
+          "domain": "UI",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "unresolved"
+      },
+      {
+        "offset": 25011,
+        "length": 4,
+        "line": 153,
+        "col": 381,
+        "found": "json",
+        "suggestions": [
+          "JSON"
+        ],
+        "rule_type": "case",
+        "severity": "info",
+        "explanation": "'json' has incorrect casing; standard form: JSON.",
+        "explain_meta": {
+          "rationale": "'json' has incorrect casing; standard form: JSON.",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 27072,
+        "length": 6,
+        "line": 159,
+        "col": 38,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 27287,
+        "length": 6,
+        "line": 159,
+        "col": 119,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 27359,
+        "length": 6,
+        "line": 159,
+        "col": 143,
+        "found": "時時",
+        "suggestions": [
+          "時"
+        ],
+        "rule_type": "repetition",
+        "severity": "info",
+        "explanation": "'時時' is a consecutive duplicate; remove the repetition.",
+        "explain_meta": {
+          "rationale": "'時時' is a consecutive duplicate; remove the repetition.",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 28346,
+        "length": 6,
+        "line": 163,
+        "col": 45,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 28422,
+        "length": 6,
+        "line": 163,
+        "col": 73,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 28520,
+        "length": 6,
+        "line": 163,
+        "col": 127,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 33128,
+        "length": 6,
+        "line": 188,
+        "col": 482,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 33414,
+        "length": 6,
+        "line": 190,
+        "col": 10,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 33737,
+        "length": 6,
+        "line": 192,
+        "col": 9,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 33906,
+        "length": 6,
+        "line": 194,
+        "col": 60,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」 [tier2: hard anchor]",
+        "english": "through/via",
+        "anchor_match": true,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」 [tier2: hard anchor]",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": true
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」 [tier2: hard anchor]",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "heuristic"
+      },
+      {
+        "offset": 34417,
+        "length": 6,
+        "line": 196,
+        "col": 61,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 35610,
+        "length": 4,
+        "line": 200,
+        "col": 87,
+        "found": "json",
+        "suggestions": [
+          "JSON"
+        ],
+        "rule_type": "case",
+        "severity": "info",
+        "explanation": "'json' has incorrect casing; standard form: JSON.",
+        "explain_meta": {
+          "rationale": "'json' has incorrect casing; standard form: JSON.",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 36841,
+        "length": 6,
+        "line": 204,
+        "col": 243,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 37895,
+        "length": 4,
+        "line": 218,
+        "col": 34,
+        "found": "json",
+        "suggestions": [
+          "JSON"
+        ],
+        "rule_type": "case",
+        "severity": "info",
+        "explanation": "'json' has incorrect casing; standard form: JSON.",
+        "explain_meta": {
+          "rationale": "'json' has incorrect casing; standard form: JSON.",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 38517,
+        "length": 4,
+        "line": 221,
+        "col": 19,
+        "found": "json",
+        "suggestions": [
+          "JSON"
+        ],
+        "rule_type": "case",
+        "severity": "info",
+        "explanation": "'json' has incorrect casing; standard form: JSON.",
+        "explain_meta": {
+          "rationale": "'json' has incorrect casing; standard form: JSON.",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 39790,
+        "length": 3,
+        "line": 225,
+        "col": 83,
+        "found": "，",
+        "suggestions": [
+          "、"
+        ],
+        "rule_type": "punctuation",
+        "severity": "info",
+        "context": "列舉項目建議使用頓號「、」而非逗號「，」",
+        "explanation": "'，' should use the full-width equivalent 、 in CJK prose per MoE standards. Context: 列舉項目建議使用頓號「、」而非逗號「，」",
+        "explain_meta": {
+          "rationale": "'，' should use the full-width equivalent 、 in CJK prose per MoE standards. Context: 列舉項目建議使用頓號「、」而非逗號「，」",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 39802,
+        "length": 3,
+        "line": 225,
+        "col": 87,
+        "found": "，",
+        "suggestions": [
+          "、"
+        ],
+        "rule_type": "punctuation",
+        "severity": "info",
+        "context": "列舉項目建議使用頓號「、」而非逗號「，」",
+        "explanation": "'，' should use the full-width equivalent 、 in CJK prose per MoE standards. Context: 列舉項目建議使用頓號「、」而非逗號「，」",
+        "explain_meta": {
+          "rationale": "'，' should use the full-width equivalent 、 in CJK prose per MoE standards. Context: 列舉項目建議使用頓號「、」而非逗號「，」",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 39817,
+        "length": 3,
+        "line": 225,
+        "col": 92,
+        "found": "，",
+        "suggestions": [
+          "、"
+        ],
+        "rule_type": "punctuation",
+        "severity": "info",
+        "context": "列舉項目建議使用頓號「、」而非逗號「，」",
+        "explanation": "'，' should use the full-width equivalent 、 in CJK prose per MoE standards. Context: 列舉項目建議使用頓號「、」而非逗號「，」",
+        "explain_meta": {
+          "rationale": "'，' should use the full-width equivalent 、 in CJK prose per MoE standards. Context: 列舉項目建議使用頓號「、」而非逗號「，」",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 40126,
+        "length": 4,
+        "line": 227,
+        "col": 25,
+        "found": "json",
+        "suggestions": [
+          "JSON"
+        ],
+        "rule_type": "case",
+        "severity": "info",
+        "explanation": "'json' has incorrect casing; standard form: JSON.",
+        "explain_meta": {
+          "rationale": "'json' has incorrect casing; standard form: JSON.",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 40325,
+        "length": 4,
+        "line": 228,
+        "col": 35,
+        "found": "json",
+        "suggestions": [
+          "JSON"
+        ],
+        "rule_type": "case",
+        "severity": "info",
+        "explanation": "'json' has incorrect casing; standard form: JSON.",
+        "explain_meta": {
+          "rationale": "'json' has incorrect casing; standard form: JSON.",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 40714,
+        "length": 3,
+        "line": 229,
+        "col": 88,
+        "found": "，",
+        "suggestions": [
+          "、"
+        ],
+        "rule_type": "punctuation",
+        "severity": "info",
+        "context": "列舉項目建議使用頓號「、」而非逗號「，」",
+        "explanation": "'，' should use the full-width equivalent 、 in CJK prose per MoE standards. Context: 列舉項目建議使用頓號「、」而非逗號「，」",
+        "explain_meta": {
+          "rationale": "'，' should use the full-width equivalent 、 in CJK prose per MoE standards. Context: 列舉項目建議使用頓號「、」而非逗號「，」",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 40726,
+        "length": 3,
+        "line": 229,
+        "col": 92,
+        "found": "，",
+        "suggestions": [
+          "、"
+        ],
+        "rule_type": "punctuation",
+        "severity": "info",
+        "context": "列舉項目建議使用頓號「、」而非逗號「，」",
+        "explanation": "'，' should use the full-width equivalent 、 in CJK prose per MoE standards. Context: 列舉項目建議使用頓號「、」而非逗號「，」",
+        "explain_meta": {
+          "rationale": "'，' should use the full-width equivalent 、 in CJK prose per MoE standards. Context: 列舉項目建議使用頓號「、」而非逗號「，」",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 40741,
+        "length": 3,
+        "line": 229,
+        "col": 97,
+        "found": "，",
+        "suggestions": [
+          "、"
+        ],
+        "rule_type": "punctuation",
+        "severity": "info",
+        "context": "列舉項目建議使用頓號「、」而非逗號「，」",
+        "explanation": "'，' should use the full-width equivalent 、 in CJK prose per MoE standards. Context: 列舉項目建議使用頓號「、」而非逗號「，」",
+        "explain_meta": {
+          "rationale": "'，' should use the full-width equivalent 、 in CJK prose per MoE standards. Context: 列舉項目建議使用頓號「、」而非逗號「，」",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 40822,
+        "length": 4,
+        "line": 230,
+        "col": 22,
+        "found": "json",
+        "suggestions": [
+          "JSON"
+        ],
+        "rule_type": "case",
+        "severity": "info",
+        "explanation": "'json' has incorrect casing; standard form: JSON.",
+        "explain_meta": {
+          "rationale": "'json' has incorrect casing; standard form: JSON.",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 41025,
+        "length": 4,
+        "line": 231,
+        "col": 35,
+        "found": "json",
+        "suggestions": [
+          "JSON"
+        ],
+        "rule_type": "case",
+        "severity": "info",
+        "explanation": "'json' has incorrect casing; standard form: JSON.",
+        "explain_meta": {
+          "rationale": "'json' has incorrect casing; standard form: JSON.",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      }
+    ],
+    "applied_fixes": 0,
+    "summary": {
+      "errors": 0,
+      "warnings": 0,
+      "info": 37
+    },
+    "gate": {
+      "enabled": true,
+      "max_errors": 0,
+      "residual_errors": 0,
+      "max_warnings": 0,
+      "residual_warnings": 0
+    },
+    "profile": "strict",
+    "political_stance": "roc_centric",
+    "detected_script": "traditional",
+    "s2t_applied": false,
+    "trace": {
+      "trace_id": "9c602d39d91849c9c73c1c2dad7c2c4a",
+      "ruleset_hash": "3a6a5eecb12ada10725c0167434703c0f713136adad683257ee436f4b1ca8038",
+      "input_hash": "3657721e13345807ecd53d3f25385f52fcde16ba48156a6bb60673bd6359eb6b",
+      "timestamp": "2026-09-25T09:24:09.060Z",
+      "tool": "zhtw",
+      "issue_count": 37
+    },
+    "verify": {
+      "api_ok": true,
+      "matched": 1,
+      "unmatched": 15,
+      "no_english": 21
+    },
+    "coverage": {
+      "rules_checked": 1803,
+      "rules_matched": 2
+    },
+    "oral_density": 0.0070360596,
+    "quality_flags": [
+      "stutter_detected"
+    ],
+    "ai_signature": {
+      "score": 0,
+      "markers": [],
+      "top_signals": [],
+      "sentence_variability": 25.821875,
+      "zero_width_count": 0,
+      "punctuation_profile": {
+        "comma": {
+          "count": 438,
+          "density": 28.25442,
+          "cv": 0.7330355
+        },
+        "period": {
+          "count": 295,
+          "density": 19.029802,
+          "cv": 0.6024778
+        },
+        "semicolon": {
+          "count": 40,
+          "density": 2.5803123,
+          "cv": 1.2276056
+        },
+        "dunhao": {
+          "count": 82,
+          "density": 5.28964,
+          "cv": 1.1070912
+        },
+        "dash": {
+          "count": 0,
+          "density": 0
+        }
+      }
+    },
+    "translationese_signature": {
+      "score": 0,
+      "markers": [
+        {
+          "signal": "被動語態",
+          "count": 6,
+          "density": 0.38704684,
+          "threshold": 6
+        },
+        {
+          "signal": "的字鏈",
+          "count": 3,
+          "density": 3,
+          "threshold": 5
+        },
+        {
+          "signal": "弱動詞分解",
+          "count": 0,
+          "density": 0,
+          "threshold": 4
+        },
+        {
+          "signal": "代詞密度",
+          "count": 28,
+          "density": 1.8062186,
+          "threshold": 6
+        },
+        {
+          "signal": "翻譯腔偵測",
+          "count": 1,
+          "density": 0.064507805,
+          "threshold": 7
+        }
+      ],
+      "top_signals": [],
+      "max_de_chain": 3,
+      "domain": "technical"
+    },
+    "style_scorecard": {
+      "style_scores": {
+        "ai": 0,
+        "translationese": 0,
+        "consistency": 0.7181651
+      },
+      "top_issues_per_axis": {
+        "ai": [],
+        "translationese": [
+          {
+            "line": 99,
+            "col": 21,
+            "found": "是一個",
+            "severity": "info",
+            "rule_type": "translationese",
+            "context": "翻譯腔 Y1: 繫詞+量詞膨脹（是一個/名/位…的…），建議刪除繫詞+量詞"
+          }
+        ],
+        "consistency": [
+          {
+            "line": 29,
+            "col": 490,
+            "found": "通過",
+            "severity": "info",
+            "rule_type": "cross_strait",
+            "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」"
+          },
+          {
+            "line": 107,
+            "col": 27,
+            "found": "通過",
+            "severity": "info",
+            "rule_type": "cross_strait",
+            "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」"
+          },
+          {
+            "line": 107,
+            "col": 341,
+            "found": "通過",
+            "severity": "info",
+            "rule_type": "cross_strait",
+            "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」"
+          },
+          {
+            "line": 107,
+            "col": 369,
+            "found": "通過",
+            "severity": "info",
+            "rule_type": "cross_strait",
+            "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」"
+          },
+          {
+            "line": 153,
+            "col": 359,
+            "found": "保存",
+            "severity": "info",
+            "rule_type": "cross_strait",
+            "context": "@domain UI。tw 日常亦用「保存」(保存食物、保存文化)，僅 IT 存檔語境改「儲存」 [tier2: suppressed (score=0.18)]"
+          }
+        ]
+      }
+    },
+    "telemetry": {
+      "estimated_tokens_per_1k_chars": 0,
+      "estimated_llm_token_share": 0,
+      "estimated_tokens_per_ambiguous_term": 0,
+      "cache_hit_count": 0,
+      "cache_miss_count": 0,
+      "tier2_local_resolutions": 0,
+      "raw": {
+        "input_chars": 22279,
+        "rule_hits": 37,
+        "ambiguous_terms": 1,
+        "llm_round_trips": 0,
+        "estimated_prompt_tokens": 0,
+        "estimated_completion_tokens": 0,
+        "final_fixes": 0
+      }
+    },
+    "summary_metrics": {
+      "deterministic_fixes": 35,
+      "heuristic_fixes": 1,
+      "llm_judged_fixes": 0,
+      "unresolved": 1,
+      "llm_calls": 0,
+      "llm_tokens": 0,
+      "confidence_distribution": {
+        "high": 36,
+        "medium": 0,
+        "low": 1
+      }
+    }
+  }
+}

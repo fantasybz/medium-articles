@@ -3,6 +3,8 @@
 這個資料夾放的是流程，用來決定下個月寫什麼；文章本身不在這裡，仍然一篇一個
 `YYYY-MM-slug/` 資料夾（見上層 [README.md](../README.md)）。
 
+想先找回之前規劃的研究與收集的主題，請看 [研究與主題總覽](TOPICS.md)：包含系列進度、待補證據、主題庫與現行版本入口。本檔說明研究流程，文末待辦同時保留已完成紀錄與未勾選事項。
+
 所有月份共用 [作者寫作風格](../STYLE.md)。選題、大綱、撰稿、審稿、潤稿與翻譯前，先讀這份標準，再讀當月的 `style_brief.md`；完整的動作敘述、清楚的語意與邏輯、以真實經驗帶出的溫度與故事，都是後續系列的基本要求。
 
 目標是每月轉一圈、越轉越準的迴圈：
@@ -76,6 +78,7 @@ flowchart LR
 ```
 research/
 ├── README.md                 # 本檔：迴圈怎麼轉
+├── TOPICS.md                 # 研究與主題總覽：進度、素材、待補證據、現行版本入口
 ├── scripts/
 │   ├── _common.sh            # 給其他腳本 source、不直接執行：ROOT、EX_* 離開碼、browse 的路徑、collect.sh 的鎖、headless 算繪前的 viewport 準備
 │   ├── collect.sh            # 收集階段的驅動腳本（由 2026-09-05 跑通的指令整理而成）
@@ -223,7 +226,7 @@ presentations 的那幾週，都是粉絲團有分享的週。這些數字放在
 - [x] **批評／修訂完成（2026-09-07 15:20）**：四篇各過三視角批評 → 修訂 → 驗證（總論兩輪，第二輪併入 Codex 對計畫的意見）；最終 zh-tw 檢查只採納 是一個→是、場景→情境、全形標點旁的空白；英文版四篇（`article.en.md`，`publish/en/`）由翻譯 agent 產出、英文圖標籤縮短到 MERMAID.md 寬度內。正文中文字：總論 4,497、測試篇 4,144、Review 篇 4,061、可靠度篇 3,221（三部曲仍高於 1,900–2,600 的目標，批評者未再要求裁減；作者校閱時可再刪）。**接下來是作者的事**：逐節校閱四篇 zh 與 en；做完「作者親手做的兩件事」；依 PUBLISHING.md 用 `tools/medium_draft.sh <dir>` 與 `<dir> en` 建草稿（Medium 每 24 小時只能發兩篇），發布後把 URL 填回四篇的系列連結與 README、PUBLISHED.md。
 - [x] **10 月八篇已上 Medium 排程（2026-09-07 晚）**：草稿全部以 `tools/medium_draft.sh` 建立並逐塊比對通過，中文每週二 09:00（10/06、10/13、10/20、10/27）、英文同週四 09:00（10/08、10/15、10/22、10/29）。星期誤記已依 2026-09-23 與 2026-09-25 的 Medium 排程核對校正；Post ID 與狀態在 [PUBLISHING.md](../PUBLISHING.md)〈目前的發布佇列〉與各篇 `publish/PUBLISHED.md`。**每週一次的回填**（上線後把其他篇的「（即將發布）」換成連結、英文版上線後在中文版文末加英文版連結）還是人工／下一個 session 的事，指令在 PUBLISHING.md。這次踩到三個 Medium 改寫：日期連字號變 en dash、`(c)` 變 ©、`^5` 變上標—前兩個進了 `verify_draft.py` 的摺疊與 `md2medium.py` 的守衛，第三個進了摺疊。
 - [x] **英文版校閱已補上（2026-09-23 至 2026-09-25）**：2026-09-07 的四篇英文稿當時只有翻譯與機械檢查，尚未做 evidence／reader／editor 三視角批評。2026-09-23、24 已完成中英文逐句精修、證據限制與後半部論述核對，並同步 Medium（見各篇 `publish/en/PUBLISHED.md`）。2026-09-25 再就付款補充段落與第四篇〈付款實作篇〉，由 Claude Code／Codex 獨立對照數字、程式、語意與適用界線；本輪審閱範圍及修正見 [付款實作研究紀錄](2026-10/payment-example-evidence.md)。
-- [x] **Codex 二審已跑（2026-09-07 14:04–14:25，gpt-5.5 xhigh）**：`research/2026-09/codex-review-{selection,2026-10-…,2026-11-…,2026-12-…}.md` 原話照錄。10 月的致命項已在文章批評／修訂中處理（payment PR「不讀 diff」改為「不逐行讀、只讀標紅 hunk」、READY 標非 code、0.3–0.5 元比例標為暫定啟發式、brownfield 順序與上一季總論對齊、c 不用 49% 當量測值）。**11、12 月大綱要依 Codex 意見再修一輪再寫**：11 月—「沒人量過變異」不誠實（2608.25399 有 run-to-run variance）、變異篇實驗規模砍到 A0/A/B/C 各 N=10、全系列只用一個實驗案例、12 月獨佔數字不得在 11 月出現；12 月—OTel semconv 的 `invoke_agent`/`execute_tool` 要先實查、`outcome_verified` 不能只靠 human approval、burn-rate 加 `min_events`、error budget 與 YAML 矛盾、2608.23610 的 behavioural tuple 待全文、時程砍到三個工件；Codex 總判斷「12 月目前不合格，必須重切成 flight recorder / accountability，否則把爆炸半徑提前」。
+- [x] **Codex 二審已跑（2026-09-07 14:04–14:25，gpt-5.5 xhigh）**：`research/2026-09/codex-review-{selection,2026-10-…,2026-11-…,2026-12-…}.md` 原話照錄。10 月的致命項已在文章批評／修訂中處理（payment PR「不讀 diff」改為「不逐行讀、只讀標紅 hunk」、READY 標非 code、0.3–0.5 元比例標為暫定啟發式、brownfield 順序與上一季總論對齊、c 不用 49% 當量測值）。**當時要求 11、12 月大綱依 Codex 意見再修一輪再寫**：11 月—「沒人量過變異」不誠實（2608.25399 有 run-to-run variance）、變異篇實驗規模砍到 A0/A/B/C 各 N=10、全系列只用一個實驗案例、12 月獨佔數字不得在 11 月出現；12 月—OTel semconv 的 `invoke_agent`/`execute_tool` 要先實查、`outcome_verified` 不能只靠 human approval、burn-rate 加 `min_events`、error budget 與 YAML 矛盾、2608.23610 的 behavioural tuple 待全文、時程砍到三個工件；Codex 總判斷「12 月目前不合格，必須重切成 flight recorder / accountability，否則把爆炸半徑提前」。
 - [ ] LinkedIn 動態牆的 selector（目前靠「Feed post」切文字，只抓到 8 篇）。
 - [ ] `collect.sh` 還沒以單一腳本從頭跑過一次；第一次請逐段看。
 - [ ] **PNG 沒有過期閘門**：已 commit 的 `publish/images/*.png` 跟算繪它們的來源沒有綁在一起。
@@ -238,3 +241,17 @@ presentations 的那幾週，都是粉絲團有分享的週。這些數字放在
       `extract_*.js`、`collect.sh`、`mermaid_check*.sh`、`render_images.sh` 依賴外部 DOM、瀏覽器或 Keychain，
       沒有離線測試，靠執行時自檢。等 selector 穩定再決定要不要把純 Python 那批搬進 `tools/`。
 - [ ] 每月更新 `style_brief.md` 的 reception 段與 `backlog.md` 的權重。
+
+### 2026-09-25：同一份規格的研究續圈
+
+[當時修訂的研究大綱](2026-10/2026-11-same-spec-ten-runs.md)與[二審處置](2026-10/same-spec-ten-runs/review-resolution.md)已取代原方案；本 repo 的 parser 維護任務、四組文件、外部 evaluator 與分析程式位於[實驗入口](experiments/same-spec-ten-runs/README.md)。[正式結果](experiments/same-spec-ten-runs/RESULTS.md)已記錄完整 40 次、四組各 10/10 通過與結構差異，保留 pilot／formal 的區別。這輪以獨立 CLI sessions 執行四視角審查及複核，實際時序見[research loop 紀錄](2026-10/same-spec-ten-runs/research-loop.md)，沒有把未呼叫的 Workflow tool 標成已執行。
+
+2026-09-25 首輪成稿完成：四篇由 Claude Code `max` 主寫，完成當輪逐段潤飾、代理複核與嚴格繁中檢查；當時的版本及限制見[9/25 品質紀錄](2026-10/same-spec-ten-runs/manuscripts/STATUS-2026-09-25.md)。這是歷史版本紀錄，現行正文已由下述全面重寫取代。
+
+2026-09-28 前輪敘事修訂完成：補入研究動機、三個問題、系列承接及四份 spec 的內容，由 Claude Code max 主寫，並完成當輪 Codex 潤飾、Claude xhigh 讀者複核與 strict zh-TW MCP；見[前輪品質紀錄](2026-10/same-spec-ten-runs/manuscripts/STATUS-2026-09-28-narrative.md)。作者其後仍認為深度與實用度不足，因此再次全面重寫；該輪審查不代表本輪的審查結果。
+
+2026-09-28 再次全面研究重寫完成：以十月份系列為基準，新增規格與契約基礎、評估設計與真人成本研究，重播 parser／CSV 教學裝置，重新建立四篇的論證與讀者判斷過程。四篇由 Claude Code Opus 5.5 `max` 主寫，完成 Codex 全文潤飾、後半部重讀與有界複核；八份正文／貼稿的 strict zh-TW MCP 均為 0 錯誤、0 警告，29 張本機圖表及發布包已檢查。正式四十次封存不變，下一輪比較尚未執行，全系列尚未發布。見[本輪研究入口](2026-10/same-spec-ten-runs/rebuild-2026-09-28/README.md)與[目前成稿紀錄](2026-10/same-spec-ten-runs/manuscripts/STATUS.md)。SRE 系列仍以 9/15 重切大綱為基礎，實作證據與正文尚待完成；其他待辦見[主題總覽](TOPICS.md)。
+
+### 2026-10-03：規格變異系列的讀者回饋修訂
+
+作者試讀後要求新概念有容易理解的例子，各篇與各段主軸更連貫。Codex 主代理沿用 9/28 Claude max 主稿，完成四篇修訂與共用風格更新；最新八份正文／貼稿通過嚴格繁中檢查，發布包與正式封存已核對。這次沒有新增 Claude 主寫、獨立代理審查或正式實驗。詳見[本輪修訂](2026-10/same-spec-ten-runs/readability-2026-10-03/README.md)與[成稿狀態](2026-10/same-spec-ten-runs/manuscripts/STATUS.md)。英文版、公開附件固定連結與發布尚未完成；下一輪 P／Q 比較與人工資料仍是後續研究。

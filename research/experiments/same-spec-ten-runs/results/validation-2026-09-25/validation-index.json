@@ -1,0 +1,12 @@
+{
+  "phase": "formal",
+  "purpose": "Public-archive rescoring and independent recorded-data audit. No additional generation.",
+  "hash_scope": "All listed validation files; excludes this index.",
+  "files_sha256": {
+    "formal-data-audit.json": "e66b551ccd89f7f0709a8be9ce060214fbfbf07ad4ab75ef634a00bfff2e82a8",
+    "formal-data-audit.md": "e2b00c994f62ef23b83feb70242a3c89b7ae76d7ec03f03ae282002da35da144",
+    "public-rescore-execution.json": "43aee2b74a8d7edeabd8fc1fcf6ceac8211c14185c10f5584c954b9b239152dd",
+    "public-rescore.json": "83c55e0b00bacf039210ad5247a8f9eefde341ba650a75c2b65412afe6ebf258",
+    "public-rescore.log": "1d09410c4453a562eacec50f47ecc72a94e3b1bc6a67f044c350edf022aed793"
+  }
+}

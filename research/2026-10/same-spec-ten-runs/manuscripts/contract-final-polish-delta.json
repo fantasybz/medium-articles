@@ -1,0 +1,28 @@
+{
+  "article": "2026-11-same-spec-contract/article.md",
+  "before_sha256": "d7d1244e859d407fe54b19510311d4100cd370dcd9ceb71df48cd0dc151cca76",
+  "after_sha256": "8103c4371c1d944cb7f9da326caad25060dce523438c3ca6c48bf9eb46ec5b92",
+  "reason": "Final root paragraph review and independent editorial/reader minor fixes; no data, examples, tables or figures changed.",
+  "edits": [
+    {
+      "before": "這裡分開的是規則的控制與候選的執行：候選無法決定要用哪些案例、怎麼比對，也碰不到 evaluator 的來源。",
+      "after": "這裡分開的是規則的控制與候選的執行：案例與比對邏輯由外部 driver 控制，不透過候選的輸入介面提供。"
+    },
+    {
+      "before": "evaluator 保有自己的規則，確保的是候選改不了這些規則。規則實際涵蓋多少行為，要看案例本身，也要看執行案例的環境是否真的隔離，而後者正是下一節要處理的問題。",
+      "after": "這個安排把規則的控制留在外部 driver。案例涵蓋多少行為，要看案例本身；候選的存取受到哪些限制，則要對照隔離設定與實際 probe。後者正是下一節要處理的問題。"
+    },
+    {
+      "before": "## 五、保留 streaming 的行為，不能只比最後一行",
+      "after": "## 五、保留 streaming 的行為，還要檢查輸出何時出現"
+    },
+    {
+      "before": "也無法說明四組在這個維度上沒有差別",
+      "after": "也無法說明四組處理 CLI 參數的方式沒有差別"
+    },
+    {
+      "before": "有幾個維度完全沒有觀察點，其中一個還牽涉到組間的措辭差異",
+      "after": "有幾項要求完全沒有觀察點，其中一項還牽涉到組間的措辭差異"
+    }
+  ]
+}
