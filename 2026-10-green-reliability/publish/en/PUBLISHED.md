@@ -2,7 +2,7 @@
 
 **Title** Green Is Not Done, Part 3 — The 34% SWE-Gate Found Behind a Green Build: Constraint Tests, pass^k and the Gate for Expanding Autonomy
 **Post ID** `4b6d147bff0d`（draft https://medium.com/p/4b6d147bff0d/edit；stable URL after publishing https://medium.com/p/4b6d147bff0d）
-**Schedule** 2026-10-29（四）09:00 GMT+8（2026-10-03 已重新讀取 Medium 排程確認）
+**Schedule** 2026-10-29（四）09:00 GMT+8（2026-10-18 已重新讀取 Medium 排程確認）
 **Built with** `./tools/medium_draft.sh 2026-10-green-reliability en`, block-by-block verification clean
 
 ## Settings
@@ -172,3 +172,11 @@ The author's requested pass covers the overview and all four parts in Chinese an
 The existing scheduled draft was updated under the same Post ID. After saving, independent fresh navigation verified **160 text blocks, 25 links, 7 original images and 10 dividers** against the final publishing payload, with no image placeholders. Link destinations and order, image identifiers and positions all match.
 
 A further fresh settings read confirmed that the title, cover identifier and dimensions, topics, preview title and subtitle, notification setting and publication schedule exactly match the pre-update baseline. `isPublished: false`; the future schedule remains `2026-10-29T01:00:00Z`. The update did not publish the story early.
+
+## 2026-10-18 發布進度與程式碼連結時點
+
+依作者指定，正文與參考資料暫不連到付款程式碼，並註明待第四篇〈付款實作篇〉發布後提供。情境、實測說明與系列導覽保留；原稿、貼稿與既有草稿同步。
+
+儲存後另開編輯頁逐塊比對：160 個文字區塊、23 個連結、7 張圖、10 條分隔線全部相符；連結目的地與順序一致，付款程式碼連結為 0，圖片識別碼與順序保留。
+
+發布設定另從新分頁讀回，與修改前完全相同：仍為 `isPublished: false`；排程 **2026-10-29 09:00 Asia/Taipei**（`publishAt: 1793235600000`）。標題、Topics、封面、預覽文字與通知設定均保留，沒有重新排程。

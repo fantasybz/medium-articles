@@ -1,8 +1,9 @@
 # Publication record (English edition)
 
 **Title** Green Is Not Done, Part 1 — Reviewing the Tests an Agent Wrote: Loosened Assertions, Frozen Bugs and Mutation Score
-**Post ID** `51d001a6dcd5`（draft https://medium.com/p/51d001a6dcd5/edit；stable URL after publishing https://medium.com/p/51d001a6dcd5）
-**Schedule** 2026-10-15（四）09:00 GMT+8（2026-10-03 已重新讀取 Medium 排程確認）
+**Post ID** `51d001a6dcd5`（[已發布文章](https://medium.com/p/51d001a6dcd5)；[編輯頁](https://medium.com/p/51d001a6dcd5/edit)）
+**實際發布** 2026-10-15 09:01:02 Asia/Taipei（GMT+8）；2026-10-18 由公開頁 `firstPublishedAt` 核對。
+**Original schedule** 2026-10-15（四）09:00 GMT+8（2026-10-03 已重新讀取 Medium 排程確認）
 **Built with** `./tools/medium_draft.sh 2026-10-green-testing en`, block-by-block verification clean
 
 ## Settings
@@ -151,3 +152,11 @@ The author's requested pass covers the overview and all four parts in Chinese an
 The existing scheduled draft was updated under the same Post ID. After saving, independent fresh navigation verified **197 text blocks, 26 links, 8 original images and 13 dividers** against the final publishing payload, with no image placeholders. Link destinations and order, image identifiers and positions all match.
 
 A further fresh settings read confirmed that the title, cover identifier and dimensions, topics, preview title and subtitle, notification setting and publication schedule exactly match the pre-update baseline. `isPublished: false`; the future schedule remains `2026-10-15T01:00:00Z`. The update did not publish the story early.
+
+## 2026-10-18 發布進度與連結同步
+
+依作者指定，付款程式碼連結須等第四篇〈付款實作篇〉發布後再提供。本篇正文與參考資料均暫不連到程式碼，保留原有情境與實測說明，參考資料已註明提供時點。原稿、貼稿與公開頁同步一致。
+
+沿用原 Post ID，局部修改後按 **Save and publish**，再從新分頁讀取公開全文。最終為 197 個文字區塊、24 個連結、8 張圖、13 條分隔線，逐塊相符；連結目的地與順序另行核對，付款程式碼連結為 0。
+
+圖片識別碼、原圖尺寸、順序及程式碼內容與縮排均保留。標題、首次發布時間、Topics、封面、預覽文字、可見性、付費牆與 publication 設定均與更新前相同；僅最後更新時間變動。當次封面為 `1*xm5Bmvm62Sr2IwFtTnOOyQ.png`（1800 × 1916）。未重新建立文章或更動排程。

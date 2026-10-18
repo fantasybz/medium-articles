@@ -155,10 +155,12 @@ research/
 重跑：確認根目錄的 `STYLE.md` 已反映作者最新要求，並把 `research/YYYY-MM/` 的四份 digest 與 `style_brief.md` 準備好（原始 JSON 在 `.context/research/YYYY-MM/`，workflow 不讀它），
 在 Claude Code 裡用 Workflow 工具帶 `scriptPath` 執行。四支 workflow 都不寫死路徑、日期與已發布文章：
 `root`（repo 根目錄）、`month`（研究月份）、`today`（`YYYY-MM-DD`；workflow 腳本裡沒有 `Date`，缺了會直接丟錯）、
-`published`（已發布文章的目錄清單，缺了也丟錯）一律從 args 帶入。目前的 `published` 是下面這四個目錄，新系列上線後在這裡加：
+`published`（已發布文章的目錄清單，缺了也丟錯）一律從 args 帶入。截至 2026-10-18，已發布文章涵蓋下面六個目錄，共十二份中英版本；後續文章上線後再更新清單。
+
+下方 `Workflow` 呼叫保留 2026-09 首次執行時的日期作為格式範例。實際重跑時，須依當輪研究一併更新 `month`、`today` 與相關檔案路徑，並重新核對已發布清單。
 
 ```js
-const PUBLISHED = ["2026-09-agentic-engineering-platform", "2026-09-agentic-org-design", "2026-10-agentic-harness-blueprint", "2026-11-agentic-eval-economics"]
+const PUBLISHED = ["2026-09-agentic-engineering-platform", "2026-09-agentic-org-design", "2026-10-agentic-harness-blueprint", "2026-11-agentic-eval-economics", "2026-10-green-overview", "2026-10-green-testing"]
 Workflow({scriptPath: "research/workflows/plan-next-three-themes.js", args: {root, month: "2026-09", today: "2026-09-05", published: PUBLISHED}})   // 可加 months: ["2026-10", "2026-11", "2026-12"]，預設是 month 之後三個月
 Workflow({scriptPath: "research/workflows/review-outlines.js", args: {root, month: "2026-09", today: "2026-09-06", published: PUBLISHED, files: ["research/2026-09/2026-11-same-spec-ten-runs.md"]}})
 Workflow({scriptPath: "research/workflows/finish-outline.js", args: {root, month: "2026-09", today: "2026-09-06", published: PUBLISHED, file: "research/2026-09/2026-11-same-spec-ten-runs.md", issuesFile: root + "/.context/research/issues-2026-11.json"}})

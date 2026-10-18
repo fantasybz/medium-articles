@@ -187,7 +187,7 @@ agent 讓測試產出變快，也讓逐份人工審閱更難負擔，因此更�
 
 門檻是我的建議值，不是業界標準：先以 agent 改動行的 mutation score ≥ 70% 作為合併前的起始參考。導入時先提供一個月的報告，再開始阻擋未達標的 PR。這個數字參考 Uncle Bob 的做法，再加上我的初步估計，尚待自己的試行資料校準；它不是已經驗證過的通用門檻。Review 可以提早確認規格與挑選測試，分數過線則仍要逐項判讀關鍵風險。
 
-**用付款把百分比的限制看清楚。** 前面說的是方法，現在看一份可重現的結果。隨文的 [可執行範例](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment)，是一瓶示範售價 35 元的無糖純喫綠茶。測試使用可以控制回覆的假金流，沒有真的刷卡：它先記錄扣款，再模擬回覆逾時。應用程式收不到確定答案，就應保留 `PENDING`（結果待確認），不能自行宣告成功。Reviewer 把「未知結果不得冒充成功，重送不得再次扣款」留下來，寫成 constraint test，也就是持續驗證這份約定的測試；它同時保護功能行為，兩個名稱並不互斥。
+**用付款把百分比的限制看清楚。** 前面說的是方法，現在看一份可重現的結果。隨文的可執行範例，是一瓶示範售價 35 元的無糖純喫綠茶。測試使用可以控制回覆的假金流，沒有真的刷卡：它先記錄扣款，再模擬回覆逾時。應用程式收不到確定答案，就應保留 `PENDING`（結果待確認），不能自行宣告成功。Reviewer 把「未知結果不得冒充成功，重送不得再次扣款」留下來，寫成 constraint test，也就是持續驗證這份約定的測試；它同時保護功能行為，兩個名稱並不互斥。
 
 這個測試會用同一張訂單與同一個 key 呼叫兩次 `Checkout.pay()`；key 是辨識同一次付款嘗試的識別值。它確認回覆仍是 `PENDING`、沒有代表成功付款的 payment ID，而且金流只被呼叫一次。完整版本另外涵蓋扣款前就逾時的情境，避免把「不知道」誤解成「一定已經扣款」。這些事先約定的預期結果，就是測試的 oracle：用來判斷對錯的依據，不能由待測程式幫自己算答案。
 
@@ -646,7 +646,7 @@ Lisa Crispin 與 Tip House 的《Testing Extreme Programming》說「人人都�
 11. 李博杰《深入理解 AI Agent：設計原理與工程實踐》v2.0 — [第七章〈Agent 的評估〉](https://bojieli.github.io/ai-agent-book/book-en/chapter7/)（2026-09-06，§7.5.2 失敗歸因的 Coding Agent 錯誤分類表）〔第二節〕
 12. Quartic.ai — [Letting an Agent Upgrade Production Kubernetes — Without Getting Paged at 3 AM](https://sched.co/2QlD9)（AGNTCon + MCPCon Japan 2026，2026-09-10；[講者投影片](https://hosted-files.sched.co/agntconmcpconjapan26/d9/AGNTCon-MCPCon-Japan-2026_Abhijeet_Sanskar_final.pdf#page=29) slide 29）〔第五節〕
 13. Spring Framework 官方文件 — [@DirtiesContext](https://docs.spring.io/spring-framework/reference/testing/annotations/integration-spring/annotation-dirtiescontext.html)，說明測試 context 的失效、移除與重建〔第七節〕。
-14. 隨文實作 — [無糖純喫綠茶付款、constraint tests 與七個指定 mutant](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment)〔第四節；教學案例與實測，非真實金流〕
+14. 隨文程式碼 — 無糖純喫綠茶付款、constraint tests 與七個指定 mutant〔第四節；教學案例與實測，非真實金流〕（程式碼連結待第四篇〈付款實作篇〉發布後提供）
 
 ---
 
@@ -656,4 +656,4 @@ Lisa Crispin 與 Tip House 的《Testing Extreme Programming》說「人人都�
 
 ---
 
-*本文發表於 [Medium @fantasybz](https://medium.com/@fantasybz)。若你正在幫團隊裝第一道 test gate，歡迎交流。*
+*本文發表於 [Medium @fantasybz](https://medium.com/@fantasybz)。英文版：[English edition](https://medium.com/p/51d001a6dcd5)。若你正在幫團隊裝第一道 test gate，歡迎交流。*

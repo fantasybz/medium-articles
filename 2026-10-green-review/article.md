@@ -141,7 +141,7 @@ AI 的 approve 是 approval artifact 裡的一個訊號欄，供負責 approve �
 
 再看示範 Review 的幾則意見。「重按一次會不會多扣款？」有明確後果、穩定的觀察方式與長期要求，可以留下「同一付款嘗試只送出一次扣款請求」的約束。「逾時以前可能已經扣款」則要求測試涵蓋回覆遺失，確認結果保持待確認的 `PENDING` 狀態，重送不會再扣一筆。區域變數命名交給當次修改或既有 lint；「活動要不要提供退款」則先由產品與 payment owner 決定政策，不能讓 agent 自行產生預期答案。
 
-保留的規則還要記下來源、適用範圍、測試名稱、owner 與重新檢視條件。高影響的風險第一次被指出就可以保護，不必等到真的扣錯款。這些是教學評論與建議流程，不是某個真實 PR 的歷史紀錄；完整對照與可重跑程式見 [付款範例](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment)，第四篇〈付款實作篇〉另有逐步說明。
+保留的規則還要記下來源、適用範圍、測試名稱、owner 與重新檢視條件。高影響的風險第一次被指出就可以保護，不必等到真的扣錯款。這些是教學評論與建議流程，不是某個真實 PR 的歷史紀錄；第四篇〈付款實作篇〉會提供完整對照、可重跑程式與逐步說明。
 
 這份範例也提醒我，機器可驗證的程度不能只靠一個總分判斷。漏掉逾時案例時，mutation score，也就是有效變異中被測試辨識出的比例，已經有 85.7%，但「把未知結果改成表示已付款的 `PAID`」的 M5 仍存活。這七個是手選的教學變異，不能直接套用工具在真實 diff 上的門檻。Reviewer 應指出這條尚未被保護的付款要求，再補測試與證據；不能看到數字超過測試篇的 70% 起始參考，就把這個 PR 移到可以減少深讀的那一格。
 
@@ -645,7 +645,7 @@ model 版本一直在換，複核比例也要依量測結果調整。但誰負�
 25. Studist 的 Masaya Nakamura — [Intent as Code: Why Existing Permissions Aren't Enough for AI](https://sched.co/2QlDX)（AGNTCon + MCPCon Japan 2026，東京，2026-09-10；[講者投影片](https://hosted-files.sched.co/agntconmcpconjapan26/ab/Intent-as-Code%20%2813%29.pdf#page=16) slide 16，該頁引 H. Yu et al., [arXiv 2606.22721](https://arxiv.org/abs/2606.22721)）〔第三節；轉引投影片上的引用〕
 26. GitHub 官方文件 — [About code owners](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners)，CODEOWNERS 與必要核准的設定〔第三、七節〕。
 27. GitHub 官方文件 — [About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)，必要 review、過期核准與 bypass 設定〔第七節〕。
-28. 隨文實作 — [無糖純喫綠茶付款、constraint tests 與七個指定 mutant](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment)〔第三節；教學案例與實測，非真實金流〕
+28. 隨文程式碼 — 無糖純喫綠茶付款、constraint tests 與七個指定 mutant〔第三節；教學案例與實測，非真實金流〕（程式碼連結待第四篇〈付款實作篇〉發布後提供）
 
 ---
 
