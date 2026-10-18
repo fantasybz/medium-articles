@@ -2,7 +2,7 @@
 
 **Title** Green Is Not Done, Part 2 — Review Is the Control Point, Not the Bottleneck: Triage, Reviewer Fleets and the Closed-Loop Ban
 **Post ID** `4d36d0f2f9c1`（draft https://medium.com/p/4d36d0f2f9c1/edit；stable URL after publishing https://medium.com/p/4d36d0f2f9c1）
-**Schedule** 2026-10-22（四）09:00 GMT+8（2026-10-03 已重新讀取 Medium 排程確認）
+**Schedule** 2026-10-22（四）09:00 GMT+8（2026-10-18 已重新讀取 Medium 排程確認）
 **Built with** `./tools/medium_draft.sh 2026-10-green-review en`, block-by-block verification clean
 
 ## Settings
@@ -148,3 +148,9 @@ The author's requested pass covers the overview and all four parts in Chinese an
 The existing scheduled draft was updated under the same Post ID. After saving, independent fresh navigation verified **216 text blocks, 36 links, 7 original images and 12 dividers** against the final publishing payload, with no image placeholders. Link destinations and order, image identifiers and positions all match.
 
 A further fresh settings read confirmed that the title, cover identifier and dimensions, topics, preview title and subtitle, notification setting and publication schedule exactly match the pre-update baseline. `isPublished: false`; the future schedule remains `2026-10-22T01:00:00Z`. The update did not publish the story early.
+
+## 2026-10-18 發布進度核對
+
+從新分頁讀回，仍為 `isPublished: false`；排程為 **2026-10-22 09:00 Asia/Taipei**（`publishAt: 1792630800000`），與原排程相符。本次僅核對，沒有重貼正文或更動發布設定。
+
+正文與目前貼稿逐塊相符：216 個文字區塊、36 個連結、7 張圖、12 條分隔線。連結數量及圖片槽位通過既有驗證器；本次不重查所有外部引文的可用性。

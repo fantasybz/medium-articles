@@ -64,3 +64,9 @@ The author's requested pass covers the overview and all four parts in Chinese an
 The existing scheduled draft was updated under the same Post ID. After saving, independent fresh navigation verified **146 text blocks, 25 links, 7 original images and 11 dividers** against the final publishing payload, with no image placeholders. Link destinations and order, image identifiers and positions all match.
 
 A further fresh settings read confirmed that the title, cover identifier and dimensions, topics, preview title and subtitle, notification setting and publication schedule exactly match the pre-update baseline. `isPublished: false`; the future schedule remains `2026-11-05T01:00:00Z`. The update did not publish the story early.
+
+## 2026-10-18 發布進度核對
+
+從新分頁讀回，仍為 `isPublished: false`；排程為 **2026-11-05 09:00 Asia/Taipei**（`publishAt: 1793840400000`），與原排程相符。本次僅核對，沒有重貼正文或更動發布設定。
+
+正文與目前貼稿逐塊相符：146 個文字區塊、25 個連結、7 張圖、11 條分隔線。連結數量及圖片槽位通過既有驗證器；本次不重查所有外部引文的可用性。
