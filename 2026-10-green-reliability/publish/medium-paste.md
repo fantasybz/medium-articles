@@ -146,7 +146,7 @@ def test_no_direct_http_client_construction():
 
 **再看一條需要執行行為的付款約束。** 假設示範訂單是一瓶 35 元的無糖純喫綠茶，reviewer 提醒：「畫面逾時時，金流可能已經扣款；重送不能直接開始另一筆。」團隊確認要求後，保留來源、payment owner、適用的重送情境，以及 provider 契約改變時重新檢視的條件。這些評論與價格都是教學設定，不是實際事故或商品售價。
 
-這條規則不能只靠掃描有沒有 `PENDING` 字串來驗證。隨文 [付款範例](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment) 讓 `FakeGateway` 在記錄成功扣款後拋出逾時，再透過 `Checkout.pay()` 重送同一張訂單與 key。測試同時確認結果維持 `PENDING`、沒有 payment ID，且金流呼叫與成功扣款都只有一筆。替身刻意不幫忙去重，才不會掩蓋應用程式缺少 guard 的錯誤。完整測試另外涵蓋扣款前逾時及其他連線例外。
+這條規則不能只靠掃描有沒有 `PENDING` 字串來驗證。隨文付款範例讓 `FakeGateway` 在記錄成功扣款後拋出逾時，再透過 `Checkout.pay()` 重送同一張訂單與 key。測試同時確認結果維持 `PENDING`、沒有 payment ID，且金流呼叫與成功扣款都只有一筆。替身刻意不幫忙去重，才不會掩蓋應用程式缺少 guard 的錯誤。完整測試另外涵蓋扣款前逾時及其他連線例外。
 
 從 Review 挑出它的理由，是後果明確、預期結果可判定、需求會延續到後續修改，而且有人維護。命名偏好不必各建一個行為測試；尚未決定的退款政策，則要先確認需求。第四篇〈付款實作篇〉把這些選擇、九個付款測試與七個指定 mutant 完整接起來。
 
@@ -428,7 +428,7 @@ G2 原本已經追蹤重試、外逸缺陷與 champions 的運作；新增四條
 12. 筆者筆記：Claude Certified Architect — Foundations 考試筆記（stop_reason、stratified sampling）
 13. Agentic Engineering：[營運篇：Eval、單位經濟與規模化](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%89-eval-%E5%96%AE%E4%BD%8D%E7%B6%93%E6%BF%9F%E8%88%87%E8%A6%8F%E6%A8%A1%E5%8C%96-%E6%8A%8A-agent-%E7%95%B6%E7%94%A2%E5%93%81%E7%87%9F%E9%81%8B-d6d9623c2dc6)第二、五節（judge 三陷阱、G2 gate）
 14. PagerDuty — [From Clicks To Context: Building an Open-Source Evaluation Pipeline for AI Agents](https://sched.co/2QlEA)（AGNTCon + MCPCon Japan 2026，2026-09-11）〔第五節；[講者投影片](https://hosted-files.sched.co/agntconmcpconjapan26/57/From%20Clicks%20to%20Context_%20Building%20an%20Open-Source%20Evaluation%20Pipeline%20for%20AI%20Agents%20_%20Ine%CC%82s%20Bolan%CC%83os.pdf#page=15) 第 15 頁「THE RED LINE」那張，與[第 21 頁](https://hosted-files.sched.co/agntconmcpconjapan26/57/From%20Clicks%20to%20Context_%20Building%20an%20Open-Source%20Evaluation%20Pipeline%20for%20AI%20Agents%20_%20Ine%CC%82s%20Bolan%CC%83os.pdf#page=21) H.I.R.E. 的 Red Line Rate〕
-15. 隨文實作 — [無糖純喫綠茶付款、constraint tests 與七個指定 mutant](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment)〔第二節；教學案例與實測，非真實金流〕
+15. 隨文程式碼 — 無糖純喫綠茶付款、constraint tests 與七個指定 mutant〔第二節；教學案例與實測，非真實金流〕（程式碼連結待第四篇〈付款實作篇〉發布後提供）
 
 ---
 

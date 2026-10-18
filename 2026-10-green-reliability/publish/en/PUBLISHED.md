@@ -173,8 +173,10 @@ The existing scheduled draft was updated under the same Post ID. After saving, i
 
 A further fresh settings read confirmed that the title, cover identifier and dimensions, topics, preview title and subtitle, notification setting and publication schedule exactly match the pre-update baseline. `isPublished: false`; the future schedule remains `2026-10-29T01:00:00Z`. The update did not publish the story early.
 
-## 2026-10-18 發布進度核對
+## 2026-10-18 發布進度與程式碼連結時點
 
-從新分頁讀回，仍為 `isPublished: false`；排程為 **2026-10-29 09:00 Asia/Taipei**（`publishAt: 1793235600000`），與原排程相符。本次僅核對，沒有重貼正文或更動發布設定。
+依作者指定，正文與參考資料暫不連到付款程式碼，並註明待第四篇〈付款實作篇〉發布後提供。情境、實測說明與系列導覽保留；原稿、貼稿與既有草稿同步。
 
-正文與目前貼稿逐塊相符：160 個文字區塊、25 個連結、7 張圖、10 條分隔線。連結數量及圖片槽位通過既有驗證器；本次不重查所有外部引文的可用性。
+儲存後另開編輯頁逐塊比對：160 個文字區塊、23 個連結、7 張圖、10 條分隔線全部相符；連結目的地與順序一致，付款程式碼連結為 0，圖片識別碼與順序保留。
+
+發布設定另從新分頁讀回，與修改前完全相同：仍為 `isPublished: false`；排程 **2026-10-29 09:00 Asia/Taipei**（`publishAt: 1793235600000`）。標題、Topics、封面、預覽文字與通知設定均保留，沒有重新排程。

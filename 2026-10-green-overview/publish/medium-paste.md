@@ -204,7 +204,7 @@ Uncle Bob 在 8 月 17 日還做了一個小實驗，本文照著那則貼文叫
 
 這裡的「constraint」描述要求的來源與長期責任，不是排除功能行為的另一種測試技術。正常購買要扣對金額，重送不能再次扣款，都是產品要求；reviewer 決定保留後，可以單獨測付款函式（unit test），也可以把相連的元件放在一起驗證（integration test），依所需證據選擇。選擇依據是後果、可判定的預期結果與維護責任，不是每則評論都必須變成一個測試。
 
-在隨文的[付款程式範例](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment)中，兩個正常購買測試只辨識出七個指定 mutant 裡的兩個，mutation score 是 28.6%；八個測試漏掉逾時案例時，分數雖到 85.7%，仍抓不到「把未知付款標成成功」。完整九個測試辨識出這七種變異。這是同一行程、依序呼叫假金流的實測，不能替並行、重新啟動與真實扣款作保。
+在隨文的付款程式範例中，兩個正常購買測試只辨識出七個指定 mutant 裡的兩個，mutation score 是 28.6%；八個測試漏掉逾時案例時，分數雖到 85.7%，仍抓不到「把未知付款標成成功」。完整九個測試辨識出這七種變異。這是同一行程、依序呼叫假金流的實測，不能替並行、重新啟動與真實扣款作保。
 
 test gate 交出這份逐項報告；review gate 則由懂付款的人判斷存活的變異是否違反關鍵要求，不能只看分數放行。若接著量測 reliability gate 的 constraint pass rate，分母才換成功能檢查通過的候選 PR，計算其中也通過全部適用約束的比例。單一範例通過九個測試，並不是 agent 的長期可靠度。完整的選擇理由、程式與計分，已整理在第四篇〈付款實作篇：買一瓶無糖純喫綠茶，從 Review 約束走到 mutation score〉中。
 
@@ -462,7 +462,7 @@ RD 再被問「這個 PR 測過了嗎」的時候，就能拿著幾份具體的�
 13. Robert C. Martin（@unclebobmartin）— [2026-07-26 測試種類](https://x.com/unclebobmartin/status/2081332683582427641)、[2026-07-29 measure cleanliness](https://x.com/unclebobmartin/status/2082497764223492161)、[2026-07-30 TDD is a human discipline](https://x.com/unclebobmartin/status/2082850576832905657)、[2026-08-05 deterministic tools](https://x.com/unclebobmartin/status/2085104553746190372)、[2026-08-17 negative test experiment](https://x.com/unclebobmartin/status/2089449442089025936)
 14. Martin Fowler（@martinfowler）— [2026-08-11 TDD inside the agent loop（Birgitta Böckeler）](https://x.com/martinfowler/status/2087173563144912985)、[2026-09-02 Maybe we shouldn't be reviewing all this code](https://x.com/martinfowler/status/2095147242986373485)
 15. 社群討論：Scrum Community in Taiwan 的公開貼文（「AI 說沒問題」、「把人類的價值要求 AI 是對的」）
-16. 隨文程式碼 — [無糖純喫綠茶付款、constraint tests 與七個指定 mutant](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment)〔第六節；教學案例與實測，非真實金流〕
+16. 隨文程式碼 — 無糖純喫綠茶付款、constraint tests 與七個指定 mutant〔第六節；教學案例與實測，非真實金流〕（程式碼連結待第四篇〈付款實作篇〉發布後提供）
 
 ---
 
