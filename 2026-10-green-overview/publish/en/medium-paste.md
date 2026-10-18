@@ -28,7 +28,7 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 
 > **TL;DR** — When an agent delivers code and tests, the team still has three questions to answer: can these tests detect the relevant errors; who has established that this change is ready to merge; and does repeated performance justify giving the agent more authority? This overview organizes those questions into three gates. Green tests are useful evidence, but without independent scrutiny of the tests, they may only show that the agent passed its own exam. I explain how testing, review and reliability share the work, then turn that division into a gradual 90-day adoption plan.
 
-> Series: **Overview (this piece)** → 1. Testing (coming soon) → 2. Review (coming soon) → 3. Reliability (coming soon) → 4. Payment Walkthrough (coming soon). Related reading, the Agentic Engineering series: [Don't Build Your Own Devin](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9) → [1. Org Design](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987) → [2. The Harness Blueprint](https://fantasybz.medium.com/agentic-engineering-part-2-the-harness-blueprint-making-your-system-legible-to-agents-3facc281f633) → [3. Evals and Unit Economics](https://fantasybz.medium.com/agentic-engineering-part-3-evals-unit-economics-and-scaling-running-agents-like-a-product-1cb1855a2046)
+> Series: **Overview (this piece)** → [1. Testing](https://medium.com/p/51d001a6dcd5) → 2. Review (coming soon) → 3. Reliability (coming soon) → 4. Payment Walkthrough (coming soon). Related reading, the Agentic Engineering series: [Don't Build Your Own Devin](https://fantasybz.medium.com/dont-build-your-own-devin-org-strategy-and-a-90-day-blueprint-for-agentic-engineering-8187e7ec80f9) → [1. Org Design](https://fantasybz.medium.com/agentic-engineering-part-1-who-does-this-platform-plus-federation-in-practice-92343384d987) → [2. The Harness Blueprint](https://fantasybz.medium.com/agentic-engineering-part-2-the-harness-blueprint-making-your-system-legible-to-agents-3facc281f633) → [3. Evals and Unit Economics](https://fantasybz.medium.com/agentic-engineering-part-3-evals-unit-economics-and-scaling-running-agents-like-a-product-1cb1855a2046)
 
 ---
 
@@ -200,11 +200,11 @@ Each gate needs a clear question to answer, a metric to measure, and someone res
 
 📌【在此插入表 table-03.png】
 
-One component is shared by all three gates: constraint tests. Consider a bottle of 無糖純喫綠茶, unsweetened pure green tea, with an illustrative NTD 35 order. A reviewer asks: “The payment was sent, but the screen stopped responding. Could another click charge again?” The team agrees that replaying the same attempt must not charge twice and retains an executable check. The comment now protects future changes. This is a teaching scenario, not the product's actual price.
+One component is shared by all three gates: constraint tests. Consider a bottle of Sugar-free Green Tea, unsweetened pure green tea, with an illustrative NTD 35 order. A reviewer asks: “The payment was sent, but the screen stopped responding. Could another click charge again?” The team agrees that replaying the same attempt must not charge twice and retains an executable check. The comment now protects future changes. This is a teaching scenario, not the product's actual price.
 
 “Constraint” describes the requirement's origin and continuing responsibility, not a test technology that excludes functional behavior. Charging the right amount and avoiding duplicate charges are both product requirements. A unit test can check the payment function in isolation; an integration test can check connected components together. Either can protect a constraint the reviewer has chosen to retain, depending on the evidence needed. Selection depends on consequences, a decidable expected result and ownership; not every comment needs its own test.
 
-In the accompanying [payment example](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment), two happy-path tests detect two of seven selected mutants, for a mutation score of 28.6%. Eight tests omitting the timeout case reach 85.7% while still missing an unknown payment marked successful. All nine tests detect all seven mutants. These are measured results from sequential calls to a fake provider in one process, not evidence about concurrency, restarts or real charges.
+In the accompanying [payment code example](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment), two happy-path tests detect two of seven selected mutants, for a mutation score of 28.6%. Eight tests omitting the timeout case reach 85.7% while still missing an unknown payment marked successful. All nine tests detect all seven mutants. These are measured results from sequential calls to a fake provider in one process, not evidence about concurrency, restarts or real charges.
 
 The test gate supplies the individual results. At the review gate, someone who understands payments decides whether a surviving mutant violates a critical requirement; the percentage alone cannot authorize the change. Measuring constraint pass rate at the reliability gate changes the denominator to candidate PRs passing functional checks, then asks what share also pass every applicable constraint. One example passing nine tests does not measure an agent's long-term reliability. “Part 4 — A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score” develops the selection decisions, implementation and arithmetic.
 
@@ -427,7 +427,7 @@ One last prediction with a date on it, so that it can be checked and so that it 
 
 For me, the design returns to the engineer in the opening section who is asked whether the work has been tested. The next answer should give the engineer and reviewer something they can examine together: evidence, questions and an account of what still deserves investigation. Tools handle repeatable checks so people have room to continue that work.
 
-The four parts begin with the test, review and reliability gates, then connect constraints, tests and judgment through a payment for unsweetened green tea. To start with the PR in front of you, begin with “Reviewing the Tests an Agent Wrote” and ask what the tests that have already turned green actually protect.
+The four parts begin with the test, review and reliability gates, then connect constraints, tests and judgment through a payment for unsweetened green tea. To start with the PR in front of you, begin with “[Reviewing the Tests an Agent Wrote](https://medium.com/p/51d001a6dcd5)” and ask what the tests that have already turned green actually protect.
 
 ---
 
@@ -436,7 +436,7 @@ The four parts begin with the test, review and reliability gates, then connect c
 The overview and four parts make five articles: the first three parts develop one gate each; Part 4 connects them through a payment walkthrough.
 
 - **Overview (this piece)**
-- Part 1 — Reviewing the Tests an Agent Wrote: Loosened Assertions, Frozen Bugs and Mutation Score (coming soon)
+- [Part 1 — Reviewing the Tests an Agent Wrote: Loosened Assertions, Frozen Bugs and Mutation Score](https://medium.com/p/51d001a6dcd5)
 - Part 2 — Review Is the Control Point, Not the Bottleneck: Triage, Reviewer Fleets and the Closed-Loop Ban (coming soon)
 - Part 3 — The 34% SWE-Gate Found Behind a Green Build: Constraint Tests, pass^k and the Gate for Expanding Autonomy (coming soon)
 - Part 4 — A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score (coming soon)
@@ -462,7 +462,7 @@ Related reading, the Agentic Engineering series: [Overview](https://fantasybz.me
 13. Robert C. Martin (@unclebobmartin) — [2026-07-26 kinds of tests](https://x.com/unclebobmartin/status/2081332683582427641), [2026-07-29 measure cleanliness](https://x.com/unclebobmartin/status/2082497764223492161), [2026-07-30 TDD is a human discipline](https://x.com/unclebobmartin/status/2082850576832905657), [2026-08-05 deterministic tools](https://x.com/unclebobmartin/status/2085104553746190372), [2026-08-17 negative test experiment](https://x.com/unclebobmartin/status/2089449442089025936)
 14. Martin Fowler (@martinfowler) — [2026-08-11 TDD inside the agent loop (Birgitta Böckeler)](https://x.com/martinfowler/status/2087173563144912985), [2026-09-02 Maybe we shouldn't be reviewing all this code](https://x.com/martinfowler/status/2095147242986373485)
 15. Community discussion: public posts in the Scrum Community in Taiwan group ("the AI said it's fine"; "demanding human values of an AI is right")
-16. Accompanying implementation — [Tea payment, constraint tests and seven selected mutants](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment) [section 6; measured teaching example, no real provider]
+16. Accompanying code — [Tea payment, constraint tests and seven selected mutants](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment) [section 6; measured teaching example, no real provider]
 
 ---
 

@@ -646,7 +646,7 @@ Lisa Crispin 與 Tip House 的《Testing Extreme Programming》說「人人都�
 11. 李博杰《深入理解 AI Agent：設計原理與工程實踐》v2.0 — [第七章〈Agent 的評估〉](https://bojieli.github.io/ai-agent-book/book-en/chapter7/)（2026-09-06，§7.5.2 失敗歸因的 Coding Agent 錯誤分類表）〔第二節〕
 12. Quartic.ai — [Letting an Agent Upgrade Production Kubernetes — Without Getting Paged at 3 AM](https://sched.co/2QlD9)（AGNTCon + MCPCon Japan 2026，2026-09-10；[講者投影片](https://hosted-files.sched.co/agntconmcpconjapan26/d9/AGNTCon-MCPCon-Japan-2026_Abhijeet_Sanskar_final.pdf#page=29) slide 29）〔第五節〕
 13. Spring Framework 官方文件 — [@DirtiesContext](https://docs.spring.io/spring-framework/reference/testing/annotations/integration-spring/annotation-dirtiescontext.html)，說明測試 context 的失效、移除與重建〔第七節〕。
-14. 隨文實作 — [無糖純喫綠茶付款、constraint tests 與七個指定 mutant](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment)〔第四節；教學案例與實測，非真實金流〕
+14. 隨文程式碼 — [無糖純喫綠茶付款、constraint tests 與七個指定 mutant](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment)〔第四節；教學案例與實測，非真實金流〕
 
 ---
 
@@ -656,4 +656,4 @@ Lisa Crispin 與 Tip House 的《Testing Extreme Programming》說「人人都�
 
 ---
 
-*本文發表於 [Medium @fantasybz](https://medium.com/@fantasybz)。若你正在幫團隊裝第一道 test gate，歡迎交流。*
+*本文發表於 [Medium @fantasybz](https://medium.com/@fantasybz)。英文版：[English edition](https://medium.com/p/51d001a6dcd5)。若你正在幫團隊裝第一道 test gate，歡迎交流。*

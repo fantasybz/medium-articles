@@ -646,7 +646,7 @@ Reviewing the test suite this way gives the team firmer ground for the next ques
 11. Bojie Li, *AI Agents in Depth: Design Principles and Engineering Practice* v2.0 — [Chapter 7, Evaluating Agents](https://bojieli.github.io/ai-agent-book/book-en/chapter7/) (2026-09-06; §7.5.2, the coding-agent failure-attribution table). Section 2.
 12. Quartic.ai — [Letting an Agent Upgrade Production Kubernetes — Without Getting Paged at 3 AM](https://sched.co/2QlD9) (AGNTCon + MCPCon Japan 2026, 2026-09-10; [slides](https://hosted-files.sched.co/agntconmcpconjapan26/d9/AGNTCon-MCPCon-Japan-2026_Abhijeet_Sanskar_final.pdf#page=29), slide 29). Section 5.
 13. Spring Framework documentation — [@DirtiesContext](https://docs.spring.io/spring-framework/reference/testing/annotations/integration-spring/annotation-dirtiescontext.html), explaining context invalidation, removal and rebuilding (section 7).
-14. Accompanying implementation — [Tea payment, constraint tests and seven selected mutants](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment) [section 4; measured teaching example, no real provider]
+14. Accompanying code — [Tea payment, constraint tests and seven selected mutants](https://github.com/fantasybz/medium-articles/tree/main/examples/tea_payment) [section 4; measured teaching example, no real provider]
 
 ---
 
