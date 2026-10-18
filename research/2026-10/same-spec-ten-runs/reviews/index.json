@@ -1,0 +1,295 @@
+{
+  "note": "Verbatim AI review outputs; input packets and raw provider traces remain local. A review finding is not accepted until adjudicated in research-loop.md. Model identifiers and effort are recorded from the invocation and response metadata.",
+  "reviews": [
+    {
+      "id": "outline-evidence",
+      "review_file": "outline-evidence.md",
+      "review_sha256": "fac5b81d19c081a7b17bec3004b19611c5bc177755f3a87e45e6a5db564a8a76",
+      "input_packet_sha256": "be8244aa9f0c1eb3b0e162a75cb1973fad3f73218b222e2b5d159b9ce3dbae82",
+      "metadata": {
+        "model": "claude-opus-5-5",
+        "effort": "high",
+        "exit_code": 0,
+        "seconds": 128.77797404199373,
+        "is_error": false,
+        "modelUsage": {
+          "claude-haiku-4-5-20251001": {
+            "inputTokens": 180670,
+            "outputTokens": 16,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 0.18075,
+            "contextWindow": 200000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "claude-haiku-4-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          },
+          "claude-opus-5-5": {
+            "inputTokens": 2,
+            "outputTokens": 12186,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 240628,
+            "webSearchRequests": 0,
+            "costUSD": 2.168752,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 128000,
+            "thinkingTokens": 8993,
+            "canonicalModel": "claude-opus-5-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        }
+      }
+    },
+    {
+      "id": "outline-vp-reader",
+      "review_file": "outline-vp-reader.md",
+      "review_sha256": "7bbb682fef7d356e6c77ebc4d67d5ddb6a91c7ce747c6a80930e9035f6e90490",
+      "input_packet_sha256": "197e4ca1a8338985fbe9d52ec80b57ac61bb61e9402e1c3b6ea4ff34b12c377c",
+      "metadata": {
+        "model": "claude-opus-5-5",
+        "effort": "high",
+        "exit_code": 0,
+        "seconds": 109.13734474999364,
+        "is_error": false,
+        "modelUsage": {
+          "claude-haiku-4-5-20251001": {
+            "inputTokens": 31036,
+            "outputTokens": 29,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 0.031181,
+            "contextWindow": 200000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "claude-haiku-4-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          },
+          "claude-opus-5-5": {
+            "inputTokens": 2,
+            "outputTokens": 10773,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 34343,
+            "webSearchRequests": 0,
+            "costUSD": 0.490212,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 128000,
+            "thinkingTokens": 7833,
+            "canonicalModel": "claude-opus-5-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        }
+      }
+    },
+    {
+      "id": "outline-editor",
+      "review_file": "outline-editor.md",
+      "review_sha256": "c668fc3693e1e92a2e893a91769d9764089e3e4f6b16c94edc197dfba56ff2de",
+      "input_packet_sha256": "0eccd54f2c745e434036bb1b54d9162af194025f4e885e61c64ba2b591559a1e",
+      "metadata": {
+        "model": "claude-opus-5-5",
+        "effort": "high",
+        "exit_code": 0,
+        "seconds": 131.62786237501132,
+        "is_error": false,
+        "modelUsage": {
+          "claude-haiku-4-5-20251001": {
+            "inputTokens": 31075,
+            "outputTokens": 20,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 0.031174999999999998,
+            "contextWindow": 200000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "claude-haiku-4-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          },
+          "claude-opus-5-5": {
+            "inputTokens": 2,
+            "outputTokens": 13075,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 34390,
+            "webSearchRequests": 0,
+            "costUSD": 0.536628,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 128000,
+            "thinkingTokens": 9665,
+            "canonicalModel": "claude-opus-5-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        }
+      }
+    },
+    {
+      "id": "outline-figures",
+      "review_file": "outline-figures.md",
+      "review_sha256": "a54c3f69ab59b27f751491af29ba59463ea630ebd10437f36b97c5009360841a",
+      "input_packet_sha256": "8b12355ccc87b58a048b308d5098423b658a0af9a8ea0233920174635850baea",
+      "metadata": {
+        "model": "claude-opus-5-5",
+        "effort": "high",
+        "exit_code": 0,
+        "seconds": 101.26818837500468,
+        "is_error": false,
+        "modelUsage": {
+          "claude-haiku-4-5-20251001": {
+            "inputTokens": 31075,
+            "outputTokens": 17,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 0.03116,
+            "contextWindow": 200000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "claude-haiku-4-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          },
+          "claude-opus-5-5": {
+            "inputTokens": 2,
+            "outputTokens": 9270,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 34391,
+            "webSearchRequests": 0,
+            "costUSD": 0.460536,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 128000,
+            "thinkingTokens": 5914,
+            "canonicalModel": "claude-opus-5-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        }
+      }
+    },
+    {
+      "id": "design-claude-xhigh",
+      "review_file": "design-claude-xhigh.md",
+      "review_sha256": "19288b45fe26070e4e3d5b3916fda87cac7de9527298e8164752f6c519336f02",
+      "input_packet_sha256": "5d5c731ef017a61cf8a1b9974a2af8105f0222118ae214d13935ec896570602e",
+      "metadata": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh",
+        "exit_code": 0,
+        "elapsed_seconds": 446.8508882909955,
+        "is_error": false,
+        "modelUsage": {
+          "claude-haiku-4-5-20251001": {
+            "inputTokens": 27896,
+            "outputTokens": 17,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 0.027981,
+            "contextWindow": 200000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "claude-haiku-4-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          },
+          "claude-opus-5-5": {
+            "inputTokens": 2,
+            "outputTokens": 46435,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 37509,
+            "webSearchRequests": 0,
+            "costUSD": 1.22878,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 128000,
+            "thinkingTokens": 43828,
+            "canonicalModel": "claude-opus-5-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        }
+      }
+    },
+    {
+      "id": "design-codex-xhigh",
+      "review_file": "design-codex-xhigh.md",
+      "review_sha256": "1dfdd39302ded6e7f6aded582cc1d67b9b0bedd812134df3c0b0c6ccb7de719d",
+      "input_packet_sha256": "219f49966570ccade3072dba335d3828420de2a70fa0b66b556882571b9f5486",
+      "metadata": {
+        "model": "gpt-5.5",
+        "effort": "xhigh",
+        "exit_code": 0,
+        "elapsed_seconds": 33.152960583000095
+      }
+    },
+    {
+      "id": "codex-verification-02",
+      "review_file": "codex-verification-02.md",
+      "review_sha256": "bf16215148a03a89b3701b43327668370a728b83855d706a03a31dff79089a78",
+      "input_packet_sha256": "264a4e876241690309aa5a65c6988db0554a2cc9ea942e83bdd1b8f817aa8a5c",
+      "metadata": {
+        "model": "gpt-5.5",
+        "effort": "xhigh",
+        "exit_code": 0
+      }
+    },
+    {
+      "id": "claude-verification-02",
+      "review_file": "claude-verification-02.md",
+      "review_sha256": "73c9471552996a535e2d19aa643f684c816c6688d851bb0e31d6385d8f07d772",
+      "input_packet_sha256": "63a8464ecf69a3f151abfb1e4e98c5be98419b4de9709ac96a43597642cc997f",
+      "metadata": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh",
+        "elapsed_seconds": 147.387634624989,
+        "input_packet_sha256": "63a8464ecf69a3f151abfb1e4e98c5be98419b4de9709ac96a43597642cc997f",
+        "exit_code": 0,
+        "is_error": false,
+        "modelUsage": {
+          "claude-haiku-4-5-20251001": {
+            "inputTokens": 21321,
+            "outputTokens": 24,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 0.021440999999999998,
+            "contextWindow": 200000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "claude-haiku-4-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          },
+          "claude-opus-5-5": {
+            "inputTokens": 2,
+            "outputTokens": 15073,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 27462,
+            "webSearchRequests": 0,
+            "costUSD": 0.521164,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 128000,
+            "thinkingTokens": 13583,
+            "canonicalModel": "claude-opus-5-5",
+            "provider": "firstParty",
+            "costBasis": "list"
+          }
+        }
+      }
+    }
+  ],
+  "excluded_attempts": [
+    {
+      "model": "claude-opus-5-5",
+      "effort": "max",
+      "timeout_seconds": 900,
+      "status": "timeout_no_usable_review"
+    }
+  ]
+}

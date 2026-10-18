@@ -1,0 +1,42 @@
+---
+config:
+  theme: base
+  themeVariables:
+    fontSize: 16px
+    primaryColor: "#f8f9fa"
+    primaryTextColor: "#1f2933"
+    primaryBorderColor: "#6b7280"
+    lineColor: "#6b7280"
+    secondaryColor: "#f8f9fa"
+    tertiaryColor: "#ffffff"
+    clusterBkg: "#ffffff"
+    clusterBorder: "#9ca3af"
+    edgeLabelBackground: "#ffffff"
+  flowchart:
+    nodeSpacing: 128
+    rankSpacing: 30
+    padding: 12
+    htmlLabels: true
+    subGraphTitleMargin:
+      top: 8
+      bottom: 12
+    curve: basis
+---
+flowchart TB
+    B{"行為是否<br/>已經決定？"}
+    B -->|否| C["需求 owner<br/>確認空值等政策"]
+    C --> B
+    B -->|是| D{"驗收正反對照<br/>是否可用？"}
+    D -->|否| E["QA owner<br/>修正量尺並重評"]
+    E --> D
+    D -->|是| H["處理這份候選<br/>沿用既有核准責任"]
+    H --> I{"可選自查<br/>要採為預設嗎？"}
+    I -->|否| J["本次工作結案"]
+    I -->|是| K["另設有範圍比較<br/>核對效果與投入"]
+    classDef own fill:#d4edda,stroke:#2e7d32,color:#1f2933
+    classDef buy fill:#fff3cd,stroke:#b8860b,color:#1f2933
+    classDef bad fill:#ffe0e0,stroke:#c0392b,color:#1f2933
+    classDef human fill:#e3f2fd,stroke:#1565c0,color:#1f2933
+    class C,E,H human
+    class B,D,I buy
+    class J,K own

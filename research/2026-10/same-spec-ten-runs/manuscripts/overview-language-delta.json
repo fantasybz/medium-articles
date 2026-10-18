@@ -1,0 +1,108 @@
+{
+  "article": "2026-11-same-spec-overview/article.md",
+  "before_sha256": "f70652654ebd1e0c2dddf05e01eb3208bf5852f75dfa4dc91e281697cc675583",
+  "after_sha256": "9bb547bf842c295afc8fb53f0e3db7e7d9fdf6f9cf87a52f0914d5fb97cc88c0",
+  "reason": "Root contextual edits after actual strict zh-TW MCP, with table boundary false positives considered individually. No facts or metrics changed.",
+  "edits": [
+    {
+      "before": "產出的審查檔案看起來仍像一份完整的審查",
+      "after": "產出檔案看起來仍像一份完整審查",
+      "count": 1
+    },
+    {
+      "before": "AST 節點種類 multiset 的 cosine | 候選之間的程式表示是否相同",
+      "after": "AST 節點種類 multiset cosine | 比較候選，判斷程式表示是否相同",
+      "count": 1
+    },
+    {
+      "before": "CLI 回報的牌價估計 | 這 40 次正式生成大約用掉多少時間與牌價 | 實際帳單、pilot 與審查成本、人的工時",
+      "after": "CLI 回報牌價估計 | 這 40 次正式生成大約用掉多少時間與牌價 | 實際帳單、pilot 與審查成本、人力工時",
+      "count": 1
+    },
+    {
+      "before": "比較 reasoning effort 與工具存取等組態下的 agent 在同一個 webapp 任務上的表現。",
+      "after": "讓 agent 在同一個 webapp 任務上工作，並比較 reasoning effort、工具存取等組態與表現之間的關係。",
+      "count": 1
+    },
+    {
+      "before": "| 讀到的位置 | 輸入內容 | 舊版的行為 | 規格要求的行為 |",
+      "after": "| 讀取位置 | 輸入內容 | 舊版行為 | 規格要求 |",
+      "count": 1
+    },
+    {
+      "before": "規格中的例子只用來澄清容易誤讀的地方",
+      "after": "規格舉例，是為了澄清容易誤讀的地方",
+      "count": 1
+    },
+    {
+      "before": "| 組別 | 指令包的文字條件 | 與其他組的關係 | 沒有包含的內容 |",
+      "after": "| 組別 | 指令包文字條件 | 組間關係 | 未包含內容 |",
+      "count": 1
+    },
+    {
+      "before": "R01–R13 的精簡版本 |",
+      "after": "精簡表達 R01–R13 |",
+      "count": 1
+    },
+    {
+      "before": "B 的附加理由與清單、C 的 pattern 段落",
+      "after": "B 附加的理由與清單、C 附加的 pattern 段落",
+      "count": 2
+    },
+    {
+      "before": "B 與 C 的共同底稿 |",
+      "after": "B 與 C 共用底稿 |",
+      "count": 1
+    },
+    {
+      "before": "所以 C 組的任何結果都只能描述「多了一段文字 pattern」的條件",
+      "after": "所以 C 組只能呈現這種文件條件下的結果：指令包多了一段文字 pattern",
+      "count": 1
+    },
+    {
+      "before": "因此同組候選之間的差異不會來自明確送出的 packet 文字",
+      "after": "因此，同組候選即使不同，也不是因為研究方送出了不同 packet",
+      "count": 1
+    },
+    {
+      "before": "程序可能在最多 5 秒的終止寬限內留下合法候選",
+      "after": "行程可能在最多 5 秒的終止寬限內留下合法候選",
+      "count": 1
+    },
+    {
+      "before": "AST 節點類型 multiset 的 cosine 則統計每種節點出現的次數",
+      "after": "AST 節點種類 multiset cosine 則先統計各種節點出現幾次",
+      "count": 1
+    },
+    {
+      "before": "也無法推定兩份程式在 103 項以外的輸入上會有一致的行為",
+      "after": "也無法推定兩份程式處理這 103 項以外的輸入時，行為仍然一致",
+      "count": 1
+    },
+    {
+      "before": "前面的所有數字仍然是原來四份 packet 的觀測結果",
+      "after": "前面列出的數字，仍然描述原來四份 packet 的觀測結果",
+      "count": 1
+    },
+    {
+      "before": "| 結果情境 | 本輪是否出現 | 可以說明的事 | 負責人的下一步 |",
+      "after": "| 結果情境 | 本輪是否出現 | 證據範圍 | 負責人下一步 |",
+      "count": 1
+    },
+    {
+      "before": "該組在這份契約下有可觀察的失敗",
+      "after": "觀察到該組未符合這份契約",
+      "count": 1
+    },
+    {
+      "before": "以同樣的算法計算",
+      "after": "以同樣的方法計算",
+      "count": 1
+    },
+    {
+      "before": "以下連結指向 repo 內的正文檔案",
+      "after": "以下連結指向 repo 內的文章檔案",
+      "count": 1
+    }
+  ]
+}

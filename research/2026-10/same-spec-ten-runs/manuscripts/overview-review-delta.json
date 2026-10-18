@@ -1,0 +1,27 @@
+{
+  "article": "2026-11-same-spec-overview/article.md",
+  "before_sha256": "9bb547bf842c295afc8fb53f0e3db7e7d9fdf6f9cf87a52f0914d5fb97cc88c0",
+  "after_sha256": "98381db29e1bd4c7323e6a0adda49550e8d9c271fcc4c31b4c0026a48dd14de7",
+  "edits": [
+    {
+      "before": "只有回頭檢查原始輸入的人才會發現問題",
+      "after": "回頭核對原始輸入，才容易看出這類型別問題",
+      "count": 1
+    },
+    {
+      "before": "它的程式寫成什麼形狀，和同組其他候選相比有多接近。",
+      "after": "它的程式寫成什麼形狀，和同組其他候選相比有多接近。研究以抽象語法樹（AST）描述結構，也就是程式解析後的樹狀表示。",
+      "count": 1
+    },
+    {
+      "before": "B 附加的理由與清單、C 附加的 pattern 段落",
+      "after": "B 附加理由與清單、C 附加 pattern 段落",
+      "count": 2
+    },
+    {
+      "before": "| 驗收結果本身不可信 |",
+      "after": "| 執行條件或驗收程序偏離計畫，不能照原設計解讀全輪結果 |",
+      "count": 1
+    }
+  ]
+}

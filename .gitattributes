@@ -1,0 +1,8 @@
+# Preserve generated plot bytes and exact source-comparison patches.
+2026-11-same-spec-variance/figures/F2.svg -whitespace
+research/experiments/same-spec-ten-runs/results/figures-2026-09-25/F2.svg -whitespace
+research/experiments/same-spec-ten-runs/spec-comparison/*.diff -whitespace
+
+# Historical tool responses retain their original trailing newline count.
+research/2026-10/same-spec-ten-runs/manuscripts/narrative-2026-09-27/*.json whitespace=-blank-at-eof
+research/2026-10/same-spec-ten-runs/reviews/zhtw-final.json whitespace=-blank-at-eof

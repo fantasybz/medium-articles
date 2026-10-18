@@ -1,0 +1,317 @@
+{
+  "input_path": "research/2026-10/same-spec-ten-runs/manuscripts/packet-wording-caveat.md",
+  "file_sha256": "a22e54b5b22c2082b8f1e5ca22f1d10522b4e545376787673da4a5c29822a764",
+  "configuration": {
+    "content_type": "markdown",
+    "fix_mode": "none",
+    "fix_output": "search_replace",
+    "profile": "strict",
+    "translationese_domain": "technical",
+    "detect_ai": true,
+    "ai_threshold": "low",
+    "detect_translationese": true,
+    "consistency": true,
+    "detect_style": true,
+    "explain": true,
+    "include_stats": true,
+    "include_telemetry": true,
+    "verify": true,
+    "max_errors": 0,
+    "max_warnings": 0,
+    "output": "full"
+  },
+  "response": {
+    "accepted": false,
+    "text": "# 成稿階段補記：A0／A 的 CLI 範圍措辭\n\n發現日期：2026-09-25。這是全文證據複核發現的方法限制，不是變更正式實驗要求或評分方式的 amendment。凍結 packet、requirements、候選與原始結果均保持原樣；本次沒有新增模型樣本。\n\n四組以同一組 R01–R13 為規範基準。A、B、C 的規範段落有可直接核對的前綴關係，A0 與 A 則使用不同措辭。相同 requirement ID、hash 核對與 AI 語義審查，都不能證明這兩份文字嚴格等價。\n\n逐字複核找到一處具體差異：\n\n- [A0 的 R01](../../../experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md) 寫「No new CLI arguments or external dependencies are required.」，表示不需新增參數。\n- [A 的 R13](../../../experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md) 另把「adding CLI options」列為「outside this task」。[B](../../../experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md) 與 [C](../../../experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md) 包含 A 的完整前綴，也繼承這句話；A0 的 R13 沒有對應句子。\n\n「不需要」與「不在範圍內」的約束強度不同。任務背景可能使實作者採取相同做法，但這項差異是否影響候選，本輪沒有辨識。不能推定它已造成結果差異，也不能因四組都通過驗收，就推定它沒有影響。[凍結評測器](../../../experiments/same-spec-ten-runs/results/formal-2026-09-25/source/evaluator.py) 未逐一檢查額外 CLI 選項，無法替這項範圍語義作出判定。\n\n因此，正文會以「共同 R01–R13 基準」描述設計，並明確保留 A0／A 的措辭限制；不再把它概括為已證明只改寫法、完全沒有規範強度差異的介入。各組 10／10、103 項有限驗收、結構描述與資源紀錄仍是原來那四份 packet 的觀測結果。這些數字不因補記而改變，但它們不能用來估計排除這項差異後的純措辭效果。\n\n規格篇會提供具體例子，總論與變異篇保留簡短提示。若下一輪要修正措辭，須另訂研究版本，不能事後覆寫本輪 packet 再沿用原結果。\n\n這項發現來自獨立 AI 證據審查與主代理逐字複核，不是新增真人盲審。\n",
+    "issues": [
+      {
+        "offset": 349,
+        "length": 50,
+        "line": 5,
+        "col": 26,
+        "found": "C 的規範段落有可直接核對的前綴關係",
+        "suggestions": [],
+        "rule_type": "translationese",
+        "severity": "warning",
+        "context": "翻譯腔 ZY5: 定語堆疊 — 18 字無逗點、含 2 個「的」，建議拆成短句",
+        "explanation": "'C 的規範段落有可直接核對的前綴關係' — 翻譯腔 ZY5: 定語堆疊 — 18 字無逗點、含 2 個「的」，建議拆成短句. Translationese / 歐化 pattern; consider an idiomatic zh-TW rewrite.",
+        "explain_meta": {
+          "rationale": "'C 的規範段落有可直接核對的前綴關係' — 翻譯腔 ZY5: 定語堆疊 — 18 字無逗點、含 2 個「的」，建議拆成短句. Translationese / 歐化 pattern; consider an idiomatic zh-TW rewrite.",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 387,
+        "length": 6,
+        "line": 5,
+        "col": 40,
+        "found": "前綴",
+        "suggestions": [
+          "字首"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "warning",
+        "context": "@domain 程式設計 [tier2: hard anchor]",
+        "english": "prefix",
+        "anchor_match": true,
+        "explanation": "'前綴' is a mainland Chinese term for 'prefix'; Taiwan uses '字首'. Context: @domain 程式設計 [tier2: hard anchor]",
+        "anchor_provenance": {
+          "anchor_en": "prefix",
+          "anchor_match": true
+        },
+        "explain_meta": {
+          "rationale": "'前綴' is a mainland Chinese term for 'prefix'; Taiwan uses '字首'. Context: @domain 程式設計 [tier2: hard anchor]",
+          "domain": "程式設計",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": false,
+          "editorial_confidence": "medium"
+        },
+        "resolution": "heuristic"
+      },
+      {
+        "offset": 1141,
+        "length": 6,
+        "line": 10,
+        "col": 330,
+        "found": "前綴",
+        "suggestions": [
+          "字首"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "warning",
+        "context": "@domain 程式設計 [tier2: hard anchor]",
+        "english": "prefix",
+        "anchor_match": true,
+        "explanation": "'前綴' is a mainland Chinese term for 'prefix'; Taiwan uses '字首'. Context: @domain 程式設計 [tier2: hard anchor]",
+        "anchor_provenance": {
+          "anchor_en": "prefix",
+          "anchor_match": true
+        },
+        "explain_meta": {
+          "rationale": "'前綴' is a mainland Chinese term for 'prefix'; Taiwan uses '字首'. Context: @domain 程式設計 [tier2: hard anchor]",
+          "domain": "程式設計",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": false,
+          "editorial_confidence": "medium"
+        },
+        "resolution": "heuristic"
+      },
+      {
+        "offset": 1436,
+        "length": 6,
+        "line": 12,
+        "col": 78,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "warning",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      }
+    ],
+    "applied_fixes": 0,
+    "summary": {
+      "errors": 0,
+      "warnings": 4,
+      "info": 0
+    },
+    "gate": {
+      "enabled": true,
+      "max_errors": 0,
+      "residual_errors": 0,
+      "max_warnings": 0,
+      "residual_warnings": 4
+    },
+    "profile": "strict",
+    "political_stance": "roc_centric",
+    "detected_script": "traditional",
+    "s2t_applied": false,
+    "trace": {
+      "trace_id": "70cd75392f08c41a28a182262309ee7d",
+      "ruleset_hash": "3a6a5eecb12ada10725c0167434703c0f713136adad683257ee436f4b1ca8038",
+      "input_hash": "64ca237f2d69a132beefab3ab2208b737aa3b9fe9302583ff98d8625660732d1",
+      "timestamp": "2026-09-25T08:32:07.302Z",
+      "tool": "zhtw",
+      "issue_count": 4
+    },
+    "verify": {
+      "api_ok": true,
+      "matched": 2,
+      "unmatched": 1,
+      "no_english": 1
+    },
+    "coverage": {
+      "rules_checked": 1803,
+      "rules_matched": 2
+    },
+    "oral_density": 0,
+    "ai_signature": {
+      "score": 0,
+      "markers": [],
+      "top_signals": [],
+      "sentence_variability": 17.106691,
+      "zero_width_count": 0,
+      "punctuation_profile": {
+        "comma": {
+          "count": 17,
+          "density": 20.142181,
+          "cv": 0.7604796
+        },
+        "period": {
+          "count": 19,
+          "density": 22.511848,
+          "cv": 0.42056108
+        },
+        "semicolon": {
+          "count": 3,
+          "density": 3.5545025
+        },
+        "dunhao": {
+          "count": 8,
+          "density": 9.478673
+        },
+        "dash": {
+          "count": 0,
+          "density": 0
+        }
+      }
+    },
+    "translationese_signature": {
+      "score": 0,
+      "markers": [
+        {
+          "signal": "被動語態",
+          "count": 0,
+          "density": 0,
+          "threshold": 6
+        },
+        {
+          "signal": "的字鏈",
+          "count": 2,
+          "density": 2,
+          "threshold": 5
+        },
+        {
+          "signal": "弱動詞分解",
+          "count": 0,
+          "density": 0,
+          "threshold": 4
+        },
+        {
+          "signal": "代詞密度",
+          "count": 4,
+          "density": 4.7393365,
+          "threshold": 6
+        },
+        {
+          "signal": "翻譯腔偵測",
+          "count": 1,
+          "density": 1.1848341,
+          "threshold": 7
+        }
+      ],
+      "top_signals": [],
+      "max_de_chain": 2,
+      "domain": "technical"
+    },
+    "style_scorecard": {
+      "style_scores": {
+        "ai": 0,
+        "translationese": 0,
+        "consistency": 1
+      },
+      "top_issues_per_axis": {
+        "ai": [],
+        "translationese": [
+          {
+            "line": 5,
+            "col": 26,
+            "found": "C 的規範段落有可直接核對的前綴關係",
+            "severity": "warning",
+            "rule_type": "translationese",
+            "context": "翻譯腔 ZY5: 定語堆疊 — 18 字無逗點、含 2 個「的」，建議拆成短句"
+          }
+        ],
+        "consistency": [
+          {
+            "line": 5,
+            "col": 40,
+            "found": "前綴",
+            "severity": "warning",
+            "rule_type": "cross_strait",
+            "context": "@domain 程式設計 [tier2: hard anchor]"
+          },
+          {
+            "line": 10,
+            "col": 330,
+            "found": "前綴",
+            "severity": "warning",
+            "rule_type": "cross_strait",
+            "context": "@domain 程式設計 [tier2: hard anchor]"
+          },
+          {
+            "line": 12,
+            "col": 78,
+            "found": "通過",
+            "severity": "warning",
+            "rule_type": "cross_strait",
+            "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」"
+          }
+        ]
+      }
+    },
+    "telemetry": {
+      "estimated_tokens_per_1k_chars": 0,
+      "estimated_llm_token_share": 0,
+      "estimated_tokens_per_ambiguous_term": null,
+      "cache_hit_count": 0,
+      "cache_miss_count": 0,
+      "tier2_local_resolutions": 0,
+      "raw": {
+        "input_chars": 1267,
+        "rule_hits": 4,
+        "ambiguous_terms": 0,
+        "llm_round_trips": 0,
+        "estimated_prompt_tokens": 0,
+        "estimated_completion_tokens": 0,
+        "final_fixes": 0
+      }
+    },
+    "summary_metrics": {
+      "deterministic_fixes": 2,
+      "heuristic_fixes": 2,
+      "llm_judged_fixes": 0,
+      "unresolved": 0,
+      "llm_calls": 0,
+      "llm_tokens": 0,
+      "confidence_distribution": {
+        "high": 4,
+        "medium": 0,
+        "low": 0
+      }
+    }
+  }
+}

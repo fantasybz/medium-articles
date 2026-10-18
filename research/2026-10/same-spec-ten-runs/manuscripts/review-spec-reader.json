@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "review_type": "independent_reader_full_manuscript",
+  "reviewed_at": "2026-09-25T08:44:41.497645+00:00",
+  "reviewer": "Codex independent reader sub-agent (AI)",
+  "lens": "engineering manager / Staff engineer / test engineer reader",
+  "verdict": "PASS_SPEC_READER_SCOPE",
+  "series_verdict": "NOT_ASSESSED_AS_A_COMPLETE_SERIES",
+  "series_ready": false,
+  "public_release_complete": false,
+  "article": {
+    "path": "2026-11-same-spec-spec/article.md",
+    "sha256": "829017b621e70355979aa9ad6dc8830842fed52c74f00c95bbae53e52cedb8e6",
+    "line_count": 194
+  },
+  "instructions_read": [
+    "STYLE.md",
+    "research/2026-10/style_brief.md",
+    "research/2026-09/voice_brief.md"
+  ],
+  "reading": {
+    "entire_manuscript": true,
+    "entire_manuscript_lines": [
+      1,
+      194
+    ],
+    "separate_second_half_reread": true,
+    "second_half_reread_lines": [
+      98,
+      194
+    ],
+    "opening_tldr_conclusion_compared": true,
+    "tables_references_disclosure_included": true
+  },
+  "findings": [],
+  "open_counts": {
+    "blocker": 0,
+    "major": 0,
+    "minor": 0
+  },
+  "checks": [
+    {
+      "name": "real_parser_problem",
+      "lines": [
+        15,
+        30
+      ],
+      "result": "PASS",
+      "reason": "先解釋 parser 的呼叫端與輸出，再用數值 text、exit 0 與預期 exit 6 說明缺陷；基底重現、依規格還原的示例與預期結果明確分開。"
+    },
+    {
+      "name": "executable_requirement_comparison",
+      "lines": [
+        34,
+        94
+      ],
+      "result": "PASS",
+      "reason": "exit 優先序表有閱讀方法與相反順序的測試例，R01–R13 表有引導、逐欄位例子及範圍說明；讀者能把要求、相容行為與明確不做的事分開核對。"
+    },
+    {
+      "name": "A0_A_CLI_scope_caveat",
+      "lines": [
+        88,
+        107
+      ],
+      "result": "PASS",
+      "reason": "把不需新增與不在範圍內的措辭差異具體列出，明說 hash、requirement ID 及全數通過不能證明文字嚴格等價；TL;DR、條件比較、成本段與結語均保留限制。"
+    },
+    {
+      "name": "summary_and_finite_evaluator_coverage",
+      "lines": [
+        62,
+        94
+      ],
+      "result": "PASS",
+      "reason": "表前明說是摘要且不能只照表實作，表後列 main() 與額外 CLI 選項的未覆蓋範圍；103 項檢查未被寫成全部規格的證明。"
+    },
+    {
+      "name": "conditions_and_outcomes",
+      "lines": [
+        98,
+        125
+      ],
+      "result": "PASS",
+      "reason": "規範與非規範內容分開，C 的純文字 pattern 與原生 Skill 分開；工具空設定及無法觀察的 context 有界線；10／10、小樣本區間、非等效與不能拆解累加成分的限制均有推理。"
+    },
+    {
+      "name": "cost_and_human_ROI",
+      "lines": [
+        129,
+        149
+      ],
+      "result": "PASS",
+      "reason": "外部研究的模型、任務數與區間保留，研究間不可直接比較的理由具體；本輪費用是 CLI 牌價估計並排除其他請求，人力資料未量測且不報 ROI；修訂規格的建議與研究結果分開。"
+    },
+    {
+      "name": "ending_and_series_recall",
+      "lines": [
+        153,
+        194
+      ],
+      "result": "PASS",
+      "reason": "結語回到 AGENTS.md 比較問題與 123／exit 0 缺口，保留 CLI 措辭差異及小樣本限制，最後給 golden tasks 使用者具體下一步；不是只靠下一篇預告收束。來源、尚待發布狀態及 AI 協作範圍另有說明。"
+    },
+    {
+      "name": "paragraph_level_style",
+      "lines": [
+        1,
+        194
+      ],
+      "result": "PASS",
+      "reason": "依現行標準逐段確認動作對象、指涉、承接、圖表前後解釋與條件；後半部維持完整敘述，沒有退回提案短語或在結尾放大結論。"
+    }
+  ],
+  "scope_limits": [
+    "本輪為獨立 AI 讀者複核，不是真人盲審。",
+    "沒有重做來源全文查核、模型實驗或 zh-TW MCP 檢查。",
+    "總論與契約的本機目標仍在撰寫，依任務範圍不列為本文 blocker；最後連結完整性由主代理驗證。",
+    "沒有判定全系列 READY 或遠端發布完成。"
+  ],
+  "manuscript_modified": false,
+  "frozen_research_modified": false
+}

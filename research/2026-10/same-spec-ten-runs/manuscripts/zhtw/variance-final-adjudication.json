@@ -1,0 +1,1087 @@
+{
+  "piece": "variance",
+  "reviewed_at": "2026-09-25T09:27:20.634646+00:00",
+  "reviewer": "Codex root contextual editorial review",
+  "scope": "Actual final source and paste MCP reports; all retained info items adjudicated individually. This does not claim zero prompts or human review.",
+  "configuration": "strict; ai_threshold=low; technical translationese; consistency; style; explain; verify; max_errors=0; max_warnings=0; no automatic fix",
+  "checks": [
+    {
+      "report": "zhtw/variance-pass-06.json",
+      "input_path": "2026-11-same-spec-variance/article.md",
+      "input_sha256": "3ee25eaa1ca3ae1f177403f1719eb833a5c07ecfa972d4189e2129ab2fff6b0d",
+      "summary": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 59
+      },
+      "issues": [
+        {
+          "issue_index": 0,
+          "line": 3,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "b68bab2bf53bb8a2b884fcd94258f1840d64fe44cc12468df1d009d3816a09ba"
+        },
+        {
+          "issue_index": 1,
+          "line": 3,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "b68bab2bf53bb8a2b884fcd94258f1840d64fe44cc12468df1d009d3816a09ba"
+        },
+        {
+          "issue_index": 2,
+          "line": 3,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "b68bab2bf53bb8a2b884fcd94258f1840d64fe44cc12468df1d009d3816a09ba"
+        },
+        {
+          "issue_index": 3,
+          "line": 9,
+          "rule_type": "cross_strait",
+          "found": "協議",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處是研究 protocol／事前研究約定，不是網路通訊協定。",
+          "source_line_sha256": "d73832e3aa3f008dfd326a224c28e50f48e2ec86cc82d79834991a25ea67c0f3"
+        },
+        {
+          "issue_index": 4,
+          "line": 13,
+          "rule_type": "cross_strait",
+          "found": "協議",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處是研究 protocol／事前研究約定，不是網路通訊協定。",
+          "source_line_sha256": "a28f33b307cd5a29085ee073eecc5dd448c2bfdadbcbfd7055fa00893c2e910b"
+        },
+        {
+          "issue_index": 5,
+          "line": 17,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "2efd0a14fa470eff8948083f5e82d3c467fd241723bfacf19dab1cc5f4a68195"
+        },
+        {
+          "issue_index": 6,
+          "line": 30,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "194cecf1ab3d1539ed41b53977b0c75fa0f83c424381ccf129ec07369ecf84b0"
+        },
+        {
+          "issue_index": 7,
+          "line": 51,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "1dccb15038b5306b9955c9ba532fda87d12482296520a4af90947b75cb7c52cb"
+        },
+        {
+          "issue_index": 8,
+          "line": 57,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "76f2ea4cebcd3976f47ebe52802f4950bd1ad2da57985550cf4e7312542a7952"
+        },
+        {
+          "issue_index": 9,
+          "line": 61,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "56115e5e605ad4402aa8b190e3e6bc6718dcd97d89361d8da0be0f983969a842"
+        },
+        {
+          "issue_index": 10,
+          "line": 63,
+          "rule_type": "cross_strait",
+          "found": "協議",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處是研究 protocol／事前研究約定，不是網路通訊協定。",
+          "source_line_sha256": "51deaf495f045ad95ddc0180bbf8a23c2cb0975a0d9c24b4979844facf2d6a98"
+        },
+        {
+          "issue_index": 11,
+          "line": 63,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "51deaf495f045ad95ddc0180bbf8a23c2cb0975a0d9c24b4979844facf2d6a98"
+        },
+        {
+          "issue_index": 12,
+          "line": 65,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "d00a147f958b1456dd8bdbb2370e393c1a7f29b82c16d225baebed2d8002a69d"
+        },
+        {
+          "issue_index": 13,
+          "line": 65,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "d00a147f958b1456dd8bdbb2370e393c1a7f29b82c16d225baebed2d8002a69d"
+        },
+        {
+          "issue_index": 14,
+          "line": 67,
+          "rule_type": "cross_strait",
+          "found": "協議",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處是研究 protocol／事前研究約定，不是網路通訊協定。",
+          "source_line_sha256": "0fe92f85fe79300bcc4a888684dd66257faa96aae774a14d002774274554e4c2"
+        },
+        {
+          "issue_index": 15,
+          "line": 79,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "fe3fc4509e460e8806f10a00ee0a8e73ed10459b61c8ca5c26e1ce655b995dad"
+        },
+        {
+          "issue_index": 16,
+          "line": 79,
+          "rule_type": "translationese",
+          "found": "是一個",
+          "disposition": "contextually_retained",
+          "reason": "保留：明確界定一個 run 的計數單位或 parser 角色；數量／對象對論述必要。",
+          "source_line_sha256": "fe3fc4509e460e8806f10a00ee0a8e73ed10459b61c8ca5c26e1ce655b995dad"
+        },
+        {
+          "issue_index": 17,
+          "line": 81,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "e3b97a91920bf016985f0887ecdc2e6cad49086152713aafa3d9690871819310"
+        },
+        {
+          "issue_index": 18,
+          "line": 85,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "30f2821f775afef2a65e6fa48f7bdcd106d86feec849a51daf25d99c31ea2d65"
+        },
+        {
+          "issue_index": 19,
+          "line": 87,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "22fa5b94a948e1f8084c32d6b7c53b5881cfd4bb827b018e049cdf2006125f06"
+        },
+        {
+          "issue_index": 20,
+          "line": 89,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "fe820725720d2b0a266977a5ba3fb85a06e3395576755339b0bd2c5fa34c864d"
+        },
+        {
+          "issue_index": 21,
+          "line": 91,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "b6c5ce2bde2b8d736c1c074aa75e9f72e347c9faf26c28908fd8b53258d5fa60"
+        },
+        {
+          "issue_index": 22,
+          "line": 91,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "b6c5ce2bde2b8d736c1c074aa75e9f72e347c9faf26c28908fd8b53258d5fa60"
+        },
+        {
+          "issue_index": 23,
+          "line": 91,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "b6c5ce2bde2b8d736c1c074aa75e9f72e347c9faf26c28908fd8b53258d5fa60"
+        },
+        {
+          "issue_index": 24,
+          "line": 95,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "75250ac761fb88e635693e309b8105b1e09fbe8f4105077a2177a0ac60f0cb3f"
+        },
+        {
+          "issue_index": 25,
+          "line": 97,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "a1ca76021e7e568ee98de56f463d94819638fef9b45b88ffd8bcb7f5610b3e46"
+        },
+        {
+          "issue_index": 26,
+          "line": 105,
+          "rule_type": "ai_style",
+          "found": "維度",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指圖的縱向位置不代表另一量測維度，屬具體量測說明。",
+          "source_line_sha256": "c9c97a115e5a264358a23da2be2c773fc945a22d0d5d71044defd80a904f39fc"
+        },
+        {
+          "issue_index": 27,
+          "line": 128,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "4f77e069ea839115ffe24cf0d618f34f26ea0e85c0d17201f296191762e88da8"
+        },
+        {
+          "issue_index": 28,
+          "line": 128,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "4f77e069ea839115ffe24cf0d618f34f26ea0e85c0d17201f296191762e88da8"
+        },
+        {
+          "issue_index": 29,
+          "line": 128,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "4f77e069ea839115ffe24cf0d618f34f26ea0e85c0d17201f296191762e88da8"
+        },
+        {
+          "issue_index": 30,
+          "line": 152,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "986247347615d640f67150bdd0180c49a4b6ffd85057735169bc5786b18ea61d"
+        },
+        {
+          "issue_index": 31,
+          "line": 158,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "cd5308572e53b58a21390f9f9465d882e96b2f8116006f7243cc5490b58858c1"
+        },
+        {
+          "issue_index": 32,
+          "line": 158,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "cd5308572e53b58a21390f9f9465d882e96b2f8116006f7243cc5490b58858c1"
+        },
+        {
+          "issue_index": 33,
+          "line": 177,
+          "rule_type": "ai_style",
+          "found": "A 52,202、B 57,749、C 64,234",
+          "disposition": "contextually_retained",
+          "reason": "保留：逐組列出正式資料的實際數值，不是裝飾性三連排比。",
+          "source_line_sha256": "c205c8870e81ef6d8a7dbde509e55e0cc64ce85a14db1cc93d924f89e5638381"
+        },
+        {
+          "issue_index": 34,
+          "line": 179,
+          "rule_type": "cross_strait",
+          "found": "協議",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處是研究 protocol／事前研究約定，不是網路通訊協定。",
+          "source_line_sha256": "3d8a81df7ba1c34740000f5d18c9a0c107c043929f55bd8a7c2029e7433bf286"
+        },
+        {
+          "issue_index": 35,
+          "line": 183,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "b08ecdbb890b4f502a6f58f67cf8366046b91d9c146f5d55c8974b04ce049c88"
+        },
+        {
+          "issue_index": 36,
+          "line": 185,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "88dd31be1691f2f50073ceaf9e925674f8a2cccdf0afe07900726a15641a993a"
+        },
+        {
+          "issue_index": 37,
+          "line": 203,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "5f2b59c1d72e259e8d1c2653dfacf0fe524f67931cc45d5c8298ab553a88f7b4"
+        },
+        {
+          "issue_index": 38,
+          "line": 205,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "ae27d8baef94a200f7f9dfeb7c23a064addb893037b5de1635d56f0bac5d9dd9"
+        },
+        {
+          "issue_index": 39,
+          "line": 217,
+          "rule_type": "cross_strait",
+          "found": "協議",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處是研究 protocol／事前研究約定，不是網路通訊協定。",
+          "source_line_sha256": "e986bb55937e86cf7d45fb1a6b451c046ff30ac10dad8c066ad16529d21b0def"
+        },
+        {
+          "issue_index": 40,
+          "line": 219,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "bc65e2c6101daf4d789241760a19cf259be5d70de69415252474c7d3a9dfbed2"
+        },
+        {
+          "issue_index": 41,
+          "line": 219,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "bc65e2c6101daf4d789241760a19cf259be5d70de69415252474c7d3a9dfbed2"
+        },
+        {
+          "issue_index": 42,
+          "line": 221,
+          "rule_type": "cross_strait",
+          "found": "協議",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處是研究 protocol／事前研究約定，不是網路通訊協定。",
+          "source_line_sha256": "8b1fc4a2ed7d7f5af4ba61f7e38b76d6e035f64cd653589dd63d7e6a48e3dfe4"
+        },
+        {
+          "issue_index": 43,
+          "line": 223,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "49f4f35f162fcd68acb0697e05f101e6b9507dace057916a369192a76e2d39f8"
+        },
+        {
+          "issue_index": 44,
+          "line": 223,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "49f4f35f162fcd68acb0697e05f101e6b9507dace057916a369192a76e2d39f8"
+        },
+        {
+          "issue_index": 45,
+          "line": 225,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "7354abffd28631a2c3ce2a556f8bd903f17df079d5d406a2d30315c91234ef9a"
+        },
+        {
+          "issue_index": 46,
+          "line": 244,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "6fb94268a24bd551f4035e0fdd6e68ed9dfd27cee0e27dcdca15654d41d3fc8e"
+        },
+        {
+          "issue_index": 47,
+          "line": 245,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "076e8e5f0abdac53fdfc343bb75421858f8a8b2f68da06ab82604d4e3e0242c6"
+        },
+        {
+          "issue_index": 48,
+          "line": 246,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "5c1ba029a0ffaf7b40311661de64151f2b3e9bb80261f46af60460dc391a6d6f"
+        },
+        {
+          "issue_index": 49,
+          "line": 247,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "788d0fb55d0b06f7d3a8f46714f9187f2cc7b972fb98929d09d7b3d51b5bfc0c"
+        },
+        {
+          "issue_index": 50,
+          "line": 248,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "eb6ca7fd64a87e48cb15e9077097f45d44c9c2d9723d2dabcce0d731c9a8490d"
+        },
+        {
+          "issue_index": 51,
+          "line": 249,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "632950e08ad1441a059a4e7f5152f742e423974e7e2a7b1b41d78fbe0821b7d9"
+        },
+        {
+          "issue_index": 52,
+          "line": 250,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "9abdea721972361a98ff5a6874016a84e050763d6ae51574789e72deca2983e5"
+        },
+        {
+          "issue_index": 53,
+          "line": 252,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "21bf84e9a828f66d3c970fb78bc340985ebeba30bb91b5e8f7d3afd4c5b24873"
+        },
+        {
+          "issue_index": 54,
+          "line": 253,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "51420460497b86f5352b383849cc00b1ecd9d2d100469d54dcc8877ff11eaa00"
+        },
+        {
+          "issue_index": 55,
+          "line": 254,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "9623116575e7abb6a77d35978e76b2bddaddca07e09dcad0d02597ac76581d2f"
+        },
+        {
+          "issue_index": 56,
+          "line": 255,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "1ad063097d29fe21fcd341bcf815ae2a1dd24936f0832439bfdba72c076c4ae5"
+        },
+        {
+          "issue_index": 57,
+          "line": 256,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "7f82240e6a95461ea3c4f17cee923fe729775674ec51756dba7f4e78d2b11ea0"
+        },
+        {
+          "issue_index": 58,
+          "line": 262,
+          "rule_type": "cross_strait",
+          "found": "協議",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處是研究 protocol／事前研究約定，不是網路通訊協定。",
+          "source_line_sha256": "ec06d9100d5081dc7390314ae5d9c37d6a398d8cd9be8c1d86ace15164e16d91"
+        }
+      ]
+    },
+    {
+      "report": "zhtw/variance-paste-03.json",
+      "input_path": "2026-11-same-spec-variance/publish/medium-paste.md",
+      "input_sha256": "0592cce2f5a869527173d7eb2ef8b01707b12092f700528f345e64eb29986e07",
+      "summary": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 58
+      },
+      "issues": [
+        {
+          "issue_index": 0,
+          "line": 29,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "b68bab2bf53bb8a2b884fcd94258f1840d64fe44cc12468df1d009d3816a09ba"
+        },
+        {
+          "issue_index": 1,
+          "line": 29,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "b68bab2bf53bb8a2b884fcd94258f1840d64fe44cc12468df1d009d3816a09ba"
+        },
+        {
+          "issue_index": 2,
+          "line": 29,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "b68bab2bf53bb8a2b884fcd94258f1840d64fe44cc12468df1d009d3816a09ba"
+        },
+        {
+          "issue_index": 3,
+          "line": 35,
+          "rule_type": "cross_strait",
+          "found": "協議",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處是研究 protocol／事前研究約定，不是網路通訊協定。",
+          "source_line_sha256": "d73832e3aa3f008dfd326a224c28e50f48e2ec86cc82d79834991a25ea67c0f3"
+        },
+        {
+          "issue_index": 4,
+          "line": 39,
+          "rule_type": "cross_strait",
+          "found": "協議",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處是研究 protocol／事前研究約定，不是網路通訊協定。",
+          "source_line_sha256": "a28f33b307cd5a29085ee073eecc5dd448c2bfdadbcbfd7055fa00893c2e910b"
+        },
+        {
+          "issue_index": 5,
+          "line": 43,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "2efd0a14fa470eff8948083f5e82d3c467fd241723bfacf19dab1cc5f4a68195"
+        },
+        {
+          "issue_index": 6,
+          "line": 56,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "194cecf1ab3d1539ed41b53977b0c75fa0f83c424381ccf129ec07369ecf84b0"
+        },
+        {
+          "issue_index": 7,
+          "line": 70,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "1dccb15038b5306b9955c9ba532fda87d12482296520a4af90947b75cb7c52cb"
+        },
+        {
+          "issue_index": 8,
+          "line": 74,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "56115e5e605ad4402aa8b190e3e6bc6718dcd97d89361d8da0be0f983969a842"
+        },
+        {
+          "issue_index": 9,
+          "line": 76,
+          "rule_type": "cross_strait",
+          "found": "協議",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處是研究 protocol／事前研究約定，不是網路通訊協定。",
+          "source_line_sha256": "51deaf495f045ad95ddc0180bbf8a23c2cb0975a0d9c24b4979844facf2d6a98"
+        },
+        {
+          "issue_index": 10,
+          "line": 76,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "51deaf495f045ad95ddc0180bbf8a23c2cb0975a0d9c24b4979844facf2d6a98"
+        },
+        {
+          "issue_index": 11,
+          "line": 78,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "d00a147f958b1456dd8bdbb2370e393c1a7f29b82c16d225baebed2d8002a69d"
+        },
+        {
+          "issue_index": 12,
+          "line": 78,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "d00a147f958b1456dd8bdbb2370e393c1a7f29b82c16d225baebed2d8002a69d"
+        },
+        {
+          "issue_index": 13,
+          "line": 80,
+          "rule_type": "cross_strait",
+          "found": "協議",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處是研究 protocol／事前研究約定，不是網路通訊協定。",
+          "source_line_sha256": "0fe92f85fe79300bcc4a888684dd66257faa96aae774a14d002774274554e4c2"
+        },
+        {
+          "issue_index": 14,
+          "line": 92,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "fe3fc4509e460e8806f10a00ee0a8e73ed10459b61c8ca5c26e1ce655b995dad"
+        },
+        {
+          "issue_index": 15,
+          "line": 92,
+          "rule_type": "translationese",
+          "found": "是一個",
+          "disposition": "contextually_retained",
+          "reason": "保留：明確界定一個 run 的計數單位或 parser 角色；數量／對象對論述必要。",
+          "source_line_sha256": "fe3fc4509e460e8806f10a00ee0a8e73ed10459b61c8ca5c26e1ce655b995dad"
+        },
+        {
+          "issue_index": 16,
+          "line": 94,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "e3b97a91920bf016985f0887ecdc2e6cad49086152713aafa3d9690871819310"
+        },
+        {
+          "issue_index": 17,
+          "line": 98,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "30f2821f775afef2a65e6fa48f7bdcd106d86feec849a51daf25d99c31ea2d65"
+        },
+        {
+          "issue_index": 18,
+          "line": 100,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "22fa5b94a948e1f8084c32d6b7c53b5881cfd4bb827b018e049cdf2006125f06"
+        },
+        {
+          "issue_index": 19,
+          "line": 102,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "fe820725720d2b0a266977a5ba3fb85a06e3395576755339b0bd2c5fa34c864d"
+        },
+        {
+          "issue_index": 20,
+          "line": 104,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "b6c5ce2bde2b8d736c1c074aa75e9f72e347c9faf26c28908fd8b53258d5fa60"
+        },
+        {
+          "issue_index": 21,
+          "line": 104,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "b6c5ce2bde2b8d736c1c074aa75e9f72e347c9faf26c28908fd8b53258d5fa60"
+        },
+        {
+          "issue_index": 22,
+          "line": 104,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "b6c5ce2bde2b8d736c1c074aa75e9f72e347c9faf26c28908fd8b53258d5fa60"
+        },
+        {
+          "issue_index": 23,
+          "line": 108,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "75250ac761fb88e635693e309b8105b1e09fbe8f4105077a2177a0ac60f0cb3f"
+        },
+        {
+          "issue_index": 24,
+          "line": 110,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "a1ca76021e7e568ee98de56f463d94819638fef9b45b88ffd8bcb7f5610b3e46"
+        },
+        {
+          "issue_index": 25,
+          "line": 118,
+          "rule_type": "ai_style",
+          "found": "維度",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指圖的縱向位置不代表另一量測維度，屬具體量測說明。",
+          "source_line_sha256": "c9c97a115e5a264358a23da2be2c773fc945a22d0d5d71044defd80a904f39fc"
+        },
+        {
+          "issue_index": 26,
+          "line": 139,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "4f77e069ea839115ffe24cf0d618f34f26ea0e85c0d17201f296191762e88da8"
+        },
+        {
+          "issue_index": 27,
+          "line": 139,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "4f77e069ea839115ffe24cf0d618f34f26ea0e85c0d17201f296191762e88da8"
+        },
+        {
+          "issue_index": 28,
+          "line": 139,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "4f77e069ea839115ffe24cf0d618f34f26ea0e85c0d17201f296191762e88da8"
+        },
+        {
+          "issue_index": 29,
+          "line": 163,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "986247347615d640f67150bdd0180c49a4b6ffd85057735169bc5786b18ea61d"
+        },
+        {
+          "issue_index": 30,
+          "line": 169,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "cd5308572e53b58a21390f9f9465d882e96b2f8116006f7243cc5490b58858c1"
+        },
+        {
+          "issue_index": 31,
+          "line": 169,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "cd5308572e53b58a21390f9f9465d882e96b2f8116006f7243cc5490b58858c1"
+        },
+        {
+          "issue_index": 32,
+          "line": 183,
+          "rule_type": "ai_style",
+          "found": "A 52,202、B 57,749、C 64,234",
+          "disposition": "contextually_retained",
+          "reason": "保留：逐組列出正式資料的實際數值，不是裝飾性三連排比。",
+          "source_line_sha256": "c205c8870e81ef6d8a7dbde509e55e0cc64ce85a14db1cc93d924f89e5638381"
+        },
+        {
+          "issue_index": 33,
+          "line": 185,
+          "rule_type": "cross_strait",
+          "found": "協議",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處是研究 protocol／事前研究約定，不是網路通訊協定。",
+          "source_line_sha256": "3d8a81df7ba1c34740000f5d18c9a0c107c043929f55bd8a7c2029e7433bf286"
+        },
+        {
+          "issue_index": 34,
+          "line": 189,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "b08ecdbb890b4f502a6f58f67cf8366046b91d9c146f5d55c8974b04ce049c88"
+        },
+        {
+          "issue_index": 35,
+          "line": 191,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "88dd31be1691f2f50073ceaf9e925674f8a2cccdf0afe07900726a15641a993a"
+        },
+        {
+          "issue_index": 36,
+          "line": 209,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "5f2b59c1d72e259e8d1c2653dfacf0fe524f67931cc45d5c8298ab553a88f7b4"
+        },
+        {
+          "issue_index": 37,
+          "line": 211,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "ae27d8baef94a200f7f9dfeb7c23a064addb893037b5de1635d56f0bac5d9dd9"
+        },
+        {
+          "issue_index": 38,
+          "line": 223,
+          "rule_type": "cross_strait",
+          "found": "協議",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處是研究 protocol／事前研究約定，不是網路通訊協定。",
+          "source_line_sha256": "e986bb55937e86cf7d45fb1a6b451c046ff30ac10dad8c066ad16529d21b0def"
+        },
+        {
+          "issue_index": 39,
+          "line": 225,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "bc65e2c6101daf4d789241760a19cf259be5d70de69415252474c7d3a9dfbed2"
+        },
+        {
+          "issue_index": 40,
+          "line": 225,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "bc65e2c6101daf4d789241760a19cf259be5d70de69415252474c7d3a9dfbed2"
+        },
+        {
+          "issue_index": 41,
+          "line": 227,
+          "rule_type": "cross_strait",
+          "found": "協議",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處是研究 protocol／事前研究約定，不是網路通訊協定。",
+          "source_line_sha256": "8b1fc4a2ed7d7f5af4ba61f7e38b76d6e035f64cd653589dd63d7e6a48e3dfe4"
+        },
+        {
+          "issue_index": 42,
+          "line": 229,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "49f4f35f162fcd68acb0697e05f101e6b9507dace057916a369192a76e2d39f8"
+        },
+        {
+          "issue_index": 43,
+          "line": 229,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "49f4f35f162fcd68acb0697e05f101e6b9507dace057916a369192a76e2d39f8"
+        },
+        {
+          "issue_index": 44,
+          "line": 231,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "7354abffd28631a2c3ce2a556f8bd903f17df079d5d406a2d30315c91234ef9a"
+        },
+        {
+          "issue_index": 45,
+          "line": 250,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "6fb94268a24bd551f4035e0fdd6e68ed9dfd27cee0e27dcdca15654d41d3fc8e"
+        },
+        {
+          "issue_index": 46,
+          "line": 251,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "076e8e5f0abdac53fdfc343bb75421858f8a8b2f68da06ab82604d4e3e0242c6"
+        },
+        {
+          "issue_index": 47,
+          "line": 252,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "5c1ba029a0ffaf7b40311661de64151f2b3e9bb80261f46af60460dc391a6d6f"
+        },
+        {
+          "issue_index": 48,
+          "line": 253,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "788d0fb55d0b06f7d3a8f46714f9187f2cc7b972fb98929d09d7b3d51b5bfc0c"
+        },
+        {
+          "issue_index": 49,
+          "line": 254,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "eb6ca7fd64a87e48cb15e9077097f45d44c9c2d9723d2dabcce0d731c9a8490d"
+        },
+        {
+          "issue_index": 50,
+          "line": 255,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "632950e08ad1441a059a4e7f5152f742e423974e7e2a7b1b41d78fbe0821b7d9"
+        },
+        {
+          "issue_index": 51,
+          "line": 256,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "9abdea721972361a98ff5a6874016a84e050763d6ae51574789e72deca2983e5"
+        },
+        {
+          "issue_index": 52,
+          "line": 258,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "21bf84e9a828f66d3c970fb78bc340985ebeba30bb91b5e8f7d3afd4c5b24873"
+        },
+        {
+          "issue_index": 53,
+          "line": 259,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "51420460497b86f5352b383849cc00b1ecd9d2d100469d54dcc8877ff11eaa00"
+        },
+        {
+          "issue_index": 54,
+          "line": 260,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "9623116575e7abb6a77d35978e76b2bddaddca07e09dcad0d02597ac76581d2f"
+        },
+        {
+          "issue_index": 55,
+          "line": 261,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "1ad063097d29fe21fcd341bcf815ae2a1dd24936f0832439bfdba72c076c4ae5"
+        },
+        {
+          "issue_index": 56,
+          "line": 262,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "7f82240e6a95461ea3c4f17cee923fe729775674ec51756dba7f4e78d2b11ea0"
+        },
+        {
+          "issue_index": 57,
+          "line": 268,
+          "rule_type": "cross_strait",
+          "found": "協議",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處是研究 protocol／事前研究約定，不是網路通訊協定。",
+          "source_line_sha256": "ec06d9100d5081dc7390314ae5d9c37d6a398d8cd9be8c1d86ace15164e16d91"
+        }
+      ]
+    }
+  ],
+  "earlier_rounds": "All original MCP reports are retained. Real wording issues were revised in the root polish/delta records; output was rerun after final modifications."
+}

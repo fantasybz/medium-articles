@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-09-25",
+  "reviewer": "Codex independent senior technical editor sub-agent (AI)",
+  "lens": "editor_final_delta",
+  "verdict": "PASS_VARIANCE_EDITORIAL",
+  "series_verdict": "NOT_FULLY_REVIEWED",
+  "series_ready": false,
+  "public_release_complete": false,
+  "input": {
+    "path": "2026-11-same-spec-variance/article.md",
+    "sha256": "1cf47ca478afca22ff028c285c4d0550a844e4794886b7e345fa122a27cac800",
+    "line_count": 262
+  },
+  "previous_full_review": {
+    "path": "research/2026-10/same-spec-ten-runs/manuscripts/review-editor-followup.md",
+    "input_sha256": "ce383be20445328cec4a509e8ce7f519b94e9fe99b2fd927e494ffc4661c3587",
+    "verdict": "PASS_VARIANCE_EDITORIAL"
+  },
+  "delta_verification": {
+    "record": "research/2026-10/same-spec-ten-runs/manuscripts/final-sibling-status-fix.json",
+    "issue": "READER-08",
+    "replacement_count": 2,
+    "after_occurrences": [1, 1],
+    "changed_paragraph_lines": [17, 221],
+    "reconstructed_previous_sha256": "ce383be20445328cec4a509e8ce7f519b94e9fe99b2fd927e494ffc4661c3587",
+    "reconstructed_previous_matches_reviewed_version": true,
+    "current_matches_declared_new_sha256": true,
+    "only_declared_replacements": true,
+    "editorial_effect": "Sibling draft status is explicit; conclusion recalls the present article instead of an unfinished overview. No change to evidence, logic, figures, or E01–E07 resolutions."
+  },
+  "new_issues": [],
+  "open_counts": {"blocker": 0, "major": 0, "minor": 0},
+  "scope": "Delta review only; prior complete manuscript review remains applicable after exact two-replacement verification.",
+  "manuscript_modified": false,
+  "prior_reviews_modified": false
+}

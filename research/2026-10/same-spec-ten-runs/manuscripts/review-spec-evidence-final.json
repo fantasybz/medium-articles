@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "reviewed_at_utc": "2026-09-25T08:48:23.206258+00:00",
+  "reviewer": "Codex evidence lens /root/series_evidence_review",
+  "verdict": "EVIDENCE_READY_SPEC_ONLY",
+  "spec_evidence_ready": true,
+  "series_ready": false,
+  "published": false,
+  "scope": "完整讀取前版 829017b6 至署名；本輪逐項審查三處精確差異，反向套用後與前版 SHA-256 完全一致，最終判定涵蓋 3d4fa69b 版本全文。",
+  "manuscript": {
+    "path": "2026-11-same-spec-spec/article.md",
+    "sha256": "3d4fa69b2fb198aee8b75f01be21712c0482589f773b80873375d82d627a37ca",
+    "full_read_sha256": "829017b621e70355979aa9ad6dc8830842fed52c74f00c95bbae53e52cedb8e6",
+    "bytes": 35825,
+    "line_count": 194,
+    "delta_verified": true
+  },
+  "prior_review": {
+    "path": "research/2026-10/same-spec-ten-runs/manuscripts/review-spec-evidence.json",
+    "sha256": "e83ae99862472f3090ddc63dbf78da9ed60faa191477a546c2dc974cd7d56ae3"
+  },
+  "delta": {
+    "path": ".context/same-spec-ten-runs/manuscripts/spec-final-review-delta.json",
+    "sha256": "ec25c53fa194cb882dae22eb3efeccf5cb3f454bc6fdba8cb52d7f5dc0e7c385",
+    "change_count": 3,
+    "restored_before_sha256": "829017b621e70355979aa9ad6dc8830842fed52c74f00c95bbae53e52cedb8e6",
+    "exact_inverse_matches_prior_full_read": true,
+    "changes": [
+      {
+        "before": "每個名額的 CLI 都正常完成，生成邊界也完整。",
+        "after": "每個名額的 CLI 都正常完成，執行紀錄也未出現模型或工具設定越界。"
+      },
+      {
+        "before": "這樣的設計無法把效果拆給個別成分，也估不出成分之間的交互作用，因此我不把這次比較讀成「規格越長，表現越好或越差」。",
+        "after": "本輪沒有估計組間差值；這種逐組累加的配置，也不能分離各成分在不同組合下的獨立效果或完整交互作用。因此，我不把這次比較讀成「規格越長，表現越好或越差」。"
+      },
+      {
+        "before": "它交付的是 R01–R13 的完整任務規格",
+        "after": "本篇提供的是 R01–R13 的完整任務規格"
+      }
+    ]
+  },
+  "resolutions": [
+    {
+      "id": "SPEC-E01",
+      "prior_severity": "minor",
+      "status": "resolved",
+      "line": 125,
+      "evidence": "明確區分本輪未估組間差值與逐組累加配置無法分離跨組合獨立效果／完整交互作用，不再概括成所有個別成分差異都不能估。"
+    }
+  ],
+  "additional_delta_checks": [
+    {
+      "line": 117,
+      "status": "pass",
+      "evidence": "將生成邊界完整收窄成執行紀錄未見模型／工具設定越界，符合 trace 與有限觀測範圍。"
+    },
+    {
+      "line": 155,
+      "status": "pass",
+      "evidence": "它交付改成本篇提供，釐清主詞；沒有新增資料、結果或因果主張。"
+    }
+  ],
+  "open_findings": [],
+  "open_counts": {
+    "blocker": 0,
+    "major": 0,
+    "minor": 0
+  },
+  "unchanged_evidence_checks": "SE01–SE15 沿用前版全文審查；本輪沒有另外修改數值、引用、規格表或研究條件。",
+  "limits": [
+    "只簽核本篇證據範圍，不取代編輯／讀者／zh-TW MCP／發布包檢查。",
+    "沒有新模型請求、候選執行或網頁查證。",
+    "未修改初審報告、正文或 frozen data。"
+  ],
+  "markdown_report_sha256": "07261ee0f90b563bb38d2095d3f93d04481d752e0d70a46aa6000117f7177736"
+}

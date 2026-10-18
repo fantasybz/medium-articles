@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-09-25",
+  "reviewer": "Codex independent senior technical editor sub-agent (AI)",
+  "lens": "editor",
+  "verdict": "CHANGES_REQUESTED_FOR_VARIANCE",
+  "series_verdict": "NOT_FULLY_REVIEWED",
+  "series_ready": false,
+  "scope": "Full variance manuscript only; other three manuscripts were not complete and were not reviewed as full manuscripts.",
+  "external_evidence_reverified": false,
+  "manuscripts_modified": false,
+  "raw_reasoning_read": false,
+  "inputs": [
+    {"path": "2026-11-same-spec-overview/article.md", "status": "not_reviewed_incomplete", "sha256": null},
+    {"path": "2026-11-same-spec-spec/article.md", "status": "not_reviewed_incomplete", "sha256": null},
+    {"path": "2026-11-same-spec-contract/article.md", "status": "not_reviewed_incomplete", "sha256": null},
+    {"path": "2026-11-same-spec-variance/article.md", "status": "fully_read_changes_requested", "sha256": "10f2baf37137360f244a133ccca05f3f982ae828ac256188df3dcf433428b1e4", "line_count": 230}
+  ],
+  "counts": {"blocker": 0, "major": 3, "minor": 4},
+  "issues": [
+    {
+      "id": "E01", "severity": "major", "status": "open",
+      "path": "2026-11-same-spec-variance/article.md", "lines": [47, 59],
+      "quote": "每一列都是下一列的前提",
+      "problem": "CLI success is not a prerequisite for artifact success, and the failure row is not a subsequent stage. The prose contradicts the possible CLI-false/artifact-true outcome described at line 59.",
+      "revision": "Explain that the table separately reports all planned slots, CLI completion, artifact acceptance, and their intersection. Rename the first column from 階段 to 名額與結果欄位; explicitly state that these are not consecutive filtering stages."
+    },
+    {
+      "id": "E02", "severity": "major", "status": "open",
+      "path": "2026-11-same-spec-variance/article.md", "lines": [118, 118],
+      "quote": "表示每一份都保留了大量原本的骨架",
+      "problem": "Node-type count cosine demonstrates similar proportions, not the amount of retained source code. The inference contradicts the metric limits explained earlier.",
+      "revision": "State that the node-type proportions remain similar, that the common seed may contribute to high similarity, and that the study did not quantify retained original code or subtract shared scaffolding."
+    },
+    {
+      "id": "E03", "severity": "major", "status": "open",
+      "path": "2026-11-same-spec-variance/article.md", "lines": [116, 116],
+      "quote": "任何一對候選之間的 cosine",
+      "problem": "Only 180 within-arm pairs were computed; the phrase also includes unreported cross-arm pairs.",
+      "revision": "Limit both sentences to the 180 within-arm pairs actually computed: 在本輪計算的 180 個組內 pair 中，最低的 cosine 仍高於 40 份候選各自相對 seed 的最高值。"
+    },
+    {
+      "id": "E04", "severity": "minor", "status": "open",
+      "path": "2026-11-same-spec-variance/article.md", "lines": [155, 155],
+      "quote": "分子與分母剛好沒有落差",
+      "problem": "The numerator is cost and the denominator is accepted task count; their units cannot be described as having no gap.",
+      "revision": "Say there were no failed or abandoned slots, so every formal generation cost came from an accepted slot and the data cannot show how failed-generation costs raise average cost per successful task."
+    },
+    {
+      "id": "E05", "severity": "minor", "status": "open",
+      "path": "2026-11-same-spec-variance/article.md", "lines": [210, 215],
+      "quote": "References 1–6 show repository paths as inline code without links",
+      "problem": "Readers cannot follow the promised path from reported IDs to source artifacts. Section back-pointers are present and should be retained.",
+      "revision": "Use valid relative Markdown links in the repository manuscript and confirmed public URLs in the publishing workflow. Point R01–R13 to the frozen archive source/requirements.json rather than a mutable working copy."
+    },
+    {
+      "id": "E06", "severity": "minor", "status": "open",
+      "path": "2026-11-same-spec-variance/article.md", "lines": [41, 41],
+      "quote": "本篇的每一個數字都只來自正式的四十個名額",
+      "problem": "The article also reports pilot/probe counts, tool tests, audit checks, and external research values.",
+      "revision": "Limit the statement to the four arms' acceptance, structural, and resource results: 下文四組的驗收、結構與資源結果，只採計正式的四十個名額。"
+    },
+    {
+      "id": "E07", "severity": "minor", "status": "open",
+      "path": "2026-11-same-spec-variance/article.md", "lines": [122, 122],
+      "quote": "差異只能在 AST 層次看見",
+      "problem": "A single-file task can still differ in text, diagnostics, and behavior. The article turns its choice of descriptor into a universal observation limit.",
+      "revision": "State that file count cannot distinguish the candidates, so this study chose AST descriptors to describe internal structural differences."
+    }
+  ],
+  "checks": {
+    "full_variance_read": true,
+    "second_half_read_through_signature": true,
+    "invented_firsthand_experience_found": false,
+    "recognizable_recall": "pass",
+    "narrative_warmth": "pass",
+    "taiwan_usage": "no systematic substitution required",
+    "term_explanations": "adequate in context",
+    "cross_article_overlap": "deferred_until_all_four_complete",
+    "required_tail_sections": true,
+    "chinese_numbered_sections": 7,
+    "table_columns": [2, 5, 4, 5],
+    "tables_at_most_five_columns": true,
+    "mermaid_count": 0,
+    "unapproved_mermaid": false,
+    "f2_visually_inspected": true,
+    "f2_matches_formal_png": true,
+    "f2_sha256": "474f4ae875dcababaf7ffcddf501b2b7c49fa5d9ed0e80a4ac9a57a98f9084fb"
+  },
+  "required_followup": "Verify E01–E07 against a new variance hash and reread its second half; review the other three complete manuscripts and cross-article division before issuing any series-ready verdict."
+}

@@ -1,0 +1,37 @@
+{
+  "requested_model": "claude-opus-5-5",
+  "requested_effort": "xhigh",
+  "cli_version": "2.1.283 (Claude Code)",
+  "prompt_sha256": "d587221d911f459d81c7b2c59f5eac15134a73f9e4df2741bc780422ff121145",
+  "started_at": "2026-09-27T15:40:30.392316+00:00",
+  "finished_at": "2026-09-27T15:52:05.506938+00:00",
+  "inputs": [
+    {
+      "piece": "overview",
+      "path": "2026-11-same-spec-overview/article.md",
+      "sha256": "31f0e47629b57665511ffbee56a75149335045607e95d93f0f547e42280eb40e"
+    },
+    {
+      "piece": "spec",
+      "path": "2026-11-same-spec-spec/article.md",
+      "sha256": "e4efceeff1d4c715641b09c5c858988bd41a5e28aea3eb53f5b46b0ce458a675"
+    },
+    {
+      "piece": "contract",
+      "path": "2026-11-same-spec-contract/article.md",
+      "sha256": "91616df339991789956f4448a187e54bc0f99221790cce8dc42dd7529bee2d6e"
+    },
+    {
+      "piece": "variance",
+      "path": "2026-11-same-spec-variance/article.md",
+      "sha256": "17ba2cc3f02286cfec093d4b70d7e2b05c49bf5144b49f441d51d831b2a6acdd"
+    }
+  ],
+  "purpose": "independent series narrative/reader review, not principal writing",
+  "success": true,
+  "assistant_models": [
+    "claude-opus-5-5"
+  ],
+  "elapsed_seconds": 695.125,
+  "artifact_sha256": "a25d4282f79755f7c4f6ac3d2b143562900b6f9f633e332c1857f0f04f3f0a91"
+}

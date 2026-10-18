@@ -1,0 +1,1018 @@
+{
+  "schema_version": 1,
+  "reviewed_at_utc": "2026-09-25T09:29:18.329096+00:00",
+  "reviewer": "Codex evidence lens /root/series_evidence_review",
+  "review_type": "full_manuscript_evidence_review_preserving_initial_findings",
+  "verdict": "REVISE_CONTRACT_AT_REVIEWED_SHA",
+  "series_ready": false,
+  "published": false,
+  "manuscript": {
+    "path": "2026-11-same-spec-contract/article.md",
+    "sha256": "416476b5ade3ded365cd3faff9477d666175ceb5154eddffc75ed18a8da18def",
+    "bytes": 45267,
+    "line_count": 291,
+    "complete_read_lines": [
+      1,
+      291
+    ],
+    "recovery": "Reverse contract-evidence-delta.json from current article; exact hash verified."
+  },
+  "findings": [
+    {
+      "id": "CONTRACT-E01",
+      "severity": "major",
+      "status": "open_at_reviewed_sha",
+      "line": 203,
+      "title": "候選失敗分類、生成邊界與隔離 probe 混為一層",
+      "quote": "越界的實作必須記為越界。……逾時、越界與語義失敗分開記錄",
+      "evidence": "evaluator._grade 只產生 timeout、output_limit、mismatch；它沒有候選 boundary-violation 分類。sandbox.preflight 的 read_denied/write_denied/network_denied 是三項實際操作拒絕的結果；runner 的 boundary_violation 則由模型／工具 trace 判定。",
+      "source_refs": [
+        "source/evaluator.py:267-291",
+        "source/sandbox.py:96-129",
+        "source/test_sandbox.py:26-29,42-53",
+        "source/tests/test_task_evaluator.py:83-90,138-195",
+        "source/run_study.py:189-235,333-365"
+      ],
+      "suggested_fix": "分開正確參考實作、語義 mutants 與候選 timeout 測試，再另述三項隔離 denial probes；列出實際 batch failure 欄位，不宣稱所有候選越界都被分類記錄。"
+    },
+    {
+      "id": "CONTRACT-E02",
+      "severity": "minor",
+      "status": "open_at_reviewed_sha",
+      "line": 195,
+      "title": "固定條件擴張成所有研究者能控制的開關",
+      "quote": "研究者控制得到的輸入與開關都已固定，也留下了紀錄。",
+      "evidence": "manifest.environment_controls 明載其他環境與 provider/CLI context 沿用、未記錄或完整固定；run_study.environment_controls/generation_environment 只固定列出的值，其餘複製環境。",
+      "source_refs": [
+        "manifest.json#environment_controls",
+        "source/run_study.py:58-79"
+      ],
+      "suggested_fix": "限定為明確送出的 packet 及封存列出的模型、effort、CLI 開關，保留其餘請求內容未完全掌握的限制。"
+    }
+  ],
+  "open_counts_at_reviewed_sha": {
+    "blocker": 0,
+    "major": 1,
+    "minor": 1
+  },
+  "checks": [
+    {
+      "id": "CE01",
+      "lines": [
+        3,
+        9,
+        11,
+        13,
+        45,
+        243
+      ],
+      "topic": "起點與 legacy 缺陷",
+      "status": "pass",
+      "evidence": "[]／null crash 及 numeric text + completion 的 exit 0 有 baseline-reproduction；原始 seed 以固定 commit/hash 識別。未虛構生產事故。",
+      "source_refs": [
+        "source/baseline-reproduction.json:8-19,43-48",
+        "source/seed/codex_jsonl.py"
+      ]
+    },
+    {
+      "id": "CE02",
+      "lines": [
+        15,
+        17,
+        27,
+        35,
+        43,
+        47,
+        49
+      ],
+      "topic": "七行 JSONL 範例",
+      "status": "pass",
+      "evidence": "七個實體行依序為文字、非 JSON、空白、array、string、numeric text、completed；malformed 行號 4/5/6 正確。stdout 保留訊息與 token 前導空行，stderr 三行且無 EOF6 summary；先前輸出不回收。這是規格推導例示，不冒充封存案例。",
+      "source_refs": [
+        "source/requirements.json:R02,R03,R05,R08,R11,R12"
+      ]
+    },
+    {
+      "id": "CE03",
+      "lines": [
+        53,
+        62,
+        64,
+        66,
+        72,
+        74,
+        178,
+        179,
+        180,
+        181,
+        183
+      ],
+      "topic": "null、fallback 與示意對照表",
+      "status": "pass",
+      "evidence": "root/type/item shape、bool tokens、unknown 字串類型例外正確。error:null 合法失敗，錯誤 error envelope 先 malformed 再 FAILED no message 再 EOF3 summary。command 殼與 160 字元、LGTM 重複與 requirement IDs 均保留先前修正。",
+      "source_refs": [
+        "source/requirements.json:R02-R13",
+        "source/evaluator.py:149-159,189-220"
+      ]
+    },
+    {
+      "id": "CE04",
+      "lines": [
+        84,
+        86,
+        87,
+        88,
+        92,
+        94,
+        96,
+        98
+      ],
+      "topic": "平行成功欄位、四格與 CI",
+      "status": "pass",
+      "evidence": "cli_success/artifact_success 平行、accepted 取交集；五秒寬限只屬 timeout。正式各組 true/true10，其餘0；CP95 69.15–100 的共同 Bernoulli、獨立與涵蓋率限制正確，不保證可靠度或等效。",
+      "source_refs": [
+        "source/run_study.py:333-386,454-493",
+        "source/PROTOCOL.md:73-93,120-128",
+        "records.jsonl"
+      ]
+    },
+    {
+      "id": "CE05",
+      "lines": [
+        100,
+        104,
+        106,
+        108,
+        110,
+        166,
+        168,
+        170,
+        172,
+        187
+      ],
+      "topic": "generator、candidate、driver 與 F1",
+      "status": "pass",
+      "evidence": "模型只收到 packet；候選必須取得當次 stdin，driver 保留整份套件／預期結果／比對邏輯。第172行已限定輸入介面。F1 byte-identical 核准來源；先全生成再評測、異常停機不補跑一致。無全管道隔離或真人獨立性保證。",
+      "source_refs": [
+        "source/run_study.py:38-47,441-493",
+        "source/evaluator.py:294-349",
+        "source/sandbox.py:34-51,76-81",
+        "approved F1"
+      ]
+    },
+    {
+      "id": "CE06",
+      "lines": [
+        104,
+        168,
+        174,
+        185
+      ],
+      "topic": "前篇 recall 與 owner",
+      "status": "pass",
+      "evidence": "Harness 文件/CI 分工、green Review 的作者陳述、green 可靠度的約束來源與 owner，均能對回本地原文；green 系列明說尚未發布。",
+      "source_refs": [
+        "2026-10-agentic-harness-blueprint/article.md:273",
+        "2026-10-green-review/article.md:114-116",
+        "2026-10-green-reliability/article.md:164-166"
+      ]
+    },
+    {
+      "id": "CE07",
+      "lines": [
+        193,
+        195
+      ],
+      "topic": "CLI 設定與控制範圍",
+      "status": "minor_finding",
+      "evidence": "--tools 空值、disable-slash-commands、safe-mode、strict-mcp-config、setting-sources 空值均在正式 invocation；init 工具/MCP/skills/slash 空清單由 trace 核對。Haiku 只在 cost accounting，OS版本後補正確；但控制範圍的全稱句見 CONTRACT-E02。",
+      "source_refs": [
+        "manifest.json#invocation",
+        "manifest.json#environment_controls",
+        "source/run_study.py:58-79,145-149,209-235",
+        "runtime-supplement.json"
+      ]
+    },
+    {
+      "id": "CE08",
+      "lines": [
+        197,
+        201
+      ],
+      "topic": "Seatbelt probe 的時間與範圍",
+      "status": "pass",
+      "evidence": "freeze 04:24:12.039363 UTC、launch preflight 04:24:22.093608、首名額04:24:22.246230。read/write/network bind 三項拒絕真實紀錄，不追認全 OS/IPC 隔離；重新驗收不倒補舊執行的安全證據。",
+      "source_refs": [
+        "manifest.json",
+        "launch-preflight.json",
+        "formal-01-A/launch.json",
+        "source/sandbox.py:96-129",
+        "source/PROTOCOL.md:112-118"
+      ]
+    },
+    {
+      "id": "CE09",
+      "lines": [
+        199,
+        201,
+        247,
+        282
+      ],
+      "topic": "SaltBench 方法與歷史限制",
+      "status": "pass",
+      "evidence": "§3.2 明載 file-reading tool 在 harness process、不受 subprocess path deny；未觀察利用不等於有保護。§8 matrix cells 無各自build-provenance record，mapping為事後重建。append-only修訂與分開halt/失敗的引用屬方法，未把後來修補追認為舊run已完全隔離。",
+      "source_refs": [
+        "2609.11076v1.txt:79,134,136,139-141,373-375"
+      ]
+    },
+    {
+      "id": "CE10",
+      "lines": [
+        203,
+        205
+      ],
+      "topic": "工具 fixtures 與 83 項分母",
+      "status": "major_finding",
+      "evidence": "工具驗證紀錄83/83，靜態數六個test檔也有83個test method；這不是83候選或新增模型樣本。reference與語義mutants、真實timeout、denial probes存在，但沒有原稿所稱統一越界候選分類，見CONTRACT-E01。",
+      "source_refs": [
+        "validation-before-formal.json",
+        "source/tests/test_task_evaluator.py:138-195",
+        "source/test_sandbox.py:26-53",
+        "source/evaluator.py:267-291"
+      ]
+    },
+    {
+      "id": "CE11",
+      "lines": [
+        209,
+        211,
+        213,
+        224,
+        226,
+        235
+      ],
+      "topic": "streaming 可觀察行為",
+      "status": "pass",
+      "evidence": "批次比較最終輸出不足驗時序；probe 在stdin未EOF且未terminal時觀察第一則訊息，之後送suffix。未要求特定flush API；不擴張為每種stdout/stderr均即時、全串流路徑都受測。",
+      "source_refs": [
+        "source/sandbox.py:72-93,132-189",
+        "source/evaluator.py:307-316",
+        "source/test_sandbox.py:31-39"
+      ]
+    },
+    {
+      "id": "CE12",
+      "lines": [
+        215,
+        217,
+        222
+      ],
+      "topic": "R10 null 與 false 的 stderr",
+      "status": "pass",
+      "evidence": "明寫兩行各自當完整輸入：null不malformed，false多一行malformed；兩者stdout皆空、EOF皆3，只有這項stderr差異。or {}會吞false診斷的機制說明正確；未聲稱本輪實測了例示。",
+      "source_refs": [
+        "source/requirements.json:R03,R10-R12",
+        "source/evaluator.py:149-153,202-209"
+      ]
+    },
+    {
+      "id": "CE13",
+      "lines": [
+        3,
+        106,
+        187,
+        237,
+        239,
+        249,
+        253
+      ],
+      "topic": "有限103與CLI caveat",
+      "status": "pass",
+      "evidence": "字面main/額外CLI/內部編碼未逐一檢查；同R IDs不等於等價。CLI措辭影響未辨識，通過103不能消除差異。補記未改規範／評分，未偽裝成原協議amendment。",
+      "source_refs": [
+        "source/PROTOCOL.md:95-110",
+        "source/specs/A0.md:7",
+        "source/specs/A.md:133",
+        "packet-wording-caveat.md"
+      ]
+    },
+    {
+      "id": "CE14",
+      "lines": [
+        170,
+        245,
+        247,
+        249,
+        251,
+        253
+      ],
+      "topic": "重評、amendment與結語",
+      "status": "pass",
+      "evidence": "既有同oracle重評40×103一致不增模型樣本；將來修oracle須保留舊版、另版本記理由、全部候選一致重評。單模型候選、AI稽核及無真人盲審限制保留；不把工具通過推成所有品質。",
+      "source_refs": [
+        "public-rescore.json",
+        "formal-data-audit.md",
+        "source/PROTOCOL.md:120-149"
+      ]
+    },
+    {
+      "id": "CE15",
+      "lines": [
+        255,
+        264,
+        266,
+        276,
+        277,
+        287,
+        289,
+        291
+      ],
+      "topic": "References、主寫與公開狀態",
+      "status": "pass",
+      "evidence": "46本機相對連結皆存在；資料與四稿是本機/未發布。head/tail actual invocation max，meta成功、退出0、單terminal；artifact hashes與assembly精確相符。正式high40名額與max主寫分開，無英文／遠端發布簽核。",
+      "source_refs": [
+        "contract-assembly.json",
+        "resume-contract-head/invocation.json",
+        "resume-contract-head/meta.json",
+        "resume-contract-tail/invocation.json",
+        "resume-contract-tail/meta.json"
+      ]
+    }
+  ],
+  "prior_prefix_report": {
+    "path": ".context/same-spec-ten-runs/manuscripts/evidence-contract-prefix.md",
+    "sha256": "5cd0a113870b234a087a38fe62edff0f7b293ea7632e603a1dfaa72c39cb5422",
+    "scope": "Prefix passed; current review reads the complete assembled article, including that prefix."
+  },
+  "prior_delta_chain": [
+    {
+      "path": "research/2026-10/same-spec-ten-runs/manuscripts/contract-language-delta.json",
+      "sha256": "1b83f5ee8328c550c17824e3424e1a888a50d67b84238fbe451410c2cbd3647a",
+      "before_sha256": "6f6c03c137fad291a6ac3e6fd8399089a3a68a5cd8d4cf1aa2f599937ae94e26",
+      "after_sha256": "d7d1244e859d407fe54b19510311d4100cd370dcd9ceb71df48cd0dc151cca76",
+      "edit_records": 16,
+      "inverse_verified": true
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/manuscripts/contract-final-polish-delta.json",
+      "sha256": "0e567f1b807b15f2c933468695d024ddd4761f14a61feec829e4375716962644",
+      "before_sha256": "d7d1244e859d407fe54b19510311d4100cd370dcd9ceb71df48cd0dc151cca76",
+      "after_sha256": "8103c4371c1d944cb7f9da326caad25060dce523438c3ca6c48bf9eb46ec5b92",
+      "edit_records": 5,
+      "inverse_verified": true
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/manuscripts/contract-final-clarification-delta.json",
+      "sha256": "42a024ce1fd1879b1a61780dbb9c32085cbff4d2f3999dd14d6a3f48f69a5e58",
+      "before_sha256": "8103c4371c1d944cb7f9da326caad25060dce523438c3ca6c48bf9eb46ec5b92",
+      "after_sha256": "416476b5ade3ded365cd3faff9477d666175ceb5154eddffc75ed18a8da18def",
+      "edit_records": 1,
+      "inverse_verified": true
+    }
+  ],
+  "frozen_integrity": {
+    "archive_path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/archive.json",
+    "archive_sha256": "534434650fbd4070f9304ba79bb58d61245fdb94a259af430ea9e5f8ae5c995a",
+    "targeted_files_checked": 58,
+    "mismatches": [],
+    "sources": [
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/manifest.json",
+        "sha256": "ba30398118ecde62b2f682884c1e882b2864c22d70faf99549ceab0d7c0a55f2",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/records.jsonl",
+        "sha256": "2be5ed458de2e2defa2ab4f24d88f25bdd3b7340c9207915ab6aa0988c0db7f0",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json",
+        "sha256": "8198a4478b8158268298960576655d920db3b8d2dc2bd207348dcef8a346dfb9",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/launch-preflight.json",
+        "sha256": "cfd87314b81a659bf5bf67382226e6f1ebf9b0ef448b48be78ded04ab8426a64",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json",
+        "sha256": "32e0a0af2578564624b5a5b5f9d981e0dc296e6eb690b6598482cb809419a515",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+        "sha256": "a747ae3abd880f77227e7492e8a2e6d6346637a39b1e64366bc435dd772b4a10",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+        "sha256": "3ea6d57daae7dba9d3ceb6327607ee60ccaed3bd4193e5ec7c79441ad36bc247",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+        "sha256": "c10ef7256aadc46816e73b1bbaf7edc26b5d2719e687ff497ff5005062ff8a3b",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md",
+        "sha256": "19c404372f742c8f80165fdfea8df998bb29c3324f892433c8992e418e9c54af",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/evaluator.py",
+        "sha256": "443b47cc93ca1559293a6025472696eee8351a25cb8486e09ee682bcfd29508a",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/run_study.py",
+        "sha256": "2d0bd4bb0b0f02a9f12694fcf6867b8e663645cf943dc45f71f1fbfcaf6bfac8",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/PROTOCOL.md",
+        "sha256": "94af80dc28a933e18e03c53deb088b9a22161c1d39c296a929efcef3ed977a58",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/sandbox.py",
+        "sha256": "50dbd5c92c39ef388090abe761e9d96527e3427c7ff3fea318865ecbdf73c523",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/test_sandbox.py",
+        "sha256": "51e2067adcf0a6ec4659d8221125e93216b4f6eb9cfcad7167c8be2682617541",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/tests/test_task_evaluator.py",
+        "sha256": "e6ff5eaa2fa043aa4a95a1fadf32bab7df7cc388905b9d81912278a05e82c952",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/test_run_study.py",
+        "sha256": "b8b7d85071c8fdcfc0f963d2b932683ae92344772f5743bd65443a7d8c5d07ab",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/baseline-reproduction.json",
+        "sha256": "50b4cf407ec4502e746fdc43ba4dd7b2c8b175444c21ed7a40a7ad85c5f6930f",
+        "matches_archive": true
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/seed/codex_jsonl.py",
+        "sha256": "4949ff55184cbfd3cbd0c8add632a6382ec4b5e6ec2240ca88018443370e6afb",
+        "matches_archive": true
+      }
+    ],
+    "evaluations": [
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-01-A/evaluation.json",
+        "sha256": "6909537f80d52ad6d5828d43ec561ae684ec585d4a18f7c4e29c5717a57c4bfa"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-01-A0/evaluation.json",
+        "sha256": "c2eb6310c2f91f35f1ae41199acd879650034e2ee3177ee976e9748d85349493"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-01-B/evaluation.json",
+        "sha256": "0ff3bdbb5f253ee8e4e45fad206d67381cc1061da7e6e5e50cd493eccd3c61e6"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-01-C/evaluation.json",
+        "sha256": "d7b0e8f8d7d007cc74aa08dfa4145c3cf833631b1add960e63b0673188e77362"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-02-A/evaluation.json",
+        "sha256": "f2b3c12efc163ec530e49744e3fc323f09f3aa6049f87a2c082733364a72599b"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-02-A0/evaluation.json",
+        "sha256": "ef2e43b88e8df8f8004cbd8e9d66d223140ebcc68bfb662f5fa16200a0222f96"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-02-B/evaluation.json",
+        "sha256": "869b302e038bc052da945a65cfae5293692ccc54d24f5be2a24b13da9bf18390"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-02-C/evaluation.json",
+        "sha256": "90a43d1e847b7329fe9487aefa7dc12a47ac9cc7ccfe933621dbb35b14ed9428"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-03-A/evaluation.json",
+        "sha256": "120b7218a01df0d0e2b9d079f2a7ca7df4f710a97da17b257a2ed6122130898b"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-03-A0/evaluation.json",
+        "sha256": "878d4dfb5f03bc1c8ff7ae1a70d62c35564a97f7126f7e56b701b84e0131f071"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-03-B/evaluation.json",
+        "sha256": "3302a249125abde62f94da7d797370214d9d50b8d4ad051c4639510e27861528"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-03-C/evaluation.json",
+        "sha256": "980f5955a9255fca2709bfe79484c8f6e958bfcecf0047a4fe84bb35ffd91e3d"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-04-A/evaluation.json",
+        "sha256": "e31e97661f7d6a109ba756a09d01dcdb941b929e2621a953d32dedab18236199"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-04-A0/evaluation.json",
+        "sha256": "e49ae8971f2769f2dae5bf3c855123e61076a2705c323ccea3a0db5cce59949a"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-04-B/evaluation.json",
+        "sha256": "874f21a5be4e25b18eb448c83d11dde9a40e739a988d402d9ebb3558e69206bd"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-04-C/evaluation.json",
+        "sha256": "3e5b5491cbb1a5177269f09dd180fca3cb2f63e25173f1eb80b0486fcbf36b9a"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-05-A/evaluation.json",
+        "sha256": "38b98ed435342a7f6f9350beb0a82f5954e1bfed60373dd9440ad77776b0f48f"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-05-A0/evaluation.json",
+        "sha256": "863b64920c8c4206841ddd6210011dc233cf90759098957f47339efe141b54ac"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-05-B/evaluation.json",
+        "sha256": "a638af5008cf4ae43f3fd427c47b5b72d0897e85516416ec89b68429512f5db4"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-05-C/evaluation.json",
+        "sha256": "6a7adc8f9cb075e33a317bc5efc37e991fa4cfa8082bd08a0c4941b85c44d661"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-06-A/evaluation.json",
+        "sha256": "981aa63c823910f2a94a61adc3951c3c07c926af614439ddb72b362c227b7af2"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-06-A0/evaluation.json",
+        "sha256": "e15595a8e70ee743a872c3410ac9aee296e42e80c3fc22c85618fd43e53cada1"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-06-B/evaluation.json",
+        "sha256": "4de5e396ab74d9c5c9d6aa11f06e051280433c93473dfe88d7daf703ffb98bc8"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-06-C/evaluation.json",
+        "sha256": "ff26fc0df6f88b3d1bb386491f1cb1929adf8bd8966714a45ef9a7b872836a24"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-07-A/evaluation.json",
+        "sha256": "e35227eb03a73be62aca155ebd24f9bdbf3287b9b472b64820208c6a44a44611"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-07-A0/evaluation.json",
+        "sha256": "75ff55a3fba308bcd408757985cf8acd63ed70c3e8e53f1592fc610b93774104"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-07-B/evaluation.json",
+        "sha256": "b1ec08fa8f2923bf36b6d7d386cd3e8982af53115090ffe85fa4e6f193d19095"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-07-C/evaluation.json",
+        "sha256": "625767f21adfdc5564fba43163244a5842ac57a5aeff8525e99fb156dbdc08b4"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-08-A/evaluation.json",
+        "sha256": "1f2bbc396f525637cd003dada9331732276786f31b9b6231a654c76d1576f187"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-08-A0/evaluation.json",
+        "sha256": "672265ddffb8ee902dcb5a54799e0c458600767365b051d6085da66e1ace5ffe"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-08-B/evaluation.json",
+        "sha256": "2e7e57607581c2e952040593e985e7b8f44d41af96510f5871a209704ce88420"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-08-C/evaluation.json",
+        "sha256": "ab112ce814763f59a7761aee61d206211bd2ed35b490ea5d17c7036a9ffcac23"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-09-A/evaluation.json",
+        "sha256": "005130ef7a3459ec9f9f16c7755c2277f77dfb9a6a6450b85fb342f90d365461"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-09-A0/evaluation.json",
+        "sha256": "3f893ad9e5ea90c58e57fac9be47c8ba5cd6ce3d28ebaaf4ddeacb8b358c3bbf"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-09-B/evaluation.json",
+        "sha256": "d6633920ea3b508eaa2909bb4570e37aa9d0cab21c69804851948fed7cee3267"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-09-C/evaluation.json",
+        "sha256": "60abaee7fef296a2b46cc5f5dc069cacd6480ea5e96ab7b5800175ebaf8d42d0"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-10-A/evaluation.json",
+        "sha256": "40572a18a7024b05068d9795f850e55a1b85878b301776cf7174db10b23f3858"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-10-A0/evaluation.json",
+        "sha256": "3a0aa411bcc7eba644997536a3f840f54897144af086fc96b924ca2324bb6a0a"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-10-B/evaluation.json",
+        "sha256": "03a220a88112fc33a58734a64de666681abfcf0d3c3b2914dfeaa3129c828e68"
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-10-C/evaluation.json",
+        "sha256": "0dc26782a64bacbdb4eab91361fca30ee09c1d102c78a91f6c19de0217446095"
+      }
+    ],
+    "full_317_file_audit_repeated": false
+  },
+  "additional_sources": [
+    {
+      "path": "research/2026-10/same-spec-ten-runs/reviews/validation-before-formal.json",
+      "sha256": "e5fd7a02678ce2466ca40926a3e93dcc4a5eae356b4fc5c73d4c83030c9f17c3"
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/reviews/runtime-supplement.json",
+      "sha256": "d5bfc7b4bcdab0eaa42b7b47c72a68cf529fbbf94ee394ccf958f907d5bcbf34"
+    },
+    {
+      "path": ".context/same-spec-ten-runs/sources/2609.11076v1.txt",
+      "sha256": "fe75b652a5685f3dda94fbd36bd4585d3bf0534fd06b5599c0e16dc64a2ba046"
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/evidence-audit.md",
+      "sha256": "e165f88daf73e3c4ed9fb94b697767f1197a03ceec105049018771aa1648eb86"
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/manuscripts/packet-wording-caveat.md",
+      "sha256": "96e7ab484df0564d3ddfb5396216c0c63da83e22bf47fa0c251ecf362bf60490"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/results/validation-2026-09-25/public-rescore.json",
+      "sha256": "83c55e0b00bacf039210ad5247a8f9eefde341ba650a75c2b65412afe6ebf258"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/results/validation-2026-09-25/formal-data-audit.md",
+      "sha256": "e2b00c994f62ef23b83feb70242a3c89b7ae76d7ec03f03ae282002da35da144"
+    },
+    {
+      "path": "2026-10-agentic-harness-blueprint/article.md",
+      "sha256": "6742ef7f89c770df640a755e3acbccd6fef2f0929f0622313cfee76b66635218"
+    },
+    {
+      "path": "2026-10-green-review/article.md",
+      "sha256": "6fc8c6269a81b12352e2425d23a92adde89de0a598fcc1ed0be660a911e84caa"
+    },
+    {
+      "path": "2026-10-green-reliability/article.md",
+      "sha256": "0ed617a1ef4f9dce06aeb62ef939b1650e1ca0e45c3c9efa6e1600ede639ab37"
+    },
+    {
+      "path": ".context/same-spec-ten-runs/manuscripts/evidence-contract-prefix.md",
+      "sha256": "5cd0a113870b234a087a38fe62edff0f7b293ea7632e603a1dfaa72c39cb5422"
+    }
+  ],
+  "arms": [
+    {
+      "arm": "A0",
+      "cli_success": 10,
+      "artifact_success": 10,
+      "accepted_completion": 10,
+      "four_cells": {
+        "true_true": 10,
+        "true_false": 0,
+        "false_true": 0,
+        "false_false": 0
+      }
+    },
+    {
+      "arm": "A",
+      "cli_success": 10,
+      "artifact_success": 10,
+      "accepted_completion": 10,
+      "four_cells": {
+        "true_true": 10,
+        "true_false": 0,
+        "false_true": 0,
+        "false_false": 0
+      }
+    },
+    {
+      "arm": "B",
+      "cli_success": 10,
+      "artifact_success": 10,
+      "accepted_completion": 10,
+      "four_cells": {
+        "true_true": 10,
+        "true_false": 0,
+        "false_true": 0,
+        "false_false": 0
+      }
+    },
+    {
+      "arm": "C",
+      "cli_success": 10,
+      "artifact_success": 10,
+      "accepted_completion": 10,
+      "four_cells": {
+        "true_true": 10,
+        "true_false": 0,
+        "false_true": 0,
+        "false_false": 0
+      }
+    }
+  ],
+  "tool_tests": {
+    "validation_record": "research/2026-10/same-spec-ten-runs/reviews/validation-before-formal.json",
+    "recorded_passed": 83,
+    "recorded_exit_code": 0,
+    "static_test_methods": [
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/test_analyze.py",
+        "static_test_method_count": 32
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/test_archive.py",
+        "static_test_method_count": 8
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/test_campaign_status.py",
+        "static_test_method_count": 3
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/test_run_study.py",
+        "static_test_method_count": 23
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/test_sandbox.py",
+        "static_test_method_count": 5
+      },
+      {
+        "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/tests/test_task_evaluator.py",
+        "static_test_method_count": 12
+      }
+    ],
+    "static_total": 83,
+    "tests_reexecuted": false
+  },
+  "timing": {
+    "frozen_at_utc": "2026-09-25T04:24:12.039363+00:00",
+    "launch_preflight_at_utc": "2026-09-25T04:24:22.093608+00:00",
+    "first_launch_at_utc": "2026-09-25T04:24:22.246230+00:00",
+    "ordered": true
+  },
+  "f1": {
+    "source_path": "research/2026-10/2026-11-same-spec-ten-runs.figures.md",
+    "source_sha256": "0cbff4a499fbf167ac05e49e23d9daefe73c7c4cb1e7db37d59b13e4c45fb88c",
+    "diagram_sha256": "0ba7420d3a7af4899388038dc97cd94bef12c8a50311377b1052315799bd6c97",
+    "byte_identical_to_approved": true,
+    "visual_rendering_verified": false
+  },
+  "writer_provenance": {
+    "assembly_path": ".context/same-spec-ten-runs/manuscripts/contract-assembly.json",
+    "assembly_sha256": "d79b1b0affa1a2f47a00926c9e2a3aa104ab75b71b74697782e6dbca0870751e",
+    "segments": [
+      {
+        "artifact_path": ".context/same-spec-ten-runs/manuscripts/resume-contract-head/artifact.md",
+        "artifact_sha256": "23d3292fc8b01bc1d5b97ea674d10d1231b7ab0d5da49461ff45d5209c432279",
+        "invocation_path": ".context/same-spec-ten-runs/manuscripts/resume-contract-head/invocation.json",
+        "invocation_sha256": "43c21ed6f9565d345eb09e884d0c2c9c31797486a3923e8d40250c3f000e53db",
+        "meta_path": ".context/same-spec-ten-runs/manuscripts/resume-contract-head/meta.json",
+        "meta_sha256": "f3410f4bb3875931620dbe7835ba329c5b2f44b7ac5e5ce1f7eb60e30427d76d",
+        "requested_model": "claude-opus-5-5",
+        "requested_effort": "max",
+        "assistant_models": [
+          "claude-opus-5-5"
+        ],
+        "success": true,
+        "exit_code": 0,
+        "terminal_count": 1
+      },
+      {
+        "artifact_path": ".context/same-spec-ten-runs/manuscripts/resume-contract-tail/artifact.md",
+        "artifact_sha256": "25f0a08fd8dc6828fbc6ddd21cfe986872ad7d1bf430dca2efe6c43ad6f8b4e9",
+        "invocation_path": ".context/same-spec-ten-runs/manuscripts/resume-contract-tail/invocation.json",
+        "invocation_sha256": "a092810d036bd0407f368cb19b50cb8d3c6da30bb60df9ee760d7949cf486880",
+        "meta_path": ".context/same-spec-ten-runs/manuscripts/resume-contract-tail/meta.json",
+        "meta_sha256": "36368e7bb9a06742269b72e2a71853a4c16b24c826f70c32481907e95508d00a",
+        "requested_model": "claude-opus-5-5",
+        "requested_effort": "max",
+        "assistant_models": [
+          "claude-opus-5-5"
+        ],
+        "success": true,
+        "exit_code": 0,
+        "terminal_count": 1
+      }
+    ],
+    "raw_join_separator": "\n",
+    "raw_join_sha256": "ddceb2a648ea56a3a6fbebfc3bcb9b9c861308ade0c986324c7e779ff8a5f80a",
+    "raw_join_verified": true,
+    "raw_response_read": false,
+    "thinking_text_read": false
+  },
+  "links": {
+    "occurrences_checked": 46,
+    "checks": [
+      {
+        "target": "../2026-11-same-spec-overview/article.md",
+        "exists": true
+      },
+      {
+        "target": "../2026-11-same-spec-spec/article.md",
+        "exists": true
+      },
+      {
+        "target": "../2026-11-same-spec-variance/article.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/records.jsonl",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/RESULTS.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md",
+        "exists": true
+      },
+      {
+        "target": "../research/2026-10/same-spec-ten-runs/manuscripts/packet-wording-caveat.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/evaluator.py",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/PROTOCOL.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/archive.json",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/manifest.json",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/launch-preflight.json",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/sandbox.py",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/evaluator.py",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+        "exists": true
+      },
+      {
+        "target": "../research/2026-10/same-spec-ten-runs/manuscripts/packet-wording-caveat.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/validation-2026-09-25/public-rescore.json",
+        "exists": true
+      },
+      {
+        "target": "../2026-11-same-spec-spec/article.md",
+        "exists": true
+      },
+      {
+        "target": "../2026-11-same-spec-variance/article.md",
+        "exists": true
+      },
+      {
+        "target": "../2026-11-same-spec-overview/article.md",
+        "exists": true
+      },
+      {
+        "target": "../2026-11-same-spec-spec/article.md",
+        "exists": true
+      },
+      {
+        "target": "../2026-11-same-spec-variance/article.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/seed/codex_jsonl.py",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/PROTOCOL.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/records.jsonl",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/RESULTS.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/evaluator.py",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/archive.json",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/validation-2026-09-25/public-rescore.json",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/manifest.json",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/launch-preflight.json",
+        "exists": true
+      },
+      {
+        "target": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/sandbox.py",
+        "exists": true
+      },
+      {
+        "target": "../research/2026-10/same-spec-ten-runs/manuscripts/packet-wording-caveat.md",
+        "exists": true
+      },
+      {
+        "target": "../research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+        "exists": true
+      }
+    ],
+    "missing": [],
+    "remote_publication_verified": false
+  },
+  "new_model_samples": 0,
+  "candidate_executions": 0,
+  "fresh_web_queries": 0,
+  "manuscript_modified": false,
+  "frozen_data_modified": false,
+  "prior_reports_modified": false,
+  "closure_report": "research/2026-10/same-spec-ten-runs/manuscripts/review-contract-evidence-final.json",
+  "markdown_report_sha256": "3126fdd847abf1d84d9230e4ba603ed434812b6e532ae3fe4f688ac9c53c3253"
+}

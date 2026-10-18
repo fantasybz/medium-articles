@@ -1,0 +1,53 @@
+{
+  "requested_model": "claude-opus-5-5",
+  "requested_effort": "xhigh",
+  "cli_version": "2.1.283 (Claude Code)",
+  "prompt_sha256": "8b30e9204bcf2b8dc38c12ea951ac722cbdf7d7813ced0f4c8392af464434c37",
+  "started_at": "2026-09-27T16:02:10.651229+00:00",
+  "finished_at": "2026-09-27T16:04:25.647793+00:00",
+  "inputs": [
+    {
+      "piece": "overview",
+      "path": "2026-11-same-spec-overview/article.md",
+      "sha256": "3358d7a42683d71ac2f5b843df7440f654b0b279c0f83ca43ed780cd9636d0be",
+      "sections": [
+        "二",
+        "五"
+      ]
+    },
+    {
+      "piece": "spec",
+      "path": "2026-11-same-spec-spec/article.md",
+      "sha256": "be75563c9535316ee09e157acf54e9ba082deb4aab08258cffc4adf57750c041",
+      "sections": [
+        "三",
+        "五"
+      ]
+    },
+    {
+      "piece": "contract",
+      "path": "2026-11-same-spec-contract/article.md",
+      "sha256": "77d11ba87bf4a413c1d7b5b1d4e78f194bb1c313a667d29d527bf2ce69ce038b",
+      "sections": [
+        "二"
+      ]
+    },
+    {
+      "piece": "variance",
+      "path": "2026-11-same-spec-variance/article.md",
+      "sha256": "446dbd563ebe6a61fad033fa6494b743952f1a4f770ba7fa03891f2916416a82",
+      "sections": [
+        "二",
+        "三",
+        "四"
+      ]
+    }
+  ],
+  "purpose": "bounded review of evidence-to-judgment explanations after latest author feedback; selected sections only",
+  "success": true,
+  "assistant_models": [
+    "claude-opus-5-5"
+  ],
+  "elapsed_seconds": 134.998,
+  "artifact_sha256": "6c7e44de832fcf2797b0e7d7d9cb16d813adb7eb4872175ebb24e3f27672362a"
+}

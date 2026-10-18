@@ -1,0 +1,391 @@
+{
+  "configuration": {
+    "content_type": "markdown",
+    "fix_mode": "none",
+    "profile": "strict",
+    "translationese_domain": "technical",
+    "detect_ai": true,
+    "ai_threshold": "low",
+    "detect_translationese": true,
+    "consistency": true,
+    "detect_style": true,
+    "explain": true,
+    "include_stats": true,
+    "include_telemetry": true,
+    "verify": true,
+    "max_errors": 0,
+    "max_warnings": 0,
+    "output": "full",
+    "ignore_terms": [
+      "通過",
+      "協議"
+    ]
+  },
+  "adjudication": "通過 means successful acceptance; 協議 appears inside the explicitly quoted research-protocol phrase. Lowercase json is a file extension in link labels.",
+  "response": {
+    "accepted": true,
+    "text": "# 全文撰寫與品質紀錄\n\n更新：2026-09-25。使用者要求 Claude Code `max` 以上主寫四篇中文全文，由 Codex 潤飾、審查，並以 zh-TW MCP 嚴格檢查。目前完成 **變異篇一篇**；系列尚未完成，也尚未發布。\n\n| 篇目 | 實際主寫結果 | 目前狀態 |\n|---|---|---|\n| 總論 | 已呼叫 Claude Code `max`，未取得正文 | 待重置額度後主寫 |\n| 規格篇 | Claude Code `max` 已產生部分正文，於第四節中斷 | 保留部分稿，待續寫及全文審查 |\n| 契約篇 | 已呼叫 Claude Code `max`，未取得正文 | 待重置額度後主寫 |\n| [變異篇全文](../../../../2026-11-same-spec-variance/article.md) | Claude Code `max` 完整主稿 | Codex 全文潤飾、三種角度複核與嚴格中文檢查完成；本機可交付 |\n\n## 主寫模型與目前阻礙\n\n四個主寫請求都明確設定 `claude-opus-5-5 --effort max`，使用 Claude Code CLI 2.1.282。變異篇正常完成；另三個請求達到單次輸出上限後，續接遇到 session 額度限制。隨後的獨立小型探測也回報相同限制，預計 **2026-09-25 16:10（Asia/Taipei）** 重置，沒有實際模型輸出。\n\n[主寫來源紀錄](writer-provenance.json)保留模型、effort、呼叫時間、結束狀態與原稿雜湊。原始回應含模型思考內容，只留在 gitignored 的 `.context/`，不作公開稿件或資料來源。沒有改用其他模型代寫，也沒有預設額度重置一定成功；目前沒有背景重試或排程。\n\n續作仍維持 Claude Code `max`。先用較小、按章節分配的資料包完成規格篇，再完成總論與契約篇；先確認一節能完整產出，再擴大執行。這是減少重複上下文的操作調整，研究設定與正式四十個名額不變。\n\n## 變異篇完成的工作\n\n主代理從開場讀到結語，修正 CLI 與產物判定的關係、信賴區間的解讀、驗收盲點、AST cosine 的適用範圍，以及跨研究比較。也補上三處既有系列承接：已發布的組織篇、營運篇，以及已完成但尚待發布的可靠度篇。尚未成稿的兄弟篇使用規劃語氣。\n\n為了讓結構指標更容易理解，另加入 A0 前兩個排程區塊的真實程式對照。選取規則在閱讀兩份候選之前留下紀錄，與分數、費用及相似程度無關；正文明標為成稿階段的事後教學示例，不當成事前分析或代表性樣本。詳見[示例來源](teaching-example-provenance.json)。\n\n| 審查角度 | 修訂後判定與紀錄 |\n|---|---|\n| 證據 | [複核完成](review-evidence-followup.md)，六項初審問題均解決 |\n| 編輯 | [最終複核完成](review-editor-final.md)，七項初審問題均解決 |\n| 讀者 | [最終複核完成](review-reader-final.md)，七項初審問題及一項時態補充均解決 |\n\n上述是獨立 AI 代理的核對，並非真人盲審。三個角度都只判定變異篇，沒有替其餘三篇給出完成判定。初審與後續報告分開保留。\n\n## 中文、圖表與貼稿驗證\n\n[最終正文 zh-TW MCP 回報](zhtw/variance-pass-04.json)使用 `strict` profile、`ai_threshold=low`、技術領域翻譯腔檢查、一致性檢查及 `verify=true`，門檻是零 errors、零 warnings。實際回報 **accepted=true、errors=0、warnings=0**。貼稿也[另行通過](zhtw/variance-paste.json)。\n\n這不是零提示宣稱。正文仍保留 58 項 info，主要是「通過驗收」與「研究協議」的語境誤報，以及版型空白、實際數值列舉等提示。第一輪所有問題都留下[逐項處理理由](zhtw/variance-adjudication.json)，沒有整批自動替換。\n\n本機[貼稿](../../../../2026-11-same-spec-variance/publish/medium-paste.md)包含四張表與一張實測圖，均已檢視。F2 保留原始位元組，SHA-256 未變；317 份正式封存檔案再次核對，沒有雜湊差異。發布工具 301 項、研究工具 121 項測試均通過，貼稿正文也與 converter 輸出逐字一致。完整證據見[交付驗證](delivery-validation.json)。這些檢查沒有增加模型實驗樣本。\n\n變異篇最終 SHA-256：`1cf47ca478afca22ff028c285c4d0550a844e4794886b7e345fa122a27cac800`。\n\n## 尚未完成\n\n總論、規格篇與契約篇仍須完成 Claude 主稿、主代理潤飾、三種角度的全文複核與實際 zh-TW MCP 檢查。公開發文前也須把 repo 附件換成可存取、版本固定的公開入口。目前只有本機連結，沒有建立 Medium 草稿、排程或發布；英文版不在本次執行範圍。\n",
+    "issues": [
+      {
+        "offset": 1218,
+        "length": 4,
+        "line": 16,
+        "col": 28,
+        "found": "json",
+        "suggestions": [
+          "JSON"
+        ],
+        "rule_type": "case",
+        "severity": "info",
+        "explanation": "'json' has incorrect casing; standard form: JSON.",
+        "explain_meta": {
+          "rationale": "'json' has incorrect casing; standard form: JSON.",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 2479,
+        "length": 4,
+        "line": 24,
+        "col": 136,
+        "found": "json",
+        "suggestions": [
+          "JSON"
+        ],
+        "rule_type": "case",
+        "severity": "info",
+        "explanation": "'json' has incorrect casing; standard form: JSON.",
+        "explain_meta": {
+          "rationale": "'json' has incorrect casing; standard form: JSON.",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 3318,
+        "length": 6,
+        "line": 36,
+        "col": 190,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 3425,
+        "length": 6,
+        "line": 38,
+        "col": 30,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 3452,
+        "length": 6,
+        "line": 38,
+        "col": 39,
+        "found": "協議",
+        "suggestions": [
+          "協定"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain 網路",
+        "english": "protocol",
+        "anchor_match": false,
+        "explanation": "'協議' is a mainland Chinese term for 'protocol'; Taiwan uses '協定'. Context: @domain 網路",
+        "anchor_provenance": {
+          "anchor_en": "protocol",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'協議' is a mainland Chinese term for 'protocol'; Taiwan uses '協定'. Context: @domain 網路",
+          "domain": "網路",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 3931,
+        "length": 6,
+        "line": 40,
+        "col": 157,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 4040,
+        "length": 4,
+        "line": 40,
+        "col": 216,
+        "found": "json",
+        "suggestions": [
+          "JSON"
+        ],
+        "rule_type": "case",
+        "severity": "info",
+        "explanation": "'json' has incorrect casing; standard form: JSON.",
+        "explain_meta": {
+          "rationale": "'json' has incorrect casing; standard form: JSON.",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      }
+    ],
+    "applied_fixes": 0,
+    "summary": {
+      "errors": 0,
+      "warnings": 0,
+      "info": 7
+    },
+    "gate": {
+      "enabled": true,
+      "max_errors": 0,
+      "residual_errors": 0,
+      "max_warnings": 0,
+      "residual_warnings": 0
+    },
+    "profile": "strict",
+    "political_stance": "roc_centric",
+    "detected_script": "traditional",
+    "s2t_applied": false,
+    "trace": {
+      "trace_id": "60c602c4fc161eb31ac2d76acfa9c6eb",
+      "ruleset_hash": "3a6a5eecb12ada10725c0167434703c0f713136adad683257ee436f4b1ca8038",
+      "input_hash": "92b7735ccaf98fa34c59ddecf080eaf21bbef50a4563d1bdb1847c070a7ace8c",
+      "timestamp": "2026-09-25T06:05:03.765Z",
+      "tool": "zhtw",
+      "issue_count": 7
+    },
+    "verify": {
+      "api_ok": true,
+      "matched": 0,
+      "unmatched": 4,
+      "no_english": 3
+    },
+    "coverage": {
+      "rules_checked": 1803,
+      "rules_matched": 2
+    },
+    "oral_density": 0,
+    "ai_signature": {
+      "score": 0,
+      "markers": [],
+      "top_signals": [],
+      "sentence_variability": 32.40134,
+      "zero_width_count": 0,
+      "punctuation_profile": {
+        "comma": {
+          "count": 33,
+          "density": 18.353727,
+          "cv": 0.73854405
+        },
+        "period": {
+          "count": 31,
+          "density": 17.241379,
+          "cv": 0.9959124
+        },
+        "semicolon": {
+          "count": 7,
+          "density": 3.8932147
+        },
+        "dunhao": {
+          "count": 25,
+          "density": 13.904338,
+          "cv": 1.2470095
+        },
+        "dash": {
+          "count": 0,
+          "density": 0
+        }
+      }
+    },
+    "translationese_signature": {
+      "score": 0,
+      "markers": [
+        {
+          "signal": "被動語態",
+          "count": 0,
+          "density": 0,
+          "threshold": 6
+        },
+        {
+          "signal": "的字鏈",
+          "count": 3,
+          "density": 3,
+          "threshold": 5
+        },
+        {
+          "signal": "弱動詞分解",
+          "count": 0,
+          "density": 0,
+          "threshold": 4
+        },
+        {
+          "signal": "代詞密度",
+          "count": 0,
+          "density": 0,
+          "threshold": 6
+        },
+        {
+          "signal": "翻譯腔偵測",
+          "count": 0,
+          "density": 0,
+          "threshold": 7
+        }
+      ],
+      "top_signals": [],
+      "max_de_chain": 3,
+      "domain": "technical"
+    },
+    "style_scorecard": {
+      "style_scores": {
+        "ai": 0,
+        "translationese": 0,
+        "consistency": 1
+      },
+      "top_issues_per_axis": {
+        "ai": [],
+        "translationese": [],
+        "consistency": [
+          {
+            "line": 36,
+            "col": 190,
+            "found": "通過",
+            "severity": "info",
+            "rule_type": "cross_strait",
+            "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」"
+          },
+          {
+            "line": 38,
+            "col": 30,
+            "found": "通過",
+            "severity": "info",
+            "rule_type": "cross_strait",
+            "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」"
+          },
+          {
+            "line": 38,
+            "col": 39,
+            "found": "協議",
+            "severity": "info",
+            "rule_type": "cross_strait",
+            "context": "@domain 網路"
+          },
+          {
+            "line": 40,
+            "col": 157,
+            "found": "通過",
+            "severity": "info",
+            "rule_type": "cross_strait",
+            "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」"
+          }
+        ]
+      }
+    },
+    "telemetry": {
+      "estimated_tokens_per_1k_chars": 0,
+      "estimated_llm_token_share": 0,
+      "estimated_tokens_per_ambiguous_term": null,
+      "cache_hit_count": 0,
+      "cache_miss_count": 0,
+      "tier2_local_resolutions": 0,
+      "raw": {
+        "input_chars": 2251,
+        "rule_hits": 7,
+        "ambiguous_terms": 0,
+        "llm_round_trips": 0,
+        "estimated_prompt_tokens": 0,
+        "estimated_completion_tokens": 0,
+        "final_fixes": 0
+      }
+    },
+    "summary_metrics": {
+      "deterministic_fixes": 7,
+      "heuristic_fixes": 0,
+      "llm_judged_fixes": 0,
+      "unresolved": 0,
+      "llm_calls": 0,
+      "llm_tokens": 0,
+      "confidence_distribution": {
+        "high": 7,
+        "medium": 0,
+        "low": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,999 @@
+{
+  "recorded_at": "2026-10-03T17:16:17.293666+00:00",
+  "main_merge": {
+    "pr": "https://github.com/fantasybz/medium-articles/pull/20",
+    "commit": "010cea2c60c0fb37ea8ff48e9629a4011fa31134"
+  },
+  "articles": [
+    {
+      "piece": "overview",
+      "label": "總論",
+      "title": "同一份規格，跑十次：我們憑什麼把一種交代變成團隊預設？",
+      "date": "2026-11-10",
+      "publish_at_utc": "2026-11-10T01:00:00Z",
+      "english_planned_date": "2026-11-12",
+      "time_zone": "Asia/Taipei",
+      "local_time": "09:00",
+      "cover": "diagram-01.png",
+      "preview_description": "一次成功之後，什麼證據才足以把一段自查設為團隊預設？從四十份程式與公開規格，分清需求、驗收與方法比較。",
+      "topics": [
+        "Software Testing",
+        "Code Review",
+        "AI",
+        "Software Engineering",
+        "Engineering Management"
+      ],
+      "notify_subscribers": true,
+      "english_status": "blocked: Claude weekly limit; no English draft produced",
+      "post_id": "6986ee29219e",
+      "remote_status": "scheduled and freshly verified",
+      "cover_image_id": "1*jC0_0qecKfj3A1RCRMyTjA.png",
+      "checks": {
+        "text_blocks": 174,
+        "links": 47,
+        "images": 7,
+        "dividers": 0
+      },
+      "language_checks": [
+        {
+          "path": "2026-11-same-spec-overview/article.md",
+          "sha256": "a621beab11a7b22d6a6798e1edbc3e931a9b041b7bebf50bbf1dad005e94d0c8",
+          "accepted": true,
+          "unchanged_response_text": true,
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 49
+          },
+          "private_result_sha256": "de301893c627152ad48b5e92d8261e2e9da83f72ef99103023ec928fabc36ccb"
+        },
+        {
+          "path": "2026-11-same-spec-overview/publish/medium-paste.md",
+          "sha256": "65d7f18bf7d826aa149c38fa317fcdcf2c7d2abb8c9436ccfbf4b8b56c12380d",
+          "accepted": true,
+          "unchanged_response_text": true,
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 49
+          },
+          "private_result_sha256": "e9299a3fb8da8903b354e41e1e61cc95d5bb7d9727a33aa9b88168841e6ad762"
+        }
+      ],
+      "remote_audit": {
+        "piece": "overview",
+        "post_id": "6986ee29219e",
+        "verified_at": "2026-10-03T17:11:14.576977+00:00",
+        "article_sha256": "a621beab11a7b22d6a6798e1edbc3e931a9b041b7bebf50bbf1dad005e94d0c8",
+        "paste_sha256": "65d7f18bf7d826aa149c38fa317fcdcf2c7d2abb8c9436ccfbf4b8b56c12380d",
+        "verification": "expected 174 text blocks, editor has 174\nlinks: 47, all present\nfigures: 7, each in its own slot\ndividers: 0, all accounted for\nall blocks match",
+        "editor_state": {
+          "figures": 7,
+          "imgs": 7,
+          "pending": 0,
+          "slots": 0
+        },
+        "schedule_utc": "2026-11-10T01:00:00Z",
+        "metadata_verified": true,
+        "payload_sha256": "4a1c202fc01935c2491070fb3e8245c0b7c23aad27857a7f6dcf72218b8f370b",
+        "remote_dump_sha256": "9b6c77e46c647ad376eeb33fe2d1146febcd78478759abe3222645ff750a98ac"
+      },
+      "metadata": {
+        "url": "https://medium.com/p/6986ee29219e/submission",
+        "id": "6986ee29219e",
+        "title": "同一份規格，跑十次：我們憑什麼把一種交代變成團隊預設？",
+        "isPublished": false,
+        "publishSchedule": {
+          "__typename": "PostPublishSchedule",
+          "publishAt": 1794272400000
+        },
+        "previewImage": {
+          "__typename": "ImageMetadata",
+          "id": "1*jC0_0qecKfj3A1RCRMyTjA.png",
+          "focusPercentX": null,
+          "focusPercentY": null,
+          "originalWidth": 664,
+          "originalHeight": 878,
+          "alt": null
+        },
+        "previewContent": {
+          "__typename": "PreviewContent",
+          "subtitle": "一次成功之後，什麼證據才足以把一段自查設為團隊預設？從四十份程式與公開規格，分清需求、驗收與方法比較。"
+        },
+        "topics": [
+          "Code Review",
+          "Software Testing",
+          "AI",
+          "Software Engineering",
+          "Engineering Management"
+        ],
+        "isPublishToEmail": true
+      }
+    },
+    {
+      "piece": "spec",
+      "label": "規格篇",
+      "title": "同一份規格，跑十次（一）：規格篇—先決定要什麼，再決定怎麼交代",
+      "date": "2026-11-17",
+      "publish_at_utc": "2026-11-17T01:00:00Z",
+      "english_planned_date": "2026-11-19",
+      "time_zone": "Asia/Taipei",
+      "local_time": "09:00",
+      "cover": "table-03.png",
+      "preview_description": "多寫一句話，可能是在解釋，也可能改了要求。對照 A0、A、B、C 原文，找出文件修改前必須作出的判斷。",
+      "topics": [
+        "Software Testing",
+        "Code Review",
+        "AI",
+        "Software Engineering",
+        "Engineering Management"
+      ],
+      "notify_subscribers": true,
+      "english_status": "blocked: Claude weekly limit; no English draft produced",
+      "post_id": "fc5ed5fce443",
+      "remote_status": "scheduled and freshly verified",
+      "cover_image_id": "1*zrftFORGuezSq0hjlRJ9QQ.png",
+      "checks": {
+        "text_blocks": 193,
+        "links": 62,
+        "images": 8,
+        "dividers": 0
+      },
+      "language_checks": [
+        {
+          "path": "2026-11-same-spec-spec/article.md",
+          "sha256": "a88eb70dcb70cdd72f8b5fb1eeb72095ca89caf8c1497493fde7c814eada95f1",
+          "accepted": true,
+          "unchanged_response_text": true,
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 43
+          },
+          "private_result_sha256": "535db5c91ec3861496a2a2dee84180fba4dff3caa33e0df8313332b139d2bec0"
+        },
+        {
+          "path": "2026-11-same-spec-spec/publish/medium-paste.md",
+          "sha256": "7e6dcf83333994105804d1b210e97bd05073d9061dfe20bc19430d4e868dd126",
+          "accepted": true,
+          "unchanged_response_text": true,
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 42
+          },
+          "private_result_sha256": "efb4e68d2f663d939b32ab964ee83b7e19dfb869e35c06b4e0faee8a18f38b80"
+        }
+      ],
+      "remote_audit": {
+        "piece": "spec",
+        "post_id": "fc5ed5fce443",
+        "verified_at": "2026-10-03T17:11:17.608475+00:00",
+        "article_sha256": "a88eb70dcb70cdd72f8b5fb1eeb72095ca89caf8c1497493fde7c814eada95f1",
+        "paste_sha256": "7e6dcf83333994105804d1b210e97bd05073d9061dfe20bc19430d4e868dd126",
+        "verification": "expected 193 text blocks, editor has 193\nlinks: 62, all present\nfigures: 8, each in its own slot\ndividers: 0, all accounted for\nall blocks match",
+        "editor_state": {
+          "figures": 8,
+          "imgs": 8,
+          "pending": 0,
+          "slots": 0
+        },
+        "schedule_utc": "2026-11-17T01:00:00Z",
+        "metadata_verified": true,
+        "payload_sha256": "106063d1a7ab724404479dac1da1f33ac22391ac913cda1a67e16a2fdd972447",
+        "remote_dump_sha256": "b835e56e01b87c1121827f6d4bb22dcd49b400d96e486d539b65778f2fa3c8cd"
+      },
+      "metadata": {
+        "url": "https://medium.com/p/fc5ed5fce443/submission",
+        "id": "fc5ed5fce443",
+        "title": "同一份規格，跑十次（一）：規格篇 — 先決定要什麼，再決定怎麼交代",
+        "isPublished": false,
+        "publishSchedule": {
+          "__typename": "PostPublishSchedule",
+          "publishAt": 1794877200000
+        },
+        "previewImage": {
+          "__typename": "ImageMetadata",
+          "id": "1*zrftFORGuezSq0hjlRJ9QQ.png",
+          "focusPercentX": null,
+          "focusPercentY": null,
+          "originalWidth": 1800,
+          "originalHeight": 668,
+          "alt": null
+        },
+        "previewContent": {
+          "__typename": "PreviewContent",
+          "subtitle": "多寫一句話，可能是在解釋，也可能改了要求。對照 A0、A、B、C 原文，找出文件修改前必須作出的判斷。"
+        },
+        "topics": [
+          "Software Testing",
+          "Code Review",
+          "AI",
+          "Software Engineering",
+          "Engineering Management"
+        ],
+        "isPublishToEmail": true
+      }
+    },
+    {
+      "piece": "contract",
+      "label": "契約篇",
+      "title": "同一份規格，跑十次（二）：契約篇—把要求變成驗收，中間還缺哪些判斷？",
+      "date": "2026-11-24",
+      "publish_at_utc": "2026-11-24T01:00:00Z",
+      "english_planned_date": "2026-11-26",
+      "time_zone": "Asia/Taipei",
+      "local_time": "09:00",
+      "cover": "diagram-01.png",
+      "preview_description": "要求寫好了，檢查就一定可信嗎？從三行輸入推導應有結果，再用刻意錯法與合法差異，檢查驗收工具看得見什麼。",
+      "topics": [
+        "Software Testing",
+        "Code Review",
+        "AI",
+        "Software Engineering",
+        "Engineering Management"
+      ],
+      "notify_subscribers": true,
+      "english_status": "blocked: Claude weekly limit; no English draft produced",
+      "post_id": "f7684c057c0e",
+      "remote_status": "scheduled and freshly verified",
+      "cover_image_id": "1*tAFGUekCIWEd6qayUszNuw.png",
+      "checks": {
+        "text_blocks": 226,
+        "links": 54,
+        "images": 7,
+        "dividers": 0
+      },
+      "language_checks": [
+        {
+          "path": "2026-11-same-spec-contract/article.md",
+          "sha256": "dbebd3e6d2193f80ffdae1bf217197be1e286dce4c05ff3f42b0bd674cbe9554",
+          "accepted": true,
+          "unchanged_response_text": true,
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 52
+          },
+          "private_result_sha256": "917d4926c7c5a879fac13f384a9eb284b4df6d7f210fc60eeb005dd2ce863533"
+        },
+        {
+          "path": "2026-11-same-spec-contract/publish/medium-paste.md",
+          "sha256": "0dcf2f5d05a071851e5d03700a5d7415a96e508b9d311a085eaafaf060c9503a",
+          "accepted": true,
+          "unchanged_response_text": true,
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 51
+          },
+          "private_result_sha256": "9d2ca3ca663c071da73326bf02c44349ea9e08d6fa81ac59ec699d26f195c058"
+        }
+      ],
+      "remote_audit": {
+        "piece": "contract",
+        "post_id": "f7684c057c0e",
+        "verified_at": "2026-10-03T17:11:20.643676+00:00",
+        "article_sha256": "dbebd3e6d2193f80ffdae1bf217197be1e286dce4c05ff3f42b0bd674cbe9554",
+        "paste_sha256": "0dcf2f5d05a071851e5d03700a5d7415a96e508b9d311a085eaafaf060c9503a",
+        "verification": "expected 226 text blocks, editor has 226\nlinks: 54, all present\nfigures: 7, each in its own slot\ndividers: 0, all accounted for\nall blocks match",
+        "editor_state": {
+          "figures": 7,
+          "imgs": 7,
+          "pending": 0,
+          "slots": 0
+        },
+        "schedule_utc": "2026-11-24T01:00:00Z",
+        "metadata_verified": true,
+        "payload_sha256": "28a710d31a80ae9ff623f6602255b64e659e059b3860c2fa329498671e3ba347",
+        "remote_dump_sha256": "a788616b5c054d986cff71b78d681591d1d42436a2c74b6e6428938089c5cd4d"
+      },
+      "metadata": {
+        "url": "https://medium.com/p/f7684c057c0e/submission",
+        "id": "f7684c057c0e",
+        "title": "同一份規格，跑十次（二）：契約篇 — 把要求變成驗收，中間還缺哪些判斷？",
+        "isPublished": false,
+        "publishSchedule": {
+          "__typename": "PostPublishSchedule",
+          "publishAt": 1795482000000
+        },
+        "previewImage": {
+          "__typename": "ImageMetadata",
+          "id": "1*tAFGUekCIWEd6qayUszNuw.png",
+          "focusPercentX": null,
+          "focusPercentY": null,
+          "originalWidth": 664,
+          "originalHeight": 582,
+          "alt": null
+        },
+        "previewContent": {
+          "__typename": "PreviewContent",
+          "subtitle": "要求寫好了，檢查就一定可信嗎？從三行輸入推導應有結果，再用刻意錯法與合法差異，檢查驗收工具看得見什麼。"
+        },
+        "topics": [
+          "Software Testing",
+          "Code Review",
+          "AI",
+          "Software Engineering",
+          "Engineering Management"
+        ],
+        "isPublishToEmail": true
+      }
+    },
+    {
+      "piece": "variance",
+      "label": "變異篇",
+      "title": "同一份規格，跑十次（三）：變異篇—十次都通過，下一筆證據該怎麼找？",
+      "date": "2026-12-01",
+      "publish_at_utc": "2026-12-01T01:00:00Z",
+      "english_planned_date": "2026-12-03",
+      "time_zone": "Asia/Taipei",
+      "local_time": "09:00",
+      "cover": "table-03.png",
+      "preview_description": "四種交代各十次全過，下一筆預算該用在哪裡？分清重複生成、換任務、補驗收與人工接手，各自能改變哪個決定。",
+      "topics": [
+        "Software Testing",
+        "Code Review",
+        "AI",
+        "Software Engineering",
+        "Engineering Management"
+      ],
+      "notify_subscribers": true,
+      "english_status": "blocked: Claude weekly limit; no English draft produced",
+      "post_id": "785ace43b955",
+      "remote_status": "scheduled and freshly verified",
+      "cover_image_id": "1*nZPshTbPutZ9hdLDeTx4hg.png",
+      "checks": {
+        "text_blocks": 198,
+        "links": 57,
+        "images": 7,
+        "dividers": 0
+      },
+      "language_checks": [
+        {
+          "path": "2026-11-same-spec-variance/article.md",
+          "sha256": "647eb6e48382cc26fbaa1b57e09c9e10304ba3907a389305b389761433ef0ff1",
+          "accepted": true,
+          "unchanged_response_text": true,
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 48
+          },
+          "private_result_sha256": "583d3604981af38faf81bcbc4c11cf210139a646b181882afaf70fee450976ea"
+        },
+        {
+          "path": "2026-11-same-spec-variance/publish/medium-paste.md",
+          "sha256": "b2b4ecad0417bfe659639e57344a5aa0f245a2de0fbd9c8cbdfb38033f7705c7",
+          "accepted": true,
+          "unchanged_response_text": true,
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 46
+          },
+          "private_result_sha256": "89acda1de51dca61950b50e33369a5c821ba034c5e1764b277bed75c557ccc52"
+        }
+      ],
+      "remote_audit": {
+        "piece": "variance",
+        "post_id": "785ace43b955",
+        "verified_at": "2026-10-03T17:11:23.310157+00:00",
+        "article_sha256": "647eb6e48382cc26fbaa1b57e09c9e10304ba3907a389305b389761433ef0ff1",
+        "paste_sha256": "b2b4ecad0417bfe659639e57344a5aa0f245a2de0fbd9c8cbdfb38033f7705c7",
+        "verification": "expected 198 text blocks, editor has 198\nlinks: 57, all present\nfigures: 7, each in its own slot\ndividers: 0, all accounted for\nall blocks match",
+        "editor_state": {
+          "figures": 7,
+          "imgs": 7,
+          "pending": 0,
+          "slots": 0
+        },
+        "schedule_utc": "2026-12-01T01:00:00Z",
+        "metadata_verified": true,
+        "payload_sha256": "106e58dd695396befbea80130b44aff153c28eb23ea46ed2ff1f2954f43ff45e",
+        "remote_dump_sha256": "91a645a25d0ac52722043ee0cf5040655b647e4f028aa8bf099b222b88b89349"
+      },
+      "metadata": {
+        "url": "https://medium.com/p/785ace43b955/submission",
+        "id": "785ace43b955",
+        "title": "同一份規格，跑十次（三）：變異篇 — 十次都通過，下一筆證據該怎麼找？",
+        "isPublished": false,
+        "publishSchedule": {
+          "__typename": "PostPublishSchedule",
+          "publishAt": 1796086800000
+        },
+        "previewImage": {
+          "__typename": "ImageMetadata",
+          "id": "1*nZPshTbPutZ9hdLDeTx4hg.png",
+          "focusPercentX": null,
+          "focusPercentY": null,
+          "originalWidth": 1630,
+          "originalHeight": 312,
+          "alt": null
+        },
+        "previewContent": {
+          "__typename": "PreviewContent",
+          "subtitle": "四種交代各十次全過，下一筆預算該用在哪裡？分清重複生成、換任務、補驗收與人工接手，各自能改變哪個決定。"
+        },
+        "topics": [
+          "Software Testing",
+          "Code Review",
+          "AI",
+          "Software Engineering",
+          "Engineering Management"
+        ],
+        "isPublishToEmail": true
+      }
+    }
+  ],
+  "link_code_image_checks": [
+    {
+      "piece": "overview",
+      "links": 47,
+      "ordered_destinations_equal": true,
+      "medium_redirects_unwrapped": 42,
+      "code_blocks": 3,
+      "code_whitespace_and_content_equal": true,
+      "images": [
+        {
+          "id": "1*x8nbYx7g4NdWi6G0zquUNg.png",
+          "width": 1800,
+          "height": 634,
+          "file": "table-01.png",
+          "local_sha256": "112247b582243b8b1960cdbab0801a159d52806698ab97bcc9a7cbe4337cc668"
+        },
+        {
+          "id": "1*jC0_0qecKfj3A1RCRMyTjA.png",
+          "width": 664,
+          "height": 878,
+          "file": "diagram-01.png",
+          "local_sha256": "167614011181c44762ca10de6a4cfa1edca18cdece8755604007274649d0d878"
+        },
+        {
+          "id": "1*tSRHsTu7AYZOj6-XiP4D6A.png",
+          "width": 1800,
+          "height": 538,
+          "file": "table-02.png",
+          "local_sha256": "474e040d63584d276764c893205b341b930428618eef80ba2800c983a788c6d1"
+        },
+        {
+          "id": "1*BZos8pbxBC0aThCzQ22iNw.png",
+          "width": 1682,
+          "height": 476,
+          "file": "table-03.png",
+          "local_sha256": "e5f92924f1d1f2c2b0b7bd39e5a97a6dd2dbad4c9ea572aea0206ce1df45167f"
+        },
+        {
+          "id": "1*iars1H8jinh5W3cV9UfKYA.png",
+          "width": 1800,
+          "height": 490,
+          "file": "table-04.png",
+          "local_sha256": "8fde47f07b28aca542f62108f598350d2bdb05f19a2e5f135564f843f3b999f8"
+        },
+        {
+          "id": "1*NHIwhZ9CREQa_AaFWfuUSg.png",
+          "width": 1800,
+          "height": 736,
+          "file": "table-05.png",
+          "local_sha256": "3346f0d8a99c4a7cad2bfb118d98682a09a8ca77f7f37b647bd5ae2753789979"
+        },
+        {
+          "id": "1*3539vVwlRPGg0-KEX6-aRw.png",
+          "width": 1800,
+          "height": 586,
+          "file": "table-06.png",
+          "local_sha256": "5afd01659d527df157572dd0d2f3840ba051a5c2272b0b2f19a6ab5381def130"
+        }
+      ],
+      "cover_matches_body_image": true
+    },
+    {
+      "piece": "spec",
+      "links": 62,
+      "ordered_destinations_equal": true,
+      "medium_redirects_unwrapped": 52,
+      "code_blocks": 5,
+      "code_whitespace_and_content_equal": true,
+      "images": [
+        {
+          "id": "1*oU_WpUCXFAfgGxQxOJfzvg.png",
+          "width": 1800,
+          "height": 764,
+          "file": "table-01.png",
+          "local_sha256": "e10ca79c5e11eeb270be99a36871d66a8d9053c74cf39bedafc18cb6fca59d91"
+        },
+        {
+          "id": "1*LpEHE-evcAULcSKDRutL5w.png",
+          "width": 1800,
+          "height": 928,
+          "file": "table-02.png",
+          "local_sha256": "bd12f97e63b317f86ff4c008bb6054c40f2bfd577c961df73df28883d3b3ecdd"
+        },
+        {
+          "id": "1*zrftFORGuezSq0hjlRJ9QQ.png",
+          "width": 1800,
+          "height": 668,
+          "file": "table-03.png",
+          "local_sha256": "7204fa5446abc8ace6f5f24adbf7a2e554416ce2c5b988db7f5f032356d68089"
+        },
+        {
+          "id": "1*f7LTzwDGI1QvcaVHTjGcgw.png",
+          "width": 1800,
+          "height": 764,
+          "file": "table-04.png",
+          "local_sha256": "3c4d1a3db073f5d88252e5336a06d85798181e86296cd56d5d724b86865b4551"
+        },
+        {
+          "id": "1*INzxSH2mabaxfvxMrAp7Mw.png",
+          "width": 1800,
+          "height": 490,
+          "file": "table-05.png",
+          "local_sha256": "d7fb3764119d6c8f7413ea3c5c8f1c00a54f2d011243434ff768e40501a60318"
+        },
+        {
+          "id": "1*4QsHaBcBxuycSPOGOu4DCQ.png",
+          "width": 1800,
+          "height": 1038,
+          "file": "table-06.png",
+          "local_sha256": "eba0762ea3286ddde61450d180c5a65700d4e73d6e826fa75c74af8177bb4cb9"
+        },
+        {
+          "id": "1*pWpw9y-cJ--p3QkYJEnszA.png",
+          "width": 1800,
+          "height": 730,
+          "file": "table-07.png",
+          "local_sha256": "475ea3f61fdeafddfd8be3696e12daddccd5fda9f46f023784fcd55835757db0"
+        },
+        {
+          "id": "1*eXXHusut10yUfridcinjCw.png",
+          "width": 1800,
+          "height": 778,
+          "file": "table-08.png",
+          "local_sha256": "0c4f3ffe9854d8fedfaaac7bd9a2b41aeaa06b02a4def63e9fd5d776c8d66046"
+        }
+      ],
+      "cover_matches_body_image": true
+    },
+    {
+      "piece": "contract",
+      "links": 54,
+      "ordered_destinations_equal": true,
+      "medium_redirects_unwrapped": 44,
+      "code_blocks": 15,
+      "code_whitespace_and_content_equal": true,
+      "images": [
+        {
+          "id": "1*XFszBI6N9nX3O12Hda4wqw.png",
+          "width": 1698,
+          "height": 476,
+          "file": "table-01.png",
+          "local_sha256": "2950ae5535f828e06856324be04c60c0701d6ef980b007250c96b586020c5c48"
+        },
+        {
+          "id": "1*Zyrd7c4HdEXSMD809G7zFA.png",
+          "width": 1800,
+          "height": 538,
+          "file": "table-02.png",
+          "local_sha256": "6b1514d7c8cfa3feb7bfc3002e9db4aa9dc82b34f7b64bfbd5816add22ddd128"
+        },
+        {
+          "id": "1*YipI4sJGxQ2HAy4xsq-tGw.png",
+          "width": 1784,
+          "height": 476,
+          "file": "table-03.png",
+          "local_sha256": "a091a485f21529e543accf3b523db0e6b6b63a7cb869712c9c9013bddfc5a2aa"
+        },
+        {
+          "id": "1*tAFGUekCIWEd6qayUszNuw.png",
+          "width": 664,
+          "height": 582,
+          "file": "diagram-01.png",
+          "local_sha256": "929aeafe8ff819aef7fb45f6f513a51b44d798effdab90269b2b933bc09530fa"
+        },
+        {
+          "id": "1*noIClsy3Vff39Gs_dzNV7A.png",
+          "width": 1634,
+          "height": 394,
+          "file": "table-04.png",
+          "local_sha256": "44f22365ff089c17c49169e35e5097c7c9c30a87926a902c1ead41707d1eee9e"
+        },
+        {
+          "id": "1*1X92oSJEaBdUzF8BeNL5Xg.png",
+          "width": 1800,
+          "height": 1168,
+          "file": "table-05.png",
+          "local_sha256": "61b1d95d810146c97beadda3957e790effbac5b2da5e4ea508d2637d84e83b2c"
+        },
+        {
+          "id": "1*bmf-icjkiZmnbJLPEVvgiA.png",
+          "width": 1800,
+          "height": 990,
+          "file": "table-06.png",
+          "local_sha256": "0194c32f6df516821565a1bff281904c874b34f54f2b68e05beb1da4dfe0fc88"
+        }
+      ],
+      "cover_matches_body_image": true
+    },
+    {
+      "piece": "variance",
+      "links": 57,
+      "ordered_destinations_equal": true,
+      "medium_redirects_unwrapped": 44,
+      "code_blocks": 2,
+      "code_whitespace_and_content_equal": true,
+      "images": [
+        {
+          "id": "1*fowN3dn7DbpVXyNji1Sq2A.png",
+          "width": 1800,
+          "height": 634,
+          "file": "table-01.png",
+          "local_sha256": "46f5f28a4572c987501c146fd5521e6004850bb8082e0f8c54ccc6800f3f4ee9"
+        },
+        {
+          "id": "1*9GPl-HCvnNKCsQYrqca5oQ.png",
+          "width": 1800,
+          "height": 668,
+          "file": "table-02.png",
+          "local_sha256": "717ea5c82bc84552a3243d6ecd4213baa1942649000f4c2eeecd77e3d98bcc5b"
+        },
+        {
+          "id": "1*nZPshTbPutZ9hdLDeTx4hg.png",
+          "width": 1630,
+          "height": 312,
+          "file": "table-03.png",
+          "local_sha256": "5af07c503b304f38c9f1124fbf4ee1a3cc5312d4159ba35428b70d4de64af8e1"
+        },
+        {
+          "id": "1*LqaUyBFIg9eFMlYxz7XDZA.png",
+          "width": 1800,
+          "height": 1024,
+          "file": "table-04.png",
+          "local_sha256": "994c59204c2a638e95ab00ef54a6e01d99ce612bb5e1e98080f4b59fc0cd99a3"
+        },
+        {
+          "id": "1*DMm7jGkbbVTdv4V3mJdwZQ.png",
+          "width": 1800,
+          "height": 826,
+          "file": "table-05.png",
+          "local_sha256": "416fc4ac18abf5e591a94b8c910bc4b064b611c401c6db50fd1064839aacb8ce"
+        },
+        {
+          "id": "1*ku21Z39VrjVfcmI4mAUn4w.png",
+          "width": 1800,
+          "height": 572,
+          "file": "table-06.png",
+          "local_sha256": "4fc3882a0e174ac6a788e881494dbd956e16e38b58efb43623672b8c8320e9fa"
+        },
+        {
+          "id": "1*854Rys8yNvCgRKLHskpLeg.png",
+          "width": 1800,
+          "height": 874,
+          "file": "table-07.png",
+          "local_sha256": "7d57ea6269fa25ef14e9ac8da6e0b35cda4330f338e05d3bde33ddaea21324a1"
+        }
+      ],
+      "cover_matches_body_image": true
+    }
+  ],
+  "content_invariants": [
+    {
+      "piece": "overview",
+      "code_and_mermaid_unchanged": true,
+      "tables_unchanged": true,
+      "image_count": 7,
+      "all_image_bytes_unchanged": true,
+      "relative_article_links": 0
+    },
+    {
+      "piece": "spec",
+      "code_and_mermaid_unchanged": true,
+      "tables_unchanged": true,
+      "image_count": 8,
+      "all_image_bytes_unchanged": true,
+      "relative_article_links": 0
+    },
+    {
+      "piece": "contract",
+      "code_and_mermaid_unchanged": true,
+      "tables_unchanged": true,
+      "image_count": 7,
+      "all_image_bytes_unchanged": true,
+      "relative_article_links": 0
+    },
+    {
+      "piece": "variance",
+      "code_and_mermaid_unchanged": true,
+      "tables_unchanged": true,
+      "image_count": 7,
+      "all_image_bytes_unchanged": true,
+      "relative_article_links": 0
+    }
+  ],
+  "mcp_config": {
+    "content_type": "markdown",
+    "fix_mode": "none",
+    "fix_output": "search_replace",
+    "profile": "strict",
+    "translationese_domain": "technical",
+    "detect_ai": true,
+    "ai_threshold": "low",
+    "detect_translationese": true,
+    "consistency": true,
+    "detect_style": true,
+    "explain": true,
+    "include_stats": true,
+    "include_telemetry": true,
+    "verify": true,
+    "max_errors": 0,
+    "max_warnings": 0,
+    "output": "full",
+    "ignore_terms": [
+      "通過"
+    ],
+    "glossary": {
+      "proper_nouns": [
+        "Can your AI agent be cheaper?"
+      ]
+    }
+  },
+  "mcp_info_review": "No new issue signatures relative to the reviewed 2026-10-03 public-link pass. Previous contextual adjudication retained; no ignore list expansion.",
+  "english_attempts": [
+    {
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "cli_version": "2.1.283 (Claude Code)",
+      "started_at": "2026-10-03T16:32:38.930515+00:00",
+      "finished_at": "2026-10-03T16:32:41.395105+00:00",
+      "success": false,
+      "exit_code": 1,
+      "assistant_models": [
+        "<synthetic>"
+      ],
+      "error_result": "You've hit your weekly limit · resets 10am (Asia/Taipei)",
+      "prompt_sha256": "862d79d6853cc3279ce6d40ff13b7da5b27053b264d72189b0dc4b7a8c5280a9",
+      "job": "translate-contract-max"
+    },
+    {
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "cli_version": "2.1.283 (Claude Code)",
+      "started_at": "2026-10-03T16:32:38.930561+00:00",
+      "finished_at": "2026-10-03T16:32:41.382611+00:00",
+      "success": false,
+      "exit_code": 1,
+      "assistant_models": [
+        "<synthetic>"
+      ],
+      "error_result": "You've hit your weekly limit · resets 10am (Asia/Taipei)",
+      "prompt_sha256": "3e7176a2495dcf3c712707781beeecab459fbabbe0d299f51524e0ebe2fdd3b4",
+      "job": "translate-overview-max"
+    },
+    {
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "cli_version": "2.1.283 (Claude Code)",
+      "started_at": "2026-10-03T16:32:38.930516+00:00",
+      "finished_at": "2026-10-03T16:32:41.391028+00:00",
+      "success": false,
+      "exit_code": 1,
+      "assistant_models": [
+        "<synthetic>"
+      ],
+      "error_result": "You've hit your weekly limit · resets 10am (Asia/Taipei)",
+      "prompt_sha256": "299a95360f8189c5c8b5813bf15281a685dd891a3c5597b46d460217a905aba0",
+      "job": "translate-spec-max"
+    },
+    {
+      "requested_model": "claude-opus-5-5",
+      "requested_effort": "max",
+      "cli_version": "2.1.283 (Claude Code)",
+      "started_at": "2026-10-03T16:32:38.930521+00:00",
+      "finished_at": "2026-10-03T16:32:41.382601+00:00",
+      "success": false,
+      "exit_code": 1,
+      "assistant_models": [
+        "<synthetic>"
+      ],
+      "error_result": "You've hit your weekly limit · resets 10am (Asia/Taipei)",
+      "prompt_sha256": "2417bd34befb0f292a1c4d88abf7dbe72d9bebe4b8a4442e745bff228b781ebc",
+      "job": "translate-variance-max"
+    }
+  ],
+  "formal_archive": {
+    "files": 317,
+    "index_sha256": "534434650fbd4070f9304ba79bb58d61245fdb94a259af430ea9e5f8ae5c995a",
+    "modified": false
+  },
+  "testing": {
+    "merge_pass": {
+      "publishing": 301,
+      "research": 121,
+      "payment": 21,
+      "study": 83
+    },
+    "final_pass": [
+      {
+        "suite": "tools",
+        "tests": 301,
+        "exit_code": 0,
+        "seconds": 72.016,
+        "log_sha256": "2b5f6871654459bf6e9976a33262aa6f4c57f21b123dec9bb7b86bd1724eb9f6"
+      },
+      {
+        "suite": "research",
+        "tests": 121,
+        "exit_code": 0,
+        "seconds": 6.529,
+        "log_sha256": "3f282dbb6b1d7b6519973ae30b3d0946ade9e83d77439c54d5564706cf182e91"
+      },
+      {
+        "suite": "payment",
+        "tests": 21,
+        "exit_code": 0,
+        "seconds": 1.809,
+        "log_sha256": "3f3a49108fe31169baa07da4faa1b2f445924682d60ce343742fee385d6532d5"
+      },
+      {
+        "suite": "archive",
+        "files": 317,
+        "passed": true
+      }
+    ]
+  },
+  "limitations": [
+    "Scheduled is not published.",
+    "No English draft or English schedule exists.",
+    "No new study trials or human-cost observations were added.",
+    "This publication pass is not a new independent Claude manuscript review."
+  ],
+  "documentation_checks": [
+    {
+      "path": "research/2026-10/same-spec-ten-runs/publication-2026-10-04.md",
+      "scope": "full document",
+      "sha256": "a352a0159df18d7c8e9b6120c5f6b2f2f70522bf073ebcc80acaee38f79534d3",
+      "checked_text_sha256": "a352a0159df18d7c8e9b6120c5f6b2f2f70522bf073ebcc80acaee38f79534d3",
+      "accepted": true,
+      "unchanged_response_text": true,
+      "summary": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 5
+      },
+      "private_result_sha256": "95735786032007fa7c436363ff94875b361cc024528df2d731baa470ea430a93"
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+      "scope": "full document",
+      "sha256": "7f6174ffd7040c7fdb3ece89f80331f2276b59f472787891b443dc58c709f96e",
+      "checked_text_sha256": "7f6174ffd7040c7fdb3ece89f80331f2276b59f472787891b443dc58c709f96e",
+      "accepted": true,
+      "unchanged_response_text": true,
+      "summary": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 5
+      },
+      "private_result_sha256": "ae6387f0f011d8a09aa47df413a2fe7321f1e2045329452892f03de7479f089e"
+    },
+    {
+      "path": "2026-11-same-spec-contract/publish/PUBLISHED.md",
+      "scope": "full document",
+      "sha256": "438baa05e4a1226a41bedb40f683b4206b3d3d12e92489249e1fae939a846c9b",
+      "checked_text_sha256": "438baa05e4a1226a41bedb40f683b4206b3d3d12e92489249e1fae939a846c9b",
+      "accepted": true,
+      "unchanged_response_text": true,
+      "summary": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 2
+      },
+      "private_result_sha256": "d0bc045b2b6bf92d4e5c52a61f4773054c383fcd428214b5e6c5f3127c5aef3f"
+    },
+    {
+      "path": "2026-11-same-spec-overview/publish/PUBLISHED.md",
+      "scope": "full document",
+      "sha256": "2a616ddf3704ece6dee99be73b343fe601b6c59d043a2bfd3c1be31ed192e945",
+      "checked_text_sha256": "2a616ddf3704ece6dee99be73b343fe601b6c59d043a2bfd3c1be31ed192e945",
+      "accepted": true,
+      "unchanged_response_text": true,
+      "summary": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 2
+      },
+      "private_result_sha256": "f12f65e8e9c146b4fc18f949c33fe8768f083c8206a9b86972abe4d4fbf4fa85"
+    },
+    {
+      "path": "2026-11-same-spec-spec/publish/PUBLISHED.md",
+      "scope": "full document",
+      "sha256": "4d1fc39e3432666fb4208e9f90a90bc64ed6f03955545cd5cc034a0804f4bf33",
+      "checked_text_sha256": "4d1fc39e3432666fb4208e9f90a90bc64ed6f03955545cd5cc034a0804f4bf33",
+      "accepted": true,
+      "unchanged_response_text": true,
+      "summary": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 3
+      },
+      "private_result_sha256": "66427b685947918f59b50d4e3c3bc702626f2ea5745d767e73784c17fb61010f"
+    },
+    {
+      "path": "2026-11-same-spec-variance/publish/PUBLISHED.md",
+      "scope": "full document",
+      "sha256": "df6344fda0d8145481d257470fe5468c85e5a7d8a9963f0219af4cd0d54587d7",
+      "checked_text_sha256": "df6344fda0d8145481d257470fe5468c85e5a7d8a9963f0219af4cd0d54587d7",
+      "accepted": true,
+      "unchanged_response_text": true,
+      "summary": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 4
+      },
+      "private_result_sha256": "d2081c76e8b1c7e6321e1623e2b8114d0884083f81e9cb266564bc6f1f85689f"
+    },
+    {
+      "path": "research/TOPICS.md",
+      "scope": "added or changed lines only",
+      "sha256": "4bcf451ff62e9762e6fc14230112e1ea810ce02061445a6aaba911431e8c1ac7",
+      "checked_text_sha256": "b67d41dde6867378a7de6aae714663e180f5237c0ef740cd860696f033a76e68",
+      "accepted": true,
+      "unchanged_response_text": true,
+      "summary": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 2
+      },
+      "private_result_sha256": "349b310c277211890ca7226132d566b4e17a580de376fd48cc571a5558ecb3b8"
+    },
+    {
+      "path": "README.md",
+      "scope": "added or changed lines only",
+      "sha256": "3cb6e43a1de729bbc59fd378ee133d7b95577995c7f63958c08627242cfffebe",
+      "checked_text_sha256": "b2786aa533a2501325c301887b2bfa2269975f9883d2d94b4a56810f5689790e",
+      "accepted": true,
+      "unchanged_response_text": true,
+      "summary": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 1
+      },
+      "private_result_sha256": "01403b2bb375a2d8713d3e77c1f8a011c0dc19d3efa0effb20fb6034ea86114f"
+    },
+    {
+      "path": "PUBLISHING.md",
+      "scope": "added or changed lines only",
+      "sha256": "cc7f2932b46239e30f0e496243bfc422ac91ffa5ab25cff4558cb07286870738",
+      "checked_text_sha256": "9595dad045350286955d79136c40de2b577d84ab753a8575ee40ef5e7b0d17cd",
+      "accepted": true,
+      "unchanged_response_text": true,
+      "summary": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 0
+      },
+      "private_result_sha256": "3662c20f68d5e4b08a123245a50dcb0d0c45010ee15db425939c9a6fc94f2eaa"
+    },
+    {
+      "path": "research/README.md",
+      "scope": "added or changed lines only",
+      "sha256": "3d1d75f69149f326c1f3960461136d7f7b6913e8bdb8018d0c532fec22d1c930",
+      "checked_text_sha256": "076d4944743e3043b36fd45ab91364727105e724c07017cb3c0a01a58be338e8",
+      "accepted": true,
+      "unchanged_response_text": true,
+      "summary": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 0
+      },
+      "private_result_sha256": "5fcd578a7fafb71bc56941991bea1fda452a1b97317cdfc536e68ae50256778f"
+    }
+  ],
+  "documentation_check_scope": "Full current publication report, manuscript status, and four publication ledgers; only newly added or changed lines in four shared index/workflow files. Older unrelated content was not re-certified.",
+  "documentation_info_review": "Retained pass-result terminology, recorded metadata/proper titles, protocol identifiers and reporting-status distinctions after contextual review; no ignore-list expansion.",
+  "updated_at": "2026-10-03T17:28:14.230695+00:00",
+  "schedule_calendar_screenshot": {
+    "private_path": ".context/same-spec-ten-runs/publish-2026-10-04/medium-schedule-november.png",
+    "sha256": "c7eba2ca97c3fc87329aa61c129e58be2004db80def01187987ce49163e0924a",
+    "observed": "November 2026 calendar shows prior-series payment posts on November 3 and 5, then the four Chinese posts on November 10, 17, 24 and December 1; English slots for this series remain empty."
+  }
+}

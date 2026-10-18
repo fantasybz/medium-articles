@@ -1,0 +1,66 @@
+{
+  "source_commit": "37f6c0ce9b536f95132d5e01a387f380bbb9639c",
+  "source_path": "research/scripts/codex_jsonl.py",
+  "source_sha256": "4949ff55184cbfd3cbd0c8add632a6382ec4b5e6ec2240ca88018443370e6afb",
+  "evidence_kind": "trusted unchanged repository baseline bug reproduction; not candidate study data",
+  "cases": [
+    {
+      "name": "array_root",
+      "input_text": "[]\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+      "returncode": 1,
+      "stdout": "",
+      "stderr_exception": "AttributeError: 'list' object has no attribute 'get'"
+    },
+    {
+      "name": "null_root",
+      "input_text": "null\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+      "returncode": 1,
+      "stdout": "",
+      "stderr_exception": "AttributeError: 'NoneType' object has no attribute 'get'"
+    },
+    {
+      "name": "number_root",
+      "input_text": "123\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+      "returncode": 1,
+      "stdout": "",
+      "stderr_exception": "AttributeError: 'int' object has no attribute 'get'"
+    },
+    {
+      "name": "null_item",
+      "input_text": "{\"type\": \"item.completed\", \"item\": null}\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+      "returncode": 1,
+      "stdout": "",
+      "stderr_exception": "AttributeError: 'NoneType' object has no attribute 'get'"
+    },
+    {
+      "name": "null_usage",
+      "input_text": "{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": null}\n",
+      "returncode": 1,
+      "stdout": "after\n",
+      "stderr_exception": "AttributeError: 'NoneType' object has no attribute 'get'"
+    },
+    {
+      "name": "number_text",
+      "input_text": "{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": 123}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+      "returncode": 0,
+      "stdout": "123\n\n<!-- tokens: in 10 out 5 -->\n",
+      "stderr": "",
+      "stderr_exception": ""
+    },
+    {
+      "name": "number_command",
+      "input_text": "{\"type\": \"item.completed\", \"item\": {\"type\": \"command_execution\", \"command\": 123}}\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+      "returncode": 1,
+      "stdout": "",
+      "stderr_exception": "TypeError: 'int' object is not subscriptable"
+    },
+    {
+      "name": "number_item_error_message",
+      "input_text": "{\"type\": \"item.completed\", \"item\": {\"type\": \"error\", \"message\": 123}}\n{\"type\": \"item.completed\", \"item\": {\"type\": \"agent_message\", \"text\": \"after\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 10, \"output_tokens\": 5}}\n",
+      "returncode": 1,
+      "stdout": "",
+      "stderr_exception": "TypeError: can only concatenate str (not \"int\") to str"
+    }
+  ],
+  "note": "Exception last lines retained; local traceback paths omitted. Re-run the inputs against seed/codex_jsonl.py to reproduce."
+}

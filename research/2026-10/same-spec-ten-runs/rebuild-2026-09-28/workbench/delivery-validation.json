@@ -1,0 +1,30 @@
+{
+  "verified_at_utc": "2026-09-27T17:05:17.256664+00:00",
+  "scope": "trusted-fixture teaching delivery, no formal study change",
+  "workbench_checks_passed": 26,
+  "oracle_unit_tests_passed": 3,
+  "fixtures": {
+    "reference": 1,
+    "known_faults": 6,
+    "legal_variations": 1
+  },
+  "frozen_archive_files_checked": 317,
+  "frozen_archive_mismatches": [],
+  "local_markdown_links": "all resolve",
+  "whitespace": "git diff --no-index --check emits no diagnostics; code 1 denotes new-file difference",
+  "current_code_matches_run_sha256": true,
+  "historical_code_matches_run_sha256": true,
+  "files_sha256": {
+    "test_workbench.py": "20746b5bb8c6f4974219642abc171ad227b0788c5df27dc895569ea57c44cb72",
+    "observed-results.json": "5b5be34932498b9ff2d081c21a3b6ea565b83464a19abde69a2f0307ab115c4c",
+    "writer-facts.md": "315848d63e90322f90247f192b0ac42c863a17b752ddafa3ff2bff116538a0ad",
+    "README.md": "481e3941a640f2ad957aca5ededab9627a6c0f73adf2bcaf04edc6973f208af2",
+    "workbench.py": "2ef3e7c87fb9f62e06f82911055af8e7d277dec2225a0a8ebdca589826a645b9",
+    "RESULTS.md": "fc28562017640e4ec77b9a96abd3b963ba79f79d3216b75bc9f28a8dcafb688d",
+    ".gitignore": "32dae3052f331ee34d628ef535709b301259a45df7c7522c4d35dcf49873f00b",
+    "obligations.md": "7456146671adeddb35864c43179f8492eb0785ea951aa05e0454241510591ad9",
+    "oracle-test-validation.json": "8cf84e2b29d57b55a4083933586218fd360e6287830d462a46f4d74050e33019",
+    "runs/initial-results.json": "12032a216ffc0c406915879e8280c1c613adbe6f2842104dd6be5279aa4fb116",
+    "runs/initial-workbench.py.txt": "7c7ecdfae88789976bb4e17b35dbacd22e43d69dc2a1d3c4cd87c3c6fd0c149a"
+  }
+}

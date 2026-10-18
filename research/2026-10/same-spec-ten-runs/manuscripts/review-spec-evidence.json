@@ -1,0 +1,456 @@
+{
+  "schema_version": 1,
+  "reviewed_at_utc": "2026-09-25T08:45:43.211547+00:00",
+  "reviewer": "Codex evidence lens /root/series_evidence_review",
+  "verdict": "EVIDENCE_MINOR_REVISION_SPEC_ONLY",
+  "scope": "完整閱讀規格篇標題、TL;DR、六節、系列導覽、References、AI 協作說明與署名。",
+  "spec_evidence_ready": false,
+  "series_ready": false,
+  "published": false,
+  "manuscript": {
+    "path": "2026-11-same-spec-spec/article.md",
+    "sha256": "829017b621e70355979aa9ad6dc8830842fed52c74f00c95bbae53e52cedb8e6",
+    "full_read_sha256": "829017b621e70355979aa9ad6dc8830842fed52c74f00c95bbae53e52cedb8e6",
+    "line_count": 194,
+    "bytes": 35738
+  },
+  "open_findings": [
+    {
+      "id": "SPEC-E01",
+      "severity": "minor",
+      "lines": [
+        125
+      ],
+      "summary": "累加設計的限制寫得略廣，容易被讀成任何個別成分差異都不能估。",
+      "quote": "這樣的設計無法把效果拆給個別成分，也估不出成分之間的交互作用",
+      "evidence": "凍結 protocol 第 126–128 行明定本輪沒有組間 contrast estimator 或假說檢定。這是本研究分析範圍；累加設計在另訂分析時仍可估相鄰條件的條件性差異，例如在 B 內容之上加入 C pattern，但不能分離各成分跨組合的獨立效果或完整交互作用。",
+      "recommendation": "改成「本輪沒有估計組間差值；這種逐組累加的配置，也不能分離各成分在不同組合下的獨立效果或完整交互作用。」或同義限定。",
+      "status": "open"
+    }
+  ],
+  "open_counts": {
+    "blocker": 0,
+    "major": 0,
+    "minor": 1
+  },
+  "checks": [
+    {
+      "id": "SE01",
+      "lines": [
+        3,
+        17,
+        19,
+        20,
+        21,
+        24,
+        26,
+        159
+      ],
+      "topic": "真實缺陷與例示",
+      "evidence": "基底固定 commit、root []／null crash 與 numeric text 123 exit 0 均有凍結紀錄。本文 12／3 token 例子明標非原始重現字串，修補後 exit 6 明標由 R05、R08、R11 推導。結語沒有虛構事故或親歷情境。",
+      "sources": [
+        "baseline:8–19,43–48",
+        "seed:39,43–45",
+        "requirements:69,102,135"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SE02",
+      "lines": [
+        28,
+        30,
+        109,
+        117,
+        190
+      ],
+      "topic": "生成設定、名額與寫作分界",
+      "evidence": "40 名額、每組 10、Opus 5.5 high、CLI 2.1.282、tool-free 與生成後統一評測符合 manifest。主寫 max 另由 invocation／assembly 證明，沒有把寫作 effort 或費用混入正式生成。",
+      "sources": [
+        "manifest",
+        "summary",
+        "assembly"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SE03",
+      "lines": [
+        38,
+        40,
+        44,
+        45,
+        46,
+        47,
+        48,
+        50,
+        52,
+        54
+      ],
+      "topic": "exit 與歷史語義",
+      "evidence": "舊 exit 5 以 truthiness 記錄發言的事實與修補後非空字串判準已分開。3 → 6 → 4 → 5 → 0、逐行繼續、turn.failed 例外、三條原 stderr 摘要與 exit 6 無摘要均符合凍結要求和測試案例。",
+      "sources": [
+        "seed:43–45,62–71",
+        "requirements:124,135,146",
+        "evaluator:213–220"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SE04",
+      "lines": [
+        62,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        80
+      ],
+      "topic": "R01–R13 摘要表",
+      "evidence": "逐條核對未見反向規則。R10 已保留 error:null 例外，R03 例外明指失敗狀態與 stderr。表前明說只是摘要、不能只照表實作，完整格式仍以凍結規格為準。",
+      "sources": [
+        "requirements",
+        "A0",
+        "A"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SE05",
+      "lines": [
+        82,
+        84,
+        86,
+        88,
+        90,
+        92,
+        94
+      ],
+      "topic": "相容性、語義等價與驗收覆蓋",
+      "evidence": "非 JSON 文字略過、未知字串 type 不驗 payload、重複事件相容均正確；作者理由與規格原文分開。A0/A CLI 措辭差異具體揭露，不將 ID／hash 當語義等價證明。literal main／額外 CLI 選項未逐一驗證的限制保留。",
+      "sources": [
+        "A:15–19,29–33,129–133",
+        "A0:7,55",
+        "evaluator:240–349",
+        "wording_caveat"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SE06",
+      "lines": [
+        100,
+        104,
+        105,
+        106,
+        107,
+        111,
+        113,
+        115,
+        123
+      ],
+      "topic": "A/B/C 累加內容與 C 範圍",
+      "evidence": "A/B/C 前綴關係、理由與自查清單、可選純文字 pattern 都符合 packet。B/C 明文不增規範要求且繼承 A 的 CLI 限制，C 未冒充原生 Skill，malformed turn.failed 的失敗訊號也保留。",
+      "sources": [
+        "B:135–150",
+        "C:152–173",
+        "wording_caveat"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SE07",
+      "lines": [
+        3,
+        30,
+        117,
+        119,
+        121,
+        123,
+        157
+      ],
+      "topic": "10／10 與區間",
+      "evidence": "四組 accepted 均 10／10，雙側 95% Clopper–Pearson 下界 0.6915028921812392，捨入 69.15%。沒有當成下輪保證、已證等效或可靠度勝負；共同通過機率與獨立性假設亦保留。",
+      "sources": [
+        "summary",
+        "protocol:118–128"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SE08",
+      "lines": [
+        125
+      ],
+      "topic": "每組正規化 AST 不同",
+      "evidence": "每組 unique_normalized_ast_hashes 均為 10，引用變異篇展開；沒有把 hash 差異改稱品質或維護成本。",
+      "sources": [
+        "summary"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SE09",
+      "lines": [
+        133,
+        135,
+        143,
+        182
+      ],
+      "topic": "A1 成本研究",
+      "evidence": "5 tasks × 12 specs × 3 efforts × 15 repeats＝2,700；正式分析排除 oracle、11 規格。bare user story 相對 full 成本 +29.7%，90% credible interval +5.1–58.7%，95% −0.3–66.8% 含零，方向和數值正確。單一 Kimi K3、mini-swe-agent、按同一價目表估價，未泛化為跨模型 token 比例。資訊移除與本輪介入不同的限制保留。",
+      "sources": [
+        "A1_snapshot:§3.1–3.3,§4.1,Appendix C/E",
+        "evidence_audit:15–26"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SE10",
+      "lines": [
+        137,
+        139,
+        183
+      ],
+      "topic": "A5 prompt/effort/harness",
+      "evidence": "核心 24 deterministic tasks、18 variants、4,644 valid runs 正確；語意要求與逐字重述區分，effort 依 harness policy 改變的限定對應 §3／§6.1。小任務與架構覆蓋不足的限制保留，沒有混入另一個 hard-task campaign 的數字。",
+      "sources": [
+        "A5_snapshot:§2–3,§6.1,§11",
+        "evidence_audit:68–79"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SE11",
+      "lines": [
+        141,
+        143,
+        145,
+        190
+      ],
+      "topic": "本輪成本、cache 與人力空白",
+      "evidence": "四組總成本相加為 5.692342，文章約 5.69；A0 1.248397→1.25、C 1.547817→1.55；wall 中位數 37.16–40.28 秒，約 37–40；cache read 全 0，creation 順序 A0/A/B/C 遞增。均標 CLI 牌價而非帳單，不含研究／寫作／pilot，未推 ROI、人時或跨任務效果。",
+      "sources": [
+        "summary",
+        "protocol:143–149"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SE12",
+      "lines": [
+        147,
+        149,
+        184
+      ],
+      "topic": "修訂版本與 SaltBench",
+      "evidence": "usage:null 變更是明標假設與作者建議，沒有聲稱已執行新規格。SaltBench 的 freeze／dated appended amendments 只用來支持紀錄方式；同時說明原研究有隔離缺口，沒有將其視為完美保護證据。",
+      "sources": [
+        "A4_snapshot:§2.1,§3.2",
+        "evidence_audit:54–66"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SE13",
+      "lines": [
+        11,
+        115,
+        135,
+        159,
+        185,
+        186
+      ],
+      "topic": "系列 recall",
+      "evidence": "Harness 第 115 行支持 golden tasks；第 94 行支持文件指引與強制執行分界；第 75–76 行支持資訊用途與 100 行僅為維護建議。green 可靠度第 527 行的引文逐字可對，並標尚待發布，沒有把排程當已發布。",
+      "sources": [
+        "harness_article:75–76,94,115",
+        "reliability_article:527",
+        "recall_report"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SE14",
+      "lines": [
+        3,
+        13,
+        90,
+        92,
+        125,
+        143,
+        155,
+        157,
+        159,
+        161,
+        163
+      ],
+      "topic": "開頭與結語一致",
+      "evidence": "從 123 假成功回到明確要求；結論交付核對方法與有限觀測，沒有從相同結果推成規格無用。CLI 措辭 caveat 在 TL;DR、§3、§4、成本比較與結語均維持，未重新宣稱已證純措辭效果。作者下一步建議與實驗發現有分開。",
+      "sources": [
+        "wording_caveat",
+        "requirements",
+        "summary"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "SE15",
+      "lines": [
+        178,
+        180,
+        181,
+        182,
+        183,
+        184,
+        185,
+        186,
+        190,
+        192,
+        194
+      ],
+      "topic": "References、AI 協作與署名",
+      "evidence": "來源版本與章節回指正確；研究附件明說僅本機，署名未宣稱已刊登。主寫 max、實驗 high、設計審查 xhigh 分開；AI 審查未冒充真人盲審或外部重現。MCP／多角度品質完成狀態指向動態紀錄，沒有由本報告代簽。",
+      "sources": [
+        "assembly",
+        "evidence_audit",
+        "recall_report"
+      ],
+      "status": "pass"
+    }
+  ],
+  "source_bindings": {
+    "requirements": {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json",
+      "sha256": "32e0a0af2578564624b5a5b5f9d981e0dc296e6eb690b6598482cb809419a515"
+    },
+    "A0": {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+      "sha256": "a747ae3abd880f77227e7492e8a2e6d6346637a39b1e64366bc435dd772b4a10"
+    },
+    "A": {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+      "sha256": "3ea6d57daae7dba9d3ceb6327607ee60ccaed3bd4193e5ec7c79441ad36bc247"
+    },
+    "B": {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+      "sha256": "c10ef7256aadc46816e73b1bbaf7edc26b5d2719e687ff497ff5005062ff8a3b"
+    },
+    "C": {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md",
+      "sha256": "19c404372f742c8f80165fdfea8df998bb29c3324f892433c8992e418e9c54af"
+    },
+    "seed": {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/seed/codex_jsonl.py",
+      "sha256": "4949ff55184cbfd3cbd0c8add632a6382ec4b5e6ec2240ca88018443370e6afb"
+    },
+    "baseline": {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/baseline-reproduction.json",
+      "sha256": "50b4cf407ec4502e746fdc43ba4dd7b2c8b175444c21ed7a40a7ad85c5f6930f"
+    },
+    "evaluator": {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/evaluator.py",
+      "sha256": "443b47cc93ca1559293a6025472696eee8351a25cb8486e09ee682bcfd29508a"
+    },
+    "manifest": {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/manifest.json",
+      "sha256": "ba30398118ecde62b2f682884c1e882b2864c22d70faf99549ceab0d7c0a55f2"
+    },
+    "summary": {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json",
+      "sha256": "8198a4478b8158268298960576655d920db3b8d2dc2bd207348dcef8a346dfb9"
+    },
+    "protocol": {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/PROTOCOL.md",
+      "sha256": "94af80dc28a933e18e03c53deb088b9a22161c1d39c296a929efcef3ed977a58"
+    },
+    "evidence_audit": {
+      "path": "research/2026-10/same-spec-ten-runs/evidence-audit.md",
+      "sha256": "e165f88daf73e3c4ed9fb94b697767f1197a03ceec105049018771aa1648eb86"
+    },
+    "A1_snapshot": {
+      "path": ".context/same-spec-ten-runs/sources/2608.25399v1.txt",
+      "sha256": "4b91f67f074a10527e52be6fb52e6f9a38c6dfb4566a9974530e2ee1ed47704e"
+    },
+    "A5_snapshot": {
+      "path": ".context/same-spec-ten-runs/sources/2608.01347v6.txt",
+      "sha256": "a9af7ff769f41dff35eefe37d4bcdad7efdb88487ca166670192c0f341c91ad5"
+    },
+    "A4_snapshot": {
+      "path": ".context/same-spec-ten-runs/sources/2609.11076v1.txt",
+      "sha256": "fe75b652a5685f3dda94fbd36bd4585d3bf0534fd06b5599c0e16dc64a2ba046"
+    },
+    "recall_report": {
+      "path": ".context/same-spec-ten-runs/manuscripts/recall-source-check.md",
+      "sha256": "4f124fd1f9f90ba9f8e161018902fe21c45391fcc5a9cb83906e85a4272473e4"
+    },
+    "harness_article": {
+      "path": "2026-10-agentic-harness-blueprint/article.md",
+      "sha256": "6742ef7f89c770df640a755e3acbccd6fef2f0929f0622313cfee76b66635218"
+    },
+    "reliability_article": {
+      "path": "2026-10-green-reliability/article.md",
+      "sha256": "0ed617a1ef4f9dce06aeb62ef939b1650e1ca0e45c3c9efa6e1600ede639ab37"
+    },
+    "wording_caveat": {
+      "path": "research/2026-10/same-spec-ten-runs/manuscripts/packet-wording-caveat.md",
+      "sha256": "96e7ab484df0564d3ddfb5396216c0c63da83e22bf47fa0c251ecf362bf60490"
+    },
+    "assembly": {
+      "path": ".context/same-spec-ten-runs/manuscripts/spec-assembly.json",
+      "sha256": "1ff8b80a9d2346935eb0a49a5529f40059038510e9fe1cd0eb43a2506250deba"
+    }
+  },
+  "writer_provenance_check": {
+    "source_segments": [
+      {
+        "path": ".context/same-spec-ten-runs/manuscripts/resume-spec-tail/prefix.md",
+        "sha256": "bc062efda0e9071c9763574797fd262da15d1f148e7d9b2b87d45d338117ae90",
+        "origin": "draft-spec partial text, trailing incomplete paragraph removed",
+        "actual_sha256": "bc062efda0e9071c9763574797fd262da15d1f148e7d9b2b87d45d338117ae90",
+        "hash_matches": true
+      },
+      {
+        "path": ".context/same-spec-ten-runs/manuscripts/resume-spec-tail/artifact.md",
+        "sha256": "8213c88063712e7040c7d5558d13659b07e2a2f11a961c8dd0d086726640cff5",
+        "origin": "completed max continuation",
+        "actual_sha256": "8213c88063712e7040c7d5558d13659b07e2a2f11a961c8dd0d086726640cff5",
+        "hash_matches": true
+      }
+    ],
+    "unmodified_composite_sha256": "ea582c917e1555c78373a0a5b2593784aaf2119ac8a75cb3299f5f0d608f5a8a",
+    "matches_assembly": true,
+    "draft_prefix_matches_original_partial": true,
+    "both_invocations_requested_effort": "max",
+    "original_first_segment_completed": false,
+    "continuation_completed": true,
+    "new_model_requests_by_reviewer": 0
+  },
+  "local_links": {
+    "present_count": 15,
+    "expected_pending_sibling_links": [
+      "../2026-11-same-spec-overview/article.md",
+      "../2026-11-same-spec-contract/article.md",
+      "../2026-11-same-spec-contract/article.md",
+      "../2026-11-same-spec-overview/article.md",
+      "../2026-11-same-spec-contract/article.md"
+    ],
+    "unexpected_missing": []
+  },
+  "limits": [
+    "本次未重新抓取網頁，使用既有來源 audit 及已核對的原站內容快照。",
+    "未執行新模型生成或候選重評；凍結檔未改動。",
+    "兄弟篇導覽按主代理指示視為正在建立，不列 blocker；尚不代表它們已完成。",
+    "本篇證據判定與語言、編輯、讀者審查分開，不等於全系列或發布完成。"
+  ],
+  "markdown_report_sha256": "e5b5407ef99cdd4d1d0bbca678f6c39de04b4decb8a2e79864a64c00ef5e1709"
+}

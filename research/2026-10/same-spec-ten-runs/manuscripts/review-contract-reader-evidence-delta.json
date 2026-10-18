@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "review_type": "independent_reader_evidence_delta_check",
+  "reviewed_at": "2026-09-25T09:25:05.294143+00:00",
+  "reviewer": "Codex independent reader sub-agent (AI)",
+  "verdict": "PASS_CONTRACT_EVIDENCE_DELTA_READER_SCOPE",
+  "series_verdict": "NOT_ASSESSED_AS_A_COMPLETE_SERIES",
+  "series_ready": false,
+  "public_release_complete": false,
+  "article": {
+    "path": "2026-11-same-spec-contract/article.md",
+    "sha256": "6f99865b86beabc93adfa6ca61a2e8cd826cf926eb9b4afbfca7a149f81019cc",
+    "line_count": 293
+  },
+  "previous_reader_closure": {
+    "path": "research/2026-10/same-spec-ten-runs/manuscripts/review-contract-reader-final.json",
+    "input_sha256": "416476b5ade3ded365cd3faff9477d666175ceb5154eddffc75ed18a8da18def",
+    "full_read_origin_sha256": "d7d1244e859d407fe54b19510311d4100cd370dcd9ceb71df48cd0dc151cca76"
+  },
+  "delta_verification": {
+    "record": "research/2026-10/same-spec-ten-runs/manuscripts/contract-evidence-delta.json",
+    "replacement_count": 2,
+    "replacement_targets_unique": true,
+    "reverse_replacement_sha256": "416476b5ade3ded365cd3faff9477d666175ceb5154eddffc75ed18a8da18def",
+    "matches_previous_reader_closure": true,
+    "forward_replacement_byte_equal": true,
+    "only_declared_replacements": true,
+    "changed_ranges": [
+      {
+        "tag": "replace",
+        "previous_lines": [
+          195,
+          195
+        ],
+        "current_lines": [
+          195,
+          195
+        ]
+      },
+      {
+        "tag": "replace",
+        "previous_lines": [
+          203,
+          203
+        ],
+        "current_lines": [
+          203,
+          205
+        ]
+      }
+    ],
+    "prior_reports_sha256": {
+      "review-contract-reader.md": "5fbaa1cd5549c2f6a41fb2386cd5c9acc71681e5853c11745b64ee23c4c89e79",
+      "review-contract-reader.json": "c2616b33762775f8ce11e99dbccc01b8e318d15d718bd5f5427d7798c3607518",
+      "review-contract-reader-final.md": "086546e006f3f05809db5204bae480e5faa8b19c2787f59be87ec7eb9734fba1",
+      "review-contract-reader-final.json": "b30330025d17e60249279dc00027aae37f17764bb742a4a81dfb50b6fcfc9ee1"
+    }
+  },
+  "reading_this_pass": {
+    "lines": [
+      187,
+      211
+    ],
+    "scope": "只讀兩處 evidence 修訂與第四節相鄰段落；沒有重做全文閱讀、技術來源驗證、模型實驗或 zh-TW MCP。"
+  },
+  "assessments": [
+    {
+      "current_line": 195,
+      "result": "PASS",
+      "topic": "固定條件的範圍",
+      "reason": "將固定項目限於明確送出的 packet、封存紀錄列出的模型、effort 與 CLI 開關，讀者不會把它延伸成所有可繼承環境值均已固定。前文 provider context 與 OS 狀態未固定，和這句可以直接對照。"
+    },
+    {
+      "current_lines": [
+        203,
+        205
+      ],
+      "result": "PASS",
+      "topic": "三層分類與隔離證據",
+      "reason": "正確／刻意錯誤參考實作與 candidate timeout 是工具測試；三項 preflight probe 另行驗證特定拒絕；batch failure reason 與 generation boundary_violation 則是不同層的紀錄。每層的主詞、觀察與限制皆明確，沒有再暗示 evaluator 對每種候選越界都有獨立分類。"
+    },
+    {
+      "current_lines": [
+        205,
+        207
+      ],
+      "result": "PASS",
+      "topic": "後續判斷與承接",
+      "reason": "timeout 連到候選行為與執行環境，mismatch 連到規格、expected 與實際輸出核對，沒有直接斷定語義錯誤。下一段 83 項工具測試仍和 103 項候選驗收及 40 次生成分開，新增分類說明沒有改動分母。"
+    }
+  ],
+  "technical_validation": "技術正確性由獨立 evidence 代理核對；本報告只判斷修訂是否讓讀者清楚辨認層次與證據限制。",
+  "findings": [],
+  "open_counts": {
+    "blocker": 0,
+    "major": 0,
+    "minor": 0
+  },
+  "inherited_scope": "未改動的正文沿用先前全文與後半部讀者複核；先前 final 報告保持原樣。",
+  "manuscript_modified": false,
+  "prior_reviews_modified": false,
+  "frozen_research_modified": false
+}

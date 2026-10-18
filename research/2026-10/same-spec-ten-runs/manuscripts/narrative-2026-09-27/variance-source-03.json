@@ -1,0 +1,1882 @@
+{
+  "input_path": "2026-11-same-spec-variance/article.md",
+  "file_sha256": "3c3328b4faaec499612bd540b113f8aa5a1cac98ab8d25ab5efa31a2875778c0",
+  "config": {
+    "content_type": "markdown",
+    "fix_mode": "none",
+    "fix_output": "search_replace",
+    "profile": "strict",
+    "translationese_domain": "technical",
+    "detect_ai": true,
+    "ai_threshold": "low",
+    "detect_translationese": true,
+    "consistency": true,
+    "detect_style": true,
+    "explain": true,
+    "include_stats": true,
+    "include_telemetry": true,
+    "verify": true,
+    "max_errors": 0,
+    "max_warnings": 0,
+    "output": "full",
+    "ignore_terms": [
+      "通過"
+    ],
+    "glossary": {
+      "proper_nouns": [
+        "Can your AI agent be cheaper?"
+      ]
+    }
+  },
+  "response": {
+    "accepted": true,
+    "text": "# 同一份規格，跑十次（三）：變異篇—四十份都通過，然後呢？\n\n> **TL;DR** — 一次通過驗收，只能說明那一次做到了。團隊若要決定某種交代方式值不值得反覆使用，得先看同一份交代重複交給 agent 時會發生什麼。前兩篇已經攤開四份文件的差異與驗收方式，本篇接著讀結果：四組各生成十次，四十份候選全部通過既定驗收，原本想比較的組間高下因此分不出來。本篇依序回答幾件事：十次全過能支持多大的判斷、都通過的程式為什麼仍各不相同，以及成本與人力哪些已經量測、哪些還沒有。最後整理接手 review 與下一輪比較可以怎麼安排。\n\n> 系列導覽：[總論](../2026-11-same-spec-overview/article.md) → [一、規格篇](../2026-11-same-spec-spec/article.md) → [二、契約篇](../2026-11-same-spec-contract/article.md) → **三、變異篇（本篇）**（全系列為本機稿，尚未發布）\n\n---\n\n## 一、四份交代各生成十次，全部通過之後\n\n〈[同一份規格，跑十次（一）：規格篇—四份交代，究竟差在哪裡？](../2026-11-same-spec-spec/article.md)〉把四份交代攤開來比較。A0 寫得精簡，但已寫齊事件格式、診斷與結束狀態的邊界。A 用較長的篇幅展開同一組要求，附上例子，也已經帶有部分理由。B 以 A 的全文開頭，再集中附上理由與六組自查。C 以 B 的全文開頭，再附一段可選的純文字寫法建議。這段建議不是原生 Skill，也明說沿用原本的分支寫法可以接受。\n\n〈[同一份規格，跑十次（二）：契約篇—寫在規格裡的要求，要怎麼驗收？](../2026-11-same-spec-contract/article.md)〉接著把這些要求翻成外部證據。每份候選程式都要通過 102 個批次案例，另外還有 1 個 streaming probe，在輸入結束（EOF）之前檢查輸出的時點。輸入與判分方式都已確立，這一篇要讀的是結果。\n\n結果本身很簡單。四組各生成十次，四十份候選全部通過這 103 項檢查，原本規劃的組間比較，在驗收這一欄分不出高下。這樣的結果容易被讀成兩種過頭的結論。一種是「交代寫多寫少都一樣，選最短的就好」，另一種是「agent 已經穩定到可以放心交付」。接手結果的工程主管與測試工程師，最後常要回答「能不能用」與「穩不穩」。如果只拿四個 10/10 回答，很容易連資料沒有涵蓋的部分也一起背書。\n\n所以這一篇回到〈[總論](../2026-11-same-spec-overview/article.md)〉提出的三個研究問題，逐一確認資料能回答到哪裡：\n\n1. 固定同一份指令包，重複生成十次，有幾次能完成相同驗收？\n2. 換成精簡、展開、附理由與自查、再附可選寫法的文件條件，觀察到的驗收與資源是否不同？\n3. 即使都通過，十份程式的實作是否相同？這些差異能告訴接手 review 的人什麼？\n\n必要的設定用一段交代，細節留在總論與研究附件〈[正式結果與限制](../research/experiments/same-spec-ten-runs/RESULTS.md)〉。任務來自我的文章 repo 裡的小工具 `research/scripts/codex_jsonl.py`。它把 `codex exec --json` 輸出的 JSONL 事件轉成審查文字與診斷，並用 exit code 告訴呼叫端結果。研究代理從固定 commit 取出這個檔案，重現了兩個缺陷。第一個是 agent 訊息的 `text` 欄位為數字 `123`，接著又收到有效的 `turn.completed` 時，程式會把 `123` 當成審查內容印出，再以代表成功的 exit 0 結束。第二個是讀到一行 `[]` 或 `null` 時，程式會拋出 `AttributeError` 後中止。\n\n2026-09-25，研究代理依照執行前封存的研究計畫，讓 `claude-opus-5-5`（effort high）透過 Claude Code CLI 2.1.282 生成修補。模型在生成時沒有工具可用，也不讀 repo，只收到指令包（下稱 packet），並一次回傳一份單檔候選。驗收結果不會回傳給模型，也沒有追加的修復對話，本文把這種設定稱為 tool-free 生成。四十次生成全部結束後，外部驗收程式才統一判分。\n\n標題中的「同一份」，指的是同一組內的十次生成都收到逐 byte 相同的 packet。四組合計四十次，是四份文件各生成十次，而不是同一份文字生成四十次。跨組比較以十三條規範 R01–R13 為共同基準。四份文件的篇幅、附加內容與部分措辭各不相同，第五節回答第二個問題時，會再交代其中一處措辭差異。\n\n---\n\n## 二、每一個 10/10 的分母，以及它撐得起的判斷\n\n讀四個 10/10 之前，要先確認分母。本輪把每一次生成機會稱為一個「名額」，四十個名額在第一個正式請求之前就已排定。一個名額不論成功、逾時或出錯，都會留在分母裡，本輪也沒有替補、重試或事後追加。因此，下文的每個 10/10，意思都是「預先排定的十次裡，有十次通過」，而不是從更多次嘗試中挑出十次成功。逐名額的狀態記錄在[名額台帳](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/records.jsonl)，封存內容則列在[正式封存索引](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/archive.json)。\n\n下表把名額與三個判定欄位分開列出。CLI 是否正常結束，以及產物是否通過驗收，各有自己的判定條件。本輪事先指定的主要結果 `accepted_completion`，是這兩項判定的交集：\n\n| 名額與判定 | A0 | A | B | C |\n|---|---:|---:|---:|---:|\n| 預先排定並啟動的名額 | 10 | 10 | 10 | 10 |\n| `cli_success`：CLI 正常結束，生成邊界與設定相符 | 10 | 10 | 10 | 10 |\n| `artifact_success`：合法候選通過 103 項外部檢查 | 10 | 10 | 10 | 10 |\n| `accepted_completion`：前兩項同時成立 | 10 | 10 | 10 | 10 |\n\n兩項判定分開記錄，是〈契約篇〉刻意保留的設計。CLI 這一側要確認三件事：行程在每名額 600 秒的時限內正常結束（到點後最多保留 5 秒停機寬限），沒有觸發預算停止，事件紀錄裡的模型與工具邊界也和封存設定相符。產物這一側確認交回的檔案是否合法，再檢查封存的單檔候選能否通過 103 項外部檢查。\n\n即使 CLI 未正常完成，只要仍留下合法候選，外部驗收就能另外判定那份程式。因此可能出現「CLI 判定失敗、產物卻通過」這類組合。實際上，本輪每一組的交叉計數都是「兩者皆成立 10，其餘組合 0」。生成端沒有出現逾時、操作錯誤、預算停止、邊界不符或缺少候選的情形。驗收端的候選失敗分類只有逾時（timeout）、輸出超限（output_limit）與結果不符（mismatch）三種，計數也都是 0。\n\n判分本身後來也重做過一次。研究代理在不需要 Claude CLI 的空白工作目錄中，用封存包[重新驗收](../research/experiments/same-spec-ten-runs/results/validation-2026-09-25/public-rescore.json)同一批 40 份候選，每份候選的 103 項逐案結果都與原紀錄一致。另一個 AI 代理也[核對了封存檔案、排程與逐候選驗收](../research/experiments/same-spec-ten-runs/results/validation-2026-09-25/formal-data-audit.md)。重評讓判分可以回算，但生成樣本仍然只有這四十份。\n\n十次全過能支持多大的判斷，可以用區間來描述。四組的結果都是 10/10，雙側 95% Clopper–Pearson 區間也都是 69.15%–100%。Clopper–Pearson 是直接由二項分布推得的區間，樣本小的時候偏向保守。它的前提是同一組的十次生成彼此獨立，並且共用同一個成功機率。在這個前提下，以相同方法反覆抽樣並建立區間，所得區間至少有 95% 會涵蓋真正的通過率。\n\n這一次算出的範圍，從約七成延伸到 100%，80%、95% 與 100% 都在裡面。十次全過說明這個條件可以重複通過，但還不足以估計它多常失敗。這個區間也不保證下一輪至少有七成通過，更沒有替「夠可靠」訂出門檻。\n\n「獨立、共用同一機率」這個前提，也要放回實際的執行條件來看。四十個名額排成十個區塊，每個區塊裡四組的順序事先隨機化，最多四個生成行程同時執行，相鄰區塊也可以重疊。這樣安排是為了平衡啟動順序，避免服務提供端的變化剛好和某一組重疊。不過，區塊不是同步開始、同步結束的配對時窗，所以分析沒有計算區塊內的組間差值。\n\n封存固定了送出的 packet、Python build 與 CLI binary。服務提供端的隱藏 context、取樣用的隨機種子、temperature、服務實作，以及完整的作業系統環境，則沒有固定。封存是在首個正式請求之前於本機完成，並非第三方預註冊。這些條件讓區間的前提仍停留在研究假設。\n\n四組的區間完全相同，是因為結果都碰到 10/10 的上限，並不表示四組已被證明相同。要主張等效，需要事先訂好可接受的差距，也要準備足以偵測這個差距的樣本。這份研究計畫沒有設定組間差值、顯著性檢定或勝負判定，所以四組的通過率只能並列描述，無法排序。\n\n---\n\n## 三、先看兩份通過的程式，再談如何描述差異\n\n通過驗收說明了程式在 103 項檢查上的行為，卻沒有說明程式本身寫成什麼樣子。「綠燈不是驗收」系列的〈[可靠度篇](../2026-10-green-reliability/article.md)〉（已完成、尚待發布）也把這兩件事分開：同一套檢查反覆成功，和每次得到相近的實作，是兩個不同的問題。第三個研究問題問的是後者。在介紹任何指標之前，先看兩份實際通過驗收的程式。\n\n這組教學示例是成稿階段另外加上的。選取規則是在讀這兩份原始程式碼之前訂下：按凍結排程的區塊編號，取 A0 的前兩個名額 `formal-01-A0` 與 `formal-02-A0`，不依分數、花費或相似程度挑選。這是事後的說明示例，沒有列在執行前的分析計畫裡，也不代表其餘候選。\n\n[第一份候選](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-01-A0/candidate/codex_jsonl.py)把狀態放在 `main()` 的區域變數中，其中 `malformed` 放進字典，供內部函式更新。以下是原檔節錄：\n\n```python\n    state = {\"malformed\": False}\n    done = 0\n    spoke = 0\n    failed = False\n```\n\n[第二份候選](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-02-A0/candidate/codex_jsonl.py)則先定義一個類別，把同一批狀態集中在物件裡。以下同樣是原檔節錄：\n\n```python\nclass _State(object):\n    def __init__(self):\n        self.done = 0\n        self.spoke = 0\n        self.failed = False\n        self.malformed = False\n```\n\n事件處理也有對應的差別。第一份主要在 `main()` 裡用分支處理各種事件。第二份則由 `_handle_line()` 把事件分派到 `_handle_item()`、`_handle_turn_completed()` 與 `_handle_turn_failed()`。兩份候選收到的是同一份 A0 packet，也都通過同樣的 103 項檢查，接手的人卻會讀到兩種組織方式。一種把狀態留在主函式裡就地更新，另一種把狀態收進物件，再交給幾個處理函式。哪一種比較好改，要另做 review 或維護研究才能判斷，光看這兩段程式無法決定。\n\n為了把這種差異記錄成可以比較的數字，本輪在封存時一併凍結了兩種結構描述，兩者都以 AST 為基礎。AST（abstract syntax tree，抽象語法樹）是 Python 解析原始程式碼後得到的樹狀結構，每個節點都有型別，例如條件判斷、函式呼叫或比較運算。\n\n第一種是正規化 AST hash。它先去掉行號之類的位置資訊，選定哪些欄位要處理，再把其中的識別名稱統一換成代號，再對整棵樹計算 hash。屬性名稱、import 路徑、常數與節點順序都會保留。它不追蹤名稱綁定到哪一個變數，所以兩份程式得到相同 hash，只表示正規化後的樹相同，不等於語意等價。這個描述回答的問題很窄：這一份和另一份，在這個表示下是不是同一份。\n\n第二種是 AST 節點類型分布的 cosine。做法是統計一份程式裡每種節點各出現幾次，再計算兩份程式的計數向量有多接近。值為 1，代表各類節點的比例完全相同。它不看節點順序，也不看名稱與常數的內容。它描述的是「用了哪些語法材料、比例如何」，並不代表保留了多少原始程式碼，也不代表品質。\n\n用這兩種描述回頭看 A0 那一對，就能理解兩個看似矛盾的結果為什麼可以同時成立。狀態從區域變數改成類別，事件處理也從主函式裡的分支，移到各別處理函式，樹的形狀與順序都變了，所以兩份的 hash 不同。兩份用到的各類節點比例仍然很接近，所以既有封存資料中，這一對的 cosine 是 0.99398。\n\n接著把兩種描述用在全部四十份候選上。下面的 F2 有上下兩個 panel，讀的時候先看點落在橫軸的哪個位置。上圖每一點，是同一組內兩份候選之間的 cosine。每組十份候選形成 45 個 pair，四組合計 180 個值。下圖每一點，是一份候選相對於共同 seed（也就是修改前的原始程式）的 cosine，共 40 個值。兩張圖的橫軸都固定在 0 到 1，沒有為了放大微小差距而裁切範圍。縱向只依 run 或 pair ID 排列，不代表另一個量測維度。繪圖設定記錄在 [F2 metadata](../research/experiments/same-spec-ten-runs/results/figures-2026-09-25/F2.metadata.json)。\n\n![F2：四組各十份候選的 AST 節點類型分布 cosine。上圖是每組全部 45 個組內 pair，四組共 180 個值；下圖是 40 份候選各自相對共同 seed 的值。上下圖橫軸都固定為 0 到 1，縱向只依 run 或 pair ID 排列。180 個點共享 40 份程式，不是 180 個獨立樣本。](figures/F2.png)\n\n所有點都擠在圖的右緣。下表列出精確值，逐候選與逐 pair 的數值保存在[逐候選與逐 pair 摘要](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json)。每組十份候選都能解析，45 個 pair 也全部有效：\n\n| 組別 | 組內 pair cosine 中位數［最小、最大］ | 不同正規化 AST hash 數 | 相對 seed 的 cosine 中位數［最小、最大］ |\n|---|---|---:|---|\n| A0 | 0.9947［0.9831、0.9982］ | 10 | 0.9656［0.9499、0.9783］ |\n| A | 0.9970［0.9913、0.9996］ | 10 | 0.9625［0.9512、0.9704］ |\n| B | 0.9975［0.9937、0.9997］ | 10 | 0.9594［0.9556、0.9665］ |\n| C | 0.9965［0.9903、0.9997］ | 10 | 0.9657［0.9529、0.9707］ |\n\n每組十份候選的正規化 hash 都各不相同，四十份合在一起也沒有任何兩份重複。同一組內的 pair cosine 則全部在 0.98 以上。這和 A0 那一對的情形一致：在這個任務上，每一次生成都寫出一份自己的程式，只是用到的語法材料比例很接近。\n\n兩個 panel 的數值範圍也沒有重疊。180 個組內 pair 的最低 cosine 是 0.9831，40 份候選相對 seed 的最高值則是 0.9783。這個比較只涵蓋已計算的組內配對，本輪沒有計算跨組配對。一個可能的解讀是，十份修改都把節點分布往相近的方向推，例如加入型別檢查、條件分支與診斷輸出，但 cosine 無法確認這個解讀。\n\n候選相對 seed 的 cosine 最低也有 0.9499，這只表示節點類型的比例仍接近原始程式，無法指出保留了哪些原始程式碼。共用 seed 也可能把組內相似度往上推。本輪提供了 seed 參照，但沒有估計或扣除這個影響。\n\n讀這張表時，也要記得 pair 之間的相依性。每組 45 個 pair 都來自同樣的十份檔案，同一份程式會出現在九個 pair 裡。180 個值合起來只有 40 份程式，所以不是 180 個獨立觀測。本輪因此沒有對 pair 做獨立樣本檢定，也沒有做 bootstrap（重抽樣估計）。四組的中位數都落在 0.9947 到 0.9975 之間。在這樣的相依結構下，我不把中位數的先後解讀成哪一組「更收斂」。\n\n「都通過、結構卻不同」也不只出現在這個 parser 上。Achint Mehta 的 [arXiv 2607.02436v2 論文](https://arxiv.org/pdf/2607.02436v2)記錄了同一份凍結 web-app 規格的重複生成。該研究整體允許在失敗後給修正提示。同一組態（Opus 4.7 xHigh base）的 6 次執行都拿到 42 分滿分。該研究有 14 項功能評分條件，每項依完成情況給 1 到 3 分；滿分代表各項在首次執行就成功。這六份程式的 source files 卻從 15 個到 22 個不等。那是一個多檔案的網頁應用任務，由知道組態的作者親自驗證。本輪是單檔修補，檔案數無法區分候選，所以改用 AST 描述檔案內的差異。兩份資料放在一起，只能說明「通過驗收的實作仍有結構差異」已有先例，兩邊量測的並不是同一件事。\n\n這些差異是好是壞，這份資料沒有回答。本輪沒有人工評分，也沒有量測人理解或修改程式的工作。它能直接提供的，是第五節要談的 review 提醒：通過同一套驗收的兩份程式，仍是兩份需要各自閱讀的程式。\n\n---\n\n## 四、同一份交代，每次花的錢與時間也會浮動\n\n第三種差異是資源。計算資源時，所有排定的名額都要算進去，包括失敗或中止的名額，因為它們同樣花了時間與費用。本輪沒有失敗名額，四十筆紀錄的資源欄位都有觀測值。下表列出每組的生成耗時、每名額費用與 output tokens：\n\n| 組別 | 生成耗時中位數［最小、最大］（秒） | 每名額 USD 中位數［最小、最大］ | 組內 USD 合計 | Output tokens 合計 |\n|---|---|---|---:|---:|\n| A0 | 37.273［30.551、49.130］ | 0.123649［0.110626、0.150329］ | 1.248397 | 44,935 |\n| A | 37.300［32.201、44.763］ | 0.136611［0.127999、0.156247］ | 1.382626 | 46,037 |\n| B | 40.277［34.887、48.307］ | 0.149123［0.136136、0.164495］ | 1.513502 | 50,161 |\n| C | 37.161［32.250、59.707］ | 0.148145［0.136205、0.199409］ | 1.547817 | 49,072 |\n\n先交代數字的意思。耗時是 runner 從啟動名額到觀察到完成所經過的 wall time，名義輪詢間隔是 0.5 秒。表中保留三位小數是為了方便核對，不代表毫秒級的精度，也不包含後來的驗收時間。費用是 CLI 回報的牌價估計（list price），四十次合計 USD 5.692342。這個數字不是訂閱或信用卡帳單，也不包含研究審查、pilot、其他開發請求與文章寫作的花費。\n\n同一份 packet 重複十次，花費也會浮動。以 C 為例，十個名額中最便宜的一次是 USD 0.136205，最貴的一次是 0.199409。四十個名額裡耗時最長的 59.707 秒，也出現在 C。\n\n〈[Can your AI agent be cheaper?](https://arxiv.org/html/2608.25399v1)〉在另一個設定下觀察到類似的現象。它以單一模型 Kimi K3 搭配 mini-swe-agent，在 SWE-bench Verified 的五個任務上，對同一規格、同一 effort 各重複執行 15 次，成本的 geometric SD 中位數是 ×1.34。geometric SD 用倍數描述離散程度。那份研究只有五個任務與一個模型，本輪也沒有計算 geometric SD，只列出最小值與最大值。兩份資料共同提醒一件事：只看一次 demo 花了多少，容易低估整批工作的成本變動。\n\n四組的費用合計由 A0 到 C 依序增加。建立快取時計入的 cache creation tokens，四組合計也依相同順序增加：A0 39,339、A 52,202、B 57,749、C 64,234。這個順序和 packet 的組成一致：A 是 A0 的展開版，B 以 A 的全文開頭，C 又以 B 的全文開頭。\n\n輸入變長可能是原因之一，但本輪沒有做能分離這個因素的分析。耗時中位數也沒有依同樣的順序排列，B 最長，C 反而最短。研究計畫只預先指定各組的摘要，沒有估計組間差值，所以我不把費用的順序換算成「附加內容要多花幾成」。\n\ntoken 欄位還有一處會影響解讀。每組的 input tokens 合計都只有 20，這是 CLI 最終 usage 的原始分類，快取的 tokens 另外計算，所以不能把 20 當成 prompt 的大小。四組的 cache read 都是 0。本輪沒有刻意重置 cache，也沒有估算不使用 cache 時的價格。計費明細 `modelUsage` 裡還出現了 Haiku，但候選生成的 assistant 訊息裡沒有它，這份 trace 無法說明它在 CLI 內部的用途。因此，這張表描述的是本輪回報的使用量；要重建帳單，需要另外的資料。\n\n〈[Agentic Engineering 三部曲（三）：Eval、單位經濟與規模化—把 agent 當產品營運](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%89-eval-%E5%96%AE%E4%BD%8D%E7%B6%93%E6%BF%9F%E8%88%87%E8%A6%8F%E6%A8%A1%E5%8C%96-%E6%8A%8A-agent-%E7%95%B6%E7%94%A2%E5%93%81%E7%87%9F%E9%81%8B-d6d9623c2dc6)〉（下稱營運篇）定義了 cost per successful task。這個指標的分子包含失敗、重試與最後放棄的直接成本，分母只計算通過驗收的件數。本輪四十個名額全數通過，沒有失敗或放棄的嘗試需要分攤。這份資料因此看不到失敗如何推高單位成本，只描述了在沒有失敗的情況下，四十次生成用掉多少牌價估計。\n\n營運篇也提醒，設定單次執行的停止上限時，要納入尚未回報的費用，也要考慮請求還在執行。本輪設定 USD 5，供 CLI 判斷何時停止，不是硬性上限。正式執行前，研究代理曾以低預算刻意觸發停止路徑，那次 probe 就是先超過設定金額，才停下來。\n\n最後是這張表沒有的欄位：人的時間。在總論的假設情境裡，負責人考慮把一份精簡交代逐步補成展開說明、理由、自查與寫法建議。這些內容要有人撰寫，也要有人跟著程式與規範一起維護。本輪沒有量測撰寫或維護文件的工時，也沒有記錄 reviewer 閱讀候選程式的時間，因此無法計算 ROI。\n\n對需要估算預算的工程主管，這張表能回答的是：在這個單檔任務與這組停止條件下，四十次生成大約用掉 USD 5.69 的牌價估計，每次耗時數十秒。模型端的費用差額看得見，人的成本仍待量測。\n\n---\n\n## 五、回到三個研究問題：答案與下一步安排\n\n第一個問題是：固定同一份指令包，重複生成十次，有幾次能完成相同驗收？在這個任務上，四份 packet 各生成十次，四十個名額全部完成驗收，分母都是預先排定的名額。研究大綱原本預定依 requirement ID 彙整失敗，以 run 為分母，找出最常出錯的契約。這張彙整表最後沒有任何非零的格子，所以也沒有主要失敗模式可以報告。\n\n讀通過的結果時，也要一起看驗收涵蓋的範圍。這 103 項檢查能分辨一些明確的錯法。exit 6 是這次新增的結束碼，依任務說明推論，未修改的 seed 不會回傳 6，所以保留舊程式無法通過預期 exit 6 的案例。EOF 前的 streaming probe，則會攔下先把整個輸入讀完才處理的實作。\n\n檢查也有沒涵蓋的地方。[R01](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json) 要求保留原本的 CLI／main entrypoint，但套件沒有逐一檢查程式裡是否仍保留名為 `main()` 的函式，也沒有檢查候選是否多了額外的 CLI 參數。第一個問題的精確答案因此是：在這 103 項凍結檢查上，四十份候選沒有失敗。\n\n配合第二節的區間來看，這表示此交付方式在這個窄案例中可以重複通過。至於它多常失敗、失敗率要多低才算夠好，還要靠更多次數與更難的任務才看得出來。\n\n第二個問題是文件條件。在驗收這一欄，四組都碰到上限，無法指出哪一種文件條件帶來較多通過。如果附加的理由、自查或寫法建議有幫助，10/10 已經沒有往上的空間。如果精簡版有缺口，這十次也沒有讓缺口露出來。任務範圍小、規格寫得完整、樣本少，或驗收仍有盲點，都可能讓結果停在上限，光看全數通過分辨不出是哪一個原因。\n\n資源這一欄看得到差別。費用合計與 cache creation tokens 依 A0 到 C 遞增，耗時中位數則沒有同樣的順序，這些都只是描述。B 同時加入理由與自查，C 又在 B 之上加入寫法建議，本輪的設計無法分開各成分的效果。\n\n四份 packet 之間還有一處措辭差異。A0 寫的是不需要新增 CLI 參數，A 的 R13 把新增 CLI 選項列為任務範圍之外，B 與 C 則沿用 A。這項差異是否影響實作，本輪沒有辨識。逐字比較見〈[規格篇](../2026-11-same-spec-spec/article.md)〉與[措辭差異補記](../research/2026-10/same-spec-ten-runs/manuscripts/packet-wording-caveat.md)。\n\n差異小到分不出來的情形，在規模更大的研究裡也會發生。〈[Skill Issue](https://arxiv.org/html/2609.12742v1)〉以 Claude Code 搭配 Sonnet 4.6，在三個 Kotlin repo 上比較 SKILL 文件最佳化前後的表現。保留作測試、沒有參與最佳化的 held-out 任務，分別有 20、26 與 23 題。以 GEPA 最佳化後，配對評分平均比基準的 0.5 高約 4.9 個百分點，但沒有任何一次最佳化的 sign test 達到 0.05，最好的 p 值是 0.29。作者因此無法把這個增益和重新執行帶來的變動分開。\n\n那份研究量的是配對評分，無法直接換算成本輪的通過與否。它也沒有證明 SKILL 無效，只顯示差異還分不出來。它提醒的是，比較文件寫法需要一個能偵測差異的設計。本輪每組只有十次二元結果，又全部碰到上限，既不足以支持「四組等效」，也不足以推出「附加說明無用」。\n\n回到總論的假設情境：負責人想知道，把精簡交代補成 A、B、C 那樣，是否值得。本輪能給的回答是：在這個任務上，精簡但邊界完整的 A0 已經十次全過，附加內容沒有機會在驗收上顯示差別，模型端費用則隨篇幅增加。至於附加內容在更難的任務上能不能減少失敗，以及撰寫與維護這些內容要花多少人力，都還需要另外量測。\n\n第三個問題是實作。四十份候選在正規化 AST 表示下沒有任何兩份相同，A0 那一對也讓我們看到，差異落在狀態組織與控制流程上。對接手 review 的人來說，意義很直接：通過同一套驗收，不等於已經審過同一份程式。如果團隊習慣在不滿意時重新生成，新產生的那一份就是新的 diff。前一份的審閱結論，不能因為兩份都通過驗收就直接沿用。\n\n對日常接手 review 的工程師或測試工程師，這三個答案可以轉成幾項具體安排：\n\n- 把每一次生成都當成新的候選，並記錄審過的是哪一個名額、哪一份檔案。以原始檔案的 hash 核對是否為已審版本；檔案不同，就重新閱讀。正規化 AST hash 只供結構比較，不能取代版本核對。\n- 把閱讀時間放在驗收沒有涵蓋的地方，例如 entrypoint 是否保留、CLI 介面是否多出參數，以及狀態與控制流程的組織方式。A0 那一對的差異就落在最後這一層，而驗收對這一層不做判斷。\n- 如果想知道這些差異值不值得在意，就替每份候選記下 review 工時與審閱意見。這正是本輪缺少的人力資料，日後也能用來判斷結構差異是否會轉成維護成本。\n\n這些安排不需要新的研究研究計畫，在日常 review 裡就能開始。它們讓「都通過」之後的審閱工作也留下紀錄，日後才有資料回答結構差異的影響。\n\n如果團隊要進一步比較文件寫法，下一輪研究要先處理這一輪分不出高下的原因：\n\n- 選擇多個任務，其中要包含會失敗的任務，讓驗收結果有上下變動的空間。只替某一組追加到三十次，無法解決結果停在上限的問題。\n- 事先封存研究計畫與分析計畫，並依想偵測的差距決定樣本數。若想主張「沒有差別」，也要事先訂好可接受的差距。\n- 對齊各組的範圍措辭，或一次只改一個成分，才能回答究竟是哪一段文字發揮作用。\n- 若要補查原規格已要求、舊驗收未明確涵蓋的 `main()`，就記下修改理由，建立新版驗收。用新版對全部封存候選一致重評時，應把它列為補充分析，與原本的凍結結果分開呈現。\n- 寫明這一輪測的是哪一種設定。〈[Prompt-Induced Waste in Coding Agents](https://arxiv.org/html/2608.01347v6)〉的核心研究，在 24 個可以明確判定結果的 coding 任務上比較 18 種 prompt 變體，取得 4,644 個有效 run。研究發現，語意要求會改變 agent 花在推理與驗證上的工作，effort 介入的效果也會隨 harness 改變。作者同時說明，這些任務偏小，功能上限也高。本輪只觀察到這張交互作用圖上的一格：一個模型、一個 effort、一個 CLI 版本下的 tool-free 生成。\n\n這類比較應該由提出問題的人先寫定研究計畫與分析，再開始生成。它回答的是交付方式的選擇，可以和日常 review 的安排分開進行。\n\n---\n\n## 六、從一次綠燈到四十次通過：已經知道的，與還要學的\n\n這個系列的起點，是總論提到的那次工作坊實作。在 2026 年 8 月的工作坊裡，測試全綠，要求的 replay 卻沒有完成。那次觀察只有一個樣本，沒有證明重複生成必然不穩定，卻讓一件事變得很清楚：一次結果無法描述下一次會怎樣。\n\n我在〈[Agentic Engineering 三部曲（一）：誰來做？Platform + Federation 的組織設計實務](https://fantasybz.medium.com/agentic-engineering-三部曲-一-誰來做-platform-federation-的組織設計實務-9d9353ef7f3a)〉談招募時，把保留版本、輸入與執行紀錄，列為處理非確定性系統的重要能力。「綠燈不是驗收」系列接著追問，一份產出要有什麼證據才值得相信。這個系列再往前一步，要問的是：交代寫得更完整之後，怎麼知道這種交付方式值得反覆使用。\n\n四十個名額之後，我們比一次綠燈多知道了幾件事。第一，在這個單檔 parser 修補上，四份交代各自重複十次，都在同一套驗收下全數通過。分母是事先排定的名額，沒有經過挑選。\n\n第二，本輪每一次通過，都交出一份不同的程式。「這個任務可以交給 agent」和「這一份程式已經審過」是兩件事，後者要跟著每一份產物走。\n\n第三，CLI 結束狀態、產物驗收，以及兩者的交集分開記錄，讓外層成功掩蓋內容錯誤的情況有地方被看見。這正是 parser 原本的缺陷：exit 0 掩蓋了不合法的審查內容。這一輪三項判定每次都一致；分開記錄的價值在於，一旦出現分歧，分歧就不會被總通過率吞掉。\n\n第四，模型端花了多少，現在已有紀錄可以回算。這筆紀錄也顯示，同一份交代每次的花費都會浮動。\n\n還要學的事也同樣具體。附加的理由、自查與寫法建議，在一個會失敗的任務上能不能減少失敗，這一輪沒有機會看到。撰寫與維護較長交代的人力，以及閱讀不同實作的 review 時間，都還沒有資料，所以 ROI 仍無從計算。換成大型 repo、會使用工具的多回合 agent、其他模型或其他 effort，結果可能不同，這些都要各自量測。\n\n回到總論最初的疑問：一次成功，是否足以評估一種交付方式？評估時還需要知道，一次以外的結果如何分布。這次把同一份 packet 重複十次，才看見四組都能反覆通過既定驗收，也看見每一次通過都交出不同的程式。要判斷更完整的交代是否值得維護，還需要一個結果有機會分出高下的比較，以及人的工時資料。\n\n這一輪也留下了一套做法，讓後續研究可以沿用：固定輸入、預先排定名額、生成結束後才由外部統一驗收，並把驗收、結構與資源分開記錄。團隊下一次評估自己的交付方式時，可以從這套做法開始，把一次綠燈換成一組有分母的紀錄。\n\n---\n\n### 系列文章\n\n以下均為本機中文稿，尚未發布：\n\n1. [同一份規格，跑十次：把交代寫清楚之後，agent 會穩定交付嗎？](../2026-11-same-spec-overview/article.md)\n2. [同一份規格，跑十次（一）：規格篇—四份交代，究竟差在哪裡？](../2026-11-same-spec-spec/article.md)\n3. [同一份規格，跑十次（二）：契約篇—寫在規格裡的要求，要怎麼驗收？](../2026-11-same-spec-contract/article.md)\n4. **同一份規格，跑十次（三）：變異篇—四十份都通過，然後呢？（本篇）**\n\n---\n\n### References\n\n以下研究資料隨本稿存放於 repo，相對連結指向對應檔案，目前尚未發布到遠端。公開發布時，需要另外補上固定版本、可公開存取的附件入口。論文與既有文章則使用已核對的來源網址。\n\n1. 筆者研究資料 — [正式結果與限制](../research/experiments/same-spec-ten-runs/RESULTS.md)（設定、區間、結構、資源與重評摘要）〔第一至五節〕\n2. 筆者研究資料 — [正式封存索引](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/archive.json)、[逐候選與逐 pair 摘要](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json)、[名額台帳](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/records.jsonl)〔第二至四節〕\n3. 筆者研究資料 — [空白環境重評](../research/experiments/same-spec-ten-runs/results/validation-2026-09-25/public-rescore.json)與 [AI 代理資料稽核](../research/experiments/same-spec-ten-runs/results/validation-2026-09-25/formal-data-audit.md)〔第二節〕\n4. 筆者研究資料 — [封存的 R01–R13 規範](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json)〔第一、五節〕\n5. 筆者研究資料 — [packet 措辭差異補記](../research/2026-10/same-spec-ten-runs/manuscripts/packet-wording-caveat.md)〔第五節〕\n6. 筆者研究資料 — [圖表來源說明](../research/2026-10/2026-11-same-spec-ten-runs.figures.md)與 [F2 metadata](../research/experiments/same-spec-ten-runs/results/figures-2026-09-25/F2.metadata.json)〔第三節〕\n7. 筆者研究資料 — [來源核對紀錄](../research/2026-10/same-spec-ten-runs/evidence-audit.md)〔第三至五節〕；教學示例：[formal-01-A0 原檔](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-01-A0/candidate/codex_jsonl.py)、[formal-02-A0 原檔](../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-02-A0/candidate/codex_jsonl.py)〔第三節〕\n8. Achint Mehta — [Reasoning effort, not tool access, buys first-try reliability in agentic code generation: Evidence from 90 matched agent runs](https://arxiv.org/pdf/2607.02436v2)（arXiv 2607.02436v2）〔第三節；依 PDF 的 Table 9，單一 web-app 規格〕\n9. Can your AI agent be cheaper? — [arXiv 2608.25399v1](https://arxiv.org/html/2608.25399v1)〔第四節；SWE-bench Verified 五個任務、單一模型〕\n10. Skill Issue — [arXiv 2609.12742v1](https://arxiv.org/html/2609.12742v1)〔第五節；三個 Kotlin repo 的 held-out 任務〕\n11. Prompt-Induced Waste in Coding Agents — [arXiv 2608.01347v6](https://arxiv.org/html/2608.01347v6)〔第五節；24 個 coding 任務的核心研究〕\n12. Agentic Engineering 三部曲 — [三、營運篇：Eval、單位經濟與規模化](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%89-eval-%E5%96%AE%E4%BD%8D%E7%B6%93%E6%BF%9F%E8%88%87%E8%A6%8F%E6%A8%A1%E5%8C%96-%E6%8A%8A-agent-%E7%95%B6%E7%94%A2%E5%93%81%E7%87%9F%E9%81%8B-d6d9623c2dc6)〔第四節；cost per successful task 與單次執行的停止上限〕\n13. Agentic Engineering 三部曲 — [一、組織篇：Platform + Federation 的組織設計實務](https://fantasybz.medium.com/agentic-engineering-三部曲-一-誰來做-platform-federation-的組織設計實務-9d9353ef7f3a)〔第六節；保留版本、輸入與執行紀錄〕\n14. 綠燈不是驗收 — [可靠度篇的 repo 稿件](../2026-10-green-reliability/article.md)（已完成、尚待發布）〔第三、六節；區分重複成功與實作差異〕\n\n---\n\n### AI 協作說明\n\n本系列的研究問題與方向由筆者提出，實驗則由 AI 代理在筆者的文章 repo 中協作設計與執行。研究設計先經過 Claude（xhigh）與 Codex（gpt-5.5 xhigh）各兩輪審查。正式的四十個名額由研究代理依凍結研究計畫執行，空白環境重評與資料稽核也由 AI 代理完成。候選程式由 `claude-opus-5-5`（effort high）生成，這些實驗請求與撰寫本篇的請求彼此分開。候選的生成模型、參與審查的 Claude 與撰稿的 Claude Code，都屬於同一個模型家族。\n\n本篇由 Claude Code（max effort）依據已查證的研究資料、舊稿與編輯方向主寫，再由 Codex 主代理逐段編輯，並核對數字、引文與連結。逐段潤飾與語言檢查（含 zh-TW MCP strict profile）的實際完成狀態，以[品質紀錄](../research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md)為準。本輪沒有另安排真人盲審或外部重現。文責由筆者自負。\n\n---\n\n*Kochi Chuang（莊軻齊）｜[Medium @fantasybz](https://medium.com/@fantasybz)。若你也在用重複執行的方式檢查 agent 的產出，歡迎交流。*\n",
+    "issues": [
+      {
+        "offset": 65,
+        "length": 6,
+        "line": 1,
+        "col": 24,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 103,
+        "length": 1,
+        "line": 3,
+        "col": 14,
+        "found": " ",
+        "suggestions": [
+          ""
+        ],
+        "rule_type": "punctuation",
+        "severity": "info",
+        "context": "全形標點與其他字元之間不加空格",
+        "explanation": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+        "explain_meta": {
+          "rationale": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 110,
+        "length": 6,
+        "line": 3,
+        "col": 17,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 414,
+        "length": 6,
+        "line": 3,
+        "col": 123,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 558,
+        "length": 6,
+        "line": 3,
+        "col": 171,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 1048,
+        "length": 6,
+        "line": 9,
+        "col": 18,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 2086,
+        "length": 6,
+        "line": 15,
+        "col": 24,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 2928,
+        "length": 6,
+        "line": 21,
+        "col": 7,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 3842,
+        "length": 6,
+        "line": 25,
+        "col": 61,
+        "found": "透過",
+        "suggestions": [
+          "藉由",
+          "經由"
+        ],
+        "rule_type": "translationese",
+        "severity": "info",
+        "context": "dewesternise.V3: 透過 used with abstract means — prefer 藉由/經由",
+        "explanation": "'透過' — dewesternise.V3: 透過 used with abstract means — prefer 藉由/經由. Suggested rewrite: 藉由 / 經由.",
+        "explain_meta": {
+          "rationale": "'透過' — dewesternise.V3: 透過 used with abstract means — prefer 藉由/經由. Suggested rewrite: 藉由 / 經由.",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 5046,
+        "length": 6,
+        "line": 33,
+        "col": 131,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 5460,
+        "length": 6,
+        "line": 35,
+        "col": 35,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 5835,
+        "length": 6,
+        "line": 41,
+        "col": 26,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "table_cell": {
+          "row": 3,
+          "col": 0
+        },
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 6336,
+        "length": 6,
+        "line": 44,
+        "col": 136,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 6520,
+        "length": 6,
+        "line": 46,
+        "col": 58,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 7883,
+        "length": 6,
+        "line": 50,
+        "col": 189,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 8029,
+        "length": 6,
+        "line": 52,
+        "col": 57,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 8125,
+        "length": 6,
+        "line": 52,
+        "col": 89,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 9298,
+        "length": 6,
+        "line": 58,
+        "col": 109,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 9371,
+        "length": 6,
+        "line": 62,
+        "col": 10,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 9415,
+        "length": 6,
+        "line": 64,
+        "col": 1,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 11104,
+        "length": 6,
+        "line": 88,
+        "col": 66,
+        "found": "分派",
+        "suggestions": [
+          "發派"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain 程式設計 [tier2: suppressed (score=0.18)]",
+        "english": "dispatch",
+        "context_clues": [
+          "函式",
+          "方法",
+          "呼叫",
+          "多型",
+          "事件"
+        ],
+        "anchor_match": false,
+        "explanation": "'分派' is a mainland Chinese term for 'dispatch'; Taiwan uses '發派'. Context: @domain 程式設計 [tier2: suppressed (score=0.18)]",
+        "anchor_provenance": {
+          "anchor_en": "dispatch",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'分派' is a mainland Chinese term for 'dispatch'; Taiwan uses '發派'. Context: @domain 程式設計 [tier2: suppressed (score=0.18)]",
+          "domain": "程式設計",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "unresolved"
+      },
+      {
+        "offset": 11242,
+        "length": 6,
+        "line": 88,
+        "col": 164,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 13698,
+        "length": 6,
+        "line": 98,
+        "col": 226,
+        "found": "維度",
+        "suggestions": [],
+        "rule_type": "ai_style",
+        "severity": "info",
+        "context": "humanize.V1: AI signature word; prefer 面向/層面",
+        "explanation": "'維度' — humanize.V1: AI signature word; prefer 面向/層面. Consider removing or rephrasing.",
+        "explain_meta": {
+          "rationale": "'維度' — humanize.V1: AI signature word; prefer 面向/層面. Consider removing or rephrasing.",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 15694,
+        "length": 6,
+        "line": 115,
+        "col": 38,
+        "found": "類型",
+        "suggestions": [
+          "型態",
+          "型別"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain 程式設計。「類型」在日常語境表示「種類/範疇」為正確 tw 用法 [tier2: suppressed (score=0.14)]",
+        "english": "type",
+        "context_clues": [
+          "型別",
+          "型態",
+          "變數",
+          "變量",
+          "函式",
+          "函數",
+          "程式碼",
+          "代碼",
+          "泛型",
+          "編譯",
+          "宣告"
+        ],
+        "anchor_match": false,
+        "explanation": "'類型' is a mainland Chinese term for 'type'; Taiwan uses '型態 / 型別'. Context: @domain 程式設計。「類型」在日常語境表示「種類/範疇」為正確 tw 用法 [tier2: suppressed (score=0.14)]",
+        "anchor_provenance": {
+          "anchor_en": "type",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'類型' is a mainland Chinese term for 'type'; Taiwan uses '型態 / 型別'. Context: @domain 程式設計。「類型」在日常語境表示「種類/範疇」為正確 tw 用法 [tier2: suppressed (score=0.14)]",
+          "domain": "程式設計",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "unresolved"
+      },
+      {
+        "offset": 16383,
+        "length": 6,
+        "line": 119,
+        "col": 3,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 16904,
+        "length": 9,
+        "line": 119,
+        "col": 274,
+        "found": "是一個",
+        "suggestions": [
+          "是"
+        ],
+        "rule_type": "translationese",
+        "severity": "info",
+        "context": "翻譯腔 Y1: 繫詞+量詞膨脹（是一個/名/位…的…），建議刪除繫詞+量詞",
+        "explanation": "'是一個' — 翻譯腔 Y1: 繫詞+量詞膨脹（是一個/名/位…的…），建議刪除繫詞+量詞. Suggested rewrite: 是.",
+        "explain_meta": {
+          "rationale": "'是一個' — 翻譯腔 Y1: 繫詞+量詞膨脹（是一個/名/位…的…），建議刪除繫詞+量詞. Suggested rewrite: 是.",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 17125,
+        "length": 6,
+        "line": 119,
+        "col": 351,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 17417,
+        "length": 6,
+        "line": 121,
+        "col": 71,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 19844,
+        "length": 30,
+        "line": 142,
+        "col": 76,
+        "found": "A 52,202、B 57,749、C 64,234",
+        "suggestions": [],
+        "rule_type": "ai_style",
+        "severity": "info",
+        "context": "AI structural: 三連排比（tricolon）— 三個等長的、分隔片段，常見於 AI 生成文本",
+        "explanation": "'A 52,202、B 57,749、C 64,234' — AI structural: 三連排比（tricolon）— 三個等長的、分隔片段，常見於 AI 生成文本. Consider removing or rephrasing.",
+        "explain_meta": {
+          "rationale": "'A 52,202、B 57,749、C 64,234' — AI structural: 三連排比（tricolon）— 三個等長的、分隔片段，常見於 AI 生成文本. Consider removing or rephrasing.",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 21382,
+        "length": 6,
+        "line": 148,
+        "col": 366,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 21433,
+        "length": 6,
+        "line": 148,
+        "col": 383,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 23114,
+        "length": 6,
+        "line": 162,
+        "col": 2,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 23347,
+        "length": 6,
+        "line": 162,
+        "col": 93,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 23978,
+        "length": 6,
+        "line": 166,
+        "col": 31,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 24226,
+        "length": 6,
+        "line": 168,
+        "col": 42,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 24514,
+        "length": 6,
+        "line": 168,
+        "col": 142,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 25872,
+        "length": 6,
+        "line": 176,
+        "col": 23,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 26838,
+        "length": 6,
+        "line": 180,
+        "col": 86,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 27038,
+        "length": 6,
+        "line": 180,
+        "col": 156,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 27919,
+        "length": 12,
+        "line": 188,
+        "col": 10,
+        "found": "研究研究",
+        "suggestions": [
+          "研究"
+        ],
+        "rule_type": "repetition",
+        "severity": "info",
+        "explanation": "'研究研究' is a consecutive duplicate; remove the repetition.",
+        "explain_meta": {
+          "rationale": "'研究研究' is a consecutive duplicate; remove the repetition.",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 27990,
+        "length": 6,
+        "line": 188,
+        "col": 39,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 29685,
+        "length": 6,
+        "line": 202,
+        "col": 15,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 30777,
+        "length": 6,
+        "line": 208,
+        "col": 65,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 30866,
+        "length": 6,
+        "line": 210,
+        "col": 9,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 31364,
+        "length": 6,
+        "line": 212,
+        "col": 124,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 32165,
+        "length": 6,
+        "line": 218,
+        "col": 78,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 32204,
+        "length": 6,
+        "line": 218,
+        "col": 91,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 33230,
+        "length": 6,
+        "line": 231,
+        "col": 27,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 33559,
+        "length": 1,
+        "line": 239,
+        "col": 10,
+        "found": " ",
+        "suggestions": [
+          ""
+        ],
+        "rule_type": "punctuation",
+        "severity": "info",
+        "context": "全形標點與其他字元之間不加空格",
+        "explanation": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+        "explain_meta": {
+          "rationale": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 33739,
+        "length": 1,
+        "line": 240,
+        "col": 10,
+        "found": " ",
+        "suggestions": [
+          ""
+        ],
+        "rule_type": "punctuation",
+        "severity": "info",
+        "context": "全形標點與其他字元之間不加空格",
+        "explanation": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+        "explain_meta": {
+          "rationale": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 34106,
+        "length": 1,
+        "line": 241,
+        "col": 10,
+        "found": " ",
+        "suggestions": [
+          ""
+        ],
+        "rule_type": "punctuation",
+        "severity": "info",
+        "context": "全形標點與其他字元之間不加空格",
+        "explanation": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+        "explain_meta": {
+          "rationale": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 34384,
+        "length": 1,
+        "line": 242,
+        "col": 10,
+        "found": " ",
+        "suggestions": [
+          ""
+        ],
+        "rule_type": "punctuation",
+        "severity": "info",
+        "context": "全形標點與其他字元之間不加空格",
+        "explanation": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+        "explain_meta": {
+          "rationale": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 34555,
+        "length": 1,
+        "line": 243,
+        "col": 10,
+        "found": " ",
+        "suggestions": [
+          ""
+        ],
+        "rule_type": "punctuation",
+        "severity": "info",
+        "context": "全形標點與其他字元之間不加空格",
+        "explanation": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+        "explain_meta": {
+          "rationale": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 34701,
+        "length": 1,
+        "line": 244,
+        "col": 10,
+        "found": " ",
+        "suggestions": [
+          ""
+        ],
+        "rule_type": "punctuation",
+        "severity": "info",
+        "context": "全形標點與其他字元之間不加空格",
+        "explanation": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+        "explain_meta": {
+          "rationale": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 34927,
+        "length": 1,
+        "line": 245,
+        "col": 10,
+        "found": " ",
+        "suggestions": [
+          ""
+        ],
+        "rule_type": "punctuation",
+        "severity": "info",
+        "context": "全形標點與其他字元之間不加空格",
+        "explanation": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+        "explain_meta": {
+          "rationale": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 35341,
+        "length": 1,
+        "line": 246,
+        "col": 16,
+        "found": " ",
+        "suggestions": [
+          ""
+        ],
+        "rule_type": "punctuation",
+        "severity": "info",
+        "context": "全形標點與其他字元之間不加空格",
+        "explanation": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+        "explain_meta": {
+          "rationale": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 35769,
+        "length": 1,
+        "line": 248,
+        "col": 16,
+        "found": " ",
+        "suggestions": [
+          ""
+        ],
+        "rule_type": "punctuation",
+        "severity": "info",
+        "context": "全形標點與其他字元之間不加空格",
+        "explanation": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+        "explain_meta": {
+          "rationale": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 35929,
+        "length": 1,
+        "line": 249,
+        "col": 42,
+        "found": " ",
+        "suggestions": [
+          ""
+        ],
+        "rule_type": "punctuation",
+        "severity": "info",
+        "context": "全形標點與其他字元之間不加空格",
+        "explanation": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+        "explain_meta": {
+          "rationale": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 36078,
+        "length": 1,
+        "line": 250,
+        "col": 28,
+        "found": " ",
+        "suggestions": [
+          ""
+        ],
+        "rule_type": "punctuation",
+        "severity": "info",
+        "context": "全形標點與其他字元之間不加空格",
+        "explanation": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+        "explain_meta": {
+          "rationale": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 36482,
+        "length": 1,
+        "line": 251,
+        "col": 28,
+        "found": " ",
+        "suggestions": [
+          ""
+        ],
+        "rule_type": "punctuation",
+        "severity": "info",
+        "context": "全形標點與其他字元之間不加空格",
+        "explanation": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+        "explain_meta": {
+          "rationale": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 36756,
+        "length": 1,
+        "line": 252,
+        "col": 11,
+        "found": " ",
+        "suggestions": [
+          ""
+        ],
+        "rule_type": "punctuation",
+        "severity": "info",
+        "context": "全形標點與其他字元之間不加空格",
+        "explanation": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+        "explain_meta": {
+          "rationale": "' ' should use the full-width equivalent  in CJK prose per MoE standards. Context: 全形標點與其他字元之間不加空格",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      }
+    ],
+    "applied_fixes": 0,
+    "summary": {
+      "errors": 0,
+      "warnings": 0,
+      "info": 61
+    },
+    "gate": {
+      "enabled": true,
+      "max_errors": 0,
+      "residual_errors": 0,
+      "max_warnings": 0,
+      "residual_warnings": 0
+    },
+    "profile": "strict",
+    "political_stance": "roc_centric",
+    "detected_script": "traditional",
+    "s2t_applied": false,
+    "trace": {
+      "trace_id": "d0775985b467ac803c4a0aa8b42d82ec",
+      "ruleset_hash": "3a6a5eecb12ada10725c0167434703c0f713136adad683257ee436f4b1ca8038",
+      "input_hash": "7fb06931d81fcd65af80b05c766429a69dead86a66c94881e6da77c0526ac960",
+      "timestamp": "2026-09-27T15:42:55.869Z",
+      "tool": "zhtw",
+      "issue_count": 61
+    },
+    "verify": {
+      "api_ok": true,
+      "matched": 0,
+      "unmatched": 34,
+      "no_english": 19
+    },
+    "coverage": {
+      "rules_checked": 1803,
+      "rules_matched": 5
+    },
+    "oral_density": 0.007347876,
+    "quality_flags": [
+      "stutter_detected"
+    ],
+    "ai_signature": {
+      "score": 0.1,
+      "markers": [],
+      "top_signals": [
+        "1 個結構性 AI 特徵"
+      ],
+      "sentence_variability": 35.60969,
+      "zero_width_count": 0,
+      "punctuation_profile": {
+        "comma": {
+          "count": 383,
+          "density": 28.19701,
+          "cv": 1.3853838
+        },
+        "period": {
+          "count": 268,
+          "density": 19.730545,
+          "cv": 1.3669959
+        },
+        "semicolon": {
+          "count": 6,
+          "density": 0.44172862
+        },
+        "dunhao": {
+          "count": 99,
+          "density": 7.2885222,
+          "cv": 1.1843444
+        },
+        "dash": {
+          "count": 0,
+          "density": 0
+        }
+      }
+    },
+    "translationese_signature": {
+      "score": 0,
+      "markers": [
+        {
+          "signal": "被動語態",
+          "count": 4,
+          "density": 0.29448575,
+          "threshold": 6
+        },
+        {
+          "signal": "的字鏈",
+          "count": 3,
+          "density": 3,
+          "threshold": 5
+        },
+        {
+          "signal": "弱動詞分解",
+          "count": 0,
+          "density": 0,
+          "threshold": 4
+        },
+        {
+          "signal": "代詞密度",
+          "count": 20,
+          "density": 1.4724288,
+          "threshold": 6
+        },
+        {
+          "signal": "翻譯腔偵測",
+          "count": 2,
+          "density": 0.14724287,
+          "threshold": 7
+        }
+      ],
+      "top_signals": [],
+      "max_de_chain": 3,
+      "domain": "technical"
+    },
+    "style_scorecard": {
+      "style_scores": {
+        "ai": 0.1,
+        "translationese": 0,
+        "consistency": 1
+      },
+      "top_issues_per_axis": {
+        "ai": [
+          {
+            "line": 98,
+            "col": 226,
+            "found": "維度",
+            "severity": "info",
+            "rule_type": "ai_style",
+            "context": "humanize.V1: AI signature word; prefer 面向/層面"
+          },
+          {
+            "line": 142,
+            "col": 76,
+            "found": "A 52,202、B 57,749、C 64,234",
+            "severity": "info",
+            "rule_type": "ai_style",
+            "context": "AI structural: 三連排比（tricolon）— 三個等長的、分隔片段，常見於 AI 生成文本"
+          }
+        ],
+        "translationese": [
+          {
+            "line": 25,
+            "col": 61,
+            "found": "透過",
+            "severity": "info",
+            "rule_type": "translationese",
+            "context": "dewesternise.V3: 透過 used with abstract means — prefer 藉由/經由"
+          },
+          {
+            "line": 119,
+            "col": 274,
+            "found": "是一個",
+            "severity": "info",
+            "rule_type": "translationese",
+            "context": "翻譯腔 Y1: 繫詞+量詞膨脹（是一個/名/位…的…），建議刪除繫詞+量詞"
+          }
+        ],
+        "consistency": [
+          {
+            "line": 1,
+            "col": 24,
+            "found": "通過",
+            "severity": "info",
+            "rule_type": "cross_strait",
+            "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」"
+          },
+          {
+            "line": 3,
+            "col": 17,
+            "found": "通過",
+            "severity": "info",
+            "rule_type": "cross_strait",
+            "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」"
+          },
+          {
+            "line": 3,
+            "col": 123,
+            "found": "通過",
+            "severity": "info",
+            "rule_type": "cross_strait",
+            "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」"
+          },
+          {
+            "line": 3,
+            "col": 171,
+            "found": "通過",
+            "severity": "info",
+            "rule_type": "cross_strait",
+            "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」"
+          },
+          {
+            "line": 9,
+            "col": 18,
+            "found": "通過",
+            "severity": "info",
+            "rule_type": "cross_strait",
+            "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」"
+          }
+        ]
+      }
+    },
+    "telemetry": {
+      "estimated_tokens_per_1k_chars": 0,
+      "estimated_llm_token_share": 0,
+      "estimated_tokens_per_ambiguous_term": 0,
+      "cache_hit_count": 0,
+      "cache_miss_count": 0,
+      "tier2_local_resolutions": 0,
+      "raw": {
+        "input_chars": 18440,
+        "rule_hits": 61,
+        "ambiguous_terms": 2,
+        "llm_round_trips": 0,
+        "estimated_prompt_tokens": 0,
+        "estimated_completion_tokens": 0,
+        "final_fixes": 0
+      }
+    },
+    "summary_metrics": {
+      "deterministic_fixes": 59,
+      "heuristic_fixes": 0,
+      "llm_judged_fixes": 0,
+      "unresolved": 2,
+      "llm_calls": 0,
+      "llm_tokens": 0,
+      "confidence_distribution": {
+        "high": 59,
+        "medium": 0,
+        "low": 2
+      }
+    }
+  }
+}

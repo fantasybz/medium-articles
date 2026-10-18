@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-09-25",
+  "reviewer": "Codex independent editorial sub-agent (AI): series_editor_review",
+  "lens": "editor_final_delta",
+  "verdict": "PASS_CONTRACT_EDITORIAL",
+  "series_verdict": "NOT_FULLY_REVIEWED",
+  "series_ready": false,
+  "public_release_complete": false,
+  "input": {
+    "path": "2026-11-same-spec-contract/article.md",
+    "sha256": "416476b5ade3ded365cd3faff9477d666175ceb5154eddffc75ed18a8da18def",
+    "line_count": 291
+  },
+  "previous_full_review": {
+    "path": "research/2026-10/same-spec-ten-runs/manuscripts/review-contract-editor.md",
+    "input_sha256": "d7d1244e859d407fe54b19510311d4100cd370dcd9ceb71df48cd0dc151cca76",
+    "complete_manuscript_read": true,
+    "continuous_second_half_reread": true
+  },
+  "delta_chain": [
+    {
+      "path": "research/2026-10/same-spec-ten-runs/manuscripts/contract-final-polish-delta.json",
+      "before_sha256": "d7d1244e859d407fe54b19510311d4100cd370dcd9ceb71df48cd0dc151cca76",
+      "after_sha256": "8103c4371c1d944cb7f9da326caad25060dce523438c3ca6c48bf9eb46ec5b92",
+      "replacement_count": 5,
+      "checks": [
+        {
+          "count": 1,
+          "after_occurrences": 1,
+          "current_lines": [
+            172
+          ]
+        },
+        {
+          "count": 1,
+          "after_occurrences": 1,
+          "current_lines": [
+            187
+          ]
+        },
+        {
+          "count": 1,
+          "after_occurrences": 1,
+          "current_lines": [
+            207
+          ]
+        },
+        {
+          "count": 1,
+          "after_occurrences": 1,
+          "current_lines": [
+            237
+          ]
+        },
+        {
+          "count": 1,
+          "after_occurrences": 1,
+          "current_lines": [
+            239
+          ]
+        }
+      ],
+      "exact_reverse_hash_match": true
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/manuscripts/contract-final-clarification-delta.json",
+      "before_sha256": "8103c4371c1d944cb7f9da326caad25060dce523438c3ca6c48bf9eb46ec5b92",
+      "after_sha256": "416476b5ade3ded365cd3faff9477d666175ceb5154eddffc75ed18a8da18def",
+      "replacement_count": 1,
+      "checks": [
+        {
+          "count": 1,
+          "after_occurrences": 1,
+          "current_lines": [
+            172
+          ]
+        }
+      ],
+      "exact_reverse_hash_match": true
+    }
+  ],
+  "reconstructed_previous_matches_full_review": true,
+  "only_declared_replacements": true,
+  "resolutions": [
+    {
+      "id": "CONTRACT-ED-01",
+      "status": "closed",
+      "line": 207,
+      "reason": "標題改以輸出何時出現為主軸，和批次比對及 EOF 前 probe 的實際差異一致。"
+    }
+  ],
+  "additional_changes": [
+    {
+      "line": 172,
+      "result": "pass",
+      "reason": "明指整份案例集、預期結果與比對邏輯由 driver 保留，和單次候選仍取得自己的 JSONL 輸入一致，沒有宣稱整個主機皆已隔離。"
+    },
+    {
+      "line": 187,
+      "result": "pass",
+      "reason": "將規則控制、案例覆蓋與存取限制分開，隔離能力須回到設定與實際 probe。"
+    },
+    {
+      "lines": [
+        237,
+        239
+      ],
+      "result": "pass",
+      "reason": "以 CLI 參數處理與未檢查要求取代含混的維度，指涉清楚而不更動方法限制。"
+    }
+  ],
+  "new_issues": [],
+  "open_counts": {
+    "blocker": 0,
+    "major": 0,
+    "minor": 0
+  },
+  "mcp_invoked_this_review": false,
+  "rendered_images_checked_this_review": false,
+  "manuscript_modified": false,
+  "prior_reviews_modified": false,
+  "frozen_data_modified": false,
+  "scope": "Exact two-record delta closure, including the whole-suite clarification, based on prior full reading and section 4-to-signature reread. Only this article editorially passes."
+}

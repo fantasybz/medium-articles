@@ -1,0 +1,34 @@
+{
+ "figures": [
+  {
+   "file": "diagram-01.png",
+   "mermaid": "---\nconfig:\n  theme: base\n  themeVariables:\n    fontSize: 16px\n    primaryColor: \"#f8f9fa\"\n    primaryTextColor: \"#1f2933\"\n    primaryBorderColor: \"#6b7280\"\n    lineColor: \"#6b7280\"\n    secondaryColor: \"#f8f9fa\"\n    tertiaryColor: \"#ffffff\"\n    clusterBkg: \"#ffffff\"\n    clusterBorder: \"#9ca3af\"\n    edgeLabelBackground: \"#ffffff\"\n  flowchart:\n    nodeSpacing: 128\n    rankSpacing: 30\n    padding: 12\n    htmlLabels: true\n    subGraphTitleMargin:\n      top: 8\n      bottom: 12\n    curve: basis\n---\nflowchart TB\n    B{\"行為是否<br/>已經決定？\"}\n    B -->|否| C[\"需求 owner<br/>確認空值等政策\"]\n    C --> B\n    B -->|是| D{\"驗收正反對照<br/>是否可用？\"}\n    D -->|否| E[\"QA owner<br/>修正量尺並重評\"]\n    E --> D\n    D -->|是| H[\"處理這份候選<br/>沿用既有核准責任\"]\n    H --> I{\"可選自查<br/>要採為預設嗎？\"}\n    I -->|否| J[\"本次工作結案\"]\n    I -->|是| K[\"另設有範圍比較<br/>核對效果與投入\"]\n    classDef own fill:#d4edda,stroke:#2e7d32,color:#1f2933\n    classDef buy fill:#fff3cd,stroke:#b8860b,color:#1f2933\n    classDef bad fill:#ffe0e0,stroke:#c0392b,color:#1f2933\n    classDef human fill:#e3f2fd,stroke:#1565c0,color:#1f2933\n    class C,E,H human\n    class B,D,I buy\n    class J,K own\n"
+  }
+ ],
+ "tables": [
+  {
+   "file": "table-01.png",
+   "markdown": "| 層次 | 問題 | 主要負責 | 判斷依據 | 常見錯位 |\n|---|---|---|---|---|\n| 需求決定 | 這個輸入下，什麼行為才算對？ | 需求 owner、領域負責人 | 已記錄的決定與例子；未決問題及其負責人 | 讓 agent 輸出或測試作者猜測充當決定 |\n| 候選驗收 | 這一份產物做到了嗎？ | QA owner、reviewer | 已用正反對照檢查的 oracle、該候選版本的實際驗收結果，以及操作條件紀錄 | 把 exit 0、「測試全過」或與範本逐 byte 相同當成符合契約 |\n| 方法比較 | 這種交代值得反覆使用嗎？ | EM／Staff 與維護者 | 依事前範圍與單位取得比較結果，核對效果、成本、人力及限制 | 用一次成功或一組全過推論成團隊預設 |\n"
+  },
+  {
+   "file": "table-02.png",
+   "markdown": "| 規則 | 例子 | 問題 | 誰決定 |\n|---|---|---|---|\n| 日期欄依指定格式輸出 | 有日期的列正常轉換 | 缺日期時，輸出空欄還是拒絕整份輸入？ | 匯出功能 owner（未決） |\n| 保留輸入列序與重複列 | 兩筆完全相同也要留下 | 無 | 呼叫端已要求（已決） |\n| 欄位內容保持原樣 | 姓名含逗號、備註含換行 | 每筆 record 可以用 LF 或 CRLF 結束嗎？ | 需求 owner 與 QA owner 共同確認 |\n"
+  },
+  {
+   "file": "table-03.png",
+   "markdown": "| 第一行的 `text` | R05 判定 | 算不算發言 | EOF 的 exit | 附舊有結尾摘要 |\n|---|---|---|---|---|\n| `\" \"`（只有空白） | 有效，原樣印出並 flush | 算 | 0 | 否 |\n| `null` | 不輸出 | 不算 | 5（已完成但沒有發言） | 是 |\n| `false` | malformed，輸出一則診斷 | 不算 | 6（有 malformed） | 否 |\n| `123` | malformed，輸出一則診斷 | 不算 | 6（有 malformed） | 否 |\n"
+  },
+  {
+   "file": "table-04.png",
+   "markdown": "| 回歸對象 | 固定什麼、變動什麼 | 可以判斷什麼 |\n|---|---|---|\n| Grader | 固定已核對行為的正反 fixtures，換 grader 版本 | 新量尺有沒有誤拒合法行為，或漏掉已知錯法？ |\n| 新候選實作 | 固定同一份契約 cases，檢查新候選 | 這份候選是否仍符合檢查所涵蓋的要求？ |\n| Model／harness 交付方法 | 取得新的生成結果，保存 task／trial 分布與 policy 版本 | 新版方法在這批工作上有沒有退步？ |\n"
+  },
+  {
+   "file": "table-05.png",
+   "markdown": "| 輸出 | 實體行數／records | 只要能解析 | 與 CRLF 範本逐 byte 相同 | 核對 header 與有序 records |\n|---|---|---|---|---|\n| 合法，CRLF | 5／3 | 接受 | 接受 | 接受 |\n| 合法，LF | 5／3 | 接受 | 拒絕 | 接受 |\n| 擅自去重 | 4／2 | 接受 | 拒絕 | 拒絕 |\n| header 欄名次序錯 | 5／3 | 接受 | 拒絕 | 拒絕 |\n| 資料列順序錯 | 5／3 | 接受 | 拒絕 | 拒絕 |\n| 一個日期值錯 | 5／3 | 接受 | 拒絕 | 拒絕 |\n"
+  },
+  {
+   "file": "table-06.png",
+   "markdown": "| 效果判斷 | 事前條件 | 假設區間（百分點） | 可以說到哪裡 |\n|---|---|---|---|\n| 支持超過實務門檻 | L > +5 | [+6, +9] | 在指定方法與假設下，支持改善超過 5 個百分點；成本與人力也達標，才支持採用 |\n| 排除達到門檻的改善 | U < +5 | [+1, +4] 或 [−2, +3] | 排除了至少 5 個百分點的改善；前者仍支持較小的正向改善，兩者都不等於等效 |\n| 仍未定 | L ≤ +5 且 U ≥ +5 | [+2, +8] 或 [−1, +7] | 既不能支持採用，也不能排除達到門檻的改善 |\n"
+  }
+ ]
+}

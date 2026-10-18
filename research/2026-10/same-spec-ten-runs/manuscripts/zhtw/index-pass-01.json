@@ -1,0 +1,307 @@
+{
+  "configuration": {
+    "content_type": "markdown",
+    "fix_mode": "none",
+    "profile": "strict",
+    "translationese_domain": "technical",
+    "detect_ai": true,
+    "ai_threshold": "low",
+    "detect_translationese": true,
+    "consistency": true,
+    "detect_style": true,
+    "explain": true,
+    "include_stats": true,
+    "include_telemetry": true,
+    "verify": true,
+    "max_errors": 0,
+    "max_warnings": 0,
+    "output": "full"
+  },
+  "response": {
+    "accepted": false,
+    "text": "## README.md\n\n撰寫中的「同一份規格，跑十次」系列：[變異篇](2026-11-same-spec-variance/article.md)已完成本機全文與複核；總論、規格篇與契約篇仍待完成。詳見[主寫與品質紀錄](research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md)。\n\n## research/README.md\n\n2026-09-25 全文撰寫續作：[變異篇](../2026-11-same-spec-variance/article.md)已由 Claude Code `max` 主寫，完成 Codex 潤飾、三種角度複核與 strict zh-TW MCP 檢查。另三篇因 Claude session 額度限制仍未完成；[主寫與品質紀錄](2026-10/same-spec-ten-runs/manuscripts/STATUS.md)明列部分稿、實際呼叫及未完成項。\n\n## research/TOPICS.md\n\n| 同一份規格，跑十次 | 分開量測驗收、實作差異與成本；總論／規格／契約／變異 | 2026-09-25 完成真實 repo 的 40 次正式量測，四組各 10/10 通過；變異篇已完成本機全文，另三篇仍待完成 | [變異篇](../2026-11-same-spec-variance/article.md)、[成稿狀態](2026-10/same-spec-ten-runs/manuscripts/STATUS.md)、[現行大綱](2026-10/2026-11-same-spec-ten-runs.md)、[實驗入口](experiments/same-spec-ten-runs/README.md)、[二審處置](2026-10/same-spec-ten-runs/review-resolution.md) |\n| 中文全文 | 變異篇完成 Claude Code `max` 主寫、Codex 潤飾、三種角度複核與 strict zh-TW 檢查；另三篇因 Claude 額度限制尚未完成，詳見[紀錄](2026-10/same-spec-ten-runs/manuscripts/STATUS.md) |\n\n## research/2026-10/2026-11-same-spec-ten-runs.md\n\n> 修訂日期：2026-09-25。這是目前採用的研究與寫作骨架，取代[原大綱](../2026-09/2026-11-same-spec-ten-runs.md)的執行方案；原檔保留為歷史紀錄。本輪已完成 40 個正式名額、外部驗收及初步分析，取得第一手資料；本檔保留寫作骨架；[變異篇](../../2026-11-same-spec-variance/article.md)已完成本機全文，另三篇狀態見[成稿紀錄](same-spec-ten-runs/manuscripts/STATUS.md)。實測結果、公開資料與重評狀態見[研究結果](../experiments/same-spec-ten-runs/RESULTS.md)，圖表見[本輪工件](2026-11-same-spec-ten-runs.figures.md)。\n本輪不預排發布日期，也不因「最高標準」而補造真人參與。研究結果已取得，變異篇已完成本機全文，另三篇與社群 hooks 尚未完成，不能寫成四篇已發布。工作往前推進的依據是可核對的工件與明確未完成項。英文版沿用相同限制與資料，排程在研究與中文稿完成後另定。\n\n## research/2026-10/same-spec-ten-runs/research-loop.md\n\n\n\n依使用者要求，四篇分別呼叫 Claude Code `claude-opus-5-5 --effort max` 主寫；[實際呼叫紀錄](manuscripts/writer-provenance.json)與四十個研究名額分開保存。變異篇正常完成，規格篇留下部分正文，總論與契約篇沒有完整正文。另三篇續接遇到 Claude session 額度限制，小型探測確認預計台北時間 16:10 重置；沒有改由其他模型代寫，也沒有背景重試。\n\n變異篇經主代理全文潤飾，以及證據、編輯與讀者三種角度的獨立複核，問題均有處置。新增真實候選對照明標事後教學示例，沒有回填事前分析。正文與貼稿的 strict zh-TW MCP 均為 errors=0、warnings=0；語境誤報逐項記錄，不做整批替換。圖表已檢視，F2 原檔與貼稿 PNG 雜湊一致，正式 317 份封存檔案未變。詳見[成稿狀態與驗證](manuscripts/STATUS.md)。\n\nA2 的版本化 PDF 已再次下載核對，雜湊與原查證一致；摘要頁與 PDF 首頁題名差異仍存在。變異篇使用 PDF 首頁完整題名及 v2 連結，沒有把這次核讀說成重現作者實驗。舊文承接也區分已發布系列與尚待發布稿。這輪完成的是變異篇本機全文，系列仍未完成，更沒有發布到遠端。\n\n\n## research/experiments/same-spec-ten-runs/RESULTS.md\n\n目前可支持的結論是：在這個真實 repo 的小型 parser 修補上，四份指令包包含相同要求，各產生十份實作並通過既定驗收，而每組內仍可觀察到結構表示不同。這批資料沒有提供提高某組可靠度、原生 Skill 效果或降低真人維護成本的證據。成稿繼續維持單一 task、small n、驗收覆蓋與 descriptor 的限制；目前變異篇已完成本機全文，另三篇尚未完成，沒有發布承諾。詳見[主寫與品質紀錄](../../2026-10/same-spec-ten-runs/manuscripts/STATUS.md)。\n",
+    "issues": [
+      {
+        "offset": 885,
+        "length": 6,
+        "line": 11,
+        "col": 86,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "warning",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 2379,
+        "length": 69,
+        "line": 17,
+        "col": 75,
+        "found": "工作往前推進的依據是可核對的工件與明確未完成項",
+        "suggestions": [],
+        "rule_type": "translationese",
+        "severity": "warning",
+        "context": "翻譯腔 ZY5: 定語堆疊 — 23 字無逗點、含 2 個「的」，建議拆成短句",
+        "explanation": "'工作往前推進的依據是可核對的工件與明確未完成項' — 翻譯腔 ZY5: 定語堆疊 — 23 字無逗點、含 2 個「的」，建議拆成短句. Translationese / 歐化 pattern; consider an idiomatic zh-TW rewrite.",
+        "explain_meta": {
+          "rationale": "'工作往前推進的依據是可核對的工件與明確未完成項' — 翻譯腔 ZY5: 定語堆疊 — 23 字無逗點、含 2 個「的」，建議拆成短句. Translationese / 歐化 pattern; consider an idiomatic zh-TW rewrite.",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 2952,
+        "length": 6,
+        "line": 23,
+        "col": 185,
+        "found": "台北",
+        "suggestions": [
+          "臺北"
+        ],
+        "rule_type": "variant",
+        "severity": "warning",
+        "context": "地名 (@in tw) MoE 標準用字 (地名用「臺」)",
+        "english": "Taipei",
+        "anchor_match": true,
+        "explanation": "'台北' is a non-standard character variant; MoE standard form: 臺北. Context: 地名 (@in tw) MoE 標準用字 (地名用「臺」)",
+        "anchor_provenance": {
+          "anchor_en": "Taipei",
+          "anchor_match": true
+        },
+        "explain_meta": {
+          "rationale": "'台北' is a non-standard character variant; MoE standard form: 臺北. Context: 地名 (@in tw) MoE 標準用字 (地名用「臺」)",
+          "is_false_friend": false,
+          "auto_fix_safe": true,
+          "needs_review": false,
+          "editorial_confidence": "medium"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 4062,
+        "length": 6,
+        "line": 32,
+        "col": 57,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "warning",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      }
+    ],
+    "applied_fixes": 0,
+    "summary": {
+      "errors": 0,
+      "warnings": 4,
+      "info": 0
+    },
+    "gate": {
+      "enabled": true,
+      "max_errors": 0,
+      "residual_errors": 0,
+      "max_warnings": 0,
+      "residual_warnings": 4
+    },
+    "profile": "strict",
+    "political_stance": "roc_centric",
+    "detected_script": "traditional",
+    "s2t_applied": false,
+    "trace": {
+      "trace_id": "871b4e6774dd482839e8053ec9d72518",
+      "ruleset_hash": "3a6a5eecb12ada10725c0167434703c0f713136adad683257ee436f4b1ca8038",
+      "input_hash": "33499ee45f57a99d160ad702c8f80e840f14d9c26cadd62ee2f7d4f8d07fdbfc",
+      "timestamp": "2026-09-25T06:05:51.698Z",
+      "tool": "zhtw",
+      "issue_count": 4
+    },
+    "verify": {
+      "api_ok": true,
+      "matched": 1,
+      "unmatched": 2,
+      "no_english": 1
+    },
+    "coverage": {
+      "rules_checked": 1803,
+      "rules_matched": 2
+    },
+    "oral_density": 0.0021929825,
+    "ai_signature": {
+      "score": 0,
+      "markers": [],
+      "top_signals": [],
+      "sentence_variability": 19.860874,
+      "zero_width_count": 0,
+      "punctuation_profile": {
+        "comma": {
+          "count": 31,
+          "density": 23.099852,
+          "cv": 0.7095308
+        },
+        "period": {
+          "count": 18,
+          "density": 13.412817,
+          "cv": 0.97529453
+        },
+        "semicolon": {
+          "count": 11,
+          "density": 8.196721,
+          "cv": 0.6638591
+        },
+        "dunhao": {
+          "count": 10,
+          "density": 7.451565,
+          "cv": 0.8894628
+        },
+        "dash": {
+          "count": 0,
+          "density": 0
+        }
+      }
+    },
+    "translationese_signature": {
+      "score": 0,
+      "markers": [
+        {
+          "signal": "被動語態",
+          "count": 0,
+          "density": 0,
+          "threshold": 6
+        },
+        {
+          "signal": "的字鏈",
+          "count": 2,
+          "density": 2,
+          "threshold": 5
+        },
+        {
+          "signal": "弱動詞分解",
+          "count": 0,
+          "density": 0,
+          "threshold": 4
+        },
+        {
+          "signal": "代詞密度",
+          "count": 1,
+          "density": 0.74515647,
+          "threshold": 6
+        },
+        {
+          "signal": "翻譯腔偵測",
+          "count": 1,
+          "density": 0.74515647,
+          "threshold": 7
+        }
+      ],
+      "top_signals": [],
+      "max_de_chain": 2,
+      "domain": "technical"
+    },
+    "style_scorecard": {
+      "style_scores": {
+        "ai": 0,
+        "translationese": 0,
+        "consistency": 0.81333876
+      },
+      "top_issues_per_axis": {
+        "ai": [],
+        "translationese": [
+          {
+            "line": 17,
+            "col": 75,
+            "found": "工作往前推進的依據是可核對的工件與明確未完成項",
+            "severity": "warning",
+            "rule_type": "translationese",
+            "context": "翻譯腔 ZY5: 定語堆疊 — 23 字無逗點、含 2 個「的」，建議拆成短句"
+          }
+        ],
+        "consistency": [
+          {
+            "line": 11,
+            "col": 86,
+            "found": "通過",
+            "severity": "warning",
+            "rule_type": "cross_strait",
+            "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」"
+          },
+          {
+            "line": 32,
+            "col": 57,
+            "found": "通過",
+            "severity": "warning",
+            "rule_type": "cross_strait",
+            "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」"
+          }
+        ]
+      }
+    },
+    "telemetry": {
+      "estimated_tokens_per_1k_chars": 0,
+      "estimated_llm_token_share": 0,
+      "estimated_tokens_per_ambiguous_term": null,
+      "cache_hit_count": 0,
+      "cache_miss_count": 0,
+      "tier2_local_resolutions": 0,
+      "raw": {
+        "input_chars": 2459,
+        "rule_hits": 4,
+        "ambiguous_terms": 0,
+        "llm_round_trips": 0,
+        "estimated_prompt_tokens": 0,
+        "estimated_completion_tokens": 0,
+        "final_fixes": 0
+      }
+    },
+    "summary_metrics": {
+      "deterministic_fixes": 4,
+      "heuristic_fixes": 0,
+      "llm_judged_fixes": 0,
+      "unresolved": 0,
+      "llm_calls": 0,
+      "llm_tokens": 0,
+      "confidence_distribution": {
+        "high": 4,
+        "medium": 0,
+        "low": 0
+      }
+    }
+  }
+}

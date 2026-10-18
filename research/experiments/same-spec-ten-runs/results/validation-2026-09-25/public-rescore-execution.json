@@ -1,0 +1,9 @@
+{
+  "started_at_utc": "2026-09-25T04:35:49.951854+00:00",
+  "completed_at_utc": "2026-09-25T04:39:41.374531+00:00",
+  "exit_code": 0,
+  "path_control": "/usr/bin:/bin",
+  "working_directory": "new empty temporary directory",
+  "purpose": "Re-evaluate public sealed candidates using the public frozen oracle; no Claude CLI on PATH and no model request.",
+  "log_sha256": "1d09410c4453a562eacec50f47ecc72a94e3b1bc6a67f044c350edf022aed793"
+}

@@ -1,0 +1,474 @@
+{
+  "note": "Development campaigns only: two original successful pilots plus four deliberately stopped operational probe slots. Never pooled with formal observations. Raw traces and immutable original bundles remain in the local .context archive. Frozen source hashes identify distinct development versions. Synthetic 529 behavior is verified only by offline regression tests; the live low-budget probe produced error_max_budget_usd.",
+  "campaigns": [
+    {
+      "development_campaign": "pilot-01",
+      "purpose": "original transport/evaluation pilots",
+      "formal_evidence": false,
+      "manifest_sha256": "74629aa19eaac3602d8715d019fa25c7d6f240a0544e84e376506a95483f386c",
+      "frozen_at_utc": "2026-09-25T03:43:31.972609+00:00",
+      "model": "claude-opus-5-5",
+      "effort": "high",
+      "timeout_seconds": 600,
+      "max_budget_usd_cli_setting": 5,
+      "planned": 2,
+      "halted": false,
+      "source_sha256": {
+        "PROTOCOL.md": "20f0979d821f4b7a9a17608101bad24c6ea91d87c1e776f1ef28467fc998ab27",
+        "README.md": "6ca76f94868d7cd1d1cbd7e5c6ab3b9b44d430199c9242389eec609f69324db4",
+        "analyze.py": "a6f80ee4fea5cc72620f4234065a480f0bcd4efa143ddc156cea7ad49ebc11ea",
+        "evaluator.py": "443b47cc93ca1559293a6025472696eee8351a25cb8486e09ee682bcfd29508a",
+        "requirements.json": "a95eb54b1d09c103751bf64253732930ecc7f5551ba9b48a391e53d446a7a238",
+        "run_study.py": "fc852fcc802adf5d23f7b75eeb4ef1cc012411b1b77c4fc9cbd47e2c708fff20",
+        "sandbox.py": "50dbd5c92c39ef388090abe761e9d96527e3427c7ff3fea318865ecbdf73c523",
+        "seed/codex_jsonl.py": "4949ff55184cbfd3cbd0c8add632a6382ec4b5e6ec2240ca88018443370e6afb",
+        "specs/A.md": "0f9b8bc55e268b5a9118dfbb7dbd403a6697ac463ac92be423542c93ac6145f5",
+        "specs/A0.md": "6fbad2d9c1e37c64c58a0609ba6fa60ad707b1a04a12e3e2819a276a73ad951a",
+        "specs/B.md": "05d0bd0c876fa2931bff4ae6d269c55a09f3fc35c50954f14bb75cd912cbe632",
+        "specs/C.md": "dade59e32a635e50c810dcf9ff9cf237ec7ce3e8303b8538cf552a220c0ddd1e",
+        "task.json": "e96c0a7a9e12e67f2eec6b025690af7f796608ff5d8f49307889e2e46ff6df40",
+        "test_analyze.py": "07482e7530f52d3b12f2f3107db5eba4531fff3685cc15c69e935bb2b753a90e",
+        "test_run_study.py": "c9b3ff260eba4f143ce9a10e330b2bf5171f4bf6eec58c494ad0ee76a0e60d04",
+        "test_sandbox.py": "51e2067adcf0a6ec4659d8221125e93216b4f6eb9cfcad7167c8be2682617541",
+        "tests/__init__.py": "8cb4d9109292f7107802eaee0b569bdbdbbd43cb0f17284c309ab22441e3c458",
+        "tests/fixtures/parser_reference.py": "aad3638eecf746ee473893d805e0734f68dd2a861f4de25be7831da390db1c9f",
+        "tests/test_task_evaluator.py": "e6ff5eaa2fa043aa4a95a1fadf32bab7df7cc388905b9d81912278a05e82c952"
+      },
+      "records_sha256": "a8dea5579959c597491407b74dd58a05804b00150b2a00c865ef6c8a7ebd9bfc",
+      "records": [
+        {
+          "run_id": "pilot-01-A0",
+          "arm": "A0",
+          "block": 1,
+          "phase": "pilot",
+          "returncode": 0,
+          "timed_out": false,
+          "wall_seconds": 38.7864457500109,
+          "cli_success": true,
+          "artifact_success": true,
+          "accepted_completion": true,
+          "artifact_sha256": "fb454984ff73f5556bc9938d0b56de0905949fd5ef9e1cf95aa097e54535d1e0",
+          "code_path": "pilot-01-A0/candidate/codex_jsonl.py",
+          "status": "completed",
+          "usage": {
+            "input_tokens": 2,
+            "cache_creation_input_tokens": 3931,
+            "cache_read_input_tokens": 0,
+            "output_tokens": 4617,
+            "output_tokens_details": {
+              "thinking_tokens": 1781
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 3931,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "not_available",
+            "iterations": [
+              {
+                "input_tokens": 2,
+                "output_tokens": 4617,
+                "cache_read_input_tokens": 0,
+                "cache_creation_input_tokens": 3931,
+                "cache_creation": {
+                  "ephemeral_5m_input_tokens": 0,
+                  "ephemeral_1h_input_tokens": 3931
+                },
+                "type": "message"
+              }
+            ],
+            "speed": "standard"
+          },
+          "total_cost_usd": 0.12728699999999998,
+          "completed_at_utc": "2026-09-25T03:44:19.194922+00:00",
+          "model_usage": {
+            "claude-haiku-4-5-20251001": {
+              "inputTokens": 3401,
+              "outputTokens": 18,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0,
+              "webSearchRequests": 0,
+              "costUSD": 0.0034909999999999997,
+              "contextWindow": 200000,
+              "maxOutputTokens": 32000,
+              "thinkingTokens": 0,
+              "canonicalModel": "claude-haiku-4-5",
+              "provider": "firstParty",
+              "costBasis": "list"
+            },
+            "claude-opus-5-5": {
+              "inputTokens": 2,
+              "outputTokens": 4617,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 3931,
+              "webSearchRequests": 0,
+              "costUSD": 0.12379599999999999,
+              "contextWindow": 1000000,
+              "maxOutputTokens": 128000,
+              "thinkingTokens": 1781,
+              "canonicalModel": "claude-opus-5-5",
+              "provider": "firstParty",
+              "costBasis": "list"
+            }
+          },
+          "boundary_ok": true
+        },
+        {
+          "run_id": "pilot-01-C",
+          "arm": "C",
+          "block": 1,
+          "phase": "pilot",
+          "returncode": 0,
+          "timed_out": false,
+          "wall_seconds": 39.28139208399807,
+          "cli_success": true,
+          "artifact_success": true,
+          "accepted_completion": true,
+          "artifact_sha256": "25a783e086930a1bb246a82def8306339725b8b7cb97c303ffe107cc22813387",
+          "code_path": "pilot-01-C/candidate/codex_jsonl.py",
+          "status": "completed",
+          "usage": {
+            "input_tokens": 2,
+            "cache_creation_input_tokens": 6422,
+            "cache_read_input_tokens": 0,
+            "output_tokens": 4652,
+            "output_tokens_details": {
+              "thinking_tokens": 1473
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 6422,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "not_available",
+            "iterations": [
+              {
+                "input_tokens": 2,
+                "output_tokens": 4652,
+                "cache_read_input_tokens": 0,
+                "cache_creation_input_tokens": 6422,
+                "cache_creation": {
+                  "ephemeral_5m_input_tokens": 0,
+                  "ephemeral_1h_input_tokens": 6422
+                },
+                "type": "message"
+              }
+            ],
+            "speed": "standard"
+          },
+          "total_cost_usd": 0.149662,
+          "completed_at_utc": "2026-09-25T03:44:23.661848+00:00",
+          "model_usage": {
+            "claude-haiku-4-5-20251001": {
+              "inputTokens": 5153,
+              "outputTokens": 17,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0,
+              "webSearchRequests": 0,
+              "costUSD": 0.005238,
+              "contextWindow": 200000,
+              "maxOutputTokens": 32000,
+              "thinkingTokens": 0,
+              "canonicalModel": "claude-haiku-4-5",
+              "provider": "firstParty",
+              "costBasis": "list"
+            },
+            "claude-opus-5-5": {
+              "inputTokens": 2,
+              "outputTokens": 4652,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 6422,
+              "webSearchRequests": 0,
+              "costUSD": 0.144424,
+              "contextWindow": 1000000,
+              "maxOutputTokens": 128000,
+              "thinkingTokens": 1473,
+              "canonicalModel": "claude-opus-5-5",
+              "provider": "firstParty",
+              "costBasis": "list"
+            }
+          },
+          "boundary_ok": true
+        }
+      ],
+      "checks_per_candidate": 103,
+      "isolation_preflight": {
+        "at_utc": "2026-09-25T03:43:39.857543+00:00",
+        "sandbox": "macos-seatbelt-v1",
+        "read_denied": true,
+        "write_denied": true,
+        "network_denied": true
+      }
+    },
+    {
+      "development_campaign": "operational-probes-20260925-v1/timeout-0p5s",
+      "purpose": "operational timeout probe",
+      "formal_evidence": false,
+      "manifest_sha256": "68782b960bea756be72e9788d600706d2b85d77d4aac60f3fce4ae528fa43bda",
+      "frozen_at_utc": "2026-09-25T04:11:08.472306+00:00",
+      "model": "claude-opus-5-5",
+      "effort": "high",
+      "timeout_seconds": 0.5,
+      "max_budget_usd_cli_setting": 5.0,
+      "planned": 2,
+      "halted": false,
+      "source_sha256": {
+        "PROTOCOL.md": "68bcb5efd1f711f152ae9b57eeb285ab7b2598f1d44396233dc9055ea1cea9b2",
+        "README.md": "b3d994d7e506998cf4d1564e32fe53c427e6c3ee33cf318e94a57d0ac6c052ea",
+        "analyze.py": "670fe86601ee7c0f9e00dbf09e84f94d0803863fedecd6e57d7efc8a761807fb",
+        "baseline-reproduction.json": "50b4cf407ec4502e746fdc43ba4dd7b2c8b175444c21ed7a40a7ad85c5f6930f",
+        "campaign_status.py": "a52ab4ff6bf9c960513bfcd59dffb240bfaea35f9a4984aaa6b6d8385d497c37",
+        "evaluator.py": "443b47cc93ca1559293a6025472696eee8351a25cb8486e09ee682bcfd29508a",
+        "requirements.json": "32e0a0af2578564624b5a5b5f9d981e0dc296e6eb690b6598482cb809419a515",
+        "run_study.py": "82d88b1b303eda06ae8356778c4e5122af9b3ca6712dc3a2383c95d7eb44f873",
+        "sandbox.py": "50dbd5c92c39ef388090abe761e9d96527e3427c7ff3fea318865ecbdf73c523",
+        "seed/codex_jsonl.py": "4949ff55184cbfd3cbd0c8add632a6382ec4b5e6ec2240ca88018443370e6afb",
+        "specs/A.md": "3ea6d57daae7dba9d3ceb6327607ee60ccaed3bd4193e5ec7c79441ad36bc247",
+        "specs/A0.md": "a747ae3abd880f77227e7492e8a2e6d6346637a39b1e64366bc435dd772b4a10",
+        "specs/B.md": "c10ef7256aadc46816e73b1bbaf7edc26b5d2719e687ff497ff5005062ff8a3b",
+        "specs/C.md": "19c404372f742c8f80165fdfea8df998bb29c3324f892433c8992e418e9c54af",
+        "task.json": "e96c0a7a9e12e67f2eec6b025690af7f796608ff5d8f49307889e2e46ff6df40",
+        "test_analyze.py": "b81c1171ef3348575a504cff61052567150c8dcc651a30fc0c92c600c04df5d3",
+        "test_campaign_status.py": "648dcc5ff1bc0b82fa0eab125e1d6e6a3530b39b7bf986835e9eb0485f5773e6",
+        "test_run_study.py": "30112d60361cae736783e3312c2bf1bae806a700b9b72414a85095fdd30a55d1",
+        "test_sandbox.py": "51e2067adcf0a6ec4659d8221125e93216b4f6eb9cfcad7167c8be2682617541",
+        "tests/__init__.py": "8cb4d9109292f7107802eaee0b569bdbdbbd43cb0f17284c309ab22441e3c458",
+        "tests/fixtures/parser_reference.py": "aad3638eecf746ee473893d805e0734f68dd2a861f4de25be7831da390db1c9f",
+        "tests/test_task_evaluator.py": "e6ff5eaa2fa043aa4a95a1fadf32bab7df7cc388905b9d81912278a05e82c952"
+      },
+      "records_sha256": "75ad1b2beb9168812f5b42a39982a6a31589dd930edb28b9b5ac82a712438930",
+      "records": [
+        {
+          "run_id": "pilot-01-A0",
+          "arm": "A0",
+          "block": 1,
+          "phase": "pilot",
+          "returncode": 143,
+          "timed_out": true,
+          "wall_seconds": 0.6412956249987474,
+          "cli_success": false,
+          "artifact_success": false,
+          "accepted_completion": false,
+          "artifact_sha256": null,
+          "code_path": null,
+          "status": "timeout",
+          "usage": {},
+          "total_cost_usd": null,
+          "completed_at_utc": "2026-09-25T04:11:25.566388+00:00",
+          "model_usage": {},
+          "boundary_ok": false,
+          "boundary_state": "unknown",
+          "boundary_violation": false,
+          "operational_error": false,
+          "artifact_error": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "run_id": "pilot-01-C",
+          "arm": "C",
+          "block": 1,
+          "phase": "pilot",
+          "returncode": 143,
+          "timed_out": true,
+          "wall_seconds": 1.34548299999733,
+          "cli_success": false,
+          "artifact_success": false,
+          "accepted_completion": false,
+          "artifact_sha256": null,
+          "code_path": null,
+          "status": "timeout",
+          "usage": {},
+          "total_cost_usd": null,
+          "completed_at_utc": "2026-09-25T04:11:25.569520+00:00",
+          "model_usage": {},
+          "boundary_ok": false,
+          "boundary_state": "unknown",
+          "boundary_violation": false,
+          "operational_error": false,
+          "artifact_error": "Expecting value: line 1 column 1 (char 0)"
+        }
+      ],
+      "checks_per_candidate": 103,
+      "isolation_preflight": {
+        "at_utc": "2026-09-25T04:11:22.943744+00:00",
+        "sandbox": "macos-seatbelt-v1",
+        "read_denied": true,
+        "write_denied": true,
+        "network_denied": true
+      }
+    },
+    {
+      "development_campaign": "operational-probes-20260925-v1/budget-0p0001",
+      "purpose": "operational budget-stop probe",
+      "formal_evidence": false,
+      "manifest_sha256": "c49ff5a7b7f723269c10699daac3e1aba63e5d625ac838ce199d4b56871200a2",
+      "frozen_at_utc": "2026-09-25T04:11:08.802483+00:00",
+      "model": "claude-opus-5-5",
+      "effort": "high",
+      "timeout_seconds": 600.0,
+      "max_budget_usd_cli_setting": 0.0001,
+      "planned": 2,
+      "halted": false,
+      "source_sha256": {
+        "PROTOCOL.md": "68bcb5efd1f711f152ae9b57eeb285ab7b2598f1d44396233dc9055ea1cea9b2",
+        "README.md": "b3d994d7e506998cf4d1564e32fe53c427e6c3ee33cf318e94a57d0ac6c052ea",
+        "analyze.py": "670fe86601ee7c0f9e00dbf09e84f94d0803863fedecd6e57d7efc8a761807fb",
+        "baseline-reproduction.json": "50b4cf407ec4502e746fdc43ba4dd7b2c8b175444c21ed7a40a7ad85c5f6930f",
+        "campaign_status.py": "a52ab4ff6bf9c960513bfcd59dffb240bfaea35f9a4984aaa6b6d8385d497c37",
+        "evaluator.py": "443b47cc93ca1559293a6025472696eee8351a25cb8486e09ee682bcfd29508a",
+        "requirements.json": "32e0a0af2578564624b5a5b5f9d981e0dc296e6eb690b6598482cb809419a515",
+        "run_study.py": "82d88b1b303eda06ae8356778c4e5122af9b3ca6712dc3a2383c95d7eb44f873",
+        "sandbox.py": "50dbd5c92c39ef388090abe761e9d96527e3427c7ff3fea318865ecbdf73c523",
+        "seed/codex_jsonl.py": "4949ff55184cbfd3cbd0c8add632a6382ec4b5e6ec2240ca88018443370e6afb",
+        "specs/A.md": "3ea6d57daae7dba9d3ceb6327607ee60ccaed3bd4193e5ec7c79441ad36bc247",
+        "specs/A0.md": "a747ae3abd880f77227e7492e8a2e6d6346637a39b1e64366bc435dd772b4a10",
+        "specs/B.md": "c10ef7256aadc46816e73b1bbaf7edc26b5d2719e687ff497ff5005062ff8a3b",
+        "specs/C.md": "19c404372f742c8f80165fdfea8df998bb29c3324f892433c8992e418e9c54af",
+        "task.json": "e96c0a7a9e12e67f2eec6b025690af7f796608ff5d8f49307889e2e46ff6df40",
+        "test_analyze.py": "b81c1171ef3348575a504cff61052567150c8dcc651a30fc0c92c600c04df5d3",
+        "test_campaign_status.py": "648dcc5ff1bc0b82fa0eab125e1d6e6a3530b39b7bf986835e9eb0485f5773e6",
+        "test_run_study.py": "30112d60361cae736783e3312c2bf1bae806a700b9b72414a85095fdd30a55d1",
+        "test_sandbox.py": "51e2067adcf0a6ec4659d8221125e93216b4f6eb9cfcad7167c8be2682617541",
+        "tests/__init__.py": "8cb4d9109292f7107802eaee0b569bdbdbbd43cb0f17284c309ab22441e3c458",
+        "tests/fixtures/parser_reference.py": "aad3638eecf746ee473893d805e0734f68dd2a861f4de25be7831da390db1c9f",
+        "tests/test_task_evaluator.py": "e6ff5eaa2fa043aa4a95a1fadf32bab7df7cc388905b9d81912278a05e82c952"
+      },
+      "records_sha256": "0d4709d92568e1a54ea241181e33cda3893a07e6c5213c7403a473ceb66569ce",
+      "records": [
+        {
+          "run_id": "pilot-01-A0",
+          "arm": "A0",
+          "block": 1,
+          "phase": "pilot",
+          "returncode": 1,
+          "timed_out": false,
+          "wall_seconds": 3.1786369170004036,
+          "cli_success": false,
+          "artifact_success": false,
+          "accepted_completion": false,
+          "artifact_sha256": null,
+          "code_path": null,
+          "status": "operational_error",
+          "usage": {
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "input_tokens": 0,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "output_tokens": 0,
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "",
+            "iterations": [],
+            "speed": "standard"
+          },
+          "total_cost_usd": 0.003489,
+          "completed_at_utc": "2026-09-25T04:11:29.076888+00:00",
+          "model_usage": {
+            "claude-haiku-4-5-20251001": {
+              "inputTokens": 3404,
+              "outputTokens": 17,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0,
+              "webSearchRequests": 0,
+              "costUSD": 0.003489,
+              "contextWindow": 200000,
+              "maxOutputTokens": 32000,
+              "thinkingTokens": 0,
+              "canonicalModel": "claude-haiku-4-5",
+              "provider": "firstParty",
+              "costBasis": "list"
+            }
+          },
+          "boundary_ok": false,
+          "boundary_state": "unknown",
+          "boundary_violation": false,
+          "operational_error": true,
+          "artifact_error": "Expecting value: line 1 column 1 (char 0)"
+        },
+        {
+          "run_id": "pilot-01-C",
+          "arm": "C",
+          "block": 1,
+          "phase": "pilot",
+          "returncode": 1,
+          "timed_out": false,
+          "wall_seconds": 3.0479248329938855,
+          "cli_success": false,
+          "artifact_success": false,
+          "accepted_completion": false,
+          "artifact_sha256": null,
+          "code_path": null,
+          "status": "operational_error",
+          "usage": {
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "input_tokens": 0,
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "output_tokens": 0,
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "inference_geo": "",
+            "iterations": [],
+            "speed": "standard"
+          },
+          "total_cost_usd": 0.005241,
+          "completed_at_utc": "2026-09-25T04:11:29.082111+00:00",
+          "model_usage": {
+            "claude-haiku-4-5-20251001": {
+              "inputTokens": 5156,
+              "outputTokens": 17,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0,
+              "webSearchRequests": 0,
+              "costUSD": 0.005241,
+              "contextWindow": 200000,
+              "maxOutputTokens": 32000,
+              "thinkingTokens": 0,
+              "canonicalModel": "claude-haiku-4-5",
+              "provider": "firstParty",
+              "costBasis": "list"
+            }
+          },
+          "boundary_ok": false,
+          "boundary_state": "unknown",
+          "boundary_violation": false,
+          "operational_error": true,
+          "artifact_error": "Expecting value: line 1 column 1 (char 0)"
+        }
+      ],
+      "checks_per_candidate": 103,
+      "isolation_preflight": {
+        "at_utc": "2026-09-25T04:11:25.745527+00:00",
+        "sandbox": "macos-seatbelt-v1",
+        "read_denied": true,
+        "write_denied": true,
+        "network_denied": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,2517 @@
+{
+  "checked_at": "2026-10-03T15:51:14.537844+00:00",
+  "scope": "Public research attachments and article URLs; no new experiment or Medium publication",
+  "repository": "https://github.com/fantasybz/medium-articles",
+  "branch": "organize-research-topics",
+  "artifact_commit": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+  "documents": [
+    {
+      "path": "2026-11-same-spec-overview/article.md",
+      "sha256": "d9c7cf8928ed7562be3d36dd8b3cdb97d45f221354027764916c288d2476d2dc",
+      "mcp_summary": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 49
+      },
+      "mcp_text_unchanged": true,
+      "mcp_record": ".context/same-spec-ten-runs/public-links-2026-10-03/overview-article-mcp-01.json"
+    },
+    {
+      "path": "2026-11-same-spec-overview/publish/medium-paste.md",
+      "sha256": "f0ca9da1bbfd0c90743ac27f327a45a66d8b0cdb84f8d7012f772701f17d7aba",
+      "mcp_summary": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 49
+      },
+      "mcp_text_unchanged": true,
+      "mcp_record": ".context/same-spec-ten-runs/public-links-2026-10-03/overview-paste-mcp-01.json"
+    },
+    {
+      "path": "2026-11-same-spec-spec/article.md",
+      "sha256": "ffd453e40eaab9ed6210fb1fc782d52baf65441a075a62035144525bf1fa3852",
+      "mcp_summary": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 43
+      },
+      "mcp_text_unchanged": true,
+      "mcp_record": ".context/same-spec-ten-runs/public-links-2026-10-03/spec-article-mcp-01.json"
+    },
+    {
+      "path": "2026-11-same-spec-spec/publish/medium-paste.md",
+      "sha256": "bd31b7a98dd80eaeb26db7d059c6a0b2f3ac17428c26263ae8c3d09c24f17699",
+      "mcp_summary": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 42
+      },
+      "mcp_text_unchanged": true,
+      "mcp_record": ".context/same-spec-ten-runs/public-links-2026-10-03/spec-paste-mcp-01.json"
+    },
+    {
+      "path": "2026-11-same-spec-contract/article.md",
+      "sha256": "778c9f40f83ef5d0f75f3aa6b7cf74e89f2438cb0ee92c2d6dd3081f4b346e99",
+      "mcp_summary": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 52
+      },
+      "mcp_text_unchanged": true,
+      "mcp_record": ".context/same-spec-ten-runs/public-links-2026-10-03/contract-article-mcp-01.json"
+    },
+    {
+      "path": "2026-11-same-spec-contract/publish/medium-paste.md",
+      "sha256": "03d82f35c91aba339d3e47204d752eba2b84898cd6589246675d3b8a746b708e",
+      "mcp_summary": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 51
+      },
+      "mcp_text_unchanged": true,
+      "mcp_record": ".context/same-spec-ten-runs/public-links-2026-10-03/contract-paste-mcp-01.json"
+    },
+    {
+      "path": "2026-11-same-spec-variance/article.md",
+      "sha256": "daedac357e46ba7c966b9f37ed99ed12bd58a60904beb77271ad31aaac97e29e",
+      "mcp_summary": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 48
+      },
+      "mcp_text_unchanged": true,
+      "mcp_record": ".context/same-spec-ten-runs/public-links-2026-10-03/variance-article-mcp-01.json"
+    },
+    {
+      "path": "2026-11-same-spec-variance/publish/medium-paste.md",
+      "sha256": "a753226fdcac00c43d84b779e005425d615f1017d16d5a23e3b23148782b3cd0",
+      "mcp_summary": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 46
+      },
+      "mcp_text_unchanged": true,
+      "mcp_record": ".context/same-spec-ten-runs/public-links-2026-10-03/variance-paste-mcp-01.json"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/SPECS.md",
+      "sha256": "04d94d94a93c949d4333e5e2a1c8c2d86d20c026ea71f56959784678b08cfc44",
+      "mcp_summary": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 2
+      },
+      "mcp_text_unchanged": true,
+      "mcp_record": ".context/same-spec-ten-runs/public-links-2026-10-03/guide-mcp-01.json"
+    }
+  ],
+  "packs": {
+    "overview": {
+      "article_to_publish_pack": {
+        "article_sha256": "d9c7cf8928ed7562be3d36dd8b3cdb97d45f221354027764916c288d2476d2dc",
+        "paste_sha256": "f0ca9da1bbfd0c90743ac27f327a45a66d8b0cdb84f8d7012f772701f17d7aba",
+        "converter_body_sha256": "577c60b0e8b2dbf69d5a81498523ab2d1d5babe0eee9d9bce85d1a2f3cceb4ee",
+        "paste_body_byte_exact": true,
+        "figures_json_structural_exact": true,
+        "image_slots": [
+          "table-01.png",
+          "diagram-01.png",
+          "table-02.png",
+          "table-03.png",
+          "table-04.png",
+          "table-05.png",
+          "table-06.png"
+        ],
+        "required_link_targets_preserved": [
+          "../2026-10-green-overview/article.md",
+          "../2026-10-green-reliability/article.md",
+          "../2026-10-green-review/article.md",
+          "../2026-10-green-testing/article.md",
+          "../2026-11-same-spec-contract/article.md",
+          "../2026-11-same-spec-spec/article.md",
+          "../2026-11-same-spec-variance/article.md",
+          "https://arxiv.org/html/2305.01210v3",
+          "https://arxiv.org/html/2608.25399v1",
+          "https://arxiv.org/pdf/2607.02436v2",
+          "https://code.claude.com/docs/en/best-practices",
+          "https://cucumber.io/blog/bdd/example-mapping-introduction/",
+          "https://fantasybz.medium.com/f2a139f5b561",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/self-check-transfer-policy.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer-results.json",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv_transfer.py",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/test_csv_transfer.py",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/RESULTS.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/SPECS.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md",
+          "https://github.com/fantasybz/medium-articles/blob/organize-research-topics/research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+          "https://lamport.azurewebsites.net/pubs/pubs.html#wired",
+          "https://lamport.azurewebsites.net/pubs/wired.pdf",
+          "https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html",
+          "https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/",
+          "https://metr.org/blog/2026-02-24-uplift-update/",
+          "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents"
+        ],
+        "link_retention_policy": "each exact target must remain at least once outside captured PNG content"
+      },
+      "local_links": {
+        "local_links": [
+          {
+            "line": 5,
+            "target": "../2026-11-same-spec-spec/article.md",
+            "resolved": "2026-11-same-spec-spec/article.md",
+            "exists": true
+          },
+          {
+            "line": 5,
+            "target": "../2026-11-same-spec-contract/article.md",
+            "resolved": "2026-11-same-spec-contract/article.md",
+            "exists": true
+          },
+          {
+            "line": 5,
+            "target": "../2026-11-same-spec-variance/article.md",
+            "resolved": "2026-11-same-spec-variance/article.md",
+            "exists": true
+          },
+          {
+            "line": 411,
+            "target": "../2026-11-same-spec-spec/article.md",
+            "resolved": "2026-11-same-spec-spec/article.md",
+            "exists": true
+          },
+          {
+            "line": 412,
+            "target": "../2026-11-same-spec-contract/article.md",
+            "resolved": "2026-11-same-spec-contract/article.md",
+            "exists": true
+          },
+          {
+            "line": 413,
+            "target": "../2026-11-same-spec-variance/article.md",
+            "resolved": "2026-11-same-spec-variance/article.md",
+            "exists": true
+          },
+          {
+            "line": 415,
+            "target": "../2026-10-green-overview/article.md",
+            "resolved": "2026-10-green-overview/article.md",
+            "exists": true
+          },
+          {
+            "line": 415,
+            "target": "../2026-10-green-testing/article.md",
+            "resolved": "2026-10-green-testing/article.md",
+            "exists": true
+          },
+          {
+            "line": 415,
+            "target": "../2026-10-green-review/article.md",
+            "resolved": "2026-10-green-review/article.md",
+            "exists": true
+          },
+          {
+            "line": 415,
+            "target": "../2026-10-green-reliability/article.md",
+            "resolved": "2026-10-green-reliability/article.md",
+            "exists": true
+          }
+        ],
+        "local_link_count": 10,
+        "all_local_paths_exist": true,
+        "other_links_not_fetched": [
+          {
+            "line": 29,
+            "target": "https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html"
+          },
+          {
+            "line": 31,
+            "target": "https://code.claude.com/docs/en/best-practices"
+          },
+          {
+            "line": 41,
+            "target": "https://fantasybz.medium.com/f2a139f5b561"
+          },
+          {
+            "line": 134,
+            "target": "https://cucumber.io/blog/bdd/example-mapping-introduction/"
+          },
+          {
+            "line": 170,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md"
+          },
+          {
+            "line": 170,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md"
+          },
+          {
+            "line": 170,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md"
+          },
+          {
+            "line": 170,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md"
+          },
+          {
+            "line": 170,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/SPECS.md"
+          },
+          {
+            "line": 205,
+            "target": "https://arxiv.org/html/2608.25399v1"
+          },
+          {
+            "line": 213,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/RESULTS.md"
+          },
+          {
+            "line": 223,
+            "target": "https://arxiv.org/pdf/2607.02436v2"
+          },
+          {
+            "line": 233,
+            "target": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents"
+          },
+          {
+            "line": 298,
+            "target": "https://arxiv.org/html/2305.01210v3"
+          },
+          {
+            "line": 300,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv_transfer.py"
+          },
+          {
+            "line": 300,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer-results.json"
+          },
+          {
+            "line": 300,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/test_csv_transfer.py"
+          },
+          {
+            "line": 310,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md"
+          },
+          {
+            "line": 332,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/self-check-transfer-policy.md"
+          },
+          {
+            "line": 342,
+            "target": "https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/"
+          },
+          {
+            "line": 344,
+            "target": "https://metr.org/blog/2026-02-24-uplift-update/"
+          },
+          {
+            "line": 366,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md"
+          },
+          {
+            "line": 417,
+            "target": "https://fantasybz.medium.com/f2a139f5b561"
+          },
+          {
+            "line": 421,
+            "target": "https://lamport.azurewebsites.net/pubs/wired.pdf"
+          },
+          {
+            "line": 421,
+            "target": "https://lamport.azurewebsites.net/pubs/pubs.html#wired"
+          },
+          {
+            "line": 422,
+            "target": "https://cucumber.io/blog/bdd/example-mapping-introduction/"
+          },
+          {
+            "line": 423,
+            "target": "https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html"
+          },
+          {
+            "line": 424,
+            "target": "https://code.claude.com/docs/en/best-practices"
+          },
+          {
+            "line": 425,
+            "target": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents"
+          },
+          {
+            "line": 426,
+            "target": "https://arxiv.org/html/2305.01210v3"
+          },
+          {
+            "line": 427,
+            "target": "https://arxiv.org/html/2608.25399v1"
+          },
+          {
+            "line": 428,
+            "target": "https://arxiv.org/pdf/2607.02436v2"
+          },
+          {
+            "line": 429,
+            "target": "https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/"
+          },
+          {
+            "line": 430,
+            "target": "https://metr.org/blog/2026-02-24-uplift-update/"
+          },
+          {
+            "line": 431,
+            "target": "https://fantasybz.medium.com/f2a139f5b561"
+          },
+          {
+            "line": 432,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/RESULTS.md"
+          },
+          {
+            "line": 432,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md"
+          },
+          {
+            "line": 432,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md"
+          },
+          {
+            "line": 432,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv_transfer.py"
+          },
+          {
+            "line": 432,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer-results.json"
+          },
+          {
+            "line": 432,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/test_csv_transfer.py"
+          },
+          {
+            "line": 439,
+            "target": "https://github.com/fantasybz/medium-articles/blob/organize-research-topics/research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md"
+          }
+        ],
+        "fragment_targets_checked": false,
+        "paste_link_validation_requires": "article_to_publish_pack must also pass"
+      },
+      "published_png_headers": {
+        "referenced_images": [
+          {
+            "path": "2026-11-same-spec-overview/publish/images/diagram-01.png",
+            "sha256": "167614011181c44762ca10de6a4cfa1edca18cdece8755604007274649d0d878",
+            "width": 664,
+            "height": 878,
+            "png_signature_and_ihdr_dimensions": true
+          },
+          {
+            "path": "2026-11-same-spec-overview/publish/images/table-01.png",
+            "sha256": "112247b582243b8b1960cdbab0801a159d52806698ab97bcc9a7cbe4337cc668",
+            "width": 1800,
+            "height": 634,
+            "png_signature_and_ihdr_dimensions": true
+          },
+          {
+            "path": "2026-11-same-spec-overview/publish/images/table-02.png",
+            "sha256": "474e040d63584d276764c893205b341b930428618eef80ba2800c983a788c6d1",
+            "width": 1800,
+            "height": 538,
+            "png_signature_and_ihdr_dimensions": true
+          },
+          {
+            "path": "2026-11-same-spec-overview/publish/images/table-03.png",
+            "sha256": "e5f92924f1d1f2c2b0b7bd39e5a97a6dd2dbad4c9ea572aea0206ce1df45167f",
+            "width": 1682,
+            "height": 476,
+            "png_signature_and_ihdr_dimensions": true
+          },
+          {
+            "path": "2026-11-same-spec-overview/publish/images/table-04.png",
+            "sha256": "8fde47f07b28aca542f62108f598350d2bdb05f19a2e5f135564f843f3b999f8",
+            "width": 1800,
+            "height": 490,
+            "png_signature_and_ihdr_dimensions": true
+          },
+          {
+            "path": "2026-11-same-spec-overview/publish/images/table-05.png",
+            "sha256": "3346f0d8a99c4a7cad2bfb118d98682a09a8ca77f7f37b647bd5ae2753789979",
+            "width": 1800,
+            "height": 736,
+            "png_signature_and_ihdr_dimensions": true
+          },
+          {
+            "path": "2026-11-same-spec-overview/publish/images/table-06.png",
+            "sha256": "5afd01659d527df157572dd0d2f3840ba051a5c2272b0b2f19a6ab5381def130",
+            "width": 1800,
+            "height": 586,
+            "png_signature_and_ihdr_dimensions": true
+          }
+        ],
+        "referenced_image_count": 7,
+        "unreferenced_png_files": [],
+        "pixel_decoding_performed": false,
+        "visual_review_performed": false
+      }
+    },
+    "spec": {
+      "article_to_publish_pack": {
+        "article_sha256": "ffd453e40eaab9ed6210fb1fc782d52baf65441a075a62035144525bf1fa3852",
+        "paste_sha256": "bd31b7a98dd80eaeb26db7d059c6a0b2f3ac17428c26263ae8c3d09c24f17699",
+        "converter_body_sha256": "545bb7fc571b43e7a94a8722bd1cd078aeba5b259902a13d1e5a739d5850076f",
+        "paste_body_byte_exact": true,
+        "figures_json_structural_exact": true,
+        "image_slots": [
+          "table-01.png",
+          "table-02.png",
+          "table-03.png",
+          "table-04.png",
+          "table-05.png",
+          "table-06.png",
+          "table-07.png",
+          "table-08.png"
+        ],
+        "required_link_targets_preserved": [
+          "../2026-10-green-overview/article.md",
+          "../2026-10-green-reliability/article.md",
+          "../2026-10-green-review/article.md",
+          "../2026-10-green-testing/article.md",
+          "../2026-11-same-spec-contract/article.md",
+          "../2026-11-same-spec-overview/article.md",
+          "../2026-11-same-spec-variance/article.md",
+          "https://arxiv.org/html/2608.01347v6",
+          "https://arxiv.org/html/2608.25399v1",
+          "https://code.claude.com/docs/en/best-practices",
+          "https://cucumber.io/blog/bdd/example-mapping-introduction/",
+          "https://fantasybz.medium.com/f2a139f5b561",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/self-check-transfer-policy.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-change-card.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-foundations-research.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/RESULTS.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/SPECS.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md",
+          "https://github.com/fantasybz/medium-articles/blob/organize-research-topics/research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+          "https://github.com/fantasybz/medium-articles/tree/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs",
+          "https://github.com/github/spec-kit",
+          "https://kiro.dev/docs/specs/",
+          "https://kiro.dev/docs/specs/bugfix-specs/",
+          "https://lamport.azurewebsites.net/pubs/pubs.html#wired",
+          "https://lamport.azurewebsites.net/pubs/wired.pdf",
+          "https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html",
+          "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+          "https://www.rfc-editor.org/rfc/rfc2119.html",
+          "https://www.rfc-editor.org/rfc/rfc8174.html"
+        ],
+        "link_retention_policy": "each exact target must remain at least once outside captured PNG content"
+      },
+      "local_links": {
+        "local_links": [
+          {
+            "line": 5,
+            "target": "../2026-11-same-spec-overview/article.md",
+            "resolved": "2026-11-same-spec-overview/article.md",
+            "exists": true
+          },
+          {
+            "line": 5,
+            "target": "../2026-11-same-spec-contract/article.md",
+            "resolved": "2026-11-same-spec-contract/article.md",
+            "exists": true
+          },
+          {
+            "line": 5,
+            "target": "../2026-11-same-spec-variance/article.md",
+            "resolved": "2026-11-same-spec-variance/article.md",
+            "exists": true
+          },
+          {
+            "line": 42,
+            "target": "../2026-10-green-overview/article.md",
+            "resolved": "2026-10-green-overview/article.md",
+            "exists": true
+          },
+          {
+            "line": 42,
+            "target": "../2026-11-same-spec-overview/article.md",
+            "resolved": "2026-11-same-spec-overview/article.md",
+            "exists": true
+          },
+          {
+            "line": 135,
+            "target": "../2026-11-same-spec-overview/article.md",
+            "resolved": "2026-11-same-spec-overview/article.md",
+            "exists": true
+          },
+          {
+            "line": 436,
+            "target": "../2026-11-same-spec-overview/article.md",
+            "resolved": "2026-11-same-spec-overview/article.md",
+            "exists": true
+          },
+          {
+            "line": 438,
+            "target": "../2026-11-same-spec-contract/article.md",
+            "resolved": "2026-11-same-spec-contract/article.md",
+            "exists": true
+          },
+          {
+            "line": 439,
+            "target": "../2026-11-same-spec-variance/article.md",
+            "resolved": "2026-11-same-spec-variance/article.md",
+            "exists": true
+          },
+          {
+            "line": 441,
+            "target": "../2026-10-green-overview/article.md",
+            "resolved": "2026-10-green-overview/article.md",
+            "exists": true
+          },
+          {
+            "line": 441,
+            "target": "../2026-10-green-testing/article.md",
+            "resolved": "2026-10-green-testing/article.md",
+            "exists": true
+          },
+          {
+            "line": 441,
+            "target": "../2026-10-green-review/article.md",
+            "resolved": "2026-10-green-review/article.md",
+            "exists": true
+          },
+          {
+            "line": 441,
+            "target": "../2026-10-green-reliability/article.md",
+            "resolved": "2026-10-green-reliability/article.md",
+            "exists": true
+          }
+        ],
+        "local_link_count": 13,
+        "all_local_paths_exist": true,
+        "other_links_not_fetched": [
+          {
+            "line": 36,
+            "target": "https://kiro.dev/docs/specs/bugfix-specs/"
+          },
+          {
+            "line": 38,
+            "target": "https://lamport.azurewebsites.net/pubs/wired.pdf"
+          },
+          {
+            "line": 71,
+            "target": "https://www.rfc-editor.org/rfc/rfc2119.html"
+          },
+          {
+            "line": 71,
+            "target": "https://www.rfc-editor.org/rfc/rfc8174.html"
+          },
+          {
+            "line": 75,
+            "target": "https://lamport.azurewebsites.net/pubs/wired.pdf"
+          },
+          {
+            "line": 81,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md"
+          },
+          {
+            "line": 81,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md"
+          },
+          {
+            "line": 81,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md"
+          },
+          {
+            "line": 81,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md"
+          },
+          {
+            "line": 83,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/SPECS.md"
+          },
+          {
+            "line": 135,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/RESULTS.md"
+          },
+          {
+            "line": 149,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md"
+          },
+          {
+            "line": 249,
+            "target": "https://cucumber.io/blog/bdd/example-mapping-introduction/"
+          },
+          {
+            "line": 251,
+            "target": "https://code.claude.com/docs/en/best-practices"
+          },
+          {
+            "line": 255,
+            "target": "https://arxiv.org/html/2608.25399v1"
+          },
+          {
+            "line": 265,
+            "target": "https://arxiv.org/html/2608.01347v6"
+          },
+          {
+            "line": 269,
+            "target": "https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html"
+          },
+          {
+            "line": 275,
+            "target": "https://github.com/github/spec-kit"
+          },
+          {
+            "line": 275,
+            "target": "https://kiro.dev/docs/specs/"
+          },
+          {
+            "line": 279,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-foundations-research.md"
+          },
+          {
+            "line": 283,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-change-card.md"
+          },
+          {
+            "line": 312,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/self-check-transfer-policy.md"
+          },
+          {
+            "line": 332,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md"
+          },
+          {
+            "line": 332,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md"
+          },
+          {
+            "line": 334,
+            "target": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents"
+          },
+          {
+            "line": 342,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer.md"
+          },
+          {
+            "line": 388,
+            "target": "https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html"
+          },
+          {
+            "line": 390,
+            "target": "https://code.claude.com/docs/en/best-practices"
+          },
+          {
+            "line": 390,
+            "target": "https://github.com/github/spec-kit"
+          },
+          {
+            "line": 410,
+            "target": "https://fantasybz.medium.com/f2a139f5b561"
+          },
+          {
+            "line": 443,
+            "target": "https://fantasybz.medium.com/f2a139f5b561"
+          },
+          {
+            "line": 447,
+            "target": "https://lamport.azurewebsites.net/pubs/wired.pdf"
+          },
+          {
+            "line": 447,
+            "target": "https://lamport.azurewebsites.net/pubs/pubs.html#wired"
+          },
+          {
+            "line": 448,
+            "target": "https://kiro.dev/docs/specs/bugfix-specs/"
+          },
+          {
+            "line": 449,
+            "target": "https://www.rfc-editor.org/rfc/rfc2119.html"
+          },
+          {
+            "line": 450,
+            "target": "https://www.rfc-editor.org/rfc/rfc8174.html"
+          },
+          {
+            "line": 451,
+            "target": "https://cucumber.io/blog/bdd/example-mapping-introduction/"
+          },
+          {
+            "line": 452,
+            "target": "https://code.claude.com/docs/en/best-practices"
+          },
+          {
+            "line": 453,
+            "target": "https://arxiv.org/html/2608.25399v1"
+          },
+          {
+            "line": 454,
+            "target": "https://arxiv.org/html/2608.01347v6"
+          },
+          {
+            "line": 455,
+            "target": "https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html"
+          },
+          {
+            "line": 456,
+            "target": "https://github.com/github/spec-kit"
+          },
+          {
+            "line": 457,
+            "target": "https://kiro.dev/docs/specs/"
+          },
+          {
+            "line": 458,
+            "target": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents"
+          },
+          {
+            "line": 459,
+            "target": "https://fantasybz.medium.com/f2a139f5b561"
+          },
+          {
+            "line": 460,
+            "target": "https://github.com/fantasybz/medium-articles/tree/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs"
+          },
+          {
+            "line": 460,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/RESULTS.md"
+          },
+          {
+            "line": 460,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-change-card.md"
+          },
+          {
+            "line": 460,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md"
+          },
+          {
+            "line": 460,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md"
+          },
+          {
+            "line": 460,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-foundations-research.md"
+          },
+          {
+            "line": 467,
+            "target": "https://github.com/fantasybz/medium-articles/blob/organize-research-topics/research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md"
+          }
+        ],
+        "fragment_targets_checked": false,
+        "paste_link_validation_requires": "article_to_publish_pack must also pass"
+      },
+      "published_png_headers": {
+        "referenced_images": [
+          {
+            "path": "2026-11-same-spec-spec/publish/images/table-01.png",
+            "sha256": "e10ca79c5e11eeb270be99a36871d66a8d9053c74cf39bedafc18cb6fca59d91",
+            "width": 1800,
+            "height": 764,
+            "png_signature_and_ihdr_dimensions": true
+          },
+          {
+            "path": "2026-11-same-spec-spec/publish/images/table-02.png",
+            "sha256": "bd12f97e63b317f86ff4c008bb6054c40f2bfd577c961df73df28883d3b3ecdd",
+            "width": 1800,
+            "height": 928,
+            "png_signature_and_ihdr_dimensions": true
+          },
+          {
+            "path": "2026-11-same-spec-spec/publish/images/table-03.png",
+            "sha256": "7204fa5446abc8ace6f5f24adbf7a2e554416ce2c5b988db7f5f032356d68089",
+            "width": 1800,
+            "height": 668,
+            "png_signature_and_ihdr_dimensions": true
+          },
+          {
+            "path": "2026-11-same-spec-spec/publish/images/table-04.png",
+            "sha256": "3c4d1a3db073f5d88252e5336a06d85798181e86296cd56d5d724b86865b4551",
+            "width": 1800,
+            "height": 764,
+            "png_signature_and_ihdr_dimensions": true
+          },
+          {
+            "path": "2026-11-same-spec-spec/publish/images/table-05.png",
+            "sha256": "d7fb3764119d6c8f7413ea3c5c8f1c00a54f2d011243434ff768e40501a60318",
+            "width": 1800,
+            "height": 490,
+            "png_signature_and_ihdr_dimensions": true
+          },
+          {
+            "path": "2026-11-same-spec-spec/publish/images/table-06.png",
+            "sha256": "eba0762ea3286ddde61450d180c5a65700d4e73d6e826fa75c74af8177bb4cb9",
+            "width": 1800,
+            "height": 1038,
+            "png_signature_and_ihdr_dimensions": true
+          },
+          {
+            "path": "2026-11-same-spec-spec/publish/images/table-07.png",
+            "sha256": "475ea3f61fdeafddfd8be3696e12daddccd5fda9f46f023784fcd55835757db0",
+            "width": 1800,
+            "height": 730,
+            "png_signature_and_ihdr_dimensions": true
+          },
+          {
+            "path": "2026-11-same-spec-spec/publish/images/table-08.png",
+            "sha256": "0c4f3ffe9854d8fedfaaac7bd9a2b41aeaa06b02a4def63e9fd5d776c8d66046",
+            "width": 1800,
+            "height": 778,
+            "png_signature_and_ihdr_dimensions": true
+          }
+        ],
+        "referenced_image_count": 8,
+        "unreferenced_png_files": [],
+        "pixel_decoding_performed": false,
+        "visual_review_performed": false
+      }
+    },
+    "contract": {
+      "article_to_publish_pack": {
+        "article_sha256": "778c9f40f83ef5d0f75f3aa6b7cf74e89f2438cb0ee92c2d6dd3081f4b346e99",
+        "paste_sha256": "03d82f35c91aba339d3e47204d752eba2b84898cd6589246675d3b8a746b708e",
+        "converter_body_sha256": "eb2c3409d6e012d2f57d8a6c4c508d954495820202a434ccda2ea6978360f0a6",
+        "paste_body_byte_exact": true,
+        "figures_json_structural_exact": true,
+        "image_slots": [
+          "table-01.png",
+          "table-02.png",
+          "table-03.png",
+          "diagram-01.png",
+          "table-04.png",
+          "table-05.png",
+          "table-06.png"
+        ],
+        "required_link_targets_preserved": [
+          "../2026-10-green-overview/article.md",
+          "../2026-10-green-reliability/article.md",
+          "../2026-10-green-review/article.md",
+          "../2026-10-green-testing/article.md",
+          "../2026-11-same-spec-overview/article.md",
+          "../2026-11-same-spec-spec/article.md",
+          "../2026-11-same-spec-variance/article.md",
+          "https://arxiv.org/html/2305.01210v3",
+          "https://arxiv.org/html/2609.11076v1",
+          "https://arxiv.org/pdf/2406.12045v1",
+          "https://cucumber.io/blog/bdd/example-mapping-introduction/",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/README.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/RESULTS.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer-results.json",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/obligations.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/observed-results.json",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/runs/initial-results.json",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/test_csv_transfer.py",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/manifest.json",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json",
+          "https://github.com/fantasybz/medium-articles/blob/organize-research-topics/research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+          "https://hypothesis.readthedocs.io/en/latest/explanation/domain.html",
+          "https://hypothesis.readthedocs.io/en/latest/quickstart.html",
+          "https://kiro.dev/docs/specs/bugfix-specs/",
+          "https://kiro.dev/docs/specs/correctness/",
+          "https://lamport.azurewebsites.net/pubs/wired.pdf",
+          "https://pitest.org/quickstart/basic_concepts/",
+          "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+          "https://www.cse.ust.hk/~scc/publ/CS98-01-metamorphictesting.pdf",
+          "https://www.rfc-editor.org/rfc/rfc2119.html",
+          "https://www.rfc-editor.org/rfc/rfc8174.html"
+        ],
+        "link_retention_policy": "each exact target must remain at least once outside captured PNG content"
+      },
+      "local_links": {
+        "local_links": [
+          {
+            "line": 5,
+            "target": "../2026-11-same-spec-overview/article.md",
+            "resolved": "2026-11-same-spec-overview/article.md",
+            "exists": true
+          },
+          {
+            "line": 5,
+            "target": "../2026-11-same-spec-spec/article.md",
+            "resolved": "2026-11-same-spec-spec/article.md",
+            "exists": true
+          },
+          {
+            "line": 5,
+            "target": "../2026-11-same-spec-variance/article.md",
+            "resolved": "2026-11-same-spec-variance/article.md",
+            "exists": true
+          },
+          {
+            "line": 522,
+            "target": "../2026-10-green-testing/article.md",
+            "resolved": "2026-10-green-testing/article.md",
+            "exists": true
+          },
+          {
+            "line": 607,
+            "target": "../2026-11-same-spec-overview/article.md",
+            "resolved": "2026-11-same-spec-overview/article.md",
+            "exists": true
+          },
+          {
+            "line": 608,
+            "target": "../2026-11-same-spec-spec/article.md",
+            "resolved": "2026-11-same-spec-spec/article.md",
+            "exists": true
+          },
+          {
+            "line": 610,
+            "target": "../2026-11-same-spec-variance/article.md",
+            "resolved": "2026-11-same-spec-variance/article.md",
+            "exists": true
+          },
+          {
+            "line": 612,
+            "target": "../2026-10-green-overview/article.md",
+            "resolved": "2026-10-green-overview/article.md",
+            "exists": true
+          },
+          {
+            "line": 612,
+            "target": "../2026-10-green-testing/article.md",
+            "resolved": "2026-10-green-testing/article.md",
+            "exists": true
+          },
+          {
+            "line": 612,
+            "target": "../2026-10-green-review/article.md",
+            "resolved": "2026-10-green-review/article.md",
+            "exists": true
+          },
+          {
+            "line": 612,
+            "target": "../2026-10-green-reliability/article.md",
+            "resolved": "2026-10-green-reliability/article.md",
+            "exists": true
+          }
+        ],
+        "local_link_count": 11,
+        "all_local_paths_exist": true,
+        "other_links_not_fetched": [
+          {
+            "line": 32,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/README.md"
+          },
+          {
+            "line": 40,
+            "target": "https://lamport.azurewebsites.net/pubs/wired.pdf"
+          },
+          {
+            "line": 59,
+            "target": "https://kiro.dev/docs/specs/correctness/"
+          },
+          {
+            "line": 61,
+            "target": "https://arxiv.org/html/2305.01210v3"
+          },
+          {
+            "line": 69,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json"
+          },
+          {
+            "line": 121,
+            "target": "https://www.rfc-editor.org/rfc/rfc2119.html"
+          },
+          {
+            "line": 121,
+            "target": "https://www.rfc-editor.org/rfc/rfc8174.html"
+          },
+          {
+            "line": 310,
+            "target": "https://kiro.dev/docs/specs/bugfix-specs/"
+          },
+          {
+            "line": 312,
+            "target": "https://arxiv.org/pdf/2406.12045v1"
+          },
+          {
+            "line": 320,
+            "target": "https://www.cse.ust.hk/~scc/publ/CS98-01-metamorphictesting.pdf"
+          },
+          {
+            "line": 354,
+            "target": "https://hypothesis.readthedocs.io/en/latest/explanation/domain.html"
+          },
+          {
+            "line": 410,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/runs/initial-results.json"
+          },
+          {
+            "line": 418,
+            "target": "https://pitest.org/quickstart/basic_concepts/"
+          },
+          {
+            "line": 438,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer.md"
+          },
+          {
+            "line": 495,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/obligations.md"
+          },
+          {
+            "line": 528,
+            "target": "https://arxiv.org/html/2609.11076v1"
+          },
+          {
+            "line": 555,
+            "target": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents"
+          },
+          {
+            "line": 577,
+            "target": "https://cucumber.io/blog/bdd/example-mapping-introduction/"
+          },
+          {
+            "line": 616,
+            "target": "https://lamport.azurewebsites.net/pubs/wired.pdf"
+          },
+          {
+            "line": 617,
+            "target": "https://arxiv.org/html/2305.01210v3"
+          },
+          {
+            "line": 618,
+            "target": "https://kiro.dev/docs/specs/correctness/"
+          },
+          {
+            "line": 619,
+            "target": "https://www.rfc-editor.org/rfc/rfc2119.html"
+          },
+          {
+            "line": 619,
+            "target": "https://www.rfc-editor.org/rfc/rfc8174.html"
+          },
+          {
+            "line": 620,
+            "target": "https://kiro.dev/docs/specs/bugfix-specs/"
+          },
+          {
+            "line": 621,
+            "target": "https://arxiv.org/pdf/2406.12045v1"
+          },
+          {
+            "line": 622,
+            "target": "https://www.cse.ust.hk/~scc/publ/CS98-01-metamorphictesting.pdf"
+          },
+          {
+            "line": 623,
+            "target": "https://hypothesis.readthedocs.io/en/latest/quickstart.html"
+          },
+          {
+            "line": 623,
+            "target": "https://hypothesis.readthedocs.io/en/latest/explanation/domain.html"
+          },
+          {
+            "line": 624,
+            "target": "https://pitest.org/quickstart/basic_concepts/"
+          },
+          {
+            "line": 625,
+            "target": "https://arxiv.org/html/2609.11076v1"
+          },
+          {
+            "line": 626,
+            "target": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents"
+          },
+          {
+            "line": 627,
+            "target": "https://cucumber.io/blog/bdd/example-mapping-introduction/"
+          },
+          {
+            "line": 628,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json"
+          },
+          {
+            "line": 628,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/README.md"
+          },
+          {
+            "line": 628,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/observed-results.json"
+          },
+          {
+            "line": 628,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/RESULTS.md"
+          },
+          {
+            "line": 628,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/runs/initial-results.json"
+          },
+          {
+            "line": 628,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer.md"
+          },
+          {
+            "line": 628,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer-results.json"
+          },
+          {
+            "line": 628,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/test_csv_transfer.py"
+          },
+          {
+            "line": 628,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/obligations.md"
+          },
+          {
+            "line": 628,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/manifest.json"
+          },
+          {
+            "line": 628,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json"
+          },
+          {
+            "line": 635,
+            "target": "https://github.com/fantasybz/medium-articles/blob/organize-research-topics/research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md"
+          }
+        ],
+        "fragment_targets_checked": false,
+        "paste_link_validation_requires": "article_to_publish_pack must also pass"
+      },
+      "published_png_headers": {
+        "referenced_images": [
+          {
+            "path": "2026-11-same-spec-contract/publish/images/diagram-01.png",
+            "sha256": "929aeafe8ff819aef7fb45f6f513a51b44d798effdab90269b2b933bc09530fa",
+            "width": 664,
+            "height": 582,
+            "png_signature_and_ihdr_dimensions": true
+          },
+          {
+            "path": "2026-11-same-spec-contract/publish/images/table-01.png",
+            "sha256": "2950ae5535f828e06856324be04c60c0701d6ef980b007250c96b586020c5c48",
+            "width": 1698,
+            "height": 476,
+            "png_signature_and_ihdr_dimensions": true
+          },
+          {
+            "path": "2026-11-same-spec-contract/publish/images/table-02.png",
+            "sha256": "6b1514d7c8cfa3feb7bfc3002e9db4aa9dc82b34f7b64bfbd5816add22ddd128",
+            "width": 1800,
+            "height": 538,
+            "png_signature_and_ihdr_dimensions": true
+          },
+          {
+            "path": "2026-11-same-spec-contract/publish/images/table-03.png",
+            "sha256": "a091a485f21529e543accf3b523db0e6b6b63a7cb869712c9c9013bddfc5a2aa",
+            "width": 1784,
+            "height": 476,
+            "png_signature_and_ihdr_dimensions": true
+          },
+          {
+            "path": "2026-11-same-spec-contract/publish/images/table-04.png",
+            "sha256": "44f22365ff089c17c49169e35e5097c7c9c30a87926a902c1ead41707d1eee9e",
+            "width": 1634,
+            "height": 394,
+            "png_signature_and_ihdr_dimensions": true
+          },
+          {
+            "path": "2026-11-same-spec-contract/publish/images/table-05.png",
+            "sha256": "61b1d95d810146c97beadda3957e790effbac5b2da5e4ea508d2637d84e83b2c",
+            "width": 1800,
+            "height": 1168,
+            "png_signature_and_ihdr_dimensions": true
+          },
+          {
+            "path": "2026-11-same-spec-contract/publish/images/table-06.png",
+            "sha256": "0194c32f6df516821565a1bff281904c874b34f54f2b68e05beb1da4dfe0fc88",
+            "width": 1800,
+            "height": 990,
+            "png_signature_and_ihdr_dimensions": true
+          }
+        ],
+        "referenced_image_count": 7,
+        "unreferenced_png_files": [],
+        "pixel_decoding_performed": false,
+        "visual_review_performed": false
+      }
+    },
+    "variance": {
+      "article_to_publish_pack": {
+        "article_sha256": "daedac357e46ba7c966b9f37ed99ed12bd58a60904beb77271ad31aaac97e29e",
+        "paste_sha256": "a753226fdcac00c43d84b779e005425d615f1017d16d5a23e3b23148782b3cd0",
+        "converter_body_sha256": "4e67a104e2d3c337837febb84a8537f50a44f99e039ffafc152881ebb5cbcdc5",
+        "paste_body_byte_exact": true,
+        "figures_json_structural_exact": true,
+        "image_slots": [
+          "table-01.png",
+          "table-02.png",
+          "table-03.png",
+          "table-04.png",
+          "table-05.png",
+          "table-06.png",
+          "table-07.png"
+        ],
+        "required_link_targets_preserved": [
+          "../2026-10-green-overview/article.md",
+          "../2026-10-green-reliability/article.md",
+          "../2026-10-green-review/article.md",
+          "../2026-10-green-testing/article.md",
+          "../2026-11-same-spec-contract/article.md",
+          "../2026-11-same-spec-overview/article.md",
+          "../2026-11-same-spec-spec/article.md",
+          "https://arxiv.org/html/2305.01210v3",
+          "https://arxiv.org/html/2407.01502v1",
+          "https://arxiv.org/html/2608.01347v6",
+          "https://arxiv.org/html/2608.25399v1",
+          "https://arxiv.org/html/2609.12742v1",
+          "https://arxiv.org/pdf/2406.12045v1",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/reliability-source-ledger.json",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/self-check-transfer-policy.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/static-review-walkthrough.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/README.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/RESULTS.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/SPECS.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-01-A0/candidate/codex_jsonl.py",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-02-A0/candidate/codex_jsonl.py",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+          "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md",
+          "https://github.com/fantasybz/medium-articles/blob/organize-research-topics/research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+          "https://hypothesis.readthedocs.io/en/latest/explanation/domain.html",
+          "https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/",
+          "https://metr.org/blog/2026-02-24-uplift-update/",
+          "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+          "https://www.anthropic.com/engineering/infrastructure-noise",
+          "https://www.itl.nist.gov/div898/handbook/pri/section3/pri332.htm"
+        ],
+        "link_retention_policy": "each exact target must remain at least once outside captured PNG content"
+      },
+      "local_links": {
+        "local_links": [
+          {
+            "line": 5,
+            "target": "../2026-11-same-spec-overview/article.md",
+            "resolved": "2026-11-same-spec-overview/article.md",
+            "exists": true
+          },
+          {
+            "line": 5,
+            "target": "../2026-11-same-spec-spec/article.md",
+            "resolved": "2026-11-same-spec-spec/article.md",
+            "exists": true
+          },
+          {
+            "line": 5,
+            "target": "../2026-11-same-spec-contract/article.md",
+            "resolved": "2026-11-same-spec-contract/article.md",
+            "exists": true
+          },
+          {
+            "line": 9,
+            "target": "../2026-11-same-spec-overview/article.md",
+            "resolved": "2026-11-same-spec-overview/article.md",
+            "exists": true
+          },
+          {
+            "line": 17,
+            "target": "../2026-10-green-reliability/article.md",
+            "resolved": "2026-10-green-reliability/article.md",
+            "exists": true
+          },
+          {
+            "line": 412,
+            "target": "../2026-11-same-spec-overview/article.md",
+            "resolved": "2026-11-same-spec-overview/article.md",
+            "exists": true
+          },
+          {
+            "line": 413,
+            "target": "../2026-11-same-spec-spec/article.md",
+            "resolved": "2026-11-same-spec-spec/article.md",
+            "exists": true
+          },
+          {
+            "line": 414,
+            "target": "../2026-11-same-spec-contract/article.md",
+            "resolved": "2026-11-same-spec-contract/article.md",
+            "exists": true
+          },
+          {
+            "line": 417,
+            "target": "../2026-10-green-overview/article.md",
+            "resolved": "2026-10-green-overview/article.md",
+            "exists": true
+          },
+          {
+            "line": 417,
+            "target": "../2026-10-green-testing/article.md",
+            "resolved": "2026-10-green-testing/article.md",
+            "exists": true
+          },
+          {
+            "line": 417,
+            "target": "../2026-10-green-review/article.md",
+            "resolved": "2026-10-green-review/article.md",
+            "exists": true
+          },
+          {
+            "line": 417,
+            "target": "../2026-10-green-reliability/article.md",
+            "resolved": "2026-10-green-reliability/article.md",
+            "exists": true
+          }
+        ],
+        "local_link_count": 12,
+        "all_local_paths_exist": true,
+        "other_links_not_fetched": [
+          {
+            "line": 45,
+            "target": "https://hypothesis.readthedocs.io/en/latest/explanation/domain.html"
+          },
+          {
+            "line": 51,
+            "target": "https://www.anthropic.com/engineering/infrastructure-noise"
+          },
+          {
+            "line": 53,
+            "target": "https://arxiv.org/html/2608.01347v6"
+          },
+          {
+            "line": 59,
+            "target": "https://arxiv.org/html/2608.25399v1"
+          },
+          {
+            "line": 67,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md"
+          },
+          {
+            "line": 67,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md"
+          },
+          {
+            "line": 67,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md"
+          },
+          {
+            "line": 67,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md"
+          },
+          {
+            "line": 67,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/SPECS.md"
+          },
+          {
+            "line": 83,
+            "target": "https://arxiv.org/html/2305.01210v3"
+          },
+          {
+            "line": 101,
+            "target": "https://arxiv.org/pdf/2406.12045v1"
+          },
+          {
+            "line": 130,
+            "target": "https://arxiv.org/html/2407.01502v1"
+          },
+          {
+            "line": 170,
+            "target": "https://arxiv.org/html/2609.12742v1"
+          },
+          {
+            "line": 194,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/RESULTS.md"
+          },
+          {
+            "line": 198,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-01-A0/candidate/codex_jsonl.py"
+          },
+          {
+            "line": 198,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-02-A0/candidate/codex_jsonl.py"
+          },
+          {
+            "line": 228,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/static-review-walkthrough.md"
+          },
+          {
+            "line": 234,
+            "target": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents"
+          },
+          {
+            "line": 261,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md"
+          },
+          {
+            "line": 261,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md"
+          },
+          {
+            "line": 265,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/self-check-transfer-policy.md"
+          },
+          {
+            "line": 294,
+            "target": "https://www.itl.nist.gov/div898/handbook/pri/section3/pri332.htm"
+          },
+          {
+            "line": 308,
+            "target": "https://metr.org/blog/2026-02-24-uplift-update/"
+          },
+          {
+            "line": 320,
+            "target": "https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/"
+          },
+          {
+            "line": 421,
+            "target": "https://arxiv.org/pdf/2406.12045v1"
+          },
+          {
+            "line": 422,
+            "target": "https://arxiv.org/html/2407.01502v1"
+          },
+          {
+            "line": 423,
+            "target": "https://www.anthropic.com/engineering/infrastructure-noise"
+          },
+          {
+            "line": 424,
+            "target": "https://arxiv.org/html/2608.01347v6"
+          },
+          {
+            "line": 425,
+            "target": "https://arxiv.org/html/2608.25399v1"
+          },
+          {
+            "line": 426,
+            "target": "https://hypothesis.readthedocs.io/en/latest/explanation/domain.html"
+          },
+          {
+            "line": 427,
+            "target": "https://arxiv.org/html/2305.01210v3"
+          },
+          {
+            "line": 428,
+            "target": "https://arxiv.org/html/2609.12742v1"
+          },
+          {
+            "line": 429,
+            "target": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents"
+          },
+          {
+            "line": 430,
+            "target": "https://www.itl.nist.gov/div898/handbook/pri/section3/pri332.htm"
+          },
+          {
+            "line": 431,
+            "target": "https://metr.org/blog/2026-02-24-uplift-update/"
+          },
+          {
+            "line": 432,
+            "target": "https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/"
+          },
+          {
+            "line": 433,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/RESULTS.md"
+          },
+          {
+            "line": 433,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/static-review-walkthrough.md"
+          },
+          {
+            "line": 433,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/README.md"
+          },
+          {
+            "line": 433,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md"
+          },
+          {
+            "line": 433,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/self-check-transfer-policy.md"
+          },
+          {
+            "line": 433,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md"
+          },
+          {
+            "line": 433,
+            "target": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/reliability-source-ledger.json"
+          },
+          {
+            "line": 440,
+            "target": "https://github.com/fantasybz/medium-articles/blob/organize-research-topics/research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md"
+          }
+        ],
+        "fragment_targets_checked": false,
+        "paste_link_validation_requires": "article_to_publish_pack must also pass"
+      },
+      "published_png_headers": {
+        "referenced_images": [
+          {
+            "path": "2026-11-same-spec-variance/publish/images/table-01.png",
+            "sha256": "46f5f28a4572c987501c146fd5521e6004850bb8082e0f8c54ccc6800f3f4ee9",
+            "width": 1800,
+            "height": 634,
+            "png_signature_and_ihdr_dimensions": true
+          },
+          {
+            "path": "2026-11-same-spec-variance/publish/images/table-02.png",
+            "sha256": "717ea5c82bc84552a3243d6ecd4213baa1942649000f4c2eeecd77e3d98bcc5b",
+            "width": 1800,
+            "height": 668,
+            "png_signature_and_ihdr_dimensions": true
+          },
+          {
+            "path": "2026-11-same-spec-variance/publish/images/table-03.png",
+            "sha256": "5af07c503b304f38c9f1124fbf4ee1a3cc5312d4159ba35428b70d4de64af8e1",
+            "width": 1630,
+            "height": 312,
+            "png_signature_and_ihdr_dimensions": true
+          },
+          {
+            "path": "2026-11-same-spec-variance/publish/images/table-04.png",
+            "sha256": "994c59204c2a638e95ab00ef54a6e01d99ce612bb5e1e98080f4b59fc0cd99a3",
+            "width": 1800,
+            "height": 1024,
+            "png_signature_and_ihdr_dimensions": true
+          },
+          {
+            "path": "2026-11-same-spec-variance/publish/images/table-05.png",
+            "sha256": "416fc4ac18abf5e591a94b8c910bc4b064b611c401c6db50fd1064839aacb8ce",
+            "width": 1800,
+            "height": 826,
+            "png_signature_and_ihdr_dimensions": true
+          },
+          {
+            "path": "2026-11-same-spec-variance/publish/images/table-06.png",
+            "sha256": "4fc3882a0e174ac6a788e881494dbd956e16e38b58efb43623672b8c8320e9fa",
+            "width": 1800,
+            "height": 572,
+            "png_signature_and_ihdr_dimensions": true
+          },
+          {
+            "path": "2026-11-same-spec-variance/publish/images/table-07.png",
+            "sha256": "7d57ea6269fa25ef14e9ac8da6e0b35cda4330f338e05d3bde33ddaea21324a1",
+            "width": 1800,
+            "height": 874,
+            "png_signature_and_ihdr_dimensions": true
+          }
+        ],
+        "referenced_image_count": 7,
+        "unreferenced_png_files": [],
+        "pixel_decoding_performed": false,
+        "visual_review_performed": false
+      }
+    }
+  },
+  "tests": [
+    {
+      "log": ".context/same-spec-ten-runs/public-links-2026-10-03/test-tools-final.log",
+      "tests": 301,
+      "seconds": 72.131,
+      "passed": true,
+      "interpreter": "Python 3.14.5"
+    },
+    {
+      "log": ".context/same-spec-ten-runs/public-links-2026-10-03/test-research-scripts-final.log",
+      "tests": 121,
+      "seconds": 6.619,
+      "passed": true,
+      "interpreter": "Python 3.14.5"
+    },
+    {
+      "log": ".context/same-spec-ten-runs/public-links-2026-10-03/test-experiment-python314.log",
+      "tests": 83,
+      "seconds": 6.839,
+      "passed": true,
+      "interpreter": "/opt/homebrew/bin/python3.14, Python 3.14.5"
+    }
+  ],
+  "link_map": {
+    "artifact_commit": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+    "articles": [
+      {
+        "piece": "overview",
+        "before_sha256": "54499176d9eded4875cbaf7e61054c722aaf1ba555b45e07e9099d01ad35f497",
+        "after_sha256": "d9c7cf8928ed7562be3d36dd8b3cdb97d45f221354027764916c288d2476d2dc",
+        "links": [
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+            "repo_path": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/organize-research-topics/research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+            "revision": "organize-research-topics",
+            "kind": "blob",
+            "occurrences": 1
+          },
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md",
+            "repo_path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 2
+          },
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md",
+            "repo_path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 2
+          },
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/self-check-transfer-policy.md",
+            "repo_path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/self-check-transfer-policy.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/self-check-transfer-policy.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 1
+          },
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer-results.json",
+            "repo_path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer-results.json",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer-results.json",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 2
+          },
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv_transfer.py",
+            "repo_path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv_transfer.py",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv_transfer.py",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 2
+          },
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/test_csv_transfer.py",
+            "repo_path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/test_csv_transfer.py",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/test_csv_transfer.py",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 2
+          },
+          {
+            "local": "../research/experiments/same-spec-ten-runs/RESULTS.md",
+            "repo_path": "research/experiments/same-spec-ten-runs/RESULTS.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/RESULTS.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 2
+          },
+          {
+            "local": "../research/experiments/same-spec-ten-runs/SPECS.md",
+            "repo_path": "research/experiments/same-spec-ten-runs/SPECS.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/SPECS.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 1
+          },
+          {
+            "local": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+            "repo_path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 1
+          },
+          {
+            "local": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+            "repo_path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 1
+          },
+          {
+            "local": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+            "repo_path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 1
+          },
+          {
+            "local": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md",
+            "repo_path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 1
+          }
+        ]
+      },
+      {
+        "piece": "spec",
+        "before_sha256": "7284e7e2f3550d3b774730c3ed20aac8b77d441d4841cb1a7a01b3db6aba67b4",
+        "after_sha256": "ffd453e40eaab9ed6210fb1fc782d52baf65441a075a62035144525bf1fa3852",
+        "links": [
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+            "repo_path": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/organize-research-topics/research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+            "revision": "organize-research-topics",
+            "kind": "blob",
+            "occurrences": 1
+          },
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md",
+            "repo_path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 2
+          },
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md",
+            "repo_path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 2
+          },
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/self-check-transfer-policy.md",
+            "repo_path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/self-check-transfer-policy.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/self-check-transfer-policy.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 1
+          },
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-change-card.md",
+            "repo_path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-change-card.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-change-card.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 2
+          },
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-foundations-research.md",
+            "repo_path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-foundations-research.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-foundations-research.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 2
+          },
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer.md",
+            "repo_path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 1
+          },
+          {
+            "local": "../research/experiments/same-spec-ten-runs/RESULTS.md",
+            "repo_path": "research/experiments/same-spec-ten-runs/RESULTS.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/RESULTS.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 2
+          },
+          {
+            "local": "../research/experiments/same-spec-ten-runs/SPECS.md",
+            "repo_path": "research/experiments/same-spec-ten-runs/SPECS.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/SPECS.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 1
+          },
+          {
+            "local": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/",
+            "repo_path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs",
+            "public_url": "https://github.com/fantasybz/medium-articles/tree/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "tree",
+            "occurrences": 1
+          },
+          {
+            "local": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+            "repo_path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 2
+          },
+          {
+            "local": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+            "repo_path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 1
+          },
+          {
+            "local": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+            "repo_path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 1
+          },
+          {
+            "local": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md",
+            "repo_path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 1
+          }
+        ]
+      },
+      {
+        "piece": "contract",
+        "before_sha256": "ceae48f523483da89cffbed7e9f941098ab36caa129845567229d461598a49f0",
+        "after_sha256": "778c9f40f83ef5d0f75f3aa6b7cf74e89f2438cb0ee92c2d6dd3081f4b346e99",
+        "links": [
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+            "repo_path": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/organize-research-topics/research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+            "revision": "organize-research-topics",
+            "kind": "blob",
+            "occurrences": 1
+          },
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/README.md",
+            "repo_path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/README.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/README.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 2
+          },
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/RESULTS.md",
+            "repo_path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/RESULTS.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/RESULTS.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 1
+          },
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer-results.json",
+            "repo_path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer-results.json",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer-results.json",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 1
+          },
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer.md",
+            "repo_path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 2
+          },
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/obligations.md",
+            "repo_path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/obligations.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/obligations.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 2
+          },
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/observed-results.json",
+            "repo_path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/observed-results.json",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/observed-results.json",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 1
+          },
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/runs/initial-results.json",
+            "repo_path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/runs/initial-results.json",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/runs/initial-results.json",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 2
+          },
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/test_csv_transfer.py",
+            "repo_path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/test_csv_transfer.py",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/test_csv_transfer.py",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 1
+          },
+          {
+            "local": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/manifest.json",
+            "repo_path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/manifest.json",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/manifest.json",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 1
+          },
+          {
+            "local": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json",
+            "repo_path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 2
+          },
+          {
+            "local": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json",
+            "repo_path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 1
+          }
+        ]
+      },
+      {
+        "piece": "variance",
+        "before_sha256": "7c65b972f8cb70168f0cb58a5a3d5036d56a40f6b54b5eb2bc9d9180600b41b8",
+        "after_sha256": "daedac357e46ba7c966b9f37ed99ed12bd58a60904beb77271ad31aaac97e29e",
+        "links": [
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+            "repo_path": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/organize-research-topics/research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+            "revision": "organize-research-topics",
+            "kind": "blob",
+            "occurrences": 1
+          },
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md",
+            "repo_path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 2
+          },
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md",
+            "repo_path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 2
+          },
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/reliability-source-ledger.json",
+            "repo_path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/reliability-source-ledger.json",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/reliability-source-ledger.json",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 1
+          },
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/self-check-transfer-policy.md",
+            "repo_path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/self-check-transfer-policy.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/self-check-transfer-policy.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 2
+          },
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/static-review-walkthrough.md",
+            "repo_path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/static-review-walkthrough.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/static-review-walkthrough.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 2
+          },
+          {
+            "local": "../research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/README.md",
+            "repo_path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/README.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/README.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 1
+          },
+          {
+            "local": "../research/experiments/same-spec-ten-runs/RESULTS.md",
+            "repo_path": "research/experiments/same-spec-ten-runs/RESULTS.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/RESULTS.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 2
+          },
+          {
+            "local": "../research/experiments/same-spec-ten-runs/SPECS.md",
+            "repo_path": "research/experiments/same-spec-ten-runs/SPECS.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/SPECS.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 1
+          },
+          {
+            "local": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-01-A0/candidate/codex_jsonl.py",
+            "repo_path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-01-A0/candidate/codex_jsonl.py",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-01-A0/candidate/codex_jsonl.py",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 1
+          },
+          {
+            "local": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-02-A0/candidate/codex_jsonl.py",
+            "repo_path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-02-A0/candidate/codex_jsonl.py",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-02-A0/candidate/codex_jsonl.py",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 1
+          },
+          {
+            "local": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+            "repo_path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 1
+          },
+          {
+            "local": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+            "repo_path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 1
+          },
+          {
+            "local": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+            "repo_path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 1
+          },
+          {
+            "local": "../research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md",
+            "repo_path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md",
+            "public_url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md",
+            "revision": "774759192ab0e0b2da3d8b163eb3f07f3d12f4c3",
+            "kind": "blob",
+            "occurrences": 1
+          }
+        ]
+      }
+    ]
+  },
+  "anonymous_guide": {
+    "url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/SPECS.md",
+    "title": "medium-articles/research/experiments/same-spec-ten-runs/SPECS.md at 774759192ab0e0b2da3d8b163eb3f07f3d12f4c3 · fantasybz/medium-articles · GitHub",
+    "anonymous": true,
+    "guideVisible": true,
+    "specLinks": [
+      {
+        "text": "A0 全文：精簡版",
+        "url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md"
+      },
+      {
+        "text": "A 全文：展開版",
+        "url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md"
+      },
+      {
+        "text": "B 全文：A 加理由與自查",
+        "url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md"
+      },
+      {
+        "text": "C 全文：B 加可選實作建議",
+        "url": "https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md"
+      }
+    ]
+  },
+  "anonymous_downloads": [
+    {
+      "path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/comparison-plan-example.md",
+      "status": 200,
+      "bytes": 18116,
+      "sha256": "753dbdb4a46c39cdc7b50a991fa3176958093c8e5aac61a8803ff75e922d6859",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/document-change-proposal.md",
+      "status": 200,
+      "bytes": 7871,
+      "sha256": "0fab22f9518db6fb902da0980aa5f8a2ff0626ebd0724038d9f2b48fe0d54612",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/reliability-source-ledger.json",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/reliability-source-ledger.json",
+      "status": 200,
+      "bytes": 20152,
+      "sha256": "5584007ec165e8ba383b320899b370352eaacac49cef2370bf6629cd008a8806",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/self-check-transfer-policy.md",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/self-check-transfer-policy.md",
+      "status": 200,
+      "bytes": 8480,
+      "sha256": "c51aba179c72e1f3e7c6d081539c9cd7828114877f7ac014cf322ba4b940fb82",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-change-card.md",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-change-card.md",
+      "status": 200,
+      "bytes": 15140,
+      "sha256": "a2c58263b16e8661cd910a56610bbe1fbb6ad9f4ab852d88e6d9a0e65d5c6898",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-foundations-research.md",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-foundations-research.md",
+      "status": 200,
+      "bytes": 25157,
+      "sha256": "eecf7b9e5f45f81e6b219552c16fba378ba55e81dce92d09057de343eaa37ddf",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/static-review-walkthrough.md",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/static-review-walkthrough.md",
+      "status": 200,
+      "bytes": 3774,
+      "sha256": "4e9dc8bad845be1eff720beaad97f8274b09e9853adc931681a447f132375ac8",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv_transfer.py",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv_transfer.py",
+      "status": 200,
+      "bytes": 3795,
+      "sha256": "98b4f4f9c6b2702a8a3f964f03d0c1c1009d6f61a39cee4c99119977c29f1bae",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer-results.json",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer-results.json",
+      "status": 200,
+      "bytes": 6959,
+      "sha256": "d0e82f61ca959a0c7886497b41ae681da8a4010ae7a42d5153aee66db1a25136",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer.md",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/csv-transfer.md",
+      "status": 200,
+      "bytes": 5667,
+      "sha256": "46a6daec00396a10058c0189a7d6fb39c5dd57a1332ca41795bd6266616eb375",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/obligations.md",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/obligations.md",
+      "status": 200,
+      "bytes": 5058,
+      "sha256": "7456146671adeddb35864c43179f8492eb0785ea951aa05e0454241510591ad9",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/observed-results.json",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/observed-results.json",
+      "status": 200,
+      "bytes": 46382,
+      "sha256": "5b5be34932498b9ff2d081c21a3b6ea565b83464a19abde69a2f0307ab115c4c",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/README.md",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/README.md",
+      "status": 200,
+      "bytes": 11231,
+      "sha256": "481e3941a640f2ad957aca5ededab9627a6c0f73adf2bcaf04edc6973f208af2",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/RESULTS.md",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/RESULTS.md",
+      "status": 200,
+      "bytes": 5369,
+      "sha256": "fc28562017640e4ec77b9a96abd3b963ba79f79d3216b75bc9f28a8dcafb688d",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/runs/initial-results.json",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/runs/initial-results.json",
+      "status": 200,
+      "bytes": 41223,
+      "sha256": "12032a216ffc0c406915879e8280c1c613adbe6f2842104dd6be5279aa4fb116",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/test_csv_transfer.py",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/workbench/test_csv_transfer.py",
+      "status": 200,
+      "bytes": 1941,
+      "sha256": "90345b4fcf8050ab46012041aea647575295bf784553ef8dcbcde40ba1309432",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/RESULTS.md",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/RESULTS.md",
+      "status": 200,
+      "bytes": 9233,
+      "sha256": "bec178412d0417807bf29d3e123f55b399d573dc9e1561774962fcffec831d8a",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-01-A0/candidate/codex_jsonl.py",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-01-A0/candidate/codex_jsonl.py",
+      "status": 200,
+      "bytes": 7417,
+      "sha256": "7cc9bf5a24969310f18a50aad43ac26d4a59066321b2256ec03806da076dd2b2",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-02-A0/candidate/codex_jsonl.py",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-02-A0/candidate/codex_jsonl.py",
+      "status": 200,
+      "bytes": 7821,
+      "sha256": "f2a65e9e26aaa195ab1c0b8caf2c1920cb4e3d2ee3ad2abf30d1620a78008a57",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/manifest.json",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/manifest.json",
+      "status": 200,
+      "bytes": 9372,
+      "sha256": "ba30398118ecde62b2f682884c1e882b2864c22d70faf99549ceab0d7c0a55f2",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/packets/A.txt",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/packets/A.txt",
+      "status": 200,
+      "bytes": 14002,
+      "sha256": "91bff0525998c5e028d248e3cc4fcda04ba300fe97c61814e9cd3d3efadd89d3",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/packets/A0.txt",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/packets/A0.txt",
+      "status": 200,
+      "bytes": 9762,
+      "sha256": "1e592d9179cb6f3463b9c47374c66fe3dce9c7a192f12f76a7b4a01fff65bb83",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/packets/B.txt",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/packets/B.txt",
+      "status": 200,
+      "bytes": 15773,
+      "sha256": "c4bd0d2a001a11ec9d693666bfd30fed475d6f7a783dce8c06a13e449ce9a276",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/packets/C.txt",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/packets/C.txt",
+      "status": 200,
+      "bytes": 17845,
+      "sha256": "08fda685ef707fc99704208e6395ff2d6edf9c0178a56c577bb6125652738b83",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/requirements.json",
+      "status": 200,
+      "bytes": 8754,
+      "sha256": "32e0a0af2578564624b5a5b5f9d981e0dc296e6eb690b6598482cb809419a515",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+      "status": 200,
+      "bytes": 10541,
+      "sha256": "3ea6d57daae7dba9d3ceb6327607ee60ccaed3bd4193e5ec7c79441ad36bc247",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+      "status": 200,
+      "bytes": 6301,
+      "sha256": "a747ae3abd880f77227e7492e8a2e6d6346637a39b1e64366bc435dd772b4a10",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+      "status": 200,
+      "bytes": 12312,
+      "sha256": "c10ef7256aadc46816e73b1bbaf7edc26b5d2719e687ff497ff5005062ff8a3b",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md",
+      "status": 200,
+      "bytes": 14384,
+      "sha256": "19c404372f742c8f80165fdfea8df998bb29c3324f892433c8992e418e9c54af",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/summary.json",
+      "status": 200,
+      "bytes": 122671,
+      "sha256": "8198a4478b8158268298960576655d920db3b8d2dc2bd207348dcef8a346dfb9",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/system.txt",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/results/formal-2026-09-25/system.txt",
+      "status": 200,
+      "bytes": 272,
+      "sha256": "7eb24ab7d600f00e6ba1a06abcb13da5888f3a68507412fb56157d830c5967cc",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/spec-comparison/A-to-B.diff",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/spec-comparison/A-to-B.diff",
+      "status": 200,
+      "bytes": 2505,
+      "sha256": "abea2b717398a82f6ceb3e3e51712055bb6083f5c8f51156e387d7aba07b702d",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/spec-comparison/A0-to-A.diff",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/spec-comparison/A0-to-A.diff",
+      "status": 200,
+      "bytes": 16572,
+      "sha256": "2c9c2825ba9e407d97e9f13a0cecb6ff22b4e3de4649662b1e662aa43ab8fbf7",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/spec-comparison/B-to-C.diff",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/spec-comparison/B-to-C.diff",
+      "status": 200,
+      "bytes": 2473,
+      "sha256": "d11bdef21e11c8487e82faf77529030eea2daaabde09b6314a0ec57afe1f6e20",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/spec-comparison/manifest.json",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/spec-comparison/manifest.json",
+      "status": 200,
+      "bytes": 2064,
+      "sha256": "175f9d6c26932f0f1b3378bcbf4be2866442fc92a107176f42576cc14629fbb6",
+      "matches": true,
+      "credentials": "omit"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/SPECS.md",
+      "url": "https://raw.githubusercontent.com/fantasybz/medium-articles/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/SPECS.md",
+      "status": 200,
+      "bytes": 5592,
+      "sha256": "04d94d94a93c949d4333e5e2a1c8c2d86d20c026ea71f56959784678b08cfc44",
+      "matches": true,
+      "credentials": "omit"
+    }
+  ],
+  "mcp_config": {
+    "content_type": "markdown",
+    "fix_mode": "none",
+    "fix_output": "search_replace",
+    "profile": "strict",
+    "translationese_domain": "technical",
+    "detect_ai": true,
+    "ai_threshold": "low",
+    "detect_translationese": true,
+    "consistency": true,
+    "detect_style": true,
+    "explain": true,
+    "include_stats": true,
+    "include_telemetry": true,
+    "verify": true,
+    "max_errors": 0,
+    "max_warnings": 0,
+    "output": "full",
+    "ignore_terms": [
+      "通過"
+    ],
+    "glossary": {
+      "proper_nouns": [
+        "Can your AI agent be cheaper?"
+      ]
+    }
+  },
+  "mcp_info_review": "Article findings retain the previous editorial context; guide lists describe parallel comparisons and 通過 means pass. No ignore terms added.",
+  "unchanged": {
+    "article_prose_except_research_urls": true,
+    "figure_indices": true,
+    "png_count": 29,
+    "png_sha256": true
+  },
+  "archive": {
+    "archive": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25",
+    "index_sha256": "534434650fbd4070f9304ba79bb58d61245fdb94a259af430ea9e5f8ae5c995a",
+    "files_checked": 317,
+    "sha256_mismatches": []
+  },
+  "initial_experiment_test_failure": {
+    "reason": "Shell in experiment cwd selected system Python 3.9.6, below documented 3.10+ requirement.",
+    "failures": 17,
+    "errors": 15,
+    "resolution": "Selected the same explicit Python 3.14.5 build as the frozen manifest; 83 tests passed. No experiment code changed."
+  },
+  "prepush_scan_review": {
+    "hook_bypassed": false,
+    "high_findings": 0,
+    "medium_findings": {
+      "pii.ip_public": 6,
+      "pii.cc": 343,
+      "pii.phone.e164": 1692,
+      "pii.wallet": 1,
+      "env.kv": 1
+    },
+    "review": "Representative PII findings were checked against NIST section numbers, decimal measurements and plot coordinates. The sole wallet and env findings were located in a language-check trace identifier and the IMAGE_TOKEN regex assignment. This was not an individual semantic review of all 2043 medium findings. The separate local credential-pattern scan found no matches."
+  },
+  "whitespace_preservation": "Path-scoped .gitattributes preserve generated SVG, historical JSON trailing newlines, and exact unified-diff data; no frozen evidence rewritten.",
+  "not_performed": [
+    "merge to main",
+    "new independent review",
+    "new model experiment",
+    "Medium remote draft or publication"
+  ],
+  "metadata_local_links": {
+    "README.md": 38,
+    "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md": 12,
+    "research/2026-10/same-spec-ten-runs/public-links-2026-10-03.md": 2,
+    "research/experiments/same-spec-ten-runs/SPECS.md": 14
+  }
+}

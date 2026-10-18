@@ -1,0 +1,170 @@
+{
+  "checker": "zh-TW MCP",
+  "mode": "lint only; no automatic edits",
+  "gate": {
+    "max_errors": 0,
+    "max_warnings": 40
+  },
+  "manual_term_adjudications": {
+    "通過": "All retained uses mean passing acceptance/testing, not via/through.",
+    "協議": "Study/research protocol, not a network protocol.",
+    "登錄": "Research registration, not account login.",
+    "函式": "Programming functions, not mathematical functions.",
+    "程序": "Running processes or procedures, not a mistranslation of source program."
+  },
+  "notes": [
+    "The unfiltered development/final checks exposed context-mismatched lexical findings. The final gate ignores only these adjudicated terms.",
+    "Warnings about table fragments, exact book titles and optional prose style were reviewed by the primary AI agent; this is not human review.",
+    "Raw AI review transcripts, frozen source docs, generated candidates and historical article bodies are preserved verbatim and are not rewritten to satisfy this gate."
+  ],
+  "files": [
+    {
+      "path": "research/experiments/same-spec-ten-runs/RESULTS.md",
+      "sha256": "8b82472ec00144a60803882273804295de236faa67176f91c6ca72e30ea251a3",
+      "accepted": true,
+      "summary": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 9,
+        "tier2_gray_zone": 1
+      },
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"accepted\":true,\"issues\":[{\"found\":\"程序\",\"suggestions\":[\"程式\"],\"rule_type\":\"cross_strait\",\"severity\":\"info\",\"context\":\"@domain IT。不應與「程序」(procedure/步驟) 混淆\",\"english\":\"program\",\"count\":1,\"locations\":[{\"line\":59,\"col\":14}]},{\"found\":\"通過\",\"suggestions\":[\"透過\"],\"rule_type\":\"cross_strait\",\"severity\":\"info\",\"context\":\"@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」\",\"english\":\"through/via\",\"count\":8,\"locations\":[{\"line\":3,\"col\":87},{\"line\":9,\"col\":87},{\"line\":9,\"col\":131},{\"line\":11,\"col\":19},{\"line\":61,\"col\":70},{\"line\":69,\"col\":114},{\"line\":73,\"col\":89},{\"line\":77,\"col\":57}]}],\"applied_fixes\":0,\"summary\":{\"errors\":0,\"warnings\":0,\"info\":9,\"tier2_gray_zone\":1},\"gate\":{\"enabled\":true,\"max_errors\":0,\"residual_errors\":0,\"max_warnings\":40,\"residual_warnings\":0},\"profile\":\"base\",\"detected_script\":\"traditional\",\"s2t_applied\":false,\"coverage\":{\"rules_checked\":1755,\"rules_matched\":2},\"oral_density\":0.0041608876,\"ai_signature\":{\"score\":0.0,\"markers\":[],\"top_signals\":[],\"sentence_variability\":37.802937,\"zero_width_count\":0,\"punctuation_profile\":{\"comma\":{\"count\":41,\"density\":10.414021,\"cv\":1.1265905},\"period\":{\"count\":44,\"density\":11.176023,\"cv\":1.1803582},\"semicolon\":{\"count\":24,\"density\":6.096012,\"cv\":0.92093104},\"dunhao\":{\"count\":44,\"density\":11.176023,\"cv\":1.5213388},\"dash\":{\"count\":0,\"density\":0.0}}},\"translationese_signature\":{\"score\":0.0,\"markers\":[{\"signal\":\"被動語態\",\"count\":2,\"density\":0.508001,\"threshold\":6.0},{\"signal\":\"的字鏈\",\"count\":2,\"density\":2.0,\"threshold\":5.0},{\"signal\":\"弱動詞分解\",\"count\":0,\"density\":0.0,\"threshold\":4.0},{\"signal\":\"代詞密度\",\"count\":5,\"density\":1.2700025,\"threshold\":6.0},{\"signal\":\"翻譯腔偵測\",\"count\":0,\"density\":0.0,\"threshold\":7.0}],\"top_signals\":[],\"max_de_chain\":2,\"domain\":\"technical\"}}"
+          }
+        ]
+      }
+    },
+    {
+      "path": "research/2026-10/2026-11-same-spec-ten-runs.md",
+      "sha256": "5c88976e5e95161c2496314d2a7a521555f2209d87990fcfadfe9ac7b38efe7c",
+      "accepted": true,
+      "summary": {
+        "errors": 0,
+        "warnings": 5,
+        "info": 22,
+        "tier2_gray_zone": 2
+      },
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"accepted\":true,\"issues\":[{\"found\":\"6、4、5\",\"suggestions\":[],\"rule_type\":\"ai_style\",\"severity\":\"info\",\"context\":\"AI structural: 三連排比（tricolon）— 三個等長的、分隔片段，常見於 AI 生成文本\",\"count\":1,\"locations\":[{\"line\":157,\"col\":6}]},{\"found\":\"也不能把 C 的文字 pattern 簡稱為 native skill 的效果\",\"suggestions\":[],\"rule_type\":\"translationese\",\"severity\":\"warning\",\"context\":\"翻譯腔 ZY5: 定語堆疊 — 39 字無逗點、含 2 個「的」，建議拆成短句\",\"count\":1,\"locations\":[{\"line\":120,\"col\":91}]},{\"found\":\"保存\",\"suggestions\":[\"儲存\"],\"rule_type\":\"cross_strait\",\"severity\":\"warning\",\"context\":\"@domain UI。tw 日常亦用「保存」(保存食物、保存文化)，僅 IT 存檔語境改「儲存」\",\"english\":\"save\",\"count\":1,\"locations\":[{\"line\":189,\"col\":36}]},{\"found\":\"協議\",\"suggestions\":[\"協定\"],\"rule_type\":\"cross_strait\",\"severity\":\"info\",\"context\":\"@domain 網路\",\"english\":\"protocol\",\"count\":2,\"locations\":[{\"line\":50,\"col\":147},{\"line\":207,\"col\":12}]},{\"found\":\"圖表後說明它能支持的判斷與未回答的問題\",\"suggestions\":[],\"rule_type\":\"translationese\",\"severity\":\"warning\",\"context\":\"翻譯腔 ZY5: 定語堆疊 — 19 字無逗點、含 2 個「的」，建議拆成短句\",\"count\":1,\"locations\":[{\"line\":247,\"col\":9}]},{\"found\":\"工作往前推進的依據是可核對的工件與明確未完成項\",\"suggestions\":[],\"rule_type\":\"translationese\",\"severity\":\"warning\",\"context\":\"翻譯腔 ZY5: 定語堆疊 — 23 字無逗點、含 2 個「的」，建議拆成短句\",\"count\":1,\"locations\":[{\"line\":262,\"col\":64}]},{\"found\":\"登錄\",\"suggestions\":[\"登入\"],\"rule_type\":\"cross_strait\",\"severity\":\"info\",\"context\":\"@domain IT\",\"english\":\"login\",\"count\":2,\"locations\":[{\"line\":50,\"col\":160},{\"line\":209,\"col\":119}]},{\"found\":\"程序\",\"suggestions\":[\"程式\"],\"rule_type\":\"cross_strait\",\"severity\":\"info\",\"context\":\"@domain IT。不應與「程序」(procedure/步驟) 混淆\",\"english\":\"program\",\"count\":1,\"locations\":[{\"line\":145,\"col\":8}]},{\"found\":\"給讀者基底 parser 的兩個反例與正常輸出的例子\",\"suggestions\":[],\"rule_type\":\"translationese\",\"severity\":\"warning\",\"context\":\"翻譯腔 ZY5: 定語堆疊 — 26 字無逗點、含 2 個「的」，建議拆成短句\",\"count\":1,\"locations\":[{\"line\":153,\"col\":1}]},{\"found\":\"通過\",\"suggestions\":[\"透過\"],\"rule_type\":\"cross_strait\",\"severity\":\"info\",\"context\":\"@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」\",\"english\":\"through/via\",\"count\":16,\"locations\":[{\"line\":11,\"col\":37},{\"line\":11,\"col\":79},{\"line\":48,\"col\":195},{\"line\":59,\"col\":41},{\"line\":62,\"col\":8},{\"line\":72,\"col\":141},{\"line\":80,\"col\":47},{\"line\":80,\"col\":76},{\"line\":124,\"col\":29},{\"line\":136,\"col\":7},{\"line\":138,\"col\":5},{\"line\":145,\"col\":18},{\"line\":199,\"col\":12},{\"line\":219,\"col\":7},{\"line\":241,\"col\":43},{\"line\":247,\"col\":68}]}],\"applied_fixes\":0,\"summary\":{\"errors\":0,\"warnings\":5,\"info\":22,\"tier2_gray_zone\":2},\"gate\":{\"enabled\":true,\"max_errors\":0,\"residual_errors\":0,\"max_warnings\":40,\"residual_warnings\":5},\"profile\":\"base\",\"detected_script\":\"traditional\",\"s2t_applied\":false,\"coverage\":{\"rules_checked\":1755,\"rules_matched\":5},\"oral_density\":0.0012851405,\"ai_signature\":{\"score\":0.1,\"markers\":[],\"top_signals\":[\"1 個結構性 AI 特徵\"],\"sentence_variability\":48.188023,\"zero_width_count\":0,\"punctuation_profile\":{\"comma\":{\"count\":209,\"density\":16.991869,\"cv\":0.8071141},\"period\":{\"count\":167,\"density\":13.577235,\"cv\":1.2289771},\"semicolon\":{\"count\":61,\"density\":4.9593496,\"cv\":0.6962611},\"dunhao\":{\"count\":179,\"density\":14.552845,\"cv\":1.2141374},\"dash\":{\"count\":0,\"density\":0.0}}},\"translationese_signature\":{\"score\":0.0,\"markers\":[{\"signal\":\"被動語態\",\"count\":3,\"density\":0.24390243,\"threshold\":6.0},{\"signal\":\"的字鏈\",\"count\":2,\"density\":2.0,\"threshold\":5.0},{\"signal\":\"弱動詞分解\",\"count\":0,\"density\":0.0,\"threshold\":4.0},{\"signal\":\"代詞密度\",\"count\":8,\"density\":0.6504065,\"threshold\":6.0},{\"signal\":\"翻譯腔偵測\",\"count\":4,\"density\":0.32520324,\"threshold\":7.0}],\"top_signals\":[],\"max_de_chain\":2,\"domain\":\"technical\"}}"
+          }
+        ]
+      }
+    },
+    {
+      "path": "research/2026-10/2026-11-same-spec-ten-runs.figures.md",
+      "sha256": "f0d3ff8e49fb5aba841519edc0782d91ed9fd0caf88c9a9492b1f491a238812a",
+      "accepted": true,
+      "summary": {
+        "errors": 0,
+        "warnings": 13,
+        "info": 18
+      },
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"accepted\":true,\"issues\":[{\"found\":\"**\",\"suggestions\":[],\"rule_type\":\"ai_style\",\"severity\":\"info\",\"context\":\"AI structural: 段落粗體過多 — 5 處粗體標記（每 200 字 ≥3 處）\",\"count\":1,\"locations\":[{\"line\":193,\"col\":1}]},{\"found\":\",\",\"suggestions\":[\"，\"],\"rule_type\":\"punctuation\",\"severity\":\"warning\",\"context\":\"繁體中文應使用全形逗號「，」而非半形逗號「,」\",\"count\":4,\"locations\":[{\"line\":173,\"col\":28},{\"line\":173,\"col\":62},{\"line\":197,\"col\":65},{\"line\":197,\"col\":119}]},{\"found\":\"AI 語義核對 |\\n| B | 完整 R01–R13 | A 全文＋非規範理由與自查清單 | 無 | script 檢查 A 是 B 的完整前綴 |\\n| C | 完整 R01–R13 | B 全文＋可選的純文字 implementation pattern | 無 | script 檢查 B 是 C 的完整前綴\",\"suggestions\":[],\"rule_type\":\"translationese\",\"severity\":\"warning\",\"context\":\"翻譯腔 ZY5: 定語堆疊 — 156 字無逗點、含 3 個「的」，建議拆成短句\",\"count\":1,\"locations\":[{\"line\":105,\"col\":65}]},{\"found\":\"json\",\"suggestions\":[\"JSON\"],\"rule_type\":\"case\",\"severity\":\"info\",\"count\":5,\"locations\":[{\"line\":20,\"col\":13},{\"line\":22,\"col\":12},{\"line\":95,\"col\":37},{\"line\":110,\"col\":103},{\"line\":210,\"col\":169}]},{\"found\":\"前綴\",\"suggestions\":[\"字首\"],\"rule_type\":\"cross_strait\",\"severity\":\"warning\",\"context\":\"@domain 程式設計\",\"english\":\"prefix\",\"count\":4,\"locations\":[{\"line\":8,\"col\":52},{\"line\":106,\"col\":61},{\"line\":107,\"col\":80},{\"line\":110,\"col\":65}]},{\"found\":\"協議\",\"suggestions\":[\"協定\"],\"rule_type\":\"cross_strait\",\"severity\":\"info\",\"context\":\"@domain 網路\",\"english\":\"protocol\",\"count\":3,\"locations\":[{\"line\":13,\"col\":10},{\"line\":158,\"col\":144},{\"line\":160,\"col\":100}]},{\"found\":\"原始碼\",\"suggestions\":[\"原始程式碼\"],\"rule_type\":\"cross_strait\",\"severity\":\"warning\",\"context\":\"@domain IT。tw 標準用語為「原始程式碼」(source code)\",\"english\":\"source code\",\"count\":3,\"locations\":[{\"line\":85,\"col\":293},{\"line\":87,\"col\":221},{\"line\":214,\"col\":149}]},{\"found\":\"只有封存後的候選程式才接收外部 driver 送來的事件流\",\"suggestions\":[],\"rule_type\":\"translationese\",\"severity\":\"warning\",\"context\":\"翻譯腔 ZY5: 定語堆疊 — 29 字無逗點、含 2 個「的」，建議拆成短句\",\"count\":1,\"locations\":[{\"line\":27,\"col\":24}]},{\"found\":\"有有\",\"suggestions\":[\"有\"],\"rule_type\":\"repetition\",\"severity\":\"info\",\"count\":2,\"locations\":[{\"line\":121,\"col\":11},{\"line\":122,\"col\":11}]},{\"found\":\"維度\",\"suggestions\":[],\"rule_type\":\"ai_style\",\"severity\":\"info\",\"context\":\"humanize.V1: AI signature word; prefer 面向/層面\",\"count\":1,\"locations\":[{\"line\":193,\"col\":245}]},{\"found\":\"通過\",\"suggestions\":[\"透過\"],\"rule_type\":\"cross_strait\",\"severity\":\"info\",\"context\":\"@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」\",\"english\":\"through/via\",\"count\":6,\"locations\":[{\"line\":7,\"col\":40},{\"line\":11,\"col\":76},{\"line\":85,\"col\":196},{\"line\":160,\"col\":24},{\"line\":160,\"col\":80},{\"line\":193,\"col\":192}]}],\"applied_fixes\":0,\"summary\":{\"errors\":0,\"warnings\":13,\"info\":18},\"gate\":{\"enabled\":true,\"max_errors\":0,\"residual_errors\":0,\"max_warnings\":40,\"residual_warnings\":13},\"profile\":\"base\",\"detected_script\":\"traditional\",\"s2t_applied\":false,\"coverage\":{\"rules_checked\":1755,\"rules_matched\":5},\"oral_density\":0.002636783,\"quality_flags\":[\"stutter_detected\"],\"ai_signature\":{\"score\":0.1,\"markers\":[],\"top_signals\":[\"1 個結構性 AI 特徵\"],\"sentence_variability\":64.54279,\"zero_width_count\":0,\"punctuation_profile\":{\"comma\":{\"count\":84,\"density\":9.557402,\"cv\":1.3493445},\"period\":{\"count\":80,\"density\":9.102287,\"cv\":1.3617151},\"semicolon\":{\"count\":52,\"density\":5.9164867,\"cv\":0.8770877},\"dunhao\":{\"count\":68,\"density\":7.736944,\"cv\":1.7006899},\"dash\":{\"count\":0,\"density\":0.0}}},\"translationese_signature\":{\"score\":0.0,\"markers\":[{\"signal\":\"被動語態\",\"count\":1,\"density\":0.11377859,\"threshold\":6.0},{\"signal\":\"的字鏈\",\"count\":2,\"density\":2.0,\"threshold\":5.0},{\"signal\":\"弱動詞分解\",\"count\":0,\"density\":0.0,\"threshold\":4.0},{\"signal\":\"代詞密度\",\"count\":4,\"density\":0.45511436,\"threshold\":6.0},{\"signal\":\"翻譯腔偵測\",\"count\":2,\"density\":0.22755718,\"threshold\":7.0}],\"top_signals\":[],\"max_de_chain\":2,\"domain\":\"technical\"}}"
+          }
+        ]
+      }
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/review-resolution.md",
+      "sha256": "f96edb0989fda9f30f7b525245e9604d90a2de4755491a6e9f5d5ee5807faf35",
+      "accepted": true,
+      "summary": {
+        "errors": 0,
+        "warnings": 2,
+        "info": 30
+      },
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"accepted\":true,\"issues\":[{\"found\":\"-\",\"suggestions\":[],\"rule_type\":\"ai_style\",\"severity\":\"info\",\"context\":\"AI structural: 機械式列表 — 5 項全部以粗體關鍵字開頭\",\"count\":1,\"locations\":[{\"line\":126,\"col\":1}]},{\"found\":\"json\",\"suggestions\":[\"JSON\"],\"rule_type\":\"case\",\"severity\":\"info\",\"count\":1,\"locations\":[{\"line\":60,\"col\":100}]},{\"found\":\"協議\",\"suggestions\":[\"協定\"],\"rule_type\":\"cross_strait\",\"severity\":\"info\",\"context\":\"@domain 網路\",\"english\":\"protocol\",\"count\":1,\"locations\":[{\"line\":83,\"col\":3}]},{\"found\":\"數據\",\"suggestions\":[\"資料\"],\"rule_type\":\"cross_strait\",\"severity\":\"warning\",\"context\":\"@domain 資料。資料涵蓋文字、聲音、影像等所有形式的紀錄。「數據」僅指純數值資料，不應一律代替 data。「data and number」應譯為「資料與數據」\",\"english\":\"data\",\"count\":2,\"locations\":[{\"line\":36,\"col\":90},{\"line\":36,\"col\":174}]},{\"found\":\"若\",\"suggestions\":[],\"rule_type\":\"translationese\",\"severity\":\"info\",\"context\":\"翻譯腔 G4: 後置條件句，建議將條件前置\",\"count\":1,\"locations\":[{\"line\":48,\"col\":173}]},{\"found\":\"通過\",\"suggestions\":[\"透過\"],\"rule_type\":\"cross_strait\",\"severity\":\"info\",\"context\":\"@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」\",\"english\":\"through/via\",\"count\":26,\"locations\":[{\"line\":5,\"col\":51},{\"line\":5,\"col\":151},{\"line\":9,\"col\":95},{\"line\":10,\"col\":55},{\"line\":10,\"col\":136},{\"line\":49,\"col\":150},{\"line\":51,\"col\":185},{\"line\":56,\"col\":39},{\"line\":61,\"col\":137},{\"line\":62,\"col\":113},{\"line\":66,\"col\":167},{\"line\":67,\"col\":129},{\"line\":69,\"col\":120},{\"line\":70,\"col\":206},{\"line\":71,\"col\":189},{\"line\":72,\"col\":131},{\"line\":73,\"col\":132},{\"line\":75,\"col\":187},{\"line\":77,\"col\":170},{\"line\":78,\"col\":127},{\"line\":81,\"col\":128},{\"line\":81,\"col\":155},{\"line\":95,\"col\":61},{\"line\":105,\"col\":79},{\"line\":127,\"col\":48},{\"line\":129,\"col\":130}]}],\"applied_fixes\":0,\"summary\":{\"errors\":0,\"warnings\":2,\"info\":30},\"gate\":{\"enabled\":true,\"max_errors\":0,\"residual_errors\":0,\"max_warnings\":40,\"residual_warnings\":2},\"profile\":\"base\",\"detected_script\":\"traditional\",\"s2t_applied\":false,\"coverage\":{\"rules_checked\":1755,\"rules_matched\":3},\"oral_density\":0.0,\"ai_signature\":{\"score\":0.1,\"markers\":[],\"top_signals\":[\"1 個結構性 AI 特徵\"],\"sentence_variability\":52.42457,\"zero_width_count\":0,\"punctuation_profile\":{\"comma\":{\"count\":133,\"density\":8.502206,\"cv\":0.81965125},\"period\":{\"count\":146,\"density\":9.333248,\"cv\":0.56843305},\"semicolon\":{\"count\":157,\"density\":10.036438,\"cv\":0.65287125},\"dunhao\":{\"count\":123,\"density\":7.862942,\"cv\":1.4576517},\"dash\":{\"count\":0,\"density\":0.0}}},\"translationese_signature\":{\"score\":0.0,\"markers\":[{\"signal\":\"被動語態\",\"count\":5,\"density\":0.3196318,\"threshold\":6.0},{\"signal\":\"的字鏈\",\"count\":2,\"density\":2.0,\"threshold\":5.0},{\"signal\":\"弱動詞分解\",\"count\":0,\"density\":0.0,\"threshold\":4.0},{\"signal\":\"代詞密度\",\"count\":2,\"density\":0.12785272,\"threshold\":6.0},{\"signal\":\"翻譯腔偵測\",\"count\":1,\"density\":0.06392636,\"threshold\":7.0}],\"top_signals\":[],\"max_de_chain\":2,\"domain\":\"technical\"}}"
+          }
+        ]
+      }
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/research-loop.md",
+      "sha256": "224d0ca31dcf51b83b50ec852170b8a69fd86497f28da17ad9c80679debc2619",
+      "accepted": true,
+      "summary": {
+        "errors": 0,
+        "warnings": 4,
+        "info": 12,
+        "tier2_gray_zone": 1
+      },
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"accepted\":true,\"issues\":[{\"found\":\"Claude 的第二輪只核對實際 blocker 的修正及失敗路徑\",\"suggestions\":[],\"rule_type\":\"translationese\",\"severity\":\"warning\",\"context\":\"翻譯腔 ZY5: 定語堆疊 — 33 字無逗點、含 2 個「的」，建議拆成短句\",\"count\":1,\"locations\":[{\"line\":26,\"col\":91}]},{\"found\":\"json\",\"suggestions\":[\"JSON\"],\"rule_type\":\"case\",\"severity\":\"info\",\"count\":2,\"locations\":[{\"line\":9,\"col\":153},{\"line\":9,\"col\":232}]},{\"found\":\"依賴\",\"suggestions\":[\"相依性\"],\"rule_type\":\"cross_strait\",\"severity\":\"warning\",\"context\":\"@domain IT。dependency\",\"english\":\"dependency\",\"count\":1,\"locations\":[{\"line\":21,\"col\":137}]},{\"found\":\"協議\",\"suggestions\":[\"協定\"],\"rule_type\":\"cross_strait\",\"severity\":\"info\",\"context\":\"@domain 網路\",\"english\":\"protocol\",\"count\":1,\"locations\":[{\"line\":44,\"col\":110}]},{\"found\":\"存在 halt 或已記錄的 boundary violation 仍不能報完整研究的區間\",\"suggestions\":[],\"rule_type\":\"translationese\",\"severity\":\"warning\",\"context\":\"翻譯腔 ZY5: 定語堆疊 — 44 字無逗點、含 2 個「的」，建議拆成短句\",\"count\":1,\"locations\":[{\"line\":26,\"col\":346}]},{\"found\":\"數據\",\"suggestions\":[\"資料\"],\"rule_type\":\"cross_strait\",\"severity\":\"warning\",\"context\":\"@domain 資料。資料涵蓋文字、聲音、影像等所有形式的紀錄。「數據」僅指純數值資料，不應一律代替 data。「data and number」應譯為「資料與數據」\",\"english\":\"data\",\"count\":1,\"locations\":[{\"line\":18,\"col\":106}]},{\"found\":\"登錄\",\"suggestions\":[\"登入\"],\"rule_type\":\"cross_strait\",\"severity\":\"info\",\"context\":\"@domain IT\",\"english\":\"login\",\"count\":1,\"locations\":[{\"line\":40,\"col\":55}]},{\"found\":\"透過\",\"suggestions\":[\"藉由\",\"經由\"],\"rule_type\":\"translationese\",\"severity\":\"info\",\"context\":\"dewesternise.V3: 透過 used with abstract means — prefer 藉由/經由\",\"count\":1,\"locations\":[{\"line\":40,\"col\":48}]},{\"found\":\"通過\",\"suggestions\":[\"透過\"],\"rule_type\":\"cross_strait\",\"severity\":\"info\",\"context\":\"@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」\",\"english\":\"through/via\",\"count\":7,\"locations\":[{\"line\":26,\"col\":61},{\"line\":26,\"col\":244},{\"line\":32,\"col\":110},{\"line\":34,\"col\":453},{\"line\":38,\"col\":112},{\"line\":40,\"col\":40},{\"line\":46,\"col\":127}]}],\"applied_fixes\":0,\"summary\":{\"errors\":0,\"warnings\":4,\"info\":12,\"tier2_gray_zone\":1},\"gate\":{\"enabled\":true,\"max_errors\":0,\"residual_errors\":0,\"max_warnings\":40,\"residual_warnings\":4},\"profile\":\"base\",\"detected_script\":\"traditional\",\"s2t_applied\":false,\"coverage\":{\"rules_checked\":1755,\"rules_matched\":6},\"oral_density\":0.0012476606,\"ai_signature\":{\"score\":0.0,\"markers\":[],\"top_signals\":[],\"sentence_variability\":30.759941,\"zero_width_count\":0,\"punctuation_profile\":{\"comma\":{\"count\":56,\"density\":16.582766,\"cv\":0.719438},\"period\":{\"count\":43,\"density\":12.733194,\"cv\":1.2880298},\"semicolon\":{\"count\":16,\"density\":4.737933,\"cv\":0.69629127},\"dunhao\":{\"count\":28,\"density\":8.291383,\"cv\":1.2412943},\"dash\":{\"count\":0,\"density\":0.0}}},\"translationese_signature\":{\"score\":0.0,\"markers\":[{\"signal\":\"被動語態\",\"count\":2,\"density\":0.59224164,\"threshold\":6.0},{\"signal\":\"的字鏈\",\"count\":2,\"density\":2.0,\"threshold\":5.0},{\"signal\":\"弱動詞分解\",\"count\":0,\"density\":0.0,\"threshold\":4.0},{\"signal\":\"代詞密度\",\"count\":3,\"density\":0.8883624,\"threshold\":6.0},{\"signal\":\"翻譯腔偵測\",\"count\":3,\"density\":0.8883624,\"threshold\":7.0}],\"top_signals\":[],\"max_de_chain\":2,\"domain\":\"technical\"}}"
+          }
+        ]
+      }
+    },
+    {
+      "path": "research/2026-10/same-spec-ten-runs/evidence-audit.md",
+      "sha256": "e165f88daf73e3c4ed9fb94b697767f1197a03ceec105049018771aa1648eb86",
+      "accepted": true,
+      "summary": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 9
+      },
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"accepted\":true,\"issues\":[{\"found\":\" \",\"suggestions\":[\"\"],\"rule_type\":\"punctuation\",\"severity\":\"info\",\"context\":\"全形標點與其他字元之間不加空格\",\"count\":7,\"locations\":[{\"line\":17,\"col\":36},{\"line\":43,\"col\":16},{\"line\":43,\"col\":18},{\"line\":56,\"col\":14},{\"line\":56,\"col\":16},{\"line\":70,\"col\":42},{\"line\":70,\"col\":44}]},{\"found\":\"登錄\",\"suggestions\":[\"登入\"],\"rule_type\":\"cross_strait\",\"severity\":\"info\",\"context\":\"@domain IT\",\"english\":\"login\",\"count\":1,\"locations\":[{\"line\":62,\"col\":70}]},{\"found\":\"通過\",\"suggestions\":[\"透過\"],\"rule_type\":\"cross_strait\",\"severity\":\"info\",\"context\":\"@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」\",\"english\":\"through/via\",\"count\":1,\"locations\":[{\"line\":13,\"col\":79}]}],\"applied_fixes\":0,\"summary\":{\"errors\":0,\"warnings\":0,\"info\":9},\"gate\":{\"enabled\":true,\"max_errors\":0,\"residual_errors\":0,\"max_warnings\":40,\"residual_warnings\":0},\"profile\":\"base\",\"detected_script\":\"traditional\",\"s2t_applied\":false,\"coverage\":{\"rules_checked\":1755,\"rules_matched\":2},\"oral_density\":0.0028116214,\"ai_signature\":{\"score\":0.0,\"markers\":[],\"top_signals\":[],\"sentence_variability\":32.431576,\"zero_width_count\":0,\"punctuation_profile\":{\"comma\":{\"count\":62,\"density\":9.780723,\"cv\":1.0297974},\"period\":{\"count\":100,\"density\":15.775358,\"cv\":0.70863676},\"semicolon\":{\"count\":39,\"density\":6.1523895,\"cv\":0.6178743},\"dunhao\":{\"count\":60,\"density\":9.465215,\"cv\":1.3529491},\"dash\":{\"count\":0,\"density\":0.0}}},\"translationese_signature\":{\"score\":0.0,\"markers\":[{\"signal\":\"被動語態\",\"count\":0,\"density\":0.0,\"threshold\":6.0},{\"signal\":\"的字鏈\",\"count\":2,\"density\":2.0,\"threshold\":5.0},{\"signal\":\"弱動詞分解\",\"count\":0,\"density\":0.0,\"threshold\":4.0},{\"signal\":\"代詞密度\",\"count\":6,\"density\":0.9465215,\"threshold\":6.0},{\"signal\":\"翻譯腔偵測\",\"count\":0,\"density\":0.0,\"threshold\":7.0}],\"top_signals\":[],\"max_de_chain\":2,\"domain\":\"technical\"}}"
+          }
+        ]
+      }
+    },
+    {
+      "path": "research/TOPICS.md",
+      "sha256": "442f10b4b184ca98d31e2f8dbe3a5d76cc6603f2e78d52b518800a5f2fdd50b1",
+      "accepted": true,
+      "summary": {
+        "errors": 0,
+        "warnings": 16,
+        "info": 9
+      },
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"accepted\":true,\"issues\":[{\"found\":\"!\",\"suggestions\":[\"！\"],\"rule_type\":\"punctuation\",\"severity\":\"warning\",\"context\":\"繁體中文應使用全形驚嘆號「！」而非半形「!」\",\"count\":1,\"locations\":[{\"line\":65,\"col\":67}]},{\"found\":\")\",\"suggestions\":[\"）\"],\"rule_type\":\"punctuation\",\"severity\":\"warning\",\"context\":\"繁體中文應使用全形右括號「）」而非半形「)」\",\"count\":2,\"locations\":[{\"line\":137,\"col\":46},{\"line\":142,\"col\":74}]},{\"found\":\"| # | 主題 | 已收集的切入點 | 接續補證據 | 原最早時間 |\\n|---|---|---|---|---|\\n| 1 | Coding Agent 的爆炸半徑 | harness 外的權限控制\",\"suggestions\":[],\"rule_type\":\"translationese\",\"severity\":\"warning\",\"context\":\"翻譯腔 ZY5: 定語堆疊 — 100 字無逗點、含 3 個「的」，建議拆成短句\",\"count\":1,\"locations\":[{\"line\":57,\"col\":1}]},{\"found\":\"| # | 主題 | 已收集的切入點 | 接續補證據 | 原最早時間 |\\n|---|---|---|---|---|\\n| 1 | Coding Agent 的爆炸半徑 | harness 外的權限控制、工具供應鏈與執行邊界 | 資安協作者審稿、可重現的防禦實驗；\",\"suggestions\":[],\"rule_type\":\"translationese\",\"severity\":\"warning\",\"context\":\"翻譯腔 S3: 的的不休 — 一個子句中出現 4 個「的」（余光中）\",\"count\":1,\"locations\":[{\"line\":57,\"col\":1}]},{\"found\":\"| 定義可獨立驗證的結果、SLI、error budget 與處置 | 28 天 revert 基線、成本與介入量測、burn-rate 與最小事件數驗算 |\\n| A3：ledger-backed attestation status check | 核對執行證據、核准者與被核准的 commit | 可查詢的 append-only ledger、agent 能否修改 hook／紀錄的實測、review event 與 commit 的對應 |\",\"suggestions\":[],\"rule_type\":\"translationese\",\"severity\":\"warning\",\"context\":\"翻譯腔 S3: 的的不休 — 一個子句中出現 5 個「的」（余光中）\",\"count\":1,\"locations\":[{\"line\":44,\"col\":23}]},{\"found\":\"| 要做的事 | 採用的檔案 | 歷史資料的用途\",\"suggestions\":[],\"rule_type\":\"translationese\",\"severity\":\"warning\",\"context\":\"翻譯腔 ZY5: 定語堆疊 — 24 字無逗點、含 3 個「的」，建議拆成短句\",\"count\":1,\"locations\":[{\"line\":152,\"col\":1}]},{\"found\":\"《Explore It!》與語音測試案例 | 一輪有紀錄的 exploratory session、補閱讀、取得可重現的公開範例 | 2027-04 |\\n| 11 | MCP 生態的可用性 | 公開 MCP server 的存續、維護成本與付款機制 | 回原論文核對投影片數字；\",\"suggestions\":[],\"rule_type\":\"translationese\",\"severity\":\"warning\",\"context\":\"翻譯腔 S3: 的的不休 — 一個子句中出現 4 個「的」（余光中）\",\"count\":1,\"locations\":[{\"line\":65,\"col\":56}]},{\"found\":\"協議\",\"suggestions\":[\"協定\"],\"rule_type\":\"cross_strait\",\"severity\":\"info\",\"context\":\"@domain 網路\",\"english\":\"protocol\",\"count\":2,\"locations\":[{\"line\":30,\"col\":17},{\"line\":35,\"col\":23}]},{\"found\":\"取得可重現的公開範例 | 2027-04 |\\n| 11 | MCP 生態的可用性 | 公開 MCP server 的存續\",\"suggestions\":[],\"rule_type\":\"translationese\",\"severity\":\"warning\",\"context\":\"翻譯腔 ZY5: 定語堆疊 — 60 字無逗點、含 3 個「的」，建議拆成短句\",\"count\":1,\"locations\":[{\"line\":65,\"col\":110}]},{\"found\":\"可重切為 harness 的模型可攜性 | 3～5 家台灣公司的企業採購觀察\",\"suggestions\":[],\"rule_type\":\"translationese\",\"severity\":\"warning\",\"context\":\"翻譯腔 ZY5: 定語堆疊 — 38 字無逗點、含 2 個「的」，建議拆成短句\",\"count\":1,\"locations\":[{\"line\":75,\"col\":34}]},{\"found\":\"外部來源的內容與版本仍以各份研究紀錄的查閱日期為準\",\"suggestions\":[],\"rule_type\":\"translationese\",\"severity\":\"warning\",\"context\":\"翻譯腔 ZY5: 定語堆疊 — 25 字無逗點、含 2 個「的」，建議拆成短句\",\"count\":1,\"locations\":[{\"line\":3,\"col\":97}]},{\"found\":\"後續需重查狀態 |\\n| 以驗證為先的 AI for Science | 會議中的跨領域案例\",\"suggestions\":[],\"rule_type\":\"translationese\",\"severity\":\"warning\",\"context\":\"翻譯腔 ZY5: 定語堆疊 — 45 字無逗點、含 2 個「的」，建議拆成短句\",\"count\":1,\"locations\":[{\"line\":99,\"col\":101}]},{\"found\":\"或軟體工程情境的重現研究 | 2027-04 |\\n| 5 | Agent 的探索式測試\",\"suggestions\":[],\"rule_type\":\"translationese\",\"severity\":\"warning\",\"context\":\"翻譯腔 ZY5: 定語堆疊 — 43 字無逗點、含 2 個「的」，建議拆成短句\",\"count\":1,\"locations\":[{\"line\":64,\"col\":82}]},{\"found\":\"才有可重現的範例 |\\n| 我的 Golden Kubestronaut 之路＋認證地圖 | 學習計畫與認證素材的成文規劃\",\"suggestions\":[],\"rule_type\":\"translationese\",\"severity\":\"warning\",\"context\":\"翻譯腔 ZY5: 定語堆疊 — 60 字無逗點、含 3 個「的」，建議拆成短句\",\"count\":1,\"locations\":[{\"line\":86,\"col\":88}]},{\"found\":\"摘要同段的「tool economics as availability risk」已併入 #11 MCP 生態的可用性\",\"suggestions\":[],\"rule_type\":\"translationese\",\"severity\":\"warning\",\"context\":\"翻譯腔 ZY5: 定語堆疊 — 60 字無逗點、含 2 個「的」，建議拆成短句\",\"count\":1,\"locations\":[{\"line\":102,\"col\":1}]},{\"found\":\"目前\",\"suggestions\":[],\"rule_type\":\"ai_style\",\"severity\":\"info\",\"context\":\"AI structural: 段落粗體過多 — 3 處粗體標記（每 200 字 ≥3 處）\",\"count\":1,\"locations\":[{\"line\":5,\"col\":1}]},{\"found\":\"目前有 **2 個系列已成稿**（一個已發布、一個已排程）、**2 個系列已有大綱、尚待成稿**（其中規格變異研究已完成正式量測），以及 **14 個編號主題**（9 個候選、4 個觀察中、1 個單篇插曲）。\",\"suggestions\":[],\"rule_type\":\"translationese\",\"severity\":\"info\",\"context\":\"翻譯腔 V13: 時態標記冗餘 — 句中已有日期，5 個時態詞多餘\",\"count\":1,\"locations\":[{\"line\":5,\"col\":1}]},{\"found\":\"維度\",\"suggestions\":[],\"rule_type\":\"ai_style\",\"severity\":\"info\",\"context\":\"humanize.V1: AI signature word; prefer 面向/層面\",\"count\":1,\"locations\":[{\"line\":67,\"col\":12}]},{\"found\":\"詳細分配仍見兩輪 backlog 的「已被吸收的訊號\",\"suggestions\":[],\"rule_type\":\"translationese\",\"severity\":\"warning\",\"context\":\"翻譯腔 ZY5: 定語堆疊 — 26 字無逗點、含 2 個「的」，建議拆成短句\",\"count\":1,\"locations\":[{\"line\":121,\"col\":26}]},{\"found\":\"通過\",\"suggestions\":[\"透過\"],\"rule_type\":\"cross_strait\",\"severity\":\"info\",\"context\":\"@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」\",\"english\":\"through/via\",\"count\":4,\"locations\":[{\"line\":15,\"col\":86},{\"line\":31,\"col\":19},{\"line\":32,\"col\":27},{\"line\":87,\"col\":73}]}],\"applied_fixes\":0,\"summary\":{\"errors\":0,\"warnings\":16,\"info\":9},\"gate\":{\"enabled\":true,\"max_errors\":0,\"residual_errors\":0,\"max_warnings\":40,\"residual_warnings\":16},\"profile\":\"base\",\"detected_script\":\"traditional\",\"s2t_applied\":false,\"coverage\":{\"rules_checked\":1755,\"rules_matched\":3},\"oral_density\":0.0,\"ai_signature\":{\"score\":0.1,\"markers\":[],\"top_signals\":[\"1 個結構性 AI 特徵\"],\"sentence_variability\":134.61334,\"zero_width_count\":0,\"punctuation_profile\":{\"comma\":{\"count\":99,\"density\":11.182651,\"cv\":0.9292424},\"period\":{\"count\":42,\"density\":4.7441545,\"cv\":1.3400468},\"semicolon\":{\"count\":74,\"density\":8.358748,\"cv\":0.88965106},\"dunhao\":{\"count\":130,\"density\":14.684288,\"cv\":1.4407642},\"dash\":{\"count\":0,\"density\":0.0}}},\"translationese_signature\":{\"score\":0.0,\"markers\":[{\"signal\":\"被動語態\",\"count\":4,\"density\":0.45182425,\"threshold\":6.0},{\"signal\":\"的字鏈\",\"count\":4,\"density\":4.0,\"threshold\":5.0},{\"signal\":\"弱動詞分解\",\"count\":0,\"density\":0.0,\"threshold\":4.0},{\"signal\":\"代詞密度\",\"count\":1,\"density\":0.11295606,\"threshold\":6.0},{\"signal\":\"翻譯腔偵測\",\"count\":14,\"density\":1.5813849,\"threshold\":7.0}],\"top_signals\":[],\"max_de_chain\":4,\"domain\":\"technical\"}}"
+          }
+        ]
+      }
+    },
+    {
+      "path": "research/2026-10/selection.md",
+      "sha256": "0db30473ef6f1addc7455515aadb7aeb902d3eae5f3f6b347960bba155d0bff8",
+      "accepted": true,
+      "summary": {
+        "errors": 0,
+        "warnings": 5,
+        "info": 1
+      },
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"accepted\":true,\"issues\":[{\"found\":\"ch.2 的 KV cache 與狀態欄則是「變異來自 loop 的哪一段」的機制解釋\",\"suggestions\":[],\"rule_type\":\"translationese\",\"severity\":\"warning\",\"context\":\"翻譯腔 ZY5: 定語堆疊 — 43 字無逗點、含 3 個「的」，建議拆成短句\",\"count\":1,\"locations\":[{\"line\":62,\"col\":109}]},{\"found\":\"harness 的邊界與 Verify 規則 | 總論 §五書錨段 |\\n| 書 ch.7 Exp 7-6 | 52 筆真實失敗裡 24 筆自稱完成卻被 verifier 否決 | 總論 §五（全系列唯一帶書數字處） |\\n| 書 ch.10 §10.5 | 多 agent 的拜占庭故障\",\"suggestions\":[],\"rule_type\":\"translationese\",\"severity\":\"warning\",\"context\":\"翻譯腔 ZY5: 定語堆疊 — 142 字無逗點、含 2 個「的」，建議拆成短句\",\"count\":1,\"locations\":[{\"line\":42,\"col\":41}]},{\"found\":\"數據\",\"suggestions\":[\"資料\"],\"rule_type\":\"cross_strait\",\"severity\":\"warning\",\"context\":\"@domain 資料。資料涵蓋文字、聲音、影像等所有形式的紀錄。「數據」僅指純數值資料，不應一律代替 data。「data and number」應譯為「資料與數據」\",\"english\":\"data\",\"count\":1,\"locations\":[{\"line\":78,\"col\":130}]},{\"found\":\"狀態欄\",\"suggestions\":[\"狀態列\"],\"rule_type\":\"cross_strait\",\"severity\":\"warning\",\"context\":\"@domain UI\",\"english\":\"status bar\",\"count\":1,\"locations\":[{\"line\":62,\"col\":126}]},{\"found\":\"講的卻多半是 vendor 自家 gateway 內的觀測\",\"suggestions\":[],\"rule_type\":\"translationese\",\"severity\":\"warning\",\"context\":\"翻譯腔 ZY5: 定語堆疊 — 29 字無逗點、含 2 個「的」，建議拆成短句\",\"count\":1,\"locations\":[{\"line\":70,\"col\":91}]},{\"found\":\"通過\",\"suggestions\":[\"透過\"],\"rule_type\":\"cross_strait\",\"severity\":\"info\",\"context\":\"@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」\",\"english\":\"through/via\",\"count\":1,\"locations\":[{\"line\":78,\"col\":125}]}],\"applied_fixes\":0,\"summary\":{\"errors\":0,\"warnings\":5,\"info\":1},\"gate\":{\"enabled\":true,\"max_errors\":0,\"residual_errors\":0,\"max_warnings\":40,\"residual_warnings\":5},\"profile\":\"base\",\"detected_script\":\"traditional\",\"s2t_applied\":false,\"coverage\":{\"rules_checked\":1755,\"rules_matched\":3},\"oral_density\":0.0,\"ai_signature\":{\"score\":0.0,\"markers\":[],\"top_signals\":[],\"sentence_variability\":76.52761,\"zero_width_count\":0,\"punctuation_profile\":{\"comma\":{\"count\":57,\"density\":12.555066,\"cv\":1.6392416},\"period\":{\"count\":29,\"density\":6.3876653,\"cv\":1.8070983},\"semicolon\":{\"count\":41,\"density\":9.030837,\"cv\":1.4087087},\"dunhao\":{\"count\":44,\"density\":9.69163,\"cv\":1.3791053},\"dash\":{\"count\":0,\"density\":0.0}}},\"translationese_signature\":{\"score\":0.0,\"markers\":[{\"signal\":\"被動語態\",\"count\":2,\"density\":0.44052863,\"threshold\":6.0},{\"signal\":\"的字鏈\",\"count\":3,\"density\":3.0,\"threshold\":5.0},{\"signal\":\"弱動詞分解\",\"count\":0,\"density\":0.0,\"threshold\":4.0},{\"signal\":\"代詞密度\",\"count\":1,\"density\":0.22026432,\"threshold\":6.0},{\"signal\":\"翻譯腔偵測\",\"count\":3,\"density\":0.66079295,\"threshold\":7.0}],\"top_signals\":[],\"max_de_chain\":3,\"domain\":\"technical\"}}"
+          }
+        ]
+      }
+    }
+  ]
+}
+

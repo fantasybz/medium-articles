@@ -1,0 +1,330 @@
+{
+  "research_date_local": "2026-09-28",
+  "timezone": "Asia/Taipei",
+  "scope": "Eight verified primary sources supporting the full rewrite. Public ledger contains bibliographic metadata, bounded claims, limitations, and private cache provenance; no cached source bodies. No model experiments conducted for this research.",
+  "sources": [
+    {
+      "id": "REL01",
+      "title": "τ-bench: A Benchmark for Tool-Agent-User Interaction in Real-World Domains",
+      "authors": "Shunyu Yao, Noah Shinn, Pedram Razavi, Karthik Narasimhan (Sierra)",
+      "date": "2024-06-17",
+      "version": "arXiv:2406.12045v1",
+      "url": "https://arxiv.org/pdf/2406.12045v1",
+      "cache": {
+        "path": ".context/same-spec-ten-runs/research-rebuild-2026-09-28/sources-reliability/tau-bench-v1.txt",
+        "sha256": "8c2153fb25ff00cd6e69bf587641ccbd08dc8b65253edaee150dc88386a257b1",
+        "accessed_utc": "2026-09-27T16:44:00.125130+00:00",
+        "capture_note": "Browser download then pdftotext -layout",
+        "timestamp_basis": "Downloaded PDF file modification time; browser request timestamp was not separately captured.",
+        "pdf_path": ".context/same-spec-ten-runs/research-rebuild-2026-09-28/sources-reliability/tau-bench-v1.pdf",
+        "pdf_sha256": "0ce66a1763d698c61bb311c3c874bf593d1e9a5bfff11bb35f6f72b981f6da56"
+      },
+      "sections": [
+        "§3, pp.4–5: reward and pass^k definition",
+        "Table 1, p.5: 115 retail / 50 airline tasks",
+        "§5, pp.6–7: model/method settings and Figure 4 reliability",
+        "§5.2 p.7: task ambiguity found on trajectory review"
+      ],
+      "supported_claims": [
+        "pass@k means at least one success among k iid trials; pass^k means all k successful, averaged across tasks. Both differ from pooling task runs without task identity.",
+        "For a task with n observed trials, c successes: unbiased estimators are 1-C(n-c,k)/C(n,k) and C(c,k)/C(n,k), then task average. When n=k, pass^k is the fraction of tasks whose k runs all pass.",
+        "Database end-state equality is necessary but not sufficient for policy compliance; user confirmation violations may remain undetected."
+      ],
+      "numerical_claims": [
+        {
+          "claim": "Main task set: 115 retail + 50 airline tasks; main table uses at least 3 trials/task; agent temperature 0, simulated user temperature 1.",
+          "denominator": "Task population is synthetic customer service, not code generation. Figure 4 has more repeats than main table; avoid presenting main-table trial count as Figure 4 design."
+        },
+        {
+          "claim": "GPT-4o function-calling retail pass^1 61.2%; retail pass^8 below25%.",
+          "denominator": "115 retail tasks; Figure4 repeated trials, stochastic user and agent; do not transfer rates to coding."
+        }
+      ],
+      "limits": [
+        "User simulator adds stochasticity; fixed customer-service scenario is not byte-identical coding packet.",
+        "Only one local parser task cannot estimate a population-level pass^k across software tasks."
+      ],
+      "use": "Formal distinction and concrete operational question; old performance numbers optional, not contemporary model ranking.",
+      "verification": "Primarysourcebodyread via gstack browse; caches retained privately."
+    },
+    {
+      "id": "REL02",
+      "title": "Demystifying evals for AI agents",
+      "authors": "Mikaela Grace, Jeremy Hadfield, Rodrigo Olivares, Jiri De Jonghe (Anthropic)",
+      "date": "2026-01-09",
+      "version": "Live engineering article captured 2026-09-28 Asia/Taipei",
+      "url": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+      "cache": {
+        "path": ".context/same-spec-ten-runs/research-rebuild-2026-09-28/sources-reliability/anthropic-demystifying.txt",
+        "sha256": "428bb0105eca50f1368e1582c500cd11389ce1a701457422fd432cd51ab74b1e",
+        "accessed_utc": "2026-09-27T16:44:08.811174+00:00",
+        "capture_note": "gstack browse goto + text; captured page text, including navigation"
+      },
+      "sections": [
+        "Capability vs. regression evals",
+        "Understanding non-determinism in evaluations for agents",
+        "Step2 Write unambiguous tasks with reference solutions",
+        "Step4 Build a robust eval harness with a stable environment",
+        "Step6 Check the transcripts",
+        "Step7 Monitor for capability eval saturation"
+      ],
+      "short_verbatim_anchor": "An eval at 100% tracks regressions but provides no signal for improvement.",
+      "supported_claims": [
+        "Capability evals seek headroom for improvement; near-ceiling tasks can serve as regression assets.",
+        "Fresh trial environments prevent shared state from producing correlated failures or leaked advantages.",
+        "Reference solution and domain-expert agreement help assess whether tasks/graders express the intended requirement.",
+        "Read transcripts and grades together before attributing results to agent capability."
+      ],
+      "numerical_claims": [],
+      "limits": [
+        "Practice report from vendor; no controlled experiment establishes every recommendation.",
+        "A saturated benchmark can catch future regression, but a single 40/40 batch does not establish a population-wide stable baseline."
+      ],
+      "use": "Major rewrite turn: explain what the 40/40 study becomes useful for after it cannot rank A0–C.",
+      "verification": "Primarysourcebodyread via gstack browse; caches retained privately."
+    },
+    {
+      "id": "REL03",
+      "title": "Quantifying infrastructure noise in agentic coding evals",
+      "authors": "Gian Segato (Anthropic)",
+      "date": "2026-02-05",
+      "version": "Live engineering article captured 2026-09-28 Asia/Taipei",
+      "url": "https://www.anthropic.com/engineering/infrastructure-noise",
+      "cache": {
+        "path": ".context/same-spec-ten-runs/research-rebuild-2026-09-28/sources-reliability/infrastructure-noise.txt",
+        "sha256": "63ea8d467a5512cd14355a2b8248e2e7a50393fc2736f039f1800a6d1d1446b0",
+        "accessed_utc": "2026-09-27T16:45:18.792142+00:00",
+        "capture_note": "gstack browse goto + text; captured page text, including navigation"
+      },
+      "sections": [
+        "How we got here",
+        "How this affects measurement",
+        "Other sources of variance",
+        "What we recommend"
+      ],
+      "supported_claims": [
+        "CPU/RAM guarantees and kill thresholds change agentic eval results; the harness/runtime is part of treatment conditions.",
+        "Binomial sampling intervals do not absorb unmodeled infrastructure differences.",
+        "Provider recommends reporting guaranteed allocation plus hard ceiling, calibrated to the benchmark, not universally 3×."
+      ],
+      "numerical_claims": [
+        {
+          "claim": "Terminal-Bench 2.0: six resource settings with the same model, harness, and task set; strict 1× to uncapped improved by 6 percentage points (p < .01).",
+          "denominator": "The article does not publish the task or run count for this experiment. Preserve this limitation if using the number."
+        },
+        {
+          "claim": "SWE-bench crossover: 227 problems with 10 samples each; available RAM increased from 1× to 5×, with a 1.54-percentage-point improvement at 5×.",
+          "denominator": "The article does not state whether the 10 samples are per resource condition. Do not infer a total request count."
+        }
+      ],
+      "limits": [
+        "Vendor internal experiments; no complete open dataset/individual model identity in article.",
+        "Local parser generation has no tool runtime, so this does not prove its observed variation came from RAM. It motivates versioned runtime records for future agent-loop studies."
+      ],
+      "use": "Mechanism for why fixed prompt and model name alone do not define a repeatable treatment.",
+      "verification": "Primarysourcebodyread via gstack browse; caches retained privately."
+    },
+    {
+      "id": "REL04",
+      "title": "Is Your Code Generated by ChatGPT Really Correct? Rigorous Evaluation of Large Language Models for Code Generation",
+      "authors": "Jiawei Liu, Chunqiu Steven Xia, Yuyao Wang, Lingming Zhang",
+      "date": "2023-10-30",
+      "version": "arXiv:2305.01210v3 (v1 2023-05-02)",
+      "url": "https://arxiv.org/html/2305.01210v3",
+      "cache": {
+        "path": ".context/same-spec-ten-runs/research-rebuild-2026-09-28/sources-reliability/evalplus-v3.txt",
+        "sha256": "ec25eb8dd99cb893a0f4c363f4a4eb136a00bc0d67362ba4d5433d8bb1d054d9",
+        "accessed_utc": "2026-09-27T16:45:30.330902+00:00",
+        "capture_note": "gstack browse goto + text; captured page text, including navigation"
+      },
+      "sections": [
+        "§2.1 Automated Test Input Generation",
+        "§2.3 Program Input Contracts",
+        "§3 Setup;Table2;Table3;Evaluation of LLMs"
+      ],
+      "supported_claims": [
+        "More discriminating tests can change correctness verdicts and rankings on the same generated programs; increasing generation repeats cannot repair a blind grader.",
+        "Input contracts exclude invalid/undefined inputs from unfair grading and clarify intended domain.",
+        "Contracts themselves can be incomplete; ground-truth programs also needed review."
+      ],
+      "numerical_claims": [
+        {
+          "claim": "HumanEval has 164 tasks; the study evaluates 26 models and expands the test suite by approximately 80×.",
+          "denominator": "Small Python function synthesis. Most models use 200 samples per task at each temperature (.2, .4, .6, .8), plus greedy decoding. GPT-4 uses greedy decoding only; ChatGPT has limited random sampling. Do not imply identical sampling across all 26 models."
+        },
+        {
+          "claim": "Maximum relative reductions: 19.3% for pass@1, 24.9% for pass@10, 28.9% for pass@100, and 23.1% for greedy pass@1*.",
+          "denominator": "Maxima across evaluated models, not percentage-point changes or average effects. Omit these percentages unless they are needed."
+        }
+      ],
+      "limits": [
+        "Expanded tests improve bug detection but still do not prove universal correctness.",
+        "Localparser R02–R10 deliberately define malformed-input behavior, so invalid JSON shapes cannot be discarded just because EvalPlus filters inputs outside its own contracts."
+      ],
+      "use": "Why test adequacy must be checked before interpreting ten repetitions as reliability; useful contract boundary counterexample.",
+      "verification": "Primarysourcebodyread via gstack browse; caches retained privately."
+    },
+    {
+      "id": "REL05",
+      "title": "AI Agents That Matter",
+      "authors": "Sayash Kapoor, Benedikt Stroebl, Zachary S. Siegel, Nitya Nadgir, Arvind Narayanan",
+      "date": "2024-07-01",
+      "version": "arXiv:2407.01502v1",
+      "url": "https://arxiv.org/html/2407.01502v1",
+      "cache": {
+        "path": ".context/same-spec-ten-runs/research-rebuild-2026-09-28/sources-reliability/agents-that-matter-v1.txt",
+        "sha256": "c10b7d4999ef32c4f48b083bfed2d15c98894cc75fccbf47f5453a14046b2399",
+        "accessed_utc": "2026-09-27T16:45:54.387042+00:00",
+        "capture_note": "gstack browse goto + text; captured page text, including navigation"
+      },
+      "sections": [
+        "§2.2–2.3 accuracy-cost tradeoff",
+        "§4 model-vs-downstream developers",
+        "§5 holdout generality and§5.2 human-in-loop",
+        "§6 evaluation reproducibility",
+        "AppendixG limitations"
+      ],
+      "supported_claims": [
+        "Compare cost and success together; retry strategies can mimic some gains attributed to complex agent architecture.",
+        "Holdout unit must match intended generalization: new task vs new environment vs new domain.",
+        "Human participation is part of the deployed system; autonomous benchmark accuracy alone does not establish practical utility."
+      ],
+      "numerical_claims": [
+        {
+          "claim": "The HumanEval comparison uses 164 problems, with each agent evaluated five times. The simple Retry baseline retries up to five times using the provided example tests.",
+          "denominator": "Five complete benchmark evaluations are distinct from the within-task retry limit. These are 2024 models and costs, not a current model ranking."
+        }
+      ],
+      "limits": [
+        "Paper explicitly says labor, annotation and maintenance costs were not extensively analyzed.",
+        "Do not interpret fixed input cost difference in local40 as causal effect of morewords; these are bundled documentconditions.",
+        "HTML oddly renders an August24,2026 affiliation/date line; citation date anchored to arXivabs submission v1July1,2024, not rendererline."
+      ],
+      "use": "Cost denominator, retry policy, holdout design and maintainability evidence boundary.",
+      "verification": "Primarysourcebodyread via gstack browse; caches retained privately."
+    },
+    {
+      "id": "REL06",
+      "title": "Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity",
+      "authors": "Joel Becker, Nate Rush, Beth Barnes, David Rein (METR)",
+      "date": "2025-07-10",
+      "version": "Historical RCT report; current warning and 2026 follow-up captured.",
+      "url": "https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/",
+      "cache": {
+        "path": ".context/same-spec-ten-runs/research-rebuild-2026-09-28/sources-reliability/metr-rct.txt",
+        "sha256": "03e7bb3183ac1ffda8680a06cffee6d06ee8cc045debe550debc6b48fc1b3747",
+        "accessed_utc": "2026-09-27T16:44:22.760872+00:00",
+        "capture_note": "gstack browse goto + text; captured page text, including navigation"
+      },
+      "sections": [
+        "Methodology",
+        "Core Result",
+        "Discussion comparison table",
+        "FAQ representativeness",
+        "Current update warning at page top"
+      ],
+      "supported_claims": [
+        "Real-repo issue completion measured until a human believed work would pass review, includingstyle/tests/docs; endpoint differs from benchmark tests.",
+        "Implementationtime from humanworkingwithAI is a separate outcome fromagentgenerationelapsedtime."
+      ],
+      "numerical_claims": [
+        {
+          "claim": "16 experienced developers and 246 self-selected real issues, randomized to AI-allowed or AI-disallowed; AI-allowed tasks took 19% longer.",
+          "denominator": "Early 2025, largely Cursor Pro with Claude 3.5/3.7, on contributors’ own familiar large open-source repositories. Issue-level randomization. The source explicitly marks this historical finding as out of date; it is not a current productivity forecast."
+        }
+      ],
+      "limits": [
+        "Not a long-term maintenance study; not review-only time; not current models.",
+        "Do not headline19% slowdown without immediately carrying2026update."
+      ],
+      "use": "Define review-ready end-to-end outcome; historical example of what must actually be measured.",
+      "verification": "Primarysourcebodyread via gstack browse; caches retained privately."
+    },
+    {
+      "id": "REL07",
+      "title": "We are Changing our Developer Productivity Experiment Design",
+      "authors": "Joel Becker, Nate Rush, Tom Cunningham, David Rein, Khalid Mahamud (METR)",
+      "date": "2026-02-24",
+      "version": "Live research update captured 2026-09-28 Asia/Taipei.",
+      "url": "https://metr.org/blog/2026-02-24-uplift-update/",
+      "cache": {
+        "path": ".context/same-spec-ten-runs/research-rebuild-2026-09-28/sources-reliability/metr-uplift-update.txt",
+        "sha256": "6693b9a33b9384c61fccacc66466d1643c9de12ac7c6abae350ad41f3155b4a8",
+        "accessed_utc": "2026-09-27T16:44:47.388638+00:00",
+        "capture_note": "gstack browse goto + text; captured page text, including navigation"
+      },
+      "sections": [
+        "Opening interpretation",
+        "Wider adoption of AI has made it more difficult to measure task-level productivity",
+        "Other means of measuring productivity",
+        "Details of the productivity study"
+      ],
+      "supported_claims": [
+        "The investigators consider the update unreliable for estimating the current productivity effect because developer selection, task selection, and attribution of time during concurrent work changed.",
+        "Participants may omit tasks they expect AI to help with before randomization. Randomization after selection does not repair representativeness.",
+        "Concurrent agent work makes elapsed time and active human work distinct measurements."
+      ],
+      "numerical_claims": [
+        {
+          "claim": "57 developers: 10 returning and 47 new, across 143 repositories and more than 800 tasks.",
+          "denominator": "Recruitment pay changed from USD 150/hour to USD 50/hour. Tasks were randomized to AI-allowed or AI-disallowed. This is not an unbiased sample of all developers or tasks."
+        },
+        {
+          "claim": "Returning participants: estimate −18%, confidence interval −38% to +9%; new participants: estimate −4%, confidence interval −15% to +9%.",
+          "denominator": "The authors describe the estimates as very weak evidence for effect size because of selection. Do not present them as evidence of no speedup or as a current 4% speedup."
+        }
+      ],
+      "limits": [
+        "Observationofselectionandmethodchange;notnewunbiasedproductivityeffect.",
+        "The update does not establish long-term maintainability outcomes."
+      ],
+      "use": "Strong why-inconclusive-is-a-decision story; what to record when agentparallelism changes measurement.",
+      "verification": "Primarysourcebodyread via gstack browse; caches retained privately."
+    },
+    {
+      "id": "REL08",
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods — 5.3.3.2 Randomized block designs",
+      "authors": "NIST/SEMATECH",
+      "date": null,
+      "version": "Undated live handbook section captured 2026-09-28 Asia/Taipei.",
+      "url": "https://www.itl.nist.gov/div898/handbook/pri/section3/pri332.htm",
+      "cache": {
+        "path": ".context/same-spec-ten-runs/research-rebuild-2026-09-28/sources-reliability/nist-blocking.txt",
+        "sha256": "baa564d81ebab37a52d9b3783bb9d6eb5beb8563e2aa1ff8dc439e51a851c9d8",
+        "accessed_utc": "2026-09-27T16:46:04.626129+00:00",
+        "capture_note": "gstack browse goto + text; captured page text, including navigation"
+      },
+      "sections": [
+        "Blocking used for nuisance factors that can be controlled",
+        "Definition of blocking factors",
+        "Block for a few of the most important nuisance factors"
+      ],
+      "supported_claims": [
+        "Block important known nuisance factors; randomize the remaining factors.",
+        "Compare treatment levels within homogeneous blocks, retaining block information for analysis."
+      ],
+      "numerical_claims": [],
+      "limits": [
+        "General design-of-experiments guidance, not a ready-made statistical analysis for binary agent outcomes.",
+        "The existing overlapping schedule blocks are not synchronized windows; the control afforded by a new design cannot be retroactively claimed."
+      ],
+      "use": "Turn vague advice to fix conditions into explicit blocking by day, runtime, and task stratum.",
+      "verification": "Primarysourcebodyread via gstack browse; caches retained privately."
+    }
+  ],
+  "excluded_access_attempts": [
+    {
+      "url": "https://arxiv.org/html/2406.12045v3",
+      "reason": "404; actualpaperonlyv1; replacedwithv1PDF."
+    },
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5502906/",
+      "reason": "Cookieinterstitial; bodyunverified; notused."
+    },
+    {
+      "url": "Google/DuckDuckGo search",
+      "reason": "botchallenges; not usedas evidence."
+    }
+  ],
+  "public_copy_note": "Source bodies and PDFs remain private. Cache paths are repository-root-relative provenance references, not public attachments."
+}

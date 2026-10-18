@@ -1,0 +1,1650 @@
+{
+  "backend": "Agg",
+  "checked_campaign_files": {
+    "formal-01-A/candidate/codex_jsonl.py": "41235617b7df427f0fa5e77e4b8252527c1b2ea38fa9b174c73419b0a47f590c",
+    "formal-01-A0/candidate/codex_jsonl.py": "7cc9bf5a24969310f18a50aad43ac26d4a59066321b2256ec03806da076dd2b2",
+    "formal-01-B/candidate/codex_jsonl.py": "cc1dc64285ae6af140f9005eba45c5590a1d2d93186be2bac5e74206057f4843",
+    "formal-01-C/candidate/codex_jsonl.py": "de84a7df070260e1e0b409470d9629e35e806a0a436a7da7d6d7a838edbc1d70",
+    "formal-02-A/candidate/codex_jsonl.py": "9da37909b221f0572498eb96b415c1633ecfd9f94e2054e228f62ce9931a6018",
+    "formal-02-A0/candidate/codex_jsonl.py": "f2a65e9e26aaa195ab1c0b8caf2c1920cb4e3d2ee3ad2abf30d1620a78008a57",
+    "formal-02-B/candidate/codex_jsonl.py": "5689f691c490c47bf459b6381a5dcbbc83c1d74a619bd6e4efaeb35eae0c0874",
+    "formal-02-C/candidate/codex_jsonl.py": "36c878a80843f977860adc0edf5829d3d5dcef07b3aa5902191df4a01b28d375",
+    "formal-03-A/candidate/codex_jsonl.py": "4c17e07c544ba59b38602400b736170d7acb2b1a2d8973e1b1b48d8e81f3a646",
+    "formal-03-A0/candidate/codex_jsonl.py": "391d8affc322dbb71051aaed94e52cd8ee9657651f9a6554941a3aa1d143b023",
+    "formal-03-B/candidate/codex_jsonl.py": "e0e2fb09d629a7b3972bba662ef9e2550a430e45200b00833e2f1a199c8bbf51",
+    "formal-03-C/candidate/codex_jsonl.py": "af38a27c173661ad528755d68dc5906d10d1e65b0de73bf4a8f88c8f4f1ba941",
+    "formal-04-A/candidate/codex_jsonl.py": "7153d56699b5c81ad8e254adb2427ddf9ae68bc3e625159b11ccc5211e63fe9c",
+    "formal-04-A0/candidate/codex_jsonl.py": "e188594d0b26b491be27e672946c6f1e1b16d92d92fb58e3cda26e10637c7123",
+    "formal-04-B/candidate/codex_jsonl.py": "215c1922b09361e6732650febe2de091c3582d01620506d0eacf166578fb0da4",
+    "formal-04-C/candidate/codex_jsonl.py": "bb96cc3a0105b5807f5af7da9a29e4f960ddec5690d44e5b5e5f40cabfe0e949",
+    "formal-05-A/candidate/codex_jsonl.py": "f97d0840a5c97095dbe726f90c35ce7024ef0dfeffebf3c79631452ca7adcaf7",
+    "formal-05-A0/candidate/codex_jsonl.py": "7fac6145accb3733cfc998d50219ee1c762cd43f03423943504093746857f141",
+    "formal-05-B/candidate/codex_jsonl.py": "1b513e2c0027c8a5cf6a770f8450c19a938faaee7131312251f31beb8d37b149",
+    "formal-05-C/candidate/codex_jsonl.py": "5fe42c8314179153ef344e34ff87d1136d2f619b02d77c292af76a03c867489b",
+    "formal-06-A/candidate/codex_jsonl.py": "19025db8d27d4a4243243dd11a413b8bf134a7ac73a07276b6854cf8def39220",
+    "formal-06-A0/candidate/codex_jsonl.py": "4d3efb172479139d70f5fbd712633fc1e67fdce3b56b753be71743df0f4bc545",
+    "formal-06-B/candidate/codex_jsonl.py": "ba1ea3f39081e9f3e0e411a8a1488d3d38f8a9bef509934a8dd61f1d7794f840",
+    "formal-06-C/candidate/codex_jsonl.py": "e73c0afa9235b7a41883144bb8ad39fa80b6f46baf4493fa248838eacd2ec10e",
+    "formal-07-A/candidate/codex_jsonl.py": "d56cfcb9277a84ddb3fc67560f705248423d9078be8187a3715e224539699202",
+    "formal-07-A0/candidate/codex_jsonl.py": "80bcb1abdc3dacfafd56536af1c2e064adb7df332480918d4b0aa3af7b1e65d6",
+    "formal-07-B/candidate/codex_jsonl.py": "c2a117a9f0f8b49ea812cb0a468923b385c346cb882df773c27e9b8f95ee824b",
+    "formal-07-C/candidate/codex_jsonl.py": "41b7234d59c7b3400a43dee932ec5289c8597716bd1b2f58dbcb2a6a2f8d1015",
+    "formal-08-A/candidate/codex_jsonl.py": "cc87a5c264fa0df1f20f23928b0084cabcadee6f553ef6f0cd4b3d257e46b7bc",
+    "formal-08-A0/candidate/codex_jsonl.py": "e8d3932e9f4366ea1b979f3626232c69437eda95f512788fb7cbd07ffed80cc4",
+    "formal-08-B/candidate/codex_jsonl.py": "79dba03564b8cef306ef937b91e7f9404e7e4b021074be5d641f4dab31bbf456",
+    "formal-08-C/candidate/codex_jsonl.py": "7bf94369b54670ac1d58bbaf056021c7f60c389a260eb236c5191404488a6c2d",
+    "formal-09-A/candidate/codex_jsonl.py": "387205b2ae6b3e1c9c82904deb1f7678d8e3f0a1f483c5bb1dc5aff0ddca6a15",
+    "formal-09-A0/candidate/codex_jsonl.py": "8669318368597537bbba6ee6389ed8fe1a7aec0787eebf32165fac811ed374be",
+    "formal-09-B/candidate/codex_jsonl.py": "d1a634ca0fae86d63412cac3d7bf22d84db5fb285868244416e7d22336dfd143",
+    "formal-09-C/candidate/codex_jsonl.py": "47c52b711a6a5d1374d9ac09b7474d5dfe5832568b8a4183eeeab5d8ea447573",
+    "formal-10-A/candidate/codex_jsonl.py": "bde6f2d1a4531e5e65d579fdda0caef9e551081f3c7f35353acc6831220b35fa",
+    "formal-10-A0/candidate/codex_jsonl.py": "20051aa450cfd11e1d5bbcf2d824b8520cdd8db97e83bf926d205033f96fb315",
+    "formal-10-B/candidate/codex_jsonl.py": "2c4a095da66197e9ce62ab2ceb3525c07cadea54af0bc173983ae787b59c2f5a",
+    "formal-10-C/candidate/codex_jsonl.py": "36e00893efa6e0433df746558904f5fe23124025c939b4e4dfcc2f55d5d4e0ca",
+    "manifest.json": "ba30398118ecde62b2f682884c1e882b2864c22d70faf99549ceab0d7c0a55f2",
+    "manifest.sha256": "15264bbbb7d950357bc2e101e34bec74fe7b4d7b694960031c26ad4ba3d71987",
+    "records.jsonl": "2be5ed458de2e2defa2ab4f24d88f25bdd3b7340c9207915ab6aa0988c0db7f0",
+    "source/analyze.py": "c5df73abb76fb4b36bfb63325524419f80ad1b4c7755f2036d8291ca086cb585",
+    "source/render_results.py": "ea3c6aa0377d5bd269b49addb56af2ba6860b8b3d309d1fbb83a85ebd46e2608",
+    "source/requirements-figures.txt": "9d97c2b08302ac89509ef79011e3c49429307c72ba0474eea998bfd9409ce43c",
+    "source/seed/codex_jsonl.py": "4949ff55184cbfd3cbd0c8add632a6382ec4b5e6ec2240ca88018443370e6afb",
+    "summary.json": "8198a4478b8158268298960576655d920db3b8d2dc2bd207348dcef8a346dfb9"
+  },
+  "dependencies": {
+    "contourpy": "1.4.0",
+    "cycler": "0.12.1",
+    "fonttools": "4.66.0",
+    "kiwisolver": "1.5.1",
+    "matplotlib": "3.11.2",
+    "numpy": "2.5.3",
+    "packaging": "26.3",
+    "pillow": "12.3.0",
+    "pyparsing": "3.3.3",
+    "python-dateutil": "2.9.0.post0",
+    "six": "1.17.0"
+  },
+  "figure_inches": [
+    9.6,
+    9.1
+  ],
+  "font": {
+    "family": "DejaVu Sans",
+    "sha256": "3fdf69cabf06049ea70a00b5919340e2ce1e6d02b0cc3c4b44fb6801bd1e0d22"
+  },
+  "freetype_version": "2.14.3",
+  "inclusion": "All hash-verified nonempty parseable artifacts; accepted status is not a filter",
+  "metric": "python-ast-node-type-multiset-cosine-v1",
+  "outputs": {
+    "png": {
+      "filename": "F2.png",
+      "sha256": "474f4ae875dcababaf7ffcddf501b2b7c49fa5d9ed0e80a4ac9a57a98f9084fb"
+    },
+    "svg": {
+      "filename": "F2.svg",
+      "sha256": "3a8b1706b4a56fb74c48544e3554ac79bce4775e35ef4f0aa82a749d2ba2311f"
+    }
+  },
+  "phase": "formal",
+  "platform": "darwin",
+  "plot_data": {
+    "arm_counts": {
+      "A": {
+        "observed_pairs": 45,
+        "parsed_artifacts": 10,
+        "planned_artifacts": 10,
+        "possible_pairs": 45,
+        "seed_missing": 0,
+        "seed_observed": 10
+      },
+      "A0": {
+        "observed_pairs": 45,
+        "parsed_artifacts": 10,
+        "planned_artifacts": 10,
+        "possible_pairs": 45,
+        "seed_missing": 0,
+        "seed_observed": 10
+      },
+      "B": {
+        "observed_pairs": 45,
+        "parsed_artifacts": 10,
+        "planned_artifacts": 10,
+        "possible_pairs": 45,
+        "seed_missing": 0,
+        "seed_observed": 10
+      },
+      "C": {
+        "observed_pairs": 45,
+        "parsed_artifacts": 10,
+        "planned_artifacts": 10,
+        "possible_pairs": 45,
+        "seed_missing": 0,
+        "seed_observed": 10
+      }
+    },
+    "missing_seed_values": [],
+    "pair_points": [
+      {
+        "arm": "A0",
+        "cosine": 0.9939804370606344,
+        "left": "formal-01-A0",
+        "right": "formal-02-A0",
+        "y": 2.75
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9954326078828022,
+        "left": "formal-01-A0",
+        "right": "formal-03-A0",
+        "y": 2.7613636363636362
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9968545854105689,
+        "left": "formal-01-A0",
+        "right": "formal-04-A0",
+        "y": 2.772727272727273
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9947224882099858,
+        "left": "formal-01-A0",
+        "right": "formal-05-A0",
+        "y": 2.784090909090909
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9926531832538109,
+        "left": "formal-01-A0",
+        "right": "formal-06-A0",
+        "y": 2.7954545454545454
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9954081458368321,
+        "left": "formal-01-A0",
+        "right": "formal-07-A0",
+        "y": 2.8068181818181817
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.998213420185101,
+        "left": "formal-01-A0",
+        "right": "formal-08-A0",
+        "y": 2.8181818181818183
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9975420115990852,
+        "left": "formal-01-A0",
+        "right": "formal-09-A0",
+        "y": 2.8295454545454546
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.994413494026063,
+        "left": "formal-01-A0",
+        "right": "formal-10-A0",
+        "y": 2.840909090909091
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.997060791430467,
+        "left": "formal-02-A0",
+        "right": "formal-03-A0",
+        "y": 2.8522727272727275
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9963907701388763,
+        "left": "formal-02-A0",
+        "right": "formal-04-A0",
+        "y": 2.8636363636363638
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9837812577286158,
+        "left": "formal-02-A0",
+        "right": "formal-05-A0",
+        "y": 2.875
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9964133722260607,
+        "left": "formal-02-A0",
+        "right": "formal-06-A0",
+        "y": 2.8863636363636362
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9912493669191452,
+        "left": "formal-02-A0",
+        "right": "formal-07-A0",
+        "y": 2.897727272727273
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9955916765138733,
+        "left": "formal-02-A0",
+        "right": "formal-08-A0",
+        "y": 2.909090909090909
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9917603593009071,
+        "left": "formal-02-A0",
+        "right": "formal-09-A0",
+        "y": 2.9204545454545454
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9868167609971641,
+        "left": "formal-02-A0",
+        "right": "formal-10-A0",
+        "y": 2.9318181818181817
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9965620227180476,
+        "left": "formal-03-A0",
+        "right": "formal-04-A0",
+        "y": 2.9431818181818183
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9914150779101547,
+        "left": "formal-03-A0",
+        "right": "formal-05-A0",
+        "y": 2.9545454545454546
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9961497854223359,
+        "left": "formal-03-A0",
+        "right": "formal-06-A0",
+        "y": 2.965909090909091
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9951392544714588,
+        "left": "formal-03-A0",
+        "right": "formal-07-A0",
+        "y": 2.977272727272727
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9951890115872866,
+        "left": "formal-03-A0",
+        "right": "formal-08-A0",
+        "y": 2.9886363636363638
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9947095029518737,
+        "left": "formal-03-A0",
+        "right": "formal-09-A0",
+        "y": 3.0
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9922458681722941,
+        "left": "formal-03-A0",
+        "right": "formal-10-A0",
+        "y": 3.0113636363636362
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9912779245405875,
+        "left": "formal-04-A0",
+        "right": "formal-05-A0",
+        "y": 3.0227272727272725
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9931045164871077,
+        "left": "formal-04-A0",
+        "right": "formal-06-A0",
+        "y": 3.034090909090909
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.995856022725755,
+        "left": "formal-04-A0",
+        "right": "formal-07-A0",
+        "y": 3.0454545454545454
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9981803892112417,
+        "left": "formal-04-A0",
+        "right": "formal-08-A0",
+        "y": 3.0568181818181817
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9945526303243418,
+        "left": "formal-04-A0",
+        "right": "formal-09-A0",
+        "y": 3.0681818181818183
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9925392223733626,
+        "left": "formal-04-A0",
+        "right": "formal-10-A0",
+        "y": 3.0795454545454546
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.984465291619165,
+        "left": "formal-05-A0",
+        "right": "formal-06-A0",
+        "y": 3.090909090909091
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.994440562440185,
+        "left": "formal-05-A0",
+        "right": "formal-07-A0",
+        "y": 3.1022727272727275
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9928233252658563,
+        "left": "formal-05-A0",
+        "right": "formal-08-A0",
+        "y": 3.1136363636363638
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9960239803148836,
+        "left": "formal-05-A0",
+        "right": "formal-09-A0",
+        "y": 3.125
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9969148657421627,
+        "left": "formal-05-A0",
+        "right": "formal-10-A0",
+        "y": 3.1363636363636362
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9931748369720373,
+        "left": "formal-06-A0",
+        "right": "formal-07-A0",
+        "y": 3.1477272727272725
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9917306816873954,
+        "left": "formal-06-A0",
+        "right": "formal-08-A0",
+        "y": 3.159090909090909
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.98967975227877,
+        "left": "formal-06-A0",
+        "right": "formal-09-A0",
+        "y": 3.1704545454545454
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.983118989574078,
+        "left": "formal-06-A0",
+        "right": "formal-10-A0",
+        "y": 3.1818181818181817
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9948575996419691,
+        "left": "formal-07-A0",
+        "right": "formal-08-A0",
+        "y": 3.1931818181818183
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9932529234326187,
+        "left": "formal-07-A0",
+        "right": "formal-09-A0",
+        "y": 3.2045454545454546
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9927438220529623,
+        "left": "formal-07-A0",
+        "right": "formal-10-A0",
+        "y": 3.215909090909091
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9971942996186233,
+        "left": "formal-08-A0",
+        "right": "formal-09-A0",
+        "y": 3.2272727272727275
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9950712566997162,
+        "left": "formal-08-A0",
+        "right": "formal-10-A0",
+        "y": 3.2386363636363638
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9972992945587227,
+        "left": "formal-09-A0",
+        "right": "formal-10-A0",
+        "y": 3.25
+      },
+      {
+        "arm": "A",
+        "cosine": 0.997037240960184,
+        "left": "formal-01-A",
+        "right": "formal-02-A",
+        "y": 1.75
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9965005360552678,
+        "left": "formal-01-A",
+        "right": "formal-03-A",
+        "y": 1.7613636363636362
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9949310291314825,
+        "left": "formal-01-A",
+        "right": "formal-04-A",
+        "y": 1.7727272727272727
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9988435319493445,
+        "left": "formal-01-A",
+        "right": "formal-05-A",
+        "y": 1.7840909090909092
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9977893765959764,
+        "left": "formal-01-A",
+        "right": "formal-06-A",
+        "y": 1.7954545454545454
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9973778767650002,
+        "left": "formal-01-A",
+        "right": "formal-07-A",
+        "y": 1.8068181818181819
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9981880382060345,
+        "left": "formal-01-A",
+        "right": "formal-08-A",
+        "y": 1.8181818181818181
+      },
+      {
+        "arm": "A",
+        "cosine": 0.995882425476571,
+        "left": "formal-01-A",
+        "right": "formal-09-A",
+        "y": 1.8295454545454546
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9986458053092239,
+        "left": "formal-01-A",
+        "right": "formal-10-A",
+        "y": 1.8409090909090908
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9975022444375882,
+        "left": "formal-02-A",
+        "right": "formal-03-A",
+        "y": 1.8522727272727273
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9969297218457666,
+        "left": "formal-02-A",
+        "right": "formal-04-A",
+        "y": 1.8636363636363638
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9974642840417426,
+        "left": "formal-02-A",
+        "right": "formal-05-A",
+        "y": 1.875
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9971465846633706,
+        "left": "formal-02-A",
+        "right": "formal-06-A",
+        "y": 1.8863636363636362
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9980483528876022,
+        "left": "formal-02-A",
+        "right": "formal-07-A",
+        "y": 1.8977272727272727
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9972331795327193,
+        "left": "formal-02-A",
+        "right": "formal-08-A",
+        "y": 1.9090909090909092
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9972319442914028,
+        "left": "formal-02-A",
+        "right": "formal-09-A",
+        "y": 1.9204545454545454
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9961722931004571,
+        "left": "formal-02-A",
+        "right": "formal-10-A",
+        "y": 1.9318181818181819
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9912810196628649,
+        "left": "formal-03-A",
+        "right": "formal-04-A",
+        "y": 1.9431818181818181
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9965121135263103,
+        "left": "formal-03-A",
+        "right": "formal-05-A",
+        "y": 1.9545454545454546
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9930695386169103,
+        "left": "formal-03-A",
+        "right": "formal-06-A",
+        "y": 1.9659090909090908
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9953256712034801,
+        "left": "formal-03-A",
+        "right": "formal-07-A",
+        "y": 1.9772727272727273
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9955540736118959,
+        "left": "formal-03-A",
+        "right": "formal-08-A",
+        "y": 1.9886363636363638
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9939004409943353,
+        "left": "formal-03-A",
+        "right": "formal-09-A",
+        "y": 2.0
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9951335593181003,
+        "left": "formal-03-A",
+        "right": "formal-10-A",
+        "y": 2.0113636363636362
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9961569216178678,
+        "left": "formal-04-A",
+        "right": "formal-05-A",
+        "y": 2.0227272727272725
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9977515435940133,
+        "left": "formal-04-A",
+        "right": "formal-06-A",
+        "y": 2.034090909090909
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9984711101996583,
+        "left": "formal-04-A",
+        "right": "formal-07-A",
+        "y": 2.0454545454545454
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9969307085841058,
+        "left": "formal-04-A",
+        "right": "formal-08-A",
+        "y": 2.0568181818181817
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9963778577966166,
+        "left": "formal-04-A",
+        "right": "formal-09-A",
+        "y": 2.0681818181818183
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9937881296555493,
+        "left": "formal-04-A",
+        "right": "formal-10-A",
+        "y": 2.0795454545454546
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9979928303141302,
+        "left": "formal-05-A",
+        "right": "formal-06-A",
+        "y": 2.090909090909091
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9987799355558306,
+        "left": "formal-05-A",
+        "right": "formal-07-A",
+        "y": 2.1022727272727275
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9996001761342895,
+        "left": "formal-05-A",
+        "right": "formal-08-A",
+        "y": 2.1136363636363638
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9961437569239344,
+        "left": "formal-05-A",
+        "right": "formal-09-A",
+        "y": 2.125
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9972501820024458,
+        "left": "formal-05-A",
+        "right": "formal-10-A",
+        "y": 2.1363636363636362
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9975181595439494,
+        "left": "formal-06-A",
+        "right": "formal-07-A",
+        "y": 2.1477272727272725
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9980439236667196,
+        "left": "formal-06-A",
+        "right": "formal-08-A",
+        "y": 2.159090909090909
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9961992422848002,
+        "left": "formal-06-A",
+        "right": "formal-09-A",
+        "y": 2.1704545454545454
+      },
+      {
+        "arm": "A",
+        "cosine": 0.997399976862729,
+        "left": "formal-06-A",
+        "right": "formal-10-A",
+        "y": 2.1818181818181817
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9990305112237539,
+        "left": "formal-07-A",
+        "right": "formal-08-A",
+        "y": 2.1931818181818183
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9969749521232057,
+        "left": "formal-07-A",
+        "right": "formal-09-A",
+        "y": 2.2045454545454546
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9961449843785832,
+        "left": "formal-07-A",
+        "right": "formal-10-A",
+        "y": 2.215909090909091
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9957830364863389,
+        "left": "formal-08-A",
+        "right": "formal-09-A",
+        "y": 2.2272727272727275
+      },
+      {
+        "arm": "A",
+        "cosine": 0.996931943692004,
+        "left": "formal-08-A",
+        "right": "formal-10-A",
+        "y": 2.2386363636363638
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9962581017384481,
+        "left": "formal-09-A",
+        "right": "formal-10-A",
+        "y": 2.25
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9950471834020317,
+        "left": "formal-01-B",
+        "right": "formal-02-B",
+        "y": 0.75
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9943405887185679,
+        "left": "formal-01-B",
+        "right": "formal-03-B",
+        "y": 0.7613636363636364
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9977281252439474,
+        "left": "formal-01-B",
+        "right": "formal-04-B",
+        "y": 0.7727272727272727
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9969009560874801,
+        "left": "formal-01-B",
+        "right": "formal-05-B",
+        "y": 0.7840909090909091
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9990241130617475,
+        "left": "formal-01-B",
+        "right": "formal-06-B",
+        "y": 0.7954545454545454
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9975205705166432,
+        "left": "formal-01-B",
+        "right": "formal-07-B",
+        "y": 0.8068181818181819
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9981287534812546,
+        "left": "formal-01-B",
+        "right": "formal-08-B",
+        "y": 0.8181818181818181
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9983222601659093,
+        "left": "formal-01-B",
+        "right": "formal-09-B",
+        "y": 0.8295454545454546
+      },
+      {
+        "arm": "B",
+        "cosine": 0.998266408307532,
+        "left": "formal-01-B",
+        "right": "formal-10-B",
+        "y": 0.8409090909090909
+      },
+      {
+        "arm": "B",
+        "cosine": 0.998689079912459,
+        "left": "formal-02-B",
+        "right": "formal-03-B",
+        "y": 0.8522727272727273
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9974401258735307,
+        "left": "formal-02-B",
+        "right": "formal-04-B",
+        "y": 0.8636363636363636
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9959541060579377,
+        "left": "formal-02-B",
+        "right": "formal-05-B",
+        "y": 0.875
+      },
+      {
+        "arm": "B",
+        "cosine": 0.995771268772756,
+        "left": "formal-02-B",
+        "right": "formal-06-B",
+        "y": 0.8863636363636364
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9949681591514833,
+        "left": "formal-02-B",
+        "right": "formal-07-B",
+        "y": 0.8977272727272727
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9959204691872425,
+        "left": "formal-02-B",
+        "right": "formal-08-B",
+        "y": 0.9090909090909091
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9970277817911437,
+        "left": "formal-02-B",
+        "right": "formal-09-B",
+        "y": 0.9204545454545454
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9968161779497132,
+        "left": "formal-02-B",
+        "right": "formal-10-B",
+        "y": 0.9318181818181819
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9971629050794959,
+        "left": "formal-03-B",
+        "right": "formal-04-B",
+        "y": 0.9431818181818181
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9962300495629207,
+        "left": "formal-03-B",
+        "right": "formal-05-B",
+        "y": 0.9545454545454546
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9942763947707763,
+        "left": "formal-03-B",
+        "right": "formal-06-B",
+        "y": 0.9659090909090909
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9945181671064889,
+        "left": "formal-03-B",
+        "right": "formal-07-B",
+        "y": 0.9772727272727273
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9936980338638068,
+        "left": "formal-03-B",
+        "right": "formal-08-B",
+        "y": 0.9886363636363636
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9971807257973142,
+        "left": "formal-03-B",
+        "right": "formal-09-B",
+        "y": 1.0
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9966528562700914,
+        "left": "formal-03-B",
+        "right": "formal-10-B",
+        "y": 1.0113636363636362
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9989545065981762,
+        "left": "formal-04-B",
+        "right": "formal-05-B",
+        "y": 1.0227272727272727
+      },
+      {
+        "arm": "B",
+        "cosine": 0.998119856628905,
+        "left": "formal-04-B",
+        "right": "formal-06-B",
+        "y": 1.0340909090909092
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9970258163231085,
+        "left": "formal-04-B",
+        "right": "formal-07-B",
+        "y": 1.0454545454545454
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9983550974460663,
+        "left": "formal-04-B",
+        "right": "formal-08-B",
+        "y": 1.0568181818181819
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9992223015493009,
+        "left": "formal-04-B",
+        "right": "formal-09-B",
+        "y": 1.0681818181818181
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9997084722123473,
+        "left": "formal-04-B",
+        "right": "formal-10-B",
+        "y": 1.0795454545454546
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9975090685354608,
+        "left": "formal-05-B",
+        "right": "formal-06-B",
+        "y": 1.0909090909090908
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9981364162738168,
+        "left": "formal-05-B",
+        "right": "formal-07-B",
+        "y": 1.1022727272727273
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9975575480934711,
+        "left": "formal-05-B",
+        "right": "formal-08-B",
+        "y": 1.1136363636363638
+      },
+      {
+        "arm": "B",
+        "cosine": 0.998215682688439,
+        "left": "formal-05-B",
+        "right": "formal-09-B",
+        "y": 1.125
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9985602175328704,
+        "left": "formal-05-B",
+        "right": "formal-10-B",
+        "y": 1.1363636363636362
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9974110555071742,
+        "left": "formal-06-B",
+        "right": "formal-07-B",
+        "y": 1.1477272727272727
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9988414217498038,
+        "left": "formal-06-B",
+        "right": "formal-08-B",
+        "y": 1.1590909090909092
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9982954068604404,
+        "left": "formal-06-B",
+        "right": "formal-09-B",
+        "y": 1.1704545454545454
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9985530536158933,
+        "left": "formal-06-B",
+        "right": "formal-10-B",
+        "y": 1.1818181818181819
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9966517692656618,
+        "left": "formal-07-B",
+        "right": "formal-08-B",
+        "y": 1.1931818181818181
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9965575546539424,
+        "left": "formal-07-B",
+        "right": "formal-09-B",
+        "y": 1.2045454545454546
+      },
+      {
+        "arm": "B",
+        "cosine": 0.99670566327238,
+        "left": "formal-07-B",
+        "right": "formal-10-B",
+        "y": 1.2159090909090908
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9977654666936093,
+        "left": "formal-08-B",
+        "right": "formal-09-B",
+        "y": 1.2272727272727273
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9982738403086965,
+        "left": "formal-08-B",
+        "right": "formal-10-B",
+        "y": 1.2386363636363638
+      },
+      {
+        "arm": "B",
+        "cosine": 0.999440740882127,
+        "left": "formal-09-B",
+        "right": "formal-10-B",
+        "y": 1.25
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9989538990828334,
+        "left": "formal-01-C",
+        "right": "formal-02-C",
+        "y": -0.25
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9980687249144075,
+        "left": "formal-01-C",
+        "right": "formal-03-C",
+        "y": -0.23863636363636365
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9955168078607782,
+        "left": "formal-01-C",
+        "right": "formal-04-C",
+        "y": -0.22727272727272727
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9984376153323938,
+        "left": "formal-01-C",
+        "right": "formal-05-C",
+        "y": -0.2159090909090909
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9962727600529693,
+        "left": "formal-01-C",
+        "right": "formal-06-C",
+        "y": -0.20454545454545453
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9936494754189068,
+        "left": "formal-01-C",
+        "right": "formal-07-C",
+        "y": -0.19318181818181818
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9962197159321188,
+        "left": "formal-01-C",
+        "right": "formal-08-C",
+        "y": -0.18181818181818182
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9981447344819846,
+        "left": "formal-01-C",
+        "right": "formal-09-C",
+        "y": -0.17045454545454547
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9986903336764547,
+        "left": "formal-01-C",
+        "right": "formal-10-C",
+        "y": -0.1590909090909091
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9990318686609286,
+        "left": "formal-02-C",
+        "right": "formal-03-C",
+        "y": -0.1477272727272727
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9957613423735916,
+        "left": "formal-02-C",
+        "right": "formal-04-C",
+        "y": -0.13636363636363635
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9975912960364612,
+        "left": "formal-02-C",
+        "right": "formal-05-C",
+        "y": -0.125
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9974221554925166,
+        "left": "formal-02-C",
+        "right": "formal-06-C",
+        "y": -0.11363636363636365
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9936887905495894,
+        "left": "formal-02-C",
+        "right": "formal-07-C",
+        "y": -0.10227272727272727
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9953757019500891,
+        "left": "formal-02-C",
+        "right": "formal-08-C",
+        "y": -0.09090909090909091
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9982437735767838,
+        "left": "formal-02-C",
+        "right": "formal-09-C",
+        "y": -0.07954545454545456
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9996635137178821,
+        "left": "formal-02-C",
+        "right": "formal-10-C",
+        "y": -0.06818181818181818
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9955649528833684,
+        "left": "formal-03-C",
+        "right": "formal-04-C",
+        "y": -0.05681818181818182
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9965807362203882,
+        "left": "formal-03-C",
+        "right": "formal-05-C",
+        "y": -0.04545454545454544
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9975594936010796,
+        "left": "formal-03-C",
+        "right": "formal-06-C",
+        "y": -0.03409090909090909
+      },
+      {
+        "arm": "C",
+        "cosine": 0.99308695664398,
+        "left": "formal-03-C",
+        "right": "formal-07-C",
+        "y": -0.022727272727272735
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9943655213791114,
+        "left": "formal-03-C",
+        "right": "formal-08-C",
+        "y": -0.011363636363636354
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9989843783317963,
+        "left": "formal-03-C",
+        "right": "formal-09-C",
+        "y": 0.0
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9988543579936616,
+        "left": "formal-03-C",
+        "right": "formal-10-C",
+        "y": 0.011363636363636354
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9973064143909127,
+        "left": "formal-04-C",
+        "right": "formal-05-C",
+        "y": 0.022727272727272707
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9962226590761308,
+        "left": "formal-04-C",
+        "right": "formal-06-C",
+        "y": 0.034090909090909116
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9984593840009987,
+        "left": "formal-04-C",
+        "right": "formal-07-C",
+        "y": 0.04545454545454547
+      },
+      {
+        "arm": "C",
+        "cosine": 0.994638352729097,
+        "left": "formal-04-C",
+        "right": "formal-08-C",
+        "y": 0.05681818181818182
+      },
+      {
+        "arm": "C",
+        "cosine": 0.99638606473372,
+        "left": "formal-04-C",
+        "right": "formal-09-C",
+        "y": 0.06818181818181818
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9959027012368017,
+        "left": "formal-04-C",
+        "right": "formal-10-C",
+        "y": 0.07954545454545453
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9972236304385331,
+        "left": "formal-05-C",
+        "right": "formal-06-C",
+        "y": 0.09090909090909088
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9956504993376594,
+        "left": "formal-05-C",
+        "right": "formal-07-C",
+        "y": 0.10227272727272729
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9979693139502832,
+        "left": "formal-05-C",
+        "right": "formal-08-C",
+        "y": 0.11363636363636365
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9975291863710564,
+        "left": "formal-05-C",
+        "right": "formal-09-C",
+        "y": 0.125
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9974953117454373,
+        "left": "formal-05-C",
+        "right": "formal-10-C",
+        "y": 0.13636363636363635
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9939109863100797,
+        "left": "formal-06-C",
+        "right": "formal-07-C",
+        "y": 0.1477272727272727
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9952021290104555,
+        "left": "formal-06-C",
+        "right": "formal-08-C",
+        "y": 0.15909090909090912
+      },
+      {
+        "arm": "C",
+        "cosine": 0.996476611810487,
+        "left": "formal-06-C",
+        "right": "formal-09-C",
+        "y": 0.17045454545454547
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9971186629138622,
+        "left": "formal-06-C",
+        "right": "formal-10-C",
+        "y": 0.18181818181818182
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9903201755726883,
+        "left": "formal-07-C",
+        "right": "formal-08-C",
+        "y": 0.19318181818181818
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9946565816394807,
+        "left": "formal-07-C",
+        "right": "formal-09-C",
+        "y": 0.20454545454545453
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9936897057314988,
+        "left": "formal-07-C",
+        "right": "formal-10-C",
+        "y": 0.21590909090909088
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9944509766589787,
+        "left": "formal-08-C",
+        "right": "formal-09-C",
+        "y": 0.2272727272727273
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9956712074823407,
+        "left": "formal-08-C",
+        "right": "formal-10-C",
+        "y": 0.23863636363636365
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9979121550970981,
+        "left": "formal-09-C",
+        "right": "formal-10-C",
+        "y": 0.25
+      }
+    ],
+    "seed_points": [
+      {
+        "arm": "A0",
+        "cosine": 0.9673159871710889,
+        "run_id": "formal-01-A0",
+        "y": 2.77
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9499274849309509,
+        "run_id": "formal-02-A0",
+        "y": 2.821111111111111
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9638748637854272,
+        "run_id": "formal-03-A0",
+        "y": 2.8722222222222222
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9624008632562655,
+        "run_id": "formal-04-A0",
+        "y": 2.9233333333333333
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9782952038070717,
+        "run_id": "formal-05-A0",
+        "y": 2.9744444444444444
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9631781742701755,
+        "run_id": "formal-06-A0",
+        "y": 3.0255555555555556
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9774694888611442,
+        "run_id": "formal-07-A0",
+        "y": 3.0766666666666667
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9614887870429818,
+        "run_id": "formal-08-A0",
+        "y": 3.1277777777777778
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.968066434882568,
+        "run_id": "formal-09-A0",
+        "y": 3.178888888888889
+      },
+      {
+        "arm": "A0",
+        "cosine": 0.9706521714245506,
+        "run_id": "formal-10-A0",
+        "y": 3.23
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9638004942815976,
+        "run_id": "formal-01-A",
+        "y": 1.77
+      },
+      {
+        "arm": "A",
+        "cosine": 0.95976506670632,
+        "run_id": "formal-02-A",
+        "y": 1.8211111111111111
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9511626142217453,
+        "run_id": "formal-03-A",
+        "y": 1.8722222222222222
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9653845147699361,
+        "run_id": "formal-04-A",
+        "y": 1.9233333333333333
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9571477483918415,
+        "run_id": "formal-05-A",
+        "y": 1.9744444444444444
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9664108488057277,
+        "run_id": "formal-06-A",
+        "y": 2.0255555555555556
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9611678079114112,
+        "run_id": "formal-07-A",
+        "y": 2.0766666666666667
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9582880462060206,
+        "run_id": "formal-08-A",
+        "y": 2.1277777777777778
+      },
+      {
+        "arm": "A",
+        "cosine": 0.9698558859749039,
+        "run_id": "formal-09-A",
+        "y": 2.178888888888889
+      },
+      {
+        "arm": "A",
+        "cosine": 0.970360782482074,
+        "run_id": "formal-10-A",
+        "y": 2.23
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9665370698792379,
+        "run_id": "formal-01-B",
+        "y": 0.77
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9555748471509664,
+        "run_id": "formal-02-B",
+        "y": 0.8211111111111111
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9612815828469563,
+        "run_id": "formal-03-B",
+        "y": 0.8722222222222222
+      },
+      {
+        "arm": "B",
+        "cosine": 0.958182535416011,
+        "run_id": "formal-04-B",
+        "y": 0.9233333333333333
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9569180200519013,
+        "run_id": "formal-05-B",
+        "y": 0.9744444444444444
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9629111179654465,
+        "run_id": "formal-06-B",
+        "y": 1.0255555555555556
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9566268010301876,
+        "run_id": "formal-07-B",
+        "y": 1.0766666666666667
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9558685676804204,
+        "run_id": "formal-08-B",
+        "y": 1.1277777777777778
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9655898090102545,
+        "run_id": "formal-09-B",
+        "y": 1.1788888888888889
+      },
+      {
+        "arm": "B",
+        "cosine": 0.9605818541784814,
+        "run_id": "formal-10-B",
+        "y": 1.23
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9677406760319454,
+        "run_id": "formal-01-C",
+        "y": -0.23
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9671124844558227,
+        "run_id": "formal-02-C",
+        "y": -0.1788888888888889
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9706973629758694,
+        "run_id": "formal-03-C",
+        "y": -0.12777777777777777
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9629253542848059,
+        "run_id": "formal-04-C",
+        "y": -0.07666666666666666
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9636377542440644,
+        "run_id": "formal-05-C",
+        "y": -0.025555555555555554
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9705837148587814,
+        "run_id": "formal-06-C",
+        "y": 0.02555555555555558
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9642391116933505,
+        "run_id": "formal-07-C",
+        "y": 0.07666666666666669
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9529071786683895,
+        "run_id": "formal-08-C",
+        "y": 0.1277777777777778
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9697055655648109,
+        "run_id": "formal-09-C",
+        "y": 0.1788888888888889
+      },
+      {
+        "arm": "C",
+        "cosine": 0.9640339325985929,
+        "run_id": "formal-10-C",
+        "y": 0.23000000000000007
+      }
+    ]
+  },
+  "png_dpi": 240,
+  "python_version": "3.14.5",
+  "renderer_sha256": "ea3c6aa0377d5bd269b49addb56af2ba6860b8b3d309d1fbb83a85ebd46e2608",
+  "renderer_version": "same-spec-f2-v1",
+  "requirements_sha256": "9d97c2b08302ac89509ef79011e3c49429307c72ba0474eea998bfd9409ce43c",
+  "schema_version": 1,
+  "source_sha256": {
+    "analyzer_sha256": "c5df73abb76fb4b36bfb63325524419f80ad1b4c7755f2036d8291ca086cb585",
+    "manifest_sha256": "ba30398118ecde62b2f682884c1e882b2864c22d70faf99549ceab0d7c0a55f2",
+    "records_sha256": "2be5ed458de2e2defa2ab4f24d88f25bdd3b7340c9207915ab6aa0988c0db7f0",
+    "seed_sha256": "4949ff55184cbfd3cbd0c8add632a6382ec4b5e6ec2240ca88018443370e6afb",
+    "summary_sha256": "8198a4478b8158268298960576655d920db3b8d2dc2bd207348dcef8a346dfb9"
+  },
+  "svg_fonttype": "path",
+  "vertical_layout": "Lexicographic IDs, evenly spaced: pair +/-0.25; artifact +/-0.23; no random jitter",
+  "x_axis": {
+    "max": 1,
+    "min": 0,
+    "shared_by_both_panels": true
+  }
+}

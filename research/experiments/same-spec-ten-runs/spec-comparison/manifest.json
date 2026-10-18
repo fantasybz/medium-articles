@@ -1,0 +1,59 @@
+{
+  "source_campaign": "formal-2026-09-25",
+  "method": "Python difflib.diff_bytes(difflib.unified_diff), n=3; original bytes, no normalization",
+  "specs": {
+    "A0": {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A0.md",
+      "sha256": "a747ae3abd880f77227e7492e8a2e6d6346637a39b1e64366bc435dd772b4a10",
+      "bytes": 6301,
+      "whitespace_words": 936
+    },
+    "A": {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/A.md",
+      "sha256": "3ea6d57daae7dba9d3ceb6327607ee60ccaed3bd4193e5ec7c79441ad36bc247",
+      "bytes": 10541,
+      "whitespace_words": 1655
+    },
+    "B": {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/B.md",
+      "sha256": "c10ef7256aadc46816e73b1bbaf7edc26b5d2719e687ff497ff5005062ff8a3b",
+      "bytes": 12312,
+      "whitespace_words": 1923
+    },
+    "C": {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/source/specs/C.md",
+      "sha256": "19c404372f742c8f80165fdfea8df998bb29c3324f892433c8992e418e9c54af",
+      "bytes": 14384,
+      "whitespace_words": 2223
+    }
+  },
+  "comparisons": [
+    {
+      "from": "A0",
+      "to": "A",
+      "diff": "A0-to-A.diff",
+      "sha256": "2c9c2825ba9e407d97e9f13a0cecb6ff22b4e3de4649662b1e662aa43ab8fbf7",
+      "bytes": 16572,
+      "source_preserved_as_byte_prefix": false,
+      "patch_reconstructs_target_byte_exactly": true
+    },
+    {
+      "from": "A",
+      "to": "B",
+      "diff": "A-to-B.diff",
+      "sha256": "abea2b717398a82f6ceb3e3e51712055bb6083f5c8f51156e387d7aba07b702d",
+      "bytes": 2505,
+      "source_preserved_as_byte_prefix": true,
+      "patch_reconstructs_target_byte_exactly": true
+    },
+    {
+      "from": "B",
+      "to": "C",
+      "diff": "B-to-C.diff",
+      "sha256": "d11bdef21e11c8487e82faf77529030eea2daaabde09b6314a0ec57afe1f6e20",
+      "bytes": 2473,
+      "source_preserved_as_byte_prefix": true,
+      "patch_reconstructs_target_byte_exactly": true
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+You implement a Python program from the supplied repository snapshot and specification. You have no tools or external files. Return exactly one JSON object with exactly one key codex_jsonl.py whose value is the complete UTF-8 source code. No markdown fences or commentary.

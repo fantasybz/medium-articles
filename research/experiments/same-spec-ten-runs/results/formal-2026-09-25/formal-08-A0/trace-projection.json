@@ -1,0 +1,55 @@
+{
+  "format": "parse-trace-whitelist-projection-v1",
+  "is_raw_trace": false,
+  "raw_sha256": "e31ecc613b9576056d58de8d08921d4f022ac84244d54ee2f7a402a083e5cb03",
+  "projection_sha256": "5d0c6f0ac033c511c4d4aaefcb5d742417382d549ec43a48c81e1793e7c5fa4a",
+  "original_parser_observations": {
+    "boundary_ok": true,
+    "boundary_violation": false,
+    "boundary_violations": [],
+    "boundary_state": "confirmed",
+    "generation_identity_confirmed": true,
+    "operational_error": false,
+    "synthetic_messages": 0,
+    "unknown_model_messages": 0,
+    "result_count": 1,
+    "candidate_source": "terminal_success_result",
+    "tool_call_count": 0,
+    "generation_models": [
+      "claude-opus-5-5"
+    ],
+    "malformed_lines": 0,
+    "malformed_fields": 0,
+    "trace_valid": true,
+    "invalid_utf8": false
+  },
+  "projection_parser_observations": {
+    "boundary_ok": true,
+    "boundary_violation": false,
+    "boundary_violations": [],
+    "boundary_state": "confirmed",
+    "generation_identity_confirmed": true,
+    "operational_error": false,
+    "synthetic_messages": 0,
+    "unknown_model_messages": 0,
+    "result_count": 1,
+    "candidate_source": "terminal_success_result",
+    "tool_call_count": 0,
+    "generation_models": [
+      "claude-opus-5-5"
+    ],
+    "malformed_lines": 0,
+    "malformed_fields": 0,
+    "trace_valid": true,
+    "invalid_utf8": false
+  },
+  "redactions": [
+    "thinking/signature blocks",
+    "transport/session/request identifiers",
+    "cwd/socket/auth/config metadata",
+    "exposure entry details",
+    "unlisted metadata"
+  ],
+  "encoding_note": "Projection is valid UTF-8; original invalid_utf8 and trace_valid are preserved above, not inferred from projection.",
+  "text_note": "Assistant text and terminal result text remain verbatim; this is not general-purpose secret removal from generated code."
+}

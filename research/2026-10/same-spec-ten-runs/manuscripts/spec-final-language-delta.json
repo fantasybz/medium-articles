@@ -1,0 +1,14 @@
+{
+  "article": "2026-11-same-spec-spec/article.md",
+  "reviewed_sha256": "3d4fa69b2fb198aee8b75f01be21712c0482589f773b80873375d82d627a37ca",
+  "final_sha256": "55b1b472694d6e8e48a4c4137b3738b66488c0b7fc5c8c15e36e3a814d49ed55",
+  "changes": [
+    {
+      "before": "本篇提供的是 R01–R13 的完整任務規格",
+      "after": "本篇提供 R01–R13 完整任務規格",
+      "reason": "Remove nominalized phrasing while keeping the subject explicit; no claim, number, reference, or table changed."
+    }
+  ],
+  "verified_exact_reverse_delta": true,
+  "checked_by": "Codex primary editor"
+}

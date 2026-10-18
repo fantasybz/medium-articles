@@ -1,0 +1,338 @@
+{
+  "input_path": ".context/same-spec-ten-runs/manuscripts/final-index-excerpts.md",
+  "file_sha256": "1fc9e0cd2a84366ce1654d254a7f8ea3f4fcff1e9e1809ff4792ce1b5f9471d3",
+  "configuration": {
+    "content_type": "markdown",
+    "fix_mode": "none",
+    "fix_output": "search_replace",
+    "profile": "strict",
+    "translationese_domain": "technical",
+    "detect_ai": true,
+    "ai_threshold": "low",
+    "detect_translationese": true,
+    "consistency": true,
+    "detect_style": true,
+    "explain": true,
+    "include_stats": true,
+    "include_telemetry": true,
+    "verify": true,
+    "max_errors": 0,
+    "max_warnings": 0,
+    "output": "full",
+    "ignore_terms": [
+      "通過"
+    ]
+  },
+  "response": {
+    "accepted": false,
+    "text": "## README.md\n\n「同一份規格，跑十次」四篇中文全文已完成：[總論](2026-11-same-spec-overview/article.md)、[規格篇](2026-11-same-spec-spec/article.md)、[契約篇](2026-11-same-spec-contract/article.md)、[變異篇](2026-11-same-spec-variance/article.md)。Claude Code `max` 主寫，全文逐段潤飾、三種角度複核與 strict zh-TW MCP 檢查完成；目前為本機稿，尚未發布。詳見[品質紀錄](research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md)。\n\n## research/README.md\n\n2026-09-25 全文撰寫完成：[總論](../2026-11-same-spec-overview/article.md)、[規格篇](../2026-11-same-spec-spec/article.md)、[契約篇](../2026-11-same-spec-contract/article.md)、[變異篇](../2026-11-same-spec-variance/article.md)均由 Claude Code `max` 主寫，完成 Codex 全文逐段潤飾、三種角度複核與 strict zh-TW MCP 檢查。四篇正文與貼稿皆為零錯誤、零警告；本機發布包已驗證，尚未遠端發布。實際呼叫、修訂與限制見[品質紀錄](2026-10/same-spec-ten-runs/manuscripts/STATUS.md)。\n\n## research/TOPICS.md\n\n四篇中文全文、逐段潤飾、複核與本機發布包均完成，尚未發布\n\n## research/TOPICS.md\n\n四篇均完成 Claude Code `max` 主寫、Codex 逐段潤飾、三種角度複核；正文與貼稿均通過 strict zh-TW 檢查\n\n## research/2026-10/2026-11-same-spec-ten-runs.md\n\n四篇本機全文均已完成，入口、逐段潤飾與複核見[成稿紀錄](same-spec-ten-runs/manuscripts/STATUS.md)\n\n## research/2026-10/2026-11-same-spec-ten-runs.md\n\n研究結果與四篇中文本機全文均已完成，正文、圖表與貼稿已複核，不能寫成已遠端發布。英文版與社群 hooks 不在本次範圍；若後續製作，仍須保留相同限制與資料，發布安排另定。\n\n## research/experiments/same-spec-ten-runs/RESULTS.md\n\n四篇中文本機全文已完成 Claude Code `max` 主寫、逐段潤飾、複核與嚴格中文檢查，目前尚未發布。\n\n## research/2026-10/selection.md\n\n\n\n2026-09-25 成稿更新：本系列四篇中文全文與本機發布包已完成，主稿由 Claude Code `max` 撰寫，逐段潤飾與複核紀錄見[品質紀錄](same-spec-ten-runs/manuscripts/STATUS.md)。這不表示已遠端發布；正式實驗設定、名額與封存資料保持原樣。\n\n\n## research/2026-10/same-spec-ten-runs/research-loop.md\n\n\n\n## 2026-09-25 額度重置後的四篇成稿\n\n依使用者選擇維持 Claude Code `max`。實際 CLI 請求確認恢復後，以章節資料包續寫，規格篇後半、總論前後半及契約篇前後半均完整產出。四篇現在都有中文全文，主代理依現行風格逐段潤飾，另讀後半部至結語，並完成證據、編輯與讀者三種角度的獨立複核。\n\n所有正文與貼稿的實際 zh-TW MCP 嚴格回報皆為零錯誤、零警告，資訊提示另附逐項判讀。20 張圖表已檢視，四份貼稿與 converter 同步，317 份正式封存檔案沒有變動。契約篇分類與環境控制的證據修訂也留下原意見與差異紀錄。實際版本、呼叫、複核及交付驗證見[品質紀錄](manuscripts/STATUS.md)。首輪未完成的紀錄保留為歷史，不能再當作目前狀態；本輪仍未發布到遠端。\n\n",
+    "issues": [
+      {
+        "offset": 1325,
+        "length": 6,
+        "line": 15,
+        "col": 52,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 1603,
+        "length": 6,
+        "line": 23,
+        "col": 9,
+        "found": "文本",
+        "suggestions": [
+          "文字"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "warning",
+        "context": "@domain IT [tier2: hard anchor]",
+        "english": "text",
+        "anchor_match": true,
+        "explanation": "'文本' is a mainland Chinese term for 'text'; Taiwan uses '文字'. Context: @domain IT [tier2: hard anchor]",
+        "anchor_provenance": {
+          "anchor_en": "text",
+          "anchor_match": true
+        },
+        "explain_meta": {
+          "rationale": "'文本' is a mainland Chinese term for 'text'; Taiwan uses '文字'. Context: @domain IT [tier2: hard anchor]",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": false,
+          "editorial_confidence": "medium"
+        },
+        "resolution": "heuristic"
+      },
+      {
+        "offset": 1886,
+        "length": 6,
+        "line": 27,
+        "col": 4,
+        "found": "文本",
+        "suggestions": [
+          "文字"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "warning",
+        "context": "@domain IT [tier2: hard anchor]",
+        "english": "text",
+        "anchor_match": true,
+        "explanation": "'文本' is a mainland Chinese term for 'text'; Taiwan uses '文字'. Context: @domain IT [tier2: hard anchor]",
+        "anchor_provenance": {
+          "anchor_en": "text",
+          "anchor_match": true
+        },
+        "explain_meta": {
+          "rationale": "'文本' is a mainland Chinese term for 'text'; Taiwan uses '文字'. Context: @domain IT [tier2: hard anchor]",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": false,
+          "editorial_confidence": "medium"
+        },
+        "resolution": "heuristic"
+      },
+      {
+        "offset": 2514,
+        "length": 6,
+        "line": 42,
+        "col": 39,
+        "found": "恢復",
+        "suggestions": [
+          "還原",
+          "復原"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain UI。cn「恢復」；tw 用「還原」或「復原」(restore/recover) [tier2: suppressed (score=0.17)]",
+        "english": "restore/recover",
+        "context_clues": [
+          "系統",
+          "備份",
+          "預設",
+          "設定",
+          "出廠",
+          "資料"
+        ],
+        "anchor_match": false,
+        "explanation": "'恢復' is a mainland Chinese term for 'restore/recover'; Taiwan uses '還原 / 復原'. Context: @domain UI。cn「恢復」；tw 用「還原」或「復原」(restore/recover) [tier2: suppressed (score=0.17)]",
+        "anchor_provenance": {
+          "anchor_en": "restore/recover",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'恢復' is a mainland Chinese term for 'restore/recover'; Taiwan uses '還原 / 復原'. Context: @domain UI。cn「恢復」；tw 用「還原」或「復原」(restore/recover) [tier2: suppressed (score=0.17)]",
+          "domain": "UI",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "unresolved"
+      }
+    ],
+    "applied_fixes": 0,
+    "summary": {
+      "errors": 0,
+      "warnings": 2,
+      "info": 2
+    },
+    "gate": {
+      "enabled": true,
+      "max_errors": 0,
+      "residual_errors": 0,
+      "max_warnings": 0,
+      "residual_warnings": 2
+    },
+    "profile": "strict",
+    "political_stance": "roc_centric",
+    "detected_script": "traditional",
+    "s2t_applied": false,
+    "trace": {
+      "trace_id": "8527d2ba50ac34a67d55fe5b3db8c69e",
+      "ruleset_hash": "3a6a5eecb12ada10725c0167434703c0f713136adad683257ee436f4b1ca8038",
+      "input_hash": "d50d61cc0176b211ac88ae2a367677d2f7943df0b074d92be321bf5999ed1c83",
+      "timestamp": "2026-09-25T09:30:22.044Z",
+      "tool": "zhtw",
+      "issue_count": 4
+    },
+    "verify": {
+      "api_ok": true,
+      "matched": 2,
+      "unmatched": 2,
+      "no_english": 0
+    },
+    "coverage": {
+      "rules_checked": 1803,
+      "rules_matched": 3
+    },
+    "oral_density": 0,
+    "ai_signature": {
+      "score": 0,
+      "markers": [],
+      "top_signals": [],
+      "sentence_variability": 16.606163,
+      "zero_width_count": 0,
+      "punctuation_profile": {
+        "comma": {
+          "count": 22,
+          "density": 20.38925,
+          "cv": 0.673476
+        },
+        "period": {
+          "count": 12,
+          "density": 11.121408,
+          "cv": 0.8402316
+        },
+        "semicolon": {
+          "count": 4,
+          "density": 3.7071362
+        },
+        "dunhao": {
+          "count": 17,
+          "density": 15.755329,
+          "cv": 0.9017548
+        },
+        "dash": {
+          "count": 0,
+          "density": 0
+        }
+      }
+    },
+    "translationese_signature": {
+      "score": 0,
+      "markers": [
+        {
+          "signal": "被動語態",
+          "count": 0,
+          "density": 0,
+          "threshold": 6
+        },
+        {
+          "signal": "的字鏈",
+          "count": 1,
+          "density": 1,
+          "threshold": 5
+        },
+        {
+          "signal": "弱動詞分解",
+          "count": 0,
+          "density": 0,
+          "threshold": 4
+        },
+        {
+          "signal": "代詞密度",
+          "count": 0,
+          "density": 0,
+          "threshold": 6
+        },
+        {
+          "signal": "翻譯腔偵測",
+          "count": 0,
+          "density": 0,
+          "threshold": 7
+        }
+      ],
+      "top_signals": [],
+      "max_de_chain": 1,
+      "domain": "technical"
+    },
+    "style_scorecard": {
+      "style_scores": {
+        "ai": 0,
+        "translationese": 0,
+        "consistency": 1
+      },
+      "top_issues_per_axis": {
+        "ai": [],
+        "translationese": [],
+        "consistency": [
+          {
+            "line": 23,
+            "col": 9,
+            "found": "文本",
+            "severity": "warning",
+            "rule_type": "cross_strait",
+            "context": "@domain IT [tier2: hard anchor]"
+          },
+          {
+            "line": 27,
+            "col": 4,
+            "found": "文本",
+            "severity": "warning",
+            "rule_type": "cross_strait",
+            "context": "@domain IT [tier2: hard anchor]"
+          },
+          {
+            "line": 15,
+            "col": 52,
+            "found": "通過",
+            "severity": "info",
+            "rule_type": "cross_strait",
+            "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」"
+          },
+          {
+            "line": 42,
+            "col": 39,
+            "found": "恢復",
+            "severity": "info",
+            "rule_type": "cross_strait",
+            "context": "@domain UI。cn「恢復」；tw 用「還原」或「復原」(restore/recover) [tier2: suppressed (score=0.17)]"
+          }
+        ]
+      }
+    },
+    "telemetry": {
+      "estimated_tokens_per_1k_chars": 0,
+      "estimated_llm_token_share": 0,
+      "estimated_tokens_per_ambiguous_term": 0,
+      "cache_hit_count": 0,
+      "cache_miss_count": 0,
+      "tier2_local_resolutions": 0,
+      "raw": {
+        "input_chars": 1871,
+        "rule_hits": 4,
+        "ambiguous_terms": 1,
+        "llm_round_trips": 0,
+        "estimated_prompt_tokens": 0,
+        "estimated_completion_tokens": 0,
+        "final_fixes": 0
+      }
+    },
+    "summary_metrics": {
+      "deterministic_fixes": 1,
+      "heuristic_fixes": 2,
+      "llm_judged_fixes": 0,
+      "unresolved": 1,
+      "llm_calls": 0,
+      "llm_tokens": 0,
+      "confidence_distribution": {
+        "high": 3,
+        "medium": 0,
+        "low": 1
+      }
+    }
+  }
+}

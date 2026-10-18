@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-09-25",
+  "reviewer": "Codex independent editorial sub-agent (AI): series_editor_review",
+  "lens": "editor_evidence_correction_delta",
+  "verdict": "PASS_CONTRACT_EDITORIAL",
+  "series_verdict": "NOT_FULLY_REVIEWED",
+  "series_ready": false,
+  "public_release_complete": false,
+  "input": {
+    "path": "2026-11-same-spec-contract/article.md",
+    "sha256": "6f99865b86beabc93adfa6ca61a2e8cd826cf926eb9b4afbfca7a149f81019cc",
+    "line_count": 293
+  },
+  "previous_editorial_final": {
+    "path": "research/2026-10/same-spec-ten-runs/manuscripts/review-contract-editor-final.md",
+    "input_sha256": "416476b5ade3ded365cd3faff9477d666175ceb5154eddffc75ed18a8da18def"
+  },
+  "previous_full_review": {
+    "path": "research/2026-10/same-spec-ten-runs/manuscripts/review-contract-editor.md",
+    "input_sha256": "d7d1244e859d407fe54b19510311d4100cd370dcd9ceb71df48cd0dc151cca76",
+    "complete_manuscript_read": true,
+    "continuous_second_half_reread": true
+  },
+  "current_reading_scope": {
+    "lines": [
+      187,
+      215
+    ],
+    "purpose": "Read only the two evidence-driven changes and adjacent transitions; no repeated full-manuscript review."
+  },
+  "delta_verification": {
+    "path": "research/2026-10/same-spec-ten-runs/manuscripts/contract-evidence-delta.json",
+    "replacement_count": 2,
+    "checks": [
+      {
+        "after_occurrences": 1,
+        "start_line": 195,
+        "end_line": 195
+      },
+      {
+        "after_occurrences": 1,
+        "start_line": 203,
+        "end_line": 205
+      }
+    ],
+    "reconstructed_previous_sha256": "416476b5ade3ded365cd3faff9477d666175ceb5154eddffc75ed18a8da18def",
+    "reconstructed_previous_matches_editorial_final": true,
+    "only_declared_replacements": true
+  },
+  "reviewed_changes": [
+    {
+      "lines": [
+        195
+      ],
+      "editorial_result": "pass",
+      "reason": "明確列出 packet、封存模型、effort 與 CLI 開關，前後仍說明 provider 和 OS 的未固定部分；固定條件的對象與可主張範圍清楚。"
+    },
+    {
+      "lines": [
+        203,
+        205
+      ],
+      "editorial_result": "pass",
+      "reason": "工具測試、preflight 拒絕與生成 boundary_violation 各有明確主詞和判定層級；timeout 與 mismatch 的後續動作完整，承接前文隔離限制與後文 83 項工具測試。"
+    }
+  ],
+  "new_editorial_issues": [],
+  "open_counts": {
+    "blocker": 0,
+    "major": 0,
+    "minor": 0
+  },
+  "technical_findings_reverified_by_this_reviewer": false,
+  "technical_verification_scope": "Technical verification of classifier and environment-control claims belongs to the independent evidence review; this report judges prose and transitions only.",
+  "mcp_invoked_this_review": false,
+  "manuscript_modified": false,
+  "prior_reviews_modified": false,
+  "frozen_data_modified": false,
+  "scope": "Bounded editorial delta review after a substantive evidence correction. Earlier full-manuscript editorial coverage remains linked through the exact two-replacement reverse hash; no claim that the old technical wording was correct."
+}

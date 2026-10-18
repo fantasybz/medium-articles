@@ -1,0 +1,31 @@
+{
+  "date": "2026-09-25T05:41:52.542094+00:00",
+  "type": "post-experiment manuscript teaching example; not preregistered analysis",
+  "selection_rule": "Select A0 formal blocks 01 and 02, the first two A0 slots by the pre-frozen schedule block ID; no selection by score, cost, similarity or code layout.",
+  "run_ids": [
+    "formal-01-A0",
+    "formal-02-A0"
+  ],
+  "purpose": "Illustrate why AST node-count cosine and normalized hash describe different properties; do not claim representativeness, semantic equivalence or maintenance benefit.",
+  "added_by": "Codex editor during manuscript revision, not Claude initial draft",
+  "candidate_files": [
+    {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-01-A0/candidate/codex_jsonl.py",
+      "sha256": "7cc9bf5a24969310f18a50aad43ac26d4a59066321b2256ec03806da076dd2b2"
+    },
+    {
+      "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25/formal-02-A0/candidate/codex_jsonl.py",
+      "sha256": "f2a65e9e26aaa195ab1c0b8caf2c1920cb4e3d2ee3ad2abf30d1620a78008a57"
+    }
+  ],
+  "frozen_pair_record": {
+    "arm": "A0",
+    "cosine": 0.9939804370606344,
+    "metric": "python-ast-node-type-multiset-cosine-v1",
+    "normalized_ast_equal": false,
+    "run_id_left": "formal-01-A0",
+    "run_id_right": "formal-02-A0"
+  },
+  "summary_sha256": "8198a4478b8158268298960576655d920db3b8d2dc2bd207348dcef8a346dfb9",
+  "formal_analysis_modified": false
+}

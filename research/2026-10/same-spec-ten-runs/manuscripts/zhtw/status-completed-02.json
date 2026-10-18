@@ -1,0 +1,415 @@
+{
+  "input_path": "research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md",
+  "file_sha256": "be2e7cd85fe3fb202ea6d5dae17edd9037fef2f157fbd1fac288cae25232e231",
+  "configuration": {
+    "content_type": "markdown",
+    "fix_mode": "none",
+    "fix_output": "search_replace",
+    "profile": "strict",
+    "translationese_domain": "technical",
+    "detect_ai": true,
+    "ai_threshold": "low",
+    "detect_translationese": true,
+    "consistency": true,
+    "detect_style": true,
+    "explain": true,
+    "include_stats": true,
+    "include_telemetry": true,
+    "verify": true,
+    "max_errors": 0,
+    "max_warnings": 0,
+    "output": "full",
+    "ignore_terms": [
+      "通過"
+    ]
+  },
+  "response": {
+    "accepted": true,
+    "text": "# 全文撰寫與品質紀錄\n\n更新：2026-09-25。「同一份規格，跑十次」四篇中文全文已完成本機交付。主稿維持 Claude Code `claude-opus-5-5 --effort max`；Codex 主代理依現行寫作標準逐段潤飾，再整合證據、編輯與讀者三種角度的獨立 AI 複核。四篇都尚未發布。\n\n| 篇目 | 主寫 | 完成範圍 | 本機發布包 |\n|---|---|---|---|\n| [總論全文](../../../../2026-11-same-spec-overview/article.md) | Claude Code `max` | 全文逐段潤飾、三種角度複核完成 | [7 張圖表與貼稿](../../../../2026-11-same-spec-overview/publish/medium-paste.md) |\n| [規格篇全文](../../../../2026-11-same-spec-spec/article.md) | Claude Code `max` | 全文逐段潤飾、三種角度複核完成 | [3 張圖表與貼稿](../../../../2026-11-same-spec-spec/publish/medium-paste.md) |\n| [契約篇全文](../../../../2026-11-same-spec-contract/article.md) | Claude Code `max` | 全文逐段潤飾、三種角度複核完成 | [5 張圖表與貼稿](../../../../2026-11-same-spec-contract/publish/medium-paste.md) |\n| [變異篇全文](../../../../2026-11-same-spec-variance/article.md) | Claude Code `max` | 全文逐段潤飾、三種角度複核完成 | [5 張圖表與貼稿](../../../../2026-11-same-spec-variance/publish/medium-paste.md) |\n\n## 主寫來源與額度續作\n\n首輪變異篇完整產出，規格篇留下部分正文，總論與契約篇未完成。續接曾被 session 額度擋住。使用者選擇維持 Claude `max`，在預計臺北時間 16:10 重置後繼續；實際續作請求已回報允許執行。\n\n續作把資料包依章節切開，仍使用相同主寫模型與 `max` effort。規格篇補完後半部，總論與契約篇各完成前後兩段；所有片段都有成功結果與原稿雜湊。CLI 可在單次回應達到輸出設定後續接，因此累計 tokens 可能超過單次回應設定，不能把它寫成整次呼叫的硬上限。\n\n[主寫來源紀錄](writer-provenance.json)保留九次主寫嘗試、實際模型、effort、時間、完成狀態、片段與組稿雜湊。只有最終文字用於成稿；含模型思考的原始回應留在 gitignored `.context/`，沒有放入公開資料。正式研究的四十次生成使用 **high** effort，與這些 **max** 寫作請求分開，樣本與成本也沒有混算。\n\n## 全文逐段潤飾\n\n依 [STYLE.md](../../../../STYLE.md)、[本輪 style brief](../../style_brief.md)與[現行聲音手冊](../../../2026-09/voice_brief.md)，主代理讀完四篇的開場、所有章節、圖表說明、清單、結語、References 與 AI 協作說明，再連續重讀後半部。檢查包含動作與對象、段落承接、真實經驗、分母、推論界線，以及首尾是否維持同一個主張。[逐段紀錄](paragraph-polish.json)保存目前版本與段落雜湊；這是逐段編輯工作的索引，不是自動評分。\n\n系列承接使用已核對的篇名、原文與發布紀錄。Agentic 系列標為已發布；「綠燈不是驗收」系列標為已完成、排程中、尚待發布。同一份工作坊觀察沒有在四篇重複當成新的量測證據。本系列四篇互相連到 repo 內的文章檔案。\n\n## 獨立複核與修訂\n\n| 篇目 | 證據核對 | 編輯複核 | 讀者複核 | 未解意見 |\n|---|---|---|---|---:|\n| 總論 | [證據](review-overview-evidence.md) | [編輯](review-overview-editor-final.md) | [讀者](review-overview-reader-final.md) | 0 |\n| 規格篇 | [證據](review-spec-evidence-final.md) | [編輯](review-spec-editor-supplemental-final.md) | [讀者](review-spec-reader-final.md) | 0 |\n| 契約篇 | [證據](review-contract-evidence-final.md) | [編輯](review-contract-editor-evidence-delta.md) | [讀者](review-contract-reader-evidence-delta.md) | 0 |\n| 變異篇 | [證據](review-variance-current-evidence-final.md) | [編輯](review-variance-current-editor.md) | [讀者](review-variance-current-reader-final.md) | 0 |\n\n各報告保留真正讀取的版本。後續修改以獨立 delta 留下原句、新句、理由與前後雜湊，再作有界複核；沒有把較早的報告改標成重讀新版全文。規格篇最後兩處純語文修改另經編輯補充複核；變異篇最後一處失敗計數澄清由證據與讀者角度結案。\n\n成稿過程另找到 A0 與 A／B／C 對新增 CLI 選項的約束強度差異。四篇與研究結果均保留這項限制，不宣稱四份文字已證語義等價，詳見[措辭差異補記](packet-wording-caveat.md)。契約篇最終證據核對也修正了失敗分類：批次評分、生成邊界與沙箱拒絕 probe 屬於不同層次，不能合稱為候選越界分類器。正式 packet、evaluator、候選與原始資料全數保持原樣。\n\n這些是彼此分工的 AI 代理審查，並非真人盲審或外部重現。變異篇列出真實程式對照，明標為成稿階段新增的事後教學示例；選取與分數、成本、相似程度無關，見[示例來源](teaching-example-provenance.json)。\n\n## 嚴格中文檢查\n\n正文與重新產生的貼稿都實際呼叫 zh-TW MCP，設定 `strict`、最高敏感度 `ai_threshold=low`、技術領域翻譯腔、一致性與風格檢查、`verify=true`，門檻為零 errors、零 warnings，沒有自動整批替換。\n\n| 篇目 | 最終正文 | 最終貼稿 | 提示處置 |\n|---|---|---|---|\n| 總論 | [0 錯誤／0 警告；34 提示](zhtw/overview-full-03.json) | [0 錯誤／0 警告；30 提示](zhtw/overview-paste-01.json) | [逐項判讀](zhtw/overview-final-adjudication.json) |\n| 規格篇 | [0 錯誤／0 警告；29 提示](zhtw/spec-full-06.json) | [0 錯誤／0 警告；28 提示](zhtw/spec-paste-03.json) | [逐項判讀](zhtw/spec-final-adjudication.json) |\n| 契約篇 | [0 錯誤／0 警告；39 提示](zhtw/contract-full-04.json) | [0 錯誤／0 警告；37 提示](zhtw/contract-paste-03.json) | [逐項判讀](zhtw/contract-final-adjudication.json) |\n| 變異篇 | [0 錯誤／0 警告；59 提示](zhtw/variance-pass-06.json) | [0 錯誤／0 警告；58 提示](zhtw/variance-paste-03.json) | [逐項判讀](zhtw/variance-final-adjudication.json) |\n\n八份回報均為 `accepted=true`。資訊提示仍保留，例如「通過」表示 pass、英文正式題名的問號、檔名 `.json`、書目欄位與數值列舉。逐項判讀記錄說明保留理由，不宣稱零提示，也不把語言工具當作事實查核。\n\n## 本機發布包與資料完整性\n\n四篇共 20 張 PNG，主代理均已實際檢視；本機預覽的圖片全部載入，沒有頁面水平溢出。F1 與核准 Mermaid 原稿相同，F2 保留原始位元組。四份貼稿與 converter 輸出逐字一致，`figures.json` 同步，所有本機連結存在。\n\n317 份正式封存檔案的 hash 再次核對無差異；沒有新增模型實驗名額。發布工具 301 項、研究工具 121 項測試均通過，shell 語法與 diff 空白檢查通過。最新雜湊、圖表、複核版本與驗證結果見[交付驗證](delivery-validation.json)。\n\n本次交付範圍是四篇中文全文與本機發布包。尚未建立 Medium 草稿、排程或發布；repo 附件仍使用本機連結，公開發文前需要換成版本固定的公開入口。英文版與社群發布文案不在本次範圍。\n",
+    "issues": [
+      {
+        "offset": 1986,
+        "length": 4,
+        "line": 18,
+        "col": 28,
+        "found": "json",
+        "suggestions": [
+          "JSON"
+        ],
+        "rule_type": "case",
+        "severity": "info",
+        "explanation": "'json' has incorrect casing; standard form: JSON.",
+        "explain_meta": {
+          "rationale": "'json' has incorrect casing; standard form: JSON.",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 2803,
+        "length": 4,
+        "line": 22,
+        "col": 240,
+        "found": "json",
+        "suggestions": [
+          "JSON"
+        ],
+        "rule_type": "case",
+        "severity": "info",
+        "explanation": "'json' has incorrect casing; standard form: JSON.",
+        "explain_meta": {
+          "rationale": "'json' has incorrect casing; standard form: JSON.",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 5005,
+        "length": 4,
+        "line": 39,
+        "col": 111,
+        "found": "json",
+        "suggestions": [
+          "JSON"
+        ],
+        "rule_type": "case",
+        "severity": "info",
+        "explanation": "'json' has incorrect casing; standard form: JSON.",
+        "explain_meta": {
+          "rationale": "'json' has incorrect casing; standard form: JSON.",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 6210,
+        "length": 6,
+        "line": 52,
+        "col": 35,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 6559,
+        "length": 6,
+        "line": 56,
+        "col": 42,
+        "found": "溢出",
+        "suggestions": [
+          "溢位",
+          "上限溢位"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain 程式設計 [tier2: suppressed (score=0.00)]",
+        "english": "overflow",
+        "anchor_match": false,
+        "explanation": "'溢出' is a mainland Chinese term for 'overflow'; Taiwan uses '溢位 / 上限溢位'. Context: @domain 程式設計 [tier2: suppressed (score=0.00)]",
+        "anchor_provenance": {
+          "anchor_en": "overflow",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'溢出' is a mainland Chinese term for 'overflow'; Taiwan uses '溢位 / 上限溢位'. Context: @domain 程式設計 [tier2: suppressed (score=0.00)]",
+          "domain": "程式設計",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "unresolved"
+      },
+      {
+        "offset": 6874,
+        "length": 6,
+        "line": 58,
+        "col": 62,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 6916,
+        "length": 6,
+        "line": 58,
+        "col": 84,
+        "found": "通過",
+        "suggestions": [
+          "透過"
+        ],
+        "rule_type": "cross_strait",
+        "severity": "info",
+        "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "english": "through/via",
+        "anchor_match": false,
+        "explanation": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+        "anchor_provenance": {
+          "anchor_en": "through/via",
+          "anchor_match": false
+        },
+        "explain_meta": {
+          "rationale": "'通過' is a mainland Chinese term for 'through/via'; Taiwan uses '透過'. Context: @domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」",
+          "domain": "IT",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      },
+      {
+        "offset": 7014,
+        "length": 4,
+        "line": 58,
+        "col": 132,
+        "found": "json",
+        "suggestions": [
+          "JSON"
+        ],
+        "rule_type": "case",
+        "severity": "info",
+        "explanation": "'json' has incorrect casing; standard form: JSON.",
+        "explain_meta": {
+          "rationale": "'json' has incorrect casing; standard form: JSON.",
+          "is_false_friend": false,
+          "auto_fix_safe": false,
+          "needs_review": true,
+          "editorial_confidence": "low"
+        },
+        "resolution": "deterministic"
+      }
+    ],
+    "applied_fixes": 0,
+    "summary": {
+      "errors": 0,
+      "warnings": 0,
+      "info": 8
+    },
+    "gate": {
+      "enabled": true,
+      "max_errors": 0,
+      "residual_errors": 0,
+      "max_warnings": 0,
+      "residual_warnings": 0
+    },
+    "profile": "strict",
+    "political_stance": "roc_centric",
+    "detected_script": "traditional",
+    "s2t_applied": false,
+    "trace": {
+      "trace_id": "57ee9c3c7db3884dafb142b5e3823af6",
+      "ruleset_hash": "3a6a5eecb12ada10725c0167434703c0f713136adad683257ee436f4b1ca8038",
+      "input_hash": "b13ab46889a2b5247d111749a1042933afc9d9bbb4f810efc4ba34137ed654ab",
+      "timestamp": "2026-09-25T09:31:18.936Z",
+      "tool": "zhtw",
+      "issue_count": 8
+    },
+    "verify": {
+      "api_ok": true,
+      "matched": 0,
+      "unmatched": 4,
+      "no_english": 4
+    },
+    "coverage": {
+      "rules_checked": 1803,
+      "rules_matched": 2
+    },
+    "oral_density": 0,
+    "ai_signature": {
+      "score": 0,
+      "markers": [],
+      "top_signals": [],
+      "sentence_variability": 72.72618,
+      "zero_width_count": 0,
+      "punctuation_profile": {
+        "comma": {
+          "count": 34,
+          "density": 11.210023,
+          "cv": 1.6548563
+        },
+        "period": {
+          "count": 41,
+          "density": 13.517969,
+          "cv": 1.5156897
+        },
+        "semicolon": {
+          "count": 20,
+          "density": 6.5941315,
+          "cv": 1.1648927
+        },
+        "dunhao": {
+          "count": 36,
+          "density": 11.869436,
+          "cv": 1.7284714
+        },
+        "dash": {
+          "count": 0,
+          "density": 0
+        }
+      }
+    },
+    "translationese_signature": {
+      "score": 0,
+      "markers": [
+        {
+          "signal": "被動語態",
+          "count": 1,
+          "density": 0.32970655,
+          "threshold": 6
+        },
+        {
+          "signal": "的字鏈",
+          "count": 1,
+          "density": 1,
+          "threshold": 5
+        },
+        {
+          "signal": "弱動詞分解",
+          "count": 0,
+          "density": 0,
+          "threshold": 4
+        },
+        {
+          "signal": "代詞密度",
+          "count": 1,
+          "density": 0.32970655,
+          "threshold": 6
+        },
+        {
+          "signal": "翻譯腔偵測",
+          "count": 0,
+          "density": 0,
+          "threshold": 7
+        }
+      ],
+      "top_signals": [],
+      "max_de_chain": 1,
+      "domain": "technical"
+    },
+    "style_scorecard": {
+      "style_scores": {
+        "ai": 0,
+        "translationese": 0,
+        "consistency": 0.97967184
+      },
+      "top_issues_per_axis": {
+        "ai": [],
+        "translationese": [],
+        "consistency": [
+          {
+            "line": 52,
+            "col": 35,
+            "found": "通過",
+            "severity": "info",
+            "rule_type": "cross_strait",
+            "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」"
+          },
+          {
+            "line": 56,
+            "col": 42,
+            "found": "溢出",
+            "severity": "info",
+            "rule_type": "cross_strait",
+            "context": "@domain 程式設計 [tier2: suppressed (score=0.00)]"
+          },
+          {
+            "line": 58,
+            "col": 62,
+            "found": "通過",
+            "severity": "info",
+            "rule_type": "cross_strait",
+            "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」"
+          },
+          {
+            "line": 58,
+            "col": 84,
+            "found": "通過",
+            "severity": "info",
+            "rule_type": "cross_strait",
+            "context": "@domain IT。tw「通過」= pass (通過考試)；僅 via/through 義改「透過」"
+          }
+        ]
+      }
+    },
+    "telemetry": {
+      "estimated_tokens_per_1k_chars": 0,
+      "estimated_llm_token_share": 0,
+      "estimated_tokens_per_ambiguous_term": 0,
+      "cache_hit_count": 0,
+      "cache_miss_count": 0,
+      "tier2_local_resolutions": 0,
+      "raw": {
+        "input_chars": 4083,
+        "rule_hits": 8,
+        "ambiguous_terms": 1,
+        "llm_round_trips": 0,
+        "estimated_prompt_tokens": 0,
+        "estimated_completion_tokens": 0,
+        "final_fixes": 0
+      }
+    },
+    "summary_metrics": {
+      "deterministic_fixes": 7,
+      "heuristic_fixes": 0,
+      "llm_judged_fixes": 0,
+      "unresolved": 1,
+      "llm_calls": 0,
+      "llm_tokens": 0,
+      "confidence_distribution": {
+        "high": 7,
+        "medium": 0,
+        "low": 1
+      }
+    }
+  }
+}

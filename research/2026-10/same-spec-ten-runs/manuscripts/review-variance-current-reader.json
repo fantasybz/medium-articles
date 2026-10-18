@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "review_type": "independent_reader_full_manuscript_current",
+  "reviewed_at": "2026-09-25T08:58:25.896904+00:00",
+  "reviewer": "Codex independent reader sub-agent (AI)",
+  "verdict": "ONE_MINOR_READER_CLARIFICATION",
+  "series_verdict": "NOT_ASSESSED_AS_A_COMPLETE_SERIES",
+  "series_ready": false,
+  "public_release_complete": false,
+  "article": {
+    "path": "2026-11-same-spec-variance/article.md",
+    "sha256": "26adde9c3e9578ec949dbdc10e3c23fcb5faa6b20673bd8edce1120607703386",
+    "line_count": 266
+  },
+  "instructions_applied": [
+    "STYLE.md",
+    "research/2026-10/style_brief.md",
+    "research/2026-09/voice_brief.md"
+  ],
+  "reading": {
+    "entire_manuscript_lines": [
+      1,
+      266
+    ],
+    "entire_manuscript_read": true,
+    "second_half_reread_lines": [
+      95,
+      266
+    ],
+    "opening_tldr_conclusion_compared": true,
+    "tables_code_captions_references_disclosure_read": true,
+    "figure_visually_inspected": {
+      "path": "2026-11-same-spec-variance/figures/F2.png",
+      "sha256": "474f4ae875dcababaf7ffcddf501b2b7c49fa5d9ed0e80a4ac9a57a98f9084fb",
+      "method": "view_image"
+    }
+  },
+  "findings": [
+    {
+      "id": "VARIANCE-CURRENT-READER-01",
+      "severity": "minor",
+      "status": "OPEN",
+      "line": 79,
+      "title": "失敗分布的解釋混用了分母與計數單位",
+      "quote": "若改用檢查次數當分母，案例寫得比較多的契約，就會看起來特別容易失敗。",
+      "reason": "這一段要說明每份候選在同一條要求上最多計一次失敗，但句子把偏重某條契約的原因歸於改用檢查次數當分母。分母改變本身並不必然使案例較多的契約看起來較常失敗；同一候選被多個案例重複計數，以及各條要求的案例配置不同，才是需要說清楚的比較問題。測試工程師若直接沿用這句，可能把每案例失敗率、每候選失敗率與全部失敗案例的構成混為一談。",
+      "suggested_replacement": "若改成按失敗案例數比較各條契約，一份候選在同一條要求上連錯幾個案例，就會被重複計數；各條要求的案例數不同，也會影響比較。",
+      "impact": "只需修正計數方式的解釋，不改本輪零失敗、40 個名額或 4,120 次檢查的事實。"
+    }
+  ],
+  "open_counts": {
+    "blocker": 0,
+    "major": 0,
+    "minor": 1
+  },
+  "section_assessments": [
+    {
+      "section": "一",
+      "lines": [
+        9,
+        45
+      ],
+      "result": "PASS",
+      "reason": "名額、真實 parser、例示與重現、文字條件與 CLI 措辭限制均有交代；tool-free 的模型行為和研究代理角色分開，未把單次檔案生成寫成完整 agent 迴圈。"
+    },
+    {
+      "section": "二",
+      "lines": [
+        49,
+        73
+      ],
+      "result": "PASS",
+      "reason": "CLI 與 artifact 成功是分開判斷的條件，accepted 是交集；小樣本區間、非等效、空白環境重評與未新增樣本說清楚，隔離證據沒有擴張成完整保證。"
+    },
+    {
+      "section": "三",
+      "lines": [
+        77,
+        91
+      ],
+      "result": "MINOR_CLARIFICATION",
+      "reason": "零失敗與外部驗收覆蓋限制清楚；第 79 行應將分母與重複計數的理由分開。"
+    },
+    {
+      "section": "四",
+      "lines": [
+        95,
+        158
+      ],
+      "result": "PASS",
+      "reason": "AST cosine 與正規化 hash 有獨立定義；F2 的上、下 panel、完整 0–1 軸、180 個相依 pair 與 40 個 seed 值一致。精確表格補足聚在右側的圖。程式對照交代事後選取規則，局部變數／字典與狀態物件的差別可讀，沒有用兩段程式推定品質或維護成本。"
+    },
+    {
+      "section": "五",
+      "lines": [
+        162,
+        187
+      ],
+      "result": "PASS",
+      "reason": "費用分母涵蓋全部名額，wall time 與驗收時間分開、三位小數不冒充毫秒精度、牌價估計不當成帳單。cache 與 Haiku 的不可推定範圍清楚，沒有把成本排序、相似度或本輪零失敗變成人類 ROI。"
+    },
+    {
+      "section": "六",
+      "lines": [
+        191,
+        209
+      ],
+      "result": "PASS",
+      "reason": "任務、模型、tool-free、服務提供端、樣本、交互作用與真人資料缺口逐項交代。Skill Issue 的 +4.9 個百分點維持 composite score 限定，沒有換算 resolve rate 或本輪檢定力。沒有把十次成功當成外部寫入授權。"
+    },
+    {
+      "section": "七與尾段",
+      "lines": [
+        213,
+        266
+      ],
+      "result": "PASS",
+      "reason": "結語回到四十筆 accepted 與 parser 的外層成功問題；建議修訂驗收時整批重評，下一輪以團隊自己的任務判斷，並明確區分 A0 本輪成本最低與跨面向較好。最後保留任務、文字、103 項檢查和每組十次的限制。導覽、References 與 AI 協作說明沒有把本機稿寫成已發布。"
+    }
+  ],
+  "scope_limits": [
+    "這是本篇獨立 AI 讀者複核，不是真人盲審，也不宣告全系列 READY。",
+    "本輪未重做來源全文查核或模型實驗；主代理已完成的 zh-TW MCP strict 0/0 不由本報告重新聲稱為自行執行。",
+    "正在完成的兄弟本機稿連結依任務要求不列 finding，最後由主代理驗證。"
+  ],
+  "manuscript_modified": false,
+  "frozen_research_modified": false,
+  "prior_reviews_modified": false
+}

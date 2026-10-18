@@ -1,0 +1,581 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-09-27T16:58:25.602634+00:00",
+  "timezone_for_report": "Asia/Taipei",
+  "purpose": "Verified research inputs for full rewrite; full external-source caches remain private",
+  "browser": {
+    "skill": "gstack /browse",
+    "external_access_method": "gstack browse only; downloaded PDFs locally extracted with pdftotext",
+    "isolated_browser_state": true
+  },
+  "report_path": "research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/spec-foundations-research.md",
+  "report_sha256": "eecf7b9e5f45f81e6b219552c16fba378ba55e81dce92d09057de343eaa37ddf",
+  "sources": [
+    {
+      "id": "S1",
+      "title": "Why We Should Build Software Like We Build Houses",
+      "authors": [
+        "Leslie Lamport"
+      ],
+      "date": "2013-01-24",
+      "version": "author-preserved latest copy; author says probably the Wired-published version",
+      "kind": "primary author engineering essay",
+      "canonical_url": "https://lamport.azurewebsites.net/pubs/wired.pdf",
+      "caches": [
+        {
+          "id": "lamport-wired-2013",
+          "requested_url": "https://lamport.azurewebsites.net/pubs/wired.pdf",
+          "resolved_url": "https://lamport.azurewebsites.net/pubs/wired.pdf",
+          "accessed_utc": "2026-09-27T16:49:10.876043+00:00",
+          "cache_sha256": "8f78122a76838e61728d81f065cd7818ef406d03e7726980accbaa4ef7e716e2",
+          "text_cache_sha256": "d0dd26949ca6a0caabfd402ba05eadaff1174650ca25d0564b758907ee56581d",
+          "method": "gstack browse download then local pdftotext -layout",
+          "verified_sections": [
+            {
+              "section_or_page": "p. 1: specification as a blueprint for thinking",
+              "start_character_offset_in_text_cache": 1127
+            },
+            {
+              "section_or_page": "p. 2: interface-usage knowledge",
+              "start_character_offset_in_text_cache": 3969
+            },
+            {
+              "section_or_page": "p. 3: limits and continued need for coding-bug checks",
+              "start_character_offset_in_text_cache": 6167
+            }
+          ],
+          "private_cache_filename": "lamport-wired-2013.pdf",
+          "private_text_cache_filename": "lamport-wired-2013.txt"
+        },
+        {
+          "id": "lamport-pubs",
+          "requested_url": "https://lamport.azurewebsites.net/pubs/pubs.html",
+          "resolved_url": "https://lamport.azurewebsites.net/pubs/pubs.html",
+          "accessed_utc": "2026-09-27T16:47:52.386449+00:00",
+          "cache_sha256": "af906395e8c32ee615565f0265fc0cae7bbce4cab5fdcd3017ff37d0aff28afa",
+          "characters": 304438,
+          "navigation": "Navigated to https://lamport.azurewebsites.net/pubs/pubs.html (200)\n",
+          "verified_sections": [
+            {
+              "section_or_page": "2015 item and relation to prior 2013 article",
+              "start_character_offset_in_text_cache": 291822
+            },
+            {
+              "section_or_page": "2013 item: provenance and version caveat",
+              "start_character_offset_in_text_cache": 290013
+            }
+          ],
+          "private_cache_filename": "lamport-pubs.txt"
+        }
+      ],
+      "verified_claims": [
+        "Writing a specification supports thinking about intended behavior before coding.",
+        "The author treats formal specification as one end of a spectrum and normally uses informal specifications.",
+        "The author explicitly says writing specs alone does not ensure programs never crash."
+      ],
+      "reader_action": "Record what a caller must know to use the interface, along with unresolved choices, before choosing document length.",
+      "proposed_artifact": "One-page caller-behavior contract with failure meaning, compatibility promises, allowed freedom and open questions.",
+      "limits": [
+        "Engineering argument and personal anecdotes; not causal effectiveness evidence.",
+        "Do not attribute 2015 expansion content to the 2013 copy.",
+        "No author anecdote timing is used as a numerical benefit claim."
+      ],
+      "numeric_claims_for_manuscript": []
+    },
+    {
+      "id": "S2",
+      "title": "Introducing Example Mapping",
+      "authors": [
+        "Matt Wynne"
+      ],
+      "date": "2015-12-08",
+      "version": "Cucumber primary article, accessed 2026-09-28 Asia/Taipei",
+      "kind": "primary method author's practitioner account",
+      "canonical_url": "https://cucumber.io/blog/bdd/example-mapping-introduction/",
+      "caches": [
+        {
+          "id": "example-mapping",
+          "requested_url": "https://cucumber.io/blog/bdd/example-mapping-introduction/",
+          "resolved_url": "https://cucumber.io/blog/bdd/example-mapping-introduction/",
+          "accessed_utc": "2026-09-27T16:43:40.720278+00:00",
+          "cache_sha256": "92ccd4c202666cd9b7b4bef3fd5fc57304559436b760f1972f11b44818239473",
+          "characters": 10741,
+          "navigation": "Navigated to https://cucumber.io/blog/bdd/example-mapping-introduction/ (200)\n",
+          "verified_sections": [
+            {
+              "section_or_page": "How it works",
+              "start_character_offset_in_text_cache": 1373
+            },
+            {
+              "section_or_page": "Friends episodes",
+              "start_character_offset_in_text_cache": 6224
+            },
+            {
+              "section_or_page": "Who should come?",
+              "start_character_offset_in_text_cache": 6958
+            },
+            {
+              "section_or_page": "So when do we write Gherkin?",
+              "start_character_offset_in_text_cache": 7964
+            }
+          ],
+          "private_cache_filename": "example-mapping.txt"
+        }
+      ],
+      "verified_claims": [
+        "Separates story, rules, concrete examples and unanswered questions.",
+        "Treats unclear expected outcomes as questions rather than settled examples.",
+        "Distinguishes discovering shared understanding from later formulation in Gherkin."
+      ],
+      "reader_action": "Bring unresolved policy to the responsible product/developer/tester participants instead of letting a generated test silently decide it.",
+      "proposed_artifact": "Rule/example/question/decision-owner table; suggested adaptation, not an existing author tool.",
+      "limits": [
+        "The suggested meeting time is practitioner guidance, not an experimental optimum.",
+        "Existing formal study already fixed R01-R13; it did not evaluate this discovery process."
+      ],
+      "numeric_claims_for_manuscript": []
+    },
+    {
+      "id": "S3",
+      "title": "BCP 14 requirement-level wording: RFC 2119 and RFC 8174",
+      "authors": [
+        "Scott Bradner",
+        "Barry Leiba"
+      ],
+      "date": "1997-03 and 2017-05",
+      "version": "RFC 2119 as updated by RFC 8174",
+      "kind": "primary normative standards documents",
+      "canonical_url": "https://www.rfc-editor.org/rfc/rfc2119.html",
+      "companion_url": "https://www.rfc-editor.org/rfc/rfc8174.html",
+      "caches": [
+        {
+          "id": "rfc2119",
+          "requested_url": "https://www.rfc-editor.org/rfc/rfc2119.html",
+          "resolved_url": "https://www.rfc-editor.org/rfc/rfc2119.html",
+          "accessed_utc": "2026-09-27T16:46:00.428911+00:00",
+          "cache_sha256": "361aecc23921a32c0cd2f89560571599c67a9ab68fb46452656ab0307f1939ad",
+          "characters": 4550,
+          "navigation": "Navigated to https://www.rfc-editor.org/rfc/rfc2119.html (200)\n",
+          "verified_sections": [
+            {
+              "section_or_page": "§1 absolute requirement",
+              "start_character_offset_in_text_cache": 1258
+            },
+            {
+              "section_or_page": "§3 justified exceptions",
+              "start_character_offset_in_text_cache": 1517
+            },
+            {
+              "section_or_page": "§5 genuinely optional behavior",
+              "start_character_offset_in_text_cache": 2244
+            },
+            {
+              "section_or_page": "§6 do not impose implementation methods unnecessarily",
+              "start_character_offset_in_text_cache": 2943
+            }
+          ],
+          "private_cache_filename": "rfc2119.txt"
+        },
+        {
+          "id": "rfc8174",
+          "requested_url": "https://www.rfc-editor.org/rfc/rfc8174.html",
+          "resolved_url": "https://www.rfc-editor.org/rfc/rfc8174.html",
+          "accessed_utc": "2026-09-27T16:46:15.371354+00:00",
+          "cache_sha256": "ab35d207ce2f9d4f0a4beb7762ec74ab3f5676fa2bb801a08eee3669ffd14e62",
+          "characters": 5759,
+          "navigation": "Navigated to https://www.rfc-editor.org/rfc/rfc8174.html (200)\n",
+          "verified_sections": [
+            {
+              "section_or_page": "§2 normative text need not use these keywords",
+              "start_character_offset_in_text_cache": 4134
+            },
+            {
+              "section_or_page": "§2 uppercase convention",
+              "start_character_offset_in_text_cache": 4436
+            }
+          ],
+          "private_cache_filename": "rfc8174.txt"
+        }
+      ],
+      "verified_claims": [
+        "Requirement strength differs from recommendation and option.",
+        "RFC 2119 §6 warns against imposing methods not required for interoperability.",
+        "RFC 8174 does not imply non-keyword text is non-normative."
+      ],
+      "reader_action": "Audit whether a wording edit changes the set of acceptable behaviors, and distinguish optional implementation hints from requirements.",
+      "proposed_artifact": "Allowed/forbidden/optional table, including both an invalid implementation and a different valid implementation.",
+      "limits": [
+        "IETF scope; do not claim all repository documents must use BCP 14.",
+        "Do not pretend frozen A0-C explicitly adopted this uppercase convention."
+      ],
+      "numeric_claims_for_manuscript": []
+    },
+    {
+      "id": "S4",
+      "title": "Hypothesis: Quickstart; Domain and distribution",
+      "authors": [
+        "Hypothesis team"
+      ],
+      "date": null,
+      "version": "documentation 6.168.2; accessed 2026-09-28 Asia/Taipei",
+      "kind": "primary project documentation",
+      "canonical_url": "https://hypothesis.readthedocs.io/en/latest/explanation/domain.html",
+      "companion_url": "https://hypothesis.readthedocs.io/en/latest/quickstart.html",
+      "caches": [
+        {
+          "id": "hypothesis-details",
+          "requested_url": "https://hypothesis.readthedocs.io/en/latest/quickstart.html",
+          "resolved_url": "https://hypothesis.readthedocs.io/en/latest/quickstart.html",
+          "accessed_utc": "2026-09-27T16:44:11.889368+00:00",
+          "cache_sha256": "295c2a7a82b872ce06cfb12f6b6231577d44e2c32ed54c40e7a48d3470fb8edc",
+          "characters": 5410,
+          "navigation": "Navigated to https://hypothesis.readthedocs.io/en/latest/quickstart.html (200)\n",
+          "verified_sections": [
+            {
+              "section_or_page": "Quickstart: Write your first test",
+              "start_character_offset_in_text_cache": 1411
+            },
+            {
+              "section_or_page": "Quickstart: Filtering inside a test",
+              "start_character_offset_in_text_cache": 3266
+            },
+            {
+              "section_or_page": "Quickstart: Dependent generation",
+              "start_character_offset_in_text_cache": 5317
+            }
+          ],
+          "private_cache_filename": "hypothesis-details.txt"
+        },
+        {
+          "id": "hypothesis-domain",
+          "requested_url": "https://hypothesis.readthedocs.io/en/latest/explanation/domain.html",
+          "resolved_url": "https://hypothesis.readthedocs.io/en/latest/explanation/domain.html",
+          "accessed_utc": "2026-09-27T16:45:40.330341+00:00",
+          "cache_sha256": "b4a43ed8cc057877c9529044fda5fca3798834167ff35f3452d9e52e86864f61",
+          "characters": 6731,
+          "navigation": "Navigated to https://hypothesis.readthedocs.io/en/latest/explanation/domain.html (200)\n",
+          "verified_sections": [
+            {
+              "section_or_page": "Domain and distribution definitions",
+              "start_character_offset_in_text_cache": 1293
+            },
+            {
+              "section_or_page": "How should I choose a domain for my test?",
+              "start_character_offset_in_text_cache": 2165
+            },
+            {
+              "section_or_page": "Okay, but what is the distribution?",
+              "start_character_offset_in_text_cache": 4928
+            }
+          ],
+          "private_cache_filename": "hypothesis-domain.txt"
+        }
+      ],
+      "verified_claims": [
+        "Users select input domain; generation distribution is selected by Hypothesis.",
+        "Overly narrow domains can exclude bug-triggering values.",
+        "Generated inputs are not intended as uniform or production-realistic samples."
+      ],
+      "reader_action": "Review the property and the generator together; verify that null/falsy/type-boundary cases have not been filtered out.",
+      "proposed_artifact": "Requirement/domain/invariant/exception/minimal-counterexample table.",
+      "limits": [
+        "Passing generated inputs does not estimate production reliability.",
+        "This documentation does not establish the existing 103-check study used Hypothesis.",
+        "Do not use default example count as an assurance threshold."
+      ],
+      "numeric_claims_for_manuscript": []
+    },
+    {
+      "id": "S5",
+      "title": "Metamorphic Testing: A New Approach for Generating Next Test Cases",
+      "authors": [
+        "T. Y. Chen",
+        "S. C. Cheung",
+        "S. M. Yiu"
+      ],
+      "date": "1998",
+      "version": "Technical Report HKUST-CS98-01; original PDF linked by coauthor",
+      "kind": "primary original research report",
+      "canonical_url": "https://www.cse.ust.hk/~scc/publ/CS98-01-metamorphictesting.pdf",
+      "caches": [
+        {
+          "id": "metamorphic-1998",
+          "requested_url": "https://www.cse.ust.hk/~scc/publ/CS98-01-metamorphictesting.pdf",
+          "resolved_url": "https://www.cse.ust.hk/~scc/publ/CS98-01-metamorphictesting.pdf",
+          "accessed_utc": "2026-09-27T16:50:47.724663+00:00",
+          "cache_sha256": "a2095b46cebac69051c7d5e6eb16bea4c0ddce5f1981182852c929a4167e131b",
+          "text_cache_sha256": "31a9ef58eb730c97f43c8077db1fb4d4acd1b9454bc362ebda17ef2b2e28e1f9",
+          "method": "gstack browse download then local pdftotext -layout",
+          "verified_sections": [
+            {
+              "section_or_page": "§1 pp. 2-3: complements other selection strategies",
+              "start_character_offset_in_text_cache": 6857
+            },
+            {
+              "section_or_page": "§2 p. 3: follow-up construction and practical constraints",
+              "start_character_offset_in_text_cache": 8501
+            },
+            {
+              "section_or_page": "§3.1 pp. 4-5: binary search example",
+              "start_character_offset_in_text_cache": 10018
+            },
+            {
+              "section_or_page": "§4 pp. 10-11: illustrative nature and incomplete methodology",
+              "start_character_offset_in_text_cache": 30946
+            }
+          ],
+          "private_cache_filename": "metamorphic-1998.pdf",
+          "private_text_cache_filename": "metamorphic-1998.txt"
+        },
+        {
+          "id": "cheung-publications",
+          "requested_url": "https://www.cse.ust.hk/~scc/publ/publ.html",
+          "resolved_url": "https://www.cse.ust.hk/~scc/publ/publ.html",
+          "accessed_utc": "2026-09-27T16:50:17.229872+00:00",
+          "cache_sha256": "ec7e0623363677b8f582efa9f4370d6437ea71e65cc9c9aa81598b416667881d",
+          "characters": 55781,
+          "navigation": "Navigated to https://www.cse.ust.hk/~scc/publ/publ.html (200)\n",
+          "verified_sections": [
+            {
+              "section_or_page": "coauthor publication list: title and original report identification",
+              "start_character_offset_in_text_cache": 55212
+            }
+          ],
+          "private_cache_filename": "cheung-publications.txt"
+        }
+      ],
+      "verified_claims": [
+        "Previously successful cases can support new follow-up cases designed to reveal missed errors.",
+        "Domain knowledge is required to design meaningful follow-up relations.",
+        "The approach supplements other testing strategies; the report is primarily motivation and examples."
+      ],
+      "reader_action": "State source input, transformation, preconditions and output relationship before implementing a relation test.",
+      "proposed_artifact": "Blank-line insertion relation with diagnostic-line-number adjustment; duplication counterexample under R13.",
+      "limits": [
+        "Worked parser examples are deductions from frozen requirements, not executed additions to the formal study.",
+        "The original PDF's extracted mathematical symbols contain OCR/encoding artifacts; do not quote formulas from text cache.",
+        "No large-scale experimental effectiveness claim is taken from this report."
+      ],
+      "numeric_claims_for_manuscript": []
+    },
+    {
+      "id": "S6",
+      "title": "PIT: Basic Concepts",
+      "authors": [
+        "PIT maintainers"
+      ],
+      "date": null,
+      "version": "undated live documentation; accessed 2026-09-28 Asia/Taipei",
+      "kind": "primary project documentation",
+      "canonical_url": "https://pitest.org/quickstart/basic_concepts/",
+      "caches": [
+        {
+          "id": "pit-basic",
+          "requested_url": "https://pitest.org/quickstart/basic_concepts/",
+          "resolved_url": "https://pitest.org/quickstart/basic_concepts/",
+          "accessed_utc": "2026-09-27T16:43:58.176874+00:00",
+          "cache_sha256": "e89f69b74e7f1635d89e8f31099ecd6a4426f12c3b33045333756cd2b208e4d8",
+          "characters": 4232,
+          "navigation": "Navigated to https://pitest.org/quickstart/basic_concepts/ (200)\n",
+          "verified_sections": [
+            {
+              "section_or_page": "Mutation Operators",
+              "start_character_offset_in_text_cache": 179
+            },
+            {
+              "section_or_page": "Equivalent Mutations",
+              "start_character_offset_in_text_cache": 1300
+            },
+            {
+              "section_or_page": "Running the tests: outcomes",
+              "start_character_offset_in_text_cache": 2725
+            }
+          ],
+          "private_cache_filename": "pit-basic.txt"
+        }
+      ],
+      "verified_claims": [
+        "Mutations introduce changes whose effects a test may detect.",
+        "Equivalent or out-of-scope differences can legitimately survive.",
+        "PIT distinguishes survival, no coverage, invalid mutation and execution failures."
+      ],
+      "reader_action": "Classify surviving changes before adding assertions; pair negative controls with legal alternate implementations.",
+      "proposed_artifact": "Requirement-linked controlled-fault matrix with expected reject/accept disposition.",
+      "limits": [
+        "PIT mutates Java bytecode; the study parser is Python.",
+        "Do not describe proposed targeted faults as executed results or claim a mutation score.",
+        "Mutation score alone is not a measure of complete specification correctness."
+      ],
+      "numeric_claims_for_manuscript": []
+    },
+    {
+      "id": "S7",
+      "title": "Best practices for Claude Code",
+      "authors": [
+        "Anthropic"
+      ],
+      "date": null,
+      "version": "live official documentation accessed 2026-09-28 Asia/Taipei",
+      "kind": "primary vendor documentation",
+      "canonical_url": "https://code.claude.com/docs/en/best-practices",
+      "caches": [
+        {
+          "id": "claude-best-practices",
+          "requested_url": "https://code.claude.com/docs/en/best-practices",
+          "resolved_url": "https://code.claude.com/docs/en/best-practices",
+          "accessed_utc": "2026-09-27T16:43:28.480535+00:00",
+          "cache_sha256": "54468ae03595a2c80e144a499f1f1130a8d46ad3732bdab292d4444fa52cfd2c",
+          "characters": 34569,
+          "navigation": "Navigated to https://code.claude.com/docs/en/best-practices (200)\n",
+          "verified_sections": [
+            {
+              "section_or_page": "Give Claude a way to verify its work",
+              "start_character_offset_in_text_cache": 3707
+            },
+            {
+              "section_or_page": "Explore first, then plan, then code",
+              "start_character_offset_in_text_cache": 6440
+            },
+            {
+              "section_or_page": "Write an effective CLAUDE.md",
+              "start_character_offset_in_text_cache": 10585
+            },
+            {
+              "section_or_page": "Let Claude interview you",
+              "start_character_offset_in_text_cache": 19686
+            },
+            {
+              "section_or_page": "Add an adversarial review step",
+              "start_character_offset_in_text_cache": 29970
+            },
+            {
+              "section_or_page": "Avoid common failure patterns",
+              "start_character_offset_in_text_cache": 31491
+            }
+          ],
+          "private_cache_filename": "claude-best-practices.txt"
+        }
+      ],
+      "verified_claims": [
+        "Separates exploration/planning from implementation and gives an interview-to-spec pattern for larger features.",
+        "Recommends observable verification signals and fresh-context review.",
+        "Warns that excessive persistent instructions add noise and review prompts may induce unnecessary findings."
+      ],
+      "reader_action": "Separate project instructions, feature contract, executable checks and review criteria, then retain actual evidence.",
+      "proposed_artifact": "Versioned handoff record with scope, verification commands/results, unknowns and finding dispositions.",
+      "limits": [
+        "Vendor practical guidance, not a randomized causal study.",
+        "Tool-enabled iterative workflows differ from the frozen tool-free one-shot study.",
+        "Fresh context does not establish independence of models or training data.",
+        "Do not repeat vendor promises of unattended correctness as a guarantee."
+      ],
+      "numeric_claims_for_manuscript": []
+    },
+    {
+      "id": "S8",
+      "title": "Bidirectional Empowerment of Metamorphic Testing and Large Language Models: A Systematic Survey",
+      "authors": [
+        "Zheng Zheng",
+        "Zenghui Zhou",
+        "Yinwang Xu",
+        "Daixu Ren",
+        "Tsong Yueh Chen"
+      ],
+      "date": "2026-05-12",
+      "version": "arXiv:2605.13898v1",
+      "kind": "research-author methodological synthesis; preprint survey, not a primary experiment",
+      "canonical_url": "https://arxiv.org/html/2605.13898v1",
+      "caches": [
+        {
+          "id": "metamorphic-paper",
+          "requested_url": "https://arxiv.org/html/2605.13898v1",
+          "resolved_url": "https://arxiv.org/html/2605.13898v1",
+          "accessed_utc": "2026-09-27T16:47:47.385269+00:00",
+          "cache_sha256": "55059794ef8781a39f3a3d6923b23643a7d86b42508af68a29ac9940e5cb55db",
+          "characters": 150953,
+          "navigation": "Navigated to https://arxiv.org/html/2605.13898v1 (200)\n",
+          "verified_sections": [
+            {
+              "section_or_page": "§2.1 relation definitions",
+              "start_character_offset_in_text_cache": 13162
+            },
+            {
+              "section_or_page": "§6.1 validity of proposed relations",
+              "start_character_offset_in_text_cache": 107081
+            },
+            {
+              "section_or_page": "§6.3 stochastic variation and reproducibility",
+              "start_character_offset_in_text_cache": 111049
+            }
+          ],
+          "private_cache_filename": "metamorphic-paper.txt"
+        }
+      ],
+      "verified_claims": [
+        "Plausible-sounding generated relations can be invalid or overly strong.",
+        "Paraphrases can legitimately change task meaning or expected responses.",
+        "One-shot relation violations in stochastic systems may mix defects and ordinary variability."
+      ],
+      "reader_action": "Require preconditions and a possible counterexample for a generated relation before treating it as a requirement.",
+      "proposed_artifact": "Relation-assurance card reviewed by the domain owner.",
+      "limits": [
+        "Uses the authors' own methodological discussion, not reported effect sizes from cited third-party experiments.",
+        "HTML contains a placeholder DOI; do not claim formal CSUR publication.",
+        "Suggested assurance approaches are research directions, not proven guarantees.",
+        "The review's study count is unnecessary to the manuscript and is not used as an effectiveness denominator."
+      ],
+      "numeric_claims_for_manuscript": []
+    }
+  ],
+  "unexecuted_teaching_examples": [
+    {
+      "name": "blank-line insertion",
+      "basis": "frozen R02/R03",
+      "invalid_relation": "stdout, stderr and exit are all byte-identical after insertion",
+      "corrected_relation": "stdout and exit remain equal; later malformed physical-line numbers shift according to insertion position, or restrict domain to no malformed events",
+      "status": "deduced design; no added candidate experiment executed"
+    },
+    {
+      "name": "event duplication",
+      "basis": "frozen R13",
+      "invalid_relation": "duplicate events are idempotent",
+      "corrected_relation": "duplicate valid agent messages emit duplicate message output",
+      "status": "deduced design; no added candidate experiment executed"
+    }
+  ],
+  "excluded_or_background": [
+    {
+      "title": "The World and the Machine",
+      "reason": "author server TLS/empty-response failures; ACM DOI 403; full text unverified"
+    },
+    {
+      "title": "Who Builds a House without Drawing Blueprints? (2015)",
+      "reason": "CACM 403; do not conflate with successfully obtained 2013 predecessor"
+    },
+    {
+      "title": "QuickCheck original home/manual",
+      "reason": "home fetched; manual body empty; no original 2000 paper full-text claim",
+      "cache_ids": [
+        "quickcheck-home",
+        "quickcheck-manual"
+      ]
+    },
+    {
+      "title": "Spec Kit README",
+      "reason": "fetched successfully; current industry SDD covered independently by root",
+      "cache_id": "spec-kit"
+    },
+    {
+      "title": "initial HKU report URL",
+      "reason": "failed guessed URL superseded by verified coauthor HKUST report"
+    }
+  ],
+  "boundaries": [
+    "No article edits",
+    "No frozen experimental archive edits",
+    "No new candidate generation",
+    "No unexecuted design presented as an observation"
+  ],
+  "publication_scope": "Source metadata, hashes, section locators and paraphrased findings only. Cached source full texts are not published.",
+  "external_reproduction": false
+}

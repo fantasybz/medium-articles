@@ -1,0 +1,611 @@
+{
+  "piece": "overview",
+  "reviewed_at": "2026-09-25T09:27:20.634646+00:00",
+  "reviewer": "Codex root contextual editorial review",
+  "scope": "Actual final source and paste MCP reports; all retained info items adjudicated individually. This does not claim zero prompts or human review.",
+  "configuration": "strict; ai_threshold=low; technical translationese; consistency; style; explain; verify; max_errors=0; max_warnings=0; no automatic fix",
+  "checks": [
+    {
+      "report": "zhtw/overview-full-03.json",
+      "input_path": "2026-11-same-spec-overview/article.md",
+      "input_sha256": "98381db29e1bd4c7323e6a0adda49550e8d9c271fcc4c31b4c0026a48dd14de7",
+      "summary": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 34,
+        "tier2_gray_zone": 1
+      },
+      "issues": [
+        {
+          "issue_index": 0,
+          "line": 3,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "959b841c7f7a6474a0dd605ec03d2313f9d68b198d864ae457f0232bf9cadee6"
+        },
+        {
+          "issue_index": 1,
+          "line": 3,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "959b841c7f7a6474a0dd605ec03d2313f9d68b198d864ae457f0232bf9cadee6"
+        },
+        {
+          "issue_index": 2,
+          "line": 17,
+          "rule_type": "ai_style",
+          "found": "打造",
+          "disposition": "contextually_retained",
+          "reason": "保留：出現在已發布文章的正式篇名，不能為風格提示改名。",
+          "source_line_sha256": "92ab2d7db0b5269b629eec2bd871702eccea23b31f1734711a98bfd386662d7a"
+        },
+        {
+          "issue_index": 3,
+          "line": 27,
+          "rule_type": "case",
+          "found": "json",
+          "disposition": "contextually_retained",
+          "reason": "保留：實際檔名及連結標籤使用小寫 .json，必須對應 repo 路徑。",
+          "source_line_sha256": "0cf400fdad75baf509691d935bf0b122c8064e9d8b4c78bb6b883b914102eb2a"
+        },
+        {
+          "issue_index": 4,
+          "line": 35,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "0b52e356f38051d5f058d8c7cbe9078db7a105b1a265fa2e0c1fff3824621170"
+        },
+        {
+          "issue_index": 5,
+          "line": 35,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "0b52e356f38051d5f058d8c7cbe9078db7a105b1a265fa2e0c1fff3824621170"
+        },
+        {
+          "issue_index": 6,
+          "line": 37,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "dea011d9a295e7f5e20591181dd70dd21faaebb0aea867835ca7cf4c9b380abf"
+        },
+        {
+          "issue_index": 7,
+          "line": 45,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "3db8ae9edfa09414e41ad8c74f2d49c1da008f10500b1a9a64d4e08e9de8d4dc"
+        },
+        {
+          "issue_index": 8,
+          "line": 62,
+          "rule_type": "case",
+          "found": "json",
+          "disposition": "contextually_retained",
+          "reason": "保留：實際檔名及連結標籤使用小寫 .json，必須對應 repo 路徑。",
+          "source_line_sha256": "6ba00b748f3c929e29bc812a7b75fd40a6106d3e08bbbae8a562c24c22299129"
+        },
+        {
+          "issue_index": 9,
+          "line": 64,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "e2d72a70bd31ad5f176eb51ba18b331bc63e6c24551d35911dc8e841175610c8"
+        },
+        {
+          "issue_index": 10,
+          "line": 64,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "e2d72a70bd31ad5f176eb51ba18b331bc63e6c24551d35911dc8e841175610c8"
+        },
+        {
+          "issue_index": 11,
+          "line": 81,
+          "rule_type": "ai_style",
+          "found": "設有",
+          "disposition": "contextually_retained",
+          "reason": "保留：明確說明研究設置時間上限，動作與對象清楚。",
+          "source_line_sha256": "3f29f37f45e5cb2802421e7d2606e28cbfd8803291b5cf333d70b74e38e3653b"
+        },
+        {
+          "issue_index": 12,
+          "line": 83,
+          "rule_type": "case",
+          "found": "json",
+          "disposition": "contextually_retained",
+          "reason": "保留：實際檔名及連結標籤使用小寫 .json，必須對應 repo 路徑。",
+          "source_line_sha256": "b0609e1dfb9ac0813280c6cc42e70ed44d5823676f996bf2e8d57c746dd5bfbc"
+        },
+        {
+          "issue_index": 13,
+          "line": 91,
+          "rule_type": "case",
+          "found": "json",
+          "disposition": "contextually_retained",
+          "reason": "保留：實際檔名及連結標籤使用小寫 .json，必須對應 repo 路徑。",
+          "source_line_sha256": "eb31c6d61ccea27c72064758bafcaf71aae6589f12eda2b08ed20b0155dafd7c"
+        },
+        {
+          "issue_index": 14,
+          "line": 98,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "12a3822a96bc47cc0183f2026672d5d321d84f3da8f75920b314fca2dde5dc16"
+        },
+        {
+          "issue_index": 15,
+          "line": 105,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "4247a44414b5d90cf53d18315392012333b8c865e9796eb09dd9a4cea66eeb34"
+        },
+        {
+          "issue_index": 16,
+          "line": 105,
+          "rule_type": "cross_strait",
+          "found": "程序",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處是 procedure／驗收或計算步驟，不是 program；表示執行中 process 的原句已改成「行程」。",
+          "source_line_sha256": "4247a44414b5d90cf53d18315392012333b8c865e9796eb09dd9a4cea66eeb34"
+        },
+        {
+          "issue_index": 17,
+          "line": 105,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "4247a44414b5d90cf53d18315392012333b8c865e9796eb09dd9a4cea66eeb34"
+        },
+        {
+          "issue_index": 18,
+          "line": 105,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "4247a44414b5d90cf53d18315392012333b8c865e9796eb09dd9a4cea66eeb34"
+        },
+        {
+          "issue_index": 19,
+          "line": 111,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "f8b1384073a80796cda5b9cc56c5a5f02d020106e7c0ae27b9c16d7acf96a158"
+        },
+        {
+          "issue_index": 20,
+          "line": 111,
+          "rule_type": "case",
+          "found": "json",
+          "disposition": "contextually_retained",
+          "reason": "保留：實際檔名及連結標籤使用小寫 .json，必須對應 repo 路徑。",
+          "source_line_sha256": "f8b1384073a80796cda5b9cc56c5a5f02d020106e7c0ae27b9c16d7acf96a158"
+        },
+        {
+          "issue_index": 21,
+          "line": 115,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "5389fe4bd9beb55ae668bf371b9646fbdd9a7457a9b2f93c1feb52e884a34e86"
+        },
+        {
+          "issue_index": 22,
+          "line": 117,
+          "rule_type": "case",
+          "found": "json",
+          "disposition": "contextually_retained",
+          "reason": "保留：實際檔名及連結標籤使用小寫 .json，必須對應 repo 路徑。",
+          "source_line_sha256": "25c45a9b4814dbb0c7820d1cfe3cf7d25c651f2393782553078b4d5f95b41a66"
+        },
+        {
+          "issue_index": 23,
+          "line": 130,
+          "rule_type": "case",
+          "found": "json",
+          "disposition": "contextually_retained",
+          "reason": "保留：實際檔名及連結標籤使用小寫 .json，必須對應 repo 路徑。",
+          "source_line_sha256": "e7d6ec19f6489ca642ad9ada0876f826dd87b09437871da65217a12de331d358"
+        },
+        {
+          "issue_index": 24,
+          "line": 134,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "0f63a3e7b4436198ac6ae7b9ab67443e1f4116e1ac48b535a722790ed03ea5fa"
+        },
+        {
+          "issue_index": 25,
+          "line": 146,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "5390c91f21716fcf5d157251a162b4143819fa67ac6766f26671d02c2a9588a5"
+        },
+        {
+          "issue_index": 26,
+          "line": 148,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "3aa204191118039f2166060bec7bee2703bfc64e7a31a39421ccb5c4cf4d8e39"
+        },
+        {
+          "issue_index": 27,
+          "line": 149,
+          "rule_type": "cross_strait",
+          "found": "程序",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處是 procedure／驗收或計算步驟，不是 program；表示執行中 process 的原句已改成「行程」。",
+          "source_line_sha256": "55c0194d0817623efd369ae4ec8947cc04819a7e031524beb8a908c131765221"
+        },
+        {
+          "issue_index": 28,
+          "line": 157,
+          "rule_type": "case",
+          "found": "json",
+          "disposition": "contextually_retained",
+          "reason": "保留：實際檔名及連結標籤使用小寫 .json，必須對應 repo 路徑。",
+          "source_line_sha256": "b9ddba1776f30fd2f8ed07c1dc5a2c9f0ce413c4efb2e9ae62e0079654d9da5c"
+        },
+        {
+          "issue_index": 29,
+          "line": 168,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "e646a63eb97efc2e3cb3d6880bd64182fc8dc246f0d0c03d0b35221beee7f442"
+        },
+        {
+          "issue_index": 30,
+          "line": 174,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "3ae2e04616e5d396ca89378df249a39eb1d419dbff83fb4e7c47d25f42c3f1f3"
+        },
+        {
+          "issue_index": 31,
+          "line": 174,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "3ae2e04616e5d396ca89378df249a39eb1d419dbff83fb4e7c47d25f42c3f1f3"
+        },
+        {
+          "issue_index": 32,
+          "line": 176,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "2775cf61c55886d7dd51e7468d8b43a44ab3b2e80a09a2c618bac089fbc67b6b"
+        },
+        {
+          "issue_index": 33,
+          "line": 191,
+          "rule_type": "ai_style",
+          "found": "打造",
+          "disposition": "contextually_retained",
+          "reason": "保留：出現在已發布文章的正式篇名，不能為風格提示改名。",
+          "source_line_sha256": "c6363c218e84600e916635ed431d270a51253783b3356edf156d6b86da6ce198"
+        }
+      ]
+    },
+    {
+      "report": "zhtw/overview-paste-01.json",
+      "input_path": "2026-11-same-spec-overview/publish/medium-paste.md",
+      "input_sha256": "d06842086fe22fa61880ca3e3aca6d38d574084d409dccbf0322f8e845d50e56",
+      "summary": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 30
+      },
+      "issues": [
+        {
+          "issue_index": 0,
+          "line": 29,
+          "rule_type": "punctuation",
+          "found": " ",
+          "disposition": "contextually_retained",
+          "reason": "保留：系列版型 TL;DR 分隔符或 References 欄位間距；非中文標點誤用。",
+          "source_line_sha256": "959b841c7f7a6474a0dd605ec03d2313f9d68b198d864ae457f0232bf9cadee6"
+        },
+        {
+          "issue_index": 1,
+          "line": 29,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "959b841c7f7a6474a0dd605ec03d2313f9d68b198d864ae457f0232bf9cadee6"
+        },
+        {
+          "issue_index": 2,
+          "line": 43,
+          "rule_type": "ai_style",
+          "found": "打造",
+          "disposition": "contextually_retained",
+          "reason": "保留：出現在已發布文章的正式篇名，不能為風格提示改名。",
+          "source_line_sha256": "92ab2d7db0b5269b629eec2bd871702eccea23b31f1734711a98bfd386662d7a"
+        },
+        {
+          "issue_index": 3,
+          "line": 53,
+          "rule_type": "case",
+          "found": "json",
+          "disposition": "contextually_retained",
+          "reason": "保留：實際檔名及連結標籤使用小寫 .json，必須對應 repo 路徑。",
+          "source_line_sha256": "0cf400fdad75baf509691d935bf0b122c8064e9d8b4c78bb6b883b914102eb2a"
+        },
+        {
+          "issue_index": 4,
+          "line": 57,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "0b52e356f38051d5f058d8c7cbe9078db7a105b1a265fa2e0c1fff3824621170"
+        },
+        {
+          "issue_index": 5,
+          "line": 57,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "0b52e356f38051d5f058d8c7cbe9078db7a105b1a265fa2e0c1fff3824621170"
+        },
+        {
+          "issue_index": 6,
+          "line": 59,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "dea011d9a295e7f5e20591181dd70dd21faaebb0aea867835ca7cf4c9b380abf"
+        },
+        {
+          "issue_index": 7,
+          "line": 67,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "3db8ae9edfa09414e41ad8c74f2d49c1da008f10500b1a9a64d4e08e9de8d4dc"
+        },
+        {
+          "issue_index": 8,
+          "line": 79,
+          "rule_type": "case",
+          "found": "json",
+          "disposition": "contextually_retained",
+          "reason": "保留：實際檔名及連結標籤使用小寫 .json，必須對應 repo 路徑。",
+          "source_line_sha256": "6ba00b748f3c929e29bc812a7b75fd40a6106d3e08bbbae8a562c24c22299129"
+        },
+        {
+          "issue_index": 9,
+          "line": 81,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "e2d72a70bd31ad5f176eb51ba18b331bc63e6c24551d35911dc8e841175610c8"
+        },
+        {
+          "issue_index": 10,
+          "line": 81,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "e2d72a70bd31ad5f176eb51ba18b331bc63e6c24551d35911dc8e841175610c8"
+        },
+        {
+          "issue_index": 11,
+          "line": 93,
+          "rule_type": "ai_style",
+          "found": "設有",
+          "disposition": "contextually_retained",
+          "reason": "保留：明確說明研究設置時間上限，動作與對象清楚。",
+          "source_line_sha256": "3f29f37f45e5cb2802421e7d2606e28cbfd8803291b5cf333d70b74e38e3653b"
+        },
+        {
+          "issue_index": 12,
+          "line": 95,
+          "rule_type": "case",
+          "found": "json",
+          "disposition": "contextually_retained",
+          "reason": "保留：實際檔名及連結標籤使用小寫 .json，必須對應 repo 路徑。",
+          "source_line_sha256": "b0609e1dfb9ac0813280c6cc42e70ed44d5823676f996bf2e8d57c746dd5bfbc"
+        },
+        {
+          "issue_index": 13,
+          "line": 103,
+          "rule_type": "case",
+          "found": "json",
+          "disposition": "contextually_retained",
+          "reason": "保留：實際檔名及連結標籤使用小寫 .json，必須對應 repo 路徑。",
+          "source_line_sha256": "eb31c6d61ccea27c72064758bafcaf71aae6589f12eda2b08ed20b0155dafd7c"
+        },
+        {
+          "issue_index": 14,
+          "line": 107,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "4247a44414b5d90cf53d18315392012333b8c865e9796eb09dd9a4cea66eeb34"
+        },
+        {
+          "issue_index": 15,
+          "line": 107,
+          "rule_type": "cross_strait",
+          "found": "程序",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處是 procedure／驗收或計算步驟，不是 program；表示執行中 process 的原句已改成「行程」。",
+          "source_line_sha256": "4247a44414b5d90cf53d18315392012333b8c865e9796eb09dd9a4cea66eeb34"
+        },
+        {
+          "issue_index": 16,
+          "line": 107,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "4247a44414b5d90cf53d18315392012333b8c865e9796eb09dd9a4cea66eeb34"
+        },
+        {
+          "issue_index": 17,
+          "line": 107,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "4247a44414b5d90cf53d18315392012333b8c865e9796eb09dd9a4cea66eeb34"
+        },
+        {
+          "issue_index": 18,
+          "line": 113,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "f8b1384073a80796cda5b9cc56c5a5f02d020106e7c0ae27b9c16d7acf96a158"
+        },
+        {
+          "issue_index": 19,
+          "line": 113,
+          "rule_type": "case",
+          "found": "json",
+          "disposition": "contextually_retained",
+          "reason": "保留：實際檔名及連結標籤使用小寫 .json，必須對應 repo 路徑。",
+          "source_line_sha256": "f8b1384073a80796cda5b9cc56c5a5f02d020106e7c0ae27b9c16d7acf96a158"
+        },
+        {
+          "issue_index": 20,
+          "line": 117,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "5389fe4bd9beb55ae668bf371b9646fbdd9a7457a9b2f93c1feb52e884a34e86"
+        },
+        {
+          "issue_index": 21,
+          "line": 119,
+          "rule_type": "case",
+          "found": "json",
+          "disposition": "contextually_retained",
+          "reason": "保留：實際檔名及連結標籤使用小寫 .json，必須對應 repo 路徑。",
+          "source_line_sha256": "25c45a9b4814dbb0c7820d1cfe3cf7d25c651f2393782553078b4d5f95b41a66"
+        },
+        {
+          "issue_index": 22,
+          "line": 127,
+          "rule_type": "case",
+          "found": "json",
+          "disposition": "contextually_retained",
+          "reason": "保留：實際檔名及連結標籤使用小寫 .json，必須對應 repo 路徑。",
+          "source_line_sha256": "e7d6ec19f6489ca642ad9ada0876f826dd87b09437871da65217a12de331d358"
+        },
+        {
+          "issue_index": 23,
+          "line": 131,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "0f63a3e7b4436198ac6ae7b9ab67443e1f4116e1ac48b535a722790ed03ea5fa"
+        },
+        {
+          "issue_index": 24,
+          "line": 149,
+          "rule_type": "case",
+          "found": "json",
+          "disposition": "contextually_retained",
+          "reason": "保留：實際檔名及連結標籤使用小寫 .json，必須對應 repo 路徑。",
+          "source_line_sha256": "b9ddba1776f30fd2f8ed07c1dc5a2c9f0ce413c4efb2e9ae62e0079654d9da5c"
+        },
+        {
+          "issue_index": 25,
+          "line": 155,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "e646a63eb97efc2e3cb3d6880bd64182fc8dc246f0d0c03d0b35221beee7f442"
+        },
+        {
+          "issue_index": 26,
+          "line": 161,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "3ae2e04616e5d396ca89378df249a39eb1d419dbff83fb4e7c47d25f42c3f1f3"
+        },
+        {
+          "issue_index": 27,
+          "line": 161,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "3ae2e04616e5d396ca89378df249a39eb1d419dbff83fb4e7c47d25f42c3f1f3"
+        },
+        {
+          "issue_index": 28,
+          "line": 163,
+          "rule_type": "cross_strait",
+          "found": "通過",
+          "disposition": "contextually_retained",
+          "reason": "保留：此處指 pass／符合檢查，並非 via；不能改成「透過」。",
+          "source_line_sha256": "2775cf61c55886d7dd51e7468d8b43a44ab3b2e80a09a2c618bac089fbc67b6b"
+        },
+        {
+          "issue_index": 29,
+          "line": 178,
+          "rule_type": "ai_style",
+          "found": "打造",
+          "disposition": "contextually_retained",
+          "reason": "保留：出現在已發布文章的正式篇名，不能為風格提示改名。",
+          "source_line_sha256": "c6363c218e84600e916635ed431d270a51253783b3356edf156d6b86da6ce198"
+        }
+      ]
+    }
+  ],
+  "earlier_rounds": "All original MCP reports are retained. Real wording issues were revised in the root polish/delta records; output was rerun after final modifications."
+}

@@ -1,0 +1,719 @@
+{
+  "date": "2026-10-03",
+  "assembled_at_utc": "2026-10-03T14:21:44.406722+00:00",
+  "scope": "Reader-guided prose revision of the 2026-09-28 Claude max principal drafts by Codex root. No new principal-writing job, independent-agent review, external research retrieval, model experiment or remote publishing is claimed for this pass.",
+  "paths_relative_to": "repository root",
+  "strict_language_config": {
+    "content_type": "markdown",
+    "fix_mode": "none",
+    "fix_output": "search_replace",
+    "profile": "strict",
+    "translationese_domain": "technical",
+    "detect_ai": true,
+    "ai_threshold": "low",
+    "detect_translationese": true,
+    "consistency": true,
+    "detect_style": true,
+    "explain": true,
+    "include_stats": true,
+    "include_telemetry": true,
+    "verify": true,
+    "max_errors": 0,
+    "max_warnings": 0,
+    "output": "full",
+    "ignore_terms": [
+      "通過"
+    ],
+    "glossary": {
+      "proper_nouns": [
+        "Can your AI agent be cheaper?"
+      ]
+    }
+  },
+  "pieces": [
+    {
+      "piece": "overview",
+      "before_article_sha256": "565fb24dbf97f7fcd00250f95a9ddf02ee7d88e1fde72c438a1d446a8f966066",
+      "article_sha256": "198d6ffd082bc73a244eee6ecf2286e0148db71a036a73706eb0f52aa4e0e596",
+      "paste_sha256": "d6f199384e51559ee1f4156fbb332f813cf91af8ab38ba2044435fc6eb308e0f",
+      "principal_draft_unchanged_from_2026_09_28": {
+        "requested_model": "claude-opus-5-5",
+        "requested_effort": "max",
+        "cli_version": "2.1.283 (Claude Code)",
+        "assistant_models": [
+          "claude-opus-5-5"
+        ],
+        "started_at": "2026-09-27T20:00:15.258124+00:00",
+        "finished_at": "2026-09-27T20:40:07.921461+00:00",
+        "exit_code": 0,
+        "success": true,
+        "text_block_count": 2,
+        "artifact_sha256": "39ea45f3208150c02845c59350e6c6e9b674237d4eeb768ae820e20b565fe656"
+      },
+      "editorial_review": {
+        "question": "一段自查為什麼值得研究，哪些證據才足以把它採為預設？",
+        "route": "工作坊落差 → 一次成功的提議 → 需求／候選／方法三層 → 正式結果 → CSV 分流 → 採用與維護",
+        "examples": [
+          "存入 100、提領 30 的假設帳戶說明依事件重建狀態；明確區分工作坊紀錄。",
+          "先以 null 日期輸出空欄說明判斷依據，再引入 oracle／grader。",
+          "一個任務在 P、Q 各做三次，說明 task／work／session；人工投入分子保留失敗工作。"
+        ],
+        "latter_half": "重讀合法差異、CSV、提案、採用與結語；拆開角色責任，保留未執行、人工缺口與撤回條件。"
+      },
+      "preservation": {
+        "fenced_blocks_byte_exact": true,
+        "table_lines_byte_exact": true,
+        "ordered_link_targets_unchanged": true,
+        "figures_index_unchanged": true
+      },
+      "language": {
+        "article": {
+          "path": "2026-11-same-spec-overview/article.md",
+          "sha256": "198d6ffd082bc73a244eee6ecf2286e0148db71a036a73706eb0f52aa4e0e596",
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 49
+          },
+          "accepted": true,
+          "exact_echo": true,
+          "private_report_sha256": "c0a207ce951bb623fb27a6de5c575aa3abd6aa295516dd74bb65f8b921f66617",
+          "verify_requested": true,
+          "verify_result": {
+            "api_ok": true,
+            "matched": 0,
+            "unmatched": 28,
+            "no_english": 21
+          }
+        },
+        "paste": {
+          "path": "2026-11-same-spec-overview/publish/medium-paste.md",
+          "sha256": "d6f199384e51559ee1f4156fbb332f813cf91af8ab38ba2044435fc6eb308e0f",
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 49
+          },
+          "accepted": true,
+          "exact_echo": true,
+          "private_report_sha256": "877b2b09bbbef8066e77e06d7de214673e1165c88592ad03a2e2613db3da7fb3",
+          "verify_requested": true,
+          "verify_result": {
+            "api_ok": true,
+            "matched": 0,
+            "unmatched": 28,
+            "no_english": 21
+          }
+        }
+      },
+      "pack": {
+        "paste_body_byte_exact": true,
+        "figures_index_exact": true,
+        "local_link_count": 24,
+        "images_unchanged_from_previous_record": [
+          {
+            "path": "2026-11-same-spec-overview/publish/images/diagram-01.png",
+            "sha256": "167614011181c44762ca10de6a4cfa1edca18cdece8755604007274649d0d878",
+            "width": 664,
+            "height": 878
+          },
+          {
+            "path": "2026-11-same-spec-overview/publish/images/table-01.png",
+            "sha256": "112247b582243b8b1960cdbab0801a159d52806698ab97bcc9a7cbe4337cc668",
+            "width": 1800,
+            "height": 634
+          },
+          {
+            "path": "2026-11-same-spec-overview/publish/images/table-02.png",
+            "sha256": "474e040d63584d276764c893205b341b930428618eef80ba2800c983a788c6d1",
+            "width": 1800,
+            "height": 538
+          },
+          {
+            "path": "2026-11-same-spec-overview/publish/images/table-03.png",
+            "sha256": "e5f92924f1d1f2c2b0b7bd39e5a97a6dd2dbad4c9ea572aea0206ce1df45167f",
+            "width": 1682,
+            "height": 476
+          },
+          {
+            "path": "2026-11-same-spec-overview/publish/images/table-04.png",
+            "sha256": "8fde47f07b28aca542f62108f598350d2bdb05f19a2e5f135564f843f3b999f8",
+            "width": 1800,
+            "height": 490
+          },
+          {
+            "path": "2026-11-same-spec-overview/publish/images/table-05.png",
+            "sha256": "3346f0d8a99c4a7cad2bfb118d98682a09a8ca77f7f37b647bd5ae2753789979",
+            "width": 1800,
+            "height": 736
+          },
+          {
+            "path": "2026-11-same-spec-overview/publish/images/table-06.png",
+            "sha256": "5afd01659d527df157572dd0d2f3840ba051a5c2272b0b2f19a6ab5381def130",
+            "width": 1800,
+            "height": 586
+          }
+        ]
+      },
+      "preview": {
+        "source_sha256": "198d6ffd082bc73a244eee6ecf2286e0148db71a036a73706eb0f52aa4e0e596",
+        "paste_sha256": "d6f199384e51559ee1f4156fbb332f813cf91af8ab38ba2044435fc6eb308e0f",
+        "layouts": [
+          {
+            "name": "desktop",
+            "viewport": {
+              "width": 1280,
+              "height": 900
+            },
+            "loaded_images": 7,
+            "horizontal_overflow": false,
+            "screenshots": [
+              {
+                "path": ".context/same-spec-ten-runs/readability-2026-10-03/preview/overview-desktop-concept.png",
+                "sha256": "0993d34f320ec4bfa078972b47b5d31fadcd2554d7fe231d49c9c48919a831cb"
+              }
+            ]
+          },
+          {
+            "name": "mobile",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "loaded_images": 7,
+            "horizontal_overflow": false,
+            "screenshots": [
+              {
+                "path": ".context/same-spec-ten-runs/readability-2026-10-03/preview/overview-mobile-closing.png",
+                "sha256": "c164dd84177a27b1d055a89aae71cd5dcd01bbbbc377b78680608078764c4d4e"
+              }
+            ]
+          }
+        ],
+        "visual_review": "Root viewed the current desktop concept and mobile conclusion captures for all four pieces. No overlapping/cropped prose observed within captured viewports. DOM checks cover image loading and overflow; wide unchanged table PNGs can still be small on mobile. No Medium remote rendering check."
+      }
+    },
+    {
+      "piece": "spec",
+      "before_article_sha256": "8a10e9233b6f2e9b17247ef2fa1667fd6ceb4e0b5c31f3725d33494afdff57ba",
+      "article_sha256": "5753304291d0a4dffa0bedd11b65ecf22b63ac6be186429e2ae0d0cd80443a8c",
+      "paste_sha256": "6a705eeabe3971e19cadd9506b9f0931d688866a1ac078ce51b064c0104869d1",
+      "principal_draft_unchanged_from_2026_09_28": {
+        "requested_model": "claude-opus-5-5",
+        "requested_effort": "max",
+        "cli_version": "2.1.283 (Claude Code)",
+        "assistant_models": [
+          "claude-opus-5-5"
+        ],
+        "started_at": "2026-09-27T20:50:15.186234+00:00",
+        "finished_at": "2026-09-27T21:26:42.060318+00:00",
+        "exit_code": 0,
+        "success": true,
+        "text_block_count": 1,
+        "artifact_sha256": "d3300ca2c185183e4a5a1cde02f58d676cbf9c0b8ad123057f902b50e75bfa33"
+      },
+      "editorial_review": {
+        "question": "增加的文字是在改要求、說理由、請人自查，還是在建議寫法？",
+        "route": "text 型別的具體選擇 → 五類句子 → A0/A/B/C → R05 對照 → CLI 範圍反例 → 修改卡 → CSV 與文件維護",
+        "examples": [
+          "同一個 text: false 改寫成五種句子，讓分類先有共同案例。",
+          "先刪一句要求、觀察哪些程式不再被排除，再介紹合法集合並保留單向判準的限制。",
+          "用同一個 CSV 功能說明 spec-first／spec-anchored／spec-as-source 的生命週期差異。"
+        ],
+        "latter_half": "重讀研究介入、自查修改卡、CSV 與維護／結語；區分讀規則、查程式、執行檢查與可選自查效果。"
+      },
+      "preservation": {
+        "fenced_blocks_byte_exact": true,
+        "table_lines_byte_exact": true,
+        "ordered_link_targets_unchanged": true,
+        "figures_index_unchanged": true
+      },
+      "language": {
+        "article": {
+          "path": "2026-11-same-spec-spec/article.md",
+          "sha256": "5753304291d0a4dffa0bedd11b65ecf22b63ac6be186429e2ae0d0cd80443a8c",
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 42
+          },
+          "accepted": true,
+          "exact_echo": true,
+          "private_report_sha256": "9d30292ee6ca9f68c308a8d094ed552eaca1d4c9d3afaf307167d6cb86205664",
+          "verify_requested": true,
+          "verify_result": {
+            "api_ok": true,
+            "matched": 0,
+            "unmatched": 13,
+            "no_english": 29
+          }
+        },
+        "paste": {
+          "path": "2026-11-same-spec-spec/publish/medium-paste.md",
+          "sha256": "6a705eeabe3971e19cadd9506b9f0931d688866a1ac078ce51b064c0104869d1",
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 41
+          },
+          "accepted": true,
+          "exact_echo": true,
+          "private_report_sha256": "a6274d233d9ad49cca4fde4c401dbbadd1545dfd01f70bd44bb64875b16db787",
+          "verify_requested": true,
+          "verify_result": {
+            "api_ok": true,
+            "matched": 0,
+            "unmatched": 12,
+            "no_english": 29
+          }
+        }
+      },
+      "pack": {
+        "paste_body_byte_exact": true,
+        "figures_index_exact": true,
+        "local_link_count": 32,
+        "images_unchanged_from_previous_record": [
+          {
+            "path": "2026-11-same-spec-spec/publish/images/table-01.png",
+            "sha256": "e10ca79c5e11eeb270be99a36871d66a8d9053c74cf39bedafc18cb6fca59d91",
+            "width": 1800,
+            "height": 764
+          },
+          {
+            "path": "2026-11-same-spec-spec/publish/images/table-02.png",
+            "sha256": "bd12f97e63b317f86ff4c008bb6054c40f2bfd577c961df73df28883d3b3ecdd",
+            "width": 1800,
+            "height": 928
+          },
+          {
+            "path": "2026-11-same-spec-spec/publish/images/table-03.png",
+            "sha256": "7204fa5446abc8ace6f5f24adbf7a2e554416ce2c5b988db7f5f032356d68089",
+            "width": 1800,
+            "height": 668
+          },
+          {
+            "path": "2026-11-same-spec-spec/publish/images/table-04.png",
+            "sha256": "3c4d1a3db073f5d88252e5336a06d85798181e86296cd56d5d724b86865b4551",
+            "width": 1800,
+            "height": 764
+          },
+          {
+            "path": "2026-11-same-spec-spec/publish/images/table-05.png",
+            "sha256": "d7fb3764119d6c8f7413ea3c5c8f1c00a54f2d011243434ff768e40501a60318",
+            "width": 1800,
+            "height": 490
+          },
+          {
+            "path": "2026-11-same-spec-spec/publish/images/table-06.png",
+            "sha256": "eba0762ea3286ddde61450d180c5a65700d4e73d6e826fa75c74af8177bb4cb9",
+            "width": 1800,
+            "height": 1038
+          },
+          {
+            "path": "2026-11-same-spec-spec/publish/images/table-07.png",
+            "sha256": "475ea3f61fdeafddfd8be3696e12daddccd5fda9f46f023784fcd55835757db0",
+            "width": 1800,
+            "height": 730
+          },
+          {
+            "path": "2026-11-same-spec-spec/publish/images/table-08.png",
+            "sha256": "0c4f3ffe9854d8fedfaaac7bd9a2b41aeaa06b02a4def63e9fd5d776c8d66046",
+            "width": 1800,
+            "height": 778
+          }
+        ]
+      },
+      "preview": {
+        "source_sha256": "5753304291d0a4dffa0bedd11b65ecf22b63ac6be186429e2ae0d0cd80443a8c",
+        "paste_sha256": "6a705eeabe3971e19cadd9506b9f0931d688866a1ac078ce51b064c0104869d1",
+        "layouts": [
+          {
+            "name": "desktop",
+            "viewport": {
+              "width": 1280,
+              "height": 900
+            },
+            "loaded_images": 8,
+            "horizontal_overflow": false,
+            "screenshots": [
+              {
+                "path": ".context/same-spec-ten-runs/readability-2026-10-03/preview/spec-desktop-concept.png",
+                "sha256": "8ff55d7bc5497a8de90e5579e51e1394f15678c84b7b1d14b6295b263e8cd3e7"
+              }
+            ]
+          },
+          {
+            "name": "mobile",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "loaded_images": 8,
+            "horizontal_overflow": false,
+            "screenshots": [
+              {
+                "path": ".context/same-spec-ten-runs/readability-2026-10-03/preview/spec-mobile-closing.png",
+                "sha256": "32318edcb5e74364e70eb95f3603b166c7603a001353d26e40402746dbfcf6c9"
+              }
+            ]
+          }
+        ],
+        "visual_review": "Root viewed the current desktop concept and mobile conclusion captures for all four pieces. No overlapping/cropped prose observed within captured viewports. DOM checks cover image loading and overflow; wide unchanged table PNGs can still be small on mobile. No Medium remote rendering check."
+      }
+    },
+    {
+      "piece": "contract",
+      "before_article_sha256": "8d1e56af8c3e4166e964d017fa9f05b4a0d2f84838c0d586681962822244c8c6",
+      "article_sha256": "ceae48f523483da89cffbed7e9f941098ab36caa129845567229d461598a49f0",
+      "paste_sha256": "170f12fdaadae7f636db6830aff03a95c732e1d5c63fd7b110ad9e7f831cb4ac",
+      "principal_draft_unchanged_from_2026_09_28": {
+        "requested_model": "claude-opus-5-5",
+        "requested_effort": "max",
+        "cli_version": "2.1.283 (Claude Code)",
+        "assistant_models": [
+          "claude-opus-5-5"
+        ],
+        "started_at": "2026-09-27T20:50:32.027562+00:00",
+        "finished_at": "2026-09-27T21:28:37.498438+00:00",
+        "exit_code": 0,
+        "success": true,
+        "text_block_count": 1,
+        "artifact_sha256": "16e348bee88f664f24286e264d49ac09eaa2992a8ca0e6cbdec87489d5cbdd65"
+      },
+      "editorial_review": {
+        "question": "如何把要求推成可信驗收，又知道該修量尺、拒絕候選或補決策？",
+        "route": "兩盞綠燈 → oracle 依據 → 三行輸入推導 → 三出口與時間 → 變形關係／property → 正反對照 → CSV → 義務表與版本處理",
+        "examples": [
+          "false → after → 完成事件，逐步推出正常輸出、診斷和退出碼。",
+          "在已知案例前插兩個空行，先問哪些結果要變，再介紹變形測試。",
+          "同一片段送兩次會留下兩份輸出，再解釋本契約為什麼不要求冪等。",
+          "先讓布林值、數字與容器共同驗證 R05，再介紹 property／strategy。"
+        ],
+        "latter_half": "重讀輸入域、變異測試、CSV、義務表、隔離、重評／重新生成與結語；把時序前提和未涵蓋行為分段。"
+      },
+      "preservation": {
+        "fenced_blocks_byte_exact": true,
+        "table_lines_byte_exact": true,
+        "ordered_link_targets_unchanged": true,
+        "figures_index_unchanged": true
+      },
+      "language": {
+        "article": {
+          "path": "2026-11-same-spec-contract/article.md",
+          "sha256": "ceae48f523483da89cffbed7e9f941098ab36caa129845567229d461598a49f0",
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 52
+          },
+          "accepted": true,
+          "exact_echo": true,
+          "private_report_sha256": "f664cac3a5b69700ad80a5ac75da119e82171961a872f6c78cbc8faf1f74752a",
+          "verify_requested": true,
+          "verify_result": {
+            "api_ok": true,
+            "matched": 0,
+            "unmatched": 31,
+            "no_english": 21
+          }
+        },
+        "paste": {
+          "path": "2026-11-same-spec-contract/publish/medium-paste.md",
+          "sha256": "170f12fdaadae7f636db6830aff03a95c732e1d5c63fd7b110ad9e7f831cb4ac",
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 51
+          },
+          "accepted": true,
+          "exact_echo": true,
+          "private_report_sha256": "24e1216592b5337a523f70049652e8fbd670ba4a8c1eae14442eb7c42ce7ed1e",
+          "verify_requested": true,
+          "verify_result": {
+            "api_ok": true,
+            "matched": 0,
+            "unmatched": 30,
+            "no_english": 21
+          }
+        }
+      },
+      "pack": {
+        "paste_body_byte_exact": true,
+        "figures_index_exact": true,
+        "local_link_count": 28,
+        "images_unchanged_from_previous_record": [
+          {
+            "path": "2026-11-same-spec-contract/publish/images/diagram-01.png",
+            "sha256": "929aeafe8ff819aef7fb45f6f513a51b44d798effdab90269b2b933bc09530fa",
+            "width": 664,
+            "height": 582
+          },
+          {
+            "path": "2026-11-same-spec-contract/publish/images/table-01.png",
+            "sha256": "2950ae5535f828e06856324be04c60c0701d6ef980b007250c96b586020c5c48",
+            "width": 1698,
+            "height": 476
+          },
+          {
+            "path": "2026-11-same-spec-contract/publish/images/table-02.png",
+            "sha256": "6b1514d7c8cfa3feb7bfc3002e9db4aa9dc82b34f7b64bfbd5816add22ddd128",
+            "width": 1800,
+            "height": 538
+          },
+          {
+            "path": "2026-11-same-spec-contract/publish/images/table-03.png",
+            "sha256": "a091a485f21529e543accf3b523db0e6b6b63a7cb869712c9c9013bddfc5a2aa",
+            "width": 1784,
+            "height": 476
+          },
+          {
+            "path": "2026-11-same-spec-contract/publish/images/table-04.png",
+            "sha256": "44f22365ff089c17c49169e35e5097c7c9c30a87926a902c1ead41707d1eee9e",
+            "width": 1634,
+            "height": 394
+          },
+          {
+            "path": "2026-11-same-spec-contract/publish/images/table-05.png",
+            "sha256": "61b1d95d810146c97beadda3957e790effbac5b2da5e4ea508d2637d84e83b2c",
+            "width": 1800,
+            "height": 1168
+          },
+          {
+            "path": "2026-11-same-spec-contract/publish/images/table-06.png",
+            "sha256": "0194c32f6df516821565a1bff281904c874b34f54f2b68e05beb1da4dfe0fc88",
+            "width": 1800,
+            "height": 990
+          }
+        ]
+      },
+      "preview": {
+        "source_sha256": "ceae48f523483da89cffbed7e9f941098ab36caa129845567229d461598a49f0",
+        "paste_sha256": "170f12fdaadae7f636db6830aff03a95c732e1d5c63fd7b110ad9e7f831cb4ac",
+        "layouts": [
+          {
+            "name": "desktop",
+            "viewport": {
+              "width": 1280,
+              "height": 900
+            },
+            "loaded_images": 7,
+            "horizontal_overflow": false,
+            "screenshots": [
+              {
+                "path": ".context/same-spec-ten-runs/readability-2026-10-03/preview/contract-desktop-concept.png",
+                "sha256": "537a323a59c15e7ed80c65fd57c858bf1c647cce1f713e77226bda8dba92cd6c"
+              }
+            ]
+          },
+          {
+            "name": "mobile",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "loaded_images": 7,
+            "horizontal_overflow": false,
+            "screenshots": [
+              {
+                "path": ".context/same-spec-ten-runs/readability-2026-10-03/preview/contract-mobile-closing.png",
+                "sha256": "ba25eafdb9bb8a9e782e726a20dd7f59ae9793560e1433f1eb0c8839759ad28e"
+              }
+            ]
+          }
+        ],
+        "visual_review": "Root viewed the current desktop concept and mobile conclusion captures for all four pieces. No overlapping/cropped prose observed within captured viewports. DOM checks cover image loading and overflow; wide unchanged table PNGs can still be small on mobile. No Medium remote rendering check."
+      }
+    },
+    {
+      "piece": "variance",
+      "before_article_sha256": "938a0d045afb02aef3f9ea809a6b41d8473c4912371c6a4806774ccd0f353ed3",
+      "article_sha256": "da207fbc266bf9d903698f76713cb5eefa4d59e44a04e4b67cf1b44da9ac374a",
+      "paste_sha256": "b435f5627a31d8577332fa7b0f9b18c6f400cbfc4d1454818f4a5d0aa3b733a0",
+      "principal_draft_unchanged_from_2026_09_28": {
+        "requested_model": "claude-opus-5-5",
+        "requested_effort": "max",
+        "cli_version": "2.1.283 (Claude Code)",
+        "assistant_models": [
+          "claude-opus-5-5"
+        ],
+        "started_at": "2026-09-27T20:50:25.420937+00:00",
+        "finished_at": "2026-09-27T21:24:45.268046+00:00",
+        "exit_code": 0,
+        "success": true,
+        "text_block_count": 1,
+        "artifact_sha256": "9303fed72c098cceeb10889c46e4eabe082aca80ec7f6be4ee85a308449436ac"
+      },
+      "editorial_review": {
+        "question": "四組都十次全過後，下一筆預算該補哪一種證據？",
+        "route": "預設自查的提議 → 三種變動與計數 → 10/10 的限制 → 使用政策 → 失敗在哪題 → 證據選擇 → 讀兩份程式 → 新比較與人工採用條件",
+        "examples": [
+          "先比較三次交付都採用與三次中挑成功的一份，再介紹 pass^k／pass@k 與 selector。",
+          "用 95% 與 80% 方法都可能交出 10/10，帶出區間而非先丟統計名稱。",
+          "同為 10/20 的 X/Y，把失敗放回原任務，說明 task ID 與群聚。",
+          "兩個工作花 6 與 4 分鐘、只有一份交付，示範人工投入分子與分母；是假設，不是量測。"
+        ],
+        "latter_half": "重讀實作差異、回歸用途、抽樣、工作身分、人工時間、精度與聯合門檻；比較卡仍未執行，未以既有審查冒充當輪獨立複核。"
+      },
+      "preservation": {
+        "fenced_blocks_byte_exact": true,
+        "table_lines_byte_exact": true,
+        "ordered_link_targets_unchanged": true,
+        "figures_index_unchanged": true
+      },
+      "language": {
+        "article": {
+          "path": "2026-11-same-spec-variance/article.md",
+          "sha256": "da207fbc266bf9d903698f76713cb5eefa4d59e44a04e4b67cf1b44da9ac374a",
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 48
+          },
+          "accepted": true,
+          "exact_echo": true,
+          "private_report_sha256": "d7f5c40a5734b7209252543274416135102fc48a53486f1a71fb6309f77ee428",
+          "verify_requested": true,
+          "verify_result": {
+            "api_ok": true,
+            "matched": 0,
+            "unmatched": 30,
+            "no_english": 18
+          }
+        },
+        "paste": {
+          "path": "2026-11-same-spec-variance/publish/medium-paste.md",
+          "sha256": "b435f5627a31d8577332fa7b0f9b18c6f400cbfc4d1454818f4a5d0aa3b733a0",
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 46
+          },
+          "accepted": true,
+          "exact_echo": true,
+          "private_report_sha256": "e551151084f663ba0eac444fa59175cca16243c9580e215f6a3d0761635cc234",
+          "verify_requested": true,
+          "verify_result": {
+            "api_ok": true,
+            "matched": 0,
+            "unmatched": 28,
+            "no_english": 18
+          }
+        }
+      },
+      "pack": {
+        "paste_body_byte_exact": true,
+        "figures_index_exact": true,
+        "local_link_count": 27,
+        "images_unchanged_from_previous_record": [
+          {
+            "path": "2026-11-same-spec-variance/publish/images/table-01.png",
+            "sha256": "46f5f28a4572c987501c146fd5521e6004850bb8082e0f8c54ccc6800f3f4ee9",
+            "width": 1800,
+            "height": 634
+          },
+          {
+            "path": "2026-11-same-spec-variance/publish/images/table-02.png",
+            "sha256": "717ea5c82bc84552a3243d6ecd4213baa1942649000f4c2eeecd77e3d98bcc5b",
+            "width": 1800,
+            "height": 668
+          },
+          {
+            "path": "2026-11-same-spec-variance/publish/images/table-03.png",
+            "sha256": "5af07c503b304f38c9f1124fbf4ee1a3cc5312d4159ba35428b70d4de64af8e1",
+            "width": 1630,
+            "height": 312
+          },
+          {
+            "path": "2026-11-same-spec-variance/publish/images/table-04.png",
+            "sha256": "994c59204c2a638e95ab00ef54a6e01d99ce612bb5e1e98080f4b59fc0cd99a3",
+            "width": 1800,
+            "height": 1024
+          },
+          {
+            "path": "2026-11-same-spec-variance/publish/images/table-05.png",
+            "sha256": "416fc4ac18abf5e591a94b8c910bc4b064b611c401c6db50fd1064839aacb8ce",
+            "width": 1800,
+            "height": 826
+          },
+          {
+            "path": "2026-11-same-spec-variance/publish/images/table-06.png",
+            "sha256": "4fc3882a0e174ac6a788e881494dbd956e16e38b58efb43623672b8c8320e9fa",
+            "width": 1800,
+            "height": 572
+          },
+          {
+            "path": "2026-11-same-spec-variance/publish/images/table-07.png",
+            "sha256": "7d57ea6269fa25ef14e9ac8da6e0b35cda4330f338e05d3bde33ddaea21324a1",
+            "width": 1800,
+            "height": 874
+          }
+        ]
+      },
+      "preview": {
+        "source_sha256": "da207fbc266bf9d903698f76713cb5eefa4d59e44a04e4b67cf1b44da9ac374a",
+        "paste_sha256": "b435f5627a31d8577332fa7b0f9b18c6f400cbfc4d1454818f4a5d0aa3b733a0",
+        "layouts": [
+          {
+            "name": "desktop",
+            "viewport": {
+              "width": 1280,
+              "height": 900
+            },
+            "loaded_images": 7,
+            "horizontal_overflow": false,
+            "screenshots": [
+              {
+                "path": ".context/same-spec-ten-runs/readability-2026-10-03/preview/variance-desktop-concept.png",
+                "sha256": "42ccbb1f25264fbc6fc58ffac4f733af27f4f22a25968370f53bc588eec90f43"
+              }
+            ]
+          },
+          {
+            "name": "mobile",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "loaded_images": 7,
+            "horizontal_overflow": false,
+            "screenshots": [
+              {
+                "path": ".context/same-spec-ten-runs/readability-2026-10-03/preview/variance-mobile-closing.png",
+                "sha256": "417169d52f4152b58389e5b55481367b23909714e615b656811be5a7eacc57b2"
+              }
+            ]
+          }
+        ],
+        "visual_review": "Root viewed the current desktop concept and mobile conclusion captures for all four pieces. No overlapping/cropped prose observed within captured viewports. DOM checks cover image loading and overflow; wide unchanged table PNGs can still be small on mobile. No Medium remote rendering check."
+      }
+    }
+  ],
+  "tests": [
+    {
+      "command": "python3 tools/test_tools.py",
+      "passed": 301,
+      "log_sha256": "1e6ad05cd5637c7338545d108661914ec1663691de0f73c9bcf90d4075f56011"
+    },
+    {
+      "command": "python3 -m unittest research/scripts/test_research_scripts.py",
+      "passed": 121,
+      "log_sha256": "09a39df6eb60c08c8f4c15df76f4c65a9354497bea4b5de5798f52be3ab4771c"
+    }
+  ],
+  "frozen_archive": {
+    "archive": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25",
+    "index_sha256": "534434650fbd4070f9304ba79bb58d61245fdb94a259af430ea9e5f8ae5c995a",
+    "files_checked": 317,
+    "sha256_mismatches": []
+  },
+  "teaching_checks": "Code and fenced examples are unchanged; the 2026-09-28 teaching executions remain historical records, not newly run checks.",
+  "info_review": "Reviewed residual informational findings in context: 通過 means passing; 一個 preserves worked-example units; 一行一行 describes streaming; 有有 occurs inside 有有效／沒有有效; procedure/category/item senses of 程序／類／項目 are retained. Lists and numeric triplets carry exact rules or costs. Nominalizations and conditional markers were considered in adjacent prose, not automatically deleted. Reference-title punctuation and explicit tense contrasts are preserved. These are editorial dispositions, not a claim of zero info findings or human acceptance.",
+  "not_completed": [
+    "author acceptance after this revision",
+    "English editions",
+    "fixed-version public research attachment links",
+    "Medium remote drafts/publication",
+    "next P/Q task mapping/freezing and comparison",
+    "human handoff cost collection"
+  ]
+}

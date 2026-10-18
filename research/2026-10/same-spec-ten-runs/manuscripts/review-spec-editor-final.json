@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-09-25",
+  "reviewer": "Codex independent editorial sub-agent (AI): series_editor_review",
+  "lens": "editor_final_delta",
+  "verdict": "PASS_SPEC_EDITORIAL",
+  "series_verdict": "NOT_FULLY_REVIEWED",
+  "series_ready": false,
+  "public_release_complete": false,
+  "input": {
+    "path": "2026-11-same-spec-spec/article.md",
+    "sha256": "3d4fa69b2fb198aee8b75f01be21712c0482589f773b80873375d82d627a37ca",
+    "line_count": 194
+  },
+  "previous_full_review": {
+    "path": "research/2026-10/same-spec-ten-runs/manuscripts/review-spec-editor.md",
+    "input_sha256": "829017b621e70355979aa9ad6dc8830842fed52c74f00c95bbae53e52cedb8e6",
+    "verdict": "PASS_SPEC_EDITORIAL_WITH_MINOR_EDITS",
+    "complete_manuscript_read": true,
+    "continuous_second_half_reread": true
+  },
+  "delta_verification": {
+    "record": ".context/same-spec-ten-runs/manuscripts/spec-final-review-delta.json",
+    "replacement_count": 3,
+    "checks": [
+      {
+        "before": "每個名額的 CLI 都正常完成，生成邊界也完整。",
+        "after": "每個名額的 CLI 都正常完成，執行紀錄也未出現模型或工具設定越界。",
+        "after_occurrences": 1,
+        "before_occurrences": 0,
+        "line": 117
+      },
+      {
+        "before": "這樣的設計無法把效果拆給個別成分，也估不出成分之間的交互作用，因此我不把這次比較讀成「規格越長，表現越好或越差」。",
+        "after": "本輪沒有估計組間差值；這種逐組累加的配置，也不能分離各成分在不同組合下的獨立效果或完整交互作用。因此，我不把這次比較讀成「規格越長，表現越好或越差」。",
+        "after_occurrences": 1,
+        "before_occurrences": 0,
+        "line": 125
+      },
+      {
+        "before": "它交付的是 R01–R13 的完整任務規格",
+        "after": "本篇提供的是 R01–R13 的完整任務規格",
+        "after_occurrences": 1,
+        "before_occurrences": 0,
+        "line": 155
+      }
+    ],
+    "changed_paragraph_lines": [
+      117,
+      125,
+      155
+    ],
+    "reconstructed_previous_sha256": "829017b621e70355979aa9ad6dc8830842fed52c74f00c95bbae53e52cedb8e6",
+    "reconstructed_previous_matches_reviewed_version": true,
+    "current_matches_declared_new_sha256": true,
+    "only_declared_replacements": true
+  },
+  "resolutions": [
+    {
+      "id": "SPEC-ED-01",
+      "status": "closed",
+      "line": 117,
+      "reason": "「執行紀錄也未出現模型或工具設定越界」明確交代可觀察的紀錄與設定判定，沒有把未觀察到越界寫成所有通道皆受保護。"
+    },
+    {
+      "id": "SPEC-ED-02",
+      "status": "closed",
+      "line": 155,
+      "reason": "「本篇提供的是」明確指向此篇的交付內容，消除結語主詞歧義。"
+    }
+  ],
+  "additional_delta_review": {
+    "line": 125,
+    "result": "pass",
+    "reason": "將本輪未估組間差值、累加配置不能分離不同組合下的獨立效果或完整交互作用分開，避免把組間差值一併寫成設計上不可識別；不以長度解釋結果的收束仍一致。"
+  },
+  "new_issues": [],
+  "open_counts": {
+    "blocker": 0,
+    "major": 0,
+    "minor": 0
+  },
+  "scope": "Exact three-replacement delta review; previous full manuscript editorial review remains applicable. This approves this article editorially, not the whole series or public publication.",
+  "rendered_figures_checked_by_this_reviewer": false,
+  "mcp_invoked_this_review": false,
+  "manuscript_modified": false,
+  "prior_reviews_modified": false,
+  "frozen_data_modified": false
+}

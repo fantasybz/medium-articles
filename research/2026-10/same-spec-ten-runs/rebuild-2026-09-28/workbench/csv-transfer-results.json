@@ -1,0 +1,230 @@
+{
+  "scope": "Fixed synthetic CSV teaching replay; not a model trial or a second formal repo task.",
+  "generated_at_utc": "2026-09-27T17:24:51.049287+00:00",
+  "python": "3.14.5",
+  "source_sha256": {
+    "csv_transfer.py": "98b4f4f9c6b2702a8a3f964f03d0c1c1009d6f61a39cee4c99119977c29f1bae",
+    "test_csv_transfer.py": "90345b4fcf8050ab46012041aea647575295bf784553ef8dcbcde40ba1309432"
+  },
+  "input": {
+    "utf8_text": "[{\"name\":\"王,小明\",\"date\":null,\"note\":\"第一行\\n第二行\"},{\"name\":\"李\",\"date\":\"2026-09-28\",\"note\":\"\"},{\"name\":\"李\",\"date\":\"2026-09-28\",\"note\":\"\"}]\n",
+    "hex": "5b7b226e616d65223a22e78e8b2ce5b08fe6988e222c2264617465223a6e756c6c2c226e6f7465223a22e7acace4b880e8a18c5c6ee7acace4ba8ce8a18c227d2c7b226e616d65223a22e69d8e222c2264617465223a22323032362d30392d3238222c226e6f7465223a22227d2c7b226e616d65223a22e69d8e222c2264617465223a22323032362d30392d3238222c226e6f7465223a22227d5d0a",
+    "sha256": "5bdf6cfc03deb69a3346fb94eebdbcbda1136183d409f231957c20aae2b9d7f4",
+    "byte_length": 156
+  },
+  "expected_header": [
+    "name",
+    "date",
+    "note"
+  ],
+  "expected_records": [
+    [
+      "王,小明",
+      "",
+      "第一行\n第二行"
+    ],
+    [
+      "李",
+      "2026-09-28",
+      ""
+    ],
+    [
+      "李",
+      "2026-09-28",
+      ""
+    ]
+  ],
+  "observations": {
+    "valid_crlf": {
+      "utf8_text": "name,date,note\r\n\"王,小明\",,\"第一行\n第二行\"\r\n李,2026-09-28,\r\n李,2026-09-28,\r\n",
+      "hex": "6e616d652c646174652c6e6f74650d0a22e78e8b2ce5b08fe6988e222c2c22e7acace4b880e8a18c0ae7acace4ba8ce8a18c220d0ae69d8e2c323032362d30392d32382c0d0ae69d8e2c323032362d30392d32382c0d0a",
+      "sha256": "b86719143547416503d1ff4eba565a9a723849c733a6043f4f808ec3a65f5a7f",
+      "byte_length": 87,
+      "physical_lines": 5,
+      "parsed_header": [
+        "name",
+        "date",
+        "note"
+      ],
+      "parsed_records": [
+        [
+          "王,小明",
+          "",
+          "第一行\n第二行"
+        ],
+        [
+          "李",
+          "2026-09-28",
+          ""
+        ],
+        [
+          "李",
+          "2026-09-28",
+          ""
+        ]
+      ],
+      "parse_only_accepts": true,
+      "exact_crlf_bytes_accepts": true,
+      "contract_accepts": true
+    },
+    "valid_lf": {
+      "utf8_text": "name,date,note\n\"王,小明\",,\"第一行\n第二行\"\n李,2026-09-28,\n李,2026-09-28,\n",
+      "hex": "6e616d652c646174652c6e6f74650a22e78e8b2ce5b08fe6988e222c2c22e7acace4b880e8a18c0ae7acace4ba8ce8a18c220ae69d8e2c323032362d30392d32382c0ae69d8e2c323032362d30392d32382c0a",
+      "sha256": "56b6b34afc05739a069c66444c33ed2bd5de53c8de65fc4c5f65a00544f1034b",
+      "byte_length": 83,
+      "physical_lines": 5,
+      "parsed_header": [
+        "name",
+        "date",
+        "note"
+      ],
+      "parsed_records": [
+        [
+          "王,小明",
+          "",
+          "第一行\n第二行"
+        ],
+        [
+          "李",
+          "2026-09-28",
+          ""
+        ],
+        [
+          "李",
+          "2026-09-28",
+          ""
+        ]
+      ],
+      "parse_only_accepts": true,
+      "exact_crlf_bytes_accepts": false,
+      "contract_accepts": true
+    },
+    "deduplicated": {
+      "utf8_text": "name,date,note\n\"王,小明\",,\"第一行\n第二行\"\n李,2026-09-28,\n",
+      "hex": "6e616d652c646174652c6e6f74650a22e78e8b2ce5b08fe6988e222c2c22e7acace4b880e8a18c0ae7acace4ba8ce8a18c220ae69d8e2c323032362d30392d32382c0a",
+      "sha256": "3ec6491b63868f309c8a6757a5a050347c65220dc049e7f52d6068b407e3d1fd",
+      "byte_length": 67,
+      "physical_lines": 4,
+      "parsed_header": [
+        "name",
+        "date",
+        "note"
+      ],
+      "parsed_records": [
+        [
+          "王,小明",
+          "",
+          "第一行\n第二行"
+        ],
+        [
+          "李",
+          "2026-09-28",
+          ""
+        ]
+      ],
+      "parse_only_accepts": true,
+      "exact_crlf_bytes_accepts": false,
+      "contract_accepts": false
+    },
+    "wrong_header": {
+      "utf8_text": "date,name,note\n\"王,小明\",,\"第一行\n第二行\"\n李,2026-09-28,\n李,2026-09-28,\n",
+      "hex": "646174652c6e616d652c6e6f74650a22e78e8b2ce5b08fe6988e222c2c22e7acace4b880e8a18c0ae7acace4ba8ce8a18c220ae69d8e2c323032362d30392d32382c0ae69d8e2c323032362d30392d32382c0a",
+      "sha256": "8f7f2f9071c669212c8a716a77f94269533f992e88db70f5f47ccb14bcf6a1de",
+      "byte_length": 83,
+      "physical_lines": 5,
+      "parsed_header": [
+        "date",
+        "name",
+        "note"
+      ],
+      "parsed_records": [
+        [
+          "王,小明",
+          "",
+          "第一行\n第二行"
+        ],
+        [
+          "李",
+          "2026-09-28",
+          ""
+        ],
+        [
+          "李",
+          "2026-09-28",
+          ""
+        ]
+      ],
+      "parse_only_accepts": true,
+      "exact_crlf_bytes_accepts": false,
+      "contract_accepts": false
+    },
+    "wrong_order": {
+      "utf8_text": "name,date,note\n李,2026-09-28,\n\"王,小明\",,\"第一行\n第二行\"\n李,2026-09-28,\n",
+      "hex": "6e616d652c646174652c6e6f74650ae69d8e2c323032362d30392d32382c0a22e78e8b2ce5b08fe6988e222c2c22e7acace4b880e8a18c0ae7acace4ba8ce8a18c220ae69d8e2c323032362d30392d32382c0a",
+      "sha256": "7cb7f245241aac0bfcb0c92af410c67a4a7eac8a0b15189a3872dad4037d6614",
+      "byte_length": 83,
+      "physical_lines": 5,
+      "parsed_header": [
+        "name",
+        "date",
+        "note"
+      ],
+      "parsed_records": [
+        [
+          "李",
+          "2026-09-28",
+          ""
+        ],
+        [
+          "王,小明",
+          "",
+          "第一行\n第二行"
+        ],
+        [
+          "李",
+          "2026-09-28",
+          ""
+        ]
+      ],
+      "parse_only_accepts": true,
+      "exact_crlf_bytes_accepts": false,
+      "contract_accepts": false
+    },
+    "wrong_value": {
+      "utf8_text": "name,date,note\n\"王,小明\",,\"第一行\n第二行\"\n李,2026-09-29,\n李,2026-09-28,\n",
+      "hex": "6e616d652c646174652c6e6f74650a22e78e8b2ce5b08fe6988e222c2c22e7acace4b880e8a18c0ae7acace4ba8ce8a18c220ae69d8e2c323032362d30392d32392c0ae69d8e2c323032362d30392d32382c0a",
+      "sha256": "87da8e09afaddec622d27d2f802c2d0d2df661b1799332b954895b187713e312",
+      "byte_length": 83,
+      "physical_lines": 5,
+      "parsed_header": [
+        "name",
+        "date",
+        "note"
+      ],
+      "parsed_records": [
+        [
+          "王,小明",
+          "",
+          "第一行\n第二行"
+        ],
+        [
+          "李",
+          "2026-09-29",
+          ""
+        ],
+        [
+          "李",
+          "2026-09-28",
+          ""
+        ]
+      ],
+      "parse_only_accepts": true,
+      "exact_crlf_bytes_accepts": false,
+      "contract_accepts": false
+    }
+  },
+  "limits": [
+    "No general date conversion or full CSV-dialect validation.",
+    "These observations are separate from the original 26 workbench checks."
+  ]
+}

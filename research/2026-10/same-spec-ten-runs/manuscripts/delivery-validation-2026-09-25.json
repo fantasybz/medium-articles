@@ -1,0 +1,618 @@
+{
+  "checked_at": "2026-09-25T09:31:19.067365+00:00",
+  "scope": "Four complete local zh-TW manuscripts, independent AI reviews, paragraph polish, actual MCP gates and local publishing packs. No remote publication.",
+  "series_ready": true,
+  "remote_medium_created": false,
+  "remote_attachment_links_ready": false,
+  "english_in_scope": false,
+  "articles": [
+    {
+      "piece": "overview",
+      "article_path": "2026-11-same-spec-overview/article.md",
+      "article_sha256": "98381db29e1bd4c7323e6a0adda49550e8d9c271fcc4c31b4c0026a48dd14de7",
+      "paste_sha256": "d06842086fe22fa61880ca3e3aca6d38d574084d409dccbf0322f8e845d50e56",
+      "paste_exactly_reproduces_converter": true,
+      "figures_json_exactly_reproduces_converter": true,
+      "sections": 8,
+      "code_blocks": 0,
+      "images": [
+        {
+          "file": "2026-11-same-spec-overview/publish/images/table-01.png",
+          "sha256": "f515e55c8611ab8834b2021d04ed7c509437bdf202e1dc176fc67c0436162c17",
+          "width": 1800,
+          "height": 538,
+          "root_visual_inspection": "readable, no clipped content"
+        },
+        {
+          "file": "2026-11-same-spec-overview/publish/images/table-02.png",
+          "sha256": "6a341e65a293d8f264f1a4a78f816c0a27e9213584127d90ebaeaf7ae8c242d3",
+          "width": 1598,
+          "height": 476,
+          "root_visual_inspection": "readable, no clipped content"
+        },
+        {
+          "file": "2026-11-same-spec-overview/publish/images/table-03.png",
+          "sha256": "9f3085c3ce3f96bc4e236afdc303ea2cc966be1b78867a44cf83d8aa955e4786",
+          "width": 1800,
+          "height": 668,
+          "root_visual_inspection": "readable, no clipped content"
+        },
+        {
+          "file": "2026-11-same-spec-overview/publish/images/table-04.png",
+          "sha256": "8c2ce13c88d7e2966cfadb605281a806791aa9d7af1efaef5eb210e1090b1fd1",
+          "width": 982,
+          "height": 886,
+          "root_visual_inspection": "readable, no clipped content"
+        },
+        {
+          "file": "2026-11-same-spec-overview/publish/images/table-05.png",
+          "sha256": "a7c890fadec47088a6c1eece57122b2ca179780a60cea888a87de9edefe6dced",
+          "width": 1768,
+          "height": 476,
+          "root_visual_inspection": "readable, no clipped content"
+        },
+        {
+          "file": "2026-11-same-spec-overview/publish/images/table-06.png",
+          "sha256": "7453987c63243b6e814bc3c6b8655993afd441aed6a0b3aeb4767747c0671d50",
+          "width": 1800,
+          "height": 764,
+          "root_visual_inspection": "readable, no clipped content"
+        },
+        {
+          "file": "2026-11-same-spec-overview/publish/images/table-07.png",
+          "sha256": "d829e5d0ed7212b807e2d0c5589135b7bec24fedcbee79ba85bf49356cdf8111",
+          "width": 1050,
+          "height": 476,
+          "root_visual_inspection": "readable, no clipped content"
+        }
+      ],
+      "language_gates": [
+        {
+          "report": "zhtw/overview-full-03.json",
+          "input_sha256": "98381db29e1bd4c7323e6a0adda49550e8d9c271fcc4c31b4c0026a48dd14de7",
+          "accepted": true,
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 34,
+            "tier2_gray_zone": 1
+          }
+        },
+        {
+          "report": "zhtw/overview-paste-01.json",
+          "input_sha256": "d06842086fe22fa61880ca3e3aca6d38d574084d409dccbf0322f8e845d50e56",
+          "accepted": true,
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 30
+          }
+        }
+      ],
+      "independent_reviews": [
+        {
+          "report": "review-overview-evidence.json",
+          "report_sha256": "53d325948ff9abf0ca61ef55be9dbf9f1419aa7da5fa28fdb49b59c0f36fc98c",
+          "review_input_sha256": "98381db29e1bd4c7323e6a0adda49550e8d9c271fcc4c31b4c0026a48dd14de7",
+          "verdict": "EVIDENCE_READY_OVERVIEW_ONLY",
+          "open_counts": {
+            "blocker": 0,
+            "major": 0,
+            "minor": 0
+          }
+        },
+        {
+          "report": "review-overview-editor-final.json",
+          "report_sha256": "88afc347d9c7084f5d1c849658524470012449616cbd0ae3ae238a70f2251bac",
+          "review_input_sha256": "98381db29e1bd4c7323e6a0adda49550e8d9c271fcc4c31b4c0026a48dd14de7",
+          "verdict": "PASS_OVERVIEW_EDITORIAL",
+          "open_counts": {
+            "blocker": 0,
+            "major": 0,
+            "minor": 0
+          }
+        },
+        {
+          "report": "review-overview-reader-final.json",
+          "report_sha256": "2a4ec227d3a1be52e4fadfbda401b63f9a96b5e8ab229f0ac76005d3f2735b84",
+          "review_input_sha256": "98381db29e1bd4c7323e6a0adda49550e8d9c271fcc4c31b4c0026a48dd14de7",
+          "verdict": "PASS_OVERVIEW_READER_SCOPE",
+          "open_counts": {
+            "blocker": 0,
+            "major": 0,
+            "minor": 0
+          }
+        }
+      ],
+      "preview": {
+        "piece": "overview",
+        "article_sha256": "98381db29e1bd4c7323e6a0adda49550e8d9c271fcc4c31b4c0026a48dd14de7",
+        "paste_sha256": "d06842086fe22fa61880ca3e3aca6d38d574084d409dccbf0322f8e845d50e56",
+        "payload_sha256": "810eda5b9df5f476837300d22dc6dcfce8c76a7f331c751dcc41e9aef9003527",
+        "html_sha256": "a5b8fd3db095d3514566a88f873f3cc4ed8f95e9881b4c7684b64cf2e417aa2e",
+        "state": {
+          "title": "同一份規格，跑十次：把驗收、實作差異與成本分開量測",
+          "images": [
+            {
+              "loaded": true,
+              "width": 1800,
+              "height": 538
+            },
+            {
+              "loaded": true,
+              "width": 1598,
+              "height": 476
+            },
+            {
+              "loaded": true,
+              "width": 1800,
+              "height": 668
+            },
+            {
+              "loaded": true,
+              "width": 982,
+              "height": 886
+            },
+            {
+              "loaded": true,
+              "width": 1768,
+              "height": 476
+            },
+            {
+              "loaded": true,
+              "width": 1800,
+              "height": 764
+            },
+            {
+              "loaded": true,
+              "width": 1050,
+              "height": 476
+            }
+          ],
+          "sections": 8,
+          "code_blocks": 0,
+          "horizontal_overflow": false
+        },
+        "opening_screenshot": ".context/same-spec-ten-runs/manuscripts/overview-opening.png"
+      }
+    },
+    {
+      "piece": "spec",
+      "article_path": "2026-11-same-spec-spec/article.md",
+      "article_sha256": "2d773424ecd438e28d771ff36a747975103ff22a3b9c95e2880c036228f41f65",
+      "paste_sha256": "d2ac465f386e37c91e6ba75ffa1c69400ce4fe372d5ede0d41707124aa4c1ae8",
+      "paste_exactly_reproduces_converter": true,
+      "figures_json_exactly_reproduces_converter": true,
+      "sections": 6,
+      "code_blocks": 1,
+      "images": [
+        {
+          "file": "2026-11-same-spec-spec/publish/images/table-01.png",
+          "sha256": "dbeaf18ac587eb6c65da2cd1ba2737ca9f8bafbeee0ee2b08dbd913f9d704919",
+          "width": 1800,
+          "height": 750,
+          "root_visual_inspection": "readable, no clipped content"
+        },
+        {
+          "file": "2026-11-same-spec-spec/publish/images/table-02.png",
+          "sha256": "c0e5779789edfcc9f056aa87855e36065778674b5f58f1bebba2367c30338965",
+          "width": 1800,
+          "height": 2414,
+          "root_visual_inspection": "readable, no clipped content"
+        },
+        {
+          "file": "2026-11-same-spec-spec/publish/images/table-03.png",
+          "sha256": "2b675ab8c4068ed1ca62ce549d0d399cda047bddd34b4854bcdf4042cee763f7",
+          "width": 1800,
+          "height": 620,
+          "root_visual_inspection": "readable, no clipped content"
+        }
+      ],
+      "language_gates": [
+        {
+          "report": "zhtw/spec-full-06.json",
+          "input_sha256": "2d773424ecd438e28d771ff36a747975103ff22a3b9c95e2880c036228f41f65",
+          "accepted": true,
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 29
+          }
+        },
+        {
+          "report": "zhtw/spec-paste-03.json",
+          "input_sha256": "d2ac465f386e37c91e6ba75ffa1c69400ce4fe372d5ede0d41707124aa4c1ae8",
+          "accepted": true,
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 28
+          }
+        }
+      ],
+      "independent_reviews": [
+        {
+          "report": "review-spec-evidence-final.json",
+          "report_sha256": "cff33d90d05d2d2dd2171350105102709425ac156d84d17c141a42874b8bfe12",
+          "review_input_sha256": "3d4fa69b2fb198aee8b75f01be21712c0482589f773b80873375d82d627a37ca",
+          "verdict": "EVIDENCE_READY_SPEC_ONLY",
+          "open_counts": {
+            "blocker": 0,
+            "major": 0,
+            "minor": 0
+          }
+        },
+        {
+          "report": "review-spec-editor-supplemental-final.json",
+          "report_sha256": "b09a54f5c12dd992cc81a88ccfde2f4af16dc7b7246f8627ace405ee86cbe0e8",
+          "review_input_sha256": "2d773424ecd438e28d771ff36a747975103ff22a3b9c95e2880c036228f41f65",
+          "verdict": "PASS_SPEC_EDITORIAL",
+          "open_counts": {
+            "blocker": 0,
+            "major": 0,
+            "minor": 0
+          }
+        },
+        {
+          "report": "review-spec-reader-final.json",
+          "report_sha256": "c6a91e57d90d6e9791923d4f0f5088e1b6ce3e3dcd517836b7ba45049e118788",
+          "review_input_sha256": "3d4fa69b2fb198aee8b75f01be21712c0482589f773b80873375d82d627a37ca",
+          "verdict": "PASS_SPEC_READER_SCOPE",
+          "open_counts": {
+            "blocker": 0,
+            "major": 0,
+            "minor": 0
+          }
+        }
+      ],
+      "preview": {
+        "piece": "spec",
+        "article_sha256": "2d773424ecd438e28d771ff36a747975103ff22a3b9c95e2880c036228f41f65",
+        "paste_sha256": "d2ac465f386e37c91e6ba75ffa1c69400ce4fe372d5ede0d41707124aa4c1ae8",
+        "payload_sha256": "3039acd13e6a2ddfcf73a45edb64b32ed94acd217a425cbb1b76399939436e50",
+        "html_sha256": "74d02d491715bfba38584c5fb805e2c636f5979a71cdfbaa5ef52c3ac4a56d42",
+        "state": {
+          "title": "同一份規格，跑十次（一）：規格篇—先確認四組收到相同的要求",
+          "images": [
+            {
+              "loaded": true,
+              "width": 1800,
+              "height": 750
+            },
+            {
+              "loaded": true,
+              "width": 1800,
+              "height": 2414
+            },
+            {
+              "loaded": true,
+              "width": 1800,
+              "height": 620
+            }
+          ],
+          "sections": 6,
+          "code_blocks": 1,
+          "horizontal_overflow": false
+        },
+        "opening_screenshot": ".context/same-spec-ten-runs/manuscripts/spec-opening.png"
+      }
+    },
+    {
+      "piece": "contract",
+      "article_path": "2026-11-same-spec-contract/article.md",
+      "article_sha256": "6f99865b86beabc93adfa6ca61a2e8cd826cf926eb9b4afbfca7a149f81019cc",
+      "paste_sha256": "17be29204516cb8c6b02d87080b4bf687a85981fee639f5f2452de3fd358436d",
+      "paste_exactly_reproduces_converter": true,
+      "figures_json_exactly_reproduces_converter": true,
+      "sections": 6,
+      "code_blocks": 5,
+      "images": [
+        {
+          "file": "2026-11-same-spec-contract/publish/images/table-01.png",
+          "sha256": "90e95d50f7cfcbd8c875a8e4bcfb60067c0e1ee4904aabf5d6a19e9d4a79a3e6",
+          "width": 1800,
+          "height": 928,
+          "root_visual_inspection": "readable, no clipped content"
+        },
+        {
+          "file": "2026-11-same-spec-contract/publish/images/table-02.png",
+          "sha256": "a2691cf1e4b9da8704948d28828fb39858bdb6c555cfaa7790b474fa595aeefc",
+          "width": 1800,
+          "height": 538,
+          "root_visual_inspection": "readable, no clipped content"
+        },
+        {
+          "file": "2026-11-same-spec-contract/publish/images/diagram-01.png",
+          "sha256": "0922df2a26985690da3f98940ea4791bd78e667864190a8166d2e4ebc3c4760a",
+          "width": 664,
+          "height": 640,
+          "root_visual_inspection": "readable, no clipped content"
+        },
+        {
+          "file": "2026-11-same-spec-contract/publish/images/table-03.png",
+          "sha256": "709db7ed6f854058144d328d38f39c30d8fffd8a22a17f5dcd598284cbba3938",
+          "width": 1800,
+          "height": 1004,
+          "root_visual_inspection": "readable, no clipped content"
+        },
+        {
+          "file": "2026-11-same-spec-contract/publish/images/table-04.png",
+          "sha256": "382fe16ea8e1cf638ff3368d7f2c26868c27c8d42a33a783c288e910f5e4c5bc",
+          "width": 1696,
+          "height": 640,
+          "root_visual_inspection": "readable, no clipped content"
+        }
+      ],
+      "language_gates": [
+        {
+          "report": "zhtw/contract-full-04.json",
+          "input_sha256": "6f99865b86beabc93adfa6ca61a2e8cd826cf926eb9b4afbfca7a149f81019cc",
+          "accepted": true,
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 39
+          }
+        },
+        {
+          "report": "zhtw/contract-paste-03.json",
+          "input_sha256": "17be29204516cb8c6b02d87080b4bf687a85981fee639f5f2452de3fd358436d",
+          "accepted": true,
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 37
+          }
+        }
+      ],
+      "independent_reviews": [
+        {
+          "report": "review-contract-evidence-final.json",
+          "report_sha256": "9df113449d6fbe5975ff903d7dc2a2504c0df08a0cc559bb22e888eb351da439",
+          "review_input_sha256": "6f99865b86beabc93adfa6ca61a2e8cd826cf926eb9b4afbfca7a149f81019cc",
+          "verdict": "EVIDENCE_READY_CONTRACT_ONLY",
+          "open_counts": {
+            "blocker": 0,
+            "major": 0,
+            "minor": 0
+          }
+        },
+        {
+          "report": "review-contract-editor-evidence-delta.json",
+          "report_sha256": "38477dc5c0d23abb25c008c2e0bd27104b55439ef9ec4d185f3061dd9287cbbf",
+          "review_input_sha256": "6f99865b86beabc93adfa6ca61a2e8cd826cf926eb9b4afbfca7a149f81019cc",
+          "verdict": "PASS_CONTRACT_EDITORIAL",
+          "open_counts": {
+            "blocker": 0,
+            "major": 0,
+            "minor": 0
+          }
+        },
+        {
+          "report": "review-contract-reader-evidence-delta.json",
+          "report_sha256": "ad201038c30762dbf2fa30365e18a0a1f0f8ea97f10a647754c8232ef1038df5",
+          "review_input_sha256": "6f99865b86beabc93adfa6ca61a2e8cd826cf926eb9b4afbfca7a149f81019cc",
+          "verdict": "PASS_CONTRACT_EVIDENCE_DELTA_READER_SCOPE",
+          "open_counts": {
+            "blocker": 0,
+            "major": 0,
+            "minor": 0
+          }
+        }
+      ],
+      "preview": {
+        "piece": "contract",
+        "article_sha256": "6f99865b86beabc93adfa6ca61a2e8cd826cf926eb9b4afbfca7a149f81019cc",
+        "paste_sha256": "17be29204516cb8c6b02d87080b4bf687a85981fee639f5f2452de3fd358436d",
+        "payload_sha256": "3692c5ce0ea2386fb1ffdadd02b67309af85427894681049561d464cac49fe2c",
+        "html_sha256": "d0f7f2848b636abcad2bf2ff66b636a48220c62996e84dd03df904ec8ff2a9bd",
+        "state": {
+          "title": "同一份規格，跑十次（二）：契約篇—由外部驗收每一份候選 parser",
+          "images": [
+            {
+              "loaded": true,
+              "width": 1800,
+              "height": 928
+            },
+            {
+              "loaded": true,
+              "width": 1800,
+              "height": 538
+            },
+            {
+              "loaded": true,
+              "width": 664,
+              "height": 640
+            },
+            {
+              "loaded": true,
+              "width": 1800,
+              "height": 1004
+            },
+            {
+              "loaded": true,
+              "width": 1696,
+              "height": 640
+            }
+          ],
+          "sections": 6,
+          "code_blocks": 5,
+          "horizontal_overflow": false
+        },
+        "opening_screenshot": ".context/same-spec-ten-runs/manuscripts/contract-opening.png"
+      }
+    },
+    {
+      "piece": "variance",
+      "article_path": "2026-11-same-spec-variance/article.md",
+      "article_sha256": "3ee25eaa1ca3ae1f177403f1719eb833a5c07ecfa972d4189e2129ab2fff6b0d",
+      "paste_sha256": "0592cce2f5a869527173d7eb2ef8b01707b12092f700528f345e64eb29986e07",
+      "paste_exactly_reproduces_converter": true,
+      "figures_json_exactly_reproduces_converter": true,
+      "sections": 7,
+      "code_blocks": 3,
+      "images": [
+        {
+          "file": "2026-11-same-spec-variance/publish/images/table-01.png",
+          "sha256": "193bdae3f9092b5004b9ad63100898a597802ef58f7f759589f3c4bdc2cd52a2",
+          "width": 1800,
+          "height": 880,
+          "root_visual_inspection": "readable, no clipped content"
+        },
+        {
+          "file": "2026-11-same-spec-variance/publish/images/table-02.png",
+          "sha256": "3b774e6aa8feae656c3cdc3139df8c83fa9e6bf5ae3706bd8531bee3e8474e97",
+          "width": 1100,
+          "height": 558,
+          "root_visual_inspection": "readable, no clipped content"
+        },
+        {
+          "file": "2026-11-same-spec-variance/publish/images/asset-01.png",
+          "sha256": "474f4ae875dcababaf7ffcddf501b2b7c49fa5d9ed0e80a4ac9a57a98f9084fb",
+          "width": 2304,
+          "height": 2184,
+          "root_visual_inspection": "readable, no clipped content"
+        },
+        {
+          "file": "2026-11-same-spec-variance/publish/images/table-03.png",
+          "sha256": "71e08e0f7f3945d6dc762becc6133423abb50f6293bbef1bf03307a9bbdcf54e",
+          "width": 1800,
+          "height": 524,
+          "root_visual_inspection": "readable, no clipped content"
+        },
+        {
+          "file": "2026-11-same-spec-variance/publish/images/table-04.png",
+          "sha256": "2da44ec0db6188a9a7126a849f1aabbd8508f2ead3f456ba5ae54d77e213681a",
+          "width": 1800,
+          "height": 716,
+          "root_visual_inspection": "readable, no clipped content"
+        }
+      ],
+      "language_gates": [
+        {
+          "report": "zhtw/variance-pass-06.json",
+          "input_sha256": "3ee25eaa1ca3ae1f177403f1719eb833a5c07ecfa972d4189e2129ab2fff6b0d",
+          "accepted": true,
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 59
+          }
+        },
+        {
+          "report": "zhtw/variance-paste-03.json",
+          "input_sha256": "0592cce2f5a869527173d7eb2ef8b01707b12092f700528f345e64eb29986e07",
+          "accepted": true,
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 58
+          }
+        }
+      ],
+      "independent_reviews": [
+        {
+          "report": "review-variance-current-evidence-final.json",
+          "report_sha256": "e1c7ae280380c88477f4011457944fc91ea37c029465ded22152686b935a4a40",
+          "review_input_sha256": "3ee25eaa1ca3ae1f177403f1719eb833a5c07ecfa972d4189e2129ab2fff6b0d",
+          "verdict": "EVIDENCE_READY_VARIANCE_ONLY",
+          "open_counts": {
+            "blocker": 0,
+            "major": 0,
+            "minor": 0
+          }
+        },
+        {
+          "report": "review-variance-current-editor.json",
+          "report_sha256": "9f36da61d0be42ae18d300c00dbd7b4bb8b0029653d84789eaee69c60de23774",
+          "review_input_sha256": "26adde9c3e9578ec949dbdc10e3c23fcb5faa6b20673bd8edce1120607703386",
+          "verdict": "PASS_VARIANCE_EDITORIAL",
+          "open_counts": {
+            "blocker": 0,
+            "major": 0,
+            "minor": 0
+          }
+        },
+        {
+          "report": "review-variance-current-reader-final.json",
+          "report_sha256": "2f22bd4be21a76e915c15efdb2be7190ed8c79c7a98e405e67265e00ebc5e32a",
+          "review_input_sha256": "3ee25eaa1ca3ae1f177403f1719eb833a5c07ecfa972d4189e2129ab2fff6b0d",
+          "verdict": "PASS_VARIANCE_READER_SCOPE",
+          "open_counts": {
+            "blocker": 0,
+            "major": 0,
+            "minor": 0
+          }
+        }
+      ],
+      "preview": {
+        "piece": "variance",
+        "article_sha256": "3ee25eaa1ca3ae1f177403f1719eb833a5c07ecfa972d4189e2129ab2fff6b0d",
+        "paste_sha256": "0592cce2f5a869527173d7eb2ef8b01707b12092f700528f345e64eb29986e07",
+        "payload_sha256": "88f8397a7c89b34db7bb692affb6ccdd1df613c0900aaa8d111bd42ceb51978e",
+        "html_sha256": "2121454e3ffa553788b4ce4c9c523d1a8d945804eb5a70fc421a2106668488cf",
+        "state": {
+          "title": "同一份規格，跑十次（三）：變異篇—從四十個名額讀懂結果與限制",
+          "images": [
+            {
+              "loaded": true,
+              "width": 1800,
+              "height": 880
+            },
+            {
+              "loaded": true,
+              "width": 1100,
+              "height": 558
+            },
+            {
+              "loaded": true,
+              "width": 2304,
+              "height": 2184
+            },
+            {
+              "loaded": true,
+              "width": 1800,
+              "height": 524
+            },
+            {
+              "loaded": true,
+              "width": 1800,
+              "height": 716
+            }
+          ],
+          "sections": 7,
+          "code_blocks": 3,
+          "horizontal_overflow": false
+        },
+        "opening_screenshot": ".context/same-spec-ten-runs/manuscripts/variance-opening.png"
+      }
+    }
+  ],
+  "local_link_count": 140,
+  "all_local_links_exist": true,
+  "frozen_archive_files_checked": 317,
+  "frozen_archive_hash_errors": [],
+  "frozen_manifest_sha256": "ba30398118ecde62b2f682884c1e882b2864c22d70faf99549ceab0d7c0a55f2",
+  "frozen_summary_sha256": "8198a4478b8158268298960576655d920db3b8d2dc2bd207348dcef8a346dfb9",
+  "scientific_F2_unchanged_sha256": "474f4ae875dcababaf7ffcddf501b2b7c49fa5d9ed0e80a4ac9a57a98f9084fb",
+  "F1_matches_approved_mermaid_source": true,
+  "all_twenty_images_visually_inspected": true,
+  "tests": [
+    {
+      "command": "python3 tools/test_tools.py",
+      "passed": 301,
+      "duration_seconds": 72.663,
+      "exit_code": 0
+    },
+    {
+      "command": "python3 -m unittest research/scripts/test_research_scripts.py",
+      "passed": 121,
+      "duration_seconds": 6.116,
+      "exit_code": 0
+    }
+  ],
+  "final_converter_checks_after_prose_deltas": true,
+  "shell_syntax_and_diff_check": "passed",
+  "new_model_experiment_samples": 0,
+  "review_hash_chain_note": "Evidence/editor/reader reports retain their reviewed hashes. Spec has two later language-only deltas plus independent editor supplemental closure; variance editor precedes the final reader/evidence-approved counting clarification. Every delta remains available; no earlier report is relabelled as a fresh full review."
+}

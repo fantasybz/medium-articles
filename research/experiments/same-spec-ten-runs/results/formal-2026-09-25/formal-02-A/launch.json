@@ -1,0 +1,9 @@
+{
+  "run_id": "formal-02-A",
+  "arm": "A",
+  "block": 2,
+  "phase": "formal",
+  "started_at_utc": "2026-09-25T04:24:57.602665+00:00",
+  "input_sha256": "91bff0525998c5e028d248e3cc4fcda04ba300fe97c61814e9cd3d3efadd89d3",
+  "environment_controls_sha256": "643ef5c109134693ea8953e4bb02eb6bf7d9e3963a506aa4a1ead671a79f0482"
+}

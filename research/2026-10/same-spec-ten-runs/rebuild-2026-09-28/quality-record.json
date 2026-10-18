@@ -1,0 +1,686 @@
+{
+  "date": "2026-09-28",
+  "assembled_at_utc": "2026-09-27T22:09:47.668982+00:00",
+  "scope": "Local writing and validation record; not author approval, independent replication, published Medium validation or proof of research conclusions.",
+  "paths_relative_to": "repository root",
+  "private_evidence": "Raw Claude texts and responses, full MCP reports, reviewer reports and screenshots are retained under gitignored .context/same-spec-ten-runs/research-rebuild-2026-09-28/. This public record contains selected facts and fingerprints, not those full private artifacts.",
+  "effort_observability": "max is the requested CLI setting; returned assistant model is independently recorded, provider-internal compute effort is not observable.",
+  "strict_language_config": {
+    "content_type": "markdown",
+    "fix_mode": "none",
+    "fix_output": "search_replace",
+    "profile": "strict",
+    "translationese_domain": "technical",
+    "detect_ai": true,
+    "ai_threshold": "low",
+    "detect_translationese": true,
+    "consistency": true,
+    "detect_style": true,
+    "explain": true,
+    "include_stats": true,
+    "include_telemetry": true,
+    "verify": true,
+    "max_errors": 0,
+    "max_warnings": 0,
+    "output": "full",
+    "ignore_terms": [
+      "通過"
+    ],
+    "glossary": {
+      "proper_nouns": [
+        "Can your AI agent be cheaper?"
+      ]
+    }
+  },
+  "pieces": [
+    {
+      "piece": "overview",
+      "principal": {
+        "requested_model": "claude-opus-5-5",
+        "requested_effort": "max",
+        "cli_version": "2.1.283 (Claude Code)",
+        "assistant_models": [
+          "claude-opus-5-5"
+        ],
+        "started_at": "2026-09-27T20:00:15.258124+00:00",
+        "finished_at": "2026-09-27T20:40:07.921461+00:00",
+        "exit_code": 0,
+        "success": true,
+        "text_block_count": 2,
+        "artifact_sha256": "39ea45f3208150c02845c59350e6c6e9b674237d4eeb768ae820e20b565fe656"
+      },
+      "language": {
+        "article": {
+          "path": "2026-11-same-spec-overview/article.md",
+          "input_sha256": "565fb24dbf97f7fcd00250f95a9ddf02ee7d88e1fde72c438a1d446a8f966066",
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 46
+          },
+          "accepted": true,
+          "output_text_exactly_equals_input": true,
+          "private_report_sha256": "21e5315937e0aadfa142111e01fe13a66f068322a8090a726eb31fc32a0caf9a"
+        },
+        "paste": {
+          "path": "2026-11-same-spec-overview/publish/medium-paste.md",
+          "input_sha256": "6dae180016e6e04d594e1adb470bf4e68f031d074033eff40259fb3156d5f385",
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 46
+          },
+          "accepted": true,
+          "output_text_exactly_equals_input": true,
+          "private_report_sha256": "9fbaafaf81bf3ffc37f3fb15594f384f70223aa3dca3854c88b590d22504273d"
+        }
+      },
+      "root_review": {
+        "article_sha256": "565fb24dbf97f7fcd00250f95a9ddf02ee7d88e1fde72c438a1d446a8f966066",
+        "private_report_sha256": "6131c3b44ec34a233d7d7847971ea5a0d99a5d1b8848a59a1a1c220c5c95c9bf",
+        "full_read": "Root read all eleven sections, References and AI collaboration text, made contextual edits; then reread sections VII through the signature after editing.",
+        "latter_half": "Preserved actual-result requirement at adoption; detecting a fault is not automatically a reason to withdraw preventive guidance. The CSV exit now matches return paths in the corrected figure.",
+        "independent_reports": [
+          {
+            "name": "overview-reader-review.md",
+            "sha256": "5ed744e2999dee889c0051b96f9769a8237ba587dece5aaa30f2cbfd92c207aa"
+          },
+          {
+            "name": "overview-reader-final.md",
+            "sha256": "6a7c72f380997df43a0321bc7e8392062c0da087e0912279e23a8f294fac1acb"
+          },
+          {
+            "name": "overview-evidence-review.md",
+            "sha256": "4759ee254d64edc61c73bc59165308588e1d90f377442e69c02bb559d5bf8ef2"
+          },
+          {
+            "name": "overview-evidence-final.md",
+            "sha256": "9be270ad34faac4587ab279ed93bb2c69ca4cfeb502e9392ece7ddf0fdb21d5b"
+          },
+          {
+            "name": "overview-foundations-review.md",
+            "sha256": "6cc90a8864a6e437a3f5769950bbafd2e6b3dddfc9aa668535277cc8908d0a8e"
+          },
+          {
+            "name": "overview-foundations-final.md",
+            "sha256": "5415cb9a39853baf978fffb73978e7d22ca55ef6d6495d9bef70eb196285e9ae"
+          }
+        ]
+      },
+      "pack": {
+        "paste_body_byte_exact": true,
+        "figures_index_exact": true,
+        "article_links_retained": true,
+        "local_link_count": 24,
+        "all_local_paths_exist": true,
+        "images": [
+          {
+            "path": "2026-11-same-spec-overview/publish/images/diagram-01.png",
+            "sha256": "167614011181c44762ca10de6a4cfa1edca18cdece8755604007274649d0d878",
+            "width": 664,
+            "height": 878
+          },
+          {
+            "path": "2026-11-same-spec-overview/publish/images/table-01.png",
+            "sha256": "112247b582243b8b1960cdbab0801a159d52806698ab97bcc9a7cbe4337cc668",
+            "width": 1800,
+            "height": 634
+          },
+          {
+            "path": "2026-11-same-spec-overview/publish/images/table-02.png",
+            "sha256": "474e040d63584d276764c893205b341b930428618eef80ba2800c983a788c6d1",
+            "width": 1800,
+            "height": 538
+          },
+          {
+            "path": "2026-11-same-spec-overview/publish/images/table-03.png",
+            "sha256": "e5f92924f1d1f2c2b0b7bd39e5a97a6dd2dbad4c9ea572aea0206ce1df45167f",
+            "width": 1682,
+            "height": 476
+          },
+          {
+            "path": "2026-11-same-spec-overview/publish/images/table-04.png",
+            "sha256": "8fde47f07b28aca542f62108f598350d2bdb05f19a2e5f135564f843f3b999f8",
+            "width": 1800,
+            "height": 490
+          },
+          {
+            "path": "2026-11-same-spec-overview/publish/images/table-05.png",
+            "sha256": "3346f0d8a99c4a7cad2bfb118d98682a09a8ca77f7f37b647bd5ae2753789979",
+            "width": 1800,
+            "height": 736
+          },
+          {
+            "path": "2026-11-same-spec-overview/publish/images/table-06.png",
+            "sha256": "5afd01659d527df157572dd0d2f3840ba051a5c2272b0b2f19a6ab5381def130",
+            "width": 1800,
+            "height": 586
+          }
+        ],
+        "orphan_generated_png_count": 0,
+        "private_mechanical_report_sha256": "73a78a21ed9795f0503039031556dd4cc1fb6248ce809c6dec0663cbdfbaf5b1"
+      },
+      "local_preview": {
+        "article_sha256": "565fb24dbf97f7fcd00250f95a9ddf02ee7d88e1fde72c438a1d446a8f966066",
+        "paste_sha256": "6dae180016e6e04d594e1adb470bf4e68f031d074033eff40259fb3156d5f385",
+        "layouts": [
+          {
+            "name": "desktop",
+            "viewport": {
+              "width": 1280,
+              "height": 900
+            },
+            "loaded_images": 7,
+            "horizontal_overflow": false
+          },
+          {
+            "name": "mobile",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "loaded_images": 7,
+            "horizontal_overflow": false
+          }
+        ],
+        "visual_review": "No crop/overlap in inspected figure/table images or screenshots. CSV code retains escaped newline in input and literal newline in output. Desktop/mobile DOM reports all 7 images loaded and no horizontal overflow. Wide PNG tables scale down on mobile; this is not a remote Medium rendering check.",
+        "private_preview_report_sha256": "b270f47c5675506d602f37f6bb6d27c1cf76d1709fb1ecf2b6ffae62259ab436"
+      }
+    },
+    {
+      "piece": "spec",
+      "principal": {
+        "requested_model": "claude-opus-5-5",
+        "requested_effort": "max",
+        "cli_version": "2.1.283 (Claude Code)",
+        "assistant_models": [
+          "claude-opus-5-5"
+        ],
+        "started_at": "2026-09-27T20:50:15.186234+00:00",
+        "finished_at": "2026-09-27T21:26:42.060318+00:00",
+        "exit_code": 0,
+        "success": true,
+        "text_block_count": 1,
+        "artifact_sha256": "d3300ca2c185183e4a5a1cde02f58d676cbf9c0b8ad123057f902b50e75bfa33"
+      },
+      "language": {
+        "article": {
+          "path": "2026-11-same-spec-spec/article.md",
+          "input_sha256": "8a10e9233b6f2e9b17247ef2fa1667fd6ceb4e0b5c31f3725d33494afdff57ba",
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 43
+          },
+          "accepted": true,
+          "output_text_exactly_equals_input": true,
+          "private_report_sha256": "5a29c821bd4690749068439dc3b4a3b7a92edb56dfff52a6fbf4e498ceee8ffc"
+        },
+        "paste": {
+          "path": "2026-11-same-spec-spec/publish/medium-paste.md",
+          "input_sha256": "2fa0f671a87f6666f82ef38e380062f0c512c5b2a64df3b13c7f3075dad9126d",
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 42
+          },
+          "accepted": true,
+          "output_text_exactly_equals_input": true,
+          "private_report_sha256": "1a47d1a73220a6edb89a96871eaa6bda0aba672c79a53d6e68d70347565e14e0"
+        }
+      },
+      "root_review": {
+        "article_sha256": "8a10e9233b6f2e9b17247ef2fa1667fd6ceb4e0b5c31f3725d33494afdff57ba",
+        "private_report_sha256": "745bc95b92ff6d6e4acf9af3ee1d0724094d72a7cacfb3efddcf9d4bed9f369e",
+        "full_read": "Root read every line of the 371-line raw manuscript, including References, navigation and collaboration footer, before substantive editing. Then reread installed sections VII through the end after edits.",
+        "latter_half": "Reread policy card, six review points, CSV owner/oracle exits, document-lifetime roles, conclusion, References and footer. Five final prose edits remove unsupported generalizations and improve continuity.",
+        "independent_reports": [
+          {
+            "name": "spec-reader-review.md",
+            "sha256": "a843fc95e4d33f4d169a14e7383edb0c2de7abdf2fe5085f8060760c02d78d77"
+          },
+          {
+            "name": "spec-reader-final.md",
+            "sha256": "cf2ed45c76198ffec760bdf093369a6fdab5c584700ee23fdc5df171dcce7829"
+          },
+          {
+            "name": "spec-evidence-final.md",
+            "sha256": "fedf86a57ed38e12547ca6f251dee62583f564cc888bbc1ada2a3534378816e3"
+          }
+        ]
+      },
+      "pack": {
+        "paste_body_byte_exact": true,
+        "figures_index_exact": true,
+        "article_links_retained": true,
+        "local_link_count": 32,
+        "all_local_paths_exist": true,
+        "images": [
+          {
+            "path": "2026-11-same-spec-spec/publish/images/table-01.png",
+            "sha256": "e10ca79c5e11eeb270be99a36871d66a8d9053c74cf39bedafc18cb6fca59d91",
+            "width": 1800,
+            "height": 764
+          },
+          {
+            "path": "2026-11-same-spec-spec/publish/images/table-02.png",
+            "sha256": "bd12f97e63b317f86ff4c008bb6054c40f2bfd577c961df73df28883d3b3ecdd",
+            "width": 1800,
+            "height": 928
+          },
+          {
+            "path": "2026-11-same-spec-spec/publish/images/table-03.png",
+            "sha256": "7204fa5446abc8ace6f5f24adbf7a2e554416ce2c5b988db7f5f032356d68089",
+            "width": 1800,
+            "height": 668
+          },
+          {
+            "path": "2026-11-same-spec-spec/publish/images/table-04.png",
+            "sha256": "3c4d1a3db073f5d88252e5336a06d85798181e86296cd56d5d724b86865b4551",
+            "width": 1800,
+            "height": 764
+          },
+          {
+            "path": "2026-11-same-spec-spec/publish/images/table-05.png",
+            "sha256": "d7fb3764119d6c8f7413ea3c5c8f1c00a54f2d011243434ff768e40501a60318",
+            "width": 1800,
+            "height": 490
+          },
+          {
+            "path": "2026-11-same-spec-spec/publish/images/table-06.png",
+            "sha256": "eba0762ea3286ddde61450d180c5a65700d4e73d6e826fa75c74af8177bb4cb9",
+            "width": 1800,
+            "height": 1038
+          },
+          {
+            "path": "2026-11-same-spec-spec/publish/images/table-07.png",
+            "sha256": "475ea3f61fdeafddfd8be3696e12daddccd5fda9f46f023784fcd55835757db0",
+            "width": 1800,
+            "height": 730
+          },
+          {
+            "path": "2026-11-same-spec-spec/publish/images/table-08.png",
+            "sha256": "0c4f3ffe9854d8fedfaaac7bd9a2b41aeaa06b02a4def63e9fd5d776c8d66046",
+            "width": 1800,
+            "height": 778
+          }
+        ],
+        "orphan_generated_png_count": 0,
+        "private_mechanical_report_sha256": "ecbf57e13cac03a04ab58d33a1e5eaffc6cffc57dc8789c042baade37268db8c"
+      },
+      "local_preview": {
+        "article_sha256": "8a10e9233b6f2e9b17247ef2fa1667fd6ceb4e0b5c31f3725d33494afdff57ba",
+        "paste_sha256": "2fa0f671a87f6666f82ef38e380062f0c512c5b2a64df3b13c7f3075dad9126d",
+        "layouts": [
+          {
+            "name": "desktop",
+            "viewport": {
+              "width": 1280,
+              "height": 900
+            },
+            "loaded_images": 8,
+            "horizontal_overflow": false
+          },
+          {
+            "name": "mobile",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "loaded_images": 8,
+            "horizontal_overflow": false
+          }
+        ],
+        "visual_review": "No clipping/overlap in inspected images and screenshots. DOM checks show all 8 images loaded and no horizontal overflow at desktop/mobile widths. Code wraps visually while source text remains intact. Wide tables scale down on mobile; this does not certify all small text legibility or remote Medium rendering.",
+        "private_preview_report_sha256": "d216f822ed0d5bb4c3bb248f233a78777f40a5023fc713bd6c74130fbc2e22da"
+      }
+    },
+    {
+      "piece": "contract",
+      "principal": {
+        "requested_model": "claude-opus-5-5",
+        "requested_effort": "max",
+        "cli_version": "2.1.283 (Claude Code)",
+        "assistant_models": [
+          "claude-opus-5-5"
+        ],
+        "started_at": "2026-09-27T20:50:32.027562+00:00",
+        "finished_at": "2026-09-27T21:28:37.498438+00:00",
+        "exit_code": 0,
+        "success": true,
+        "text_block_count": 1,
+        "artifact_sha256": "16e348bee88f664f24286e264d49ac09eaa2992a8ca0e6cbdec87489d5cbdd65"
+      },
+      "language": {
+        "article": {
+          "path": "2026-11-same-spec-contract/article.md",
+          "input_sha256": "8d1e56af8c3e4166e964d017fa9f05b4a0d2f84838c0d586681962822244c8c6",
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 54
+          },
+          "accepted": true,
+          "output_text_exactly_equals_input": true,
+          "private_report_sha256": "b77c134cb06410741b89b2e867b4c03a62866723a0b7f5a0425519ad9928cf1c"
+        },
+        "paste": {
+          "path": "2026-11-same-spec-contract/publish/medium-paste.md",
+          "input_sha256": "d28875d5b623a5c4c46b32d4e9ecae3819c41d9d0f3e351f3b36083e53f0fc81",
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 53
+          },
+          "accepted": true,
+          "output_text_exactly_equals_input": true,
+          "private_report_sha256": "3b88857f54a19987a8cd1eec10c300330fa46d5ff15133da2de05018fbd7e079"
+        }
+      },
+      "root_review": {
+        "article_sha256": "8d1e56af8c3e4166e964d017fa9f05b4a0d2f84838c0d586681962822244c8c6",
+        "private_report_sha256": "17ff7eea91377f28221690e3b6acc0b7446aa36db6a9d29211c4cdacbba5cf30",
+        "full_read": "Root read all 557 raw manuscript lines, including References and footer, before editing. Root reread installed sections VII through conclusion after edits and checked final navigation/references/footer.",
+        "latter_half": "Reread property/mutation, CSV decisions and oracle, obligation table, ownership, isolation, three regression actions, decision exits and conclusion. Refined eight final phrases; confirmed repeated same+DONE fragment is actually replayed, with malformed/failure extensions labeled deductions.",
+        "independent_reports": [
+          {
+            "name": "contract-foundations-review.md",
+            "sha256": "6b6b46ea97e00113b703f900569d942245a5addc51634f4c388f07e9b24b9f9e"
+          },
+          {
+            "name": "contract-foundations-final.md",
+            "sha256": "43436b178e8d7a9945e190eaee642efba9ee8ab022f33593570cb01259a70093"
+          },
+          {
+            "name": "contract-reader-review.md",
+            "sha256": "e5af5590d0290d28aef7466f7307f0bfe89958b0293db825ea01e66170140fca"
+          },
+          {
+            "name": "contract-evidence-review.md",
+            "sha256": "59bf3aadbbf740104653aaa140f5668cfc098456d2a88dd27f34a032ad77b6d0"
+          }
+        ]
+      },
+      "pack": {
+        "paste_body_byte_exact": true,
+        "figures_index_exact": true,
+        "article_links_retained": true,
+        "local_link_count": 28,
+        "all_local_paths_exist": true,
+        "images": [
+          {
+            "path": "2026-11-same-spec-contract/publish/images/diagram-01.png",
+            "sha256": "929aeafe8ff819aef7fb45f6f513a51b44d798effdab90269b2b933bc09530fa",
+            "width": 664,
+            "height": 582
+          },
+          {
+            "path": "2026-11-same-spec-contract/publish/images/table-01.png",
+            "sha256": "2950ae5535f828e06856324be04c60c0701d6ef980b007250c96b586020c5c48",
+            "width": 1698,
+            "height": 476
+          },
+          {
+            "path": "2026-11-same-spec-contract/publish/images/table-02.png",
+            "sha256": "6b1514d7c8cfa3feb7bfc3002e9db4aa9dc82b34f7b64bfbd5816add22ddd128",
+            "width": 1800,
+            "height": 538
+          },
+          {
+            "path": "2026-11-same-spec-contract/publish/images/table-03.png",
+            "sha256": "a091a485f21529e543accf3b523db0e6b6b63a7cb869712c9c9013bddfc5a2aa",
+            "width": 1784,
+            "height": 476
+          },
+          {
+            "path": "2026-11-same-spec-contract/publish/images/table-04.png",
+            "sha256": "44f22365ff089c17c49169e35e5097c7c9c30a87926a902c1ead41707d1eee9e",
+            "width": 1634,
+            "height": 394
+          },
+          {
+            "path": "2026-11-same-spec-contract/publish/images/table-05.png",
+            "sha256": "61b1d95d810146c97beadda3957e790effbac5b2da5e4ea508d2637d84e83b2c",
+            "width": 1800,
+            "height": 1168
+          },
+          {
+            "path": "2026-11-same-spec-contract/publish/images/table-06.png",
+            "sha256": "0194c32f6df516821565a1bff281904c874b34f54f2b68e05beb1da4dfe0fc88",
+            "width": 1800,
+            "height": 990
+          }
+        ],
+        "orphan_generated_png_count": 0,
+        "private_mechanical_report_sha256": "262002c87a57dbd81cc372b1cdb7bca5a0fea621c809966984a35c1a8e28a5dc"
+      },
+      "local_preview": {
+        "article_sha256": "8d1e56af8c3e4166e964d017fa9f05b4a0d2f84838c0d586681962822244c8c6",
+        "paste_sha256": "d28875d5b623a5c4c46b32d4e9ecae3819c41d9d0f3e351f3b36083e53f0fc81",
+        "layouts": [
+          {
+            "name": "desktop",
+            "viewport": {
+              "width": 1280,
+              "height": 900
+            },
+            "loaded_images": 7,
+            "horizontal_overflow": false
+          },
+          {
+            "name": "mobile",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "loaded_images": 7,
+            "horizontal_overflow": false
+          }
+        ],
+        "visual_review": "All images show complete labels, no clipping/overlap. Mermaid six nodes, 16px, reported aspect0.85 PASS. Desktop/mobile DOM7images loaded, no horizontal overflow. Code wraps visually; wide PNG table text scales small on mobile. Not remote Medium validation.",
+        "private_preview_report_sha256": "41eca20e13aa26cf98069ac0c47afc6d93b302b1d98b41f2d64e5862a40224cb"
+      }
+    },
+    {
+      "piece": "variance",
+      "principal": {
+        "requested_model": "claude-opus-5-5",
+        "requested_effort": "max",
+        "cli_version": "2.1.283 (Claude Code)",
+        "assistant_models": [
+          "claude-opus-5-5"
+        ],
+        "started_at": "2026-09-27T20:50:25.420937+00:00",
+        "finished_at": "2026-09-27T21:24:45.268046+00:00",
+        "exit_code": 0,
+        "success": true,
+        "text_block_count": 1,
+        "artifact_sha256": "9303fed72c098cceeb10889c46e4eabe082aca80ec7f6be4ee85a308449436ac"
+      },
+      "language": {
+        "article": {
+          "path": "2026-11-same-spec-variance/article.md",
+          "input_sha256": "938a0d045afb02aef3f9ea809a6b41d8473c4912371c6a4806774ccd0f353ed3",
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 41
+          },
+          "accepted": true,
+          "output_text_exactly_equals_input": true,
+          "private_report_sha256": "43d98dec2d0d35fc9678fe6087c03c8909ef0f991fe7c9d73e923c73c3d9071b"
+        },
+        "paste": {
+          "path": "2026-11-same-spec-variance/publish/medium-paste.md",
+          "input_sha256": "926143e5312693658a718b9069076414118895e2a4c2595a429568eb5cb868d9",
+          "summary": {
+            "errors": 0,
+            "warnings": 0,
+            "info": 39
+          },
+          "accepted": true,
+          "output_text_exactly_equals_input": true,
+          "private_report_sha256": "e63b8907fab93ce37c3bd7037a8d8f63b7a8be6a71c5b35313b886b4fa4ece83"
+        }
+      },
+      "root_review": {
+        "article_sha256": "938a0d045afb02aef3f9ea809a6b41d8473c4912371c6a4806774ccd0f353ed3",
+        "private_report_sha256": "7a7ce200838ef6dd0f7b3af244686a7ac7c41cd96655c6032dedb30cbfaa5dae",
+        "full_read": "Root read the installed manuscript in full after the first evidence edit, then made thirteen substantive changes. Read all 38 contextual language edits and reread section VIII through the signature, including references, before two final prose edits.",
+        "latter_half": "Reread proposed P/Q trial, task inventory, saved candidates, human rescue/cost denominators, precision and adoption rules, decision log, CSV transfer, conclusion, References and footer. Last edits clarify that a diagnostic pilot must not be tuned then counted formally, and separate CSV reasoning sentences.",
+        "independent_reports": [
+          {
+            "name": "variance-reader-review.md",
+            "sha256": "77ce917cf92965f6a9cd68ea722259bb1597847251fa68b820920f92e7c9fac6"
+          },
+          {
+            "name": "variance-reader-final.md",
+            "sha256": "1baa232b628c85a70af5c7071dde7cc0451cbe0db6ce8ad528e93b094967e95b"
+          },
+          {
+            "name": "variance-evidence-review.md",
+            "sha256": "7d6c4753dace34b30144c3cc8c0b8f61b5ee6d172437b8f3723effd448c85240"
+          },
+          {
+            "name": "variance-evidence-final.md",
+            "sha256": "1a964e11c8aaf838a29aa3ef72d1298b9a791dc8e2d93c6d81f5325926ad9969"
+          },
+          {
+            "name": "series-consistency-final.md",
+            "sha256": "962439c33ae682a7af2fc0b2f82c4174efb36dc34023f05c0881f70964684783"
+          }
+        ]
+      },
+      "pack": {
+        "paste_body_byte_exact": true,
+        "figures_index_exact": true,
+        "article_links_retained": true,
+        "local_link_count": 27,
+        "all_local_paths_exist": true,
+        "images": [
+          {
+            "path": "2026-11-same-spec-variance/publish/images/table-01.png",
+            "sha256": "46f5f28a4572c987501c146fd5521e6004850bb8082e0f8c54ccc6800f3f4ee9",
+            "width": 1800,
+            "height": 634
+          },
+          {
+            "path": "2026-11-same-spec-variance/publish/images/table-02.png",
+            "sha256": "717ea5c82bc84552a3243d6ecd4213baa1942649000f4c2eeecd77e3d98bcc5b",
+            "width": 1800,
+            "height": 668
+          },
+          {
+            "path": "2026-11-same-spec-variance/publish/images/table-03.png",
+            "sha256": "5af07c503b304f38c9f1124fbf4ee1a3cc5312d4159ba35428b70d4de64af8e1",
+            "width": 1630,
+            "height": 312
+          },
+          {
+            "path": "2026-11-same-spec-variance/publish/images/table-04.png",
+            "sha256": "994c59204c2a638e95ab00ef54a6e01d99ce612bb5e1e98080f4b59fc0cd99a3",
+            "width": 1800,
+            "height": 1024
+          },
+          {
+            "path": "2026-11-same-spec-variance/publish/images/table-05.png",
+            "sha256": "416fc4ac18abf5e591a94b8c910bc4b064b611c401c6db50fd1064839aacb8ce",
+            "width": 1800,
+            "height": 826
+          },
+          {
+            "path": "2026-11-same-spec-variance/publish/images/table-06.png",
+            "sha256": "4fc3882a0e174ac6a788e881494dbd956e16e38b58efb43623672b8c8320e9fa",
+            "width": 1800,
+            "height": 572
+          },
+          {
+            "path": "2026-11-same-spec-variance/publish/images/table-07.png",
+            "sha256": "7d57ea6269fa25ef14e9ac8da6e0b35cda4330f338e05d3bde33ddaea21324a1",
+            "width": 1800,
+            "height": 874
+          }
+        ],
+        "orphan_generated_png_count": 0,
+        "private_mechanical_report_sha256": "a59267d713ba63a56834475cf6b2282280af9300b1e8abc36a4ce40ee30c4e11"
+      },
+      "local_preview": {
+        "article_sha256": "938a0d045afb02aef3f9ea809a6b41d8473c4912371c6a4806774ccd0f353ed3",
+        "paste_sha256": "926143e5312693658a718b9069076414118895e2a4c2595a429568eb5cb868d9",
+        "layouts": [
+          {
+            "name": "desktop",
+            "viewport": {
+              "width": 1280,
+              "height": 900
+            },
+            "loaded_images": 7,
+            "horizontal_overflow": false
+          },
+          {
+            "name": "mobile",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "loaded_images": 7,
+            "horizontal_overflow": false
+          }
+        ],
+        "visual_review": "All table PNGs complete, without clipping or overlap. Latest six screenshots viewed after final two prose edits; code wraps and body text flows. Seven images loaded and no horizontal overflow in both DOM checks. Wide PNG tables scale down on mobile; remote Medium and all small-text legibility not certified.",
+        "private_preview_report_sha256": "3ee7276f0e2e938eabbbe3c504e713828bc2c55ca64ae25f01331a5c011be44c"
+      }
+    }
+  ],
+  "cross_series_consistency": {
+    "private_report_sha256": "962439c33ae682a7af2fc0b2f82c4174efb36dc34023f05c0881f70964684783",
+    "scope": "Specified six cross-series concerns; initial full article reviews and follow-up deltas remain distinct.",
+    "resolved": [
+      "CSV null-only decision scope",
+      "METR endpoint reference versus human work through final delivery",
+      "Unexecuted statement restricted to proposed P/Q comparison"
+    ],
+    "open_findings_in_scope": 0
+  },
+  "tests": [
+    {
+      "command": "python3 tools/test_tools.py",
+      "count": 301,
+      "exit_code": 0,
+      "seconds": 69.47,
+      "private_log_sha256": "58f2c8fd1869c9e0537eb79b4bcb30e887d61d1fffd616fb02dd9cb34b2bd627",
+      "stage": "After all four final article and paste revisions"
+    },
+    {
+      "command": "python3 -m unittest research/scripts/test_research_scripts.py",
+      "count": 121,
+      "exit_code": 0,
+      "seconds": 6.168,
+      "stage": "Earlier in this rewrite; relevant scripts unchanged since this run",
+      "private_record_sha256": "7c0f82402dec97d062a53410814b121238ed55d1fad5c6eb3c36d8aef3abfda2"
+    }
+  ],
+  "teaching_checks": {
+    "parser_self_checks": 26,
+    "parser_oracle_unit_tests": 3,
+    "csv_self_tests": 11,
+    "diagnostic_fixed_string_checks": 20,
+    "formal_sample_count_added": 0,
+    "formal_acceptance_checks_added": 0,
+    "note": "Finite teaching checks; not property proof, human research or a new model comparison."
+  },
+  "frozen_archive": {
+    "path": "research/experiments/same-spec-ten-runs/results/formal-2026-09-25",
+    "index_sha256": "534434650fbd4070f9304ba79bb58d61245fdb94a259af430ea9e5f8ae5c995a",
+    "files_checked": 317,
+    "sha256_mismatches": 0,
+    "private_verification_sha256": "1250aa26977c04c246c634d2403240c378a2a58557631e9e23cebcb62030791e"
+  },
+  "not_completed": [
+    "Author approval",
+    "English manuscripts for this series",
+    "Per-task P/Q mapping and freeze for all proposed new tasks",
+    "New P/Q experiment or human cost observation",
+    "Remote Medium drafts, publication and fixed public artifact URLs"
+  ]
+}

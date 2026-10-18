@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "review_type": "independent_reader_final_delta_closure",
+  "reviewed_at": "2026-09-25T09:18:58.266325+00:00",
+  "reviewer": "Codex independent reader sub-agent (AI)",
+  "verdict": "PASS_CONTRACT_READER_SCOPE",
+  "series_verdict": "NOT_ASSESSED_AS_A_COMPLETE_SERIES",
+  "series_ready": false,
+  "public_release_complete": false,
+  "article": {
+    "path": "2026-11-same-spec-contract/article.md",
+    "sha256": "416476b5ade3ded365cd3faff9477d666175ceb5154eddffc75ed18a8da18def",
+    "line_count": 291
+  },
+  "previous_full_review": {
+    "path": "research/2026-10/same-spec-ten-runs/manuscripts/review-contract-reader.json",
+    "input_sha256": "d7d1244e859d407fe54b19510311d4100cd370dcd9ceb71df48cd0dc151cca76",
+    "full_read_completed": true,
+    "separate_second_half_read_completed": true,
+    "F1_source_and_render_reviewed": true
+  },
+  "delta_verification": {
+    "chain": [
+      {
+        "record": "research/2026-10/same-spec-ten-runs/manuscripts/contract-final-polish-delta.json",
+        "before_sha256": "d7d1244e859d407fe54b19510311d4100cd370dcd9ceb71df48cd0dc151cca76",
+        "after_sha256": "8103c4371c1d944cb7f9da326caad25060dce523438c3ca6c48bf9eb46ec5b92",
+        "replacement_count": 5,
+        "replacement_targets_unique": true,
+        "reverse_hash_verified": true
+      },
+      {
+        "record": "research/2026-10/same-spec-ten-runs/manuscripts/contract-final-clarification-delta.json",
+        "before_sha256": "8103c4371c1d944cb7f9da326caad25060dce523438c3ca6c48bf9eb46ec5b92",
+        "after_sha256": "416476b5ade3ded365cd3faff9477d666175ceb5154eddffc75ed18a8da18def",
+        "replacement_count": 1,
+        "replacement_targets_unique": true,
+        "reverse_hash_verified": true
+      }
+    ],
+    "reconstructed_previous_sha256": "d7d1244e859d407fe54b19510311d4100cd370dcd9ceb71df48cd0dc151cca76",
+    "matches_prior_full_read": true,
+    "forward_replacement_byte_equal": true,
+    "only_declared_replacements": true,
+    "changed_lines": [
+      172,
+      187,
+      207,
+      237,
+      239
+    ],
+    "F1_render_unchanged_sha256": "0922df2a26985690da3f98940ea4791bd78e667864190a8166d2e4ebc3c4760a",
+    "prior_reports_sha256": {
+      "review-contract-reader.md": "5fbaa1cd5549c2f6a41fb2386cd5c9acc71681e5853c11745b64ee23c4c89e79",
+      "review-contract-reader.json": "c2616b33762775f8ce11e99dbccc01b8e318d15d718bd5f5427d7798c3607518"
+    }
+  },
+  "issue_resolution": {
+    "id": "CONTRACT-READER-01",
+    "status": "RESOLVED",
+    "lines": [
+      172,
+      187
+    ],
+    "reason": "規則控制已寫成整份案例集、預期結果與比對邏輯由外部 driver 保存、未透過候選介面提供；不再保證所有存取管道不可接觸。第 187 行將實際存取限制交給隔離設定與 probe 判斷，和第四節三項 probe 的界線一致。",
+    "intermediate_clarification": "初次修訂的案例一詞已進一步改為整份案例集、預期結果與比對邏輯，保留單一候選仍收到當次 JSONL 輸入的事實。"
+  },
+  "other_delta_review": {
+    "result": "PASS",
+    "reason": "第五節標題改為輸出何時出現，準確涵蓋批次與串流觀察差別；第 237、239 行將維度具體化為 CLI 參數處理與尚無觀察點的要求，指涉更清楚。示例、表格、數值、F1 與結語未變。"
+  },
+  "reading_this_pass": {
+    "delta_records_read": true,
+    "revised_context_read": true,
+    "unaffected_text_inherited_from_previous_full_read": true,
+    "not_claimed_as_new_full_read": true
+  },
+  "findings": [],
+  "open_counts": {
+    "blocker": 0,
+    "major": 0,
+    "minor": 0
+  },
+  "scope": "原全文與第四節至尾段的獨立讀者複核，加上兩段精確差異的有界結案；未重做來源查核、模型實驗或 zh-TW MCP。",
+  "manuscript_modified": false,
+  "prior_reviews_modified": false,
+  "frozen_research_modified": false
+}

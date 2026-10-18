@@ -68,3 +68,20 @@
 9 月兩位評審對 12 月的四條修正**原封不動繼續綁**：可靠篇只留一個工件；K8s sandbox fleet 不超過一段並標明是 1,000 人規模的問題；不引 Claude Taiwan 的席位抱怨當需求證據；排在 12 月，等 10、11 月的交接量出來。另外三條仍然成立：不得停在 2025 兩篇觀測文的 model-call 層、不得重講已發布四篇與 10 月四篇、Google 的「Agent Ops」要正面點名。
 
 東京推翻或修正了三件事。其一，9 月寫的「這題現在沒人在講」要改口—AAIF 已經有 observability WG 與新設的 agents accountability WG，講的卻多半是 vendor 自家 gateway 內的觀測；真正還空著的是中文，以及你自己 harness 這一層。其二，「規格已有 `invoke_agent` / `execute_tool`」不能再寫，落地名一律 `org.*`，動筆前依 2026-11 版規格再查一次。其三，東京的數字幾乎都是 organiser-reported、vendor-reported 或 team-reported，每一處都要標出自報身分，不得當成第三方量測；Reuters / Engadget 與 Grok outage 一律不進正文，也不進 References。
+
+> 本檔前四節保留 9/15 的選題判斷；涉及「首次／無人量測」與變異實驗的說法已由以下 9/25 決定及新證據表取代，不作現行事實使用。
+
+## 5. 2026-09-25：推進「同一份規格，跑十次」
+
+作者要求依 repo research loop 推進並採最高標準，且最後指定使用目前 repo。當時的[研究大綱](2026-11-same-spec-ten-runs.md)因此統一改為 `medium-articles` 的 `codex_jsonl.py` 真實修補任務，固定基底 commit；不使用付款 toy repo 作正式證據。這是本輪新增決定，不回寫成 9/15 已作的選擇。
+
+五份原站全文已重新核對，既有二審逐項處置，四組以共同規範為基準的文字條件與外部 evaluator 已落地。工具／MCP／原生 skills 不列為介入；正式計畫為每組十次，共四十個名額，另有兩次 pilot。本輪已完成 40 次正式量測，四組各 10/10 通過；完整數據、區間與限制見[正式結果](../experiments/same-spec-ten-runs/RESULTS.md)；沒有真人研究資料就不報人類基線、審閱時間或維護成本。
+
+
+2026-09-25 成稿更新：本系列四篇中文全文與本機發布包已完成，主稿由 Claude Code `max` 撰寫，逐段潤飾與複核紀錄見[品質紀錄](same-spec-ten-runs/manuscripts/STATUS-2026-09-25.md)。這不表示已遠端發布；正式實驗設定、名額與封存資料保持原樣。此處只記錄當輪版本。
+
+2026-09-28 前輪敘事修訂：四篇重新以「為何值得反覆交付」串起研究動機與三個問題，規格篇加入四份文件的真實節譯。新稿由 Claude Code max 主寫，逐段潤飾、Claude xhigh 讀者複核與嚴格繁中檢查完成，見[品質紀錄](same-spec-ten-runs/manuscripts/STATUS-2026-09-28-narrative.md)。此輪其後再依作者意見重寫。
+
+2026-09-28 全面研究重寫：作者再次要求補足 why、how、what，並以十月份系列為基準。已重新收集一手來源、重建四篇論證、重播教學案例，四篇由 Claude Code Opus 5.5 `max` 主寫，並完成主代理逐段潤飾、後半部重讀、代理複核與嚴格繁中檢查。本機發布包完成，尚未發布；見[本輪研究入口](same-spec-ten-runs/rebuild-2026-09-28/README.md)與[目前成稿紀錄](same-spec-ten-runs/manuscripts/STATUS.md)。原四十次封存未改，下一輪 P／Q 比較仍未執行。
+
+2026-10-03 讀者回饋修訂：作者認為內容充足，但術語與段落銜接仍難理解。已由 Codex 主代理沿用 9/28 的 Claude max 主稿，補具體例子、拆開段落作用、加強四篇交接，並重新檢查最新正文與貼稿。見[本輪紀錄](same-spec-ten-runs/readability-2026-10-03/README.md)。正式研究封存不變，P／Q 比較及人工資料仍未取得。
