@@ -26,7 +26,7 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 
 # Green Is Not Done, Part 2 — Review Is the Control Point, Not the Bottleneck: Triage, Reviewer Fleets and the Closed-Loop Ban
 
-> **TL;DR** — Agents increase the volume of changes without increasing reviewers' time. The first questions are who needs to examine each change, how deeply, and with what evidence for approval. Using payment retries, this piece develops risk-based triage, assigns different questions to different reviewers, and keeps review from inheriting the implementer's unchecked assumptions. Research cautions that faster decisions and more comments do not, by themselves, establish better quality. Tools can check rules and organize doubts. People still need to understand the evidence, verify claims of prior approval, and decide on every merge. Approval records must also preserve what was reviewed, so the next person can recover the reasoning.
+> **TL;DR** — Agents increase the volume of changes without increasing reviewers' time. The first questions are who needs to examine each change, how deeply, and with what evidence for approval. Using payment retries, this piece develops risk-based triage, assigns different questions to different reviewers, and keeps review from inheriting the implementer's unchecked assumptions. Research cautions that faster decisions and more comments do not, by themselves, establish better quality. Tools can check rules and organize doubts. People still need to understand the evidence, verify claims of prior approval, and decide on every merge. Approval records must also identify the version actually checked and prepared for merging. Even without a new PR commit, changes to the base branch may invalidate earlier evidence.
 
 > Series: [Overview](https://medium.com/p/c4fc9f3d8581) → [1. Testing](https://medium.com/p/51d001a6dcd5) → **2. Review (this piece)** → 3. Reliability (coming soon) → 4. Payment Walkthrough (coming soon)
 
@@ -366,7 +366,7 @@ The prompt is not enforcement by itself. Verification also requires more than fi
 
 ---
 
-## 7. Approval identifies the responsible person: the three rules the review gate needs
+## 7. Approval must identify the responsible person and the version that will merge
 
 After checks and review, someone must answer: on the evidence available, do I agree to let this change enter the system? Approval records that decision. An account name and timestamp alone still leave an investigation short of evidence if they do not identify what was reviewed.
 
@@ -399,11 +399,47 @@ Here is the minimal configuration of route a). The point of it is that only huma
 
 This excerpt illustrates the relationship between product directories and approval rules; it is not a complete permission setup. Protect CODEOWNERS and the verification workflow, restrict bypasses, and verify that new commits invalidate old approvals. With a custom status check, the agent under review must not control the checking code or the authority to publish its successful result.
 
-Now complete the approval artifact introduced in section 3. Its minimum version retains three kinds of information so someone examining it later can identify who approved and on what evidence.
+### The PR can stay unchanged while the merge candidate changes
 
-The first item is a human identity, connecting approval to a responsible person. The second answers what that person actually approved. Suppose a payment owner examines the payment branch and its reports, after which the author changes the retry logic. The old approval cannot simply stand in for review of the new version. Retain the diff, constraint report, mutation report and reviewer-agent version. This piece calls that set of jointly reviewed contents a tuple and records a hash, an identifier calculated from those contents. The third item is the AI reviewer's comment or approve signal, for human reference only.
+Now complete the approval artifact introduced in section 3. [Acemeridian's feedback](https://medium.com/@acemeridian/a-useful-edge-case-is-base-branch-drift-a-pr-can-keep-the-same-head-sha-while-the-merge-candidate-819191ed1fea) identifies an easy omission: the author can leave a PR untouched while the combined content about to merge changes. Recording only the PR's version still does not establish whether the content entering the base branch is what was checked.
 
-Before merging, the workflow must compare the current content with the set recorded at approval. Changed content requires relevant evidence and approval again. A hash helps identify a version; it neither blocks a merge on its own nor proves that the original judgment was correct. A check must perform the comparison, and a responsible person must resolve differences. The next person can then determine who decided on which evidence, rather than finding only a timestamp.
+Return to the bottle of unsweetened green tea, priced at NTD 35 in the teaching example. Suppose this PR changes payment retries and calls a shared payment function. The payment owner has examined the code and reports and established that this retry path does not issue another charge request. While the PR waits, another PR enters `main` and changes how the shared function handles timeouts. There may be no textual merge conflict, yet the combination changes what happens when a payment outcome is unknown. This is a hypothetical integration scenario, not an incident reproduced by the accompanying payment code.
+
+Git uses identifiers such as SHAs to distinguish versions. A PR's **head SHA** identifies the latest commit on its branch; think of it as that branch's current version identifier. The **base branch** receives the change, here `main`. This piece calls the combined version prepared for checks and merging the **merge candidate**. H, B1 and C1 below are short labels for those different versions:
+
+📌【在此插入表 table-04.png】
+
+This is **base-branch drift**: the receiving branch has moved forward during the wait. In this example the PR is still H, but the combined payment logic has changed from C1 to C2. The earlier approval and passing report belong to C1. Confirming that H is unchanged does not answer whether C2's timeout path still meets the requirement.
+
+GitHub's merge queue builds a merge group from the PR, the latest base branch and the PRs ahead of it in the queue. Removing an earlier PR can cause later combinations to be rebuilt. The approval record therefore needs to identify the integration version actually verified, as well as the PR itself. When GitHub Actions provides required checks, the relevant workflows must also handle the `merge_group` event to produce results for the queued version. Passing on `pull_request` alone does not supply the queue's required checks. These are platform mechanics and configuration requirements, described in [GitHub's merge queue documentation](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue).
+
+### Keep the version and its evidence in the same approval record
+
+Two identifiers need separating here. A **tree SHA** identifies the complete tracked file tree. In this context, the merge-tree SHA identifies the tree produced by integration. A **commit SHA** identifies a commit that refers to a tree and also records parent commits, authorship and a commit message. The same file contents can therefore have different commit SHAs when their history or commit information differs. Git's explanations of [objects](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects) and [merge-tree](https://git-scm.com/docs/git-merge-tree) provide the underlying distinction.
+
+Why retain more than the tree SHA? A GitHub check run, the record of one check execution, attaches to a specific commit through `head_sha`. Saying that a tree once passed leaves out which execution checked which commit and who reported the result. I therefore recommend retaining both the candidate commit and its tree, with the check records tied to that candidate commit. An equal tree does not let the workflow transfer another commit's green result on its own. The [Checks API documentation](https://docs.github.com/en/rest/checks/runs#create-a-check-run) describes these fields.
+
+I would organize a verifiable approval record into three parts:
+
+- **Who decided what.** Retain the verified human identity, approval time, review scope and reasoning. For a high-risk PR, establish that the approver also meets the independent-review requirement.
+- **Which integration version the decision covers.** Retain the PR head, the base-branch commit at that time, the candidate commit and its tree SHA. With a merge queue, also retain the corresponding merge group and the preceding PR combination, so someone can reconstruct why H and B2 produced this C2.
+- **Which evidence supports the decision.** Retain the reviewed diff, constraint and mutation reports, reviewer-agent version, and the applicable required-check list and approval-policy version. Each required check should identify the actual execution ID, associated commit, completion status and conclusion, the trusted App or system that reported it, and the workflow version used. If a check was rerun, identify the execution relied upon. A single “CI passed” field is insufficient.
+
+AI reviewer comments and approval signals may accompany this record for human reference. Hashing the record can help detect changed contents; it does not authenticate their source or block a merge. Enforcement must still verify the results' origin, version and validity, and establish that the code actually checked out for execution is the candidate. Attaching a report to C2 while running tests on C1 still leaves C2 unverified.
+
+Also distinguish successful execution from no execution: GitHub's required status checks can accept `skipped` or `neutral`. A team requiring payment tests to execute and succeed must enforce that requirement in its policy and checks, rather than treating those conclusions as proof the tests ran.
+
+### Revalidate the changed candidate, then decide what a person must reread
+
+Return to C1 and C2. My proposed policy is to **pause reuse of the old record for merging whenever the head, base branch or queue composition changes, then revalidate the candidate and its required evidence**. If the candidate commit, file tree or applicable policy has changed, obtain the required check results for the current candidate and reassess whether approval remains valid. Keep the historical record, but do not apply C1's approval to C2 automatically because H is unchanged.
+
+Revalidation need not mean rereading every unchanged line. In the payment scenario, the reviewer should examine the C1-to-C2 difference, then follow the shared function through timeout handling, pending state and retries. After checks cover that combination, a person qualified under the triage policy reconfirms the high-risk payment judgment. If the integration difference is limited to documentation that does not affect execution, a predefined policy can retain still-applicable review conclusions while recording the reason and confirmation for the new candidate. This saves unrelated rereading; version checks and required validation still happen.
+
+GitHub's stale-approval settings handle some situations, including changes to the reviewed diff or new changes introduced through the branches' common ancestor, the merge base. They should not be read as a promise that every base-branch or queue change automatically dismisses human reviews. The [protected-branches documentation](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) describes those settings. The candidate-specific approval and revalidation policy above is my recommendation for a team to implement and test.
+
+One step remains: the actual merge. Depending on the merge, squash or rebase method, the final commit SHA on the base branch need not equal the checked candidate SHA; [GitHub's merge-method documentation](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/about-merge-methods-on-github) explains the history differences. The merge mechanism must ensure that the content about to land still corresponds to the validated candidate, rather than accepting a different combination after the check. The merge record must then connect the final commit and tree back to that candidate and its evidence. Recording a SHA afterwards cannot repair a merge of unvalidated content.
+
+These remain design requirements to test during adoption, not an approval service implemented by the accompanying payment example. A pilot repo can exercise one concrete case: no new commit on the PR, but another PR changes the payment function it calls. Can the workflow hold the merge, produce a new candidate and allow it through only after corresponding evidence and confirmation? Completing that path makes the record answer who approved which integration version, on which evidence.
 
 This also connects to section 7 of “Agentic Engineering: Platform + Federation in Practice,” which proposes having junior engineers review agent PRs with a checklist. Intent, Constraints honoured and verification reports provide concrete material to compare. Someone new to the system can identify what agrees and what remains unclear, then discuss it with an experienced reviewer. The checklist supports learning and collaboration; it does not make a new hire ready to approve every high-risk change independently.
 
@@ -413,11 +449,12 @@ This also connects to section 7 of “Agentic Engineering: Platform + Federation
 
 ## 8. Closing, and the order of rollout
 
-To change an existing workflow, I would start with one pilot repo and take a clearly bounded PR through the entire process. Can the implementer explain its intent and constraints? Do the tools leave corresponding results? Can the reviewer identify unresolved questions, and does approval refer to the content actually reviewed? The seven steps below build that path. After each configuration change, use the PR to examine whether verification and release decisions have actually changed. The existence of a workflow does not by itself establish that its responsibilities are being fulfilled.
+To change an existing workflow, I would start with one pilot repo and take a clearly bounded PR through the entire process. Can the implementer explain its intent and constraints? Do the tools leave corresponding results? Can the reviewer identify unresolved questions, and does approval refer to the content actually reviewed? The eight steps below build that path. After each configuration change, use the PR to examine whether verification and release decisions have actually changed. The existence of a workflow does not by itself establish that its responsibilities are being fulfilled.
 
 - **Add the two PR template fields** (Intent and Constraints honoured). Without them, later reviewers lack a statement of purpose and constraints to check the work against.
 - **Put deterministic dispatch in front.** The PR passes lint, constraint tests and secret scan before it reaches LLM review.
 - **Exclude AI approvals from required approvals.** First verify that a PR with only AI approval is blocked, then periodically check that identity lists, bypasses and new-commit handling have not undermined the rule.
+- **Tie approval and checks to the actual merge candidate.** Deliberately change the base branch or queue composition in the pilot, and verify that the old record cannot directly authorize the new version. Establish how to obtain new evidence, who reconfirms approval and how the final merge is recorded.
 - **Bring the heterogeneous reviewers up.** With only one vendor, use that vendor's isolated session instead.
 - **Use the triage matrix to assign reviews.** The PR's risk and verifiability determine who reviews which contents.
 - **Prohibit the assigner from approving in the two high-radius cells.** Someone other than the assigner takes responsibility for approval.
@@ -427,7 +464,7 @@ To change an existing workflow, I would start with one pilot repo and take a cle
 
 Return to the four sources at the start. Fully booked senior engineers and accumulating PRs point to the same difficulty: the way code is produced has changed, while the people receiving it still work under the old division of labor. That is why I want to redesign review. Asking the person in front of us to work faster is not enough; the team also has to decide which parts actually need their judgment.
 
-Return to the false approval number in section 6. It does not prove every scanner unreliable. It shows how a workflow can contain checks throughout and still be diverted by an unverified claim of authority. The review gate needs to protect the relationship between a claim, the evidence behind it and the decision to approve.
+Return to the false approval number in section 6. It does not prove every scanner unreliable. It shows how a workflow can contain checks throughout and still be diverted by an unverified claim of authority. The review gate needs to protect the relationship between a claim, the evidence behind it and the decision to approve. Section 7 adds another requirement: even trustworthy evidence must still correspond to the content now about to merge.
 
 Model versions keep changing, and review shares need to follow measured results. The workflow can still establish who is responsible for approval and which requirements need independent verification. Those responsibilities can be assigned before choosing a reviewer agent.
 
@@ -435,7 +472,7 @@ Model versions keep changing, and review shares need to follow measured results.
 
 “The 34% SWE-Gate Found Behind a Green Build” takes the next step, from approving one PR to deciding whether a class of tasks warrants broader autonomy. It develops constraint tests, pass^k and the human review budget, connecting them to G2 in “Agentic Engineering: Evals, Unit Economics, and Scaling.”
 
-What I want to leave here is a workable division of responsibility: tools prepare evidence, reviewers know what they need to judge, and the person pressing approve can explain the decision. Receiving agent output then becomes more than fitting another obligation into an already-full calendar.
+What I want to leave here is a workable division of responsibility: tools prepare evidence, reviewers know what they need to judge, and the person pressing approve can explain which version the decision covers and why. Receiving agent output then becomes more than fitting another obligation into an already-full calendar.
 
 ---
 
@@ -479,6 +516,11 @@ What I want to leave here is a workable division of responsibility: tools prepar
 26. GitHub documentation — [About code owners](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners), code ownership and required approvals (sections 3 and 7).
 27. GitHub documentation — [About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches), required reviews, stale approvals and bypass settings (section 7).
 28. Accompanying code — Tea payment, constraint tests and seven selected mutants [section 3; measured teaching example, no real provider] (Code link to follow when Part 4, “A Payment Walkthrough,” is published.)
+29. GitHub documentation — [Managing a merge queue](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue) and [the merge_group workflow event](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#merge_group), candidate composition, queue rebuilds and required checks (section 7; checked 2026-10-23).
+30. Git documentation — [Git Objects](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects) and [git-merge-tree](https://git-scm.com/docs/git-merge-tree), commits, file trees and integration-result identifiers (section 7).
+31. GitHub documentation — [Create a check run](https://docs.github.com/en/rest/checks/runs#create-a-check-run), check executions and `head_sha` (section 7).
+32. GitHub documentation — [About merge methods on GitHub](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/about-merge-methods-on-github), history differences between merge, squash and rebase (section 7).
+33. Reader Acemeridian — [Feedback on base-branch drift](https://medium.com/@acemeridian/a-useful-edge-case-is-base-branch-drift-a-pr-can-keep-the-same-head-sha-while-the-merge-candidate-819191ed1fea), prompting the expanded account of merge candidates and approval records (section 7).
 
 ---
 

@@ -6,7 +6,7 @@ Medium articles by [@fantasybz](https://medium.com/@fantasybz) — long-form pos
 
 ## Articles
 
-截至 **2026-10-18**，以下三個系列在 Medium 共 **12 篇已發布、10 篇已排程**：Agentic Engineering 中英八篇全數公開；《綠燈不是驗收》總論與測試篇中英四篇已公開，其餘六篇維持原排程；《同一份規格，跑十次》四篇中文已排程，英文尚未成稿或建立排程。日期以 Medium 實際狀態為準，資料夾月份僅供歸檔。
+截至 **2026-10-23**，以下三個系列在 Medium 共 **14 篇已發布、8 篇已排程**：Agentic Engineering 中英八篇全數公開；《綠燈不是驗收》總論、測試篇與 Review 篇中英六篇已公開，其餘四篇維持原排程；《同一份規格，跑十次》四篇中文已排程，英文尚未成稿或建立排程。日期以 Medium 實際狀態為準，資料夾月份僅供歸檔。
 
 | 日期 | 文章 | 英文版 | Medium | 發布紀錄 |
 |---|---|---|---|---|
@@ -16,7 +16,7 @@ Medium articles by [@fantasybz](https://medium.com/@fantasybz) — long-form pos
 | 2026-09 | [三部曲（三）營運篇：Eval、單位經濟與規模化—把 agent 當產品營運](2026-11-agentic-eval-economics/article.md) | [EN](https://fantasybz.medium.com/agentic-engineering-part-3-evals-unit-economics-and-scaling-running-agents-like-a-product-1cb1855a2046) | [已發布](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%89-eval-%E5%96%AE%E4%BD%8D%E7%B6%93%E6%BF%9F%E8%88%87%E8%A6%8F%E6%A8%A1%E5%8C%96-%E6%8A%8A-agent-%E7%95%B6%E7%94%A2%E5%93%81%E7%87%9F%E9%81%8B-d6d9623c2dc6) | [PUBLISHED.md](2026-11-agentic-eval-economics/publish/PUBLISHED.md) |
 | 2026-10 | [綠燈不是驗收：agent 時代的測試、Review 與可靠度](2026-10-green-overview/article.md)（四部曲總論） | [EN](https://medium.com/p/c4fc9f3d8581) | [中文已發布 10/06](https://medium.com/p/582f24223eea)；英文已發布 10/06（臺北時間） | [PUBLISHED.md](2026-10-green-overview/publish/PUBLISHED.md) |
 | 2026-10 | [綠燈不是驗收（一）測試篇：怎麼審閱一份 agent 寫的測試—斷言鬆綁、凍結 bug 與 mutation score](2026-10-green-testing/article.md) | [EN](https://medium.com/p/51d001a6dcd5) | [中文已發布 10/13](https://medium.com/p/b01055139451)；英文已發布 10/15（臺北時間） | [PUBLISHED.md](2026-10-green-testing/publish/PUBLISHED.md) |
-| 2026-10 | [綠燈不是驗收（二）Review 篇：Review 是控制點，不是瓶頸—分流、reviewer agent 艦隊與閉環禁令](2026-10-green-review/article.md) | [EN](2026-10-green-review/article.en.md) | 已排程 10/20（二）09:00 發布；英文版已排程 10/22（四）09:00（GMT+8）；佇列見 [PUBLISHING.md](PUBLISHING.md) | [PUBLISHED.md](2026-10-green-review/publish/PUBLISHED.md) |
+| 2026-10 | [綠燈不是驗收（二）Review 篇：Review 是控制點，不是瓶頸—分流、reviewer agent 艦隊與閉環禁令](2026-10-green-review/article.md) | [EN](https://medium.com/p/4d36d0f2f9c1) | [中文已發布 10/20 09:01](https://medium.com/p/ccbf0cbe2691)；[英文已發布 10/22 09:01](https://medium.com/p/4d36d0f2f9c1)（GMT+8）；佇列見 [PUBLISHING.md](PUBLISHING.md) | [PUBLISHED.md](2026-10-green-review/publish/PUBLISHED.md) |
 | 2026-10 | [綠燈不是驗收（三）可靠度篇：SWE-Gate 量測到的 34%—constraint tests、pass^k 與授權擴張的閘門](2026-10-green-reliability/article.md) | [EN](2026-10-green-reliability/article.en.md) | 已排程 10/27（二）09:00 發布；英文版已排程 10/29（四）09:00（GMT+8）；佇列見 [PUBLISHING.md](PUBLISHING.md) | [PUBLISHED.md](2026-10-green-reliability/publish/PUBLISHED.md) |
 | 2026-11 | [綠燈不是驗收（四）付款實作篇：買一瓶無糖純喫綠茶，從 Review 約束走到 mutation score](2026-10-green-payment/article.md) | [EN](2026-10-green-payment/article.en.md) | [中文版](https://medium.com/p/46377fd460fe/edit)已排程 11/03（二）09:00 發布；[英文版](https://medium.com/p/20452944263b/edit)已排程 11/05（四）09:00 發布（GMT+8）；佇列見 [PUBLISHING.md](PUBLISHING.md) | [中](2026-10-green-payment/publish/PUBLISHED.md)／[EN](2026-10-green-payment/publish/en/PUBLISHED.md) |
 | 2026-11 | [同一份規格，跑十次：我們憑什麼把一種交代變成團隊預設？](2026-11-same-spec-overview/article.md) | 待 Claude max 額度重置後主寫 | [已排程 11/10（二）09:00](https://medium.com/p/6986ee29219e/edit)（GMT+8） | [PUBLISHED.md](2026-11-same-spec-overview/publish/PUBLISHED.md) |

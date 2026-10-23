@@ -1,0 +1,7 @@
+{
+  "runner": "python3 -m unittest {files}",
+  "dependencies": {
+    "**/figures.json": ["research/scripts/test_research_scripts.py"],
+    ".gstack/pregate.json": ["research/scripts/test_research_scripts.py"]
+  }
+}
