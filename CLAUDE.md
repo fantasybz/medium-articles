@@ -69,6 +69,11 @@ extractors, `collect.sh`, `mermaid_check*.sh` and `render_images.sh` need a
 browser or the macOS Keychain, so they are not in it; like `medium_draft.sh`,
 they check their own output at run time.
 
+For gstack's pre-gate, `.gstack/pregate.json` maps generated `figures.json`
+files to that existing research suite and runs it with stdlib `unittest`.
+The explicit mapping covers corpus files discovered at runtime; it does not
+replace the three required commands above or the Medium readback checks.
+
 The third command covers the [tea payment teaching example](examples/tea_payment/README.md):
 nine payment tests and twelve mutation-runner regression tests, all offline with
 the standard library on Python 3.10 or later. Run

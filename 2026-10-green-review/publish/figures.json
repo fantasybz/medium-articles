@@ -29,6 +29,10 @@
   {
    "file": "table-03.png",
    "markdown": "| 型態 | 判定 | 條件 |\n|---|---|---|\n| 不同 vendor、隔離 session、人讀報告 approve、抽樣深讀 | 允許 | 這是艦隊的預設型態 |\n| 同 vendor、不同 session | 有條件 | 只能 comment；approve 不進訊號欄 |\n| 同 model family、同 session 或共享 context | 禁止 | 閉環的第一種形狀 |\n| reviewer 的 accept 回饋成 generator 的訓練或 prompt | 禁止 | 訓練版有實證的 rubber-stamp regime；prompt 版是筆者的延伸 |\n| 一次審 N 個 PR 的視窗 | 禁止 | 偵測掉到約三分之一；每 PR 審 |\n| reviewer 看得到前一輪分數 | 禁止 | 設計原則，不當量化保證 |\n"
+  },
+  {
+   "file": "table-04.png",
+   "markdown": "| 時點 | PR 的版本 | 目標分支的版本 | 合併候選版本與證據 |\n|---|---|---|---|\n| 審閱與測試時 | H | B1 | C1，已有對應的檢查結果與核准 |\n| 另一份 PR 合併後 | H，沒有改動 | B2 | C2，需要重新確認；C1 的證據不能直接代替 |\n"
   }
  ]
 }

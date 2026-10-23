@@ -12,8 +12,18 @@
 | Item | Value |
 |---|---|
 | Topics | Software Testing、Code Review、AI、Software Engineering、Engineering Management |
-| Preview image | `diagram-04.png`（`1*AGrOkMD2NUf4FXaZ2-bI-A.png`，2026-09-23 已核對） |
+| Preview image | `diagram-04.png`（`1*AGrOkMD2NUf4FXaZ2-bI-A.png`，664 × 566，2026-10-23 已核對） |
 | Notify subscribers | yes (default) |
+
+## Published-page verification (2026-10-23)
+
+| Item | Result |
+|---|---|
+| Public body | 206 text blocks match the final publishing payload |
+| Links | 34, with matching destinations and order; no payment-code links |
+| Images / dividers | 18 images and 16 dividers in the expected positions; no placeholders |
+| Navigation | Published editions linked; Reliability and Payment remain coming soon |
+| Settings | Preserved; only the last-published timestamp changed |
 
 ## Status (2026-09-07)
 
@@ -148,3 +158,11 @@ A further fresh settings read confirmed that the title, cover identifier and dim
 沿用原 Post ID，局部修改後按 **Save and publish**，再從新分頁讀取公開全文。最終為 206 個文字區塊、32 個連結、18 張圖、16 條分隔線，逐塊相符；連結目的地與順序另行核對，付款程式碼連結為 0。
 
 圖片識別碼、原圖尺寸、順序及程式碼內容與縮排均保留。標題、首次發布時間、Topics、封面、預覽文字、可見性、付費牆與 publication 設定均與更新前相同；僅最後更新時間變動。當次封面為 `1*AGrOkMD2NUf4FXaZ2-bI-A.png`（664 × 566）。未重新建立文章或更動排程。
+
+## 2026-10-23 發布進度與 Review 回饋同步
+
+開頭導覽與文末系列清單已將 Review 篇的「即將發布」換成同語言公開文章連結。可靠度篇與付款實作篇仍待發布；本輪不更動正文論點。
+
+沿用原 Post ID 更新並按 **Save and publish**。先等待 Saved，再關閉本輪編輯頁、另開新編輯頁核對完整草稿，才更新公開版本；發布後另開公開頁，確認 **206 個文字區塊、34 個連結、18 張圖、16 條分隔線**與最終貼稿相符。連結順序與目的地、原有圖片的識別碼與尺寸、程式碼內容均另行比對。付款程式碼連結為 0，仍待同語言第四篇實際發布後才提供。
+
+首次發布時間、標題、Topics、封面識別碼與尺寸、預覽文字、可見性、付費牆與 publication 設定均與更新前相同；僅最後更新時間變動。沒有新建文章，也沒有更動後續排程。

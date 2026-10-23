@@ -28,7 +28,7 @@ Medium 發布指南（此註解區塊不要貼進 Medium）
 
 > **TL;DR** — If a payment were charged twice, would the tests still be green? Reviewing an agent’s tests starts with questions like this: what do they treat as correct, and which errors can they actually detect? This piece first identifies weakened tests, existing bugs treated as expected answers, and requirements left untested. It then explains how to compare assertions before and after a change, make new tests reproduce old bugs, and deliberately break code to assess fault detection. These methods produce leads for human investigation; someone still needs to check requirement completeness. A workshop example and ten-question checklist bring that judgment back to an actual test suite.
 
-> Series: [Overview](https://medium.com/p/c4fc9f3d8581) → **1. Testing (this piece)** → 2. Review (coming soon) → 3. Reliability (coming soon) → 4. Payment Walkthrough (coming soon)
+> Series: [Overview](https://medium.com/p/c4fc9f3d8581) → **1. Testing (this piece)** → [2. Review](https://medium.com/p/4d36d0f2f9c1) → 3. Reliability (coming soon) → 4. Payment Walkthrough (coming soon)
 
 ---
 
@@ -463,7 +463,7 @@ Reviewing the test suite this way gives the team firmer ground for the next ques
 
 - [Overview: Green Is Not Done — Testing, Review and Reliability for Agent Output](https://medium.com/p/c4fc9f3d8581)
 - **Part 1 — Testing (this piece)**
-- Part 2 — Review: Review Is the Control Point, Not the Bottleneck — Triage, Reviewer Fleets and the Closed-Loop Ban (coming soon)
+- [Part 2 — Review: Review Is the Control Point, Not the Bottleneck — Triage, Reviewer Fleets and the Closed-Loop Ban](https://medium.com/p/4d36d0f2f9c1)
 - Part 3 — Reliability: The 34% SWE-Gate Found Behind a Green Build — Constraint Tests, pass^k and the Gate for Expanding Autonomy (coming soon)
 - Part 4 — A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score (coming soon)
 
