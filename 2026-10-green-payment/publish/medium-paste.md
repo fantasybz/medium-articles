@@ -59,6 +59,8 @@ key = "buy-tea-001"
 
 拒絕與逾時則要分開。明確拒絕是 `DECLINED`；逾時只是我們沒有收到確定的回覆，金流端可能已經扣款，因此維持 `PENDING`。這份示範不會在逾時後自動重新扣款，也沒有實作查詢與對帳流程；後續必須由另外設計、驗證過的流程處理。
 
+即使已收到明確拒絕，本例也不允許在同一張訂單上換 key 再付一次。購買者若要換卡或重新付款，真實服務還需要定義何時可以建立新嘗試、如何取得授權，以及如何與舊嘗試區分。這段流程留待第九節交接；不能把示範的限制直接當成完整購物流程。
+
 本例也約定：其他未分類的 provider 例外要向外傳遞，交由呼叫端處理，不在 Checkout 裡擅自轉成付款成功或失敗；已登記的嘗試則保留 `PENDING`，讓相同請求重送時不再呼叫金流。後文會把這項約定和逾時行為一起寫成測試。如此既保留需要調查的錯誤，也保留重送所需的紀錄；本例沒有實作呼叫端的錯誤呈現與復原流程。
 
 這些是本例約定的行為，不是所有金流 API 共同採用的狀態名稱。[Stripe 的官方文件](https://docs.stripe.com/error-handling#connection-errors)也提醒，連線錯誤留下的是不確定結果；但在它的 idempotency 契約下，可以使用相同 key 安全重試。這份示範沒有實作 provider 端的冪等能力，因此先保留待確認結果。兩者的差別在於重試受到什麼保證，不能把這裡的保守處理推成「真實金流一律不得重試」。
@@ -171,11 +173,14 @@ def test_timeout_stays_pending_without_another_charge(self):
 
 ## 五、先看付款程式如何回應，再故意改壞它
 
-範例把付款結果存在記憶體裡。每次先確認 key 沒有被拿去付另一張訂單，再查這張訂單是否已有付款嘗試；有的話核對 key 與訂單內容，直接回傳既有結果。只有新的、有效的嘗試才會呼叫金流，並且在呼叫前先留下 `PENDING`。
+範例把付款嘗試存在同一個 `Checkout` 物件的記憶體裡，以下示範都依序呼叫這個物件。每次先確認 key 沒有被拿去付另一張訂單，再查這張訂單是否已有付款嘗試；有的話核對 key 與訂單內容，直接回傳既有結果。只有新的、有效的嘗試才會呼叫金流，並且在呼叫前先留下 `PENDING`。
 
-以下節錄扣款與狀態處理，完整 guard 與資料結構在隨文程式碼中。這幾行值得 reviewer 深讀，因為一個看似方便的例外處理，就能把「不知道結果」改成「已付款」。
+以下節錄扣款前的登記、回覆處理與最後寫回。`Receipt` 保存要回傳的付款狀態；`Attempt` 把訂單、key 與這份結果放在一起，供下一次請求查詢。完整 guard 與資料結構在隨文程式碼中。先看紀錄在哪個時間點存在，再看例外會讓程式走到哪裡，就能理解為什麼後面需要不同的錯誤情境。
 
 ```python
+receipt = Receipt(order.order_id, order.sku, order.amount_ntd, "PENDING")
+self.key_orders[key] = order.order_id
+self.attempts[order.order_id] = Attempt(order, key, receipt)
 try:
     payment_id = self.gateway.charge(order.order_id, order.amount_ntd)
 except Declined:
@@ -184,7 +189,11 @@ except TimeoutError:
     receipt = replace(receipt, status="PENDING")
 else:
     receipt = replace(receipt, status="PAID", payment_id=payment_id)
+self.attempts[order.order_id] = Attempt(order, key, receipt)
+return receipt
 ```
+
+這裡有兩次寫入 `self.attempts`。第一次在呼叫金流之前，先留下「已開始、結果未知」；第二次則在收到成功、拒絕或已捕捉的逾時之後，保存這次能確認的狀態。如果發生沒有被這兩個 `except` 接住的例外，程式會直接向外傳遞錯誤，跳過第二次寫入與 `return`。這時，重送能否找到原本的嘗試，就取決於第一次寫入是否還在。兩次寫入各有作用，不能只看正常路徑的最終結果，就把前一次判成多餘。
 
 若要理解這段程式，先沿著回覆種類讀這張圖。它描述的是本例在付款邊界能知道的狀態，不是金流端的完整交易生命週期。
 
@@ -297,11 +306,17 @@ OK
 
 若交來的仍是 85.7% 版本，我會留下這樣的評論。以下是教學示例，不是真實團隊的核准紀錄：
 
-> 暫緩核准。M5 把逾時結果改成 `PAID`，目前八個測試仍全部通過，C4 的未知付款結果尚未受到驗證。請補上扣款前與扣款後逾時的案例，透過 `Checkout.pay()` 檢查狀態、付款識別與重送的副作用。請附上測試對 M5 失敗、對原始程式通過的結果，再由 payment owner 複核。這次審閱只處理單一行程、依序呼叫的教學實作；production 的復原與整合證據另行確認。
+> 暫緩核准。M5 把逾時結果改成 `PAID`，目前八個測試仍全部通過，C4 的未知付款結果尚未受到驗證。請補上扣款前與扣款後逾時的案例，透過 `Checkout.pay()` 檢查狀態、付款識別與重送的副作用。請附上測試對 M5 失敗、對原始程式通過的結果，再由 payment owner 複核。這次審閱只處理在單一行程中重用同一個 `Checkout` 物件、依序呼叫的教學實作；production 的復原與整合證據另行確認。
 
 這則評論把拒絕核准的理由與解除條件寫在一起。作者不用猜測是分數不夠高，還是測試命名不合偏好；下一位 reviewer 也知道該檢查哪一項變更。補件後，若測試只是直接比對替身裡預設的字串，沒有經過付款程式，就尚未符合條件。必須確認同一條產品路徑在正確與錯誤版本之間呈現可解釋的差異。
 
-實際交回 PR 的內容可以精簡，但應讓判斷所需的證據連得起來。下面是一份填好的教學範本；實際使用時，要補上可開啟的 revision、規則版本與報告連結。它是審閱紀錄格式，不是已實作的自動核准工具。
+### 核准還要對應到實際準備合併的版本
+
+補回逾時測試，還有一個版本問題需要確認。延續〈Review 篇〉第七節的假設：付款 PR 通過審閱後，另一份 PR 先進入 `main`，改了它呼叫的共用金流函式。你的分支沒有新增 commit，兩邊也沒有文字衝突，但組合起來可能已改變逾時與重送行為。先前那份報告驗證過的整合內容，未必仍是現在準備合併的內容。這是用來說明審閱政策的情境，隨文程式沒有模擬合併佇列。
+
+PR head 是這份 PR 的版本；base 是當時目標分支的版本。把它們整合後，實際送去檢查的內容稱為合併候選版本。還要保存兩種識別：候選 commit SHA 辨認提交，tree SHA 辨認它指向的整棵檔案樹。檔案內容相同，提交的歷史或資訊不同，commit SHA 仍可能不同。GitHub 的 check run 又是對應特定 commit，所以只留 tree 或一句「CI 通過」，都不足以追到哪次執行驗證了什麼。[Git 的物件說明](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects)與 [Checks API](https://docs.github.com/en/rest/checks/runs#create-a-check-run)可以對照這項差別。
+
+實際交回 PR 的紀錄可以精簡，但應讓這些關係連得起來。下面以本例已知的實驗結果示範格式；版本與連結欄位仍須由實際流程填入。這是建議的審閱紀錄，隨文 runner 沒有實作候選版本核對或自動核准服務。
 
 ```text
 Intent:
@@ -312,17 +327,30 @@ Evidence:
   原始程式通過 9 個付款測試。
   7 個指定 mutant 全部被辨識；排除數為 0。
   C4 的逾時測試單獨執行時，對 M5 失敗、對原始程式通過。
-Revision / rule version / report:
-  [填入實際受審版本、受保護規則版本與執行結果連結]
+Candidate:
+  [PR head、當時 base、候選 commit 與 tree SHA]
+  [若使用 merge queue：merge group 與前置 PR 組合]
+Verification:
+  [受保護的規則、fixture、runner、workflow 與核准政策版本]
+  [必要檢查清單；各項執行 ID／連結、所屬 commit、狀態與結論]
+  [可信任的回報系統，以及執行時實際取出的候選程式版本]
 Remaining scope:
   尚待驗證持久化、並行、重新啟動、provider 整合與授權。
 Decision / approver:
-  [由具責任的人填寫核准範圍、決定與身分]
+  [由具責任的人填寫核准範圍、理由、身分與時間]
+Merge correspondence:
+  [合併前確認內容仍對應已驗證候選；合併後留下最終 commit／tree 的對應]
 ```
 
 補齊這份證據後，payment owner 可以判斷教學實作是否已符合 C1 到 C4；QA reviewer 檢查測試與變異之間的對照；整合 reviewer 記錄部署前仍需處理的範圍。若審閱目標只是把這個教學範例合併進文章 repo，這些界線可以被明確接受。若目標是部署真實付款服務，同一份報告就還不足以核准。決定不同，是因為承諾的範圍不同。
 
-規則與候選程式也需要保留獨立性。候選 PR 可以提出約束修改，但不能自行改弱測試，再用改過的綠燈證明自己合規。正式流程應讓人核准規則變更，從受保護的規則與 runner 版本評估候選程式碼，並把核准紀錄對應到實際審閱的 revision。若核准後又改了付款分支，就要對新的版本重新取得相關證據。把測試放進 `constraints/` 目錄，本身不會建立這些權限與版本保護。
+規則與候選程式也需要保留獨立性。候選 PR 可以提出約束修改，但不能自行改弱測試，再用改過的綠燈證明自己合規。正式流程應從經人核准、受保護的規則與驗證程式取得判準，再檢查候選程式。核對時還要看結果是否來自可信任的系統，以及執行時實際取出的版本：報告標上新候選的 SHA，卻仍拿舊版程式執行測試，不能驗證新候選。把測試放進 `constraints/` 目錄，本身不會建立這些保護。
+
+若 head、base 或佇列組合改變，我建議先暫停沿用舊紀錄放行，重新產生並核對候選版本。需要重新取得的必要檢查，要對應目前候選；付款測試若沒有執行，不能把 `skipped` 或 `neutral` 當成已測過。使用 [GitHub merge queue](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue) 時，相關 Actions workflow 也要涵蓋 `merge_group`，才能為佇列版本產生所需結果。這套重新確認核准的政策需要另外實作，不能假定 GitHub 會在每一種 base 變動時自動撤銷舊 review。
+
+人也不必每次從頭重讀全部程式。先比較新舊整合內容；若共用金流函式改了，就沿著逾時、待確認紀錄與重送路徑重新查證，再由符合分流要求的人確認核准。若差異只有不影響執行的文件，則可依事先訂好的政策保留仍適用的審閱結論，記錄理由。最後採用 merge、squash 或 rebase 時，落入主線的 commit 可能與候選不同，放行機制仍須確保內容對應已驗證版本，並留下最終對應。合併後補上一個 SHA，不能補救合併前尚未驗證的內容；完整機制與平台界線見〈Review 篇〉第七節。
+
+### 從這份核准，走到一批任務的量測
 
 前面一直在問：這份付款程式的測試，能不能抓到指定錯誤？若要改問「agent 交來的修改，有多常遵守團隊要求」，要計算的對象就換了。每份 agent 產出、等待驗收的修改是一份候選修補；constraint pass rate 計算的是，通過功能檢查的候選修補中，有多少也通過全部適用約束。先固定任務集合、功能要求與約束，再逐份記錄結果，才能知道分母。眼前是一份程式通過九個測試，其中七個負責保護 Review 約束，不能把這七個測試當成七次 agent 成功交付。
 
@@ -349,7 +377,9 @@ python3 -B examples/tea_payment/mutation_demo.py
 
 ### 把未知結果交給能處理它的人
 
-這份實作把付款嘗試放在執行中的程式所持有的字典裡，驗證的是**同一個行程、依序呼叫**：前一個 `pay()` 處理完，下一個才開始。真實服務若有兩個請求同時處理，就可能都在對方留下紀錄前，看見「尚無付款嘗試」；這是需要另外驗證的並行情境，本例沒有執行它。兩個服務行程也不會共用這份記憶體，重新啟動後則會失去紀錄。要把同樣的要求帶進真實服務，接著沿著一個中斷情境推想，就能看出下一份證據該放在哪裡。
+這份實作把付款嘗試放在 `Checkout` 物件自己的字典裡，驗證的是**在同一個行程中重用同一個物件、保留紀錄，並依序呼叫**：前一個 `pay()` 處理完，下一個才開始。即使行程沒有重新啟動，每次請求都建立新的 `Checkout`，也會失去前一次的紀錄，無法靠本例的查詢阻止再次扣款。
+
+真實服務若有兩個請求同時處理，就可能都在對方留下紀錄前，看見「尚無付款嘗試」；這是需要另外驗證的並行情境，本例沒有執行它。兩個服務行程也不會共用這份記憶體，重新啟動後則會失去紀錄。要把同樣的要求帶進真實服務，接著沿著一個中斷情境推想，就能看出下一份證據該放在哪裡。
 
 假設金流已完成扣款，但服務在保存最終結果前停止運作。重新啟動後，程式若只看見一張尚未完成的訂單，就再次呼叫金流，便可能把「沒有記錄結果」誤當成「先前沒有扣款」。把字典換成資料庫，還需要決定何時登記嘗試、哪些操作具備原子性，以及外部扣款完成、本地結果未寫入時怎麼復原。這裡的原子性，是指一組更新要一起成功，或一起不生效。例如把「登記付款嘗試」與「標記訂單正在處理」放在同一本地交易中，是為了避免只完成其中一半。但這個資料庫交易，無法自動把外部 provider 的扣款一起包進來。
 
@@ -387,7 +417,7 @@ python3 -B examples/tea_payment/mutation_demo.py
 
 同一份紀錄也應讓接手的人知道，哪些責任還沒有完成。reviewer 可以依前述證據，判斷這個教學範例是否符合 C1 到 C4，以及是否能合併進文章 repo；若要部署真實付款服務，持久化、並行、金流整合與復原流程仍需要各自的證據。把它們寫成「後續再補」還不夠，必須有人接下來處理，並說明取得什麼結果後才能重新討論上線。若這些安排尚未成立，暫緩核准就有明確的理由，也有可以繼續前進的條件。
 
-帶回團隊時，我會先挑一份已經全綠的 PR，沿著它對使用者作出的承諾讀一次：這個承諾由哪條要求定義，哪個測試真的經過產品路徑，哪種違反要求的版本會讓這個測試失敗，最後又由誰判斷證據足夠。遇到接不起來的地方，就把那個缺口留成下一次審閱的具體問題。前面談過的規則卡、mutation 報告與核准紀錄，都是為了幫大家完成這個判斷；能讓同事據此接手，比多一份沒有人知道如何使用的文件更有意義。
+帶回團隊時，我會先挑一份已經全綠的 PR，沿著它對使用者作出的承諾讀一次：這個承諾由哪條要求定義，哪個測試真的經過產品路徑，哪種違反要求的版本會讓這個測試失敗，證據又是否對應到眼前準備合併的內容，最後由誰判斷足夠。遇到接不起來的地方，就把那個缺口留成下一次審閱的具體問題。前面談過的規則卡、mutation 報告與核准紀錄，都是為了幫大家完成這個判斷；能讓同事據此接手，比多一份沒有人知道如何使用的文件更有意義。
 
 四部曲走到這裡，我希望留下的是這樣的工作習慣：把已確認的事情說清楚，把未知的事情交給能繼續處理的人，也讓放行的決定對得回它所依據的證據。agent 可以協助產生程式、找出反例、整理報告；團隊則要持續回答，這些結果足以支持什麼承諾，以及還有哪些承諾尚未準備好。
 
@@ -413,6 +443,8 @@ python3 -B examples/tea_payment/mutation_demo.py
 6. Petrović 等 — [Practical Mutation Testing at Scale: A view from Google](https://research.google/pubs/practical-mutation-testing-at-scale-a-view-from-google/)（2021）〔第六節；增量執行、變異過濾與選擇〕
 7. Stryker 官方文件 — [Equivalent mutants](https://stryker-mutator.io/docs/mutation-testing-elements/equivalent-mutants/)〔第六節；等價變異的判讀限制〕
 8. AWS Builders’ Library — [Making retries safe with idempotent APIs](https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/)〔第九節；識別碼、不同意圖與延遲請求〕
+9. Git — [Git Objects](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects)；GitHub — [Create a check run](https://docs.github.com/en/rest/checks/runs#create-a-check-run)〔第八節；commit、tree 與檢查結果的對應〕
+10. GitHub — [Managing a merge queue](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue)、[About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)、[About merge methods](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/about-merge-methods-on-github)〔第八節；候選重建、必要檢查、過期核准與最終合併；2026-10-24 核對〕
 
 ### AI 協作說明
 
