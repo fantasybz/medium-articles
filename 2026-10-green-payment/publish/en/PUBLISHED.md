@@ -3,7 +3,7 @@
 **標題** Green Is Not Done, Part 4 — A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score
 **Post ID** `20452944263b`
 **草稿網址** https://medium.com/p/20452944263b/edit
-**狀態** 已排程於 **2026-11-05（四）09:00 Asia/Taipei（GMT+8）** 發布；目前尚未發布（2026-10-03 重新讀回確認）。
+**狀態** 已排程於 **2026-11-05（四）09:00 Asia/Taipei（GMT+8）** 發布；目前尚未發布（2026-10-24 重新讀回確認）。
 **系列位置** 總論＋四部曲的第四篇〈付款實作篇〉。資料夾日期不代表發布日期。
 
 ## 設定
@@ -76,3 +76,13 @@ A further fresh settings read confirmed that the title, cover identifier and dim
 本篇排程稿保留付款程式碼連結。中英文各自以對應版本的第四篇實際發布為準：本篇為英文版，待 `20452944263b` 實際上線後，再回填英文總論與前三篇的程式碼入口，並移除其「待第四篇發布後提供」說明；不要只因程式碼在 GitHub 可讀就提早回填。更新時須同步各篇原稿、貼稿與 Medium，並重新核對系列與中英文連結。
 
 正文與參考資料的回填位置、中英延期標記及 Review 篇未來式的調整，統一見 [付款程式碼回填清單](../../../PUBLISHING.md#第四篇上線後的付款程式碼回填)。本語言四篇各有兩處程式碼入口，須逐一核對。
+
+## Publication-readiness polish synchronized (2026-10-24)
+
+Expanded the pending-state walkthrough, clarified that replay protection requires the same retained Checkout instance, and connected approval records to the verified merge candidate and required check runs. The executable example is unchanged. The source, generated paste and changed figures are synchronized; rationale and review limits are recorded in the [research note](../../../research/2026-10/reliability-payment-polish-evidence.md).
+
+After saving under the same Post ID, fresh editor navigation verified **157 text blocks, 33 links, 7 figures and 11 dividers** against the final payload. Ordered text, link destinations, figure positions, image IDs and dimensions match; no image placeholders remain.
+
+All seven existing image identities and original dimensions, including the cover, are unchanged. A further fresh settings read confirmed the title, topics, display title/subtitle, notification setting and original schedule. The post remains unpublished and scheduled for **2026-11-05 09:00 Asia/Taipei** (`publishAt: 1793840400000`).
+
+Payment-code links remain present in this scheduled Part 4 draft; earlier articles wait for its actual publication. No early publication or rescheduling was performed.
