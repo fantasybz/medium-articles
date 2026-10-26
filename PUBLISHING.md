@@ -605,13 +605,16 @@ Review 第七節依讀者回饋補清 PR head 不變、整合候選版本仍可�
 這一輪起每張來源圖片的圖說改貼進 Medium 圖片自己的 caption 欄（見〈圖片是怎麼進去的〉），所以文字區塊數比圖說還在正文時少了圖說的則數。
 另開新分頁讀回：六篇 `isPublished: false`、排程時段全部不變（11/02、11/04、11/09、11/11、11/16、11/18 的 UTC 01:00）、Notify subscribers 關閉、圖片數相符。
 
-兩件事留給作者在發布對話框處理：
+重灌的兩個副作用，同日稍後依作者指示在發布對話框處理完畢（按 Done，沒有按 Schedule to publish）：
 
-1. **封面**。第一篇中英的第一張內文圖就是會場照，封面不變；第二、三篇中英的第一張內文圖是系列總覽圖，重灌後封面被重設成總覽圖
-   （第二篇原本是東京鐵塔照、第三篇原本是澀谷夜景照）。改法見〈整篇重灌〉的「Change preview image」步驟，按 Done 就存，不要按 Schedule。
-2. **預覽摘要**。只有英文第一篇讀回的仍是自訂摘要；其餘五篇讀回的是 Medium 自動摘自 TL;DR 的首句，ledger 原本記的自訂摘要不在 Medium 設定裡，要自訂得重設。
+1. **封面**。第一篇中英的第一張內文圖就是會場照，封面本來就不變；第二、三篇中英的第一張內文圖是系列總覽圖，重灌後封面被重設成總覽圖，
+   已用「Change preview image」從頁內縮圖選回原照（第二篇東京鐵塔照 `1*l8bZZAVGBqlT0sVQdyRXdg.png` 2048×1152、第三篇澀谷夜景照
+   `1*yXCiu5bX04CCZi96j9C3LA.png` 2400×1350）。縮圖是依 `src` 裡的圖片識別碼選的，不是看長相；重傳的同一張圖拿到的是同一個識別碼。
+2. **預覽摘要**。重灌後只有英文第一篇仍是自訂摘要，其餘五篇讀回的是 Medium 自動摘自 TL;DR 的首句。已把 ledger 記的自訂摘要填回
+   「Write a preview subtitle」欄：`browse fill` 之後按 Tab 離開欄位，Medium 就存了，不必按任何按鈕，從新分頁讀回確認。中文第一篇的
+   「六場錄影」改成「七場」、英文第一篇的「six talks」改成「seven talks」，以符合補入的 PagerDuty 場次（英文那句是作者再指示後改的）。
 
-各篇 `PUBLISHED.md` 與[發布核對](research/2026-10/aaif-agntcon/publication.md)已依讀回值更新。
+六篇改完都從新分頁讀回：排程、`isPublished: false`、Notify 關閉皆未變。各篇 `PUBLISHED.md` 與[發布核對](research/2026-10/aaif-agntcon/publication.md)已依讀回值更新。
 
 ### 2026-10-24：第三篇上版與檢查
 
