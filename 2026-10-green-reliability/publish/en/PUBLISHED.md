@@ -4,6 +4,7 @@
 **Post ID** `4b6d147bff0d`（draft https://medium.com/p/4b6d147bff0d/edit；stable URL after publishing https://medium.com/p/4b6d147bff0d）
 **Schedule** 2026-10-29（四）09:00 GMT+8（2026-10-24 已重新讀取 Medium 排程確認）
 **Built with** `./tools/medium_draft.sh 2026-10-green-reliability en`, block-by-block verification clean
+**2026-10-26** 原稿與貼稿修訂後已重灌並讀回，見文末小節。
 
 ## Settings
 
@@ -190,3 +191,11 @@ After saving under the same Post ID, fresh editor navigation verified **169 text
 Replaced diagram-01, diagram-02 and table-02 with the revised English images. The cover remains diagram-02, now `1*3BkCssQJxK2HMOF195J5zQ.png` (1486×1136); the other four image identities and dimensions are unchanged. A further fresh settings read confirmed the title, topics, display title/subtitle, notification setting and original schedule. The post remains unpublished and scheduled for **2026-10-29 09:00 Asia/Taipei** (`publishAt: 1793235600000`).
 
 Payment-code links remain absent until this language’s Part 4 actually publishes. No early publication or rescheduling was performed.
+
+## 2026-10-26 重灌與讀回
+
+Claude Code 接手複核後修訂原稿與貼稿（見[研究紀錄](../../../research/2026-10/reliability-payment-polish-evidence.md)的 2026-10-25／26 小節）。作者允許重開 gstack browse daemon 後，先以 `research/scripts/render_images.sh 2026-10-green-reliability en` 重繪整包七張圖（全部通過 MERMAID.md 檢查，`diagram-04` 長寬比 1.44），再以 `./tools/medium_draft.sh 2026-10-green-reliability en --post 4b6d147bff0d` 重灌，未加 `--reuse-figures`。
+
+儲存後重新讀回：**169 個文字區塊、23 個連結、7 張圖、10 條分隔線**均與貼稿相符，placeholder 為 0。七張圖全部重傳；Medium 以內容定址，位元組不變的三張保留原識別碼（`table-01` `1*roevPNsK7WGH3pLAxeacQQ`、`diagram-03` `1*U6DRJpDZC58Fc04m1dTEmQ`、`table-03` `1*duxy4SJVec7HPM3jrn8JQQ`），重繪後位元組改變的四張取得新識別碼：`diagram-01` `1*aoQkc56_RaP6I9LFRlriHA`（664×604）、`table-02` `1*F6zXX1lFnCCsR5Bymoor0g`（1800×586）、`diagram-02` `1*npPKf73a1qhAQ0JmQ2PKxg`（664×522）、`diagram-04` `1*Y3rm-y29DbOSYnxI59p7TQ`（664×934）。
+
+重灌把封面重設成第一張圖 `table-01`；`UpdateSubmitFormStoryPreviewMetadataMutation` 回 `500 throughput exceeded`，改走 `/p/<id>/edit` 右上角選單的 Change featured image 選回新版 `diagram-02.png`，重新載入 `/submission` 讀回 `previewImage.id = 1*npPKf73a1qhAQ0JmQ2PKxg.png`（664×522）。標題、預覽摘要、五個 Topics、通知設定與排程均與重灌前相同：`isPublished: false`，`publishAt: 1793235600000`（2026-10-29 09:00 Asia/Taipei）。重灌前後的設定與圖片識別碼快照存於本機 `.context/ship-2026-10-26b/`，未納入 git。

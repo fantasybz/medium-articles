@@ -3,7 +3,7 @@
 **標題** Green Is Not Done, Part 4 — A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score
 **Post ID** `20452944263b`
 **草稿網址** https://medium.com/p/20452944263b/edit
-**狀態** 已排程於 **2026-11-05（四）09:00 Asia/Taipei（GMT+8）** 發布；目前尚未發布（2026-10-24 重新讀回確認）。
+**狀態** 已排程於 **2026-11-05（四）09:00 Asia/Taipei（GMT+8）** 發布；目前尚未發布（2026-10-24 重新讀回確認）；2026-10-26 原稿與貼稿修訂後已重灌並讀回，見文末小節。
 **系列位置** 總論＋四部曲的第四篇〈付款實作篇〉。資料夾日期不代表發布日期。
 
 ## 設定
@@ -86,3 +86,9 @@ After saving under the same Post ID, fresh editor navigation verified **157 text
 All seven existing image identities and original dimensions, including the cover, are unchanged. A further fresh settings read confirmed the title, topics, display title/subtitle, notification setting and original schedule. The post remains unpublished and scheduled for **2026-11-05 09:00 Asia/Taipei** (`publishAt: 1793840400000`).
 
 Payment-code links remain present in this scheduled Part 4 draft; earlier articles wait for its actual publication. No early publication or rescheduling was performed.
+
+## 2026-10-26 重灌與讀回
+
+Claude Code 接手複核後修訂原稿與貼稿（見[研究紀錄](../../../research/2026-10/reliability-payment-polish-evidence.md)的 2026-10-25／26 小節）。本篇沒有改圖，不必重繪；作者允許重開 gstack browse daemon 後，以 `./tools/medium_draft.sh 2026-10-green-payment en --post 20452944263b` 重灌，未加 `--reuse-figures`。
+
+儲存後重新讀回：**157 個文字區塊、33 個連結、7 張圖、11 條分隔線**均與貼稿相符，placeholder 為 0。七張圖全部重傳，位元組未變，Medium 以內容定址，七個識別碼與重灌前完全相同。重灌把封面重設成第一張圖 `table-01`（`1*S1SLNvaSXMfS8PYtgZ0AJw`），改走 `/p/<id>/edit` 右上角選單的 Change featured image 選回 `diagram-01.png`，重新載入 `/submission` 讀回 `previewImage.id = 1*1Rdev5wkuGbi2GfLz393Pg.png`（664×396）。標題、預覽摘要、五個 Topics、通知設定與排程均與重灌前相同：`isPublished: false`，`publishAt: 1793840400000`（2026-11-05 09:00 Asia/Taipei）。快照存於本機 `.context/ship-2026-10-26b/`，未納入 git。

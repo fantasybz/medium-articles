@@ -4,6 +4,7 @@
 **Post ID** `3c64a9622777`（草稿／排程網址 https://medium.com/p/3c64a9622777/edit；上線後的穩定短網址 https://medium.com/p/3c64a9622777）
 **排程** 2026-10-27（二）09:00 GMT+8（2026-10-24 已重新讀取 Medium 排程確認）
 **建立方式** `./tools/medium_draft.sh 2026-10-green-reliability`，逐塊比對零差異（見 [PUBLISHING.md](../../PUBLISHING.md)）
+**2026-10-26** 原稿與貼稿修訂後已重灌並讀回，見文末小節。
 
 ## 設定
 
@@ -187,3 +188,11 @@ Post ID、五個 Topics、訂閱通知設定與排程均保留。發布設定讀
 更新 `diagram-01.png`、`diagram-02.png`、`table-02.png` 三張圖；封面仍選 `diagram-02.png`，新版識別碼為 `1*wkCPXmyu9tMGAvbX8iTC-w.png`（1468×1136）。另四張圖片的識別碼與原始尺寸保留。另從新分頁讀取設定，確認標題、Topics、預覽標題與摘要、通知設定及原排程均保留。文章仍為 `isPublished: false`，排程 **2026-10-27 09:00 Asia/Taipei**（`publishAt: 1793062800000`）。
 
 付款程式碼連結維持為 0，待中文版第四篇實際發布後才回填。本輪沒有提前發布或重新排程。
+
+## 2026-10-26 重灌與讀回
+
+Claude Code 接手複核後修訂原稿與貼稿（見[研究紀錄](../../research/2026-10/reliability-payment-polish-evidence.md)的 2026-10-25／26 小節）。作者允許重開 gstack browse daemon 後，先以 `research/scripts/render_images.sh 2026-10-green-reliability` 重繪整包七張圖（全部通過 MERMAID.md 檢查，`diagram-04` 長寬比 1.40），再以 `./tools/medium_draft.sh 2026-10-green-reliability --post 3c64a9622777` 重灌，未加 `--reuse-figures`。
+
+儲存後重新讀回：**169 個文字區塊、22 個連結、7 張圖、10 條分隔線**均與貼稿相符，placeholder 為 0。七張圖全部重傳；Medium 以內容定址，位元組不變的三張保留原識別碼（`table-01` `1*whb3ph8ndZguMFPKOmqvWQ`、`diagram-03` `1*4tBxYGF49V-UkNtgS1KhCA`、`table-03` `1*RlRojU6hvMn24AP5sW7Xaw`），重繪後位元組改變的四張取得新識別碼：`diagram-01` `1*fkRAdXhXKhIcuQnOExq1BA`（664×704）、`table-02` `1*oIg_kdBNO5DM3zYsqzvsQQ`（1800×490）、`diagram-02` `1*hdKhSiqzLrBPQIJNoL4NjA`（664×528）、`diagram-04` `1*1v46ld-y8He5caJWLOzCDg`（664×916）。
+
+重灌把封面重設成第一張圖 `table-01`；`UpdateSubmitFormStoryPreviewMetadataMutation` 回 `500 throughput exceeded`，改走 `/p/<id>/edit` 右上角選單的 Change featured image 選回新版 `diagram-02.png`，重新載入 `/submission` 讀回 `previewImage.id = 1*hdKhSiqzLrBPQIJNoL4NjA.png`（664×528）。標題、預覽摘要、五個 Topics、通知設定與排程均與重灌前相同：`isPublished: false`，`publishAt: 1793062800000`（2026-10-27 09:00 Asia/Taipei）。重灌前後的設定與圖片識別碼快照存於本機 `.context/ship-2026-10-26b/`，未納入 git。

@@ -491,6 +491,27 @@ Review 篇還要把「會提供」／“will provide”改為已可取得的敘�
 
 各篇參考資料的延期說明也要移除：中文為「（程式碼連結待第四篇〈付款實作篇〉發布後提供）」，英文為 `(Code link to follow when Part 4, “A Payment Walkthrough,” is published.)`。正文原本沒有這個標記，不能只搜尋延期說明就算完成。更新原稿後重產同語言貼稿，再同步 Medium，逐塊核對正文、參考資料、連結目的地及發布設定，並更新各篇 ledger。
 
+### 2026-10-25／26：接手複核後的修正與重灌
+
+Claude Code 接手複核兩篇後續文章。可靠度篇修正了對營運篇 G2 條件的誤引（escape rate 未惡化、champions 有工時與支援，含 YAML、`diagram-04` 節點文字與結語），刪去不成立的「全系列唯一引全數字」，在首次出現處說明 oversight budget，並補清 retry rate 與 escape rate 的分母；付款實作篇補上 C3 的評論來源、merge queue 說明與多處中英對應。細節、未採用的意見與審閱界線見[研究紀錄](research/2026-10/reliability-payment-polish-evidence.md)的 2026-10-25 小節。2026-10-26 補充：第二次 /ship 審查又改了可靠度篇第五節引用營運篇 G2 第一條的一句（中、英，說明 15% 是討論起點），並補上本節的重灌細節；同日作者允許重開 browse daemon 後，四份排程稿已依下列步驟重灌並讀回，結果見本小節末的表格。
+
+原稿、四份貼稿與 `figures.json` 已更新並通過三套測試。可靠度篇兩份（`3c64a9622777`、`4b6d147bff0d`）排程在 10/27 與 10/29，付款篇兩份（`46377fd460fe`、`20452944263b`）在 11/03 與 11/05；四份都已於 2026-10-26 重灌。重灌的順序與底線，留給下次使用：
+
+1. 先執行 `research/scripts/render_images.sh 2026-10-green-reliability` 與 `research/scripts/render_images.sh 2026-10-green-reliability en`。腳本會清掉並重繪整個發布包的 4 張圖與 3 張表，不只 `diagram-04.png`；任何一張沒通過 MERMAID.md 檢查，整包就失敗。依 git 紀錄，只有 `diagram-01.png`、`diagram-02.png` 與 `table-02.png` 是 10/24 的算繪；`diagram-03.png`、`diagram-04.png`（9/23，1x）、`table-01.png`（9/07）與 `table-03.png`（9/23）都是九月的算繪。10/26 重繪實測：這三張位元組不變，變的是 `diagram-01`、`diagram-02`、`diagram-04` 與 `table-02`（10/24 那三張是另一種尺寸的算繪）。另外，`--post` 重灌會把七張圖全部刪掉重傳，但 Medium 以內容定址：位元組不變的圖拿回同一個識別碼，位元組變了的圖才換新識別碼（10/26 實測：可靠度篇中英各四張換新、三張保留；付款篇七張全部保留）。重灌前先從編輯頁讀回七張圖的槽位順序、尺寸與識別碼記進 ledger，重灌後逐張對照：預期要變的圖必須換了識別碼，不該變的圖識別碼必須相同。`diagram-04.png` 目前長寬比 1.45，接近 MERMAID.md 的 1.5 上限；若重繪時任何一張 FAIL，先 `git checkout -- 2026-10-green-reliability/publish/images 2026-10-green-reliability/publish/en/images` 還原舊圖，再修 mermaid 來源（縮短標籤或加 `<br/>`）→ 重產貼稿與 `figures.json` → 跑測試 → 再重繪；FAIL 的狀態下不要跑任何 `medium_draft.sh`。付款篇沒有改圖，不必重繪。
+2. 再依〈整篇重灌〉的 `--post` 流程重灌四份稿件並讀回核對，不要加 `--reuse-figures`：它只核對張數，會把舊的 diagram-04 CDN 圖留在槽位裡，而且讀回也看不出來。四份重灌後都要依〈整篇重灌〉的步驟還原封面：`--post` 會把封面重設成內文第一張圖，而四份貼稿的第一張都是 `table-01.png`；可靠度篇選回 `diagram-02.png`，付款篇選回 `diagram-01.png`，重灌前先從 `/p/<id>/submission` 記下 previewImage 的識別碼。若 `/submission` 的選圖按鈕不出現、GraphQL mutation 回 `500 throughput exceeded`（10/26 兩篇可靠度篇都是），改走 `/p/<id>/edit` 右上角選單的 Change featured image，從選圖列點回目標圖再按 Done；10/26 四份都以這條路完成，並重新載入 `/submission` 讀回 `previewImage.id` 確認。兩次重繪與四次重灌共六個瀏覽器工作只能逐一執行：開始前先看 `browse status`，不能有其他 session 的 headed daemon，也不能有正在跑的 `medium_draft.sh` 或 `render_images.sh`，否則重灌可能在整篇替換之後被打斷。讀回的區塊數、連結數、七張圖的識別碼與尺寸、預覽標題與摘要、Topics、通知設定與 publishAt 都記進各篇 ledger（整篇重貼曾把預覽摘要重設成自動摘文，可靠度篇的副標是手動改過的），並在本小節下方新增一張讀回表；2026-10-24 小節的表格是當天的讀回紀錄，不要改寫。
+3. 建議每份排程稿至少在發布時間 12 小時前完成重灌與讀回（10/26 四份都已在底線前完成），也就是台北時間 10/26 21:00（`3c64a9622777`）、10/28 21:00（`4b6d147bff0d`）、11/02 21:00（`46377fd460fe`）、11/04 21:00（`20452944263b`）之前；更接近發布時間就不要開始，因為 `--post` 會先整篇替換再逐張上圖，失敗時可能來不及修復。這條底線目前靠操作者自己看時間，`medium_draft.sh` 不會讀取 publishAt。若來不及，就讓 10/24 已驗證的版本照排程發布；發布後用 `tools/medium_patch.py` 逐句修正文字。可靠度篇有兩處改在語法上色的 YAML 區塊裡（`flat_two_months` → `not_worsening_two_months`、`champions_self_sustaining` → `champions_have_time_and_support`），要依〈2026-09-28：程式碼區塊與原圖識別的核對〉的做法處理：整個 `<pre>` 從貼稿來源重貼，再逐塊比對程式區塊與前後段落；另外還要依〈換圖〉流程換掉 `diagram-04.png`，否則圖上的「持平／體系自轉」會與正文矛盾。訂閱通知信裡仍會是舊版內容。
+
+2026-10-26 重灌後的讀回結果（每份都另開新分頁讀回，`isPublished: false`，排程、標題、預覽摘要、Topics 與通知設定均與重灌前相同）：
+
+| 排程稿 | Post ID | 發布時間（Asia/Taipei） | 文字區塊 | 連結 | 圖片 | 分隔線 | 封面（讀回的 previewImage） |
+|---|---|---|---:|---:|---:|---:|---|
+| 可靠度篇（中） | `3c64a9622777` | 2026-10-27 09:00 | 169 | 22 | 7 | 10 | `diagram-02` 新版 `1*hdKhSiqzLrBPQIJNoL4NjA` |
+| 可靠度篇（英） | `4b6d147bff0d` | 2026-10-29 09:00 | 169 | 23 | 7 | 10 | `diagram-02` 新版 `1*npPKf73a1qhAQ0JmQ2PKxg` |
+| 付款實作篇（中） | `46377fd460fe` | 2026-11-03 09:00 | 157 | 32 | 7 | 11 | `diagram-01` 不變 `1*H9X381hku0T7Tp5ujH2NkQ` |
+| 付款實作篇（英） | `20452944263b` | 2026-11-05 09:00 | 157 | 33 | 7 | 11 | `diagram-01` 不變 `1*1Rdev5wkuGbi2GfLz393Pg` |
+
+後續工具建議，本輪未實作：讓 `render_images.sh` 寫出每張圖來源與 PNG 的 SHA-256 側檔並加 corpus 測試，過期的 PNG 才能在離線測試中被發現；讓 `medium_draft.sh` 比照 `collect.sh` 取鎖，並在 `--post` 前讀取 publishAt、在底線內拒絕執行，兩者都要配 fake-browse 測試。
+
 ### 2026-10-24：後續可靠度與付款實作篇精修
 
 第三、四篇的中英文共四份稿件完成發布前精修，重點是量測分母、抽查人力、付款狀態保留，以及核准與合併證據如何相互核對。[研究紀錄](research/2026-10/reliability-payment-polish-evidence.md)保留理由、來源、測試及審閱界線。本輪沒有修改其他系列或已發布正文。
