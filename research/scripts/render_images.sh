@@ -89,7 +89,11 @@ for asset in assets:
     if copied != asset["sha256"]:
         target.unlink()
         sys.exit("local PNG copy checksum mismatch: %s" % target)
-    verified.append(dict(asset, copied_sha256=copied))
+    # Evidence about bytes only: file, source, both digests. The caption that
+    # figures.json also records is prose, and rewording it must not make the
+    # copy evidence read as stale.
+    verified.append({"file": asset["file"], "source": asset["source"],
+                     "sha256": asset["sha256"], "copied_sha256": copied})
     print("  %s: copied unchanged (SHA-256 %s)" % (asset["file"], copied))
 if verified:
     Path(sys.argv[3]).write_text(json.dumps({"method": "byte-copy", "assets": verified},

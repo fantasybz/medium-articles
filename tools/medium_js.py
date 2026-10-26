@@ -37,6 +37,8 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import html
+import re
 from md2medium import SLOT_MARK  # one definition of the placeholder format
 
 EDITOR = ".postArticle-content"
@@ -414,6 +416,70 @@ def figures_js():
 """
 
 
+def caption_js(payload, index):
+    """Paste one figure's caption into the figure's own <figcaption>.
+
+    Figures sit in the editor in slot order, so an index into
+    payload["captions"] is the index among the editor's <figure> elements.
+    Medium's caption is a contenteditable <figcaption> showing a placeholder
+    span until something lands in it, and what lands has to arrive as a paste
+    with the figure focused: execCommand('insertText') writes inside the
+    placeholder span and Medium drops it on save (probed 2026-10-26 on a live
+    draft; a synthetic ClipboardEvent kept the text and its link). The caption's
+    contents are selected first so a re-run replaces instead of appending.
+    """
+    captions = payload.get("captions", [])
+    if index < 0 or index >= len(captions) or not captions[index]:
+        raise ValueError("no caption at index %d" % index)
+    caption = captions[index]
+    plain = html.unescape(re.sub(r"<[^>]+>", "", caption))
+    return """(() => {
+  const editor = document.querySelector('%s');
+  if (!editor) return JSON.stringify({ err: 'no Medium editor on this page' });
+  const figs = [...editor.querySelectorAll('figure')];
+  const fig = figs[%d];
+  if (!fig) return JSON.stringify({ err: 'no figure at index', index: %d, figures: figs.length });
+  const img = fig.querySelector('img');
+  if (img) img.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+  const cap = fig.querySelector('figcaption');
+  if (!cap) return JSON.stringify({ err: 'no figcaption', index: %d });
+  cap.focus();
+  const range = document.createRange();
+  range.selectNodeContents(cap);
+  const sel = getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+  const dt = new DataTransfer();
+  dt.setData('text/html', %s);
+  dt.setData('text/plain', %s);
+  cap.dispatchEvent(new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true }));
+  return JSON.stringify({ index: %d, pasted: true });
+})()
+""" % (EDITOR, index, index, index, json.dumps(caption), json.dumps(plain), index)
+
+
+def captions_js():
+    """Each figure's caption text in document order, "" for an untouched one.
+
+    The driver polls this after every caption paste: Medium applies the paste
+    asynchronously, and the placeholder span is what an untouched caption
+    still holds, so it is excluded rather than read back as text. Reading
+    innerText would report the prompt as the caption and let a figure whose
+    caption never landed pass. dump_js reads the captions the same way for
+    verify_draft.py.
+    """
+    return """(() => {
+  const editor = document.querySelector('%s');
+  if (!editor) return JSON.stringify({ err: 'no Medium editor on this page' });
+  const figs = [...editor.querySelectorAll('figure')];
+  return JSON.stringify({
+    captions: [...editor.querySelectorAll('figure')].map(f => f.querySelector('figcaption')).map(c => c ? [...c.childNodes].filter(n => !(n.classList && n.classList.contains('defaultValue'))).map(n => n.textContent).join('').trim() : ''),
+    caption_links: editor.querySelectorAll('figure figcaption a').length
+  });
+})()
+""" % EDITOR
+
+
 def payload_with_cdn_figures(payload, srcs):
     """Point the payload's figure slots at images Medium already hosts.
 
@@ -491,6 +557,7 @@ def dump_js():
   return JSON.stringify({
     texts: g.filter(x => x.tagName !== 'FIGURE').map(x => x.innerText),
     tags: g.map(x => x.tagName),
+    captions: [...editor.querySelectorAll('figure')].map(f => f.querySelector('figcaption')).map(c => c ? [...c.childNodes].filter(n => !(n.classList && n.classList.contains('defaultValue'))).map(n => n.textContent).join('').trim() : ''),
     links: editor.querySelectorAll('a').length,
     dividers: Math.max(0, editor.querySelectorAll('section').length - 1)
   });
@@ -502,7 +569,7 @@ def main():
     if len(sys.argv) < 2:
         sys.exit(__doc__)
     kind = sys.argv[1]
-    if kind not in ("selectors", "state", "dump", "saved", "figures") and len(sys.argv) < 3:
+    if kind not in ("selectors", "state", "dump", "saved", "figures", "captions") and len(sys.argv) < 3:
         sys.exit("%s needs an argument\n\n%s" % (kind, __doc__))
     if kind == "title":
         print(title_js(json.load(open(sys.argv[2], encoding="utf-8"))))
@@ -528,6 +595,12 @@ def main():
         print(stale_js(sys.argv[2]))
     elif kind == "figures":
         print(figures_js())
+    elif kind == "caption":
+        if len(sys.argv) < 4:
+            sys.exit("caption needs a payload and a figure index\n\n%s" % __doc__)
+        print(caption_js(json.load(open(sys.argv[2], encoding="utf-8")), int(sys.argv[3])))
+    elif kind == "captions":
+        print(captions_js())
     elif kind == "cdnfill":
         # payload.json + the {"srcs": [...]} a `figures` run returned
         base = json.load(open(sys.argv[2], encoding="utf-8"))
