@@ -1,0 +1,74 @@
+{
+ "figures": [
+  {
+   "file": "diagram-01.png",
+   "mermaid": "---\nconfig:\n  theme: base\n  themeVariables:\n    fontSize: 16px\n    primaryColor: \"#f8f9fa\"\n    primaryTextColor: \"#1f2933\"\n    primaryBorderColor: \"#6b7280\"\n    lineColor: \"#6b7280\"\n    secondaryColor: \"#f8f9fa\"\n    tertiaryColor: \"#ffffff\"\n    clusterBkg: \"#ffffff\"\n    clusterBorder: \"#9ca3af\"\n    edgeLabelBackground: \"#ffffff\"\n  flowchart:\n    nodeSpacing: 36\n    rankSpacing: 32\n    padding: 12\n    htmlLabels: true\n    subGraphTitleMargin:\n      top: 8\n      bottom: 12\n    curve: basis\n---\nflowchart TB\n    %% Layout: TB, 7 nodes; checked viewBox 546x796, height/width 1.46; font 16px.\n    classDef own fill:#d4edda,stroke:#2e7d32,color:#1f2933\n    classDef human fill:#e3f2fd,stroke:#1565c0,color:#1f2933\n\n    subgraph action[\"第一篇　行動｜工具接上之後\"]\n        direction LR\n        A[\"可以做什麼？<br/>實際做了什麼？<br/>怎樣才算完成？\"]\n        B[\"操作對象與當次授權範圍<br/>外部操作結果<br/>符合要求的證據\"]\n        A --> B\n    end\n\n    subgraph handoff[\"第二篇　交接｜工作換人繼續\"]\n        direction LR\n        C[\"誰接著做？<br/>哪些已完成？<br/>哪些仍待確認？\"]\n        D[\"可查核的核准範圍<br/>已知與未知的狀態<br/>接續與復原的入口\"]\n        C --> D\n    end\n\n    subgraph memory[\"第三篇　記憶｜經驗留給下次\"]\n        direction LR\n        E[\"下次還能採用嗎？<br/>環境與版本變了嗎？<br/>更正有被讀到嗎？\"]\n        F[\"來源、版本與適用條件<br/>更正與刪除影響下次檢索<br/>新任務下重新查核\"]\n        E --> F\n    end\n\n    action -->|工作交接| handoff\n    handoff -->|留下經驗| memory\n    memory -.->|下一次任務| G[\"重新查核當下的條件<br/>看懂證據與待查事項<br/>再決定可以交出多少工作\"]\n    class B,D,F own\n    class G human\n"
+  }
+ ],
+ "tables": [
+  {
+   "file": "table-01.png",
+   "markdown": "| 要回答的事 | 用一句話說 | 哪一場補上依據 |\n|---|---|---|\n| 找回正確的對象 | 搜到的經驗，屬於哪個叢集、哪個版本？ | Neo4j 的 CrabRAG |\n| 讓更正進入下一次檢索 | 後來發現說得太滿，改在哪裡才不會只停在原始文件？ | Agent Memory 的整理與生命週期 |\n| 把結論接回觀察 | 「升級成功」到底看到了什麼？ | NexaScience／RIKEN 的自主研究驗證 |\n"
+  },
+  {
+   "file": "table-02.png",
+   "markdown": "| 類型 | 升級例子 | 何時更新 | 誰確認 |\n|---|---|---|---|\n| working memory（目前載入的內容） | 「這次要評估正式叢集」 | 任務結束後可釋放；要交接或稽核的決定與證據另行保存 | 這次任務的負責人 |\n| episodic memory（某次事件及經過） | 「上次在測試叢集升到 1.31，服務 A 健康檢查通過」 | 不改寫，只能補上更正或撤回，並連著時間與環境 | 核對觀察的平台工程師 |\n| semantic memory（需要維護的事實） | 「正式叢集的服務 A 現在使用 C 第 3 版」 | 有人改了設定就要更新，舊值退出目前有效 | 設定的 owner |\n| procedural memory（可重用的步驟） | 「升級前先核對實際外掛及相容性文件」 | 適用時機跟著寫，程序改版要留版本 | 程序維護者 |\n"
+  },
+  {
+   "file": "table-03.png",
+   "markdown": "| 紀錄 | 主張 | 要求版本與觀察 | 狀態與關係 |\n|---|---|---|---|\n| 舊判定 J-17 | 服務 A 在 1.31 的必要功能均已通過驗收 | 要求 v3（版本達標、健康檢查、每晚報表）；引用觀察 O-41 節點版本 1.31、O-42 健康檢查通過；沒有報表觀察 | 已撤回，原因是報表在演練期間暫停、沒有結果卻被整理成全過 |\n| 新判定 J-18 | 測試叢集已到 1.31，服務 A 健康檢查通過；報表工作尚未驗收 | 要求 v3；引用 O-41、O-42；標明缺報表執行與產出 | 有效，取代 J-17；確認人是服務負責人 |\n| 衍生摘要 P-9 | 升級計畫抄用了 J-17 的結論「服務 A 可以升到 1.31」 | 依據 J-17 | 重建前不得作為有效依據；重建後改引用 J-18 |\n"
+  },
+  {
+   "file": "table-04.png",
+   "markdown": "| 記憶與目前資料的關係 | 接手者應有的行為 | 驗收者檢視什麼 |\n|---|---|---|\n| 對象、版本與要求吻合，來源可查 | 使用經驗縮小調查範圍，補足仍需取得的目前證據 | 引用來源、必要查詢與尚待確認事項 |\n| 舊結果來自另一個環境 | 將它當成線索，重新確認本次環境的條件 | 有沒有把跨環境的推論寫成已驗證事實 |\n| 舊結論已被新證據更正 | 取回更正關係，依新證據調整建議 | 原文、摘要與搜尋入口是否仍推送過期結論 |\n| 主紀錄已撤回，索引或衍生摘要尚未重建 | 不把舊摘要當成目前有效依據，回報更正進行中 | 查詢層是否攔住舊結論，而不是只靠標記 |\n| 兩份來源衝突，缺少能分辨的資料 | 保留爭點，指出需要誰補哪一份資料 | 是否憑出現次數或更新時間擅自選邊 |\n| 內容依保存規則已刪除 | 不透過摘要、索引或匯出副本重新提供內容 | 各個需要清除的副本與實際搜尋結果 |\n| 同一問題改由無權讀取的角色提出 | 資料服務依目前角色限制取回內容 | 工具回傳、載入模型的內容與最後回答 |\n"
+  },
+  {
+   "file": "table-05.png",
+   "markdown": "| 欄位 | 這個案例的內容 |\n|---|---|\n| 任務與對象 | 正式叢集 prod-a、服務 A、目標 1.31；只有讀取權限 |\n| 原要求 | 含每晚報表的同一份驗收清單 v3 |\n| 既有觀察 | 版本達標、健康檢查通過；沒有報表結果 |\n| 更正後允許的結論 | 已確認兩項，報表待驗；尚不足以宣稱必要功能全過 |\n| 禁止的結論 | 必要功能全部通過；報表已知不相容 |\n| 傳播驗收 | 正常查詢與摘要重建都不能恢復 J-17 |\n| 人工出口 | 誰能暫停採用舊結論、誰核准替代判定、owner 不在時誰接手 |\n"
+  }
+ ],
+ "assets": [
+  {
+   "file": "asset-01.png",
+   "source": "figures/00-shibuya-night.png",
+   "sha256": "c92b1ef0093bdd21dd3509bb9017ee1d06362a90deca4cd159a6f6b76bbb0251",
+   "caption": "2026 年 9 月 11 日晚間的澀谷夜景。觀景台、城市燈光與低雲都保留在同一個畫面裡。攝影：筆者。"
+  },
+  {
+   "file": "asset-02.png",
+   "source": "figures/01-crabrag-relationships.png",
+   "sha256": "535662889787505abeae012970850e760100b9ca215c36c0eca40344a1531581",
+   "caption": "Stephen Chin／Neo4j，簡報第 28 頁：朋友、偏好的食物與出現地點，以具名關係連成可查詢的路徑。來源：官方簡報。"
+  },
+  {
+   "file": "asset-03.png",
+   "source": "figures/02-memory-four-jobs.png",
+   "sha256": "c413704f27c396a427087e8ef2c94df15f82a6b4d89cb170f41f199b87c21378",
+   "caption": "Rohit Ghumare、Vinuja Khatode，簡報第 11 頁：目前工作內容、事件經過、抽取的事實與可重用步驟，承擔不同的記憶工作。來源：官方 PPTX 的完整頁面轉圖。"
+  },
+  {
+   "file": "asset-04.png",
+   "source": "figures/03-memory-lifecycle.png",
+   "sha256": "9afed9b59cbd59a6d3c1247a4a7d0cfa589a9e1c2ea2f7c09e55437c0cf65c32",
+   "caption": "Agent Memory 簡報第 28 頁：記憶可以被強化、由新版本取代、降低權重或刪除；來源與版本歷史也需要自己的保存規則。來源：官方 PPTX 的完整頁面轉圖。"
+  },
+  {
+   "file": "asset-05.png",
+   "source": "figures/04-research-verification-first.png",
+   "sha256": "c1c3caa76ebe9aefe24162b5c5ea8bdc13ca66daa1c41373cc54f44bc0052567",
+   "caption": "Wataru Kumagai／NexaScience、RIKEN，簡報第 35 頁：在產生結果之前，先決定如何驗證主張。來源：官方簡報。"
+  },
+  {
+   "file": "asset-06.png",
+   "source": "figures/05-research-claims-author-photo.png",
+   "sha256": "8710a76f834a2937c08ed5519dd9d02d47dfad6cadab4541259dce1454962826",
+   "caption": "筆者於 2026 年 9 月 10 日拍攝的會場畫面，對應 Wataru Kumagai 簡報第 40 頁：研究系統提交資料，驗證者留下判定，再由已驗證的主張產生論文。投影片內容：NexaScience／RIKEN；攝影：筆者。"
+  },
+  {
+   "file": "asset-07.png",
+   "source": "figures/06-shibuya-sky-festival.png",
+   "sha256": "b8c48051d1c84c8c58ec16fa1558ab0ef104f40e7f742edf3270a8ca60b06061",
+   "caption": "2026 年 9 月 11 日晚間，SHIBUYA SKY「天空夢祭」的燈籠與展場招牌。攝影：筆者。"
+  }
+ ]
+}

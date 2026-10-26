@@ -1,0 +1,1196 @@
+{
+  "checked_date": "2026-10-23",
+  "schedule_url": "https://agntconmcpconjapan26.sched.com/list/descriptions",
+  "schedule_sha256": "1e5a97f94c0b2ca07c442749971fdff2a771b42d974400ee7885f529f01bdfc0",
+  "coverage": {
+    "agenda_entries": 77,
+    "substantive_sessions": 60,
+    "official_attachments_downloaded": 40,
+    "additional_retained_versions": 1,
+    "downloaded_files": 41,
+    "bytes": 168584303,
+    "formats": {
+      "pdf": 36,
+      "key": 1,
+      "pptx": 4
+    },
+    "sessions_without_agenda_attachments": 22,
+    "unattached_individual_pages_read": 20,
+    "unattached_individual_pages_unresolved": [
+      "2QlD3",
+      "2QlDs"
+    ],
+    "individual_pages_read_total": 23
+  },
+  "validation": "All downloaded byte sizes and SHA-256 values rechecked. PDF signatures/page counts and Office/Keynote ZIP structures were checked at download. Full visual review applies only to pages used in articles, not every page of every deck.",
+  "limitations": [
+    "The complete expanded public agenda supplied the attachment inventory. A missing attachment is not proof that a speaker never shared slides elsewhere.",
+    "ADK Evals public Google Slides can be viewed, but Download and Print are disabled in that public view. No export file was saved and no restriction was bypassed.",
+    "Some individual session pages intermittently returned maintenance or navigation failures; their status is preserved separately from the successful agenda attachment downloads."
+  ],
+  "not_downloaded": [
+    {
+      "title": "Building Local Regression Testing and Evals for ADK Agents",
+      "source_page": "https://docs.google.com/presentation/d/18K-R3Vg9DQHuwGsCRjA_f9Np4ZeR8XELc5Sbrgy9hCA/edit",
+      "reason": "Public view opened without sign-in; File > Download and Print controls were disabled. Direct export attempts failed or timed out before this UI restriction was observed. No bypass attempted.",
+      "repository": "https://github.com/iamthuya/agntcon-jp-adk-evals"
+    }
+  ],
+  "files": [
+    {
+      "session_id": "2QsUC",
+      "session_title": "Keynote: The State and Future of A2A - Kaz Sato, Staff Developer Advocate, Cloud AI, Google",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2QsUC/keynote-the-state-and-future-of-a2a-kaz-sato-staff-developer-advocate-cloud-ai-google",
+      "label": "[AGNTCon Tokyo] The State and Future of A2A (2026 Sept)",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/a5/_AGNTCon%20Tokyo_%20The%20State%20and%20Future%20of%20A2A%20%282026%20Sept%29.pdf",
+      "file": "2QsUC-01-agntcon-tokyo-the-state-and-future-of-a2a-2026-sept.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 11041537,
+      "sha256": "488672a0779a4f6050a229d307f626ea61c750f3a031ef9ac2e1cbcbd82a017a",
+      "pages": 43,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2RqMK",
+      "session_title": "Towards Trustworthy Autonomous Research - Wataru Kumagai, NexaScience/RIKEN",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2RqMK/towards-trustworthy-autonomous-research-wataru-kumagai-nexascienceriken",
+      "label": "AGNT Con 2026 v7",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/63/AGNT-Con_2026_v7.pdf",
+      "file": "2RqMK-01-agnt-con-2026-v7.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 4175698,
+      "sha256": "4e5abb0ef2c3b135ab0bb66375a5d205bec1fc171ad52cfaef62a2652df8d182",
+      "pages": 43,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2WZJf",
+      "session_title": "CrabRAG: Why Automated Assistants Need Graph Memory, Not More Tokens - Stephen Chin, Neo4j",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2WZJf/crabrag-why-automated-assistants-need-graph-memory-not-more-tokens-stephen-chin-neo4j",
+      "label": "CrabRAG Graph Memory for AI Assistants v0.6 (AGNTCon Japan)",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/ea/CrabRAG__Graph_Memory_for_AI_Assistants_v0.6%20%28AGNTCon%20Japan%29.pdf",
+      "file": "2WZJf-01-crabrag-graph-memory-for-ai-assistants-v0-6-agntcon-japan.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 6872741,
+      "sha256": "ce8dda1cfeda85beff42a94b58f3c4684d459fb2491a6292337d9b8536daaee3",
+      "pages": 39,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2RpxA",
+      "session_title": "Workshop: Building MCP Authorization with Keycloak and agentgateway - Yoshiyuki Tabata & Michito Okai, Hitachi",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2RpxA/workshop-building-mcp-authorization-with-keycloak-and-agentgateway-yoshiyuki-tabata-michito-okai-hitachi",
+      "label": "Workshop Building MCP Authorization with Keycloak and agentgateway",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/3e/Workshop%20Building%20MCP%20Authorization%20with%20Keycloak%20and%20agentgateway.pdf",
+      "file": "2RpxA-01-workshop-building-mcp-authorization-with-keycloak-and-agentgateway.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 850229,
+      "sha256": "91332debcb01afc6902754ee6a94af6c006d5732d7d108c6792b44b5ce2e2917",
+      "pages": 24,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2QlEh",
+      "session_title": "Carbon-Aware Agentic Engineering: Reducing Unnecessary Computation in AI Agent Workflows - Kouki Hama, NTT, Inc",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2QlEh/carbon-aware-agentic-engineering-reducing-unnecessary-computation-in-ai-agent-workflows-kouki-hama-ntt-inc",
+      "label": "Carbon Aware Agentic AI NTT",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/04/Carbon-Aware-Agentic-AI-NTT.pdf",
+      "file": "2QlEh-01-carbon-aware-agentic-ai-ntt.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 784289,
+      "sha256": "ed9272ebe83704940c05ace7ae5e9e1da346aaad7377e30021c3a7bb3753ed57",
+      "pages": 36,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2QlD9",
+      "session_title": "Letting an Agent Upgrade Production Kubernetes — Without Getting Paged at 3 AM - Sanskar Agrawalla & Abhijeet Chaudhuri, Quartic.ai",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2QlD9/letting-an-agent-upgrade-production-kubernetes-without-getting-paged-at-3-am-sanskar-agrawalla-abhijeet-chaudhuri-quarticai",
+      "label": "AGNTCon MCPCon Japan 2026 Abhijeet Sanskar final",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/d9/AGNTCon-MCPCon-Japan-2026_Abhijeet_Sanskar_final.pdf",
+      "file": "2QlD9-01-agntcon-mcpcon-japan-2026-abhijeet-sanskar-final.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 2480587,
+      "sha256": "f2ab9a42e44fff8aa2f388f22c5138ca3f81b74376d33b6a9e26e5a17bd21007",
+      "pages": 32,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2VPr7",
+      "session_title": "Sponsored Session: Same Prompt, Different Agent: Building an Assembly Line for Agents - Kan Wang, Raytone",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2VPr7/sponsored-session-same-prompt-different-agent-building-an-assembly-line-for-agents-kan-wang-raytone",
+      "label": "AGNTCon Raytone deck V2.9.2",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/97/AGNTCon-Raytone-deck-V2.9.2.pdf",
+      "file": "2VPr7-01-agntcon-raytone-deck-v2-9-2.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 2146678,
+      "sha256": "655603150061316bf5f58e26a4d63daef8e8d07eac9c1cab46370caa17dd72d4",
+      "pages": 20,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2RCwp",
+      "session_title": "Designing Trust Boundaries for Agent-to-Agent Systems: Lessons Learned from a Technical PoC - Ryuji Iijima, Softbank Corp.",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2RCwp/designing-trust-boundaries-for-agent-to-agent-systems-lessons-learned-from-a-technical-poc-ryuji-iijima-softbank-corp",
+      "label": "AGNTCon MCPCon Japan2026登壇資料 SoftBank Corp 飯島竜児",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/3a/AGNTCon_MCPCon_Japan2026%E7%99%BB%E5%A3%87%E8%B3%87%E6%96%99_SoftBank_Corp_%E9%A3%AF%E5%B3%B6%E7%AB%9C%E5%85%90.pdf",
+      "file": "2RCwp-01-agntcon-mcpcon-japan2026-softbank-corp.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 1619150,
+      "sha256": "4c44503c49ca38c79b96b177f007f5fb94f9871850962d9681bf9d4e85e68872",
+      "pages": 21,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2QlDC",
+      "session_title": "Do Tools Still Matter? MCP Tool Design in the Age of Code Mode - Ruben Casas, Postman",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2QlDC/do-tools-still-matter-mcp-tool-design-in-the-age-of-code-mode-ruben-casas-postman",
+      "label": "do tools still matter agentcon japan template applied",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/17/do-tools-still-matter-agentcon-japan-template-applied.key",
+      "file": "2QlDC-01-do-tools-still-matter-agentcon-japan-template-applied.key",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 13744057,
+      "sha256": "b6f13efbdd4ad64abee92165a92b832f8ac70e75a914e836a40a1c3ef6af67d8",
+      "archive_entries": 244,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2Qn4a",
+      "session_title": "The Agent Builder Loop from Daily Work to OSS - Minoru Onda, KDDI Agile Development Center Corporation",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2Qn4a/the-agent-builder-loop-from-daily-work-to-oss-minoru-onda-kddi-agile-development-center-corporation",
+      "label": "The Agent Builder Loop from Daily Work to OSS",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/56/The%20Agent%20Builder%20Loop%20from%20Daily%20Work%20to%20OSS.pdf",
+      "file": "2Qn4a-01-the-agent-builder-loop-from-daily-work-to-oss.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 16365478,
+      "sha256": "58e39c8da45ca85694ffa83d1d31cc207d83792da323baed43ab1f6ccf6fa9d9",
+      "pages": 44,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2QlDO",
+      "session_title": "What Happens When Your MCP Tools Cost Money? - Prakash Rao, AIG Technologies & Marco González, Red Hat",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2QlDO/what-happens-when-your-mcp-tools-cost-money-prakash-rao-aig-technologies-marco-gonzalez-red-hat",
+      "label": "agntconjapan2026+final 20260913215511",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/54/agntconjapan2026%2Bfinal-20260913215511.pdf",
+      "file": "2QlDO-01-agntconjapan2026-final-20260913215511.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 738630,
+      "sha256": "23f0c3b69e79504ef8c32217f1824c40eb1ed88ebd968af36ab75a77478c03c5",
+      "pages": 13,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2QlDF",
+      "session_title": "Stop Giving Agents Tokens: Securing With Side-Car Proxies - Ritwik Ranjan, Independent Contributor",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2QlDF/stop-giving-agents-tokens-securing-with-side-car-proxies-ritwik-ranjan-independent-contributor",
+      "label": "Aksh AgentCon Japan Final",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/8b/Aksh-AgentCon-Japan-Final.pptx",
+      "file": "2QlDF-01-aksh-agentcon-japan-final.pptx",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 101258,
+      "sha256": "f4079c1fd8a78e4c1197ac38067db12c9f5fb12de29ff2f7f8e686fd83b7b453",
+      "archive_entries": 99,
+      "slides": 14,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2TjiE",
+      "session_title": "Building an AI for Security Exception Tickets: What Actually Worked - Juan Corena, Woven by Toyota",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2TjiE/building-an-ai-for-security-exception-tickets-what-actually-worked-juan-corena-woven-by-toyota",
+      "label": "AIForSecurityExceptionTickets",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/17/AIForSecurityExceptionTickets.pdf",
+      "file": "2TjiE-01-aiforsecurityexceptiontickets.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 1470962,
+      "sha256": "400c413a213db91b189e403d98a9578917fe9443ac5386f47b417747157c3121",
+      "pages": 25,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2RpyS",
+      "session_title": "Workshop: Enterprise Agentic AI: Architecting Autonomous Java Systems for Production - Daniel Oh, Red Hat & Kevin Dubois, IBM",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2RpyS/workshop-enterprise-agentic-ai-architecting-autonomous-java-systems-for-production-daniel-oh-red-hat-kevin-dubois-ibm",
+      "label": "Intro Hands on workshop Enterprise Agentic AI Architecting Autonomous Java Systems for Production",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/77/Intro%20-%20Hands-on%20workshop_%20Enterprise%20Agentic%20AI_%20Architecting%20Autonomous%20Java%20Systems%20for%20Production.pdf",
+      "file": "2RpyS-01-intro-hands-on-workshop-enterprise-agentic-ai-architecting-autonomous-java-systems-for-production.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 2181977,
+      "sha256": "90ca101d9bb369e351a8ee06d1b5e821876647a82b826606b49b39b8baef6031",
+      "pages": 9,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2QlDX",
+      "session_title": "Intent as Code: Why Existing Permissions Aren’t Enough for AI - Masaya Nakamura, Studist",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2QlDX/intent-as-code-why-existing-permissions-arent-enough-for-ai-masaya-nakamura-studist",
+      "label": "Intent as Code (13)",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/ab/Intent-as-Code%20%2813%29.pdf",
+      "file": "2QlDX-01-intent-as-code-13.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 9320631,
+      "sha256": "8e28ac7f007fa7da364406cd5530c34c83e1503956eca3cc6263ee83e020987a",
+      "pages": 64,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2QlDa",
+      "session_title": "Running an MCP Proxy at Scale - Camila Rondinini, Anthropic",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2QlDa/running-an-mcp-proxy-at-scale-camila-rondinini-anthropic",
+      "label": "Running an MCP Proxy at Scale",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/2a/Running%20an%20MCP%20Proxy%20at%20Scale.pdf",
+      "file": "2QlDa-01-running-an-mcp-proxy-at-scale.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 2240174,
+      "sha256": "e5468bd92acbc5820d1676ba0aa8e3e114182573e3f92b64f398db0205d3bf58",
+      "pages": 39,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2QlDa",
+      "session_title": "Running an MCP Proxy at Scale - Camila Rondinini, Anthropic",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2QlDa/running-an-mcp-proxy-at-scale-camila-rondinini-anthropic",
+      "label": "日本語版 AI翻訳 Japanese Version AI Translated Running an MCP Proxy at Scale",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/8c/%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88%20-%20AI%E7%BF%BB%E8%A8%B3%20-%20Japanese%20Version%20-%20AI%20Translated%20-%20Running%20an%20MCP%20Proxy%20at%20Scale.pdf",
+      "file": "2QlDa-02-ai-japanese-version-ai-translated-running-an-mcp-proxy-at-scale.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 7412540,
+      "sha256": "f12fad3ba27b98075e129025756e60189640feacc8c129defc54a4548f5911af",
+      "pages": 39,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2QlDd",
+      "session_title": "Accelerating the Autonomous Web With WebMCP - Vin Lim, StaffOS",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2QlDd/accelerating-the-autonomous-web-with-webmcp-vin-lim-staffos",
+      "label": "Accelerating the Autonomous Web with WebMCP Tokyo",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/33/Accelerating%20the%20Autonomous%20Web%20with%20WebMCP%20-%20Tokyo.pdf",
+      "file": "2QlDd-01-accelerating-the-autonomous-web-with-webmcp-tokyo.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 4910031,
+      "sha256": "1c539ee57aeb81e52998d4663747f203bc8d5ad821d7e984c45a0217ff9ba328",
+      "pages": 38,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2QlDg",
+      "session_title": "Legacy Meets LLM: Giving Frontier Models a Telephone (PSTN) Over MCP - Shinya Saito, Gen-AX Corp",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2QlDg/legacy-meets-llm-giving-frontier-models-a-telephone-pstn-over-mcp-shinya-saito-gen-ax-corp",
+      "label": "agntcon mcpcon japan en shinya saito",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/a3/agntcon-mcpcon-japan_en_shinya-saito.pdf",
+      "file": "2QlDg-01-agntcon-mcpcon-japan-en-shinya-saito.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 8635682,
+      "sha256": "d5eb0ba94f9d2ad737e4d46b9a5ac1f6be5a0ad48f8a5f7f726528eb00028b02",
+      "pages": 28,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2Rl0I",
+      "session_title": "Sponsored Keynote: From Consumers to Contributors: Why Japan Must Join the Agentic AI Upstream - Yoshiyuki Tabata, Chief OSS Consultant, Hitachi",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2Rl0I/sponsored-keynote-from-consumers-to-contributors-why-japan-must-join-the-agentic-ai-upstream-yoshiyuki-tabata-chief-oss-consultant-hitachi",
+      "label": "From Consumers to Contributors Why Japan Must Join the Agentic AI Upstream",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/cb/From%20Consumers%20to%20Contributors%20Why%20Japan%20Must%20Join%20the%20Agentic%20AI%20Upstream.pdf",
+      "file": "2Rl0I-01-from-consumers-to-contributors-why-japan-must-join-the-agentic-ai-upstream.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 697178,
+      "sha256": "b25f825ac545b5a5c697b82fda000b0f304f667ed7659cb9ef1eeaeb7aa5ac2a",
+      "pages": 13,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2QlLo",
+      "session_title": "Keynote: Skills Over MCP: From Experiment to Extension - Ola Hungerford, Principal Engineer, Nordstrom",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2QlLo/keynote-skills-over-mcp-from-experiment-to-extension-ola-hungerford-principal-engineer-nordstrom",
+      "label": "Skills Over MCP From Experiment to Extension Ola Hungerford",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/00/Skills%20Over%20MCP%20-%20From%20Experiment%20to%20Extension%20-%20Ola%20Hungerford.pdf",
+      "file": "2QlLo-01-skills-over-mcp-from-experiment-to-extension-ola-hungerford.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 11269422,
+      "sha256": "3368416ec6c526451e9d7953fc5011cfc186512c13f5f7063afe65ae8d647cc1",
+      "pages": 15,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2QlDp",
+      "session_title": "Architecture Behind the Most Viral Agent Memory Open Source Project - Rohit Ghumare, DEVREL AS SERVICE",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2QlDp/architecture-behind-the-most-viral-agent-memory-open-source-project-rohit-ghumare-devrel-as-service",
+      "label": "agentmemory agntcon mcpcon opening",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/fe/agentmemory-agntcon-mcpcon-opening.pptx",
+      "file": "2QlDp-01-agentmemory-agntcon-mcpcon-opening.pptx",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 4047330,
+      "sha256": "7b63e52a3916f9ec8b1cf9147f8ebe82c68f6826931dc38c02b5937b90fd4790",
+      "archive_entries": 167,
+      "slides": 37,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2QlDI",
+      "session_title": "MCP-Powered Crash Investigation: How 11 MCP Servers Help an AI Agent Debug Production Issues at Uber - Kriti Dangi, Uber",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2QlDI/mcp-powered-crash-investigation-how-11-mcp-servers-help-an-ai-agent-debug-production-issues-at-uber-kriti-dangi-uber",
+      "label": "DebugAssist Uber MobiConf",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/1a/DebugAssist_%20Uber%20MobiConf.pptx",
+      "file": "2QlDI-01-debugassist-uber-mobiconf.pptx",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 2960168,
+      "sha256": "43a831ed70e9c8aa475ab3b2b892dd05a7624098709d0776140f7ab0c16efd03",
+      "archive_entries": 296,
+      "slides": 14,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2QlE1",
+      "session_title": "Your Agent Starts the Checkout. Then What? - Muskan Jain, Independent",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2QlE1/your-agent-starts-the-checkout-then-what-muskan-jain-independent",
+      "label": "Talk 3Acts Redesigned (1)",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/22/Talk_3Acts_Redesigned%20%281%29.pptx",
+      "file": "2QlE1-01-talk-3acts-redesigned-1.pptx",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 85409,
+      "sha256": "44d8923d6e04e056edbfeb8a25bbd531f8670a4f9f16b6dd831dc80894c946eb",
+      "archive_entries": 81,
+      "slides": 11,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2QlE4",
+      "session_title": "The Model and the Mask: An Actor's Method for Engineering Agent Character - Nick Howden-Steenstra, Independent",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2QlE4/the-model-and-the-mask-an-actors-method-for-engineering-agent-character-nick-howden-steenstra-independent",
+      "label": "The Model and the Mask NHS",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/30/The-Model-and-the-Mask-NHS.pdf",
+      "file": "2QlE4-01-the-model-and-the-mask-nhs.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 8404738,
+      "sha256": "913ba02d7ce114fa517d1fd9bfaf4e6cce39a395a269572ed09ac50ae527114d",
+      "pages": 28,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2QlE7",
+      "session_title": "Stateful Sandboxes for Stateless Agents: Designing Durable Volumes for MCP Tool Workspaces - Rui Su, Juicedata",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2QlE7/stateful-sandboxes-for-stateless-agents-designing-durable-volumes-for-mcp-tool-workspaces-rui-su-juicedata",
+      "label": "Stateful Sandboxes for Stateless Agents · designed r3",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/4e/Stateful%20Sandboxes%20for%20Stateless%20Agents%20%C2%B7%20designed-r3.pdf",
+      "file": "2QlE7-01-stateful-sandboxes-for-stateless-agents-designed-r3.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 841204,
+      "sha256": "7b51566596603be8b8c7368d01b5a71d88f28999dcc480e6bbcbbbe861f8b7f8",
+      "pages": 14,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2QlEA",
+      "session_title": "From Clicks To Context: Building an Open-Source Evaluation Pipeline for AI Agents - Inês Bolaños, PagerDuty",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2QlEA/from-clicks-to-context-building-an-open-source-evaluation-pipeline-for-ai-agents-ines-bolanos-pagerduty",
+      "label": "From Clicks to Context Building an Open Source Evaluation Pipeline for AI Agents Inês Bolaños",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/57/From%20Clicks%20to%20Context_%20Building%20an%20Open-Source%20Evaluation%20Pipeline%20for%20AI%20Agents%20_%20Ine%CC%82s%20Bolan%CC%83os.pdf",
+      "file": "2QlEA-01-from-clicks-to-context-building-an-open-source-evaluation-pipeline-for-ai-agents-ine-s-bolan-os.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 2027188,
+      "sha256": "d179519ebd4f1045f92198ba8c75c53aefbbca02bd6b1d5049fd62613188c6db",
+      "pages": 30,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2SrLI",
+      "session_title": "Workshop: Delegated Authorization for AI Agents: Build an Agent with Fine-Grained Permissions - Sohan Maheshwar, AuthZed",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2SrLI/workshop-delegated-authorization-for-ai-agents-build-an-agent-with-fine-grained-permissions-sohan-maheshwar-authzed",
+      "label": "AGNTCon Delegated AuthZ Workshop",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/a6/AGNTCon%20-%20Delegated%20AuthZ%20Workshop.pdf",
+      "file": "2SrLI-01-agntcon-delegated-authz-workshop.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 9240685,
+      "sha256": "6f6cd5d1d87dae51ed63d7a0996d3033a5d84d9b9b18296182c7ee0ec0a0dfc7",
+      "pages": 44,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2QlED",
+      "session_title": "What's Actually Running in Your Coding Agent: The Shadow AI Stack - Alexander Frazer, Runlayer",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2QlED/whats-actually-running-in-your-coding-agent-the-shadow-ai-stack-alexander-frazer-runlayer",
+      "label": "AGNTCon + MCPCon Tokyo What's Actually Running in Your Coding Agent The Shadow AI Stack",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/5b/AGNTCon%20%2B%20MCPCon%20Tokyo%20What%27s%20Actually%20Running%20in%20Your%20Coding%20Agent_%20The%20Shadow%20AI%20Stack.pdf",
+      "file": "2QlED-01-agntcon-mcpcon-tokyo-what-s-actually-running-in-your-coding-agent-the-shadow-ai-stack.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 2954295,
+      "sha256": "880af2d9cb7d0b977d002cef1a955d58ae7517e281050a5a74fcc57e6edc67af",
+      "pages": 13,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2QlEG",
+      "session_title": "What's Missing in the Open Agentic Stack: Lessons From OSS Integration - Tatsuya Sato & Satoshi Ito, Hitachi, Ltd.",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2QlEG/whats-missing-in-the-open-agentic-stack-lessons-from-oss-integration-tatsuya-sato-satoshi-ito-hitachi-ltd",
+      "label": "20260910 AGNTCon Japan Hitachi Ito Sato public",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/bf/20260910_AGNTCon_Japan_Hitachi_Ito_Sato_public.pdf",
+      "file": "2QlEG-01-20260910-agntcon-japan-hitachi-ito-sato-public.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 1976183,
+      "sha256": "c284753eb7a317c48c22256a1b3cdcfe376d55fd0d4c25cbf8087b95eb3b1083",
+      "pages": 28,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2QlEJ",
+      "session_title": "Building an Agentic Software Factory - Valentin De Matos, Delphi",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2QlEJ/building-an-agentic-software-factory-valentin-de-matos-delphi",
+      "label": "03 Slides",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/1c/03%20-%20Slides.pdf",
+      "file": "2QlEJ-01-03-slides.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 303635,
+      "sha256": "154747a09817e101481b76cbe75f8881e79fe1674f5e82342877f5a379ca1663",
+      "pages": 29,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2So56",
+      "session_title": "Trace-Based Evaluation of Open-Weight Coding Agents: Measuring Real Agent Behavior - Kota Tsuyuzaki, NTT DOCOMO BUSINESS, Inc.",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2So56/trace-based-evaluation-of-open-weight-coding-agents-measuring-real-agent-behavior-kota-tsuyuzaki-ntt-docomo-business-inc",
+      "label": "agntcon2026 ntt docomo business kota tsuyuzaki",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/9b/agntcon2026_ntt_docomo_business_kota_tsuyuzaki.pdf",
+      "file": "2So56-01-agntcon2026-ntt-docomo-business-kota-tsuyuzaki.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 517087,
+      "sha256": "282935b9ebc46f9496b80d66a5018163043ea7067e20b2be173329562bb54dfa",
+      "pages": 20,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2QlEP",
+      "session_title": "Built for Two: What Design Systems Are Missing When AI Agents Become the Third User - Karen Ng, Endor Labs",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2QlEP/built-for-two-what-design-systems-are-missing-when-ai-agents-become-the-third-user-karen-ng-endor-labs",
+      "label": "Built for Two – Karen Ng 2026",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/c0/Built%20for%20Two%20%E2%80%93%20Karen%20Ng%202026.pdf",
+      "file": "2QlEP-01-built-for-two-karen-ng-2026.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 7679140,
+      "sha256": "be28459e586c7550738d00c1fd4133d78b45c146f27041171d67ccb9fa0fe64b",
+      "pages": 64,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2QlEV",
+      "session_title": "Beyond Prototypes: Building Enterprise-scale Agentic Systems - Kevin Dubois, IBM",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2QlEV/beyond-prototypes-building-enterprise-scale-agentic-systems-kevin-dubois-ibm",
+      "label": "AGNTCon MCPCon JP",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/ac/AGNTCon-MCPCon%20JP.pdf",
+      "file": "2QlEV-01-agntcon-mcpcon-jp.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 1659915,
+      "sha256": "251c2aa1e008ddaaf37ba870cd4a6a95ac042c4cfd7d3fa0ede8cdf05d5f0632",
+      "pages": 27,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2QlEY",
+      "session_title": "Build Your Own Open-Source Claude Code With Local LLMs - Daniel Oh, Red Hat",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2QlEY/build-your-own-open-source-claude-code-with-local-llms-daniel-oh-red-hat",
+      "label": "AGENTCon + MCPCon Japan Build Your Own Claude Code With Local LLMs",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/68/AGENTCon%20%2B%20MCPCon%20Japan%20-%20Build%20Your%20Own%20Claude%20Code%20With%20Local%20LLMs.pdf",
+      "file": "2QlEY-01-agentcon-mcpcon-japan-build-your-own-claude-code-with-local-llms.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 2758396,
+      "sha256": "2112b67302e3d96cb880bffdfe8ff304e670aee15e6173f6d33c2c5d7b524a05",
+      "pages": 13,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2TMMI",
+      "session_title": "Workshop: Building Secure & Discoverable Agent Infrastructure with agentgateway & agentregistry - Mehmet Hilmi Emel, ACEDEMAND IT Consulting Services",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2TMMI/workshop-building-secure-discoverable-agent-infrastructure-with-agentgateway-agentregistry-mehmet-hilmi-emel-acedemand-it-consulting-services",
+      "label": "AGNTCon MCPCon Japan 2026 PPT (1)",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/1c/AGNTCon-MCPCon-Japan-2026_PPT%20%281%29.pdf",
+      "file": "2TMMI-01-agntcon-mcpcon-japan-2026-ppt-1.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 6691637,
+      "sha256": "8819291c5f2f91c5fc6af5b8e2f9c6121bfdb397872027ae997a57b03bd984b6",
+      "pages": 16,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2WCMf",
+      "session_title": "MCP × A2A Platform for the Enterprise: Security by Spec - Masaki Tsukada, Mitsubishi Electric Corporation",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2WCMf/mcp-x-a2a-platform-for-the-enterprise-security-by-spec-masaki-tsukada-mitsubishi-electric-corporation",
+      "label": "MCP×A2A Platform for the Enterprise",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/17/MCP%C3%97A2A_Platform_for_the_Enterprise.pdf",
+      "file": "2WCMf-01-mcp-a2a-platform-for-the-enterprise.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 1249802,
+      "sha256": "950e4b5b7fb3be178e9a0ccec4528f76a8f571b1fcb46c045d65b5b7dfc28a98",
+      "pages": 23,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2QlEe",
+      "session_title": "Externalizing Agent State: Memory and Filesystem Management for Sandboxed Coding Agents - Tadatoshi Sekiguchi, PingCAP",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2QlEe/externalizing-agent-state-memory-and-filesystem-management-for-sandboxed-coding-agents-tadatoshi-sekiguchi-pingcap",
+      "label": "EN GNTCon Japan 2026 PingCAP Seki",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/17/EN%20_GNTCon-Japan-2026_PingCAP%20Seki.pdf",
+      "file": "2QlEe-01-en-gntcon-japan-2026-pingcap-seki.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 2507098,
+      "sha256": "e226815d0504bde60493355697988772a86e8e823a8f6ec4efb3357324876bdd",
+      "pages": 26,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2QlEe",
+      "session_title": "Externalizing Agent State: Memory and Filesystem Management for Sandboxed Coding Agents - Tadatoshi Sekiguchi, PingCAP",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2QlEe/externalizing-agent-state-memory-and-filesystem-management-for-sandboxed-coding-agents-tadatoshi-sekiguchi-pingcap",
+      "label": "JP AGNTCon Japan 2026 PingCAP Seki",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/0d/JP_AGNTCon-Japan-2026_PingCAP%20Seki.pdf",
+      "file": "2QlEe-02-jp-agntcon-japan-2026-pingcap-seki.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 2598575,
+      "sha256": "1aa2310393b1ca7b844eb9956557e06c2de5ff0be7972ba6dfbd78cf2a686520",
+      "pages": 26,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2VRYC",
+      "session_title": "From Logs to Proofs: Cryptographic Compliance for Agentic Payments - Aggre Hiroyuki, Lemma Oracle",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2VRYC/from-logs-to-proofs-cryptographic-compliance-for-agentic-payments-aggre-hiroyuki-lemma-oracle",
+      "label": "From Logs to Proofs AGNTCon 2026.0.1",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/73/From-Logs-to-Proofs-AGNTCon-2026.0.1.pdf",
+      "file": "2VRYC-01-from-logs-to-proofs-agntcon-2026-0-1.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 228980,
+      "sha256": "e424112343efb7338cc2f14c67301ba967b56ccd0b60a7e12f5df768faa936ff",
+      "pages": 35,
+      "status": "downloaded_verified"
+    },
+    {
+      "file": "carbon-retained-version.pdf",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/0f/Carbon-Aware-Agentic-AI.pdf",
+      "source_kind": "retained_Chrome_group_deck",
+      "pages": 36,
+      "status": "downloaded_verified",
+      "bytes": 793909,
+      "sha256": "8bff5e5de0a362f1c237f43e2daf591aa5ce268492def25bcfa5928d39da2e5f",
+      "session_title": "Carbon-Aware Agentic AI (retained browser version)",
+      "label": "Carbon-Aware-Agentic-AI.pdf",
+      "version_note": "Retained Chrome deck; current agenda also provides Carbon-Aware-Agentic-AI-NTT.pdf. Both kept."
+    }
+  ],
+  "sessions": [
+    {
+      "id": "2QlKG",
+      "title": "Registration & Badge Pick-Up",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlKG/registration-badge-pick-up",
+      "attachments": [],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2QsUJ",
+      "title": "Keynote: Welcome - Angie Jones, Vice President of Developer Experience, Agentic AI Foundation",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QsUJ/keynote-welcome-angie-jones-vice-president-of-developer-experience-agentic-ai-foundation",
+      "attachments": [],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2RaW6",
+      "title": "Keynote: Opening Remarks - Mazin Gilbert, Executive Director, The Agentic AI Foundation",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2RaW6/keynote-opening-remarks-mazin-gilbert-executive-director-the-agentic-ai-foundation",
+      "attachments": [],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2QrbB",
+      "title": "Keynote: MCP and the Era of Connectivity - David Soria Parra, Co-creator of MCP, Anthropic",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QrbB/keynote-mcp-and-the-era-of-connectivity-david-soria-parra-co-creator-of-mcp-anthropic",
+      "attachments": [],
+      "individual_page_read": "read"
+    },
+    {
+      "id": "2Qral",
+      "title": "Keynote: Every AI Agent Needs a Gateway - Lin Sun, Head of Open Source, Solo.io",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2Qral/keynote-every-ai-agent-needs-a-gateway-lin-sun-head-of-open-source-soloio",
+      "attachments": [],
+      "individual_page_read": "read"
+    },
+    {
+      "id": "2QsUC",
+      "title": "Keynote: The State and Future of A2A - Kaz Sato, Staff Developer Advocate, Cloud AI, Google",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QsUC/keynote-the-state-and-future-of-a2a-kaz-sato-staff-developer-advocate-cloud-ai-google",
+      "attachments": [
+        "2QsUC-01-agntcon-tokyo-the-state-and-future-of-a2a-2026-sept.pdf"
+      ],
+      "individual_page_read": "read"
+    },
+    {
+      "id": "2QlLl",
+      "title": "Coffee Break",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlLl/coffee-break",
+      "attachments": [],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2TBxe",
+      "title": "Solutions Showcase",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2TBxe/solutions-showcase",
+      "attachments": [],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2RqMK",
+      "title": "Towards Trustworthy Autonomous Research - Wataru Kumagai, NexaScience/RIKEN",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2RqMK/towards-trustworthy-autonomous-research-wataru-kumagai-nexascienceriken",
+      "attachments": [
+        "2RqMK-01-agnt-con-2026-v7.pdf"
+      ],
+      "individual_page_read": "read"
+    },
+    {
+      "id": "2Tw7q",
+      "title": "Beyond Adoption: From Access Control to Execution Control in Enterprise MCP - Tomomichi Noguchi, Workato",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2Tw7q/beyond-adoption-from-access-control-to-execution-control-in-enterprise-mcp-tomomichi-noguchi-workato",
+      "attachments": [],
+      "individual_page_read": "read"
+    },
+    {
+      "id": "2QlCr",
+      "title": "Stateless MCP: Inside the 2026 Transport Spec - Himanshu Sangshetti, Mem0",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlCr/stateless-mcp-inside-the-2026-transport-spec-himanshu-sangshetti-mem0",
+      "attachments": [],
+      "individual_page_read": "read"
+    },
+    {
+      "id": "2WZJf",
+      "title": "CrabRAG: Why Automated Assistants Need Graph Memory, Not More Tokens - Stephen Chin, Neo4j",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2WZJf/crabrag-why-automated-assistants-need-graph-memory-not-more-tokens-stephen-chin-neo4j",
+      "attachments": [
+        "2WZJf-01-crabrag-graph-memory-for-ai-assistants-v0-6-agntcon-japan.pdf"
+      ],
+      "individual_page_read": "read"
+    },
+    {
+      "id": "2QlCu",
+      "title": "Let AGENTS.md Write Itself: Self-Improving Coding Agents, No RL Required! - Rudraksh Karpe, Simplismart; Satyam Soni, NitroStack",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlCu/let-agentsmd-write-itself-self-improving-coding-agents-no-rl-required-rudraksh-karpe-simplismart-satyam-soni-nitrostack",
+      "attachments": [],
+      "individual_page_read": "read"
+    },
+    {
+      "id": "2RpxA",
+      "title": "Workshop: Building MCP Authorization with Keycloak and agentgateway - Yoshiyuki Tabata & Michito Okai, Hitachi",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2RpxA/workshop-building-mcp-authorization-with-keycloak-and-agentgateway-yoshiyuki-tabata-michito-okai-hitachi",
+      "attachments": [
+        "2RpxA-01-workshop-building-mcp-authorization-with-keycloak-and-agentgateway.pdf"
+      ],
+      "individual_page_read": "failed"
+    },
+    {
+      "id": "2QlEh",
+      "title": "Carbon-Aware Agentic Engineering: Reducing Unnecessary Computation in AI Agent Workflows - Kouki Hama, NTT, Inc",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlEh/carbon-aware-agentic-engineering-reducing-unnecessary-computation-in-ai-agent-workflows-kouki-hama-ntt-inc",
+      "attachments": [
+        "2QlEh-01-carbon-aware-agentic-ai-ntt.pdf"
+      ],
+      "individual_page_read": "failed"
+    },
+    {
+      "id": "2QlD3",
+      "title": "MCP 2026-07-28 Under the Microscope: Security Implications for Stateless Agents - Thejes sree Satheesh kumar, Thoughtworks & Srinivasan Sekar, TestMu AI",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlD3/mcp-2026-07-28-under-the-microscope-security-implications-for-stateless-agents-thejes-sree-satheesh-kumar-thoughtworks-srinivasan-sekar-testmu-ai",
+      "attachments": [],
+      "individual_page_read": "failed"
+    },
+    {
+      "id": "2QlD9",
+      "title": "Letting an Agent Upgrade Production Kubernetes — Without Getting Paged at 3 AM - Sanskar Agrawalla & Abhijeet Chaudhuri, Quartic.ai",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlD9/letting-an-agent-upgrade-production-kubernetes-without-getting-paged-at-3-am-sanskar-agrawalla-abhijeet-chaudhuri-quarticai",
+      "attachments": [
+        "2QlD9-01-agntcon-mcpcon-japan-2026-abhijeet-sanskar-final.pdf"
+      ],
+      "individual_page_read": "failed"
+    },
+    {
+      "id": "2VPr7",
+      "title": "Sponsored Session: Same Prompt, Different Agent: Building an Assembly Line for Agents - Kan Wang, Raytone",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2VPr7/sponsored-session-same-prompt-different-agent-building-an-assembly-line-for-agents-kan-wang-raytone",
+      "attachments": [
+        "2VPr7-01-agntcon-raytone-deck-v2-9-2.pdf"
+      ],
+      "individual_page_read": "temporary_service_unavailable"
+    },
+    {
+      "id": "2QlMu",
+      "title": "Lunch (Provided Onsite)",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlMu/lunch-provided-onsite",
+      "attachments": [],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2VmTV",
+      "title": "Sponsor Activity - 100 Free Raytone Studio Pro Accounts: Turn Natural-Language Requests into Project Deliverables",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2VmTV/sponsor-activity-100-free-raytone-studio-pro-accounts-turn-natural-language-requests-into-project-deliverables",
+      "attachments": [],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2RCwp",
+      "title": "Designing Trust Boundaries for Agent-to-Agent Systems: Lessons Learned from a Technical PoC - Ryuji Iijima, Softbank Corp.",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2RCwp/designing-trust-boundaries-for-agent-to-agent-systems-lessons-learned-from-a-technical-poc-ryuji-iijima-softbank-corp",
+      "attachments": [
+        "2RCwp-01-agntcon-mcpcon-japan2026-softbank-corp.pdf"
+      ],
+      "individual_page_read": "failed"
+    },
+    {
+      "id": "2QlDC",
+      "title": "Do Tools Still Matter? MCP Tool Design in the Age of Code Mode - Ruben Casas, Postman",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlDC/do-tools-still-matter-mcp-tool-design-in-the-age-of-code-mode-ruben-casas-postman",
+      "attachments": [
+        "2QlDC-01-do-tools-still-matter-agentcon-japan-template-applied.key"
+      ],
+      "individual_page_read": "temporary_service_unavailable"
+    },
+    {
+      "id": "2RExH",
+      "title": "Workshop: Governing AI Agent Actions: MCP and Beyond - Shannon Williams & Chris Urwin, Obot AI",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2RExH/workshop-governing-ai-agent-actions-mcp-and-beyond-shannon-williams-chris-urwin-obot-ai",
+      "attachments": [],
+      "individual_page_read": "read"
+    },
+    {
+      "id": "2Qn4a",
+      "title": "The Agent Builder Loop from Daily Work to OSS - Minoru Onda, KDDI Agile Development Center Corporation",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2Qn4a/the-agent-builder-loop-from-daily-work-to-oss-minoru-onda-kddi-agile-development-center-corporation",
+      "attachments": [
+        "2Qn4a-01-the-agent-builder-loop-from-daily-work-to-oss.pdf"
+      ],
+      "individual_page_read": "temporary_service_unavailable"
+    },
+    {
+      "id": "2Wbgx",
+      "title": "Who Owns the Agentic Loop? - Angie Jones, Agentic AI Foundation",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2Wbgx/who-owns-the-agentic-loop-angie-jones-agentic-ai-foundation",
+      "attachments": [],
+      "individual_page_read": "read"
+    },
+    {
+      "id": "2QlDO",
+      "title": "What Happens When Your MCP Tools Cost Money? - Prakash Rao, AIG Technologies & Marco González, Red Hat",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlDO/what-happens-when-your-mcp-tools-cost-money-prakash-rao-aig-technologies-marco-gonzalez-red-hat",
+      "attachments": [
+        "2QlDO-01-agntconjapan2026-final-20260913215511.pdf"
+      ],
+      "individual_page_read": "temporary_service_unavailable"
+    },
+    {
+      "id": "2QlDL",
+      "title": "The Production Gap: Why Governing Agent Traffic Is the Key To Shipping Multi-Agent Systems - Juhi Singh, Kong & Prithvi Raj, Mirantis",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlDL/the-production-gap-why-governing-agent-traffic-is-the-key-to-shipping-multi-agent-systems-juhi-singh-kong-prithvi-raj-mirantis",
+      "attachments": [],
+      "individual_page_read": "read"
+    },
+    {
+      "id": "2QlQ9",
+      "title": "Coffee Break",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlQ9/coffee-break",
+      "attachments": [],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2WbyL",
+      "title": "Sponsor Activity: Workato - Demo Session",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2WbyL/sponsor-activity-workato-demo-session",
+      "attachments": [],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2QlDF",
+      "title": "Stop Giving Agents Tokens: Securing With Side-Car Proxies - Ritwik Ranjan, Independent Contributor",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlDF/stop-giving-agents-tokens-securing-with-side-car-proxies-ritwik-ranjan-independent-contributor",
+      "attachments": [
+        "2QlDF-01-aksh-agentcon-japan-final.pptx"
+      ],
+      "individual_page_read": "failed"
+    },
+    {
+      "id": "2QlDR",
+      "title": "Lessons From Building a Generative UI Runtime for MCP Apps - Rabi Guha, Thesys Inc",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlDR/lessons-from-building-a-generative-ui-runtime-for-mcp-apps-rabi-guha-thesys-inc",
+      "attachments": [],
+      "individual_page_read": "read"
+    },
+    {
+      "id": "2TAFy",
+      "title": "Architecting Agent-Native Data Layers: Managing Persistent State Across MCP Tools - Tomohiro Ichimura, Yugabyte Japan",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2TAFy/architecting-agent-native-data-layers-managing-persistent-state-across-mcp-tools-tomohiro-ichimura-yugabyte-japan",
+      "attachments": [],
+      "individual_page_read": "read"
+    },
+    {
+      "id": "2TjiE",
+      "title": "Building an AI for Security Exception Tickets: What Actually Worked - Juan Corena, Woven by Toyota",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2TjiE/building-an-ai-for-security-exception-tickets-what-actually-worked-juan-corena-woven-by-toyota",
+      "attachments": [
+        "2TjiE-01-aiforsecurityexceptiontickets.pdf"
+      ],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2RcMn",
+      "title": "Tasks at Scale: How MCP's New Task Lifecycle Powers Long-Running Agentic Systems - Abhishek Pandit, NitroStack",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2RcMn/tasks-at-scale-how-mcps-new-task-lifecycle-powers-long-running-agentic-systems-abhishek-pandit-nitrostack",
+      "attachments": [],
+      "individual_page_read": "read"
+    },
+    {
+      "id": "2RpyS",
+      "title": "Workshop: Enterprise Agentic AI: Architecting Autonomous Java Systems for Production - Daniel Oh, Red Hat & Kevin Dubois, IBM",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2RpyS/workshop-enterprise-agentic-ai-architecting-autonomous-java-systems-for-production-daniel-oh-red-hat-kevin-dubois-ibm",
+      "attachments": [
+        "2RpyS-01-intro-hands-on-workshop-enterprise-agentic-ai-architecting-autonomous-java-systems-for-production.pdf"
+      ],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2QlDX",
+      "title": "Intent as Code: Why Existing Permissions Aren’t Enough for AI - Masaya Nakamura, Studist",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlDX/intent-as-code-why-existing-permissions-arent-enough-for-ai-masaya-nakamura-studist",
+      "attachments": [
+        "2QlDX-01-intent-as-code-13.pdf"
+      ],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2QlDa",
+      "title": "Running an MCP Proxy at Scale - Camila Rondinini, Anthropic",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlDa/running-an-mcp-proxy-at-scale-camila-rondinini-anthropic",
+      "attachments": [
+        "2QlDa-01-running-an-mcp-proxy-at-scale.pdf",
+        "2QlDa-02-ai-japanese-version-ai-translated-running-an-mcp-proxy-at-scale.pdf"
+      ],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2QlDd",
+      "title": "Accelerating the Autonomous Web With WebMCP - Vin Lim, StaffOS",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlDd/accelerating-the-autonomous-web-with-webmcp-vin-lim-staffos",
+      "attachments": [
+        "2QlDd-01-accelerating-the-autonomous-web-with-webmcp-tokyo.pdf"
+      ],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2QlDg",
+      "title": "Legacy Meets LLM: Giving Frontier Models a Telephone (PSTN) Over MCP - Shinya Saito, Gen-AX Corp",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlDg/legacy-meets-llm-giving-frontier-models-a-telephone-pstn-over-mcp-shinya-saito-gen-ax-corp",
+      "attachments": [
+        "2QlDg-01-agntcon-mcpcon-japan-en-shinya-saito.pdf"
+      ],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2QlGa",
+      "title": "Attendee Reception",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlGa/attendee-reception",
+      "attachments": [],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2QlG6",
+      "title": "Registration & Badge Pick-Up",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlG6/registration-badge-pick-up",
+      "attachments": [],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2QsV2",
+      "title": "Keynote: Welcome - Mazin Gilbert, Executive Director, The Agentic AI Foundation",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QsV2/keynote-welcome-mazin-gilbert-executive-director-the-agentic-ai-foundation",
+      "attachments": [],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2Rl0I",
+      "title": "Sponsored Keynote: From Consumers to Contributors: Why Japan Must Join the Agentic AI Upstream - Yoshiyuki Tabata, Chief OSS Consultant, Hitachi",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2Rl0I/sponsored-keynote-from-consumers-to-contributors-why-japan-must-join-the-agentic-ai-upstream-yoshiyuki-tabata-chief-oss-consultant-hitachi",
+      "attachments": [
+        "2Rl0I-01-from-consumers-to-contributors-why-japan-must-join-the-agentic-ai-upstream.pdf"
+      ],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2RgGv",
+      "title": "Sponsored Keynote: Beyond the Model: Control and Execution for Enterprise AI - Allan Teng, Founder & Senior Advisor, APAC & Japan | General Manager & Vice President, Workato Japan, Workato",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2RgGv/sponsored-keynote-beyond-the-model-control-and-execution-for-enterprise-ai-allan-teng-founder-senior-advisor-apac-japan-general-manager-vice-president-workato-japan-workato",
+      "attachments": [],
+      "individual_page_read": "read"
+    },
+    {
+      "id": "2QlLo",
+      "title": "Keynote: Skills Over MCP: From Experiment to Extension - Ola Hungerford, Principal Engineer, Nordstrom",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlLo/keynote-skills-over-mcp-from-experiment-to-extension-ola-hungerford-principal-engineer-nordstrom",
+      "attachments": [
+        "2QlLo-01-skills-over-mcp-from-experiment-to-extension-ola-hungerford.pdf"
+      ],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2QlFt",
+      "title": "Coffee Break",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlFt/coffee-break",
+      "attachments": [],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2TBrv",
+      "title": "Solutions Showcase",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2TBrv/solutions-showcase",
+      "attachments": [],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2WF5N",
+      "title": "Sponsored Session: Reliable Agents by Design: Reasoning + Deterministic Execution - Hiroyuki Suzuki, Workato",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2WF5N/sponsored-session-reliable-agents-by-design-reasoning-+-deterministic-execution-hiroyuki-suzuki-workato",
+      "attachments": [],
+      "individual_page_read": "read"
+    },
+    {
+      "id": "2UjnC",
+      "title": "Building Local Regression Testing and Evals for ADK Agents - Thu Ya Kyaw, Google",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2UjnC/building-local-regression-testing-and-evals-for-adk-agents-thu-ya-kyaw-google",
+      "attachments": [],
+      "individual_page_read": "read"
+    },
+    {
+      "id": "2QlDm",
+      "title": "Skills as Reusable Operational Knowledge - Nimit Savant, DevRev",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlDm/skills-as-reusable-operational-knowledge-nimit-savant-devrev",
+      "attachments": [],
+      "individual_page_read": "read"
+    },
+    {
+      "id": "2QlDp",
+      "title": "Architecture Behind the Most Viral Agent Memory Open Source Project - Rohit Ghumare, DEVREL AS SERVICE",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlDp/architecture-behind-the-most-viral-agent-memory-open-source-project-rohit-ghumare-devrel-as-service",
+      "attachments": [
+        "2QlDp-01-agentmemory-agntcon-mcpcon-opening.pptx"
+      ],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2QlEM",
+      "title": "You Have 1000 Employees and None of Them Have a Name - Marcus Tenorio, Bitso",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlEM/you-have-1000-employees-and-none-of-them-have-a-name-marcus-tenorio-bitso",
+      "attachments": [],
+      "individual_page_read": "read"
+    },
+    {
+      "id": "2REza",
+      "title": "Workshop: From goose to GDK: Building Your Own Agentic Applications - Abhijay Jain, AAIF goose",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2REza/workshop-from-goose-to-gdk-building-your-own-agentic-applications-abhijay-jain-aaif-goose",
+      "attachments": [],
+      "individual_page_read": "read"
+    },
+    {
+      "id": "2QlDv",
+      "title": "The 3 AM Page: Turning Chaos Into Context With Bounded AI and Structured Evidence",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlDv/the-3-am-page-turning-chaos-into-context-with-bounded-ai-and-structured-evidence",
+      "attachments": [],
+      "individual_page_read": "read"
+    },
+    {
+      "id": "2QlDI",
+      "title": "MCP-Powered Crash Investigation: How 11 MCP Servers Help an AI Agent Debug Production Issues at Uber - Kriti Dangi, Uber",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlDI/mcp-powered-crash-investigation-how-11-mcp-servers-help-an-ai-agent-debug-production-issues-at-uber-kriti-dangi-uber",
+      "attachments": [
+        "2QlDI-01-debugassist-uber-mobiconf.pptx"
+      ],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2QlE1",
+      "title": "Your Agent Starts the Checkout. Then What? - Muskan Jain, Independent",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlE1/your-agent-starts-the-checkout-then-what-muskan-jain-independent",
+      "attachments": [
+        "2QlE1-01-talk-3acts-redesigned-1.pptx"
+      ],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2QlE4",
+      "title": "The Model and the Mask: An Actor's Method for Engineering Agent Character - Nick Howden-Steenstra, Independent",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlE4/the-model-and-the-mask-an-actors-method-for-engineering-agent-character-nick-howden-steenstra-independent",
+      "attachments": [
+        "2QlE4-01-the-model-and-the-mask-nhs.pdf"
+      ],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2QlHV",
+      "title": "Lunch (Provided Onsite)",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlHV/lunch-provided-onsite",
+      "attachments": [],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2WbyO",
+      "title": "Sponsor Activity: Workato - Demo Session",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2WbyO/sponsor-activity-workato-demo-session",
+      "attachments": [],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2QlE7",
+      "title": "Stateful Sandboxes for Stateless Agents: Designing Durable Volumes for MCP Tool Workspaces - Rui Su, Juicedata",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlE7/stateful-sandboxes-for-stateless-agents-designing-durable-volumes-for-mcp-tool-workspaces-rui-su-juicedata",
+      "attachments": [
+        "2QlE7-01-stateful-sandboxes-for-stateless-agents-designed-r3.pdf"
+      ],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2QlEA",
+      "title": "From Clicks To Context: Building an Open-Source Evaluation Pipeline for AI Agents - Inês Bolaños, PagerDuty",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlEA/from-clicks-to-context-building-an-open-source-evaluation-pipeline-for-ai-agents-ines-bolanos-pagerduty",
+      "attachments": [
+        "2QlEA-01-from-clicks-to-context-building-an-open-source-evaluation-pipeline-for-ai-agents-ine-s-bolan-os.pdf"
+      ],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2SrLI",
+      "title": "Workshop: Delegated Authorization for AI Agents: Build an Agent with Fine-Grained Permissions - Sohan Maheshwar, AuthZed",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2SrLI/workshop-delegated-authorization-for-ai-agents-build-an-agent-with-fine-grained-permissions-sohan-maheshwar-authzed",
+      "attachments": [
+        "2SrLI-01-agntcon-delegated-authz-workshop.pdf"
+      ],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2QlED",
+      "title": "What's Actually Running in Your Coding Agent: The Shadow AI Stack - Alexander Frazer, Runlayer",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlED/whats-actually-running-in-your-coding-agent-the-shadow-ai-stack-alexander-frazer-runlayer",
+      "attachments": [
+        "2QlED-01-agntcon-mcpcon-tokyo-what-s-actually-running-in-your-coding-agent-the-shadow-ai-stack.pdf"
+      ],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2QlEG",
+      "title": "What's Missing in the Open Agentic Stack: Lessons From OSS Integration - Tatsuya Sato & Satoshi Ito, Hitachi, Ltd.",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlEG/whats-missing-in-the-open-agentic-stack-lessons-from-oss-integration-tatsuya-sato-satoshi-ito-hitachi-ltd",
+      "attachments": [
+        "2QlEG-01-20260910-agntcon-japan-hitachi-ito-sato-public.pdf"
+      ],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2QlEJ",
+      "title": "Building an Agentic Software Factory - Valentin De Matos, Delphi",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlEJ/building-an-agentic-software-factory-valentin-de-matos-delphi",
+      "attachments": [
+        "2QlEJ-01-03-slides.pdf"
+      ],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2QlDs",
+      "title": "The Conductor Pattern: Multi-Granularity Feedback for Creative Agents - Yusuke Shibui, MLOps/LLMOps/AgentOps Community",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlDs/the-conductor-pattern-multi-granularity-feedback-for-creative-agents-yusuke-shibui-mlopsllmopsagentops-community",
+      "attachments": [],
+      "individual_page_read": "failed"
+    },
+    {
+      "id": "2QlQC",
+      "title": "Coffee Break",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlQC/coffee-break",
+      "attachments": [],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2QlES",
+      "title": "Governed Agent Autonomy: Building a Control Plane for Agentic Systems - Nnenna Ndukwe, Qodo AI",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlES/governed-agent-autonomy-building-a-control-plane-for-agentic-systems-nnenna-ndukwe-qodo-ai",
+      "attachments": [],
+      "individual_page_read": "read"
+    },
+    {
+      "id": "2So56",
+      "title": "Trace-Based Evaluation of Open-Weight Coding Agents: Measuring Real Agent Behavior - Kota Tsuyuzaki, NTT DOCOMO BUSINESS, Inc.",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2So56/trace-based-evaluation-of-open-weight-coding-agents-measuring-real-agent-behavior-kota-tsuyuzaki-ntt-docomo-business-inc",
+      "attachments": [
+        "2So56-01-agntcon2026-ntt-docomo-business-kota-tsuyuzaki.pdf"
+      ],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2QlEP",
+      "title": "Built for Two: What Design Systems Are Missing When AI Agents Become the Third User - Karen Ng, Endor Labs",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlEP/built-for-two-what-design-systems-are-missing-when-ai-agents-become-the-third-user-karen-ng-endor-labs",
+      "attachments": [
+        "2QlEP-01-built-for-two-karen-ng-2026.pdf"
+      ],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2QlEV",
+      "title": "Beyond Prototypes: Building Enterprise-scale Agentic Systems - Kevin Dubois, IBM",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlEV/beyond-prototypes-building-enterprise-scale-agentic-systems-kevin-dubois-ibm",
+      "attachments": [
+        "2QlEV-01-agntcon-mcpcon-jp.pdf"
+      ],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2QlEY",
+      "title": "Build Your Own Open-Source Claude Code With Local LLMs - Daniel Oh, Red Hat",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlEY/build-your-own-open-source-claude-code-with-local-llms-daniel-oh-red-hat",
+      "attachments": [
+        "2QlEY-01-agentcon-mcpcon-japan-build-your-own-claude-code-with-local-llms.pdf"
+      ],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2TMMI",
+      "title": "Workshop: Building Secure & Discoverable Agent Infrastructure with agentgateway & agentregistry - Mehmet Hilmi Emel, ACEDEMAND IT Consulting Services",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2TMMI/workshop-building-secure-discoverable-agent-infrastructure-with-agentgateway-agentregistry-mehmet-hilmi-emel-acedemand-it-consulting-services",
+      "attachments": [
+        "2TMMI-01-agntcon-mcpcon-japan-2026-ppt-1.pdf"
+      ],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2WCMf",
+      "title": "MCP × A2A Platform for the Enterprise: Security by Spec - Masaki Tsukada, Mitsubishi Electric Corporation",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2WCMf/mcp-x-a2a-platform-for-the-enterprise-security-by-spec-masaki-tsukada-mitsubishi-electric-corporation",
+      "attachments": [
+        "2WCMf-01-mcp-a2a-platform-for-the-enterprise.pdf"
+      ],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2QlEe",
+      "title": "Externalizing Agent State: Memory and Filesystem Management for Sandboxed Coding Agents - Tadatoshi Sekiguchi, PingCAP",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlEe/externalizing-agent-state-memory-and-filesystem-management-for-sandboxed-coding-agents-tadatoshi-sekiguchi-pingcap",
+      "attachments": [
+        "2QlEe-01-en-gntcon-japan-2026-pingcap-seki.pdf",
+        "2QlEe-02-jp-agntcon-japan-2026-pingcap-seki.pdf"
+      ],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2VRYC",
+      "title": "From Logs to Proofs: Cryptographic Compliance for Agentic Payments - Aggre Hiroyuki, Lemma Oracle",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2VRYC/from-logs-to-proofs-cryptographic-compliance-for-agentic-payments-aggre-hiroyuki-lemma-oracle",
+      "attachments": [
+        "2VRYC-01-from-logs-to-proofs-agntcon-2026-0-1.pdf"
+      ],
+      "individual_page_read": "not_individually_read"
+    },
+    {
+      "id": "2QlDU",
+      "title": "Your Agent Inherits Code, Not Decisions: How To Use Context Graphs for Intent - Nyah Macklin, Neo4j",
+      "url": "https://agntconmcpconjapan26.sched.com/event/2QlDU/your-agent-inherits-code-not-decisions-how-to-use-context-graphs-for-intent-nyah-macklin-neo4j",
+      "attachments": [],
+      "individual_page_read": "read"
+    }
+  ]
+}

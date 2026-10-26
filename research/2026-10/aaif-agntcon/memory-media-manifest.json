@@ -1,0 +1,256 @@
+{
+  "article_directory": "2026-11-aaif-agent-memory",
+  "checked_on": "2026-10-24",
+  "status": "local_only_unscheduled",
+  "source_decks": [
+    {
+      "session_id": "2RqMK",
+      "session_title": "Towards Trustworthy Autonomous Research - Wataru Kumagai, NexaScience/RIKEN",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2RqMK/towards-trustworthy-autonomous-research-wataru-kumagai-nexascienceriken",
+      "label": "AGNT Con 2026 v7",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/63/AGNT-Con_2026_v7.pdf",
+      "file": "2RqMK-01-agnt-con-2026-v7.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 4175698,
+      "sha256": "4e5abb0ef2c3b135ab0bb66375a5d205bec1fc171ad52cfaef62a2652df8d182",
+      "pages": 43,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2WZJf",
+      "session_title": "CrabRAG: Why Automated Assistants Need Graph Memory, Not More Tokens - Stephen Chin, Neo4j",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2WZJf/crabrag-why-automated-assistants-need-graph-memory-not-more-tokens-stephen-chin-neo4j",
+      "label": "CrabRAG Graph Memory for AI Assistants v0.6 (AGNTCon Japan)",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/ea/CrabRAG__Graph_Memory_for_AI_Assistants_v0.6%20%28AGNTCon%20Japan%29.pdf",
+      "file": "2WZJf-01-crabrag-graph-memory-for-ai-assistants-v0-6-agntcon-japan.pdf",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 6872741,
+      "sha256": "ce8dda1cfeda85beff42a94b58f3c4684d459fb2491a6292337d9b8536daaee3",
+      "pages": 39,
+      "status": "downloaded_verified"
+    },
+    {
+      "session_id": "2QlDp",
+      "session_title": "Architecture Behind the Most Viral Agent Memory Open Source Project - Rohit Ghumare, DEVREL AS SERVICE",
+      "session_url": "https://agntconmcpconjapan26.sched.com/event/2QlDp/architecture-behind-the-most-viral-agent-memory-open-source-project-rohit-ghumare-devrel-as-service",
+      "label": "agentmemory agntcon mcpcon opening",
+      "url": "https://hosted-files.sched.co/agntconmcpconjapan26/fe/agentmemory-agntcon-mcpcon-opening.pptx",
+      "file": "2QlDp-01-agentmemory-agntcon-mcpcon-opening.pptx",
+      "source_kind": "official_schedule_attachment",
+      "bytes": 4047330,
+      "sha256": "7b63e52a3916f9ec8b1cf9147f8ebe82c68f6826931dc38c02b5937b90fd4790",
+      "archive_entries": 167,
+      "slides": 37,
+      "status": "downloaded_verified"
+    }
+  ],
+  "source_documents": [
+    {
+      "project": "agentmemory",
+      "source_url": "https://github.com/rohitg00/agentmemory/blob/70517d2bdf302a0aed11ca470151ee854e74c678/README.md",
+      "commit": "70517d2bdf302a0aed11ca470151ee854e74c678",
+      "git_blob_sha": "20884ba57e634ca2373cf744a1d10dc5bae2b134",
+      "captured_utf8_sha256": "9e641f2f570a358e8f42260aff5cd9cc1b179476f3f650c436da9f345e3c457b"
+    },
+    {
+      "project": "airas",
+      "source_url": "https://github.com/airas-org/airas/blob/e1c37b5600acb4d717111b7a5789a2144a184959/README.md",
+      "commit": "e1c37b5600acb4d717111b7a5789a2144a184959",
+      "git_blob_sha": "7d3ddb703ef33a5e1aad2a6e6219b8eff3979466",
+      "captured_utf8_sha256": "b2a5d7a0414c67e6b8d335e3682f7a5a4620da28b2c3e8f9b613c77e25b1a8cb"
+    },
+    {
+      "project": "agentmemory",
+      "source_url": "https://github.com/rohitg00/agentmemory/blob/70517d2bdf302a0aed11ca470151ee854e74c678/benchmark/LONGMEMEVAL.md",
+      "commit": "70517d2bdf302a0aed11ca470151ee854e74c678",
+      "captured_utf8_sha256": "47f7e3aa940339af0f4bf4df2232e1338b89779aa9739326dc8c5c9c7b41da03",
+      "method": "Project-reported retrieval-only evaluation; not rerun"
+    },
+    {
+      "project": "agentmemory",
+      "source_url": "https://github.com/rohitg00/agentmemory/blob/70517d2bdf302a0aed11ca470151ee854e74c678/src/functions/consolidation-pipeline.ts",
+      "commit": "70517d2bdf302a0aed11ca470151ee854e74c678",
+      "git_blob_sha": "99939843323833db517e2209502f4d41be673451",
+      "captured_utf8_sha256": "a3c380c302e49960dc0ad0765dc9c8c331ca8b9113d75b9fe36e43d5454d6c45"
+    },
+    {
+      "project": "agentmemory",
+      "source_url": "https://github.com/rohitg00/agentmemory/blob/70517d2bdf302a0aed11ca470151ee854e74c678/src/state/hybrid-search.ts",
+      "commit": "70517d2bdf302a0aed11ca470151ee854e74c678",
+      "git_blob_sha": "8a1ed462914648307668d87574263b8c9ab5a297",
+      "captured_utf8_sha256": "1ca927f91283aab3869c5fb30ae55921230cc5aa199cc35073c69ecb0c8ddfe1"
+    },
+    {
+      "project": "agentmemory",
+      "source_url": "https://github.com/rohitg00/agentmemory/blob/70517d2bdf302a0aed11ca470151ee854e74c678/src/functions/auto-forget.ts",
+      "commit": "70517d2bdf302a0aed11ca470151ee854e74c678",
+      "git_blob_sha": "022b739cc34fd9f396c172847d469b482f9a1fbe",
+      "captured_utf8_sha256": "a964fe6ad16617d99d8a57ae2e6ddcbfeebd8c818051a10c939e4e58a1989540"
+    },
+    {
+      "project": "agentmemory",
+      "source_url": "https://github.com/rohitg00/agentmemory/blob/70517d2bdf302a0aed11ca470151ee854e74c678/src/functions/observe.ts",
+      "commit": "70517d2bdf302a0aed11ca470151ee854e74c678",
+      "git_blob_sha": "be320266760185f2244a543c716b01f8d1716544",
+      "captured_utf8_sha256": "1d77de5dba7484ed3b26d7cb93434375325cfdd95ca18bc5718c52cf14e40506"
+    }
+  ],
+  "images": [
+    {
+      "order": 1,
+      "article_file": "2026-11-aaif-agent-memory/figures/00-shibuya-night.png",
+      "sha256": "c92b1ef0093bdd21dd3509bb9017ee1d06362a90deca4cd159a6f6b76bbb0251",
+      "bytes": 2261576,
+      "width": 2400,
+      "height": 1350,
+      "kind": "author_photo",
+      "credit": "Kochi Chuang",
+      "album_displayed_taken_at": "2026-09-11T21:04:41+09:00",
+      "capture_method": "Clean capture of the displayed photo, not a camera-original download; no album interface or private URL",
+      "purpose": "Shibuya night view; opening"
+    },
+    {
+      "order": 2,
+      "article_file": "2026-11-aaif-agent-memory/figures/00a-shibuya-city-overview.png",
+      "sha256": "df0fbce1d376bb0b67179417a067b5bc9270338e6a1ee6b9bb6fdb2ecd4915cd",
+      "bytes": 4423594,
+      "width": 2400,
+      "height": 1350,
+      "kind": "author_photo",
+      "credit": "Kochi Chuang",
+      "album_displayed_taken_at": "2026-09-11T21:10:02",
+      "timestamp_basis": "Google Photos displayed date and time; timezone not independently verified for this addition",
+      "capture_method": "Clean capture of the displayed photo, not a camera-original download; no album interface or private URL",
+      "purpose": "Wide view down over Shibuya buildings and roads; opening"
+    },
+    {
+      "order": 3,
+      "article_file": "2026-11-aaif-agent-memory/figures/00b-shibuya-crossing.png",
+      "sha256": "fbb76c396f885a634e2df5ec902b199013c9c06b99060eb8f4009be659243291",
+      "bytes": 5280183,
+      "width": 2400,
+      "height": 1350,
+      "kind": "author_photo",
+      "credit": "Kochi Chuang",
+      "album_displayed_taken_at": "2026-09-11T20:49:32",
+      "timestamp_basis": "Google Photos displayed date and time; timezone not independently verified for this addition",
+      "capture_method": "Clean capture of the displayed photo, not a camera-original download; no album interface or private URL",
+      "purpose": "Closer view of Shibuya Crossing and pedestrians; opening"
+    },
+    {
+      "order": 4,
+      "article_file": "2026-11-aaif-agent-memory/figures/01-crabrag-relationships.png",
+      "sha256": "535662889787505abeae012970850e760100b9ca215c36c0eca40344a1531581",
+      "bytes": 104065,
+      "width": 1800,
+      "height": 1013,
+      "kind": "official_slide_render",
+      "session_id": "2WZJf",
+      "source_url": "https://hosted-files.sched.co/agntconmcpconjapan26/ea/CrabRAG__Graph_Memory_for_AI_Assistants_v0.6%20%28AGNTCon%20Japan%29.pdf",
+      "source_sha256": "ce8dda1cfeda85beff42a94b58f3c4684d459fb2491a6292337d9b8536daaee3",
+      "slide_1_based": 28,
+      "credit": "CrabRAG: Why Automated Assistants Need Graph Memory, Not More Tokens - Stephen Chin, Neo4j",
+      "capture_method": "Full PDF page rendered to PNG"
+    },
+    {
+      "order": 5,
+      "article_file": "2026-11-aaif-agent-memory/figures/02-memory-four-jobs.png",
+      "sha256": "c413704f27c396a427087e8ef2c94df15f82a6b4d89cb170f41f199b87c21378",
+      "bytes": 361998,
+      "width": 3840,
+      "height": 2160,
+      "kind": "official_slide_render",
+      "session_id": "2QlDp",
+      "source_url": "https://hosted-files.sched.co/agntconmcpconjapan26/fe/agentmemory-agntcon-mcpcon-opening.pptx",
+      "source_sha256": "7b63e52a3916f9ec8b1cf9147f8ebe82c68f6826931dc38c02b5937b90fd4790",
+      "slide_1_based": 11,
+      "credit": "Architecture Behind the Most Viral Agent Memory Open Source Project - Rohit Ghumare, DEVREL AS SERVICE",
+      "capture_method": "Full official PPTX slide rendered via macOS Quick Look preview; component PDFs rasterized with transparency; explicit sans-serif font fallback; gstack selector screenshot"
+    },
+    {
+      "order": 6,
+      "article_file": "2026-11-aaif-agent-memory/figures/03-memory-lifecycle.png",
+      "sha256": "9afed9b59cbd59a6d3c1247a4a7d0cfa589a9e1c2ea2f7c09e55437c0cf65c32",
+      "bytes": 312920,
+      "width": 3840,
+      "height": 2160,
+      "kind": "official_slide_render",
+      "session_id": "2QlDp",
+      "source_url": "https://hosted-files.sched.co/agntconmcpconjapan26/fe/agentmemory-agntcon-mcpcon-opening.pptx",
+      "source_sha256": "7b63e52a3916f9ec8b1cf9147f8ebe82c68f6826931dc38c02b5937b90fd4790",
+      "slide_1_based": 28,
+      "credit": "Architecture Behind the Most Viral Agent Memory Open Source Project - Rohit Ghumare, DEVREL AS SERVICE",
+      "capture_method": "Full official PPTX slide rendered via macOS Quick Look preview; component PDFs rasterized with transparency; explicit sans-serif font fallback; gstack selector screenshot"
+    },
+    {
+      "order": 7,
+      "article_file": "2026-11-aaif-agent-memory/figures/04-research-verification-first.png",
+      "sha256": "c1c3caa76ebe9aefe24162b5c5ea8bdc13ca66daa1c41373cc54f44bc0052567",
+      "bytes": 90816,
+      "width": 1800,
+      "height": 1013,
+      "kind": "official_slide_render",
+      "session_id": "2RqMK",
+      "source_url": "https://hosted-files.sched.co/agntconmcpconjapan26/63/AGNT-Con_2026_v7.pdf",
+      "source_sha256": "4e5abb0ef2c3b135ab0bb66375a5d205bec1fc171ad52cfaef62a2652df8d182",
+      "slide_1_based": 35,
+      "credit": "Towards Trustworthy Autonomous Research - Wataru Kumagai, NexaScience/RIKEN",
+      "capture_method": "Full PDF page rendered to PNG"
+    },
+    {
+      "order": 8,
+      "article_file": "2026-11-aaif-agent-memory/figures/05-research-claims-author-photo.png",
+      "sha256": "8710a76f834a2937c08ed5519dd9d02d47dfad6cadab4541259dce1454962826",
+      "bytes": 1239082,
+      "width": 2400,
+      "height": 1350,
+      "kind": "author_photo",
+      "credit": "Kochi Chuang",
+      "album_displayed_taken_at": "2026-09-10T10:35:44+09:00",
+      "capture_method": "Clean capture of the displayed photo, not a camera-original download; no album interface or private URL",
+      "purpose": "Author venue photograph matching research slide 40",
+      "slide_content_credit": "Wataru Kumagai / NexaScience / RIKEN",
+      "corresponding_session_id": "2RqMK",
+      "corresponding_slide": 40
+    },
+    {
+      "order": 9,
+      "article_file": "2026-11-aaif-agent-memory/figures/06-shibuya-sky-festival.png",
+      "sha256": "b8c48051d1c84c8c58ec16fa1558ab0ef104f40e7f742edf3270a8ca60b06061",
+      "bytes": 1973943,
+      "width": 2400,
+      "height": 1350,
+      "kind": "author_photo",
+      "credit": "Kochi Chuang",
+      "album_displayed_taken_at": "2026-09-11T22:05:28+09:00",
+      "capture_method": "Clean capture of the displayed photo, not a camera-original download; no album interface or private URL",
+      "purpose": "SHIBUYA SKY exhibition; closing"
+    }
+  ],
+  "tables": [
+    {
+      "language": "zh",
+      "file": "2026-11-aaif-agent-memory/publish/images/table-01.png",
+      "sha256": "75c9c0dcfe831078cda75e029a2ea896db8fee3153d6f2ea660c6254e72a449f",
+      "dimensions": [
+        1800,
+        832
+      ],
+      "cases": 6,
+      "method": "Existing repository HTML table renderer, gstack headed selector screenshot at CSS zoom 2; visually inspected"
+    },
+    {
+      "language": "en",
+      "file": "2026-11-aaif-agent-memory/publish/en/images/table-01.png",
+      "sha256": "d0faea22fbbdc719cbbd32bed2e9d5601359aaeee1e39b88f3669ca4872863d7",
+      "dimensions": [
+        1800,
+        1168
+      ],
+      "cases": 6,
+      "method": "Existing repository HTML table renderer, gstack headed selector screenshot at CSS zoom 2; visually inspected"
+    }
+  ],
+  "privacy": "Private album URLs, account data, raw social captures, and browser session data are excluded.",
+  "experiments": "No CrabRAG, Agent Memory, AIRAS deployment, or proposed memory assessment was executed."
+}

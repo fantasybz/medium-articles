@@ -6,7 +6,7 @@ Medium articles by [@fantasybz](https://medium.com/@fantasybz) — long-form pos
 
 ## Articles
 
-截至 **2026-10-18**，以下三個系列在 Medium 共 **12 篇已發布、10 篇已排程**：Agentic Engineering 中英八篇全數公開；《綠燈不是驗收》總論與測試篇中英四篇已公開，其餘六篇維持原排程；《同一份規格，跑十次》四篇中文已排程，英文尚未成稿或建立排程。日期以 Medium 實際狀態為準，資料夾月份僅供歸檔。
+依既有發布紀錄與 **2026-10-23～24** 的 Medium 讀回，以下四個系列共 **14 篇已發布、14 篇已排程**：Agentic Engineering 中英八篇全數公開；《綠燈不是驗收》總論、測試與 Review 篇中英六篇已公開，其餘四篇維持排程；《同一份規格，跑十次》四篇中文已排程、英文尚未成稿；AAIF 東京筆記三篇中英六版已排程。日期以 Medium 實際狀態為準，資料夾月份僅供歸檔。
 
 | 日期 | 文章 | 英文版 | Medium | 發布紀錄 |
 |---|---|---|---|---|
@@ -16,9 +16,12 @@ Medium articles by [@fantasybz](https://medium.com/@fantasybz) — long-form pos
 | 2026-09 | [三部曲（三）營運篇：Eval、單位經濟與規模化—把 agent 當產品營運](2026-11-agentic-eval-economics/article.md) | [EN](https://fantasybz.medium.com/agentic-engineering-part-3-evals-unit-economics-and-scaling-running-agents-like-a-product-1cb1855a2046) | [已發布](https://fantasybz.medium.com/agentic-engineering-%E4%B8%89%E9%83%A8%E6%9B%B2-%E4%B8%89-eval-%E5%96%AE%E4%BD%8D%E7%B6%93%E6%BF%9F%E8%88%87%E8%A6%8F%E6%A8%A1%E5%8C%96-%E6%8A%8A-agent-%E7%95%B6%E7%94%A2%E5%93%81%E7%87%9F%E9%81%8B-d6d9623c2dc6) | [PUBLISHED.md](2026-11-agentic-eval-economics/publish/PUBLISHED.md) |
 | 2026-10 | [綠燈不是驗收：agent 時代的測試、Review 與可靠度](2026-10-green-overview/article.md)（四部曲總論） | [EN](https://medium.com/p/c4fc9f3d8581) | [中文已發布 10/06](https://medium.com/p/582f24223eea)；英文已發布 10/06（臺北時間） | [PUBLISHED.md](2026-10-green-overview/publish/PUBLISHED.md) |
 | 2026-10 | [綠燈不是驗收（一）測試篇：怎麼審閱一份 agent 寫的測試—斷言鬆綁、凍結 bug 與 mutation score](2026-10-green-testing/article.md) | [EN](https://medium.com/p/51d001a6dcd5) | [中文已發布 10/13](https://medium.com/p/b01055139451)；英文已發布 10/15（臺北時間） | [PUBLISHED.md](2026-10-green-testing/publish/PUBLISHED.md) |
-| 2026-10 | [綠燈不是驗收（二）Review 篇：Review 是控制點，不是瓶頸—分流、reviewer agent 艦隊與閉環禁令](2026-10-green-review/article.md) | [EN](2026-10-green-review/article.en.md) | 已排程 10/20（二）09:00 發布；英文版已排程 10/22（四）09:00（GMT+8）；佇列見 [PUBLISHING.md](PUBLISHING.md) | [PUBLISHED.md](2026-10-green-review/publish/PUBLISHED.md) |
+| 2026-10 | [綠燈不是驗收（二）Review 篇：Review 是控制點，不是瓶頸—分流、reviewer agent 艦隊與閉環禁令](2026-10-green-review/article.md) | [EN](https://medium.com/p/4d36d0f2f9c1) | [中文已發布 10/20](https://medium.com/p/ccbf0cbe2691)；[英文已發布 10/22](https://medium.com/p/4d36d0f2f9c1)（臺北時間） | [PUBLISHED.md](2026-10-green-review/publish/PUBLISHED.md) |
 | 2026-10 | [綠燈不是驗收（三）可靠度篇：SWE-Gate 量測到的 34%—constraint tests、pass^k 與授權擴張的閘門](2026-10-green-reliability/article.md) | [EN](2026-10-green-reliability/article.en.md) | 已排程 10/27（二）09:00 發布；英文版已排程 10/29（四）09:00（GMT+8）；佇列見 [PUBLISHING.md](PUBLISHING.md) | [PUBLISHED.md](2026-10-green-reliability/publish/PUBLISHED.md) |
 | 2026-11 | [綠燈不是驗收（四）付款實作篇：買一瓶無糖純喫綠茶，從 Review 約束走到 mutation score](2026-10-green-payment/article.md) | [EN](2026-10-green-payment/article.en.md) | [中文版](https://medium.com/p/46377fd460fe/edit)已排程 11/03（二）09:00 發布；[英文版](https://medium.com/p/20452944263b/edit)已排程 11/05（四）09:00 發布（GMT+8）；佇列見 [PUBLISHING.md](PUBLISHING.md) | [中](2026-10-green-payment/publish/PUBLISHED.md)／[EN](2026-10-green-payment/publish/en/PUBLISHED.md) |
+| 2026-11 | [從東京 AGNTCon 回來：Agent 接上工具之後，工作才剛開始](2026-11-aaif-after-tokyo/article.md) | [EN](2026-11-aaif-after-tokyo/article.en.md) | [中 11/02](https://medium.com/p/e3d060cb8b03/edit)／[英 11/04](https://medium.com/p/565d3e375896/edit) 已排程 09:00（臺北時間） | [中](2026-11-aaif-after-tokyo/publish/PUBLISHED.md)／[EN](2026-11-aaif-after-tokyo/publish/en/PUBLISHED.md) |
+| 2026-11 | [把工作交給另一個 Agent 之前：授權、狀態與復原](2026-11-aaif-agent-handoffs/article.md) | [EN](2026-11-aaif-agent-handoffs/article.en.md) | [中 11/09](https://medium.com/p/e68dc5ab1275/edit)／[英 11/11](https://medium.com/p/8b39e1abe616/edit) 已排程 09:00（臺北時間） | [中](2026-11-aaif-agent-handoffs/publish/PUBLISHED.md)／[EN](2026-11-aaif-agent-handoffs/publish/en/PUBLISHED.md) |
+| 2026-11 | [Agent 記住的經驗，下一次還能相信嗎？](2026-11-aaif-agent-memory/article.md) | [EN](2026-11-aaif-agent-memory/article.en.md) | [中 11/16](https://medium.com/p/5380c278562e/edit)／[英 11/18](https://medium.com/p/bbf6a23c6481/edit) 已排程 09:00（臺北時間） | [中](2026-11-aaif-agent-memory/publish/PUBLISHED.md)／[EN](2026-11-aaif-agent-memory/publish/en/PUBLISHED.md) |
 | 2026-11 | [同一份規格，跑十次：我們憑什麼把一種交代變成團隊預設？](2026-11-same-spec-overview/article.md) | 待 Claude max 額度重置後主寫 | [已排程 11/10（二）09:00](https://medium.com/p/6986ee29219e/edit)（GMT+8） | [PUBLISHED.md](2026-11-same-spec-overview/publish/PUBLISHED.md) |
 | 2026-11 | [同一份規格，跑十次（一）：規格篇—先決定要什麼，再決定怎麼交代](2026-11-same-spec-spec/article.md) | 待 Claude max 額度重置後主寫 | [已排程 11/17（二）09:00](https://medium.com/p/fc5ed5fce443/edit)（GMT+8） | [PUBLISHED.md](2026-11-same-spec-spec/publish/PUBLISHED.md) |
 | 2026-11 | [同一份規格，跑十次（二）：契約篇—把要求變成驗收，中間還缺哪些判斷？](2026-11-same-spec-contract/article.md) | 待 Claude max 額度重置後主寫 | [已排程 11/24（二）09:00](https://medium.com/p/f7684c057c0e/edit)（GMT+8） | [PUBLISHED.md](2026-11-same-spec-contract/publish/PUBLISHED.md) |
@@ -27,6 +30,10 @@ Medium articles by [@fantasybz](https://medium.com/@fantasybz) — long-form pos
 「同一份規格，跑十次」已依十月份《綠燈不是驗收》的論證與敘事基準全面重寫：[總論](2026-11-same-spec-overview/article.md)、[規格篇](2026-11-same-spec-spec/article.md)、[契約篇](2026-11-same-spec-contract/article.md)、[變異篇](2026-11-same-spec-variance/article.md)。四篇由 Claude Code Opus 5.5 `max` 主寫；10/03 再依作者試讀意見，由 Codex 主代理補足概念例子、逐段主軸與銜接。10/04 已合併 main，四篇中文已接續前系列排程於 11/10、11/17、11/24、12/01 臺北時間 09:00；最新正文、貼稿與 Medium 內容均已核對。英文版因 Claude 週額度限制，尚待 max 主寫與發布。見[本輪發布紀錄](research/2026-10/same-spec-ten-runs/publication-2026-10-04.md)、[讀者回饋修訂](research/2026-10/same-spec-ten-runs/readability-2026-10-03/README.md)、[研究背景](research/2026-10/same-spec-ten-runs/rebuild-2026-09-28/README.md)與[成稿狀態](research/2026-10/same-spec-ten-runs/manuscripts/STATUS.md)。
 
 四份實驗規格的原文與比較另見 [A0／A／B／C 全文與逐行差異導讀](https://github.com/fantasybz/medium-articles/blob/774759192ab0e0b2da3d8b163eb3f07f3d12f4c3/research/experiments/same-spec-ten-runs/SPECS.md)，包含三組 diff 與完整 task packet。總論、規格篇與變異篇已補上明顯入口，最新版本與公開連結驗證見[公開附件紀錄](research/2026-10/same-spec-ten-runs/public-links-2026-10-03.md)。
+
+AAIF 東京筆記沿著三個問題前進：第一篇從受邀與參會故事、Kong 原始程式碼及六場錄影，追問工具接通後的行動與完成證據；第二篇以另六場簡報探討交接後的授權、狀態與復原；第三篇接續討論跨任務記憶如何接受查核與修正。三篇開場都有[系列總覽圖](research/2026-10/aaif-agntcon/overview/README.md)，另備中英文獨立分享圖片。2026-10-25 依作者試讀回饋重新分析並改寫三篇：每篇先立主軸與閱讀地圖，術語用情境例子帶入，查核限制集中到文末，補入 PagerDuty 場次並加深與既有系列的回扣；接著由 Codex（gpt-6.1-sol，xhigh）對三篇中文稿做三輪審稿，每輪核對來源後修訂（r1–r3 原話存於 `research/2026-10/aaif-agntcon/codex-review-*-r{1,2,3}.md`）；三輪後各篇中英版分別有 23／14／13 張圖（第一篇三張表、第二篇三張表、第三篇五張表），第三篇保留三張作者照片（開場一張澀谷夜景、會場投影片、結尾的天空夢祭），另兩張澀谷照片留在 figures 目錄未入正文。中英六版已排程於 11/02、11/04、11/09、11/11、11/16、11/18，均為週一或週三上午 9 點，錯開原有時段；2026-10-26 凌晨已把三輪後的定稿就地重灌到六份排程稿（Post ID 與排程不變），每張來源圖片的圖說也改成 Medium 的圖片 caption。第二、三篇中英的封面因重灌被重設成總覽圖、五篇的預覽摘要變成自動摘句，待作者在發布對話框改回，細節見各篇 `PUBLISHED.md` 與 [PUBLISHING.md](PUBLISHING.md)〈2026-10-25／26〉。
+
+前兩篇依作者回饋完成[三輪精修](research/2026-10/aaif-agntcon/refinement-3-runs.md)、[小標與開場修訂](research/2026-10/aaif-agntcon/title-opening-refinement.md)、[場次分段與術語解說](research/2026-10/aaif-agntcon/session-structure-refinement.md)，再補[場次導讀與來源入口](research/2026-10/aaif-agntcon/reader-entry-refinement.md)，把 Kong 的版本與核對方法集中到文末。第三篇沿用同一標準，以 CrabRAG、Agent Memory 與自主研究驗證三場材料完成[來源核對及三輪編修](research/2026-10/aaif-agntcon/memory.md)，並以澀谷與會場照片銜接旅程。10/25 的改寫理由、新增來源、三輪 Codex 審稿的採用與不採用項目及方法限制見[重新分析紀錄](research/2026-10/aaif-agntcon/rewrite-2026-10-25.md)；研究範圍見[系列目錄](research/2026-10/aaif-agntcon/README.md)、[簡報清單](research/2026-10/aaif-agntcon/slides.md)及[發布核對](research/2026-10/aaif-agntcon/publication.md)。Medium 上的六份排程稿仍為 10/24 版本，重灌待作者確認。
 
 ## Structure
 
@@ -38,7 +45,7 @@ YYYY-MM-slug/
 ├── article.en.md       # 英文版本體
 └── publish/            # Medium 發布包
     ├── medium-paste.md # 中文貼上版（含發布指南與插圖標記），由 article_to_paste.py 從 article.md 產生
-    ├── figures.json    # 哪個 mermaid 區塊／表格變成哪張 PNG；同一支腳本寫出，render_images.sh 讀它
+    ├── figures.json    # 哪個 mermaid 區塊／表格變成哪張 PNG、每張 ![圖說](png) 的圖說；同一支腳本寫出，render_images.sh 與 md2medium.py 讀它
     ├── images/         # 中文版的 Mermaid 圖與表格 PNG
     ├── PUBLISHED.md    # 發布後補：網址、tag、封面圖、核對結果
     └── en/             # 英文發布包（結構同上，圖表為英文版）

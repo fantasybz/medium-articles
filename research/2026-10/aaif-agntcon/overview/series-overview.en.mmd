@@ -1,0 +1,56 @@
+---
+config:
+  theme: base
+  themeVariables:
+    fontSize: 16px
+    primaryColor: "#f8f9fa"
+    primaryTextColor: "#1f2933"
+    primaryBorderColor: "#6b7280"
+    lineColor: "#6b7280"
+    secondaryColor: "#f8f9fa"
+    tertiaryColor: "#ffffff"
+    clusterBkg: "#ffffff"
+    clusterBorder: "#9ca3af"
+    edgeLabelBackground: "#ffffff"
+  flowchart:
+    nodeSpacing: 36
+    rankSpacing: 32
+    padding: 12
+    wrappingWidth: 320
+    htmlLabels: true
+    subGraphTitleMargin:
+      top: 8
+      bottom: 12
+    curve: basis
+---
+flowchart TB
+    %% Layout: TB, 7 nodes; checked viewBox 741x796, height/width 1.07; font 16px.
+    classDef own fill:#d4edda,stroke:#2e7d32,color:#1f2933
+    classDef human fill:#e3f2fd,stroke:#1565c0,color:#1f2933
+
+    subgraph action["Part 1　Action | Once tools are connected"]
+        direction LR
+        A["What may it do?<br/>What actually happened?<br/>What counts as done?"]
+        B["Targets and task authorization<br/>Results in external systems<br/>Evidence against requirements"]
+        A --> B
+    end
+
+    subgraph handoff["Part 2　Handoff | Someone else continues"]
+        direction LR
+        C["Who takes over?<br/>What is complete?<br/>What remains unknown?"]
+        D["Verifiable approval scope<br/>Known and unknown state<br/>A way to resume and recover"]
+        C --> D
+    end
+
+    subgraph memory["Part 3　Memory | Experience for the next task"]
+        direction LR
+        E["Does it still apply?<br/>What conditions have changed?<br/>Were corrections retrieved?"]
+        F["Sources, versions, conditions<br/>Corrections and deletions take effect<br/>Checks in the new task"]
+        E --> F
+    end
+
+    action -->|Hand off work| handoff
+    handoff -->|Retain experience| memory
+    memory -.->|The next task| G["Recheck current conditions<br/>Read evidence and open questions<br/>Decide how much work to delegate"]
+    class B,D,F own
+    class G human
