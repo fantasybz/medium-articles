@@ -982,10 +982,12 @@ happened yet, and the two kinds of post are not in the same danger:
   5. Preview subtitle: it MAY reset too. Of six scheduled posts refilled on
      2026-10-26, five came back showing Medium's auto-excerpt of the first
      paragraph in place of their custom "Write a preview subtitle" text; one
-     kept it, and the cause is not known. Check it on the same /submission
-     page. If it reset, fill the subtitle field again and leave it with Tab:
-     Medium saves on blur, no button needed. Read it back from a fresh tab,
-     and again do not press "Schedule to publish".
+     kept it, and the cause is not known. Check it on the same page ("Review
+     scheduled story" opens /p/<id>/submission). If it reset, fill the
+     subtitle field again and leave it with Tab: Medium saves on blur, no
+     button needed. Read it back from a fresh tab, and again do not press
+     "Schedule to publish". See PUBLISHING.md, section 整篇重灌, paragraph
+     預覽摘要也可能被重設.
 NEXT
 else
   cat <<'NEXT'
