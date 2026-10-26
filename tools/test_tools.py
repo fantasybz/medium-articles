@@ -3348,6 +3348,27 @@ class TestMediumDraftFinishes(Driven, unittest.TestCase):
         self.assertNotIn("did NOT leave that post alone", d.out.stderr)
         self.assertEqual([c for c in d.calls if c.startswith("eval image")], [])
 
+    def test_a_refill_warns_about_both_resets_medium_was_measured_to_make(self):
+        # The closing message is the only place the operator is told what a
+        # refill undid. 2026-09-16: the cover resets to the first figure (five
+        # of five). 2026-10-26: five of six scheduled posts came back with the
+        # custom preview subtitle replaced by Medium's auto-excerpt. Drop
+        # either warning from the heredoc and the operator ships a wrong card.
+        d = self.drive("--post", GOOD_ID, rules={
+            "eval:body.js": REFILL_OK,
+            "eval:state.js": state(figures=0, slots=0),
+            "eval:dump.js": self.editor(["T", "body"], ["H3", "P"])})
+        self.assertEqual(d.out.returncode, 0, d.out.stderr + d.out.stdout)
+        self.assertIn("Preview image: it does NOT survive", d.out.stdout)
+        self.assertIn("Preview subtitle: it MAY reset too", d.out.stdout)
+        self.assertIn('do not press "Schedule to publish"', d.out.stdout)
+        # A new draft has no refill to warn about.
+        d = self.drive(rules={
+            "eval:body.js": '{"replaced":2}',
+            "eval:state.js": state(figures=0, slots=0),
+            "eval:dump.js": self.editor(["T", "body"], ["H3", "P"])})
+        self.assertNotIn("Preview subtitle: it MAY reset too", d.out.stdout)
+
     def test_a_figure_is_inserted_confirmed_and_verified(self):
         # The whole image loop: paste, wait for the upload, select the
         # placeholder, two Backspaces, count what is left, and the final gate.

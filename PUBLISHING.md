@@ -289,6 +289,11 @@ Medium 之後把預覽圖重設成**內文第一張 figure**。三篇分論的�
    hash，直接在選擇器裡比對 `src` 即可。
    若原封面這次也重繪了，則選同一張圖的新版，並核對上傳後的新識別碼。
 
+**預覽摘要也可能被重設**（2026-10-26 實測）：六份 AAIF 排程稿重灌後，五份的 Write a preview subtitle
+欄讀回變成 Medium 自動摘自首段的句子，只有一份的自訂摘要留著；原因沒有查明，所以重灌後一律到
+`/p/<id>/submission` 核對。重填只要把句子填回該欄、按 Tab 離開欄位，Medium 就存了，不必按任何
+按鈕；另開新分頁讀回 `extendedPreviewContent.subtitle` 確認。同樣不要按 `Schedule to publish`。
+
 2026-09-23 逐一核對中英八篇後，封面對應為總論 `diagram-04`、測試篇 `diagram-03`、
 Review 篇 `diagram-02`、可靠度篇 `diagram-02`；八份 ledger 的當前設定已同步更正。
 
