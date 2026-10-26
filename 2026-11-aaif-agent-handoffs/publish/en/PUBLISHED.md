@@ -6,7 +6,7 @@
 **排程** 2026-11-11 09:00 Asia/Taipei（UTC 01:00）；新分頁讀回確認。
 **草稿** https://medium.com/p/8b39e1abe616/edit
 **上線後穩定短網址** https://medium.com/p/8b39e1abe616
-**核對時間** 2026-10-26T01:56:42+08:00
+**核對時間** 2026-10-26T10:34:32+08:00
 
 ## 內容核對
 
@@ -25,17 +25,17 @@
 
 ## 發布設定讀回
 
-核對時間：2026-10-26T01:56:42+08:00。另開新分頁，確認不含原頁面標記，再讀取 Medium 儲存的設定。
+核對時間：2026-10-26T10:34:32+08:00。另開新分頁，確認不含原頁面標記，再讀取 Medium 儲存的設定。
 
 | 項目 | 讀回值 |
 |---|---|
 | `isPublished` | `false` |
 | `publishSchedule.publishAt` | `1794358800000`（2026-11-11T01:00:00Z） |
 | Topics | Artificial Intelligence、Model Context Protocol、Software Engineering、Open Source、Ai Agents |
-| 封面 | `diagram-01.png`，`1*mf8T9LOLrhV6-KSPoIQGwQ.png`，664×718 |
+| 封面 | `asset-01.png`，`1*l8bZZAVGBqlT0sVQdyRXdg.png`，2048×1152（2026-10-26 重灌後一度被重設為總覽圖 `diagram-01.png`；同日在發布對話框用 Change preview image 依圖片識別碼選回、按 Done，從新分頁讀回確認） |
 | 預覽標題 | Before One Agent Hands Work to Another: Authority, State, and Recovery |
-| 預覽摘要 | （2026-10-26 重灌後讀回）Medium 目前顯示的是自動摘自內文 TL;DR 的首句：「TL;DR — When one agent hands work to another, or a workspace restarts and a different agent takes over, the predecessor may have been cut…」。先前記的自訂摘要「Six Tokyo talks connect delegation, persistent workspaces, and recovery through one Kubernetes upgrade scenario.」不在 Medium 設定裡，要自訂請作者在發布對話框重設 |
+| 預覽摘要 | Six Tokyo talks connect delegation, persistent workspaces, and recovery through one Kubernetes upgrade scenario.（2026-10-26 重灌後一度讀回為自動摘自 TL;DR 的首句；同日在發布對話框的 Write a preview subtitle 欄重設為此句，從新分頁讀回確認） |
 | Notify subscribers | 關閉（`isPublishToEmail: false`） |
 | 發布位置 | 個人 profile，未投稿 publication |
 
-Story image 原本使用筆者在東京辦公室拍攝的東京鐵塔日景照（`asset-01.png`）。2026-10-26 重灌後，原排程、預覽標題及通知設定與更新前相符；封面則被 Medium 重設為內文第一張圖，即系列總覽圖 `diagram-01.png`（重灌會重傳每張圖，封面跟著重設，見 PUBLISHING.md），待作者在發布對話框改回東京鐵塔照。系列文章目前仍為排程稿，待實際公開後再更新「即將發布」標示；英文版連到先行排程的中文版本。
+Story image 使用筆者在東京辦公室拍攝的東京鐵塔日景照（`asset-01.png`）。2026-10-26 重灌後封面一度被 Medium 重設為內文第一張圖（系列總覽圖），同日依作者指示在發布對話框用 Change preview image 選回原照、按 Done 存檔，預覽摘要也重設回自訂句，兩者皆從新分頁讀回確認；沒有按 Schedule to publish。原排程、預覽標題及通知設定與更新前相符。系列文章目前仍為排程稿，待實際公開後再更新「即將發布」標示；英文版連到先行排程的中文版本。

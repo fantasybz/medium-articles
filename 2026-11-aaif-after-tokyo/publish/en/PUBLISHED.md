@@ -6,7 +6,7 @@
 **排程** 2026-11-04 09:00 Asia/Taipei（UTC 01:00）；新分頁讀回確認。
 **草稿** https://medium.com/p/565d3e375896/edit
 **上線後穩定短網址** https://medium.com/p/565d3e375896
-**核對時間** 2026-10-26T01:49:32+08:00
+**核對時間** 2026-10-26T11:26:29+08:00
 
 ## 內容核對
 
@@ -25,7 +25,7 @@
 
 ## 發布設定讀回
 
-核對時間：2026-10-26T01:49:32+08:00。另開新分頁，確認不含原頁面標記，再讀取 Medium 儲存的設定。
+核對時間：2026-10-26T11:26:29+08:00。另開新分頁，確認不含原頁面標記，再讀取 Medium 儲存的設定。
 
 | 項目 | 讀回值 |
 |---|---|
@@ -34,8 +34,8 @@
 | Topics | Artificial Intelligence、Model Context Protocol、Software Engineering、Open Source、Ai Agents |
 | 封面 | `asset-01.png`，`1*jY2nu2UmaSugznxXM7TsMA.png`，1080×1080 |
 | 預覽標題 | After Tokyo AGNTCon: Connecting an Agent Is Only the Beginning |
-| 預覽摘要 | A Tokyo trip and six talks reveal why tool access still needs authority, recovery, and evidence of completion. |
+| 預覽摘要 | A Tokyo trip and seven talks reveal why tool access still needs authority, recovery, and evidence of completion.（2026-10-26 依作者指示在發布對話框把「six talks」改為「seven talks」，以符合 10/25 補入的 PagerDuty 場次；從新分頁讀回確認，排程與通知設定未變） |
 | Notify subscribers | 關閉（`isPublishToEmail: false`） |
 | 發布位置 | 個人 profile，未投稿 publication |
 
-Story image 使用筆者自己的東京會場照片。本次更新後，原排程、預覽標題與摘要、封面原圖及通知設定均與更新前相符。系列文章目前仍為排程稿，待實際公開後再更新「即將發布」標示；英文版連到先行排程的中文版本。
+Story image 使用筆者自己的東京會場照片（`asset-01.png`，也是內文第一張圖，所以重灌沒有動到封面）。2026-10-26 重灌後，原排程、預覽標題、封面原圖及通知設定與更新前相符；自訂預覽摘要在重灌後仍在，同日依作者指示把「six talks」改為「seven talks」，從新分頁讀回確認，沒有按 Schedule to publish。系列文章目前仍為排程稿，待實際公開後再更新「即將發布」標示；英文版連到先行排程的中文版本。

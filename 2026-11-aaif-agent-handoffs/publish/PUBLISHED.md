@@ -6,7 +6,7 @@
 **排程** 2026-11-09 09:00 Asia/Taipei（UTC 01:00）；新分頁讀回確認。
 **草稿** https://medium.com/p/e68dc5ab1275/edit
 **上線後穩定短網址** https://medium.com/p/e68dc5ab1275
-**核對時間** 2026-10-26T01:53:51+08:00
+**核對時間** 2026-10-26T10:34:32+08:00
 
 ## 內容核對
 
@@ -25,17 +25,17 @@
 
 ## 發布設定讀回
 
-核對時間：2026-10-26T01:53:51+08:00。另開新分頁，確認不含原頁面標記，再讀取 Medium 儲存的設定。
+核對時間：2026-10-26T10:34:32+08:00。另開新分頁，確認不含原頁面標記，再讀取 Medium 儲存的設定。
 
 | 項目 | 讀回值 |
 |---|---|
 | `isPublished` | `false` |
 | `publishSchedule.publishAt` | `1794186000000`（2026-11-09T01:00:00Z） |
 | Topics | Artificial Intelligence、Model Context Protocol、Software Engineering、Open Source、Ai Agents |
-| 封面 | `diagram-01.png`，`1*hcfJVSrI3ZyNIne3eMmvSQ.png`，664×948 |
+| 封面 | `asset-01.png`，`1*l8bZZAVGBqlT0sVQdyRXdg.png`，2048×1152（2026-10-26 重灌後一度被重設為總覽圖 `diagram-01.png`；同日在發布對話框用 Change preview image 依圖片識別碼選回、按 Done，從新分頁讀回確認） |
 | 預覽標題 | 把工作交給另一個 Agent 之前：授權、狀態與復原 |
-| 預覽摘要 | （2026-10-26 重灌後讀回）Medium 目前顯示的是自動摘自內文 TL;DR 的首句：「TL;DR — 當一個 agent 把工作交給另一個 agent，或者工作環境重啟後換一個 agent……」。先前記的自訂摘要「從東京六場簡報與一個升級案例，追問交接後的權限、未知結果，以及什麼證據才算完成。」不在 Medium 設定裡，要自訂請作者在發布對話框重設 |
+| 預覽摘要 | 從東京六場簡報與一個升級案例，追問交接後的權限、未知結果，以及什麼證據才算完成。（2026-10-26 重灌後一度讀回為自動摘自 TL;DR 的首句；同日在發布對話框的 Write a preview subtitle 欄重設為此句，從新分頁讀回確認） |
 | Notify subscribers | 關閉（`isPublishToEmail: false`） |
 | 發布位置 | 個人 profile，未投稿 publication |
 
-Story image 原本使用筆者在東京辦公室拍攝的東京鐵塔日景照（`asset-01.png`）。2026-10-26 重灌後，原排程、預覽標題與摘要及通知設定與更新前相符；封面則被 Medium 重設為內文第一張圖，即系列總覽圖 `diagram-01.png`（重灌會重傳每張圖，封面跟著重設，見 PUBLISHING.md），待作者在發布對話框改回東京鐵塔照。系列文章目前仍為排程稿，待實際公開後再更新「即將發布」標示；英文版連到先行排程的中文版本。
+Story image 使用筆者在東京辦公室拍攝的東京鐵塔日景照（`asset-01.png`）。2026-10-26 重灌後封面一度被 Medium 重設為內文第一張圖（系列總覽圖），同日依作者指示在發布對話框用 Change preview image 選回原照、按 Done 存檔，預覽摘要也重設回自訂句，兩者皆從新分頁讀回確認；沒有按 Schedule to publish。原排程、預覽標題及通知設定與更新前相符。系列文章目前仍為排程稿，待實際公開後再更新「即將發布」標示；英文版連到先行排程的中文版本。
