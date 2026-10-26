@@ -5,6 +5,10 @@
 
 想先找回之前規劃的研究與收集的主題，請看 [研究與主題總覽](TOPICS.md)：包含系列進度、待補證據、主題庫與現行版本入口。本檔說明研究流程，文末待辦同時保留已完成紀錄與未勾選事項。
 
+2026-10-23 依讀者回饋補強 Review 篇的研究紀錄，見 [合併候選版本與核准紀錄](2026-10/review-approval-drift-evidence.md)：整理 Git／GitHub 一手來源、採用範圍、核准政策的設計界線與雙語發布驗證。
+
+2026-10-24 接續精修後續兩篇，見[可靠度與付款實作篇：發布前精修紀錄](2026-10/reliability-payment-polish-evidence.md)：補清量測分母、抽查人力、付款狀態保留與合併證據的判斷過程，並記錄圖表、審閱及排程稿的驗證。
+
 所有月份共用 [作者寫作風格](../STYLE.md)。選題、大綱、撰稿、審稿、潤稿與翻譯前，先讀這份標準，再讀當月的 `style_brief.md`；完整的動作敘述、清楚的語意與邏輯、以真實經驗帶出的溫度與故事，都是後續系列的基本要求。
 
 目標是每月轉一圈、越轉越準的迴圈：
@@ -155,12 +159,12 @@ research/
 重跑：確認根目錄的 `STYLE.md` 已反映作者最新要求，並把 `research/YYYY-MM/` 的四份 digest 與 `style_brief.md` 準備好（原始 JSON 在 `.context/research/YYYY-MM/`，workflow 不讀它），
 在 Claude Code 裡用 Workflow 工具帶 `scriptPath` 執行。四支 workflow 都不寫死路徑、日期與已發布文章：
 `root`（repo 根目錄）、`month`（研究月份）、`today`（`YYYY-MM-DD`；workflow 腳本裡沒有 `Date`，缺了會直接丟錯）、
-`published`（已發布文章的目錄清單，缺了也丟錯）一律從 args 帶入。截至 2026-10-18，已發布文章涵蓋下面六個目錄，共十二份中英版本；後續文章上線後再更新清單。
+`published`（已發布文章的目錄清單，缺了也丟錯）一律從 args 帶入。截至 2026-10-23，已發布文章涵蓋下面七個目錄，共十四份中英版本；後續文章上線後再更新清單。
 
 下方 `Workflow` 呼叫保留 2026-09 首次執行時的日期作為格式範例。實際重跑時，須依當輪研究一併更新 `month`、`today` 與相關檔案路徑，並重新核對已發布清單。
 
 ```js
-const PUBLISHED = ["2026-09-agentic-engineering-platform", "2026-09-agentic-org-design", "2026-10-agentic-harness-blueprint", "2026-11-agentic-eval-economics", "2026-10-green-overview", "2026-10-green-testing"]
+const PUBLISHED = ["2026-09-agentic-engineering-platform", "2026-09-agentic-org-design", "2026-10-agentic-harness-blueprint", "2026-11-agentic-eval-economics", "2026-10-green-overview", "2026-10-green-testing", "2026-10-green-review"]
 Workflow({scriptPath: "research/workflows/plan-next-three-themes.js", args: {root, month: "2026-09", today: "2026-09-05", published: PUBLISHED}})   // 可加 months: ["2026-10", "2026-11", "2026-12"]，預設是 month 之後三個月
 Workflow({scriptPath: "research/workflows/review-outlines.js", args: {root, month: "2026-09", today: "2026-09-06", published: PUBLISHED, files: ["research/2026-09/2026-11-same-spec-ten-runs.md"]}})
 Workflow({scriptPath: "research/workflows/finish-outline.js", args: {root, month: "2026-09", today: "2026-09-06", published: PUBLISHED, file: "research/2026-09/2026-11-same-spec-ten-runs.md", issuesFile: root + "/.context/research/issues-2026-11.json"}})

@@ -11,12 +11,14 @@
 | 系列 | 核心問題與篇章 | 工作區可確認的進度 | 接續入口 |
 |---|---|---|---|
 | Agentic Engineering | 誰來做、系統怎麼建、如何營運？總論／組織／Harness／Eval 與單位經濟 | 四篇中英版，共八篇，均有正式發布紀錄；首次發布在 2026-09-01～09-05 | [文章清單](../README.md#articles) |
-| 綠燈不是驗收 | 怎麼知道 agent 做對了？總論／測試／Review／可靠度／付款實作 | 五篇中英正文與發布包齊全。總論、測試與 Review 篇中英六份已發布；其餘四份排程於 2026-10-27～11-05。總論英文版實際於 10/06 上線 | [總論](../2026-10-green-overview/article.md)、[測試篇](../2026-10-green-testing/article.md)、[Review 篇](../2026-10-green-review/article.md)、[可靠度篇](../2026-10-green-reliability/article.md)、[付款實作篇](../2026-10-green-payment/article.md)；[發布佇列](../PUBLISHING.md) |
+| 綠燈不是驗收 | 怎麼知道 agent 做對了？總論／測試／Review／可靠度／付款實作 | 五篇中英正文與發布包齊全。總論、測試篇與 Review 篇中英六份已發布；其餘四份排程於 2026-10-27～11-05。總論英文版實際於 10/06 上線 | [總論](../2026-10-green-overview/article.md)、[測試篇](../2026-10-green-testing/article.md)、[Review 篇](../2026-10-green-review/article.md)、[可靠度篇](../2026-10-green-reliability/article.md)、[付款實作篇](../2026-10-green-payment/article.md)；[發布佇列](../PUBLISHING.md) |
 | 同一份規格，跑十次 | 規範、驗收與方法比較各缺什麼證據？總論／規格／契約／變異 | 40 次正式生成、四篇 Claude Code max 中文主稿與後續潤飾已完成。10/04 合併 main，四篇中文已排程於 11/10～12/01，遠端全文與設定已核對。英文版因 Claude 週額度限制尚未成稿或排程 | [四篇原稿](../README.md#articles)、[發布核對](2026-10/same-spec-ten-runs/publication-2026-10-04.md)、[成稿狀態](2026-10/same-spec-ten-runs/manuscripts/STATUS.md)、[實驗入口](experiments/same-spec-ten-runs/README.md) |
 | AAIF 東京筆記 | 工具接通後的行動與完成、交接後的授權與復原，以及跨任務記憶的查核與修正 | 三篇中英原稿與發布包完成，分別有 17／10／9 張來源圖，各加一張開場總覽，第三篇另有一張比較表；每場有導讀、2～3 個小標與收束句，概念就地解說。中英六版排程 11/02、11/04、11/09、11/11、11/16、11/18；三份中文原稿及三份貼稿完成實際 MCP 檢查 | [研究目錄](2026-10/aaif-agntcon/README.md)、[前兩篇精修](2026-10/aaif-agntcon/refinement-3-runs.md)、[小標與開場修訂](2026-10/aaif-agntcon/title-opening-refinement.md)、[簡報清單](2026-10/aaif-agntcon/slides.md)、[發布核對](2026-10/aaif-agntcon/publication.md)、[場次分段](2026-10/aaif-agntcon/session-structure-refinement.md)、[場次導讀](2026-10/aaif-agntcon/reader-entry-refinement.md)、[第三篇來源與檢查](2026-10/aaif-agntcon/memory.md)、[系列總覽與分享圖](2026-10/aaif-agntcon/overview/README.md) |
 | 把 Agent 當 Production Workload：Agent 的 SRE | 如何觀測、維持可靠度並追責？總論／觀測／可靠／應變與追責 | 原規劃 2026-12；2026-09-15 已重切大綱，本工作區未見系列正文、真實 trace 或 ledger 實作成果 | [新版大綱](2026-10/2026-12-sre-for-agents.md)、[新版圖稿](2026-10/2026-12-sre-for-agents.figures.md)、[發布與推廣計畫](2026-10/2026-12-sre-for-agents.publish.md) |
 
 **目錄月份不能拿來判定發布狀態。** `2026-10-agentic-harness-blueprint/` 與 `2026-11-agentic-eval-economics/` 都屬於已在 9 月發布的第一個系列；`research/2026-10/` 則是 9 月中做的期中研究加圈。正式發布與排程以各篇 `PUBLISHED.md` 和 `PUBLISHING.md` 為準。
+
+2026-10-24 完成《綠燈不是驗收》可靠度與付款實作篇的雙語精修，著重從概念、例子與證據走到實際判斷的過程。變更與查核界線見[發布前精修紀錄](2026-10/reliability-payment-polish-evidence.md)；此輪沒有重新選題或擴大系列篇數。
 
 ## 已排程與尚待成稿系列的後續工作
 

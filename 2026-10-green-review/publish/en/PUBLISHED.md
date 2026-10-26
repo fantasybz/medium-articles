@@ -1,9 +1,8 @@
 # Publication record (English edition)
 
 **Title** Green Is Not Done, Part 2 — Review Is the Control Point, Not the Bottleneck: Triage, Reviewer Fleets and the Closed-Loop Ban
-**Post ID** `4d36d0f2f9c1`（draft https://medium.com/p/4d36d0f2f9c1/edit；stable URL after publishing https://medium.com/p/4d36d0f2f9c1）
-**Status** Published；2026-10-22T09:01:02+08:00，2026-10-23 讀回確認。
-**Schedule** 2026-10-22（四）09:00 GMT+8（2026-10-18 已重新讀取 Medium 排程確認）
+**Post ID** `4d36d0f2f9c1`（[公開文章](https://medium.com/p/4d36d0f2f9c1)；[編輯網址](https://medium.com/p/4d36d0f2f9c1/edit)）
+**實際發布** 2026-10-22 09:01:02 GMT+8（2026-10-23 已從 Medium 公開頁 `firstPublishedAt` 確認；原排程為同日 09:00）
 **Built with** `./tools/medium_draft.sh 2026-10-green-review en`, block-by-block verification clean
 
 ## Settings
@@ -11,8 +10,18 @@
 | Item | Value |
 |---|---|
 | Topics | Software Testing、Code Review、AI、Software Engineering、Engineering Management |
-| Preview image | `diagram-02.png`（`1*7E7igGi0v150j59JclJy9g.png`，2026-09-23 已核對） |
+| Preview image | `diagram-02.png`（`1*7E7igGi0v150j59JclJy9g.png`，664 × 578，2026-10-23 已核對） |
 | Notify subscribers | yes (default) |
+
+## Published-page verification (2026-10-23)
+
+| Item | Result |
+|---|---|
+| Public body | 240 text blocks match the final publishing payload |
+| Links | 48, with matching destinations and order; no payment-code links |
+| Images / dividers | 8 images and 12 dividers in the expected positions; no placeholders |
+| Navigation | Published editions linked; Reliability and Payment remain coming soon |
+| Settings | Preserved; only the last-published timestamp changed |
 
 ## Status (2026-09-07)
 
@@ -158,6 +167,12 @@ A further fresh settings read confirmed that the title, cover identifier and dim
 
 發布設定另從新分頁讀回，與修改前完全相同：仍為 `isPublished: false`；排程 **2026-10-22 09:00 Asia/Taipei**（`publishAt: 1792630800000`）。標題、Topics、封面、預覽文字與通知設定均保留，沒有重新排程。
 
-## 2026-10-23 公開狀態核對
+## 2026-10-23 發布進度與 Review 回饋同步
 
-以新分頁讀取 [公開文章](https://medium.com/p/4d36d0f2f9c1)，確認 `isPublished=true`、`firstPublishedAt=1792630862571`，對應臺北時間 2026-10-22T09:01:02+08:00。本次只讀取發布狀態，沒有重灌本文、改動發布設定或重新寄送通知；不把狀態讀回當成全文重新驗證。
+第七節補上 base-branch drift 的付款假設情境、H／B1／C1 到 H／B2／C2 的對照表，以及 tree SHA、候選 commit 與必要檢查的對應。核准紀錄納入檢查執行 ID、結果與可信任來源，說明何時暫停沿用舊紀錄、重新驗證，以及依風險安排人工重審。GitHub 平台行為與作者建議政策分開說明；TL;DR、導入八步、結語與參考資料同步調整。
+
+沿用原 Post ID 更新並按 **Save and publish**。先等待 Saved，再關閉本輪編輯頁、另開新編輯頁核對完整草稿，才更新公開版本；發布後另開公開頁，確認 **240 個文字區塊、48 個連結、8 張圖、12 條分隔線**與最終貼稿相符。連結順序與目的地、原有圖片的識別碼與尺寸、程式碼內容均另行比對。付款程式碼連結為 0，仍待同語言第四篇實際發布後才提供。
+
+新增 `table-04.png`（`1*DNpcTj9o5iLG1_tmc34bWQ.png`），原有七張圖片保留；References 為連續的 33 項清單。這些是文章中的設計建議，沒有宣稱教學付款程式已實作合併佇列或核准服務。
+
+首次發布時間、標題、Topics、封面識別碼與尺寸、預覽文字、可見性、付費牆與 publication 設定均與更新前相同；僅最後更新時間變動。沒有新建文章，也沒有更動後續排程。

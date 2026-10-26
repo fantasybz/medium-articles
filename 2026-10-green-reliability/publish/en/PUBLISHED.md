@@ -2,7 +2,7 @@
 
 **Title** Green Is Not Done, Part 3 — The 34% SWE-Gate Found Behind a Green Build: Constraint Tests, pass^k and the Gate for Expanding Autonomy
 **Post ID** `4b6d147bff0d`（draft https://medium.com/p/4b6d147bff0d/edit；stable URL after publishing https://medium.com/p/4b6d147bff0d）
-**Schedule** 2026-10-29（四）09:00 GMT+8（2026-10-18 已重新讀取 Medium 排程確認）
+**Schedule** 2026-10-29（四）09:00 GMT+8（2026-10-24 已重新讀取 Medium 排程確認）
 **Built with** `./tools/medium_draft.sh 2026-10-green-reliability en`, block-by-block verification clean
 
 ## Settings
@@ -10,7 +10,7 @@
 | Item | Value |
 |---|---|
 | Topics | Software Testing、Code Review、AI、Software Engineering、Engineering Management |
-| Preview image | `diagram-02.png`（`1*R6TYJinsdAM_d3U30wrV6Q.png`，2026-09-23 已核對） |
+| Preview image | `diagram-02.png`（`1*3BkCssQJxK2HMOF195J5zQ.png`，1486×1136，2026-10-24 已核對） |
 | Notify subscribers | yes (default) |
 
 ## Status (2026-09-07)
@@ -180,3 +180,13 @@ A further fresh settings read confirmed that the title, cover identifier and dim
 儲存後另開編輯頁逐塊比對：160 個文字區塊、23 個連結、7 張圖、10 條分隔線全部相符；連結目的地與順序一致，付款程式碼連結為 0，圖片識別碼與順序保留。
 
 發布設定另從新分頁讀回，與修改前完全相同：仍為 `isPublished: false`；排程 **2026-10-29 09:00 Asia/Taipei**（`publishAt: 1793235600000`）。標題、Topics、封面、預覽文字與通知設定均保留，沒有重新排程。
+
+## Publication-readiness polish synchronized (2026-10-24)
+
+Clarified independent attempts, cohort denominators, per-PR requirements, numerical reliability targets and the staffing implications of sampling. The report example and ending now explain the remaining evidence and decisions. The source, generated paste and changed figures are synchronized; rationale and review limits are recorded in the [research note](../../../research/2026-10/reliability-payment-polish-evidence.md).
+
+After saving under the same Post ID, fresh editor navigation verified **169 text blocks, 23 links, 7 figures and 10 dividers** against the final payload. Ordered text, link destinations, figure positions, image IDs and dimensions match; no image placeholders remain.
+
+Replaced diagram-01, diagram-02 and table-02 with the revised English images. The cover remains diagram-02, now `1*3BkCssQJxK2HMOF195J5zQ.png` (1486×1136); the other four image identities and dimensions are unchanged. A further fresh settings read confirmed the title, topics, display title/subtitle, notification setting and original schedule. The post remains unpublished and scheduled for **2026-10-29 09:00 Asia/Taipei** (`publishAt: 1793235600000`).
+
+Payment-code links remain absent until this language’s Part 4 actually publishes. No early publication or rescheduling was performed.

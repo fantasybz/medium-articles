@@ -59,6 +59,8 @@ The payment contract is this set of agreed outcomes: people establish what each 
 
 A decline and a timeout mean different things. An explicit decline is `DECLINED`. A timeout means a definite response did not arrive; the provider might already have captured the money, so the result remains `PENDING`. This demo does not automatically charge again after a timeout or implement lookup and reconciliation. Those need a separately designed and verified recovery path.
 
+Even after an explicit decline, this example does not let the same order start another payment by changing the key. If the buyer wants to use a different card or pay again, a real service needs rules for creating and authorizing a new attempt and distinguishing it from the old one. Section 9 hands off that work. The demonstration's restriction is not a complete shopping flow.
+
 The example also specifies that unclassified provider exceptions propagate to the caller. Checkout must not turn them into a claim of payment success or failure. The recorded attempt remains `PENDING`, so replay does not call the provider again. Later tests protect this agreement alongside the timeout behavior, preserving both the error that needs investigation and the record needed for replay. The caller's error presentation and recovery flow are outside this implementation.
 
 These are the example's agreed behaviors, not universal payment API state names. [Stripe's error-handling documentation](https://docs.stripe.com/error-handling#connection-errors) likewise treats connection errors as indeterminate, but its idempotency contract permits safe retries with the same key. This demo has no provider-side idempotency implementation, so it retains a pending result. The distinction is the guarantee supporting the retry. The conservative teaching policy should not become a blanket rule that real payment systems must never retry.
@@ -171,11 +173,14 @@ For example, comparing `first.status` with `second.status` also appears to test 
 
 ## 5. Read the payment response logic before deliberately breaking it
 
-The example stores payment attempts in memory. It first checks whether a key belongs to another order, then whether this order already has an attempt. An existing attempt requires matching key and order contents and returns the saved result. Only a new, valid attempt calls the provider, after first recording `PENDING`.
+The example stores payment attempts in one `Checkout` instance, reused for sequential calls throughout the demonstration. It first checks whether a key belongs to another order, then whether this order already has an attempt. An existing attempt requires matching key and order contents and returns the saved result. Only a new, valid attempt calls the provider, after first recording `PENDING`.
 
-The excerpt below handles the charge and its outcome; the linked implementation contains the guards and data structures. These lines deserve close review because a convenient exception handler can turn “unknown” into “paid.”
+The excerpt below shows registration before the charge, response handling and the final write. `Receipt` holds the payment state to return; `Attempt` groups the order, key and result so the next request can find them. The linked implementation contains the full guards and data structures. First follow when the record exists, then where each exception sends control. That explains why the later tests need different failure scenarios.
 
 ```python
+receipt = Receipt(order.order_id, order.sku, order.amount_ntd, "PENDING")
+self.key_orders[key] = order.order_id
+self.attempts[order.order_id] = Attempt(order, key, receipt)
 try:
     payment_id = self.gateway.charge(order.order_id, order.amount_ntd)
 except Declined:
@@ -184,7 +189,11 @@ except TimeoutError:
     receipt = replace(receipt, status="PENDING")
 else:
     receipt = replace(receipt, status="PAID", payment_id=payment_id)
+self.attempts[order.order_id] = Attempt(order, key, receipt)
+return receipt
 ```
+
+There are two writes to `self.attempts`. Before calling the provider, the first records that the attempt has started and its outcome is unknown. After success, decline or a caught timeout, the second records what the program can establish. An exception not caught by either handler propagates outward, skipping the second write and `return`. Replay then depends on the first record still existing. The writes serve different purposes; the normal path's final result alone is insufficient reason to remove the earlier one.
 
 Follow the different responses through this diagram. It shows what this example can know at the payment boundary, not the provider's entire transaction lifecycle.
 
@@ -297,11 +306,17 @@ Return to the PR in section 2 that promises payment replay. The reviewer now kno
 
 If the submission still contained the 85.7% result, I would leave a comment like this. It is a teaching example, not an actual team's approval record:
 
-> Approval withheld. M5 changes a timeout result to `PAID`, yet all eight selected tests pass. C4's unknown payment outcome remains unverified. Add timeout cases before and after capture, checking state, payment identifier and replay side effects through `Checkout.pay()`. Provide the test failing against M5 and passing against the original program, then request the payment owner's review. This review covers the sequential, single-process teaching implementation; production recovery and integration require separate evidence.
+> Approval withheld. M5 changes a timeout result to `PAID`, yet all eight selected tests pass. C4's unknown payment outcome remains unverified. Add timeout cases before and after capture, checking state, payment identifier and replay side effects through `Checkout.pay()`. Provide the test failing against M5 and passing against the original program, then request the payment owner's review. This review covers sequential calls through the same `Checkout` instance within one process; production recovery and integration require separate evidence.
 
 The comment connects the reason for withholding approval to the conditions for reconsidering it. The author need not guess whether the issue is a score or a naming preference. The next reviewer knows what to examine. A test that compares a string stored inside the fake without exercising the payment code would not meet the condition. The same product path must show an explainable difference between correct and incorrect versions.
 
-A PR evidence package can be concise while preserving those connections. Here is a completed teaching template with fields for the actual revision, rule version and report links. It is a review-record format, not an implemented automatic approval tool.
+### Approval must identify the version actually being merged
+
+Adding the timeout test leaves a version question to check. Continue the hypothetical situation from section 7 of the Review article: after this payment PR passes review, another PR reaches `main` and changes the shared provider function it calls. Your branch has no new commit and there may be no textual conflict, yet the combined timeout or replay behavior may have changed. The integration tested by the old report may no longer be the one about to merge. This illustrates a review policy; the accompanying code does not simulate a merge queue.
+
+The PR head identifies the PR's revision; the base identifies the target branch at that time. Their integrated version, submitted for checks, is the merge candidate. Retain two more identifiers: the candidate commit SHA identifies the commit, while its tree SHA identifies the complete tracked file tree. Identical files can have different commit SHAs when history or commit metadata differs. A GitHub check run belongs to a particular commit, so neither a tree alone nor “CI passed” identifies which execution checked what. [Git's object documentation](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects) and the [Checks API](https://docs.github.com/en/rest/checks/runs#create-a-check-run) explain the distinction.
+
+A PR record can be concise while preserving these relationships. The template below uses this example's observed results; an actual workflow must fill the version and link fields. It is a proposed review record. The accompanying runner implements neither candidate-version validation nor an automatic approval service.
 
 ```text
 Intent:
@@ -314,17 +329,31 @@ Evidence:
   Original program passes 9 payment tests.
   All 7 specified mutants detected; 0 excluded.
   The isolated C4 timeout method fails against M5 and passes against the original.
-Revision / rule version / report:
-  [Link actual reviewed revision, protected rule version and run results.]
+Candidate:
+  [PR head, base at validation time, candidate commit and tree SHA.]
+  [If using a merge queue: merge group and preceding PR combination.]
+Verification:
+  [Protected rules, fixtures, runner, workflow and approval-policy versions.]
+  [Required checks; each run ID/link, associated commit, status and conclusion.]
+  [Trusted reporting system and candidate version actually checked out.]
 Remaining scope:
   Persistence, concurrency, restarts, provider integration and authorization.
 Decision / approver:
-  [Responsible person records scope, decision and identity.]
+  [Responsible person records scope, rationale, identity and time.]
+Merge correspondence:
+  [Before merge, confirm content still matches the verified candidate.]
+  [After merge, retain the final commit/tree mapping.]
 ```
 
 With that evidence, the payment owner can judge whether the teaching implementation meets C1 through C4. The QA reviewer checks the relationship between tests and mutants. The integration reviewer records the remaining deployment scope. If the decision is to merge a teaching example into an article repository, those boundaries can be explicitly accepted. If it is to deploy a real payment service, the same report is insufficient. The decision changes because the commitment changes.
 
-Rules and candidate code also need independence. A candidate PR may propose a constraint change, but cannot weaken the tests and use its revised green result to authorize itself. A real process needs human approval of rule changes, evaluation against protected rule and runner versions, and an approval record tied to the reviewed revision. A later change to the payment branch requires relevant evidence for the new revision. A directory named `constraints/` does not establish those permissions or version protections.
+Rules and candidate code also need independence. A candidate PR may propose a constraint change, but cannot weaken the tests and use its revised green result to authorize itself. A real process evaluates the candidate against human-approved, protected rules and verification code. Check the trusted source of results and what was actually checked out: labeling a report with the new candidate's SHA while testing old code does not verify the new candidate. A directory named `constraints/` does not establish those protections.
+
+If the head, base or queue composition changes, my proposed policy pauses reuse of the old record while the candidate is regenerated and checked. Required checks that need renewal must correspond to the current candidate. Unexecuted payment tests cannot count as tested merely because the conclusion is `skipped` or `neutral`. With [GitHub merge queue](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue), relevant Actions workflows also need `merge_group` coverage to produce the required results for the queued version. This approval-revalidation policy needs its own implementation; GitHub must not be assumed to dismiss old reviews automatically for every base change.
+
+People need not reread everything each time. Compare the old and new integrations first. If the shared provider function changed, trace timeout handling, pending records and replay again, then have a reviewer meeting the routing policy reconfirm approval. If only non-executable documentation changed, the established policy can preserve still-applicable review conclusions with a recorded rationale. The final merge, squash or rebase commit may differ from the candidate. The release mechanism must still ensure that its content corresponds to the verified version and record the final mapping. Adding a SHA afterward cannot repair missing verification before merge. Section 7 of the Review article explains the full mechanism and platform boundaries.
+
+### From this approval to measurements across a task cohort
 
 So far we have asked whether the tests for this payment implementation detect selected errors. Asking how often an agent's submitted changes honor the team's requirements changes what we count. Each agent-produced change awaiting acceptance is a candidate patch. Constraint pass rate is the share of functionally passing candidate patches that also satisfy all applicable constraints. Fix the task set, functional requirements and constraints, then record each candidate's result so the denominator is clear. Here, one implementation passes nine tests, seven of which retain Review constraints. Those seven tests cannot be counted as seven successful agent deliveries.
 
@@ -351,7 +380,9 @@ The directory also has twelve runner regression tests covering selected cases su
 
 ### Hand unresolved outcomes to someone equipped to resolve them
 
-This implementation keeps attempts in a dictionary owned by the running program and verifies **sequential calls within one process**: one `pay()` finishes before the next starts. In a real service, two requests handled at the same time might both see no existing attempt before either records one. That is a concurrency scenario needing separate verification; this example did not run it. Separate service processes also do not share this memory, and a restart loses it. Following an interruption scenario next helps locate the evidence needed to carry the same requirements into a real service.
+This implementation keeps attempts in a dictionary owned by each `Checkout` instance. It verifies **sequential calls through the same instance, with its records retained, within one process**: one `pay()` finishes before the next starts. Even without restarting the process, creating a new `Checkout` for every request loses the previous record, so the example's lookup cannot prevent another charge.
+
+In a real service, two requests handled at the same time might both see no existing attempt before either records one. That is a concurrency scenario needing separate verification; this example did not run it. Separate service processes also do not share this memory, and a restart loses it. Following an interruption scenario next helps locate the evidence needed to carry the same requirements into a real service.
 
 Suppose the provider captures the payment, but the service stops before saving the final result. After restart, code that sees only an unfinished order may charge again, mistaking “no recorded result” for “no previous capture.” Replacing the dictionary with a database still leaves decisions about when to record an attempt, which operations are atomic, and how to recover when the external charge completes but the local result is not saved. Atomicity means a group of updates either takes effect together or does not take effect at all. For example, a local transaction could record the payment attempt and mark the order as processing together, avoiding a half-completed update. That database transaction does not automatically include the external provider's charge.
 
@@ -389,7 +420,7 @@ The people making those judgments need support, too. Suppose a different colleag
 
 The same record should make unfinished responsibilities visible. A reviewer can use the preceding evidence to judge whether this teaching example meets C1 through C4 and can be merged into the article repository. Deploying a real payment service still requires evidence for persistence, concurrency, provider integration and recovery. Labeling them “follow-up work” is insufficient: someone must take responsibility and state what results would allow the team to reconsider deployment. Until those arrangements exist, withholding approval has both an explicit reason and conditions under which the work can move forward.
 
-To bring this into a team, I would start with a PR that is already green and follow one promise it makes to a user. Which requirement defines that promise? Which test actually passes through the product path? Which version that violates the requirement would make that test fail? Who judges whether the evidence is sufficient? Wherever the chain stops, leave a concrete question for the next review. The rule cards, mutation reports and approval records discussed earlier help people make that judgment. Their value lies in enabling a colleague to take over with understanding, rather than adding another document nobody knows how to use.
+To bring this into a team, I would start with a PR that is already green and follow one promise it makes to a user. Which requirement defines that promise? Which test actually passes through the product path? Which version that violates the requirement would make that test fail? Does the evidence correspond to the content now about to merge? Who judges whether it is sufficient? Wherever the chain stops, leave a concrete question for the next review. The rule cards, mutation reports and approval records discussed earlier help people make that judgment. Their value lies in enabling a colleague to take over with understanding, rather than adding another document nobody knows how to use.
 
 At the end of these four parts, this is the working habit I hope to leave with the reader: explain what has been established, put unanswered questions in the hands of people who can pursue them, and keep approval decisions connected to their evidence. An agent can help produce code, find counterexamples and organize reports. The team must continue to decide which promises those results support, and which promises it is not yet ready to make.
 
@@ -415,6 +446,8 @@ The person waiting to buy tea will not read our test names and does not need to 
 6. Petrović et al. — [Practical Mutation Testing at Scale: A view from Google](https://research.google/pubs/practical-mutation-testing-at-scale-a-view-from-google/) (2021) [§6; incremental execution, filtering and selection]
 7. Stryker documentation — [Equivalent mutants](https://stryker-mutator.io/docs/mutation-testing-elements/equivalent-mutants/) [§6; limits of equivalence determination]
 8. AWS Builders' Library — [Making retries safe with idempotent APIs](https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/) [§9; identifiers, different intent and late requests]
+9. Git — [Git Objects](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects); GitHub — [Create a check run](https://docs.github.com/en/rest/checks/runs#create-a-check-run) [§8; commits, trees and check-result associations]
+10. GitHub — [Managing a merge queue](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue), [About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches), [About merge methods](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/about-merge-methods-on-github) [§8; candidate rebuilding, required checks, stale approvals and final merges; checked October 24, 2026]
 
 ### AI collaboration note
 

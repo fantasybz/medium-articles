@@ -2,7 +2,7 @@
 
 **標題** 綠燈不是驗收（三）可靠度篇：SWE-Gate 量測到的 34%—constraint tests、pass^k 與授權擴張的閘門
 **Post ID** `3c64a9622777`（草稿／排程網址 https://medium.com/p/3c64a9622777/edit；上線後的穩定短網址 https://medium.com/p/3c64a9622777）
-**排程** 2026-10-27（二）09:00 GMT+8（2026-10-18 已重新讀取 Medium 排程確認）
+**排程** 2026-10-27（二）09:00 GMT+8（2026-10-24 已重新讀取 Medium 排程確認）
 **建立方式** `./tools/medium_draft.sh 2026-10-green-reliability`，逐塊比對零差異（見 [PUBLISHING.md](../../PUBLISHING.md)）
 
 ## 設定
@@ -10,7 +10,7 @@
 | 項目 | 值 |
 |---|---|
 | Topics | Software Testing、Code Review、AI、Software Engineering、Engineering Management |
-| 封面圖 | `diagram-02.png`（`1*dt6CGm73bHy5WRyvsd7ppQ.png`，2026-09-23 已核對） |
+| 封面圖 | `diagram-02.png`（`1*wkCPXmyu9tMGAvbX8iTC-w.png`，1468×1136，2026-10-24 已核對） |
 | Notify subscribers | 是（預設） |
 | 發布位置 | 個人 profile，未投稿 publication |
 
@@ -177,3 +177,13 @@ Post ID、五個 Topics、訂閱通知設定與排程均保留。發布設定讀
 儲存後另開編輯頁逐塊比對：160 個文字區塊、22 個連結、7 張圖、10 條分隔線全部相符；連結目的地與順序一致，付款程式碼連結為 0，圖片識別碼與順序保留。
 
 發布設定另從新分頁讀回，與修改前完全相同：仍為 `isPublished: false`；排程 **2026-10-27 09:00 Asia/Taipei**（`publishAt: 1793062800000`）。標題、Topics、封面、預覽文字與通知設定均保留，沒有重新排程。
+
+## 發布前精修與排程稿同步（2026-10-24）
+
+補清獨立嘗試、固定樣本的分母、個別 PR 的必要約束、可靠度目標與抽查人力，並讓示範月報與結尾說明還缺哪些證據、接下來由誰做判斷。原稿、貼稿與受影響圖表同步更新；判斷依據與審閱限制見[研究紀錄](../../research/2026-10/reliability-payment-polish-evidence.md)。
+
+沿用既有 Post ID，等待儲存後另開新編輯頁讀回：**169 個文字區塊、22 個連結、7 張圖、10 條分隔線**均與最終 payload 相符。文字順序、連結目的地、圖片槽位、識別碼與尺寸逐項核對，圖片 placeholder 為 0。
+
+更新 `diagram-01.png`、`diagram-02.png`、`table-02.png` 三張圖；封面仍選 `diagram-02.png`，新版識別碼為 `1*wkCPXmyu9tMGAvbX8iTC-w.png`（1468×1136）。另四張圖片的識別碼與原始尺寸保留。另從新分頁讀取設定，確認標題、Topics、預覽標題與摘要、通知設定及原排程均保留。文章仍為 `isPublished: false`，排程 **2026-10-27 09:00 Asia/Taipei**（`publishAt: 1793062800000`）。
+
+付款程式碼連結維持為 0，待中文版第四篇實際發布後才回填。本輪沒有提前發布或重新排程。

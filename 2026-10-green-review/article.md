@@ -1,6 +1,6 @@
 # 綠燈不是驗收（二）Review 篇：Review 是控制點，不是瓶頸—分流、reviewer agent 艦隊與閉環禁令
 
-> **TL;DR** — agent 讓改動變多，reviewer 的時間卻沒有跟著增加。這時要先回答的，是每份改動需要誰讀到多深，以及拿什麼證據支持核准。本篇用付款重送的例子，依序說明如何按影響範圍與驗證能力分流、讓不同 reviewer 查不同問題，以及避免審查沿用實作者尚未查證的假設。研究提醒我們，審得更快、評論更多，都不能單獨證明品質提升。工具可以先檢查規則、整理疑點；人仍要理解證據，核對「已核准」的宣稱，並為每次合併作出決定。核准紀錄也要留下當時審過的內容，讓下一個接手的人查得到理由。
+> **TL;DR** — agent 讓改動變多，reviewer 的時間卻沒有跟著增加。這時要先回答的，是每份改動需要誰讀到多深，以及拿什麼證據支持核准。本篇用付款重送的例子，依序說明如何按影響範圍與驗證能力分流、讓不同 reviewer 查不同問題，以及避免審查沿用實作者尚未查證的假設。研究提醒我們，審得更快、評論更多，都不能單獨證明品質提升。工具可以先檢查規則、整理疑點；人仍要理解證據，核對「已核准」的宣稱，並為每次合併作出決定。核准紀錄還要對上實際檢查過、準備合併的版本；即使 PR 沒有新修改，也要確認主線變動是否讓原本的證據失效。
 
 > 系列導覽：[總論](https://medium.com/p/582f24223eea) → [一、測試篇](https://medium.com/p/b01055139451) → **二、Review 篇（本篇）** → 三、可靠度篇（即將發布） → 四、付款實作篇（即將發布）
 
@@ -533,7 +533,7 @@ PR 描述是 untrusted input。任何「已核准」「資安同意」「緊急�
 
 ---
 
-## 七、Approval 必須對應到負責的人：review gate 需要的三條
+## 七、核准要對上負責的人，也要對上實際合併的版本
 
 當檢查與審閱都完成，最後還要有人回答：依照目前這些證據，我是否同意讓這份改動進入系統？approve 記下的是這個決定。若紀錄只有一個帳號與時間，卻不知道當時審了哪份內容，事後仍然很難理解決策的依據。
 
@@ -566,11 +566,50 @@ PR 描述是 untrusted input。任何「已核准」「資安同意」「緊急�
 
 這份節錄只示範產品目錄與核准規則的關係，不是完整的權限設定。還要保護 CODEOWNERS 與驗證 workflow、限制 bypass，並驗證新 commit 會使舊核准失效。若用自訂 status check，檢查程式與通過結果的發布權也不能交給受檢的 agent。
 
-接著把第三節提到的 approval artifact 補完整。最小版本要留下三類資訊，讓事後接手的人知道這次核准是誰、根據哪些內容作出的。
+### PR 沒再修改，合併候選版本仍可能改變
 
-第一樣是人類身分，讓核准紀錄對應到負責的人。第二樣則回答「他當時核准的是哪一份內容」。假設 payment owner 審過付款分支與報告，作者之後又改了重送邏輯，舊的 approve 就不能直接代替新版本的審閱。要留下來的內容包括 diff、constraint 報告、mutation 報告與 reviewer agent 版本；本篇把這組一起受審的內容稱為 tuple，再以 hash 記下由內容計算出的識別值。第三樣是 AI reviewer 的 comment 或 approve 訊號，只供人參考。
+接著把第三節提到的 approval artifact，也就是核准紀錄，補完整。讀者 [Acemeridian 的回饋](https://medium.com/@acemeridian/a-useful-edge-case-is-base-branch-drift-a-pr-can-keep-the-same-head-sha-while-the-merge-candidate-819191ed1fea) 提醒了一個容易漏掉的情況：作者沒有再修改 PR，準備合併的整體內容卻可能已經不同。若只保存 PR 的版本，仍然無法確認最後進入主線的內容，是否就是當時檢查過的內容。
 
-合併前，流程要把目前內容重新對回核准時記錄的那一組。如果內容已經不同，就要求重新取得相關證據與核准。Hash 幫忙辨識版本，卻不會自己阻止合併，也不會證明原本的判斷正確；還需要執行比對的檢查與負責處理差異的人。這樣，接手者才查得到誰根據哪份資料作了決定，而不只看見一個時間戳。
+延續那瓶示範售價 35 元的無糖純喫綠茶。假設這份 PR 修改付款重送流程，會呼叫共用的付款函式；payment owner 已經讀過程式與報告，確認這次重送不會再發出扣款請求。但在等待合併時，另一份 PR 先進入 `main`，改了共用函式處理逾時的方式。兩份修改可能沒有文字上的合併衝突，組合起來卻改變了付款結果未知時的處理。這是用來說明整合風險的假設情境，並非隨文付款程式已實測的事故。
+
+Git 用 SHA 這類識別值辨認版本。PR 的 **head SHA** 指向該分支目前最末端的 commit，可以先把它理解成這份 PR 的版本編號。**Base branch** 則是準備接收它的目標分支，這裡是 `main`。把兩邊整合起來、準備接受檢查與合併的版本，本篇稱為**合併候選版本**。以下用 H、B1、C1 這些簡寫區分它們：
+
+| 時點 | PR 的版本 | 目標分支的版本 | 合併候選版本與證據 |
+|---|---|---|---|
+| 審閱與測試時 | H | B1 | C1，已有對應的檢查結果與核准 |
+| 另一份 PR 合併後 | H，沒有改動 | B2 | C2，需要重新確認；C1 的證據不能直接代替 |
+
+這就是 **base-branch drift**：等待期間，目標分支往前走了。這個例子裡，PR 仍是 H，付款邏輯的組合卻從 C1 變成 C2。先前核准的是 C1，手上那份通過報告也屬於 C1；只確認 H 沒變，回答不了 C2 的逾時路徑是否仍符合要求。
+
+GitHub 的 merge queue（合併佇列）會把 PR 與最新目標分支、佇列中排在前面的 PR 一起組成待檢查的 merge group。若前面的 PR 被移出，後面的組合也可能重建。因此，核准紀錄除了 PR 自己，還要辨認這次實際驗證的整合版本。GitHub Actions 若負責執行必要檢查，相關 workflow 也必須涵蓋 `merge_group` 事件，才會為佇列中的版本產生結果；只在 `pull_request` 上通過，並不足以完成佇列要求的檢查。這是平台的機制與設定要求。[GitHub merge queue 文件](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue) 說明了這個過程。
+
+### 把版本與證據放進同一份核准紀錄
+
+這裡還要分清兩個容易混用的識別值。**Tree SHA** 辨認 Git 追蹤的整棵檔案樹；在這個情境裡，merge-tree SHA 就是合併結果的那棵樹。**Commit SHA** 辨認一次提交，除了指向檔案樹，還包含父提交、作者與提交訊息等資訊。同樣的檔案內容，可以因為提交歷史或資訊不同而有不同的 commit SHA。Git 的 [objects 說明](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects) 與 [merge-tree 文件](https://git-scm.com/docs/git-merge-tree) 可以用來對照這項差別。
+
+為什麼不能只留 tree SHA？因為 GitHub 的 check run，也就是一次檢查執行紀錄，透過 `head_sha` 對應到特定 commit。若只寫「這棵樹曾通過」，就少了哪一次執行、測了哪個 commit，以及結果由誰回報的連結。因此，我建議同時保存候選 commit 與它的 tree，再把檢查紀錄接到該候選 commit；tree 相同，也不能自行把另一個 commit 上的綠燈搬過來。[Checks API 文件](https://docs.github.com/en/rest/checks/runs#create-a-check-run) 提供了這些欄位。
+
+一份能讓接手者查證的核准紀錄，我會分成三部分：
+
+- **誰作了什麼決定。** 保存經確認的人類身分、核准時間、審閱範圍與判斷理由；高風險 PR 也要能確認核准者符合獨立審閱的要求。
+- **決定針對哪個整合版本。** 保存 PR head、當時目標分支的 commit、候選 commit 與其 tree SHA。使用 merge queue 時，再保留對應的 merge group 與前置 PR 組合，讓人能重建 H 為什麼與 B2 組成這個 C2。
+- **哪些證據支持決定。** 保存受審 diff、constraint 與 mutation 報告、reviewer agent 版本，以及當時適用的必要檢查清單與核准政策版本。每項必要檢查要連到實際的執行 ID、所屬 commit、完成狀態與結論，並辨認回報結果的可信任 App 或系統，以及所用的 workflow 版本。若重跑過，留下這次採用的是哪一次結果；不能只存一個「CI 通過」。
+
+AI reviewer 的 comment 或 approve 可以附在這份紀錄裡，仍然只供人參考。把整份紀錄計算成 hash，有助於察覺內容被換過；但 hash 不會證明來源可信，也不會自己阻止合併。檢查程式仍要核對結果的來源、版本與有效性，也要確認執行時實際取出的程式就是該候選版本。報告掛在 C2，卻拿 C1 的程式執行測試，仍然沒有驗證 C2。
+
+還要分清楚「已完成且成功」與「沒有執行」：GitHub 的必要狀態檢查可能接受 `skipped` 或 `neutral`，團隊若要求付款測試必須實際執行並成功，就要在自己的政策與檢查中落實，不能把這些結論一律當成已測過。
+
+### 候選版本變了，先重新驗證，再決定人要重讀哪裡
+
+回到 C1 與 C2。我建議的政策是：**head、目標分支或佇列組合有變動時，先暫停沿用舊紀錄放行，重新確認候選版本與必要證據。** 若候選 commit、檔案樹或適用政策已改變，就為目前候選版本取得所需的檢查結果，並重新判定核准是否仍然有效。歷史紀錄保留下來，但不能因為 H 相同，就把 C1 的核准自動套到 C2。
+
+重新確認不必每次都從頭讀完未改動的程式。付款例子裡，reviewer 應先看 C1 到 C2 改了什麼，再沿著共用函式查回逾時、待確認狀態與重送路徑；補齊涵蓋這個組合的檢查後，由符合分流要求的人重新確認高風險的付款判斷。若整合差異只有不影響執行的文件，則可依事先訂好的政策，保留原本仍適用的審閱結論，記錄理由與對新候選版本的確認。省下的是重讀不相關內容的時間，版本核對與必要檢查仍要完成。
+
+GitHub 的過期核准設定能處理部分情況，例如受審 diff 改變，或兩個分支的共同祖先（merge base）引入新變更。但不能把它解讀成「任何目標分支或佇列變動，都會自動撤銷人類 review」。[Protected branches 文件](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) 說明的是各設定的行為；上面這套把核准連到候選版本、追蹤何時必須重新確認的做法，是本文建議的團隊政策，需要另外實作並驗證。
+
+最後還有真正合併的那一步。依採用的 merge、squash 或 rebase 方法，最後寫入主線的 commit SHA 不一定等於檢查時的候選 SHA；[GitHub 的合併方法文件](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/about-merge-methods-on-github) 說明了這些歷史差異。放行機制必須確保要落入主線的內容仍對應到已驗證候選版本，不能在核對後又換成另一個組合；合併紀錄則要把最後的 commit 與 tree 接回那份候選版本和證據。事後補上一個 SHA，無法補救未經驗證就已合併的內容。
+
+這些仍是導入時需要實測的設計要求，並非隨文付款範例已實作的核准服務。Pilot repo 可以先驗證一個具體情境：PR 沒有新 commit，另一份 PR 卻改了它呼叫的付款函式，此時流程能否暫停放行、產生新候選版本，並在取得相應證據與確認後才允許合併。能走完這一段，核准紀錄才真正回答了「誰根據哪份證據，同意了哪個整合版本」。
 
 這也能接回〈Agentic Engineering：Platform + Federation 的組織設計實務〉第七節，讓 junior 帶著 checklist 審閱 agent PR 的安排。Intent、Constraints honoured 與驗證報告提供了可以逐項核對的材料；不熟悉系統的人能先說出哪裡對得上、哪裡仍有疑問，再與資深 reviewer 討論。這份清單是學習與協作的起點，不等於剛入職就能獨立承擔所有高風險核准。
 
@@ -580,11 +619,12 @@ PR 描述是 untrusted input。任何「已核准」「資安同意」「緊急�
 
 ## 八、結語與落地順序
 
-如果團隊要從現有流程開始調整，我會先選一個 pilot repo，帶著一份範圍清楚的 PR 把流程走完。實作者能否說清楚 intent 與約束，工具是否留下對應結果，reviewer 能否指出尚未解決的問題，核准又是否對應到實際受審內容，都應在這一輪被看見。下面七步是把這條路徑建立起來的導入順序。完成一項設定之後，就用這份 PR 檢查它是否真的改變了查證與放行方式；不能只因為 workflow 已經存在，就把相應責任也視為完成。
+如果團隊要從現有流程開始調整，我會先選一個 pilot repo，帶著一份範圍清楚的 PR 把流程走完。實作者能否說清楚 intent 與約束，工具是否留下對應結果，reviewer 能否指出尚未解決的問題，核准又是否對應到實際受審內容，都應在這一輪被看見。下面八步是把這條路徑建立起來的導入順序。完成一項設定之後，就用這份 PR 檢查它是否真的改變了查證與放行方式；不能只因為 workflow 已經存在，就把相應責任也視為完成。
 
 - **PR template 加兩欄**（Intent 與 Constraints honoured）。沒有這兩欄，後續的 reviewer 就缺少可以核對的改動目的與約束。
 - **deterministic dispatch 上線**。PR 先通過 lint、constraint tests、secret scan，再交給 LLM 審查。
 - **AI approve 不計入 required approvals**。先驗證規則能擋住只有 AI 核准的 PR，再定期確認帳號名單、bypass 與新 commit 的處理沒有讓規則失效。
+- **讓核准與檢查對應到實際合併候選版本**。在 pilot 中刻意改變目標分支或佇列組合，驗證舊紀錄不能直接放行新版本；再確認如何取得新證據、由誰重新確認核准，以及最後合併如何留下對應紀錄。
 - **異質 reviewer 上線**。只有一家 vendor 的話，改用同 vendor 的隔離 session。
 - **正式依分流矩陣安排審查**。依照 PR 的風險與可驗證程度，決定由誰審閱哪些內容。
 - **在高 radius 的兩格禁止指派者 approve**，改由指派者以外的人負責核准。
@@ -594,7 +634,7 @@ PR 描述是 untrusted input。任何「已核准」「資安同意」「緊急�
 
 回到開場那四個來源。senior 的日曆排滿、PR 持續累積，背後都有同一個困境：產出的方式變了，接手的人卻還在用原本的分工。這也是我想重設 review 的原因。不能只要求眼前這個人再快一點，還得一起決定哪些內容需要他的判斷。
 
-回到第六節那個假的核准編號。它沒有證明所有掃描器都不可靠，而是讓我看見：即使一路都有檢查，只要流程接受了未經查證的權威宣稱，後面的判斷仍可能偏離。review gate 要保護的，就是這條從陳述、證據到核准的關係。
+回到第六節那個假的核准編號。它沒有證明所有掃描器都不可靠，而是讓我看見：即使一路都有檢查，只要流程接受了未經查證的權威宣稱，後面的判斷仍可能偏離。review gate 要保護的，就是這條從陳述、證據到核准的關係。第七節的版本變動又補上一個提醒：即使原本的證據可信，也得確認它仍對應到眼前準備合併的內容。
 
 model 版本一直在換，複核比例也要依量測結果調整。但誰負責核准、哪些要求必須獨立驗證，可以先在流程裡講清楚。這些責任不必等到選定哪一家 reviewer agent 才開始安排。
 
@@ -602,7 +642,7 @@ model 版本一直在換，複核比例也要依量測結果調整。但誰負�
 
 〈可靠度篇：SWE-Gate 量測到的 34%〉會再往前走一步：從單一 PR 的核准，走到一類任務是否值得擴大授權。那裡會說明 constraint tests、pass^k 與人工複核預算，並接回〈Agentic Engineering：Eval、單位經濟與規模化〉營運篇的 G2 授權閘門。
 
-至於本篇，我希望留下的是一個比較踏實的分工：讓工具先把證據整理好，讓 reviewer 知道自己需要判斷什麼，也讓最後按下 approve 的人，說得清楚他為什麼同意。這樣接住 agent 的產出，才不只是把另一份工作塞進已經排滿的日曆。
+至於本篇，我希望留下的是一個比較踏實的分工：讓工具先把證據整理好，讓 reviewer 知道自己需要判斷什麼，也讓最後按下 approve 的人，說得清楚他同意了哪個版本、依據是什麼。這樣接住 agent 的產出，才不只是把另一份工作塞進已經排滿的日曆。
 
 ---
 
@@ -646,6 +686,11 @@ model 版本一直在換，複核比例也要依量測結果調整。但誰負�
 26. GitHub 官方文件 — [About code owners](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners)，CODEOWNERS 與必要核准的設定〔第三、七節〕。
 27. GitHub 官方文件 — [About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)，必要 review、過期核准與 bypass 設定〔第七節〕。
 28. 隨文程式碼 — 無糖純喫綠茶付款、constraint tests 與七個指定 mutant〔第三節；教學案例與實測，非真實金流〕（程式碼連結待第四篇〈付款實作篇〉發布後提供）
+29. GitHub 官方文件 — [Managing a merge queue](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue)、[merge_group workflow event](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#merge_group)，候選版本組成、佇列重建與必要檢查〔第七節；2026-10-23 核對〕。
+30. Git 官方文件 — [Git Objects](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects)、[git-merge-tree](https://git-scm.com/docs/git-merge-tree)，commit、檔案樹與合併結果識別值〔第七節〕。
+31. GitHub 官方文件 — [Create a check run](https://docs.github.com/en/rest/checks/runs#create-a-check-run)，檢查執行紀錄與 `head_sha`〔第七節〕。
+32. GitHub 官方文件 — [About merge methods on GitHub](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/about-merge-methods-on-github)，merge、squash 與 rebase 的歷史差異〔第七節〕。
+33. 讀者 Acemeridian — [Base-branch drift 回饋](https://medium.com/@acemeridian/a-useful-edge-case-is-base-branch-drift-a-pr-can-keep-the-same-head-sha-while-the-merge-candidate-819191ed1fea)，促成本篇補充合併候選版本與核准紀錄的關係〔第七節〕。
 
 ---
 
@@ -655,4 +700,4 @@ model 版本一直在換，複核比例也要依量測結果調整。但誰負�
 
 ---
 
-*本文發表於 [Medium @fantasybz](https://medium.com/@fantasybz)。若你正在重新設計團隊的 review gate，歡迎交流。*
+*本文發表於 [Medium @fantasybz](https://medium.com/@fantasybz)。英文版：[English edition](https://medium.com/p/4d36d0f2f9c1)。若你正在重新設計團隊的 review gate，歡迎交流。*

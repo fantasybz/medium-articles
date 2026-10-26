@@ -29,6 +29,10 @@
   {
    "file": "table-03.png",
    "markdown": "| Pattern | Verdict | Condition |\n|---|---|---|\n| Different vendor, isolated session, human report-read approve, sampled deep reads | Allowed | The fleet's default pattern |\n| Same vendor, different session | Conditional | Comment only; its approval does not enter the signal column |\n| Same model family, same session or shared context | Forbidden | The first shape of the closed loop |\n| Reviewer's accept fed back into the generator's training or prompt | Forbidden | The training version has an evidenced rubber-stamp regime; the prompt version is the author's extension |\n| A window reviewing N PRs at once | Forbidden | Detection drops to about a third; review per PR |\n| Reviewer can see the previous round's scores | Forbidden | Design principle, not a quantitative guarantee |\n"
+  },
+  {
+   "file": "table-04.png",
+   "markdown": "| Moment | PR version | Base-branch version | Merge candidate and evidence |\n|---|---|---|---|\n| At review and testing | H | B1 | C1, with corresponding check results and approval |\n| After another PR merges | H, unchanged | B2 | C2, requiring revalidation; evidence for C1 cannot stand in for it |\n"
   }
  ]
 }
