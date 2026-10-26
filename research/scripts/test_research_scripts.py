@@ -14,7 +14,9 @@ HOME), the merge script whose printed count collect.sh reads, and the argument /
 keychain guards of the Notion cookie export. Everything that needs a browser, a
 real Codex session or the macOS Keychain (collect.sh, extract_*.js, notion_*.js,
 mermaid_check*.sh, render_images.sh's diagram/table rendering, codex_review.sh past its pre-flight) is
-deliberately absent.
+deliberately absent, except for what a fake browse can pin without one: mermaid_check.sh's cross-check
+of the screenshot against the svg's viewBox, and the pre-flight that keeps render_images.sh from
+clearing a pack's images when the browse daemon belongs to another session.
 
 The scripts are not a package, so they are loaded by path; the ones that are
 only ever run from a shell are exercised through their CLI so the tests pin
@@ -30,6 +32,7 @@ import json
 import os
 import re
 import shlex
+import struct
 import subprocess
 import sys
 import tempfile
@@ -593,6 +596,140 @@ class TestRenderLocalAssets(unittest.TestCase):
         self.assertFalse(os.path.exists(os.path.join(pack, ".rendered-assets.json")))
         self.assertNotIn("assets", json.loads(read(os.path.join(pack, "figures.json"))))
         self.assertFalse(os.path.exists(self.calls))
+
+
+# ---------------------------------------------------------------- browser-script guards, with a fake browse
+
+def png_header(width, height):
+    """A PNG signature and IHDR chunk with these dimensions (33 bytes, no image data).
+
+    mermaid_check.sh reads only the first 24 of them to cross-check its screenshot.
+    """
+    return (b"\x89PNG\r\n\x1a\n" + struct.pack(">I", 13) + b"IHDR"
+            + struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0) + b"\0\0\0\0")
+
+
+FAKE_BROWSE = r"""#!/bin/sh
+# Stands in for gstack's browse at the repo-local path _common.sh looks at first.
+# `status` prints FAKE_STATUS; the viewport probe says the daemon is already 1400 wide
+# at 2x so nothing gets reconfigured; the measurement prints FAKE_INFO; `screenshot`
+# copies FAKE_PNG into place; the svg dump writes an empty file. The first argument of
+# every call is appended to FAKE_BROWSE_LOG so a test can assert what the script asked.
+printf '%s\n' "$1" >> "$FAKE_BROWSE_LOG"
+case "$1" in
+  status) printf '%s\n' "$FAKE_STATUS" ;;
+  js) case "$2" in
+        *innerWidth*) echo "1400@2" ;;
+        *) if [ "$3" = "--raw" ]; then : > "$5"; else printf '%s\n' "$FAKE_INFO"; fi ;;
+      esac ;;
+  screenshot) cp "$FAKE_PNG" "$2" ;;
+  *) : ;;
+esac
+"""
+
+FOREIGN_DAEMON = ("[browse] a browse daemon for this project is running with --headed/--proxy "
+                  "(started by another session).")
+
+
+def install_fake_browse(root):
+    browse = os.path.join(root, ".claude", "skills", "gstack", "browse", "dist", "browse")
+    os.makedirs(os.path.dirname(browse))
+    write(browse, FAKE_BROWSE)
+    os.chmod(browse, 0o755)
+
+
+class TestRenderRefusesForeignDaemon(unittest.TestCase):
+    """render_images.sh must leave a pack's images alone when the daemon is another session's.
+
+    2026-10-26: the daemon was another session's headed/proxy one. The script
+    cleared the seven PNGs first, then every figure failed with "browse returned
+    no measurement" and the pack had to be restored from git. The pre-flight in
+    _common.sh now exits 75 before the rm, and asks the operator to decide.
+    """
+
+    def setUp(self):
+        root = tempfile.TemporaryDirectory()
+        self.addCleanup(root.cleanup)
+        self.root = root.name
+        self.pack = os.path.join(self.root, "piece", "publish")
+        write_png(os.path.join(self.pack, "images", "diagram-01.png"), b"previous output")
+        write(os.path.join(self.pack, "figures.json"), json.dumps({"figures": [
+            {"file": "diagram-01.png", "mermaid": "---\nconfig:\n  theme: base\n---\n" + MERMAID_A}], "tables": []}))
+        write(os.path.join(self.root, "MERMAID.md"), read(os.path.join(REPO, "MERMAID.md")))
+        install_fake_browse(self.root)
+        self.calls = os.path.join(self.root, "browse.log")
+        self.env = dict(os.environ, ROOT=self.root, FAKE_BROWSE_LOG=self.calls, FAKE_STATUS=FOREIGN_DAEMON,
+                        FAKE_INFO="", FAKE_PNG=os.devnull)
+
+    def test_exits_75_before_touching_the_images(self):
+        out = subprocess.run(["bash", os.path.join(HERE, "render_images.sh"), "piece"],
+                             env=self.env, capture_output=True, text=True)
+        self.assertEqual(out.returncode, 75, out.stdout + out.stderr)
+        self.assertIn("belongs to another session", out.stderr)
+        self.assertIn("disconnect", out.stderr)
+        with open(os.path.join(self.pack, "images", "diagram-01.png"), "rb") as fh:
+            self.assertEqual(fh.read(), b"previous output")
+        # it asked for the status and nothing else: no page load, no disconnect
+        self.assertEqual(read(self.calls).split(), ["status"])
+
+
+class TestMermaidCheckSizeGuards(unittest.TestCase):
+    """mermaid_check.sh cross-checks its screenshot against the svg's viewBox.
+
+    The measurement, the screenshot and the svg dump all come from the fake, so
+    the three outcomes the script tells apart are pinned without a browser: a
+    2x capture at viewBox size passes; an svg that fell back to the browser's
+    300px default (every PNG 664 wide, the 2026-10-26 finding) and a daemon that
+    screenshots at 1x are both render errors, exit 2, and never print PASS.
+    """
+
+    INFO = {"err": None, "w": 702, "h": 532, "wrapW": 734, "wrapH": 568, "dpr": 2, "nodes": 7, "fontSize": "16px"}
+
+    def setUp(self):
+        root = tempfile.TemporaryDirectory()
+        self.addCleanup(root.cleanup)
+        self.root = root.name
+        install_fake_browse(self.root)
+        self.mmd = os.path.join(self.root, "fig.mmd")
+        write(self.mmd, "---\nconfig:\n  theme: base\n---\n" + MERMAID_A)
+        self.shot = os.path.join(self.root, "shot.png")
+        self.calls = os.path.join(self.root, "browse.log")
+
+    def check(self, info, png):
+        with open(self.shot, "wb") as fh:
+            fh.write(png)
+        env = dict(os.environ, ROOT=self.root, FAKE_BROWSE_LOG=self.calls, FAKE_STATUS="",
+                   FAKE_INFO=json.dumps(info), FAKE_PNG=self.shot)
+        return subprocess.run(["bash", os.path.join(HERE, "mermaid_check.sh"), self.mmd, os.path.join(self.root, "out")],
+                              env=env, capture_output=True, text=True)
+
+    def test_capture_at_viewbox_size_and_2x_passes(self):
+        out = self.check(self.INFO, png_header(1468, 1136))
+        self.assertEqual(out.returncode, 0, out.stdout + out.stderr)
+        self.assertIn("702x532 css px (png 1468x1136, 2x), aspect 0.76, nodes 7", out.stdout)
+        self.assertTrue(out.stdout.rstrip().endswith("PASS"), out.stdout)
+        with open(os.path.join(self.root, "out.png"), "rb") as fh:
+            self.assertEqual(fh.read(), png_header(1468, 1136))
+
+    def test_fallback_width_capture_is_a_render_error(self):
+        out = self.check({**self.INFO, "wrapW": 332, "wrapH": 264}, png_header(664, 528))
+        self.assertEqual(out.returncode, 2, out.stdout + out.stderr)
+        self.assertIn("svg drawn at 300px wide, not its viewBox width 702px (fallback-width capture)", out.stdout)
+        self.assertNotIn("PASS", out.stdout)
+
+    def test_1x_screenshot_is_a_render_error(self):
+        out = self.check(self.INFO, png_header(734, 568))
+        self.assertEqual(out.returncode, 2, out.stdout + out.stderr)
+        self.assertIn("png is 734px wide, expected 2x of the 734px #wrap", out.stdout)
+        self.assertNotIn("PASS", out.stdout)
+
+    def test_measurement_without_the_wrap_width_is_a_render_error(self):
+        # an older daemon or script that never measured #wrap cannot be trusted either
+        info = {k: v for k, v in self.INFO.items() if k not in ("wrapW", "wrapH", "dpr")}
+        out = self.check(info, png_header(1468, 1136))
+        self.assertEqual(out.returncode, 2, out.stdout + out.stderr)
+        self.assertIn("fallback-width capture", out.stdout)
+        self.assertNotIn("PASS", out.stdout)
 
 
 class TestCommittedPastesAreReproducible(unittest.TestCase):

@@ -67,6 +67,9 @@ release_collect_lock() {
 
 # mermaid 與表格都在 headless daemon 上以 1400x1400、2x 截圖。
 # daemon 若還是 headed（medium_draft.sh 留下的），對 file:// 頁面會拒絕執行 JS，先 disconnect 讓它以 headless 重開。
+# 但 daemon 若是別的 session 以 --headed/--proxy 開的（status 會寫 started by another session），就不接手：disconnect 會
+# 踢掉那個 session 的登入；這裡以 75 退出，讓操作者自己決定要不要 disconnect（2026-10-26 實測：不擋的話 render_images.sh
+# 會先清掉舊 PNG，再讓每張圖都以「browse returned no measurement」FAIL）。
 # `viewport --scale` 會重建 browser context 並重播上一個 load-html；緊接著再 load-html 會撞在一起，
 # mermaid 在被換掉一半的 DOM 上跑就會丟 null error。所以只在需要時改，改完等一下再載入。
 HEADLESS_VIEWPORT=1400x1400
@@ -76,7 +79,12 @@ prepare_headless_viewport() {
   local status cur
   # 先接住輸出再判斷：`if cmd | grep -q` 在 cmd 失敗時永遠不會成立（CLAUDE.md）
   status="$("$BROWSE" status 2>/dev/null)" || status=""
-  case "$status" in *"Mode: headed"*) "$BROWSE" disconnect >/dev/null 2>&1 || true ;; esac
+  case "$status" in
+    *"started by another session"*)
+      echo "the browse daemon belongs to another session (headed/proxy); if that session is done with it, run '$BROWSE disconnect' yourself and retry" >&2
+      exit "$EX_TEMPFAIL" ;;
+    *"Mode: headed"*) "$BROWSE" disconnect >/dev/null 2>&1 || true ;;
+  esac
   cur="$("$BROWSE" js "window.innerWidth+'@'+window.devicePixelRatio" 2>/dev/null)" || cur=""
   if [ "$cur" != "${HEADLESS_VIEWPORT%x*}@$HEADLESS_SCALE" ]; then
     "$BROWSE" viewport "$HEADLESS_VIEWPORT" --scale "$HEADLESS_SCALE" >/dev/null 2>&1 || true
