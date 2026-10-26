@@ -4,14 +4,14 @@
 **Post ID** `3c64a9622777`（草稿／排程網址 https://medium.com/p/3c64a9622777/edit；上線後的穩定短網址 https://medium.com/p/3c64a9622777）
 **排程** 2026-10-27（二）09:00 GMT+8（2026-10-24 已重新讀取 Medium 排程確認）
 **建立方式** `./tools/medium_draft.sh 2026-10-green-reliability`，逐塊比對零差異（見 [PUBLISHING.md](../../PUBLISHING.md)）
-**2026-10-26** 原稿與貼稿修訂後已重灌並讀回，見文末小節。
+**2026-10-26** 原稿與貼稿修訂後已重灌並讀回；同日 /ship 審查發現重繪的圖只有一半解析度，腳本修正後第二次重灌，見文末兩節。
 
 ## 設定
 
 | 項目 | 值 |
 |---|---|
 | Topics | Software Testing、Code Review、AI、Software Engineering、Engineering Management |
-| 封面圖 | `diagram-02.png`（`1*wkCPXmyu9tMGAvbX8iTC-w.png`，1468×1136，2026-10-24 已核對） |
+| 封面圖 | `diagram-02.png`（`1*wLbhRvny2qsr3TZmF73T5A.png`，1468×1136，2026-10-26 第二次重灌後已核對） |
 | Notify subscribers | 是（預設） |
 | 發布位置 | 個人 profile，未投稿 publication |
 
@@ -196,3 +196,11 @@ Claude Code 接手複核後修訂原稿與貼稿（見[研究紀錄](../../resea
 儲存後重新讀回：**169 個文字區塊、22 個連結、7 張圖、10 條分隔線**均與貼稿相符，placeholder 為 0。七張圖全部重傳；Medium 以內容定址，位元組不變的三張保留原識別碼（`table-01` `1*whb3ph8ndZguMFPKOmqvWQ`、`diagram-03` `1*4tBxYGF49V-UkNtgS1KhCA`、`table-03` `1*RlRojU6hvMn24AP5sW7Xaw`），重繪後位元組改變的四張取得新識別碼：`diagram-01` `1*fkRAdXhXKhIcuQnOExq1BA`（664×704）、`table-02` `1*oIg_kdBNO5DM3zYsqzvsQQ`（1800×490）、`diagram-02` `1*hdKhSiqzLrBPQIJNoL4NjA`（664×528）、`diagram-04` `1*1v46ld-y8He5caJWLOzCDg`（664×916）。
 
 重灌把封面重設成第一張圖 `table-01`；`UpdateSubmitFormStoryPreviewMetadataMutation` 回 `500 throughput exceeded`，改走 `/p/<id>/edit` 右上角選單的 Change featured image 選回新版 `diagram-02.png`，重新載入 `/submission` 讀回 `previewImage.id = 1*hdKhSiqzLrBPQIJNoL4NjA.png`（664×528）。標題、預覽摘要、五個 Topics、通知設定與排程均與重灌前相同：`isPublished: false`，`publishAt: 1793062800000`（2026-10-27 09:00 Asia/Taipei）。重灌前後的設定與圖片識別碼快照存於本機 `.context/ship-2026-10-26b/`，未納入 git。
+
+## 2026-10-26 第二次重灌：圖片解析度修正
+
+同日 /ship 的 Red Team 審查從 PNG 檔頭看出，上一節重繪的四張圖都只有 664 px 寬：`research/scripts/mermaid_check.sh` 拿掉 mermaid 的 `max-width` 之後，`width="100%"` 的 svg 在 inline-block 容器裡退回瀏覽器預設的 300 CSS px，截圖只有 viewBox 一半的解析度，而 viewBox 的尺寸檢查照樣 PASS。10/24 的 `diagram-01`、`diagram-02` 是以別的方法算繪的完整尺寸（1076×1136、1468×1136），所以上一節的重灌把封面從 1468×1136 換成了 664×528。腳本修正（截圖前把 svg 設成 viewBox 的尺寸，並核對 `#wrap` 與 PNG 的寬度，對不上就 FAIL）後重繪整包：四張圖全部成為 2 × viewBox 的尺寸，三張表位元組不變；再以 `./tools/medium_draft.sh 2026-10-green-reliability --post 3c64a9622777` 重灌（未加 `--reuse-figures`），台北時間 11:46–11:49。
+
+儲存後重新讀回：**169 個文字區塊、22 個連結、7 張圖、10 條分隔線**均與貼稿相符，placeholder 為 0。三張表保留原識別碼（`table-01` `1*whb3ph8ndZguMFPKOmqvWQ`、`table-02` `1*oIg_kdBNO5DM3zYsqzvsQQ`、`table-03` `1*RlRojU6hvMn24AP5sW7Xaw`）；四張圖取得新識別碼：`diagram-01` `1*b1Fwtm5Nir8qJywCqoELPg`（1076×1136）、`diagram-02` `1*wLbhRvny2qsr3TZmF73T5A`（1468×1136）、`diagram-03` `1*HDQHsdzOpJcyuTti1DfSBg`（1456×1136）、`diagram-04` `1*a1gqo2NKunT7yQ65yGgeUg`（1300×1808）。上一節的四個 664 px 識別碼已不在內文裡。
+
+重灌仍把封面重設成第一張圖 `table-01`，依上一節的方法從 `/p/<id>/edit` 的 Change featured image 選回新版 `diagram-02.png`，重新載入 `/submission` 讀回 `previewImage.id = 1*wLbhRvny2qsr3TZmF73T5A.png`（1468×1136）。標題、預覽摘要、五個 Topics、通知設定與排程均未改變：`isPublished: false`，`publishAt: 1793062800000`（2026-10-27 09:00 Asia/Taipei）。這次重灌的貼稿 `medium-paste.md` SHA-256 為 `b0cfff1cdf4b2a00036f95d8e955bb1af7b1e8975237cee106f14df3d5bf0c4b`；重灌前後快照存於本機 `.context/ship-2026-10-26c/`，未納入 git。
