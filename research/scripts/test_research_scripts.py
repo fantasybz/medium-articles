@@ -662,11 +662,13 @@ class TestRenderRefusesForeignDaemon(unittest.TestCase):
                         FAKE_INFO="", FAKE_PNG=os.devnull)
 
     def test_exits_75_before_touching_the_images(self):
-        out = subprocess.run(["bash", os.path.join(HERE, "render_images.sh"), "piece"],
+        out = subprocess.run(["bash", os.path.join(REPO, "research/scripts/render_images.sh"), "piece"],
                              env=self.env, capture_output=True, text=True)
         self.assertEqual(out.returncode, 75, out.stdout + out.stderr)
         self.assertIn("belongs to another session", out.stderr)
         self.assertIn("disconnect", out.stderr)
+        # the refusal lives in the shared pre-flight that both render scripts source
+        self.assertIn("started by another session", read(os.path.join(REPO, "research/scripts/_common.sh")))
         with open(os.path.join(self.pack, "images", "diagram-01.png"), "rb") as fh:
             self.assertEqual(fh.read(), b"previous output")
         # it asked for the status and nothing else: no page load, no disconnect
@@ -700,7 +702,7 @@ class TestMermaidCheckSizeGuards(unittest.TestCase):
             fh.write(png)
         env = dict(os.environ, ROOT=self.root, FAKE_BROWSE_LOG=self.calls, FAKE_STATUS="",
                    FAKE_INFO=json.dumps(info), FAKE_PNG=self.shot)
-        return subprocess.run(["bash", os.path.join(HERE, "mermaid_check.sh"), self.mmd, os.path.join(self.root, "out")],
+        return subprocess.run(["bash", os.path.join(REPO, "research/scripts/mermaid_check.sh"), self.mmd, os.path.join(self.root, "out")],
                               env=env, capture_output=True, text=True)
 
     def test_capture_at_viewbox_size_and_2x_passes(self):
