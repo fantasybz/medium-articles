@@ -9,7 +9,7 @@
 set -uo pipefail
 MD="${1:?usage: mermaid_check_all.sh <file.md>}"
 HERE="$(cd "$(dirname "$0")" && pwd)"
-. "$HERE/_common.sh"        # ROOT、EX_*、refuse_if_collecting
+. "$HERE/_common.sh"        # ROOT、EX_*、prepare_headless_viewport
 [ -f "$MD" ] || { echo "no such file: $MD" >&2; exit "$EX_USAGE"; }
 BASE="$(basename "$MD" .md)"
 # 工作目錄會被 rm -rf。BASE 出自 basename 所以不會含 /，但 `.`／`..`／空字串會讓它指到
@@ -17,7 +17,7 @@ BASE="$(basename "$MD" .md)"
 case "$BASE" in
   ''|.|..|*/*) echo "refusing to use '$BASE' as a work directory name" >&2; exit "$EX_USAGE" ;;
 esac
-refuse_if_collecting        # 逐張才發現會印一排 FAIL；在這裡一次說清楚
+prepare_headless_viewport   # 含 refuse_if_collecting 與 daemon 檢查；逐張才發現會印一排 FAIL，在這裡一次說清楚（拒絕時以 75 退出）
 W="$ROOT/.context/mermaid/$BASE"; rm -rf "$W"; mkdir -p "$W"
 
 n=$(python3 - "$MD" "$W" <<'EOF'
@@ -46,7 +46,7 @@ printf '%-4s %-8s %-7s %-6s %-5s %s\n' '#' 'size' 'aspect' 'nodes' 'ok' 'figure'
 for f in "$W"/*.mmd; do
   [ -e "$f" ] || break        # 沒有 nullglob 時，空目錄會把字面上的 * 交給迴圈
   i="$(basename "$f" .mmd)"; label="$(cut -c1-60 "$W/$i.label" 2>/dev/null)"
-  res="$("$HERE/mermaid_check.sh" "$f" "$W/$i" 2>/dev/null)"; rc=$?
+  res="$("$HERE/mermaid_check.sh" "$f" "$W/$i" 2>&1)"; rc=$?   # RENDER ERROR 也可能寫在 stderr，不要丟
   size="$(echo "$res" | sed -n 's/.* \([0-9]*x[0-9]*\) css px.*/\1/p')"
   aspect="$(echo "$res" | sed -n 's/.*aspect \([0-9.]*\).*/\1/p')"
   nodes="$(echo "$res" | sed -n 's/.*nodes \([0-9]*\).*/\1/p')"

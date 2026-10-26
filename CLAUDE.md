@@ -75,9 +75,13 @@ browser or the macOS Keychain, so they are not in it; like `medium_draft.sh`,
 they check their own output at run time.
 
 For gstack's pre-gate, `.gstack/pregate.json` maps generated `figures.json`
-files to that existing research suite and runs it with stdlib `unittest`.
-The explicit mapping covers corpus files discovered at runtime; it does not
-replace the three required commands above or the Medium readback checks.
+files and the browser render scripts (`research/scripts/_common.sh`,
+`mermaid_check.sh`, `render_images.sh`, whose fake-browse tests live in that
+suite) to the research suite and runs it with stdlib `unittest`. gstack reads
+this file from the base branch, so a mapping added in a PR only takes effect
+after it merges; until then a test that names the script by its repo-relative
+path is what resolves the lane. The mapping does not replace the three required
+commands above or the Medium readback checks.
 
 The third command covers the [tea payment teaching example](examples/tea_payment/README.md):
 nine payment tests and twelve mutation-runner regression tests, all offline with

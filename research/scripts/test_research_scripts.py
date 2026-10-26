@@ -611,21 +611,26 @@ def png_header(width, height):
 
 FAKE_BROWSE = r"""#!/bin/sh
 # Stands in for gstack's browse at the repo-local path _common.sh looks at first.
-# `status` prints a healthy daemon; with FAKE_STATUS set it prints that refusal on STDERR
-# and exits 1, the way browse's cli.ts reports a daemon started by another session (stdout
-# stays empty). The viewport probe says the daemon is already 1400 wide at 2x so nothing
-# gets reconfigured; the measurement prints FAKE_INFO; `screenshot` copies FAKE_PNG into
-# place; the svg dump writes an empty file. The first argument of every call is appended
-# to FAKE_BROWSE_LOG so a test can assert what the script asked.
+# `status` prints a healthy launched daemon, or FAKE_STATUS_OUT verbatim on stdout (exit 0)
+# when that is set; with FAKE_STATUS set it prints that text on STDERR and exits 1, the way
+# browse's cli.ts reports a refusal (stdout stays empty). The viewport probe says the daemon
+# is already 1400 wide at 2x so nothing gets reconfigured; the figure measurement prints
+# FAKE_INFO; the table width probe prints FAKE_WPX (default 900); `screenshot` copies
+# FAKE_PNG into place when it is set and otherwise writes nothing; the svg dump writes an
+# empty file. The first argument of every call is appended to FAKE_BROWSE_LOG so a test can
+# assert what the script asked.
 printf '%s\n' "$1" >> "$FAKE_BROWSE_LOG"
 case "$1" in
   status) if [ -n "$FAKE_STATUS" ]; then printf '%s\n' "$FAKE_STATUS" >&2; exit 1; fi
+          if [ -n "$FAKE_STATUS_OUT" ]; then printf '%s\n' "$FAKE_STATUS_OUT"; exit 0; fi
           printf 'Status: healthy\nMode: launched\n' ;;
   js) case "$2" in
         *innerWidth*) echo "1400@2" ;;
-        *) if [ "$3" = "--raw" ]; then : > "$5"; else printf '%s\n' "$FAKE_INFO"; fi ;;
+        *"new Promise(res"*) printf '%s\n' "$FAKE_INFO" ;;
+        *getBoundingClientRect*) printf '%s\n' "${FAKE_WPX:-900}" ;;
+        *) if [ "$3" = "--raw" ]; then : > "$5"; fi ;;
       esac ;;
-  screenshot) cp "$FAKE_PNG" "$2" ;;
+  screenshot) [ -n "$FAKE_PNG" ] && cp "$FAKE_PNG" "$2"; : ;;
   *) : ;;
 esac
 """
@@ -664,11 +669,45 @@ class TestRenderRefusesForeignDaemon(unittest.TestCase):
         self.env = dict(os.environ, ROOT=self.root, FAKE_BROWSE_LOG=self.calls, FAKE_STATUS=FOREIGN_DAEMON,
                         FAKE_INFO="", FAKE_PNG=os.devnull)
 
+    def render(self, **env_extra):
+        return subprocess.run(["bash", os.path.join(REPO, "research/scripts/render_images.sh"), "piece"],
+                              env={**self.env, **env_extra}, capture_output=True, text=True)
+
+    def assert_untouched(self, out):
+        with open(os.path.join(self.pack, "images", "diagram-01.png"), "rb") as fh:
+            self.assertEqual(fh.read(), b"previous output")
+        # it asked for the status and nothing else: no page load, no disconnect
+        self.assertEqual(read(self.calls).split(), ["status"])
+        self.assertEqual(out.returncode, 75, out.stdout + out.stderr)
+
+    def test_tables_only_pack_exits_75_before_touching_the_images(self):
+        write(os.path.join(self.pack, "figures.json"), json.dumps({"figures": [], "tables": [{"file": "table-01.png", "markdown": TABLE}]}))
+        write_png(os.path.join(self.pack, "images", "table-01.png"), b"previous table")
+        out = self.render()
+        self.assertEqual(out.returncode, 75, out.stdout + out.stderr)
+        with open(os.path.join(self.pack, "images", "table-01.png"), "rb") as fh:
+            self.assertEqual(fh.read(), b"previous table")
+        self.assertEqual(read(self.calls).split(), ["status"])
+
+    def test_a_live_headed_browser_is_refused_not_disconnected(self):
+        # `browse connect` / open-gstack-browser: browse lets a plain call see it, and it prints Mode: headed
+        out = self.render(FAKE_STATUS="", FAKE_STATUS_OUT="Status: healthy\nMode: headed\nURL: https://example.test/\nTabs: 3\nPID: 1")
+        self.assert_untouched(out)
+        self.assertIn("live headed browser", out.stderr)
+        self.assertNotIn("disconnect", read(self.calls))
+
+    def test_any_other_status_failure_is_refused_too(self):
+        # default-deny: an unrelated failure must not fall through to the rm
+        out = self.render(FAKE_STATUS="[browse] Server not available and BROWSE_NO_AUTOSTART is set.")
+        self.assert_untouched(out)
+        self.assertIn("did not report a healthy daemon", out.stderr)
+        self.assertIn("BROWSE_NO_AUTOSTART", out.stderr)
+
     def test_exits_75_before_touching_the_images(self):
         out = subprocess.run(["bash", os.path.join(REPO, "research/scripts/render_images.sh"), "piece"],
                              env=self.env, capture_output=True, text=True)
         self.assertEqual(out.returncode, 75, out.stdout + out.stderr)
-        self.assertIn("belongs to another session", out.stderr)
+        self.assertIn("started with --headed/--proxy", out.stderr)
         self.assertIn("disconnect", out.stderr)
         with open(os.path.join(self.pack, "images", "diagram-01.png"), "rb") as fh:
             self.assertEqual(fh.read(), b"previous output")
@@ -681,7 +720,7 @@ class TestRenderRefusesForeignDaemon(unittest.TestCase):
                               os.path.join(REPO, "research/scripts/_common.sh")],
                              env=self.env, capture_output=True, text=True)
         self.assertEqual(out.returncode, 75, out.stdout + out.stderr)
-        self.assertIn("belongs to another session", out.stderr)
+        self.assertIn("started with --headed/--proxy", out.stderr)
         self.assertEqual(read(self.calls).split(), ["status"])
 
 
@@ -707,11 +746,11 @@ class TestMermaidCheckSizeGuards(unittest.TestCase):
         self.shot = os.path.join(self.root, "shot.png")
         self.calls = os.path.join(self.root, "browse.log")
 
-    def check(self, info, png, status=""):
+    def check(self, info, png, status="", shot=True):
         with open(self.shot, "wb") as fh:
             fh.write(png)
         env = dict(os.environ, ROOT=self.root, FAKE_BROWSE_LOG=self.calls, FAKE_STATUS=status,
-                   FAKE_INFO=json.dumps(info), FAKE_PNG=self.shot)
+                   FAKE_INFO=json.dumps(info), FAKE_PNG=self.shot if shot else "")
         return subprocess.run(["bash", os.path.join(REPO, "research/scripts/mermaid_check.sh"), self.mmd, os.path.join(self.root, "out")],
                               env=env, capture_output=True, text=True)
 
@@ -740,7 +779,19 @@ class TestMermaidCheckSizeGuards(unittest.TestCase):
         info = {k: v for k, v in self.INFO.items() if k not in ("wrapW", "wrapH", "dpr")}
         out = self.check(info, png_header(1468, 1136))
         self.assertEqual(out.returncode, 2, out.stdout + out.stderr)
-        self.assertIn("has no #wrap width", out.stdout)
+        self.assertIn("has no #wrap size", out.stdout)
+        self.assertNotIn("PASS", out.stdout)
+
+    def test_missing_screenshot_file_is_a_render_error(self):
+        out = self.check(self.INFO, b"", shot=False)  # browse exited 0 but wrote no file at all
+        self.assertEqual(out.returncode, 2, out.stdout + out.stderr)
+        self.assertIn("RENDER ERROR: no screenshot", out.stdout)
+        self.assertNotIn("PASS", out.stdout)
+
+    def test_clipped_screenshot_height_is_a_render_error(self):
+        out = self.check(self.INFO, png_header(1468, 900))
+        self.assertEqual(out.returncode, 2, out.stdout + out.stderr)
+        self.assertIn("png is 900px tall, expected 2x of the 568px #wrap", out.stdout)
         self.assertNotIn("PASS", out.stdout)
 
     def test_empty_or_non_png_screenshot_is_a_render_error(self):
@@ -754,9 +805,69 @@ class TestMermaidCheckSizeGuards(unittest.TestCase):
     def test_foreign_daemon_stops_mermaid_check_before_loading_the_page(self):
         out = self.check(self.INFO, png_header(1468, 1136), status=FOREIGN_DAEMON)
         self.assertEqual(out.returncode, 75, out.stdout + out.stderr)
-        self.assertIn("belongs to another session", out.stderr)
+        self.assertIn("started with --headed/--proxy", out.stderr)
         self.assertEqual(read(self.calls).split(), ["status"])
         self.assertFalse(os.path.exists(os.path.join(self.root, "out.png")))
+
+
+class TestMermaidCheckAllRefusesForeignDaemon(unittest.TestCase):
+    """mermaid_check_all.sh runs the pre-flight once, up front, so a refused daemon is one
+    message and exit 75 rather than a row of unexplained FAILs (and no work directory is
+    cleared first)."""
+
+    def test_exits_75_once_with_the_reason(self):
+        root = tempfile.TemporaryDirectory()
+        self.addCleanup(root.cleanup)
+        install_fake_browse(root.name)
+        md = os.path.join(root.name, "figs.md")
+        hdr = "---\nconfig:\n  theme: base\n---\n"
+        write(md, "# A\n\n" + fence(hdr + MERMAID_A) + "\n# B\n\n" + fence(hdr + MERMAID_B))
+        calls = os.path.join(root.name, "browse.log")
+        env = dict(os.environ, ROOT=root.name, FAKE_BROWSE_LOG=calls, FAKE_STATUS=FOREIGN_DAEMON, FAKE_INFO="", FAKE_PNG=os.devnull)
+        out = subprocess.run(["bash", os.path.join(REPO, "research/scripts/mermaid_check_all.sh"), md],
+                             env=env, capture_output=True, text=True)
+        self.assertEqual(out.returncode, 75, out.stdout + out.stderr)
+        self.assertIn("disconnect", out.stderr)
+        self.assertNotIn("FAIL", out.stdout)
+        self.assertEqual(read(calls).split(), ["status"])  # asked once, not once per figure
+        self.assertFalse(os.path.exists(os.path.join(root.name, ".context", "mermaid", "figs")))
+
+
+class TestRenderTablesNeedA2xScreenshot(unittest.TestCase):
+    """The table path gets the same PNG-header check as the diagrams: a screenshot that is not
+    HEADLESS_SCALE times the measured #wrap width is a FAIL and never reaches images/."""
+
+    def setUp(self):
+        root = tempfile.TemporaryDirectory()
+        self.addCleanup(root.cleanup)
+        self.root = root.name
+        self.pack = os.path.join(self.root, "piece", "publish")
+        os.makedirs(os.path.join(self.pack, "images"))
+        write(os.path.join(self.pack, "figures.json"), json.dumps({"figures": [], "tables": [{"file": "table-01.png", "markdown": TABLE}]}))
+        write(os.path.join(self.root, "MERMAID.md"), read(os.path.join(REPO, "MERMAID.md")))
+        install_fake_browse(self.root)
+        self.shot = os.path.join(self.root, "shot.png")
+
+    def render(self, png):
+        with open(self.shot, "wb") as fh:
+            fh.write(png)
+        env = dict(os.environ, ROOT=self.root, FAKE_BROWSE_LOG=os.path.join(self.root, "browse.log"), FAKE_STATUS="",
+                   FAKE_INFO="", FAKE_WPX="900", FAKE_PNG=self.shot)
+        return subprocess.run(["bash", os.path.join(REPO, "research/scripts/render_images.sh"), "piece"],
+                              env=env, capture_output=True, text=True)
+
+    def test_2x_table_screenshot_is_copied_into_the_pack(self):
+        out = self.render(png_header(1800, 400))
+        self.assertEqual(out.returncode, 0, out.stdout + out.stderr)
+        self.assertIn("table-01: 900px wide (png 1800x400, 2x)", out.stdout)
+        with open(os.path.join(self.pack, "images", "table-01.png"), "rb") as fh:
+            self.assertEqual(fh.read(), png_header(1800, 400))
+
+    def test_1x_table_screenshot_fails_and_leaves_nothing_in_the_pack(self):
+        out = self.render(png_header(900, 200))
+        self.assertNotEqual(out.returncode, 0)
+        self.assertIn("table-01: FAIL (png 900px wide, expected 2x of the 900px #wrap)", out.stdout)
+        self.assertFalse(os.path.exists(os.path.join(self.pack, "images", "table-01.png")))
 
 
 class TestCommittedPastesAreReproducible(unittest.TestCase):

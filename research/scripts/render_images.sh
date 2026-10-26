@@ -111,6 +111,26 @@ for m in "$W"/diagram-*.mmd; do
 done
 
 # 瀏覽器已在清舊檔之前由 prepare_headless_viewport 準備好（只有表格的發布包也走那一次）。
+# 表格截圖走與 mermaid_check.sh 同一道 PNG 檔頭核對：寬要是 #wrap 的 HEADLESS_SCALE 倍，否則是 1x 或裁切，
+# 不能進 images/。先截到 $W，核對過才複製。印出「png WxH, Nx」並以 0 退出；否則印原因、非 0 退出。
+table_png_verdict() {
+  python3 - "$1" "$2" "$HEADLESS_SCALE" <<'EOF'
+import struct, sys
+path, wpx, scale = sys.argv[1], sys.argv[2], int(sys.argv[3])
+try:
+    head = open(path, 'rb').read(24)
+except OSError as e:
+    print(f"no screenshot: {e}"); sys.exit(1)
+if head[:8] != b'\x89PNG\r\n\x1a\n' or len(head) < 24:
+    print("screenshot is not a PNG"); sys.exit(1)
+w, h = struct.unpack('>II', head[16:24])
+if not wpx.isdigit():
+    print(f"png {w}x{h}, but the #wrap width is unknown ({wpx})"); sys.exit(1)
+if abs(w - scale * int(wpx)) > 4:
+    print(f"png {w}px wide, expected {scale}x of the {wpx}px #wrap"); sys.exit(1)
+print(f"png {w}x{h}, {scale}x")
+EOF
+}
 for h in "$W"/table-*.html; do
   [ -e "$h" ] || break
   n="$(basename "$h" .html)"
@@ -119,10 +139,11 @@ for h in "$W"/table-*.html; do
   fi
   "$BROWSE" js "new Promise(r=>setTimeout(r,800)).then(()=>'ok')" >/dev/null 2>&1 || true
   wpx=$("$BROWSE" js "Math.round(document.querySelector('#wrap').getBoundingClientRect().width)" 2>/dev/null) || wpx="?"
-  if "$BROWSE" screenshot "$IMG/$n.png" --selector '#wrap' >/dev/null 2>&1 && [ -s "$IMG/$n.png" ]; then
-    echo "  $n: ${wpx}px wide"
+  verdict=""
+  if "$BROWSE" screenshot "$W/$n.png" --selector '#wrap' >/dev/null 2>&1 && verdict="$(table_png_verdict "$W/$n.png" "$wpx")"; then
+    cp "$W/$n.png" "$IMG/$n.png"; echo "  $n: ${wpx}px wide ($verdict)"
   else
-    echo "  $n: FAIL (screenshot)"; rm -f "$IMG/$n.png"; fail=$((fail+1))
+    echo "  $n: FAIL (${verdict:-screenshot})"; rm -f "$W/$n.png"; fail=$((fail+1))
   fi
 done
 echo "== images in $IMG: $(ls "$IMG" | wc -l | tr -d ' ')  (FAILs: $fail)"
