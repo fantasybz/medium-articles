@@ -1,0 +1,55 @@
+---
+config:
+  theme: base
+  themeVariables:
+    fontSize: 16px
+    primaryColor: "#f8f9fa"
+    primaryTextColor: "#1f2933"
+    primaryBorderColor: "#6b7280"
+    lineColor: "#6b7280"
+    secondaryColor: "#f8f9fa"
+    tertiaryColor: "#ffffff"
+    clusterBkg: "#ffffff"
+    clusterBorder: "#9ca3af"
+    edgeLabelBackground: "#ffffff"
+  flowchart:
+    nodeSpacing: 36
+    rankSpacing: 32
+    padding: 12
+    htmlLabels: true
+    subGraphTitleMargin:
+      top: 8
+      bottom: 12
+    curve: basis
+---
+flowchart TB
+    %% Layout: TB, 7 nodes; checked viewBox 546x796, height/width 1.46; font 16px.
+    classDef own fill:#d4edda,stroke:#2e7d32,color:#1f2933
+    classDef human fill:#e3f2fd,stroke:#1565c0,color:#1f2933
+
+    subgraph action["第一篇　行動｜工具接上之後"]
+        direction LR
+        A["可以做什麼？<br/>實際做了什麼？<br/>怎樣才算完成？"]
+        B["操作對象與當次授權範圍<br/>外部操作結果<br/>符合要求的證據"]
+        A --> B
+    end
+
+    subgraph handoff["第二篇　交接｜工作換人繼續"]
+        direction LR
+        C["誰接著做？<br/>哪些已完成？<br/>哪些仍待確認？"]
+        D["可查核的核准範圍<br/>已知與未知的狀態<br/>接續與復原的入口"]
+        C --> D
+    end
+
+    subgraph memory["第三篇　記憶｜經驗留給下次"]
+        direction LR
+        E["下次還能採用嗎？<br/>環境與版本變了嗎？<br/>更正有被讀到嗎？"]
+        F["來源、版本與適用條件<br/>更正與刪除影響下次檢索<br/>新任務下重新查核"]
+        E --> F
+    end
+
+    action -->|工作交接| handoff
+    handoff -->|留下經驗| memory
+    memory -.->|下一次任務| G["重新查核當下的條件<br/>看懂證據與待查事項<br/>再決定可以交出多少工作"]
+    class B,D,F own
+    class G human

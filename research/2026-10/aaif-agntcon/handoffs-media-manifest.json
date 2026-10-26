@@ -1,0 +1,125 @@
+{
+  "checked_date": "2026-10-23",
+  "article": "2026-11-aaif-agent-handoffs",
+  "image_count": 10,
+  "method": "Two author photographs followed by eight full PDF page renders; same source images in both languages; language-specific captions.",
+  "assets": [
+    {
+      "file": "2026-11-aaif-agent-handoffs/figures/00-tokyo-tower-office.png",
+      "sha256": "df196a6dc7ea25735e8a66086dc69c9c0c52895fdb2a5b8f93821209a2f5becb",
+      "source_sha256": "2124fafc0f2ed16d087bc81f7309a35280419cbcbc17b2883e2f75086f9cb24b",
+      "size": [
+        2048,
+        1152
+      ],
+      "source_url": "https://www.facebook.com/kochi.chuang/posts/pfbid02zFBwcpGJPFXyrzD1wMnGZLVBsPAWqHrGGFXFagjLkJ299GyUdXGTQfPpQTgqoQoAl",
+      "kind": "author_photo",
+      "source_date": "2026-09-09",
+      "usage": ["article_opening", "medium_story_image_zh", "medium_story_image_en"],
+      "transformation": "Facebook-served 2048 x 1152 JPEG converted to PNG at original dimensions; no crop, color adjustment, or content modification.",
+      "visual_review": "Original photograph visually inspected; Tokyo Tower and city scene are legible, with no people, credentials, or private office displays visible."
+    },
+    {
+      "file": "2026-11-aaif-agent-handoffs/figures/00-tokyo-tower-night.png",
+      "sha256": "7838a53aa4dd5ec69b468cfed6a74e179ce3249865a3b053077617ca5c863b5e",
+      "source_sha256": "067d6e78282c4d5df517c4ed7660db77064063392c39a4076f03576d9bf27057",
+      "size": [
+        2048,
+        1152
+      ],
+      "source_url": "https://www.facebook.com/kochi.chuang/posts/pfbid02Dgd6AUhyb7kgBcPqM1QQJFjyuCnsPMtGADCd88zsWPwa8VXpBkxQ1sTQ2zN5PmyHl",
+      "kind": "author_photo",
+      "source_date": "2026-09-09",
+      "transformation": "Facebook-served 2048 x 1152 JPEG converted to PNG at original dimensions; no crop, color adjustment, or content modification.",
+      "visual_review": "Original photograph visually inspected; Tokyo Tower and city scene are legible, with no people, credentials, or private office displays visible."
+    },
+    {
+      "file": "2026-11-aaif-agent-handoffs/figures/01-softbank-boundary.png",
+      "sha256": "ca5851a632857d61dcbc17b69e8dad11ffcb2d2f9f0873889858130ff68231bd",
+      "session_id": "2RCwp",
+      "source_url": "https://hosted-files.sched.co/agntconmcpconjapan26/3a/AGNTCon_MCPCon_Japan2026%E7%99%BB%E5%A3%87%E8%B3%87%E6%96%99_SoftBank_Corp_%E9%A3%AF%E5%B3%B6%E7%AB%9C%E5%85%90.pdf",
+      "source_sha256": "4c44503c49ca38c79b96b177f007f5fb94f9871850962d9681bf9d4e85e68872",
+      "page": 12,
+      "source_pages": 21,
+      "transformation": "Full PDF page rendered to PNG at 1920 px wide; no cropping or content modification.",
+      "visual_review": "Full page visually inspected: legible, attribution retained, no crop or content modification."
+    },
+    {
+      "file": "2026-11-aaif-agent-handoffs/figures/02-softbank-streaming.png",
+      "sha256": "3b90ae62827253b81fb28a410c79996d6a7d623318601973e5705dac6e3851ba",
+      "session_id": "2RCwp",
+      "source_url": "https://hosted-files.sched.co/agntconmcpconjapan26/3a/AGNTCon_MCPCon_Japan2026%E7%99%BB%E5%A3%87%E8%B3%87%E6%96%99_SoftBank_Corp_%E9%A3%AF%E5%B3%B6%E7%AB%9C%E5%85%90.pdf",
+      "source_sha256": "4c44503c49ca38c79b96b177f007f5fb94f9871850962d9681bf9d4e85e68872",
+      "page": 15,
+      "source_pages": 21,
+      "transformation": "Full PDF page rendered to PNG at 1920 px wide; no cropping or content modification.",
+      "visual_review": "Full page visually inspected: legible, attribution retained, no crop or content modification."
+    },
+    {
+      "file": "2026-11-aaif-agent-handoffs/figures/03-intent-enforcement.png",
+      "sha256": "768f6a9081727ee4aa059f592371399d19b82ee1598ea896988cd8a739169de3",
+      "session_id": "2QlDX",
+      "source_url": "https://hosted-files.sched.co/agntconmcpconjapan26/ab/Intent-as-Code%20%2813%29.pdf",
+      "source_sha256": "8e28ac7f007fa7da364406cd5530c34c83e1503956eca3cc6263ee83e020987a",
+      "page": 58,
+      "source_pages": 64,
+      "transformation": "Full PDF page rendered to PNG at 1920 px wide; no cropping or content modification.",
+      "visual_review": "Full page visually inspected: legible, attribution retained, no crop or content modification."
+    },
+    {
+      "file": "2026-11-aaif-agent-handoffs/figures/04-upgrade-gate.png",
+      "sha256": "c2a82676db8f6221746a3f454b10c23355ecb600427baf84b301c1572800a200",
+      "session_id": "2QlD9",
+      "source_url": "https://hosted-files.sched.co/agntconmcpconjapan26/d9/AGNTCon-MCPCon-Japan-2026_Abhijeet_Sanskar_final.pdf",
+      "source_sha256": "f2ab9a42e44fff8aa2f388f22c5138ca3f81b74376d33b6a9e26e5a17bd21007",
+      "page": 21,
+      "source_pages": 32,
+      "transformation": "Full PDF page rendered to PNG at 1920 px wide; no cropping or content modification.",
+      "visual_review": "Full page visually inspected: legible, attribution retained, no crop or content modification."
+    },
+    {
+      "file": "2026-11-aaif-agent-handoffs/figures/05-upgrade-workers.png",
+      "sha256": "cd766298e832bc14bfd6416ed46dd446df45645ad0c4f87f0df36669e8c13403",
+      "session_id": "2QlD9",
+      "source_url": "https://hosted-files.sched.co/agntconmcpconjapan26/d9/AGNTCon-MCPCon-Japan-2026_Abhijeet_Sanskar_final.pdf",
+      "source_sha256": "f2ab9a42e44fff8aa2f388f22c5138ca3f81b74376d33b6a9e26e5a17bd21007",
+      "page": 29,
+      "source_pages": 32,
+      "transformation": "Full PDF page rendered to PNG at 1920 px wide; no cropping or content modification.",
+      "visual_review": "Full page visually inspected: legible, attribution retained, no crop or content modification."
+    },
+    {
+      "file": "2026-11-aaif-agent-handoffs/figures/06-state-classes.png",
+      "sha256": "4ddc9e71dd059ea64a3b42ea8901f418c50a950d352253cf5de128a5cc81f76f",
+      "session_id": "2QlE7",
+      "source_url": "https://hosted-files.sched.co/agntconmcpconjapan26/4e/Stateful%20Sandboxes%20for%20Stateless%20Agents%20%C2%B7%20designed-r3.pdf",
+      "source_sha256": "7b51566596603be8b8c7368d01b5a71d88f28999dcc480e6bbcbbbe861f8b7f8",
+      "page": 5,
+      "source_pages": 14,
+      "transformation": "Full PDF page rendered to PNG at 1920 px wide; no cropping or content modification.",
+      "visual_review": "Full page visually inspected: legible, attribution retained, no crop or content modification."
+    },
+    {
+      "file": "2026-11-aaif-agent-handoffs/figures/07-file-conflict.png",
+      "sha256": "d663d88f2dab222d6e4fecafdaa49d94aace2f2a278b5ce7cb05ff44e259880f",
+      "session_id": "2QlEe",
+      "source_url": "https://hosted-files.sched.co/agntconmcpconjapan26/17/EN%20_GNTCon-Japan-2026_PingCAP%20Seki.pdf",
+      "source_sha256": "e226815d0504bde60493355697988772a86e8e823a8f6ec4efb3357324876bdd",
+      "page": 23,
+      "source_pages": 26,
+      "transformation": "Full PDF page rendered to PNG at 1920 px wide; no cropping or content modification.",
+      "visual_review": "Full page visually inspected: legible, attribution retained, no crop or content modification."
+    },
+    {
+      "file": "2026-11-aaif-agent-handoffs/figures/08-integration-gaps.png",
+      "sha256": "fa74808b244e70eae8627c01adcf2a3e462b87de6ffe6209ccac007799fb8e4e",
+      "session_id": "2QlEG",
+      "source_url": "https://hosted-files.sched.co/agntconmcpconjapan26/bf/20260910_AGNTCon_Japan_Hitachi_Ito_Sato_public.pdf",
+      "source_sha256": "c284753eb7a317c48c22256a1b3cdcfe376d55fd0d4c25cbf8087b95eb3b1083",
+      "page": 24,
+      "source_pages": 28,
+      "transformation": "Full PDF page rendered to PNG at 1920 px wide; no cropping or content modification.",
+      "visual_review": "Full page visually inspected: legible, attribution retained, no crop or content modification."
+    }
+  ]
+}

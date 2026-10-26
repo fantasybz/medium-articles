@@ -66,6 +66,24 @@
 - 相鄰段落靠問題與理由承接，不只增加連接詞。各篇可以獨立進入，但用共同案例與清楚交接維持系列連貫；後半部與結語同樣適用。
 - 本輪落實於「同一份規格，跑十次」四篇，見[讀者回饋修訂](same-spec-ten-runs/readability-2026-10-03/README.md)。永久標準已補入 [STYLE.md](../../STYLE.md)。
 
+## 場次標題與個人開場（作者確認，2026-10-23）
+
+AAIF 東京筆記的小標以每節要探討的問題與判斷為重心，避免反覆使用「講者／公司名稱：……」的議程式格式；講者歸屬在正文、圖說及 References 交代。第二篇的東京辦公室與鐵塔開場，依作者指定的兩則 9 月 9 日貼文與原照撰寫，不補造行程或對話；中英文的 Medium story image 均使用筆者的東京鐵塔日景照。共用原則已補入 [STYLE.md](../../STYLE.md)。
+
+## 場次內的分段與收束（作者確認，2026-10-24）
+
+AAIF 兩篇共 13 個場次（含 Kong 工作坊），各以 2～3 個 H3 小標整理機制、證據與延伸分析，最後補一句由前文支持的判斷。原有深度、圖說與來源限制保留，中英文同步；小標不以講者或公司名稱機械起頭。共用原則已補入 [STYLE.md](../../STYLE.md)，本輪核對見[場次結構修訂](aaif-agntcon/session-structure-refinement.md)。
+
+同日依作者要求，以未熟悉相關技術的讀者重新檢查兩篇：沿用 App crash 調查與 Kubernetes 升級情境，先交代元件要解決什麼問題，再讓術語承接意思。例如分清 A2A 的工作委派與 MCP 的工具使用、模型文字 token 與授權憑證，以及檔案復原與行動權限。每篇首次需要時就地說明，不假設讀者已讀前篇，也不把開場改成術語表。中英文保留同樣的理解過程。
+
+後續試讀再補上各場導讀與段內來源入口，先交代講者及主要問題，再進入深入討論。Kong 分析中的版本、模擬方式與核對範圍集中到文末資料註記，正文保留理解機制所需的條件。官方議程、演講錄影、公開簡報與筆者實作錄影按實際來源標示；本輪修訂見[場次導讀與來源註記](aaif-agntcon/reader-entry-refinement.md)。
+
+第三篇〈Agent 記住的經驗，下一次還能相信嗎？〉沿用同一標準，以第二篇的假設升級案例接起關係檢索、記憶修正與主張驗證。三場各有導讀、三個小標與一句判斷，最後以六種尚未執行的驗收情境交代採用決策。開場保留三張筆者澀谷照片，結尾附原貼文，研究場次另用本人現場照；術語、比較分母及來源範圍在需要時解說。中英稿完成三輪自我編修及中文 MCP 檢查，並於同日排程為 11/16、11/18 上午 9 點，見[第三篇研究紀錄](aaif-agntcon/memory.md)。依作者要求，三篇中英開場另加入相同主線的[系列總覽](aaif-agntcon/overview/README.md)：先交代每篇問題與證據的關係，再進入各篇故事；分享圖保留標題、圖例與作者署名。
+
+## 主軸、術語例子與跨篇回扣（作者回饋，2026-10-25）
+
+作者試讀 AAIF 三篇後指出：讀起來不連貫，觀念與資訊不清楚；專有名詞仍難懂，引入新概念時要用容易懂的例子讓讀者進入情境；每篇的主軸要向下展開到每一段，段落之間的連貫要再提升；並要和已發布或已排程的 Medium 文章有更深的回扣，收集來源時交叉參考 OpenAI、Anthropic、AI Engineer 與 AAIF 頻道的相關材料。本輪的落實方式：每篇開頭先用一句話立主軸，再用一張閱讀地圖表把各場演講對到主軸的某一題；術語一律用該節情境裡的小例子帶入（門禁櫃台、公司總機、SOP 資料夾、檔案指紋、遊戲存檔、共用文件的版本）；查核方法與限制集中到文末註記；文末另設〈延伸閱讀：本文接回的幾篇〉，正文在需要處點名既有系列的章節。詳見[重新分析紀錄](aaif-agntcon/rewrite-2026-10-25.md)。
+
 ## Conference and book material (new for this cycle)
 - **A session is cited as speaker, company, session, slide/timestamp**: 「在 AGNTCon Japan 的 X 場，<講者>（<公司>）在 slide N 說…」. Stage numbers are organiser-, vendor- or team-reported and say so; press coverage is not a source. Ground truth is `notes_sep10/11.md`.
 - **References entry for a session**: `org — [session title](https://sched.co/<id>)`, or the slide PDF URL from `sessions.md` when one exists.

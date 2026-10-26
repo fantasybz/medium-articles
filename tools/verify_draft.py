@@ -49,10 +49,17 @@ and both ends of that range are partially selected containers. An empty
 section or an orphan divider left behind at either end is invisible to
 everything else in this file.
 
+Figure captions are the fourth check. A caption lives inside the figure, not
+in a graf, so a caption that never landed (Medium still showing its
+placeholder), landed under the wrong image, or lost its words is invisible to
+the three above. payload["captions"] holds what md2medium.py lifted out of the
+prose, in slot order; the editor dump reads each <figcaption> back the same
+way, and a link inside a caption counts towards the link total on both sides.
+
 The editor side can be either a bare JSON array of graf texts, or an object
-{"texts": [...], "tags": [...], "links": N, "dividers": N} to enable the extra
-checks. Each of the three extras is skipped, with a note, when the editor
-payload does not carry its count.
+{"texts": [...], "tags": [...], "links": N, "dividers": N, "captions": [...]}
+to enable the extra checks. Each extra is skipped, with a note, when the
+editor payload does not carry it.
 """
 
 import html
@@ -130,6 +137,17 @@ def expected_dividers(payload):
     return sum(1 for line in payload["html"].split("\n") if line == "<hr>")
 
 
+def expected_captions(payload):
+    """What each figure's Medium caption should read, in slot order ("" = none).
+
+    A figure's caption is not a graf: it travels in payload["captions"], put
+    there by md2medium.py when the pack's figures.json records one, and the
+    editor dump reads it back from the <figcaption>. Aligned by position with
+    expected_figure_positions(), because that is how the driver pasted them.
+    """
+    return [normalise(c, True) if c else "" for c in payload.get("captions", [])]
+
+
 def normalise(text, from_html, in_code=False):
     """Fold the rewrites Medium applies, so only real differences remain.
 
@@ -168,7 +186,11 @@ def normalise(text, from_html, in_code=False):
 
 
 def anchor_count(payload):
-    return len(ANCHOR.findall(payload["html"]))
+    # A link inside a caption is counted by the editor's `a` query like any
+    # other, so it has to be expected here too, or a correct caption would
+    # read as one link too many.
+    return len(ANCHOR.findall(payload["html"])) \
+        + sum(len(ANCHOR.findall(c)) for c in payload.get("captions", []))
 
 
 def load_editor(path):
@@ -245,6 +267,30 @@ def main():
     elif want_figs:
         print("figures: %d expected — editor payload carried no tag list, "
               "placement not checked" % len(want_figs))
+
+    # A caption is neither a graf nor a figure position: it lives inside the
+    # figure. Compared by position with what the editor reads back from each
+    # <figcaption>, so a caption that never landed, landed under the wrong
+    # image, or kept the placeholder text is reported by figure index.
+    want_caps = expected_captions(payload)
+    if "captions" in editor:
+        got_caps = [normalise(c, False) for c in editor["captions"]]
+        if any(want_caps):
+            if got_caps != want_caps:
+                print("\ncaptions: %d expected, editor has %d figures with %d captions"
+                      % (sum(1 for c in want_caps if c), len(got_caps),
+                         sum(1 for c in got_caps if c)))
+                for i in range(max(len(want_caps), len(got_caps))):
+                    want = want_caps[i] if i < len(want_caps) else "<missing>"
+                    have = got_caps[i] if i < len(got_caps) else "<missing>"
+                    if want != have:
+                        print("  figure %d: source %r\n            editor %r" % (i, want[:160], have[:160]))
+                problems += 1
+            else:
+                print("captions: %d, all match" % sum(1 for c in want_caps if c))
+    elif any(want_caps):
+        print("captions: %d expected — editor payload carried no caption list, not checked"
+              % sum(1 for c in want_caps if c))
 
     # Neither pass above can see a divider: it is not a graf and carries no
     # text. A refill's range crosses every section in the article, so a section

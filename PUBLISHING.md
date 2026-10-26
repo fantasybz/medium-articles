@@ -59,10 +59,10 @@ Medium 的 API 早就形同廢棄，所以只能開瀏覽器。中間踩過的�
 
 | 腳本 | 做什麼 |
 |---|---|
-| `md2medium.py` | `medium-paste.md` → `{title, html, images}` 的 JSON |
+| `md2medium.py` | `medium-paste.md` → `{title, html, images, captions}` 的 JSON；旁邊的 `figures.json` 有記圖說時，把 📌 行後面那一段圖說從內文抽出來放進 `captions` |
 | `chrome_cookies.py` | 從 macOS Chrome 解密匯出某網域的 cookie |
-| `medium_js.py` | 產生餵給 `browse eval` 的瀏覽器片段（標題／內文／圖片／placeholder）；`identify` 認出編輯器裡是哪一篇、`refill` 用新內文蓋掉整篇舊內文、`state` 一次回報圖數與剩餘 placeholder；另有 `selectors` 子指令，吐出給 shell `eval` 的選擇器變數 |
-| `verify_draft.py` | 把編輯器裡的實際內容跟轉換後的 payload 逐塊比對，清點連結數，並比對每張圖落在第幾個 graf |
+| `medium_js.py` | 產生餵給 `browse eval` 的瀏覽器片段（標題／內文／圖片／placeholder）；`identify` 認出編輯器裡是哪一篇、`refill` 用新內文蓋掉整篇舊內文、`state` 一次回報圖數與剩餘 placeholder；另有 `selectors` 子指令，吐出給 shell `eval` 的選擇器變數；`caption`／`captions` 把圖說貼進 figure 自己的 caption 欄並讀回 |
+| `verify_draft.py` | 把編輯器裡的實際內容跟轉換後的 payload 逐塊比對，清點連結數（含 caption 裡的），比對每張圖落在第幾個 graf，再逐張比對 caption 文字 |
 | `medium_patch.py` | 改**已發布**的文章：找到某幾個 graf、整段換掉、逐處換字串、換圖、刪圖 |
 | `medium_draft.sh` | 把上面全部串起來；第二個參數選 `publish/<lang>/` 語言包，並在開瀏覽器前擋掉解析到 repo 外的路徑。加 `--post <id>` 則是**就地重灌既有文章**（Post ID 不變），走的是同一條插圖與驗證流程 |
 | `test_tools.py` | 這些腳本的單元測試：`python3 tools/test_tools.py` |
@@ -106,9 +106,22 @@ cookie 值貼進 repo。**
 順序因此天然正確：figure 落在它原本 📌 標記的位置，最後再由 `verify_draft.py`
 用 graf index 驗一次。
 
+**圖說進 Medium 的 caption 欄**（2026-10-26 起）。`![圖說](figures/F2.png)` 的圖說在
+`medium-paste.md` 裡仍是 📌 行後面的一段正文，手貼的人照貼即可；但 `article_to_paste.py`
+同時把它記在 `figures.json` 的 `assets[].caption`。`md2medium.py` 讀到旁邊有這份記錄，
+就把那一段從內文抽掉、改放進 payload 的 `captions`（跟 `images` 同序，沒圖說的圖是空字串），
+`medium_draft.sh` 在插圖步驟之後逐張把它貼進 Medium 圖片自己的 caption 欄（figure 下方那行
+小字）。只能用 paste 事件：對 figcaption 用 `insertText` 會打進 placeholder 那個 span，
+存檔後就消失（10/26 在 `e3d060cb8b03` 草稿實測）；貼上則文字與連結都留得住，Medium 會把
+連結改寫成 `medium.com/r/?url=` 形式。每張貼完會輪詢讀回，不是 placeholder 才算；
+`verify_draft.py` 再逐張比對 caption 文字、把 caption 裡的連結算進連結總數，重新載入後
+再比一次，證明 Medium 真的存下來了。只比對的時候不想抽圖說，加 `--captions-as-prose`。
+手貼 `medium-paste.md` 的人要自己把那一段剪進 caption 欄。
+
 已有的科學 PNG 可在文章中獨立一行寫成 `![圖說](figures/F2.png)`，原檔放在
-文章資料夾內。`article_to_paste.py` 會產生 `asset-01.png` 插圖標記，把圖說保留成
-正文段落（含圖說內的連結），並在 `figures.json` 的 `assets` 記錄來源路徑與 SHA-256。
+文章資料夾內。`article_to_paste.py` 會產生 `asset-01.png` 插圖標記，在 paste 檔裡把圖說保留成
+正文段落（含圖說內的連結），並在 `figures.json` 的 `assets` 記錄來源路徑、SHA-256 與圖說；
+`medium_draft.sh` 會把圖說設成 Medium 的圖片 caption（見上一節）。
 `render_images.sh` 核對來源後原樣複製到該語言包的 `images/`，不重新繪圖；
 複製後的雜湊證據寫入 `publish/.rendered-assets.json`（英文包在 `publish/en/`）。
 來源只接受文章目錄內的 `.png`，拒絕網址、`..`、symlink 與缺檔，並檢查 PNG 簽名與
@@ -239,7 +252,7 @@ python3 tools/medium_patch.py drop "1*舊圖的CDN檔名"
 
 它開 `https://medium.com/p/<id>/edit`，用一個 Range 把標題以下的整個內文
 （含既有的 figure）一次蓋成新的，然後走**跟建新草稿完全相同**的插圖與驗證流程：
-逐張上傳輪詢、逐張確認 placeholder 真的被選中、`verify_draft.py` 逐塊比對、
+逐張上傳輪詢、逐張確認 placeholder 真的被選中、逐張貼 caption、`verify_draft.py` 逐塊比對、
 最後斷言圖數與 leftoverSlots。**Post ID 不變**，所以系列導覽的短網址不會斷。
 
 動手之前它會擋三關：
@@ -577,6 +590,55 @@ Review 第七節依讀者回饋補清 PR head 不變、整合候選版本仍可�
 目前 `--reuse-figures` 只把 CDN URL 放進 `<img src>`，Medium 可能重新匯入縮放後的圖片，產生新的識別碼。本輪最後沿用已上傳的原圖 URL，並在貼入內容中保留 `data-image-id`、`data-width`、`data-height` 與封面的 `data-is-featured`，讓原圖識別與尺寸一起保留。每個語言版本的七張圖均從原始 CDN 下載後與本機逐像素核對，再從新編輯頁確認識別碼與順序；不能只依圖片張數判定相同。
 
 整篇重貼也可能使預覽摘要回到自動摘文。本輪完成後已還原原封面與預覽文字，並從新分頁核對完整發布設定；排程草稿不需要再次按下 Schedule to publish。
+
+### 2026-10-24：AAIF 東京筆記三篇中英版本與系列總覽
+
+第一篇保留完整參會故事與六場錄影分析，第二篇以另六場簡報討論跨 agent 交接，第三篇再追問跨任務記憶的適用條件與修正。六個版本均已在新分頁核對正文、連結、圖片與排程。第三篇於本輪建立並各送出一次排程；前兩篇沿用原 ID 與發文時段，更新後核對發布設定，沒有再次送出排程。
+
+三輪敘事與深度精修、標題及開場修訂後，10/24 依作者試讀回饋，把前兩篇 13 段場次分析各整理成 2～3 個小標與一句收束，補上術語解說及附官方議程、錄影或簡報的導讀。Kong 的版本、模擬方式與核對範圍集中到文末資料註記，另附專案首頁及七個 Facebook 原始來源入口。本輪再依作者要求，把相同主線的[系列總覽](research/2026-10/aaif-agntcon/overview/README.md)放進三篇中英開場，並另存可獨立分享的 PNG。最新讀回：第一篇中英各 209 個文字區塊，第二篇中文 155、英文 154，第三篇中英各 133；各篇每個語言版本分別有 18／11／11 張圖。原有分析正文保留，前兩篇結尾補上第三篇導覽。前輪修訂見[場次導讀及來源註記](research/2026-10/aaif-agntcon/reader-entry-refinement.md)與[場次分段及術語解說](research/2026-10/aaif-agntcon/session-structure-refinement.md)；最後正文與設定以[發布核對](research/2026-10/aaif-agntcon/publication.md)為準。
+
+| 文章 | 中文（臺北時間） | 英文（臺北時間） | 每版圖片數 |
+|---|---|---|---:|
+| 從東京 AGNTCon 回來：Agent 接上工具之後，工作才剛開始 | [2026-11-02 09:00](https://medium.com/p/e3d060cb8b03/edit) | [2026-11-04 09:00](https://medium.com/p/565d3e375896/edit) | 18 |
+| 把工作交給另一個 Agent 之前：授權、狀態與復原 | [2026-11-09 09:00](https://medium.com/p/e68dc5ab1275/edit) | [2026-11-11 09:00](https://medium.com/p/8b39e1abe616/edit) | 11 |
+| Agent 記住的經驗，下一次還能相信嗎？ | [2026-11-16 09:00](https://medium.com/p/5380c278562e/edit) | [2026-11-18 09:00](https://medium.com/p/bbf6a23c6481/edit) | 11 |
+
+六個日期為週一／週三；10/24 再核對十一月日曆，與既有週二／週四時段錯開。六份 AAIF 的 Notify subscribers 均關閉。封面均使用作者照片：第一篇為東京會場，第二篇為東京辦公室窗外的東京鐵塔日景，第三篇為澀谷觀景台夜景。前兩篇的排程、Topics、預覽文字、封面識別與尺寸、通知設定均與更新前相符。原六篇規劃剩餘五份草稿先前已確認沒有排程，舊批次程式保持暫停。
+
+各版計數、Topics、封面、預覽、時間戳與來源限制見 [AAIF 發布紀錄](research/2026-10/aaif-agntcon/publication.md)。41 份簡報原檔及索引在本機研究目錄；[公開清單](research/2026-10/aaif-agntcon/slides.md)記錄原站連結、檔案驗證與未能下載的 ADK Google Slides。排程稿仍不能當成已公開的 Ambassador 申請作品；實際上線後再確認日期並補齊系列與語言入口。
+
+### 2026-10-25／26：三篇依來源重新分析改寫、Codex 三輪審稿，六份排程稿已重灌（圖說進 caption）
+
+作者試讀後指出三篇讀起來不連貫、觀念不清楚，要求依 Codex session 提供的來源重新分析，達到既有系列的水準，並補入 PagerDuty 場次、交叉參考 OpenAI／Anthropic／AI Engineer 的材料、加深與已發布及已排程文章的回扣。本輪由 Claude 改寫三篇中英稿，理由與新增來源見[重新分析紀錄](research/2026-10/aaif-agntcon/rewrite-2026-10-25.md)。改寫後再由 Codex 對中文稿做三輪審稿並逐輪修訂（紀錄同上）。本地中文原稿、貼稿、`figures.json` 與圖片已更新（第一篇新增兩張 PagerDuty 簡報圖；三輪後中英版圖片數各為 23／14／13，含新增的決策表、義務表、交接紀錄表、記憶類型表與驗收卡）；英文三篇已鏡像三輪修訂並重新算繪；**2026-10-26 凌晨已依作者確認（「開始」）把六份排程稿就地重灌成三輪後的定稿**，用的指令（沿用原 Post ID）：
+
+```bash
+./tools/medium_draft.sh 2026-11-aaif-after-tokyo --post e3d060cb8b03
+./tools/medium_draft.sh 2026-11-aaif-after-tokyo en --post 565d3e375896
+./tools/medium_draft.sh 2026-11-aaif-agent-handoffs --post e68dc5ab1275
+./tools/medium_draft.sh 2026-11-aaif-agent-handoffs en --post 8b39e1abe616
+./tools/medium_draft.sh 2026-11-aaif-agent-memory --post 5380c278562e
+./tools/medium_draft.sh 2026-11-aaif-agent-memory en --post bbf6a23c6481
+```
+
+重灌結果（2026-10-26 01:30–02:05，逐篇 log 在 `.context/research/aaif-2026-10-25/codex-fix/repour-*-captions.log`，不入版本庫）：
+六篇都通過 `verify_draft.py` 兩次比對（貼完一次、等 Medium 存好重新載入再一次）——第一篇中英各 214 段／23 圖／19 則圖說，連結 94／95；
+第二篇 160 段／14 圖／10 則圖說，連結 54／55；第三篇 126 段／13 圖／7 則圖說，連結 49／50；分隔線各 1、placeholder 0。
+這一輪起每張來源圖片的圖說改貼進 Medium 圖片自己的 caption 欄（見〈圖片是怎麼進去的〉），所以文字區塊數比圖說還在正文時少了圖說的則數。
+另開新分頁讀回：六篇 `isPublished: false`、排程時段全部不變（11/02、11/04、11/09、11/11、11/16、11/18 的 UTC 01:00）、Notify subscribers 關閉、圖片數相符。
+
+兩件事留給作者在發布對話框處理：
+
+1. **封面**。第一篇中英的第一張內文圖就是會場照，封面不變；第二、三篇中英的第一張內文圖是系列總覽圖，重灌後封面被重設成總覽圖
+   （第二篇原本是東京鐵塔照、第三篇原本是澀谷夜景照）。改法見〈整篇重灌〉的「Change preview image」步驟，按 Done 就存，不要按 Schedule。
+2. **預覽摘要**。只有英文第一篇讀回的仍是自訂摘要；其餘五篇讀回的是 Medium 自動摘自 TL;DR 的首句，ledger 原本記的自訂摘要不在 Medium 設定裡，要自訂得重設。
+
+各篇 `PUBLISHED.md` 與[發布核對](research/2026-10/aaif-agntcon/publication.md)已依讀回值更新。
+
+### 2026-10-24：第三篇上版與檢查
+
+〈Agent 記住的經驗，下一次還能相信嗎？〉的[中文](2026-11-aaif-agent-memory/article.md)、[英文](2026-11-aaif-agent-memory/article.en.md)與兩份發布包已上傳並排程。第三篇沿用前篇的假設升級情境，以 CrabRAG、Agent Memory 與自主研究驗證討論經驗保存、修正及查核；每版有九張來源圖（五張作者照片及四張投影片）、一張六案例比較表及一張總覽。開場保留三張澀谷照片。三輪編修、實際 MCP 結果及來源方法見[研究紀錄](research/2026-10/aaif-agntcon/memory.md)，上版結果見[中文 ledger](2026-11-aaif-agent-memory/publish/PUBLISHED.md)與[英文 ledger](2026-11-aaif-agent-memory/publish/en/PUBLISHED.md)。
+
+三份中文原稿與三份生成貼稿均完成實際 strict zh-TW MCP，errors 為 0，提示按語境覆核；總覽文字與預覽摘要另行檢查。20 項既有內容與發布包檢查通過。英文第三篇已連到先行排程的中文版；其他尚未公開的系列入口保留日期或「即將發布」標示，待實際上線後再更新。
 
 ## Medium 會改動的排版
 

@@ -251,7 +251,8 @@ class TestLocalPNGAssets(unittest.TestCase):
         self.assertEqual((figures, tables), ([], []))
         self.assertEqual(text, "# T\n\n📌【在此插入圖 asset-01.png】\n\n%s\n\n\n見 [附錄](../other/article.md)。\n" % caption)
         self.assertEqual(assets, [{"file": "asset-01.png", "source": "figures/F2.png",
-                                   "sha256": hashlib.sha256(PNG).hexdigest()}])
+                                   "sha256": hashlib.sha256(PNG).hexdigest(),
+                                   "caption": caption}])
         # Match the existing tools/test_tools.py lockstep scan, including links
         # inside the caption. Converting a PNG must never swallow one of them.
         href = re.compile(r"\]\((https?://[^)]+|\.\./[^)]+)\)")
@@ -261,6 +262,16 @@ class TestLocalPNGAssets(unittest.TestCase):
         self.assertEqual(payload["images"], ["asset-01.png"])
         self.assertIn('<a href="https://example.test/p?q=1&amp;b=2">研究</a>', payload["html"])
         self.assertIn("圖 F2：見", payload["html"])
+        # Handed the recorded captions, the converter lifts that same paragraph
+        # out of the prose into the figure's Medium caption, link included, and
+        # the body loses exactly that one paragraph. This is what the driver
+        # does with the figures.json beside the paste.
+        lifted = md2medium.convert(text, {a["file"]: a["caption"] for a in assets})
+        self.assertEqual(lifted["images"], ["asset-01.png"])
+        self.assertEqual(lifted["captions"], [md2medium.inline(caption)])
+        self.assertIn('<a href="https://example.test/p?q=1&amp;b=2">研究</a>', lifted["captions"][0])
+        self.assertNotIn("圖 F2：見", lifted["html"])
+        self.assertIn("附錄", lifted["html"])
 
     def test_mixed_figure_types_and_repeated_sources_have_unique_ordered_slots(self):
         source = ("# T\n\n" + fence(MERMAID_A) + "\n![第一張](figures/F2.png)\n\n"
@@ -515,8 +526,12 @@ class TestRenderLocalAssets(unittest.TestCase):
                 spec = json.loads(read(os.path.join(pack, "figures.json")))
                 self.assertEqual((spec["figures"], spec["tables"]), ([], []))
                 proof = json.loads(read(os.path.join(pack, ".rendered-assets.json")))
-                self.assertEqual(proof, {"method": "byte-copy", "assets": [dict(
-                    spec["assets"][0], copied_sha256=hashlib.sha256(PNG).hexdigest())]})
+                # The evidence is about bytes: the caption figures.json also
+                # records is prose and stays out of it.
+                self.assertEqual(proof, {"method": "byte-copy", "assets": [
+                    {"file": "asset-01.png", "source": "figures/F2.png",
+                     "sha256": hashlib.sha256(PNG).hexdigest(),
+                     "copied_sha256": hashlib.sha256(PNG).hexdigest()}]})
                 payload_path = os.path.join(self.root, "payload.json")
                 out = subprocess.run([sys.executable, os.path.join(REPO, "tools", "md2medium.py"),
                                       os.path.join(pack, "medium-paste.md"), "--out", payload_path],
@@ -524,7 +539,13 @@ class TestRenderLocalAssets(unittest.TestCase):
                 self.assertEqual(out.returncode, 0, out.stderr)
                 payload = json.loads(read(payload_path))
                 self.assertEqual(payload["images"], ["asset-01.png"])
-                self.assertIn("<p>圖 F2：科學圖</p>", payload["html"])
+                # The caption reaches Medium as the figure's own caption, not
+                # as a body paragraph: the pack's figures.json recorded it, and
+                # the converter run beside that file lifts it out of the prose.
+                self.assertEqual(spec["assets"][0]["caption"], "圖 F2：科學圖")
+                self.assertEqual(payload["captions"], ["圖 F2：科學圖"])
+                self.assertNotIn("圖 F2：科學圖", payload["html"])
+                self.assertIn("<p>正文。</p>", payload["html"])
                 self.assertEqual(read(os.path.join(self.article, "article.md")), self.source)
 
     def test_changed_or_unsafe_sources_fail_before_old_output_is_removed(self):
@@ -639,7 +660,9 @@ class TestCommittedPastesAreReproducible(unittest.TestCase):
                                          "%s: local PNG copy differs from its source" % pack)
                 if assets:
                     self.assertEqual(json.loads(read(os.path.join(pack, ".rendered-assets.json"))),
-                                     {"method": "byte-copy", "assets": [dict(a, copied_sha256=a["sha256"]) for a in assets]},
+                                     {"method": "byte-copy", "assets": [
+                                         {"file": a["file"], "source": a["source"], "sha256": a["sha256"],
+                                          "copied_sha256": a["sha256"]} for a in assets]},
                                      "%s: local PNG copy evidence is stale" % pack)
         self.assertGreaterEqual(with_spec, 4)
 
