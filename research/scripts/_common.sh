@@ -15,7 +15,7 @@ ROOT="${ROOT:-$(cd "$_COMMON_HERE/../.." && pwd)}"
 # sysexits(3)，跟 tools/medium_draft.sh 同一組
 EX_USAGE=64        # 參數錯
 EX_UNAVAILABLE=69  # 少了外部程式（browse、codex）
-EX_TEMPFAIL=75     # 暫時不能跑（collect.sh 正持有瀏覽器），稍後重試
+EX_TEMPFAIL=75     # 暫時不能跑（collect.sh 正持有瀏覽器，或 browse daemon 屬於別的 session），稍後重試
 
 # browse：repo 內的 .claude/skills 優先，再退到 $HOME（同 tools/medium_draft.sh）
 BROWSE="$ROOT/.claude/skills/gstack/browse/dist/browse"
@@ -77,8 +77,10 @@ HEADLESS_SCALE=2
 prepare_headless_viewport() {
   refuse_if_collecting
   local status cur
-  # 先接住輸出再判斷：`if cmd | grep -q` 在 cmd 失敗時永遠不會成立（CLAUDE.md）
-  status="$("$BROWSE" status 2>/dev/null)" || status=""
+  # 先接住輸出再判斷：`if cmd | grep -q` 在 cmd 失敗時永遠不會成立（CLAUDE.md）。兩個串流都要收：
+  # browse 把「別的 session」的拒絕寫在 stderr 並以 1 退出，stdout 是空的；`2>/dev/null` 加 `|| status=""`
+  # 會把它整個丟掉，下面的守門永遠不會觸發（2026-10-26 /ship 第二輪審查，三個 specialist 各自重現）。
+  status="$("$BROWSE" status 2>&1)" || true
   case "$status" in
     *"started by another session"*)
       echo "the browse daemon belongs to another session (headed/proxy); if that session is done with it, run '$BROWSE disconnect' yourself and retry" >&2

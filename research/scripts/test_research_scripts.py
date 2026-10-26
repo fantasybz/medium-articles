@@ -611,13 +611,16 @@ def png_header(width, height):
 
 FAKE_BROWSE = r"""#!/bin/sh
 # Stands in for gstack's browse at the repo-local path _common.sh looks at first.
-# `status` prints FAKE_STATUS; the viewport probe says the daemon is already 1400 wide
-# at 2x so nothing gets reconfigured; the measurement prints FAKE_INFO; `screenshot`
-# copies FAKE_PNG into place; the svg dump writes an empty file. The first argument of
-# every call is appended to FAKE_BROWSE_LOG so a test can assert what the script asked.
+# `status` prints a healthy daemon; with FAKE_STATUS set it prints that refusal on STDERR
+# and exits 1, the way browse's cli.ts reports a daemon started by another session (stdout
+# stays empty). The viewport probe says the daemon is already 1400 wide at 2x so nothing
+# gets reconfigured; the measurement prints FAKE_INFO; `screenshot` copies FAKE_PNG into
+# place; the svg dump writes an empty file. The first argument of every call is appended
+# to FAKE_BROWSE_LOG so a test can assert what the script asked.
 printf '%s\n' "$1" >> "$FAKE_BROWSE_LOG"
 case "$1" in
-  status) printf '%s\n' "$FAKE_STATUS" ;;
+  status) if [ -n "$FAKE_STATUS" ]; then printf '%s\n' "$FAKE_STATUS" >&2; exit 1; fi
+          printf 'Status: healthy\nMode: launched\n' ;;
   js) case "$2" in
         *innerWidth*) echo "1400@2" ;;
         *) if [ "$3" = "--raw" ]; then : > "$5"; else printf '%s\n' "$FAKE_INFO"; fi ;;
@@ -667,11 +670,18 @@ class TestRenderRefusesForeignDaemon(unittest.TestCase):
         self.assertEqual(out.returncode, 75, out.stdout + out.stderr)
         self.assertIn("belongs to another session", out.stderr)
         self.assertIn("disconnect", out.stderr)
-        # the refusal lives in the shared pre-flight that both render scripts source
-        self.assertIn("started by another session", read(os.path.join(REPO, "research/scripts/_common.sh")))
         with open(os.path.join(self.pack, "images", "diagram-01.png"), "rb") as fh:
             self.assertEqual(fh.read(), b"previous output")
         # it asked for the status and nothing else: no page load, no disconnect
+        self.assertEqual(read(self.calls).split(), ["status"])
+
+    def test_the_shared_preflight_itself_exits_75(self):
+        # the refusal lives in the pre-flight both render scripts source
+        out = subprocess.run(["bash", "-c", '. "$1" && prepare_headless_viewport', "_",
+                              os.path.join(REPO, "research/scripts/_common.sh")],
+                             env=self.env, capture_output=True, text=True)
+        self.assertEqual(out.returncode, 75, out.stdout + out.stderr)
+        self.assertIn("belongs to another session", out.stderr)
         self.assertEqual(read(self.calls).split(), ["status"])
 
 
@@ -697,10 +707,10 @@ class TestMermaidCheckSizeGuards(unittest.TestCase):
         self.shot = os.path.join(self.root, "shot.png")
         self.calls = os.path.join(self.root, "browse.log")
 
-    def check(self, info, png):
+    def check(self, info, png, status=""):
         with open(self.shot, "wb") as fh:
             fh.write(png)
-        env = dict(os.environ, ROOT=self.root, FAKE_BROWSE_LOG=self.calls, FAKE_STATUS="",
+        env = dict(os.environ, ROOT=self.root, FAKE_BROWSE_LOG=self.calls, FAKE_STATUS=status,
                    FAKE_INFO=json.dumps(info), FAKE_PNG=self.shot)
         return subprocess.run(["bash", os.path.join(REPO, "research/scripts/mermaid_check.sh"), self.mmd, os.path.join(self.root, "out")],
                               env=env, capture_output=True, text=True)
@@ -730,8 +740,23 @@ class TestMermaidCheckSizeGuards(unittest.TestCase):
         info = {k: v for k, v in self.INFO.items() if k not in ("wrapW", "wrapH", "dpr")}
         out = self.check(info, png_header(1468, 1136))
         self.assertEqual(out.returncode, 2, out.stdout + out.stderr)
-        self.assertIn("fallback-width capture", out.stdout)
+        self.assertIn("has no #wrap width", out.stdout)
         self.assertNotIn("PASS", out.stdout)
+
+    def test_empty_or_non_png_screenshot_is_a_render_error(self):
+        for shot in (b"", png_header(1468, 1136)[:23]):
+            with self.subTest(size=len(shot)):
+                out = self.check(self.INFO, shot)  # browse exited 0 but wrote no usable image
+                self.assertEqual(out.returncode, 2, out.stdout + out.stderr)
+                self.assertIn("screenshot is not a PNG", out.stdout)
+                self.assertNotIn("PASS", out.stdout)
+
+    def test_foreign_daemon_stops_mermaid_check_before_loading_the_page(self):
+        out = self.check(self.INFO, png_header(1468, 1136), status=FOREIGN_DAEMON)
+        self.assertEqual(out.returncode, 75, out.stdout + out.stderr)
+        self.assertIn("belongs to another session", out.stderr)
+        self.assertEqual(read(self.calls).split(), ["status"])
+        self.assertFalse(os.path.exists(os.path.join(self.root, "out.png")))
 
 
 class TestCommittedPastesAreReproducible(unittest.TestCase):

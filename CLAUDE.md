@@ -51,7 +51,12 @@ exits non-zero on any mismatch.
 When adding a guard to the driver, capture the output first
 (`out=$(B eval ...) || exit 1`) and test it. `if B eval ... | grep -q ...` can
 never fire: browse writes failures to stderr with empty stdout, and a failing
-left side makes the `if` false rather than true.
+left side makes the `if` false rather than true. The capture form has the same
+trap: `status=$(browse status 2>/dev/null) || status=""` throws the refusal
+away together with its exit code, so a guard matching on it is dead against the
+real binary (the 2026-10-26 pre-flight shipped that way for half a day). Capture
+both streams (`2>&1 || true`), and make the test's fake browse write to stderr
+and exit non-zero the way the real one does.
 
 The second command covers `research/scripts/` the same way: stdlib `unittest`,
 no network, no browser. It tests the pure-Python scripts — the

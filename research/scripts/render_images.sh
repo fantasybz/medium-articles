@@ -110,9 +110,7 @@ for m in "$W"/diagram-*.mmd; do
   else echo "  $n: FAIL"; echo "$out" | sed 's/^/     /'; fail=$((fail+1)); fi
 done
 
-if compgen -G "$W/table-*.html" >/dev/null; then
-  prepare_headless_viewport   # 純本機 PNG 不需要啟動瀏覽器
-fi
+# 瀏覽器已在清舊檔之前由 prepare_headless_viewport 準備好（只有表格的發布包也走那一次）。
 for h in "$W"/table-*.html; do
   [ -e "$h" ] || break
   n="$(basename "$h" .html)"
