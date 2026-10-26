@@ -2,6 +2,7 @@
 
 **Title** Green Is Not Done, Part 2 — Review Is the Control Point, Not the Bottleneck: Triage, Reviewer Fleets and the Closed-Loop Ban
 **Post ID** `4d36d0f2f9c1`（draft https://medium.com/p/4d36d0f2f9c1/edit；stable URL after publishing https://medium.com/p/4d36d0f2f9c1）
+**Status** Published；2026-10-22T09:01:02+08:00，2026-10-23 讀回確認。
 **Schedule** 2026-10-22（四）09:00 GMT+8（2026-10-18 已重新讀取 Medium 排程確認）
 **Built with** `./tools/medium_draft.sh 2026-10-green-review en`, block-by-block verification clean
 
@@ -156,3 +157,7 @@ A further fresh settings read confirmed that the title, cover identifier and dim
 儲存後另開編輯頁逐塊比對：216 個文字區塊、34 個連結、7 張圖、12 條分隔線全部相符；連結目的地與順序一致，付款程式碼連結為 0，圖片識別碼與順序保留。
 
 發布設定另從新分頁讀回，與修改前完全相同：仍為 `isPublished: false`；排程 **2026-10-22 09:00 Asia/Taipei**（`publishAt: 1792630800000`）。標題、Topics、封面、預覽文字與通知設定均保留，沒有重新排程。
+
+## 2026-10-23 公開狀態核對
+
+以新分頁讀取 [公開文章](https://medium.com/p/4d36d0f2f9c1)，確認 `isPublished=true`、`firstPublishedAt=1792630862571`，對應臺北時間 2026-10-22T09:01:02+08:00。本次只讀取發布狀態，沒有重灌本文、改動發布設定或重新寄送通知；不把狀態讀回當成全文重新驗證。
