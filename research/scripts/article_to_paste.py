@@ -8,7 +8,8 @@ The mapping is the one every published piece already follows (checked on 2026-09
 
 * a ```mermaid block        -> 📌【在此插入圖 diagram-NN.png】   (NN counts from 01 in document order)
 * a markdown table          -> 📌【在此插入表 table-NN.png】
-* ![caption](local.png)     -> 📌【在此插入圖 asset-NN.png】 followed by the caption as prose;
+* ![caption](local.png)     -> 📌【在此插入圖 asset-NN.png】 followed by the caption as prose, and the caption
+                             is recorded in figures.json so medium_draft.sh can set it as the figure's Medium caption;
                                the existing PNG is copied unchanged, never rendered again
 * everything else           -> byte for byte the same (links included — tools/test_tools.py's lockstep
                                scan compares the link list and the 「（即將發布）」 count of both files)
@@ -202,7 +203,8 @@ def convert(article_text, *, article_dir=None, assets=None):
             data = read_local_png(article_dir, source)
             name = "asset-%02d.png" % (len(local_assets) + 1)
             local_assets.append({"file": name, "source": source,
-                                 "sha256": hashlib.sha256(data).hexdigest()})
+                                 "sha256": hashlib.sha256(data).hexdigest(),
+                                 "caption": caption})
             out.append(md2medium.slot_line("圖", name))
             if caption:
                 out.extend(("", caption, ""))

@@ -8,7 +8,14 @@ This emits that HTML plus the title and the ordered image list.
 Usage:
     python3 tools/md2medium.py 2026-09-agentic-engineering-platform --out /tmp/payload.json
 
-Output JSON: {"title": str, "html": str, "images": [filename, ...]}
+Output JSON: {"title": str, "html": str, "images": [filename, ...],
+              "captions": [html or "", one per image, in slot order]}
+
+A caption that article_to_paste.py recorded in the pack's figures.json is
+lifted out of the prose: the paragraph right after the figure's 📌 line is
+dropped from `html` and carried in `captions`, where medium_draft.sh pastes it
+into the figure's own Medium caption. Without a figures.json (older packs,
+hand-written pastes) every paragraph stays prose, as before.
 
 Two mappings worth knowing, both learned the hard way:
 
@@ -48,6 +55,21 @@ def slot_line(kind, filename):
         raise ValueError("%r is not a figure name the slot pattern accepts "
                          "([A-Za-z0-9-]+.png)" % filename)
     return line
+
+def load_captions(paste_path):
+    """The captions article_to_paste.py recorded next to this paste, by image name.
+
+    figures.json is optional: an older pack or a hand-written paste has none,
+    and then nothing is lifted out of the prose. Only assets with a non-empty
+    caption count; a figure without one has no paragraph to move.
+    """
+    spec_path = os.path.join(os.path.dirname(os.path.abspath(paste_path)), "figures.json")
+    if not os.path.isfile(spec_path):
+        return {}
+    with open(spec_path, encoding="utf-8") as fh:
+        spec = json.load(fh)
+    return {a["file"]: a["caption"] for a in spec.get("assets", []) if a.get("caption")}
+
 
 BLOCK_START = re.compile(r"^(#{1,6}\s|[-*]\s|\d+\.\s|>|```|-{3,}$|📌)")
 
@@ -135,7 +157,7 @@ def autocorrect_lines(lines):
     return _flagged_lines(lines, AUTOCORRECT)
 
 
-def convert(markdown):
+def convert(markdown, captions=None):
     # The leading HTML comment is the human checklist, not article content.
     body = re.sub(r"^<!--.*?-->\s*", "", markdown, flags=re.S)
     # Every real medium-paste.md opens with that comment, so line numbers in
@@ -161,7 +183,7 @@ def convert(markdown):
                  % (len(bad), "\n".join("  line %d: %s" % (k + offset, l.strip()[:78])
                                         for k, l in bad[:10])))
 
-    out, images = [], []
+    out, images, caption_html = [], [], []
     title = None
     i, n = 0, len(lines)
 
@@ -201,9 +223,26 @@ def convert(markdown):
 
         slot = SLOT_RE.match(stripped)
         if slot:
-            images.append(slot.group(1))
-            out.append("<p>%s</p>" % (SLOT_MARK % slot.group(1)))
+            name = slot.group(1)
+            images.append(name)
+            out.append("<p>%s</p>" % (SLOT_MARK % name))
+            caption_html.append("")
             i += 1
+            if captions and name in captions:
+                # The caption is the paragraph right after its 📌 line, exactly
+                # as article_to_paste.py wrote it. Matched on the text, not on
+                # position alone: a paste someone has edited by hand could have
+                # moved or dropped it, and lifting the wrong paragraph out of
+                # the body would lose real prose while every count still agreed.
+                j = i
+                while j < n and not lines[j].strip():
+                    j += 1
+                if j < n and lines[j].strip() == captions[name].strip():
+                    caption_html[-1] = inline(captions[name].strip())
+                    i = j + 1
+                else:
+                    print("warning: the caption of %s is not the paragraph right after "
+                          "its slot; left in the prose" % name, file=sys.stderr)
             continue
         if stripped.startswith("\U0001F4CC"):
             # Never fall through to the paragraph branch: a 📌 line this regex
@@ -254,7 +293,8 @@ def convert(markdown):
 
     if title is None:
         sys.exit("no '# Title' line found")
-    return {"title": title, "html": "\n".join(out), "images": images}
+    return {"title": title, "html": "\n".join(out), "images": images,
+            "captions": caption_html}
 
 
 def main():
@@ -262,6 +302,8 @@ def main():
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("article", help="article directory, or a path to medium-paste.md")
     ap.add_argument("--out", default="/tmp/medium-payload.json")
+    ap.add_argument("--captions-as-prose", action="store_true",
+                    help="keep every caption as a body paragraph even when figures.json records it")
     args = ap.parse_args()
 
     src = args.article
@@ -270,7 +312,8 @@ def main():
     if not os.path.isfile(src):
         sys.exit("no such file: " + src)
 
-    payload = convert(open(src, encoding="utf-8").read())
+    captions = {} if args.captions_as_prose else load_captions(src)
+    payload = convert(open(src, encoding="utf-8").read(), captions)
 
     images_dir = os.path.join(os.path.dirname(src), "images")
     missing = [f for f in payload["images"]
@@ -285,6 +328,7 @@ def main():
     print("title:  %s" % payload["title"])
     print("html lines: %d" % lines)
     print("images: %d (%s)" % (len(payload["images"]), ", ".join(payload["images"])))
+    print("captions: %d set as Medium captions" % sum(1 for c in payload["captions"] if c))
     print("wrote:  %s" % args.out)
 
 

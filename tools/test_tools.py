@@ -21,7 +21,9 @@ only checked at run time, by the driver, against the converted payload.
 """
 
 import base64
+import contextlib
 import glob
+import io
 import json
 import os
 import re
@@ -155,6 +157,71 @@ class TestConvert(unittest.TestCase):
         out = self.convert("# T\n\nlead in:\n📌【在此插入圖 d.png】\n")
         self.assertIn("<p>lead in:</p>", out["html"])
         self.assertEqual(out["images"], ["d.png"])
+
+    def test_a_recorded_caption_leaves_the_prose_for_the_caption_list(self):
+        # The paragraph after a figure is its caption in every pack
+        # article_to_paste.py writes. Medium shows a figure's own caption under
+        # the image; left in the prose it reads as a stray sentence.
+        out = md2medium.convert(
+            "# T\n\n📌【在此插入圖 a.png】\n\n圖一：看 [文件](https://x.test)。\n\ntail\n",
+            {"a.png": "圖一：看 [文件](https://x.test)。"})
+        self.assertEqual(out["images"], ["a.png"])
+        self.assertEqual(out["captions"], ['圖一：看 <a href="https://x.test">文件</a>。'])
+        self.assertNotIn("圖一", out["html"])
+        self.assertIn("<p>IMGSLOT-a.png-ENDSLOT</p>\n<p>tail</p>", out["html"])
+
+    def test_captions_line_up_with_images_when_a_figure_has_none(self):
+        # Diagrams and tables have no caption; the list still has one entry per
+        # image, because the driver indexes figures by position.
+        out = md2medium.convert(
+            "# T\n\n📌【在此插入圖 d.png】\n\n📌【在此插入圖 a.png】\n\ncap\n", {"a.png": "cap"})
+        self.assertEqual(out["images"], ["d.png", "a.png"])
+        self.assertEqual(out["captions"], ["", "cap"])
+
+    def test_a_caption_that_is_not_the_next_paragraph_stays_in_the_prose(self):
+        # Lifting by position alone would take real prose out of a hand-edited
+        # paste while every count still agreed. Only an exact match moves, and
+        # the mismatch is said out loud.
+        err = io.StringIO()
+        with contextlib.redirect_stderr(err):
+            out = md2medium.convert(
+                "# T\n\n📌【在此插入圖 a.png】\n\nreal prose\n\ncap\n", {"a.png": "cap"})
+        self.assertEqual(out["captions"], [""])
+        self.assertIn("<p>real prose</p>\n<p>cap</p>", out["html"])
+        self.assertIn("caption of a.png is not the paragraph right after its slot", err.getvalue())
+
+    def test_without_captions_the_paragraph_after_a_slot_is_prose_as_before(self):
+        out = md2medium.convert("# T\n\n📌【在此插入圖 a.png】\n\ncap\n")
+        self.assertEqual(out["captions"], [""])
+        self.assertIn("<p>cap</p>", out["html"])
+
+
+class TestLoadCaptions(unittest.TestCase):
+    """load_captions reads what article_to_paste.py recorded beside the paste."""
+
+    def paste(self, spec=None):
+        d = tempfile.TemporaryDirectory()
+        self.addCleanup(d.cleanup)
+        path = os.path.join(d.name, "medium-paste.md")
+        with open(path, "w", encoding="utf-8") as fh:
+            fh.write("# T\n")
+        if spec is not None:
+            with open(os.path.join(d.name, "figures.json"), "w", encoding="utf-8") as fh:
+                json.dump(spec, fh, ensure_ascii=False)
+        return path
+
+    def test_no_figures_json_means_no_captions(self):
+        # Older packs and hand-written pastes: every paragraph stays prose.
+        self.assertEqual(md2medium.load_captions(self.paste()), {})
+
+    def test_only_assets_with_a_caption_are_returned(self):
+        spec = {"figures": [{"file": "diagram-01.png", "mermaid": "graph TD"}], "tables": [],
+                "assets": [{"file": "asset-01.png", "source": "f/a.png", "sha256": "0" * 64,
+                            "caption": "cap"},
+                           {"file": "asset-02.png", "source": "f/b.png", "sha256": "0" * 64,
+                            "caption": ""},
+                           {"file": "asset-03.png", "source": "f/c.png", "sha256": "0" * 64}]}
+        self.assertEqual(md2medium.load_captions(self.paste(spec)), {"asset-01.png": "cap"})
 
 
 class TestSlotLine(unittest.TestCase):
@@ -366,14 +433,19 @@ class TestFigurePlacement(unittest.TestCase):
 
 
 class TestGateCatchesWhatTextCannotSee(unittest.TestCase):
-    def gate(self, editor):
+    def gate(self, editor, caption=None):
         root = tempfile.TemporaryDirectory()
         self.addCleanup(root.cleanup)
         p = os.path.join(root.name, "p.json")
         g = os.path.join(root.name, "g.json")
+        # With a caption, the paste carries it as the paragraph after the slot
+        # and the converter is handed the record figures.json would hold, so
+        # the payload is the one the driver builds for a captioned pack.
+        after_slot = "" if caption is None else "%s\n\n" % caption
         payload = md2medium.convert(
             "# T\n\nsee [docs](https://x.test) now\n\n"
-            "📌【在此插入圖 a.png】\n\ntail\n")
+            "📌【在此插入圖 a.png】\n\n%stail\n" % after_slot,
+            None if caption is None else {"a.png": caption})
         with open(p, "w", encoding="utf-8") as fh:
             json.dump(payload, fh, ensure_ascii=False)
         with open(g, "w", encoding="utf-8") as fh:
@@ -417,6 +489,49 @@ class TestGateCatchesWhatTextCannotSee(unittest.TestCase):
         out = self.gate(self.full(dividers=0))
         self.assertEqual(out.returncode, 0, out.stdout)
         self.assertIn("dividers: 0, all accounted for", out.stdout)
+
+    def test_a_caption_that_landed_passes_and_says_so(self):
+        out = self.gate(self.full(captions=["圖說"]), caption="圖說")
+        self.assertEqual(out.returncode, 0, out.stdout)
+        self.assertIn("captions: 1, all match", out.stdout)
+
+    def test_a_caption_that_never_landed_is_caught(self):
+        # The text pass cannot see it: a caption is not a graf, and a figure
+        # whose caption still shows the placeholder has the same grafs as one
+        # that got its caption. Reported by figure index, both sides shown.
+        out = self.gate(self.full(captions=[""]), caption="圖說")
+        self.assertEqual(out.returncode, 1)
+        self.assertIn("captions: 1 expected, editor has 1 figures with 0 captions", out.stdout)
+        self.assertIn("figure 0: source '圖說'", out.stdout)
+
+    def test_a_caption_with_the_wrong_words_is_caught(self):
+        out = self.gate(self.full(captions=["別的"]), caption="圖說")
+        self.assertEqual(out.returncode, 1)
+        self.assertIn("editor '別的'", out.stdout)
+
+    def test_a_link_inside_a_caption_is_expected_not_surplus(self):
+        # The editor counts every `a` under it, figcaptions included, so a
+        # correct caption with a link would read as one link too many unless
+        # the expected total includes it too -- and one link short is still
+        # a lost link.
+        out = self.gate(self.full(links=2, captions=["見 文件"]), caption="見 [文件](https://y.test)")
+        self.assertEqual(out.returncode, 0, out.stdout)
+        out = self.gate(self.full(links=1, captions=["見 文件"]), caption="見 [文件](https://y.test)")
+        self.assertEqual(out.returncode, 1)
+        self.assertIn("links: expected 2", out.stdout)
+
+    def test_an_editor_dump_without_captions_is_noted_not_failed(self):
+        # A dump that carries no caption list (an older medium_js.py) cannot be
+        # checked; the gate says so rather than failing or staying silent.
+        out = self.gate(self.full(), caption="圖說")
+        self.assertEqual(out.returncode, 0, out.stdout)
+        self.assertIn("captions: 1 expected", out.stdout)
+        self.assertIn("not checked", out.stdout)
+
+    def test_a_pack_without_captions_says_nothing_about_them(self):
+        out = self.gate(self.full(captions=[""]))
+        self.assertEqual(out.returncode, 0, out.stdout)
+        self.assertNotIn("captions", out.stdout)
 
     def test_the_dividers_the_payload_asks_for_are_required(self):
         root = tempfile.TemporaryDirectory()
@@ -558,6 +673,7 @@ class TestCookieFilter(unittest.TestCase):
 
 class TestSnippets(unittest.TestCase):
     payload = {"title": "T", "html": "<p>a</p>", "images": ["a.png"]}
+    captioned = dict(payload, captions=['see <a href="https://x.test">docs</a>'])
 
     def all_snippets(self):
         """Every snippet, including image_js — which needs a PNG on disk."""
@@ -581,6 +697,9 @@ class TestSnippets(unittest.TestCase):
             "mark": medium_js.mark_js("T"),
             "stale": medium_js.stale_js("T"),
             "dump": medium_js.dump_js(),
+            # The two the caption step feeds to `browse eval`.
+            "caption": medium_js.caption_js(self.captioned, 0),
+            "captions": medium_js.captions_js(),
         }
 
     def test_no_duplicate_const_declarations(self):
@@ -649,6 +768,105 @@ class TestSnippets(unittest.TestCase):
         # browser, after the run has already opened the post.
         for label, js in self.all_snippets().items():
             node_check(self, js, label)
+
+
+class TestCaptionSnippet(unittest.TestCase):
+    """`caption` and `captions` -- a figure's own Medium caption, set and read back."""
+
+    payload = {"title": "T", "html": "<p>a</p>", "images": ["a.png", "b.png", "c.png"],
+               "captions": ["", 'see <a href="https://x.test">docs</a> &amp; more', "third"]}
+
+    def test_it_targets_the_figure_at_that_index(self):
+        js = medium_js.caption_js(self.payload, 2)
+        self.assertIn("const fig = figs[2];", js)
+        self.assertNotIn("figs[1]", js)
+
+    def test_both_clipboard_flavours_carry_the_caption(self):
+        # Medium reads text/html and keeps the link; text/plain is the same
+        # words with the markup off and the entities resolved.
+        js = medium_js.caption_js(self.payload, 1)
+        self.assertIn("dt.setData('text/html', %s);"
+                      % json.dumps('see <a href="https://x.test">docs</a> &amp; more'), js)
+        self.assertIn("dt.setData('text/plain', %s);" % json.dumps("see docs & more"), js)
+
+    def test_a_figure_without_a_caption_is_refused(self):
+        # The driver only asks for indexes with a caption; asking for another
+        # would paste an empty string over whatever Medium has.
+        for bad in (0, 3, -1):
+            with self.assertRaises(ValueError, msg=bad):
+                medium_js.caption_js(self.payload, bad)
+        with self.assertRaises(ValueError):
+            medium_js.caption_js({"title": "T", "html": "", "images": []}, 0)
+
+    def test_it_pastes_rather_than_types_and_replaces_rather_than_appends(self):
+        # execCommand insertText lands inside the placeholder span and is gone
+        # after the save (probed 2026-10-26 on a live draft); a paste event is
+        # kept. Selecting the caption first is what makes a re-run idempotent.
+        js = medium_js.caption_js(self.payload, 1)
+        self.assertIn("new ClipboardEvent('paste'", js)
+        self.assertNotIn("insertText", js)
+        self.assertIn("range.selectNodeContents(cap)", js)
+
+    @unittest.skipUnless(shutil.which("node"), "node unavailable")
+    def test_against_a_fake_editor_the_paste_reaches_the_right_figcaption(self):
+        got = node_eval(self, """
+const events = [];
+const fig = (name) => {
+  const cap = { focus() { events.push({ name, type: 'focus' }); },
+                dispatchEvent(e) { events.push({ name, type: e.type,
+                  html: e.clipboardData.getData('text/html'),
+                  plain: e.clipboardData.getData('text/plain') }); } };
+  const img = { dispatchEvent(e) { events.push({ name, type: e.type }); } };
+  return { querySelector: sel => sel === 'img' ? img : cap };
+};
+const figs = [fig('first'), fig('second'), fig('third')];
+const editor = { querySelectorAll: () => figs };
+const document = { querySelector: () => editor,
+                   createRange: () => ({ selectNodeContents() {} }) };
+const getSelection = () => ({ removeAllRanges() {}, addRange() {} });
+class DataTransfer { constructor() { this.d = {}; } setData(k, v) { this.d[k] = v; }
+                     getData(k) { return this.d[k]; } }
+class ClipboardEvent { constructor(type, init) { this.type = type; this.clipboardData = init.clipboardData; } }
+class MouseEvent { constructor(type) { this.type = type; } }
+const window = {};
+const result = %s;
+console.log(JSON.stringify({ result: JSON.parse(result), events }));
+""" % medium_js.caption_js(self.payload, 1).strip())
+        self.assertEqual(got["result"], {"index": 1, "pasted": True})
+        self.assertEqual([[e["name"], e["type"]] for e in got["events"]],
+                         [["second", "click"], ["second", "focus"], ["second", "paste"]])
+        self.assertEqual(got["events"][2]["html"], 'see <a href="https://x.test">docs</a> &amp; more')
+        self.assertEqual(got["events"][2]["plain"], "see docs & more")
+
+    @unittest.skipUnless(shutil.which("node"), "node unavailable")
+    def test_a_missing_figure_or_figcaption_is_an_error_not_a_paste_elsewhere(self):
+        got = json.loads(node_eval(self, """
+const editor = { querySelectorAll: () => [] };
+const document = { querySelector: () => editor };
+console.log(JSON.stringify(%s));
+""" % medium_js.caption_js(self.payload, 1).strip()))
+        self.assertEqual(got, {"err": "no figure at index", "index": 1, "figures": 0})
+
+    @unittest.skipUnless(shutil.which("node"), "node unavailable")
+    def test_read_back_skips_the_placeholder_and_counts_caption_links(self):
+        # Medium shows "Type caption for image (optional)" through a span inside
+        # an untouched figcaption. Reading innerText would report that prompt
+        # as the caption and let a figure whose caption never landed pass.
+        got = json.loads(node_eval(self, """
+const node = (text, cls) => ({ textContent: text, classList: { contains: c => c === cls } });
+const fig = (...nodes) => ({ querySelector: () => ({ childNodes: nodes }) });
+const bare = { querySelector: () => null };
+const figs = [fig(node('Type caption for image (optional)', 'defaultValue')),
+              fig(node('see ', null), node('docs', null)), bare];
+const editor = { querySelectorAll(sel) {
+  if (sel === 'figure') return figs;
+  if (sel === 'figure figcaption a') return new Array(1);
+  return [];
+} };
+const document = { querySelector: () => editor };
+console.log(JSON.stringify(%s));
+""" % medium_js.captions_js().strip()))
+        self.assertEqual(got, {"captions": ["", "see docs", ""], "caption_links": 1})
 
 
 def node_check(case, js, label):
@@ -968,6 +1186,13 @@ class TestPayloadWithCdnFigures(unittest.TestCase):
         self.assertEqual(original["images"], ["a.png"])
         self.assertIn("IMGSLOT-a.png-ENDSLOT", original["html"])
 
+    def test_captions_travel_with_the_payload(self):
+        # The caption step runs in reuse mode too: the figures are there from
+        # the body paste, and each still needs its caption set and verified.
+        captioned = dict(self.payload(["a.png"]), captions=["cap"])
+        out = medium_js.payload_with_cdn_figures(captioned, ["https://cdn/1.png"])
+        self.assertEqual(out["captions"], ["cap"])
+
     def test_too_few_figures_on_the_post_is_an_error_not_a_partial_fill(self):
         # The mangled drafts have lost figures. Filling the slots it can and
         # leaving the rest as IMGSLOT text is exactly the damage to avoid.
@@ -1115,6 +1340,22 @@ const document = { querySelector: () => null };
 console.log(JSON.stringify(%s));
 """ % self.js().strip())
         self.assertIn("err", got)
+
+
+    @unittest.skipUnless(shutil.which("node"), "node unavailable")
+    def test_each_figure_caption_is_read_back_with_the_placeholder_as_empty(self):
+        # verify_draft.py compares these by position with payload["captions"];
+        # the prompt Medium shows in an untouched caption must not count as one.
+        got = json.loads(node_eval(self, """
+const node = (text, cls) => ({ textContent: text, classList: { contains: c => c === cls } });
+const fig = (...nodes) => ({ querySelector: () => ({ childNodes: nodes }) });
+const figs = [fig(node('Type caption for image (optional)', 'defaultValue')),
+              fig(node('圖一：', null), node('看文件', null))];
+const editor = { querySelectorAll(sel) { return sel === 'figure' ? figs : []; } };
+const document = { querySelector: () => editor };
+console.log(JSON.stringify(%s));
+""" % self.js().strip()))
+        self.assertEqual(got["captions"], ["", "圖一：看文件"])
 
 
 def title_fold_rules():
@@ -1598,6 +1839,46 @@ class TestCookieFileIsPrivate(unittest.TestCase):
             self.assertNotIn("SECRET", fh.read())
 
 
+class TestMd2MediumCLICaptions(unittest.TestCase):
+    def pack(self):
+        root = tempfile.TemporaryDirectory()
+        self.addCleanup(root.cleanup)
+        pub = os.path.join(root.name, "publish")
+        os.makedirs(os.path.join(pub, "images"))
+        with open(os.path.join(pub, "images", "asset-01.png"), "wb") as fh:
+            fh.write(b"\x89PNG\r\n\x1a\n")
+        with open(os.path.join(pub, "medium-paste.md"), "w", encoding="utf-8") as fh:
+            fh.write("# T\n\n📌【在此插入圖 asset-01.png】\n\ncap\n\ntail\n")
+        with open(os.path.join(pub, "figures.json"), "w", encoding="utf-8") as fh:
+            json.dump({"figures": [], "tables": [],
+                       "assets": [{"file": "asset-01.png", "source": "figures/F.png",
+                                   "sha256": "0" * 64, "caption": "cap"}]}, fh)
+        return os.path.join(pub, "medium-paste.md"), os.path.join(root.name, "payload.json")
+
+    def test_the_figures_json_beside_the_paste_is_picked_up(self):
+        # medium_draft.sh passes the paste path, exactly like this.
+        paste, out_path = self.pack()
+        out = run_tool(os.path.join(TOOLS, "md2medium.py"), paste, "--out", out_path)
+        self.assertEqual(out.returncode, 0, out.stderr)
+        self.assertIn("captions: 1 set as Medium captions", out.stdout)
+        with open(out_path, encoding="utf-8") as fh:
+            payload = json.load(fh)
+        self.assertEqual(payload["captions"], ["cap"])
+        self.assertNotIn("<p>cap</p>", payload["html"])
+        self.assertIn("<p>tail</p>", payload["html"])
+
+    def test_captions_as_prose_keeps_every_paragraph_in_the_body(self):
+        paste, out_path = self.pack()
+        out = run_tool(os.path.join(TOOLS, "md2medium.py"), paste, "--captions-as-prose",
+                       "--out", out_path)
+        self.assertEqual(out.returncode, 0, out.stderr)
+        self.assertIn("captions: 0 set as Medium captions", out.stdout)
+        with open(out_path, encoding="utf-8") as fh:
+            payload = json.load(fh)
+        self.assertEqual(payload["captions"], [""])
+        self.assertIn("<p>cap</p>", payload["html"])
+
+
 class TestMediumJsCLI(unittest.TestCase):
     def test_unknown_snippet_name_exits(self):
         out = run_tool(os.path.join(TOOLS, "medium_js.py"), "bogus", "x")
@@ -1614,6 +1895,26 @@ class TestMediumJsCLI(unittest.TestCase):
         out = run_tool(os.path.join(TOOLS, "medium_js.py"), "slot", "a.png")
         self.assertEqual(out.returncode, 0, out.stderr)
         self.assertIn("IMGSLOT-a.png-ENDSLOT", out.stdout)
+
+    def test_the_caption_snippets_are_reachable_from_the_command_line(self):
+        # medium_draft.sh shells out for `caption <payload> <index>` once per
+        # captioned figure and for `captions` while it polls.
+        d = tempfile.TemporaryDirectory()
+        self.addCleanup(d.cleanup)
+        path = os.path.join(d.name, "payload.json")
+        with open(path, "w", encoding="utf-8") as fh:
+            json.dump({"title": "T", "html": "<p>a</p>", "images": ["a.png"],
+                       "captions": ["cap"]}, fh)
+        out = run_tool(os.path.join(TOOLS, "medium_js.py"), "caption", path, "0")
+        self.assertEqual(out.returncode, 0, out.stderr)
+        self.assertIn("new ClipboardEvent('paste'", out.stdout)
+        self.assertIn("figs[0]", out.stdout)
+        out = run_tool(os.path.join(TOOLS, "medium_js.py"), "caption", path)
+        self.assertNotEqual(out.returncode, 0)
+        self.assertIn("caption needs a payload and a figure index", out.stderr)
+        out = run_tool(os.path.join(TOOLS, "medium_js.py"), "captions")
+        self.assertEqual(out.returncode, 0, out.stderr)
+        self.assertIn("caption_links", out.stdout)
 
     def payload_file(self):
         d = tempfile.TemporaryDirectory()
@@ -2168,7 +2469,7 @@ class DriverFixture:
 
     SCRIPT = os.path.join(TOOLS, "medium_draft.sh")
 
-    def article(self, packs, ledger=GOOD_ID, paste=PASTE_BODY, images=()):
+    def article(self, packs, ledger=GOOD_ID, paste=PASTE_BODY, images=(), captions=None):
         """A throwaway repo root holding a copy of the driver and one article.
 
         The driver resolves paths from its OWN location (`dirname $0/..`), not
@@ -2178,7 +2479,10 @@ class DriverFixture:
         `ledger` is the Post ID each pack records, since --post refuses an id
         no PUBLISHED.md names; pass None for a pack that has no ledger at all.
         `images` are files to drop in publish[/lang]/images, which md2medium
-        insists exist before a browser opens.
+        insists exist before a browser opens. `captions` ({image: caption})
+        writes the figures.json article_to_paste.py would have left beside the
+        paste, which is what makes md2medium lift those captions out of the
+        prose and the driver run its caption step.
         """
         d = tempfile.TemporaryDirectory()
         self.addCleanup(d.cleanup)
@@ -2191,6 +2495,13 @@ class DriverFixture:
             os.makedirs(pub, exist_ok=True)
             with open(os.path.join(pub, "medium-paste.md"), "w", encoding="utf-8") as fh:
                 fh.write(paste)
+            if captions:
+                spec = {"figures": [], "tables": [],
+                        "assets": [{"file": name, "source": "figures/%s" % name,
+                                    "sha256": "0" * 64, "caption": caption}
+                                   for name, caption in captions.items()]}
+                with open(os.path.join(pub, "figures.json"), "w", encoding="utf-8") as fh:
+                    json.dump(spec, fh, ensure_ascii=False)
             if ledger is not None:
                 with open(os.path.join(pub, "PUBLISHED.md"), "w", encoding="utf-8") as fh:
                     fh.write("# Published\n\n%s\n" % (LEDGER_LINE % ledger))
@@ -2733,15 +3044,19 @@ class Driven(DriverFixture):
         with open(self.SCRIPT, encoding="utf-8") as fh:
             return int(re.search(r"EDITOR_LOAD_TIMEOUT_S=(\d+)", fh.read()).group(1))
 
-    def editor(self, texts, tags, links=0, dividers=0):
+    def editor(self, texts, tags, links=0, dividers=0, captions=None):
         """What `medium_js.py dump` would report for a draft that came out right.
 
         `dividers` is the number of section *breaks*, not the `<hr>` count:
         Medium emits one structural `<hr>` per section including the first, so
-        the snippet reports `sections - 1`. See TestDumpSnippet.
+        the snippet reports `sections - 1`. See TestDumpSnippet. `captions` is
+        one string per figure, "" for one still showing its placeholder; left
+        out, the dump is the older shape without a caption list.
         """
-        return json.dumps({"texts": texts, "tags": tags,
-                           "links": links, "dividers": dividers})
+        dump = {"texts": texts, "tags": tags, "links": links, "dividers": dividers}
+        if captions is not None:
+            dump["captions"] = captions
+        return json.dumps(dump)
 
 
 class TestMediumDraftPostDrive(Driven, unittest.TestCase):
@@ -3104,6 +3419,83 @@ class TestMediumDraftFinishes(Driven, unittest.TestCase):
             "eval:dump.js": self.editor(["T", "body"], ["H3", "P", "FIGURE"])})
         self.assertNotEqual(d.out.returncode, 0)
         self.assertIn("placeholder text left in the post", d.out.stderr)
+
+
+class TestCaptionsAreSet(Driven, unittest.TestCase):
+    """The caption step: each recorded caption pasted into its figure, confirmed, verified.
+
+    The figures.json beside the paste is what switches the step on. A pack
+    without one (every drive above) must never touch a figcaption, which the
+    recorder enforces by itself: a `caption.js` it was not told about is an
+    unscripted call.
+    """
+
+    CAPTION = "圖說 [文件](https://x.test)"
+    PASTE = PASTE_WITH_FIGURE + "\n%s\n" % CAPTION
+
+    def captioned(self, **rules):
+        base = {"eval:body.js": REFILL_OK,
+                "eval:state.js": [state(figures=0, slots=1),
+                                  state(figures=1, slots=1),
+                                  state(figures=1, slots=0)],
+                "eval:image.js": '{"name":"a.png","bytes":8}',
+                "eval:slot.js": '{"selected":"IMGSLOT-a.png-ENDSLOT"}',
+                "eval:caption.js": '{"index":0,"pasted":true}',
+                "eval:captions.js": '{"captions":["圖說 文件"],"caption_links":1}',
+                "eval:dump.js": self.editor(["T", "body"], ["H3", "P", "FIGURE"],
+                                            links=1, captions=["圖說 文件"])}
+        base.update(rules)
+        return self.drive("--post", GOOD_ID, paste=self.PASTE, images=["a.png"],
+                          captions={"a.png": self.CAPTION}, rules=base)
+
+    def test_a_caption_is_pasted_confirmed_and_verified(self):
+        d = self.captioned()
+        self.assertEqual(d.out.returncode, 0, d.out.stderr + d.out.stdout)
+        self.assertIn("== setting captions", d.out.stdout)
+        self.assertEqual(d.calls.count("eval caption.js"), 1, d.calls)
+        self.assertIn("captions: 1, all match", d.out.stdout)
+        self.assertIn("post ready", d.out.stdout)
+        # The snippet handed over carries this figure's caption as HTML with
+        # its link, and the gate passed with only two text grafs: the caption
+        # paragraph left the prose rather than being pasted twice.
+        self.assertIn(json.dumps('圖說 <a href="https://x.test">文件</a>'), d.js("caption.js"))
+
+    def test_a_caption_that_never_appears_fails_the_run(self):
+        d = self.captioned(**{"eval:captions.js": '{"captions":[""],"caption_links":0}'})
+        self.assertEqual(d.out.returncode, 69, d.out.stderr)
+        self.assertIn("caption of figure 0 did not appear", d.out.stderr)
+        self.assertNotIn("post ready", d.out.stdout)
+
+    def test_a_figure_without_a_caption_field_fails_the_run(self):
+        d = self.captioned(**{"eval:caption.js": '{"err":"no figcaption","index":0}'})
+        self.assertEqual(d.out.returncode, 69, d.out.stderr)
+        self.assertIn("no figure or caption field for figure 0", d.out.stderr)
+
+    def test_a_browse_failure_while_pasting_is_a_temporary_failure(self):
+        d = self.captioned(**{"eval:caption.js": "!fail"})
+        self.assertEqual(d.out.returncode, 75, d.out.stderr)
+        self.assertIn("could not paste the caption of figure 0", d.out.stderr)
+
+    def test_a_caption_medium_kept_wrong_fails_the_final_gate(self):
+        d = self.captioned(**{"eval:dump.js": self.editor(["T", "body"], ["H3", "P", "FIGURE"],
+                                                          links=1, captions=["別的"])})
+        self.assertNotEqual(d.out.returncode, 0)
+        self.assertIn("captions: 1 expected", d.out.stdout)
+        self.assertIn("did NOT leave that post alone", d.out.stderr)
+
+    def test_a_pack_without_captions_never_touches_a_figcaption(self):
+        d = self.drive("--post", GOOD_ID, paste=PASTE_WITH_FIGURE, images=["a.png"],
+                       rules={
+            "eval:body.js": REFILL_OK,
+            "eval:state.js": [state(figures=0, slots=1),
+                              state(figures=1, slots=1),
+                              state(figures=1, slots=0)],
+            "eval:image.js": '{"name":"a.png","bytes":8}',
+            "eval:slot.js": '{"selected":"IMGSLOT-a.png-ENDSLOT"}',
+            "eval:dump.js": self.editor(["T", "body"], ["H3", "P", "FIGURE"])})
+        self.assertEqual(d.out.returncode, 0, d.out.stderr + d.out.stdout)
+        self.assertNotIn("setting captions", d.out.stdout)
+        self.assertEqual([c for c in d.calls if "caption" in c], [])
 
 
 # The four shapes Medium's metabar takes, as observed. "DraftSaved" is the

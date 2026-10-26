@@ -1,0 +1,74 @@
+{
+ "figures": [
+  {
+   "file": "diagram-01.png",
+   "mermaid": "---\nconfig:\n  theme: base\n  themeVariables:\n    fontSize: 16px\n    primaryColor: \"#f8f9fa\"\n    primaryTextColor: \"#1f2933\"\n    primaryBorderColor: \"#6b7280\"\n    lineColor: \"#6b7280\"\n    secondaryColor: \"#f8f9fa\"\n    tertiaryColor: \"#ffffff\"\n    clusterBkg: \"#ffffff\"\n    clusterBorder: \"#9ca3af\"\n    edgeLabelBackground: \"#ffffff\"\n  flowchart:\n    nodeSpacing: 36\n    rankSpacing: 32\n    padding: 12\n    wrappingWidth: 320\n    htmlLabels: true\n    subGraphTitleMargin:\n      top: 8\n      bottom: 12\n    curve: basis\n---\nflowchart TB\n    %% Layout: TB, 7 nodes; checked viewBox 741x796, height/width 1.07; font 16px.\n    classDef own fill:#d4edda,stroke:#2e7d32,color:#1f2933\n    classDef human fill:#e3f2fd,stroke:#1565c0,color:#1f2933\n\n    subgraph action[\"Part 1　Action | Once tools are connected\"]\n        direction LR\n        A[\"What may it do?<br/>What actually happened?<br/>What counts as done?\"]\n        B[\"Targets and task authorization<br/>Results in external systems<br/>Evidence against requirements\"]\n        A --> B\n    end\n\n    subgraph handoff[\"Part 2　Handoff | Someone else continues\"]\n        direction LR\n        C[\"Who takes over?<br/>What is complete?<br/>What remains unknown?\"]\n        D[\"Verifiable approval scope<br/>Known and unknown state<br/>A way to resume and recover\"]\n        C --> D\n    end\n\n    subgraph memory[\"Part 3　Memory | Experience for the next task\"]\n        direction LR\n        E[\"Does it still apply?<br/>What conditions have changed?<br/>Were corrections retrieved?\"]\n        F[\"Sources, versions, conditions<br/>Corrections and deletions take effect<br/>Checks in the new task\"]\n        E --> F\n    end\n\n    action -->|Hand off work| handoff\n    handoff -->|Retain experience| memory\n    memory -.->|The next task| G[\"Recheck current conditions<br/>Read evidence and open questions<br/>Decide how much work to delegate\"]\n    class B,D,F own\n    class G human\n"
+  }
+ ],
+ "tables": [
+  {
+   "file": "table-01.png",
+   "markdown": "| What memory has to answer | In one sentence | Which session supplies the evidence |\n|---|---|---|\n| Find the right target | Which cluster and which version does the retrieved experience belong to? | Neo4j's CrabRAG |\n| Get corrections into the next retrieval | When a claim later turns out to be overstated, where does the fix go so it does not stop at the original document? | Agent Memory's consolidation and lifecycle |\n| Connect conclusions back to observations | What exactly did \"upgrade successful\" observe? | NexaScience / RIKEN's verification of autonomous research |\n"
+  },
+  {
+   "file": "table-02.png",
+   "markdown": "| Type | Upgrade example | When it is updated | Who confirms it |\n|---|---|---|---|\n| working memory (what is currently loaded) | \"assess the production cluster this time\" | Released when the task ends; decisions and evidence needed for handoff or audit are kept separately | The owner of this task |\n| episodic memory (a particular event and how it unfolded) | \"last time the test cluster was upgraded to 1.31 and service A passed its health check\" | Never rewritten; only corrections or withdrawals are added, with the time and environment attached | The platform engineer who checks observations |\n| semantic memory (a fact that needs maintaining) | \"service A in production now uses C version 3\" | Updated whenever someone changes the configuration; the old value leaves the currently valid set | The owner of the configuration |\n| procedural memory (a reusable step) | \"check the actual plugin and its compatibility document before upgrading\" | Its conditions of applicability are written with it; a revised procedure keeps a version | The procedure maintainer |\n"
+  },
+  {
+   "file": "table-03.png",
+   "markdown": "| Record | Claim | Requirement version and observations | Status and relationships |\n|---|---|---|---|\n| Old judgment J-17 | All of service A's required functions passed acceptance on 1.31 | Requirement v3 (version reached, health check, nightly report); cites observations O-41, node version 1.31, and O-42, health check passed; no report observation | Withdrawn, because the report was paused during the rehearsal and was consolidated as passed without any result |\n| New judgment J-18 | The test cluster reached 1.31 and service A passed its health check; the report job has not yet been accepted | Requirement v3; cites O-41 and O-42; marks the missing verification of the report's run and output | Valid; supersedes J-17; confirmed by the service owner |\n| Derived summary P-9 | The upgrade plan copied J-17's conclusion, \"service A can be upgraded to 1.31\" | Based on J-17 | Not valid grounds until rebuilt; after the rebuild it cites J-18 instead |\n"
+  },
+  {
+   "file": "table-04.png",
+   "markdown": "| How the memory relates to current data | What the one taking over should do | What the acceptance reviewer examines |\n|---|---|---|\n| Target, version, and requirements match; source can be checked | Use the experience to narrow the investigation, and obtain the current evidence still needed | Cited sources, necessary queries, and items still to be confirmed |\n| The old result came from a different environment | Treat it as a lead, and reconfirm the conditions of this environment | Whether a cross-environment inference was written up as a verified fact |\n| The old conclusion has been corrected by new evidence | Retrieve the correction relationship, and adjust the recommendation to the new evidence | Whether the original text, summaries, and search entry points still push the outdated conclusion |\n| The primary record has been withdrawn, but the index or derived summaries have not yet been rebuilt | Do not treat the old summary as currently valid grounds; report that a correction is in progress | Whether the query layer holds back the old conclusion, rather than relying on a flag alone |\n| Two sources conflict, and the data to tell them apart is missing | Preserve the dispute, and identify who needs to supply which data | Whether it took sides on its own based on occurrence count or update time |\n| Content has been deleted under the retention rules | Do not re-supply the content through summaries, indexes, or exported copies | Each copy that needs clearing, and the actual search results |\n| The same question is asked by a role without read access | The data service restricts what is retrieved according to the current role | Tool responses, content loaded into the model, and the final answer |\n"
+  },
+  {
+   "file": "table-05.png",
+   "markdown": "| Field | Content for this case |\n|---|---|\n| Task and target | Production cluster prod-a, service A, target 1.31; read access only |\n| Original requirement | The same acceptance checklist v3, including the nightly report |\n| Existing observations | Version reached, health check passed; no report result |\n| Conclusions allowed after the correction | Two items confirmed, report pending; not yet enough to claim all required functions passed |\n| Forbidden conclusions | All required functions passed; the report is known to be incompatible |\n| Propagation acceptance | Neither a normal query nor a summary rebuild can restore J-17 |\n| Human exits | Who may suspend the use of the old conclusion, who approves the replacement judgment, who takes over when the owner is away |\n"
+  }
+ ],
+ "assets": [
+  {
+   "file": "asset-01.png",
+   "source": "figures/00-shibuya-night.png",
+   "sha256": "c92b1ef0093bdd21dd3509bb9017ee1d06362a90deca4cd159a6f6b76bbb0251",
+   "caption": "Shibuya at night on September 11, 2026. The observation deck, the city lights, and the low clouds are all kept in one frame. Photograph by the author."
+  },
+  {
+   "file": "asset-02.png",
+   "source": "figures/01-crabrag-relationships.png",
+   "sha256": "535662889787505abeae012970850e760100b9ca215c36c0eca40344a1531581",
+   "caption": "Stephen Chin / Neo4j, deck page 28: a friend, a preferred food, and the place it is found, joined by named relationships into a path that can be queried. Source: official slides."
+  },
+  {
+   "file": "asset-03.png",
+   "source": "figures/02-memory-four-jobs.png",
+   "sha256": "c413704f27c396a427087e8ef2c94df15f82a6b4d89cb170f41f199b87c21378",
+   "caption": "Rohit Ghumare and Vinuja Khatode, deck page 11: current task content, how events unfolded, extracted facts, and reusable steps each carry a different memory job. Source: full-page rendering of the official PPTX."
+  },
+  {
+   "file": "asset-04.png",
+   "source": "figures/03-memory-lifecycle.png",
+   "sha256": "9afed9b59cbd59a6d3c1247a4a7d0cfa589a9e1c2ea2f7c09e55437c0cf65c32",
+   "caption": "Agent Memory deck, page 28: a memory can be reinforced, replaced by a new version, downweighted, or deleted; sources and version history need retention rules of their own. Source: full-page rendering of the official PPTX."
+  },
+  {
+   "file": "asset-05.png",
+   "source": "figures/04-research-verification-first.png",
+   "sha256": "c1c3caa76ebe9aefe24162b5c5ea8bdc13ca66daa1c41373cc54f44bc0052567",
+   "caption": "Wataru Kumagai / NexaScience and RIKEN, deck page 35: decide how a claim will be verified before producing the results. Source: official slides."
+  },
+  {
+   "file": "asset-06.png",
+   "source": "figures/05-research-claims-author-photo.png",
+   "sha256": "8710a76f834a2937c08ed5519dd9d02d47dfad6cadab4541259dce1454962826",
+   "caption": "The venue as photographed by the author on September 10, 2026, corresponding to page 40 of Wataru Kumagai's deck: the research system submits material, the verifier records a judgment, and the paper is produced from verified claims. Slide content: NexaScience / RIKEN; photograph by the author."
+  },
+  {
+   "file": "asset-07.png",
+   "source": "figures/06-shibuya-sky-festival.png",
+   "sha256": "b8c48051d1c84c8c58ec16fa1558ab0ef104f40e7f742edf3270a8ca60b06061",
+   "caption": "Lanterns and exhibition signage at SHIBUYA SKY's \"天空夢祭\" on the evening of September 11, 2026. Photograph by the author."
+  }
+ ]
+}

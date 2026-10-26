@@ -1,0 +1,138 @@
+{
+ "figures": [
+  {
+   "file": "diagram-01.png",
+   "mermaid": "---\nconfig:\n  theme: base\n  themeVariables:\n    fontSize: 16px\n    primaryColor: \"#f8f9fa\"\n    primaryTextColor: \"#1f2933\"\n    primaryBorderColor: \"#6b7280\"\n    lineColor: \"#6b7280\"\n    secondaryColor: \"#f8f9fa\"\n    tertiaryColor: \"#ffffff\"\n    clusterBkg: \"#ffffff\"\n    clusterBorder: \"#9ca3af\"\n    edgeLabelBackground: \"#ffffff\"\n  flowchart:\n    nodeSpacing: 36\n    rankSpacing: 32\n    padding: 12\n    htmlLabels: true\n    subGraphTitleMargin:\n      top: 8\n      bottom: 12\n    curve: basis\n---\nflowchart TB\n    %% Layout: TB, 7 nodes; checked viewBox 546x796, height/width 1.46; font 16px.\n    classDef own fill:#d4edda,stroke:#2e7d32,color:#1f2933\n    classDef human fill:#e3f2fd,stroke:#1565c0,color:#1f2933\n\n    subgraph action[\"第一篇　行動｜工具接上之後\"]\n        direction LR\n        A[\"可以做什麼？<br/>實際做了什麼？<br/>怎樣才算完成？\"]\n        B[\"操作對象與當次授權範圍<br/>外部操作結果<br/>符合要求的證據\"]\n        A --> B\n    end\n\n    subgraph handoff[\"第二篇　交接｜工作換人繼續\"]\n        direction LR\n        C[\"誰接著做？<br/>哪些已完成？<br/>哪些仍待確認？\"]\n        D[\"可查核的核准範圍<br/>已知與未知的狀態<br/>接續與復原的入口\"]\n        C --> D\n    end\n\n    subgraph memory[\"第三篇　記憶｜經驗留給下次\"]\n        direction LR\n        E[\"下次還能採用嗎？<br/>環境與版本變了嗎？<br/>更正有被讀到嗎？\"]\n        F[\"來源、版本與適用條件<br/>更正與刪除影響下次檢索<br/>新任務下重新查核\"]\n        E --> F\n    end\n\n    action -->|工作交接| handoff\n    handoff -->|留下經驗| memory\n    memory -.->|下一次任務| G[\"重新查核當下的條件<br/>看懂證據與待查事項<br/>再決定可以交出多少工作\"]\n    class B,D,F own\n    class G human\n"
+  }
+ ],
+ "tables": [
+  {
+   "file": "table-01.png",
+   "markdown": "| 場次 | 提供的機制／能支持的判斷 | 仍缺的證據 |\n|---|---|---|\n| Kong 展示（第二節） | 分組權限與限流集中執行／這次請求是否仍被允許，被擋下前完成了哪些步驟 | 政策是否涵蓋這次任務與對象；外部效果（展示為模擬資料） |\n| MCP keynote（第四節） | 行動結果能回饋給模型／有回饋才談得上驗收，判斷仍要有要求來源 | 回饋能否分辨真正的改善；此刻替誰、為哪件事行動 |\n| Skills（第五節） | 程序的來源識別與內容指紋核對／這次讀到的是不是核准過的那份 | 程序被核准，不等於它提出的生產操作被核准；行為效果另測 |\n| Anthropic proxy（第六節） | 錯誤分層、可關聯的請求紀錄／回應在哪一層失敗，結果未知時先查什麼 | 跨使用者重用的授權依據；通訊失敗之後的業務狀態 |\n| Red Hat 私有部署（第七節） | 資料邊界與危險指令的限制位置／哪些資料能離開、哪些指令能執行 | 限制是否生效要經實際入口測試；發生只由讀寫與連線紀錄回答 |\n| Uber（第八節） | 重現、修補前後的測試、可接手的 PR／修補是否解決了重現出來的缺陷 | 合併率與事故消失的分母不同；上線後的觀察 |\n| Logfire（第九節） | 生產紀錄定位該改哪一層、行為版本可追／該由誰改，改了之後怎麼驗 | 改程序不撤回已發生的外部效果；保留案例的回歸 |\n| PagerDuty（第十節） | 摩擦指標與評分器校準／長期觀察哪裡有摩擦，不回答單次行動 | 續用與擴權所需的成效、成本與正確性證據 |\n"
+  },
+  {
+   "file": "table-02.png",
+   "markdown": "| 指標 | 計算單位 | 分子／分母 | 盲點 |\n|---|---|---|---|\n| User Correction Rate（修正率） | 對話 | 出現修正的對話／全部對話 | 文件談的是重做量，公式算的是有沒有修正，不是修了多少 |\n| Ping Pong Rate（來回次數） | 已解決的對話 | 第一次解決所在的回合數，取平均 | 有用的澄清問題目前也算一回合；要和一次解決率一起讀 |\n| Fine, Do It Yourself Rate（放棄率） | 對話 | 未解決且使用者放棄、表達挫折或要求轉人工的對話／全部對話 | 對話標記只是代理訊號，確認使用者改走介面還需要產品端的操作紀錄 |\n| Instant Resolution Rate（一次解決率） | 可解決的對話 | 第一回合就解決的對話／有定義解決動作的對話 | 純資訊型的問題不在分母 |\n| Red Line Rate（紅線率） | 單次互動 | 被標為越界的互動／全部互動 | 範圍比 gateway 攔截廣，包括洩漏敏感資訊與未授權的承諾 |\n"
+  },
+  {
+   "file": "table-03.png",
+   "markdown": "| 決定 | 允許：依據 | 發生：紀錄 | 完成：判準 | 證據不足時／負責角色 |\n|---|---|---|---|---|\n| 暫緩 rollout | 委託人、核准的開關與環境、允許的狀態變更（維持 10%，不降到 0%）、有效期間 | 操作識別、執行前後的對象版本、遠端回查的結果 | 曝光比例停在核准值、同觸發條件的 crash 不再增加 | 保留「結果未知」，查不到就交人工核對，不盲目重送寫入／值班負責人 |\n| 接受修補 | 需求版本、修補範圍的核准 | 原版失敗原因、修正版結果、受保護測試的版本、未涵蓋的條件 | 重現測試在原版失敗、修正版通過、回歸不退步、分群觀察已定 | 補重現或回到需求判斷，不以 agent 自述結案／領域 reviewer 與 QA |\n| 更新 skill | 程序維護者的核准、適用的任務範圍 | 新舊內容與完整清單、正反案例、回歸結果 | 失敗案例補到缺口、正常與保留案例不退步、授權要求未被放寬 | 維持舊版或限縮試行，結論可以是「仍未定」／程序維護者與平台 |\n"
+  }
+ ],
+ "assets": [
+  {
+   "file": "asset-01.png",
+   "source": "figures/01-tokyo-venue.png",
+   "sha256": "3694c50079dadf29246b1130dc076007e170847cb2ea7103018f99010560a35c",
+   "caption": "2026 年 9 月 10 日，東京 AGNTCon + MCPCon Japan 會場。筆者攝；識別證上的 QR code 已遮蔽。"
+  },
+  {
+   "file": "asset-02.png",
+   "source": "figures/02-invitation.png",
+   "sha256": "2839ce2dffc6b99256e69a278f7cbe94ce5b74bff6378ca9b0d4ec3441f4bd10",
+   "caption": "8 月 24 日貼文中保存的日文邀請函，活動日期為 9 月 10–11 日。票券代碼在原圖中即已遮蔽；圖片由筆者提供。"
+  },
+  {
+   "file": "asset-03.png",
+   "source": "figures/03-departure.png",
+   "sha256": "12138202d782ea6aa80cea3b3f0779f0778d8d6c79e537ad1c56b5f2d0c560f4",
+   "caption": "9 月 9 日出發前的機場停機坪。這趟四天的東京行，包含會議、交通安排，以及家裡交代的購物任務。筆者攝。"
+  },
+  {
+   "file": "asset-04.png",
+   "source": "figures/04-kong-failover.png",
+   "sha256": "4932b0521125e94ac7bdb130630df08548578802e982db15ca184bd04874736e",
+   "caption": "筆者當日操作錄影 00:50：故障切換情境中的主要模型與 gateway 路徑。"
+  },
+  {
+   "file": "asset-05.png",
+   "source": "figures/05-kong-budget.png",
+   "sha256": "ba9a85efb945b48fd1da3b079cae525d2c03e1681d067b53fe9739b119d077b1",
+   "caption": "筆者當日操作錄影 02:08：介面顯示 Rate limit enforced 與 Blocked。應把被拒絕的這筆請求，和前面已完成的步驟分開判讀。"
+  },
+  {
+   "file": "asset-06.png",
+   "source": "figures/06-keynote-connectivity.png",
+   "sha256": "86510199de513bd0e5b3f2bf5b1d0e12cf07a85d6cfabd13db8e0ac3c01ac191",
+   "caption": "David Soria Parra，東京 keynote [04:46](https://www.youtube.com/watch?v=3LwylP2as8A&t=286)：當模型能力增加，連到實際工作系統的重要性也提高。來源：AAIF 官方錄影。"
+  },
+  {
+   "file": "asset-07.png",
+   "source": "figures/15-skills-three-reads.png",
+   "sha256": "e5633c4431b9be2be7e3a0cabd4c972225d8fa039174371624d2291a2d229886",
+   "caption": "Ola Hungerford，Skills over MCP [06:10](https://www.youtube.com/watch?v=3oHLjC3wZNE&t=370)：Three reads，把發現、載入程序與讀取支援材料拆開。來源：AAIF 官方錄影。"
+  },
+  {
+   "file": "asset-08.png",
+   "source": "figures/07-skills-identity.png",
+   "sha256": "aca7b9b3eb2f3ed5b4b1129a48b807263891665bd371bdb95b0fe0d49f929161",
+   "caption": "Ola Hungerford，Skills over MCP [07:36](https://www.youtube.com/watch?v=3oHLjC3wZNE&t=456)：skill 的來源識別與內容變更，是取得工作指引之後仍需處理的問題。來源：AAIF 官方錄影。"
+  },
+  {
+   "file": "asset-09.png",
+   "source": "figures/08-proxy-refresh.png",
+   "sha256": "39b274b3f562e5dc029c7c024bb02b65a05d7c67ef2dfb22111a85144a309c80",
+   "caption": "Camila Rondinini，Anthropic MCP proxy 演講 [06:50](https://www.youtube.com/watch?v=e8DMLtP5ibk&t=410)：多個 worker 更新同一份憑證時，需要協調與重新讀取狀態。來源：AAIF 官方錄影。"
+  },
+  {
+   "file": "asset-10.png",
+   "source": "figures/16-proxy-request-log.png",
+   "sha256": "19bf671417fb60d7f5cfb8bb4d053fddf27cb9dce43ae8c04a801fc22627d04e",
+   "caption": "Camila Rondinini 演講 [17:00](https://www.youtube.com/watch?v=e8DMLtP5ibk&t=1020)：一筆請求彙整成結構化紀錄，保留上下游結果與失敗位置。來源：AAIF 官方錄影。"
+  },
+  {
+   "file": "asset-11.png",
+   "source": "figures/09-local-architecture.png",
+   "sha256": "70f53f9b7f7ea01427c72872727974c83c9ea42e39c4b9713e8e476305f585b6",
+   "caption": "Daniel Oh，私有 coding assistant 演講 [10:50](https://www.youtube.com/watch?v=kwKVe27xnw4&t=650)：模型服務、開發工具與執行環境需要一起考慮。來源：AAIF 官方錄影。"
+  },
+  {
+   "file": "asset-12.png",
+   "source": "figures/10-local-guardrails.png",
+   "sha256": "c7e3382fd7718bf0de560086105e2c1df17dfc99b6b9f853eca6dfe4bda8f211",
+   "caption": "Daniel Oh 演講 [18:20](https://www.youtube.com/watch?v=kwKVe27xnw4&t=1100)：秘密資料遮蔽、指令過濾、程式碼分析與人工確認。本文進一步追問如何驗證這些控制生效。來源：AAIF 官方錄影。"
+  },
+  {
+   "file": "asset-13.png",
+   "source": "figures/11-uber-investigation.png",
+   "sha256": "8a515782e57dd0bb9538aa48c39cf31824dc4cf45c36006737e5f37d871c5464",
+   "caption": "Kriti Dangi，Uber debugging agent harness 演講 [11:25](https://www.youtube.com/watch?v=iVCDIOf7vXw&t=685)：slide 11 把資料蒐集、根因分析、修補、測試與建立 diff 排成流程；skills／plugins 在執行時取得。來源：AAIF 官方錄影。"
+  },
+  {
+   "file": "asset-14.png",
+   "source": "figures/12-uber-results.png",
+   "sha256": "0dcef72127c8cfc1712d1ae4a1ec810942346358d5d9e6dffd7ad0e0839990d3",
+   "caption": "Uber 演講 [19:55](https://www.youtube.com/watch?v=iVCDIOf7vXw&t=1195)，slide 14。圖中數字是團隊自述；RCA accuracy、PR merge rate 與事故實際消除，是不同層次的結果。來源：AAIF 官方錄影。"
+  },
+  {
+   "file": "asset-15.png",
+   "source": "figures/13-logfire-feedback.png",
+   "sha256": "c37da789ee78578f9bdf074d540dd9c12f507af48a73e4cc6d265a3a037a5310",
+   "caption": "Marcelo Trylesinski，歐洲場次 [08:55](https://www.youtube.com/watch?v=JzBLYv1BTTM&t=535)：從執行過程尋找改進方向。這支影片是後續研究材料，不是筆者的東京現場紀錄。來源：AAIF 官方錄影。"
+  },
+  {
+   "file": "asset-16.png",
+   "source": "figures/17-logfire-prompt-diff.png",
+   "sha256": "513d19b576b06a9496c7934dbad5a8d75ed285d43dcc2e5575fe75f7e97bd92a",
+   "caption": "Logfire 演講 [13:40](https://www.youtube.com/watch?v=JzBLYv1BTTM&t=820)：提案釐清旅客條件的優先順序，並修正訂位所需的 offer_id。來源：AAIF 官方錄影。"
+  },
+  {
+   "file": "asset-17.png",
+   "source": "figures/18-pagerduty-hire.png",
+   "sha256": "b5aa8dea33aa93d5a47f0f1b5f4b8ba9d9757e4a34c4d7a5d37b6466bb02be55",
+   "caption": "Inês Bolaños／PagerDuty，簡報第 14 頁：H.I.R.E. 四個檢查面向，從團隊準備度、職位說明、該用規則還是推理，到最壞情況的防線。來源：官方簡報。"
+  },
+  {
+   "file": "asset-18.png",
+   "source": "figures/19-pagerduty-pipeline.png",
+   "sha256": "745322ceb68f0a2176217ddb7b5fa6ad7c95d8d3651c7df6d035a756b655b34e",
+   "caption": "Inês Bolaños／PagerDuty，簡報第 25 頁：三步驟流程的回饋迴圈，以及「evaluate the evaluator」。來源：官方簡報。"
+  },
+  {
+   "file": "asset-19.png",
+   "source": "figures/14-goodbye-shibuya.png",
+   "sha256": "23b32a3b7ab8294f1d075163d013042c2408f943dcef0d2da5dbd8a144bd9ba2",
+   "caption": "旅程尾聲留下的會議 T-shirt、Kubestronaut 外套與伴手禮。沒完成的澀谷晨跑，留待下次再來。筆者攝。"
+  }
+ ]
+}

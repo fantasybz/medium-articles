@@ -1,0 +1,84 @@
+{
+ "figures": [
+  {
+   "file": "diagram-01.png",
+   "mermaid": "---\nconfig:\n  theme: base\n  themeVariables:\n    fontSize: 16px\n    primaryColor: \"#f8f9fa\"\n    primaryTextColor: \"#1f2933\"\n    primaryBorderColor: \"#6b7280\"\n    lineColor: \"#6b7280\"\n    secondaryColor: \"#f8f9fa\"\n    tertiaryColor: \"#ffffff\"\n    clusterBkg: \"#ffffff\"\n    clusterBorder: \"#9ca3af\"\n    edgeLabelBackground: \"#ffffff\"\n  flowchart:\n    nodeSpacing: 36\n    rankSpacing: 32\n    padding: 12\n    htmlLabels: true\n    subGraphTitleMargin:\n      top: 8\n      bottom: 12\n    curve: basis\n---\nflowchart TB\n    %% Layout: TB, 7 nodes; checked viewBox 546x796, height/width 1.46; font 16px.\n    classDef own fill:#d4edda,stroke:#2e7d32,color:#1f2933\n    classDef human fill:#e3f2fd,stroke:#1565c0,color:#1f2933\n\n    subgraph action[\"第一篇　行動｜工具接上之後\"]\n        direction LR\n        A[\"可以做什麼？<br/>實際做了什麼？<br/>怎樣才算完成？\"]\n        B[\"操作對象與當次授權範圍<br/>外部操作結果<br/>符合要求的證據\"]\n        A --> B\n    end\n\n    subgraph handoff[\"第二篇　交接｜工作換人繼續\"]\n        direction LR\n        C[\"誰接著做？<br/>哪些已完成？<br/>哪些仍待確認？\"]\n        D[\"可查核的核准範圍<br/>已知與未知的狀態<br/>接續與復原的入口\"]\n        C --> D\n    end\n\n    subgraph memory[\"第三篇　記憶｜經驗留給下次\"]\n        direction LR\n        E[\"下次還能採用嗎？<br/>環境與版本變了嗎？<br/>更正有被讀到嗎？\"]\n        F[\"來源、版本與適用條件<br/>更正與刪除影響下次檢索<br/>新任務下重新查核\"]\n        E --> F\n    end\n\n    action -->|工作交接| handoff\n    handoff -->|留下經驗| memory\n    memory -.->|下一次任務| G[\"重新查核當下的條件<br/>看懂證據與待查事項<br/>再決定可以交出多少工作\"]\n    class B,D,F own\n    class G human\n"
+  }
+ ],
+ "tables": [
+  {
+   "file": "table-01.png",
+   "markdown": "| 交班要回答的事 | 交接通常帶過去的 | 接手者仍要重查的 | 哪幾場補上依據 |\n|---|---|---|---|\n| 用誰的權限、做到哪個範圍 | 「已核准」的說法、憑證 | 核准對應哪個叢集、哪版計畫、是否仍有效 | SoftBank、Studist、Hitachi |\n| 此刻誰持有接手權 | 「我接手了」的說法 | 目前持有者的身分與接手版本，前任是否已失去新增操作的資格 | PingCAP、第九節的驗收 |\n| 外部系統到底走到哪 | 工作檔裡的進度、最後一筆請求 | 已送出操作的結果、目前節點狀態 | Juicedata、PingCAP |\n| 怎樣才算完成 | 前任的計畫與報告 | 所有目標節點與服務本身的驗收 | Quartic.ai |\n"
+  },
+  {
+   "file": "table-02.png",
+   "markdown": "| 欄位 | 內容 | 誰寫入 |\n|---|---|---|\n| 任務與目標 | T-31，叢集 prod-a，計畫版本 v8 | 核准流程 |\n| 核准來源與失效條件 | 變更單 CR-204；維護時段結束即失效 | 變更系統 |\n| 目前持有者與接手版本 | 執行身分 run-B，接手版本 h2 | 執行服務，由協調者更新 |\n| 操作與子步驟 | op-17：drain op-17.1 完成；upgrade op-17.2 執行中；uncordon op-17.3 未接受 | 執行服務 |\n| 已確認效果／未知結果 | drain 完成／upgrade 結果未知 | 執行服務查詢 |\n| 查詢入口 | `/operations/op-17` 看整體，`/operations/op-17.2` 看子步驟 | 執行服務 |\n| 允許的下一步 | 查詢與回報；不含新的變更 | 核准流程 |\n| 接案人與期限 | 值班工程師；維護時段結束前 | 事故政策 |\n"
+  },
+  {
+   "file": "table-03.png",
+   "markdown": "| 情境 | 接手者可接受的行為 | 驗收者查什麼 | 依據來源／仍未證明 |\n|---|---|---|---|\n| 正常、核准有效 | 完成指定的有限操作 | 正確目標、效果與完成條件 | 核准紀錄 v8／服務驗收另測 |\n| 遠端完成、回覆遺失 | 查明結果後接續 | 沒有新增未獲准的驅逐或維護動作 | 執行服務的查詢契約／服務重啟後的紀錄 |\n| 排空完成、升級失敗 | 依查到的狀態三選一：確認未修改且健康才恢復排程、部分修改依核准程序修復、不明則維持隔離交人 | 版本、健康與容量證據，補救是否對回核准 | 核准的失效條件／維護時段外的授權 |\n| 請求尚未送出 | 依服務契約決定送出或停止 | 沒有把「查不到」直接當成未執行 | 紀錄保留期限／逾期後的重送語意 |\n| 結果暫時無法查詢 | 停止相依步驟並交接 | 指定接手人、查詢入口與期限 | 接案規則／可容許的等待時間 |\n| 計畫改版或核准失效 | 阻止不再獲准的新步驟 | 舊檔沒有恢復舊權限 | 變更系統／核准與節點清單的對應 |\n| 前任恢復、兩者同時行動 | 拒絕前任新增的步驟 | 接手版本與請求接受的先後一致 | 執行服務／延遲抵達的舊請求 |\n| 同一識別帶不同參數 | 拒絕不一致的請求 | 沒有沿用其他目標的結果 | 操作識別契約／參數比對的範圍 |\n| worker 尚未完成 | 留下待辦，不宣布整體完成 | 預期清單獨立於執行器回報 | 核准時的節點清單／服務本身的驗收 |\n"
+  }
+ ],
+ "assets": [
+  {
+   "file": "asset-01.png",
+   "source": "figures/00-tokyo-tower-office.png",
+   "sha256": "df196a6dc7ea25735e8a66086dc69c9c0c52895fdb2a5b8f93821209a2f5becb",
+   "caption": "2026 年 9 月 9 日，快閃公司東京辦公室時留下的東京鐵塔照片。來源：筆者當日 Facebook 貼文；保留原照。"
+  },
+  {
+   "file": "asset-02.png",
+   "source": "figures/01-softbank-boundary.png",
+   "sha256": "ca5851a632857d61dcbc17b69e8dad11ffcb2d2f9f0873889858130ff68231bd",
+   "caption": "Ryuji Iijima／SoftBank，簡報第 12 頁：A2A 通訊邊界與按照決策、權限及行動設計的信任邊界。來源：會議公開簡報，保留原圖。"
+  },
+  {
+   "file": "asset-03.png",
+   "source": "figures/02-softbank-streaming.png",
+   "sha256": "3b90ae62827253b81fb28a410c79996d6a7d623318601973e5705dac6e3851ba",
+   "caption": "SoftBank 簡報第 15 頁：串流內容需要先形成足夠脈絡，語意判斷也需要處理延遲、誤判與失敗。來源：會議公開簡報。"
+  },
+  {
+   "file": "asset-04.png",
+   "source": "figures/03-intent-enforcement.png",
+   "sha256": "768f6a9081727ee4aa059f592371399d19b82ee1598ea896988cd8a739169de3",
+   "caption": "Masaya Nakamura／Studist，簡報第 58 頁：本機 wrapper 與 hook 仍可能有旁路，需把強制控制放在 agent 無法修改的環境。來源：會議公開簡報；日文原圖。"
+  },
+  {
+   "file": "asset-05.png",
+   "source": "figures/04-upgrade-gate.png",
+   "sha256": "c2a82676db8f6221746a3f454b10c23355ecb600427baf84b301c1572800a200",
+   "caption": "Sanskar Agrawalla、Abhijeet Chaudhuri／Quartic.ai，簡報第 21 頁：評估狀態與人類核准分開，UNKNOWN 不能被當成通過。來源：會議公開簡報。"
+  },
+  {
+   "file": "asset-06.png",
+   "source": "figures/05-upgrade-workers.png",
+   "sha256": "cd766298e832bc14bfd6416ed46dd446df45645ad0c4f87f0df36669e8c13403",
+   "caption": "Quartic.ai 簡報第 29 頁：初版只檢查第一台節點，修正後需辨識節點角色、逐台升級，並在下一個版本步驟前確認所有節點。來源：會議公開簡報。"
+  },
+  {
+   "file": "asset-07.png",
+   "source": "figures/06-state-classes.png",
+   "sha256": "4ddc9e71dd059ea64a3b42ea8901f418c50a950d352253cf5de128a5cc81f76f",
+   "caption": "Rui Su／Juicedata，簡報第 5 頁：輸入、工作檔、快取、成果、控制狀態與秘密資訊，需要不同的保存與恢復方式。來源：會議公開簡報。"
+  },
+  {
+   "file": "asset-08.png",
+   "source": "figures/07-file-conflict.png",
+   "sha256": "d663d88f2dab222d6e4fecafdaa49d94aace2f2a278b5ce7cb05ff44e259880f",
+   "caption": "Tadatoshi Sekiguchi／PingCAP，英文簡報第 23 頁：寫入帶上讀取時的版本，遠端版本已改變時拒絕覆寫，並保留失敗的本機修改。來源：會議公開簡報。"
+  },
+  {
+   "file": "asset-09.png",
+   "source": "figures/08-integration-gaps.png",
+   "sha256": "fa74808b244e70eae8627c01adcf2a3e462b87de6ffe6209ccac007799fb8e4e",
+   "caption": "Tatsuya Sato、Satoshi Ito／Hitachi，簡報第 24 頁：需要串起 A2A task、agent run 與 tool call，逐步收斂權限，並驗證採購流程確實遵守條件與核准。來源：會議公開簡報。"
+  },
+  {
+   "file": "asset-10.png",
+   "source": "figures/00-tokyo-tower-night.png",
+   "sha256": "7838a53aa4dd5ec69b468cfed6a74e179ce3249865a3b053077617ca5c863b5e",
+   "caption": "同一天晚間分享的東京鐵塔夜景，貼文記下「下了一整晚大雨的東京」。來源：筆者 2026 年 9 月 9 日 Facebook 貼文；保留原照。"
+  }
+ ]
+}

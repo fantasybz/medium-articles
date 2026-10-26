@@ -11,6 +11,12 @@
 # topics, choose the preview image, or publish: those need a human look, and
 # publishing mails every subscriber and cannot be undone.
 #
+# Each figure's caption -- the paragraph after its 📌 line, which
+# article_to_paste.py also records in figures.json -- goes into the figure's
+# own Medium caption field rather than staying a body paragraph; see the
+# "setting captions" step. A pack whose figures.json records no captions (or a
+# hand-written paste with none) skips that step and is handled as before.
+#
 # --post <id> opens https://medium.com/p/<id>/edit instead of a new story and
 # replaces that post's body — old figures included — with this pack's. Two
 # things differ from the new-draft path and nothing else does: where the
@@ -58,6 +64,7 @@ readonly RELOAD_SETTLE_S=120     # 14 figures need well past 40
 readonly RECONNECT_GAP_S=3       # let the daemon go before asking for a page
 readonly PUBLISHED_LOAD_S=14     # a published page renders its figures
 readonly RELOAD_STABLE_READS=2   # identical samples before a reload counts as done
+readonly CAPTION_TIMEOUT_S=15     # a caption paste showed up within a second or two when probed
 readonly SAVE_QUIET_READS=6      # consecutive "Saved" reads before believing it
 readonly SAVE_GRACE_S=45         # hands off after that, before anything reloads
 # A new story renders instantly; an existing post has to fetch and lay out
@@ -703,6 +710,49 @@ while IFS= read -r name; do
   fi
   echo "ok"
 done < "$WORK/images.txt"
+
+# Captions. article_to_paste.py records each ![caption](png) in figures.json,
+# md2medium.py lifts that caption out of the prose into payload.captions (slot
+# order, "" where a figure has none), and here each one goes into its figure's
+# own <figcaption>, which Medium renders under the image. The caption has to
+# arrive as a paste on the focused figure: typing lands inside Medium's
+# placeholder span and is dropped on save (probed 2026-10-26, PUBLISHING.md).
+# A pack without captions skips the whole step, so older packs and the drive
+# tests built on them run exactly as before. Reuse mode has its figures from
+# the body paste already, so the same loop applies there.
+python3 -c "import json,sys; [print(i) for i, c in enumerate(json.load(open(sys.argv[1])).get('captions', [])) if c]" \
+  "$WORK/payload.json" > "$WORK/captions.txt"
+if [ -s "$WORK/captions.txt" ]; then
+  step "setting captions"
+  python3 "$TOOLS/medium_js.py" captions > "$WORK/captions.js"
+  while IFS= read -r idx; do
+    [ -n "$idx" ] || continue
+    printf '  figure %s ... ' "$idx"
+    python3 "$TOOLS/medium_js.py" caption "$WORK/payload.json" "$idx" > "$WORK/caption.js"
+    caption_result=$(B eval "$WORK/caption.js") || {
+      echo "FAILED: browse could not paste the caption of figure $idx" >&2; exit "$EX_TEMPFAIL"; }
+    case "$caption_result" in
+      *'"err"'*) echo "FAILED: no figure or caption field for figure $idx: $caption_result" >&2
+                 exit "$EX_UNAVAILABLE" ;;
+    esac
+    # Medium applies the paste asynchronously: wait until this figure's caption
+    # reads back as something other than the placeholder before moving on.
+    set_ok=0
+    caps=""
+    for _ in $(seq 1 "$CAPTION_TIMEOUT_S"); do
+      caps=$(B eval "$WORK/captions.js") || caps=""
+      if python3 -c 'import json, sys
+d = json.loads(sys.argv[1]); c = d.get("captions", []); i = int(sys.argv[2])
+sys.exit(0 if i < len(c) and c[i] else 1)' "$caps" "$idx" 2>/dev/null; then set_ok=1; break; fi
+      sleep 1
+    done
+    if [ "$set_ok" -eq 0 ]; then
+      echo "FAILED: the caption of figure $idx did not appear in ${CAPTION_TIMEOUT_S}s; browse returned: ${caps:-<nothing>}" >&2
+      exit "$EX_UNAVAILABLE"
+    fi
+    echo "ok"
+  done < "$WORK/captions.txt"
+fi
 
 step "verifying against the converted payload"
 # dividers travels with the grafs: a <hr> is not a .graf and carries no text,

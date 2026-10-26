@@ -1,0 +1,119 @@
+{
+ "method": "byte-copy",
+ "assets": [
+  {
+   "file": "asset-01.png",
+   "source": "figures/01-tokyo-venue.png",
+   "sha256": "3694c50079dadf29246b1130dc076007e170847cb2ea7103018f99010560a35c",
+   "copied_sha256": "3694c50079dadf29246b1130dc076007e170847cb2ea7103018f99010560a35c"
+  },
+  {
+   "file": "asset-02.png",
+   "source": "figures/02-invitation.png",
+   "sha256": "2839ce2dffc6b99256e69a278f7cbe94ce5b74bff6378ca9b0d4ec3441f4bd10",
+   "copied_sha256": "2839ce2dffc6b99256e69a278f7cbe94ce5b74bff6378ca9b0d4ec3441f4bd10"
+  },
+  {
+   "file": "asset-03.png",
+   "source": "figures/03-departure.png",
+   "sha256": "12138202d782ea6aa80cea3b3f0779f0778d8d6c79e537ad1c56b5f2d0c560f4",
+   "copied_sha256": "12138202d782ea6aa80cea3b3f0779f0778d8d6c79e537ad1c56b5f2d0c560f4"
+  },
+  {
+   "file": "asset-04.png",
+   "source": "figures/04-kong-failover.png",
+   "sha256": "4932b0521125e94ac7bdb130630df08548578802e982db15ca184bd04874736e",
+   "copied_sha256": "4932b0521125e94ac7bdb130630df08548578802e982db15ca184bd04874736e"
+  },
+  {
+   "file": "asset-05.png",
+   "source": "figures/05-kong-budget.png",
+   "sha256": "ba9a85efb945b48fd1da3b079cae525d2c03e1681d067b53fe9739b119d077b1",
+   "copied_sha256": "ba9a85efb945b48fd1da3b079cae525d2c03e1681d067b53fe9739b119d077b1"
+  },
+  {
+   "file": "asset-06.png",
+   "source": "figures/06-keynote-connectivity.png",
+   "sha256": "86510199de513bd0e5b3f2bf5b1d0e12cf07a85d6cfabd13db8e0ac3c01ac191",
+   "copied_sha256": "86510199de513bd0e5b3f2bf5b1d0e12cf07a85d6cfabd13db8e0ac3c01ac191"
+  },
+  {
+   "file": "asset-07.png",
+   "source": "figures/15-skills-three-reads.png",
+   "sha256": "e5633c4431b9be2be7e3a0cabd4c972225d8fa039174371624d2291a2d229886",
+   "copied_sha256": "e5633c4431b9be2be7e3a0cabd4c972225d8fa039174371624d2291a2d229886"
+  },
+  {
+   "file": "asset-08.png",
+   "source": "figures/07-skills-identity.png",
+   "sha256": "aca7b9b3eb2f3ed5b4b1129a48b807263891665bd371bdb95b0fe0d49f929161",
+   "copied_sha256": "aca7b9b3eb2f3ed5b4b1129a48b807263891665bd371bdb95b0fe0d49f929161"
+  },
+  {
+   "file": "asset-09.png",
+   "source": "figures/08-proxy-refresh.png",
+   "sha256": "39b274b3f562e5dc029c7c024bb02b65a05d7c67ef2dfb22111a85144a309c80",
+   "copied_sha256": "39b274b3f562e5dc029c7c024bb02b65a05d7c67ef2dfb22111a85144a309c80"
+  },
+  {
+   "file": "asset-10.png",
+   "source": "figures/16-proxy-request-log.png",
+   "sha256": "19bf671417fb60d7f5cfb8bb4d053fddf27cb9dce43ae8c04a801fc22627d04e",
+   "copied_sha256": "19bf671417fb60d7f5cfb8bb4d053fddf27cb9dce43ae8c04a801fc22627d04e"
+  },
+  {
+   "file": "asset-11.png",
+   "source": "figures/09-local-architecture.png",
+   "sha256": "70f53f9b7f7ea01427c72872727974c83c9ea42e39c4b9713e8e476305f585b6",
+   "copied_sha256": "70f53f9b7f7ea01427c72872727974c83c9ea42e39c4b9713e8e476305f585b6"
+  },
+  {
+   "file": "asset-12.png",
+   "source": "figures/10-local-guardrails.png",
+   "sha256": "c7e3382fd7718bf0de560086105e2c1df17dfc99b6b9f853eca6dfe4bda8f211",
+   "copied_sha256": "c7e3382fd7718bf0de560086105e2c1df17dfc99b6b9f853eca6dfe4bda8f211"
+  },
+  {
+   "file": "asset-13.png",
+   "source": "figures/11-uber-investigation.png",
+   "sha256": "8a515782e57dd0bb9538aa48c39cf31824dc4cf45c36006737e5f37d871c5464",
+   "copied_sha256": "8a515782e57dd0bb9538aa48c39cf31824dc4cf45c36006737e5f37d871c5464"
+  },
+  {
+   "file": "asset-14.png",
+   "source": "figures/12-uber-results.png",
+   "sha256": "0dcef72127c8cfc1712d1ae4a1ec810942346358d5d9e6dffd7ad0e0839990d3",
+   "copied_sha256": "0dcef72127c8cfc1712d1ae4a1ec810942346358d5d9e6dffd7ad0e0839990d3"
+  },
+  {
+   "file": "asset-15.png",
+   "source": "figures/13-logfire-feedback.png",
+   "sha256": "c37da789ee78578f9bdf074d540dd9c12f507af48a73e4cc6d265a3a037a5310",
+   "copied_sha256": "c37da789ee78578f9bdf074d540dd9c12f507af48a73e4cc6d265a3a037a5310"
+  },
+  {
+   "file": "asset-16.png",
+   "source": "figures/17-logfire-prompt-diff.png",
+   "sha256": "513d19b576b06a9496c7934dbad5a8d75ed285d43dcc2e5575fe75f7e97bd92a",
+   "copied_sha256": "513d19b576b06a9496c7934dbad5a8d75ed285d43dcc2e5575fe75f7e97bd92a"
+  },
+  {
+   "file": "asset-17.png",
+   "source": "figures/18-pagerduty-hire.png",
+   "sha256": "b5aa8dea33aa93d5a47f0f1b5f4b8ba9d9757e4a34c4d7a5d37b6466bb02be55",
+   "copied_sha256": "b5aa8dea33aa93d5a47f0f1b5f4b8ba9d9757e4a34c4d7a5d37b6466bb02be55"
+  },
+  {
+   "file": "asset-18.png",
+   "source": "figures/19-pagerduty-pipeline.png",
+   "sha256": "745322ceb68f0a2176217ddb7b5fa6ad7c95d8d3651c7df6d035a756b655b34e",
+   "copied_sha256": "745322ceb68f0a2176217ddb7b5fa6ad7c95d8d3651c7df6d035a756b655b34e"
+  },
+  {
+   "file": "asset-19.png",
+   "source": "figures/14-goodbye-shibuya.png",
+   "sha256": "23b32a3b7ab8294f1d075163d013042c2408f943dcef0d2da5dbd8a144bd9ba2",
+   "copied_sha256": "23b32a3b7ab8294f1d075163d013042c2408f943dcef0d2da5dbd8a144bd9ba2"
+  }
+ ]
+}

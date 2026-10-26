@@ -1,0 +1,47 @@
+{
+ "method": "byte-copy",
+ "assets": [
+  {
+   "file": "asset-01.png",
+   "source": "figures/00-shibuya-night.png",
+   "sha256": "c92b1ef0093bdd21dd3509bb9017ee1d06362a90deca4cd159a6f6b76bbb0251",
+   "copied_sha256": "c92b1ef0093bdd21dd3509bb9017ee1d06362a90deca4cd159a6f6b76bbb0251"
+  },
+  {
+   "file": "asset-02.png",
+   "source": "figures/01-crabrag-relationships.png",
+   "sha256": "535662889787505abeae012970850e760100b9ca215c36c0eca40344a1531581",
+   "copied_sha256": "535662889787505abeae012970850e760100b9ca215c36c0eca40344a1531581"
+  },
+  {
+   "file": "asset-03.png",
+   "source": "figures/02-memory-four-jobs.png",
+   "sha256": "c413704f27c396a427087e8ef2c94df15f82a6b4d89cb170f41f199b87c21378",
+   "copied_sha256": "c413704f27c396a427087e8ef2c94df15f82a6b4d89cb170f41f199b87c21378"
+  },
+  {
+   "file": "asset-04.png",
+   "source": "figures/03-memory-lifecycle.png",
+   "sha256": "9afed9b59cbd59a6d3c1247a4a7d0cfa589a9e1c2ea2f7c09e55437c0cf65c32",
+   "copied_sha256": "9afed9b59cbd59a6d3c1247a4a7d0cfa589a9e1c2ea2f7c09e55437c0cf65c32"
+  },
+  {
+   "file": "asset-05.png",
+   "source": "figures/04-research-verification-first.png",
+   "sha256": "c1c3caa76ebe9aefe24162b5c5ea8bdc13ca66daa1c41373cc54f44bc0052567",
+   "copied_sha256": "c1c3caa76ebe9aefe24162b5c5ea8bdc13ca66daa1c41373cc54f44bc0052567"
+  },
+  {
+   "file": "asset-06.png",
+   "source": "figures/05-research-claims-author-photo.png",
+   "sha256": "8710a76f834a2937c08ed5519dd9d02d47dfad6cadab4541259dce1454962826",
+   "copied_sha256": "8710a76f834a2937c08ed5519dd9d02d47dfad6cadab4541259dce1454962826"
+  },
+  {
+   "file": "asset-07.png",
+   "source": "figures/06-shibuya-sky-festival.png",
+   "sha256": "b8c48051d1c84c8c58ec16fa1558ab0ef104f40e7f742edf3270a8ca60b06061",
+   "copied_sha256": "b8c48051d1c84c8c58ec16fa1558ab0ef104f40e7f742edf3270a8ca60b06061"
+  }
+ ]
+}
