@@ -289,6 +289,11 @@ Medium 之後把預覽圖重設成**內文第一張 figure**。三篇分論的�
    hash，直接在選擇器裡比對 `src` 即可。
    若原封面這次也重繪了，則選同一張圖的新版，並核對上傳後的新識別碼。
 
+**預覽摘要也可能被重設**（2026-10-26 實測）：六份 AAIF 排程稿重灌後，五份的 Write a preview subtitle
+欄讀回變成 Medium 自動摘自首段的句子，只有一份的自訂摘要留著；原因沒有查明，所以重灌後一律到
+`/p/<id>/submission` 核對。重填只要把句子填回該欄、按 Tab 離開欄位，Medium 就存了，不必按任何
+按鈕；另開新分頁讀回 `extendedPreviewContent.subtitle` 確認。同樣不要按 `Schedule to publish`。
+
 2026-09-23 逐一核對中英八篇後，封面對應為總論 `diagram-04`、測試篇 `diagram-03`、
 Review 篇 `diagram-02`、可靠度篇 `diagram-02`；八份 ledger 的當前設定已同步更正。
 
@@ -639,13 +644,16 @@ Review 第七節依讀者回饋補清 PR head 不變、整合候選版本仍可�
 這一輪起每張來源圖片的圖說改貼進 Medium 圖片自己的 caption 欄（見〈圖片是怎麼進去的〉），所以文字區塊數比圖說還在正文時少了圖說的則數。
 另開新分頁讀回：六篇 `isPublished: false`、排程時段全部不變（11/02、11/04、11/09、11/11、11/16、11/18 的 UTC 01:00）、Notify subscribers 關閉、圖片數相符。
 
-兩件事留給作者在發布對話框處理：
+重灌的兩個副作用，同日稍後依作者指示在發布對話框處理完畢（按 Done，沒有按 Schedule to publish）：
 
-1. **封面**。第一篇中英的第一張內文圖就是會場照，封面不變；第二、三篇中英的第一張內文圖是系列總覽圖，重灌後封面被重設成總覽圖
-   （第二篇原本是東京鐵塔照、第三篇原本是澀谷夜景照）。改法見〈整篇重灌〉的「Change preview image」步驟，按 Done 就存，不要按 Schedule。
-2. **預覽摘要**。只有英文第一篇讀回的仍是自訂摘要；其餘五篇讀回的是 Medium 自動摘自 TL;DR 的首句，ledger 原本記的自訂摘要不在 Medium 設定裡，要自訂得重設。
+1. **封面**。第一篇中英的第一張內文圖就是會場照，封面本來就不變；第二、三篇中英的第一張內文圖是系列總覽圖，重灌後封面被重設成總覽圖，
+   已用「Change preview image」從頁內縮圖選回原照（第二篇東京鐵塔照 `1*l8bZZAVGBqlT0sVQdyRXdg.png` 2048×1152、第三篇澀谷夜景照
+   `1*yXCiu5bX04CCZi96j9C3LA.png` 2400×1350）。縮圖是依 `src` 裡的圖片識別碼選的，不是看長相；重傳的同一張圖拿到的是同一個識別碼。
+2. **預覽摘要**。重灌後只有英文第一篇仍是自訂摘要，其餘五篇讀回的是 Medium 自動摘自 TL;DR 的首句。已把 ledger 記的自訂摘要填回
+   「Write a preview subtitle」欄：`browse fill` 之後按 Tab 離開欄位，Medium 就存了，不必按任何按鈕，從新分頁讀回確認。中文第一篇的
+   「六場錄影」改成「七場」、英文第一篇的「six talks」改成「seven talks」，以符合補入的 PagerDuty 場次（英文那句是作者再指示後改的）。
 
-各篇 `PUBLISHED.md` 與[發布核對](research/2026-10/aaif-agntcon/publication.md)已依讀回值更新。
+六篇改完都從新分頁讀回：排程、`isPublished: false`、Notify 關閉皆未變。各篇 `PUBLISHED.md` 與[發布核對](research/2026-10/aaif-agntcon/publication.md)已依讀回值更新。
 
 ### 2026-10-24：第三篇上版與檢查
 
@@ -735,3 +743,24 @@ python3 tools/medium_patch.py subst " — — " " — "
 `verify_draft.py` 的連結檢查只比數量；本次另按順序比較每個目的地。Medium 的 `/r/?url=` 包裝只在網域、路徑與單一 `url` 參數均符合時解開；程式區塊另逐字比較縮排，不沿用正文比對時的空白正規化。
 
 2026-10-18 再次核對上述四份中文草稿，正文與貼稿相符，四個 `publishSchedule.publishAt` 亦與原時段一致；英文的四個規劃日期仍未成為 Medium 排程。
+
+### 2026-10-27：「同一份規格，跑十次」英文版建稿與排程
+
+四篇英文版於 2026-10-26／27 完成主寫、逐段潤飾、Claude 讀者審查與三輪 Codex 審稿（紀錄見[英文版紀錄](research/2026-10/same-spec-ten-runs/english-2026-10-26/README.md)），依前系列「中文週二、英文週四，臺北 09:00」的節奏接在各篇中文版之後排程。八份排程稿全部 `isPublished: false`，時區均為 Asia/Taipei（GMT+8）。
+
+| 篇目 | 中文 Post ID | 中文排程 | 英文 Post ID | 英文排程 |
+|---|---|---|---|---|
+| 總論 | `6986ee29219e` | 2026-11-10（二）09:00 | `3700b5d771fd` | 2026-11-12（四）09:00 |
+| 規格篇 | `fc5ed5fce443` | 2026-11-17（二）09:00 | `3c356327ea3c` | 2026-11-19（四）09:00 |
+| 契約篇 | `f7684c057c0e` | 2026-11-24（二）09:00 | `97d5d4dc4fa8` | 2026-11-26（四）09:00 |
+| 變異篇 | `785ace43b955` | 2026-12-01（二）09:00 | `3745c88d2c66` | 2026-12-03（四）09:00 |
+
+英文草稿以 `./tools/medium_draft.sh <dir> en` 建立（瀏覽器用本工作目錄專屬的 `CHROMIUM_PROFILE` 與 `BROWSE_STATE_FILE`，Medium session 仍從 Chrome Default profile 匯入），每篇寫入後一次、重新載入後一次逐塊比對：總論 175 段／49 連結／7 圖，規格篇 194／64／8，契約篇 226／56／7，變異篇 200／59／7，分隔線均為 0、無殘留 placeholder。排程、Topics、預覽摘要與封面沿用 10/04 中文版的腳本做法，送出後從新分頁讀回 `publishSchedule.publishAt`、Topics、封面識別碼與尺寸、`isPublishToEmail` 與預覽文字。四篇 Topics 與通知設定同中文版；封面依序 `diagram-01.png`、`table-03.png`、`diagram-01.png`、`table-03.png`。
+
+這一輪實測到三件值得記下的事：
+
+1. **Medium 會在英文標題最後一個空白處放 U+00A0**（避免孤字），比對標題時要把它當成一般空白，不能像中文標題那樣直接刪掉；em dash 兩側的 hair space 也同樣要正規化。
+2. **預覽標題上限 100 字元。** 三篇英文正文標題（108、117、113 字元）會被 Medium 截成「…」，依付款實作篇英文版的做法另填完整短句（規格篇 "…Part 1 — Specification: Decide What You Need First"、契約篇 "…Part 2 — Contract: What Sits Between a Requirement and a Check"、變異篇 "…Part 3 — Variance: Where the Next Evidence Comes From"）；在發布對話框內直接填會被截斷版蓋回去，要在提交頁（`/p/<id>/submission`）的「Story preview title」欄位填入再按 Tab 才存得住。正文標題不變。
+3. **重灌會重設封面與預覽摘要。** 總論與規格篇在三輪審稿後以 `--post <id>` 重灌一次（AI 協作說明末條改為如實描述英文流程），排程未受影響；封面用「Change preview image」選回，摘要重填後以 Tab 離開輸入框儲存，都不按 Schedule。
+
+系列連結依既定規則只預填本篇發布時應已上線的篇：英文版連到前系列《Green Is Not Done》五篇與 Harness 藍圖的英文版、本系列先前篇的英文 Post ID，以及自己的中文版；後篇保留 `(coming soon)`，各篇上線後再以 `medium_patch.py` 回填，英文版上線後在中文版文末補英文版連結。研究附件仍固定在 commit `774759192ab0e0b2da3d8b163eb3f07f3d12f4c3`。

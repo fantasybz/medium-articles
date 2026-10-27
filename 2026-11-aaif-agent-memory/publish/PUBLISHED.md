@@ -6,7 +6,7 @@
 **排程** 2026-11-16 09:00 Asia/Taipei（UTC 01:00）；新分頁讀回確認。
 **草稿** https://medium.com/p/5380c278562e/edit
 **上線後穩定短網址** https://medium.com/p/5380c278562e
-**核對時間** 2026-10-26T02:00:06+08:00
+**核對時間** 2026-10-26T10:34:32+08:00
 
 ## 內容核對
 
@@ -25,17 +25,17 @@
 
 ## 發布設定讀回
 
-核對時間：2026-10-26T02:00:06+08:00。另開新分頁，確認不含原頁面標記，再讀取 Medium 儲存的設定。
+核對時間：2026-10-26T10:34:32+08:00。另開新分頁，確認不含原頁面標記，再讀取 Medium 儲存的設定。
 
 | 項目 | 讀回值 |
 |---|---|
 | `isPublished` | `false` |
 | `publishSchedule.publishAt` | `1794790800000`（2026-11-16T01:00:00Z） |
 | Topics | Artificial Intelligence、Model Context Protocol、Software Engineering、Open Source、Ai Agents |
-| 封面 | `diagram-01.png`，`1*hcfJVSrI3ZyNIne3eMmvSQ.png`，664×948 |
+| 封面 | `asset-01.png`，`1*yXCiu5bX04CCZi96j9C3LA.png`，2400×1350（2026-10-26 重灌後一度被重設為總覽圖 `diagram-01.png`；同日在發布對話框用 Change preview image 依圖片識別碼選回、按 Done，從新分頁讀回確認） |
 | 預覽標題 | Agent 記住的經驗，下一次還能相信嗎？ |
-| 預覽摘要 | （2026-10-26 重灌後讀回）Medium 目前顯示的是自動摘自內文 TL;DR 的首句：「TL;DR — Agent 記得上次怎麼做，確實能省下重新說明與調查的時間。但「上次測試通過」一旦被整理成「這個系統可以升級」……」。先前記的自訂摘要「從澀谷照片到三場會議材料，追問 Agent 記憶的來源、適用條件，以及更正如何進入下一次任務。」不在 Medium 設定裡，要自訂請作者在發布對話框重設 |
+| 預覽摘要 | 從澀谷照片到三場會議材料，追問 Agent 記憶的來源、適用條件，以及更正如何進入下一次任務。（2026-10-26 重灌後一度讀回為自動摘自 TL;DR 的首句；同日在發布對話框的 Write a preview subtitle 欄重設為此句，從新分頁讀回確認） |
 | Notify subscribers | 關閉（`isPublishToEmail: false`） |
 | 發布位置 | 個人 profile，未投稿 publication |
 
-Story image 原本使用筆者自己的澀谷觀景台夜景照（`asset-01.png`）。2026-10-26 重灌後，原排程、預覽標題及通知設定與更新前相符；封面則被 Medium 重設為內文第一張圖，即系列總覽圖 `diagram-01.png`（重灌會重傳每張圖，封面跟著重設，見 PUBLISHING.md），待作者在發布對話框改回澀谷夜景照。10/25 改寫後正文保留一張澀谷開場照與一張 SKY 慶典照，另兩張澀谷照留在 `figures/` 未使用。系列文章目前仍為排程稿，待實際公開後再更新「即將發布」標示；英文版連到先行排程的中文版本。
+Story image 使用筆者自己的澀谷觀景台夜景照（`asset-01.png`）。2026-10-26 重灌後封面一度被 Medium 重設為內文第一張圖（系列總覽圖），同日依作者指示在發布對話框用 Change preview image 選回原照、按 Done 存檔，預覽摘要也重設回自訂句，兩者皆從新分頁讀回確認；沒有按 Schedule to publish。原排程、預覽標題及通知設定與更新前相符。10/25 改寫後正文保留一張澀谷開場照與一張 SKY 慶典照，另兩張澀谷照留在 `figures/` 未使用。系列文章目前仍為排程稿，待實際公開後再更新「即將發布」標示；英文版連到先行排程的中文版本。
