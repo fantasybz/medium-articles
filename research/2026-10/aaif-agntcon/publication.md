@@ -85,3 +85,14 @@ Topics 均為 Artificial Intelligence、Model Context Protocol、Software Engine
 | 三 | 英 | `bbf6a23c6481` | 11/18 01:00 | 126 | 50 | 13 | 7 | 重設為總覽圖，同日改回原照 | 自動摘句，同日重設為自訂 |
 
 六篇 `isPublished: false`、Notify subscribers 關閉、分隔線各 1、placeholder 0。封面重設是重灌的已知副作用（重傳每張圖，Medium 以內文第一張圖當封面；第一篇的第一張圖就是會場照，所以不變）；預覽摘要除英文第一篇外都讀回自動摘句，ledger 原記的自訂摘要不在 Medium 設定裡。兩者於同日稍後依作者指示在發布對話框處理：封面用 Change preview image 依圖片識別碼選回原照、按 Done；摘要填回 Write a preview subtitle 欄後按 Tab 離開即存；都沒有按 Schedule to publish，六篇改完各從新分頁讀回，排程與通知設定未變。英文第一篇的「six talks」也依作者指示改成「seven talks」。各篇 `PUBLISHED.md` 已依讀回值更新。
+
+## 2026-10-27 重灌：第一篇第二節的全貌與閱讀順序
+
+作者要求第二節（Kong 展示）開頭先交代全貌與閱讀順序，並加強與第三節的鋪陳；同輪改正兩處貼文時間。改動見[場次導讀與來源註記](reader-entry-refinement.md)末節。作者確認後，兩份排程稿以 `tools/medium_draft.sh 2026-11-aaif-after-tokyo [en] --post <id>` 就地重灌。每篇貼完比對一次，等 Medium 存好、重新載入後再比對一次，兩次都相符；之後逐篇另開新分頁讀回發布設定。
+
+| 篇 | 語言 | Post ID | 排程（UTC） | 文字區塊 | 連結 | 圖 | 圖說 | 封面 | 預覽摘要 | 讀回時間 |
+|---|---|---|---|---:|---:|---:|---:|---|---|---|
+| 一 | 中 | `e3d060cb8b03` | 11/02 01:00 | 217 | 94 | 23 | 19 | 會場照不變 | 重設為自動摘句，已填回自訂句 | 2026-10-27T23:37:35+08:00 |
+| 一 | 英 | `565d3e375896` | 11/04 01:00 | 217 | 95 | 23 | 19 | 會場照不變 | 自訂摘要仍在 | 2026-10-27T23:41:12+08:00 |
+
+兩篇 `isPublished: false`，Notify subscribers 關閉，Topics 五個都在，分隔線各 1、placeholder 0；都沒有按 Schedule to publish。文字區塊比 10/26 多 3 段：原第一段拆成兩段，另加導讀段與橋接段。
