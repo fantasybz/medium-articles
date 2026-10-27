@@ -46,13 +46,18 @@ printf '%-4s %-8s %-7s %-6s %-5s %s\n' '#' 'size' 'aspect' 'nodes' 'ok' 'figure'
 for f in "$W"/*.mmd; do
   [ -e "$f" ] || break        # 沒有 nullglob 時，空目錄會把字面上的 * 交給迴圈
   i="$(basename "$f" .mmd)"; label="$(cut -c1-60 "$W/$i.label" 2>/dev/null)"
-  res="$("$HERE/mermaid_check.sh" "$f" "$W/$i" 2>&1)"; rc=$?   # RENDER ERROR 也可能寫在 stderr，不要丟
+  res="$("$HERE/mermaid_check.sh" "$f" "$W/$i" 2>&1)"; rc=$?   # 子程序的 stderr 也收：traceback 或 browse 的錯誤要能出現在 FAIL 列下面
   size="$(echo "$res" | sed -n 's/.* \([0-9]*x[0-9]*\) css px.*/\1/p')"
   aspect="$(echo "$res" | sed -n 's/.*aspect \([0-9.]*\).*/\1/p')"
   nodes="$(echo "$res" | sed -n 's/.*nodes \([0-9]*\).*/\1/p')"
   if [ "$rc" = "0" ]; then ok=PASS; pass=$((pass+1)); else ok=FAIL; fail=$((fail+1)); fi
   printf '%-4s %-8s %-7s %-6s %-5s %s\n' "$i" "${size:-?}" "${aspect:-?}" "${nodes:-?}" "$ok" "$label"
-  if [ "$rc" != "0" ]; then echo "$res" | grep -E '^(  - |RENDER ERROR)' | sed 's/^/       /'; fi
+  if [ "$rc" != "0" ]; then
+    detail="$(echo "$res" | grep -E '^(  - |RENDER ERROR)')"
+    # 沒有 RENDER ERROR 或規則行的失敗（traceback、browse 的錯誤）就印最後一行非空輸出，FAIL 列不能沒有原因
+    [ -n "$detail" ] || detail="$(echo "$res" | grep -v '^[[:space:]]*$' | tail -1)"
+    echo "${detail:-(no output)}" | sed 's/^/       /'
+  fi
 done
 echo "== PASS $pass / FAIL $fail  (renders in $W)"
 [ "$fail" = "0" ]

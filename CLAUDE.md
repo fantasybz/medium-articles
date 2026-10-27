@@ -70,14 +70,21 @@ each `figures.json` still matches; `sync_figures.py`'s id matching; the
 runs against a throwaway git repo with a fake `codex` first on `PATH`, so the
 missing-digest guard (exit 64 before Codex is called) and the happy path that
 writes `codex-review-<slug>.md` are both covered without a Codex session. The
-extractors, `collect.sh`, `mermaid_check*.sh` and `render_images.sh` need a
-browser or the macOS Keychain, so they are not in it; like `medium_draft.sh`,
-they check their own output at run time.
+extractors and `collect.sh` need a browser or the macOS Keychain, so they are
+not in it. `mermaid_check.sh`, `mermaid_check_all.sh` and `render_images.sh`
+are: a fake `browse` installed at the repo-local path `_common.sh` checks first
+(under a temporary `ROOT`) pins their pre-flight refusals, the screenshot size
+guards, the table verdict, the copy-or-clear rule and the sweep table; what the
+real browser draws is checked by the scripts themselves at run time, like
+`medium_draft.sh`.
 
 For gstack's pre-gate, `.gstack/pregate.json` maps generated `figures.json`
 files and the browser render scripts (`research/scripts/_common.sh`,
-`mermaid_check.sh`, `render_images.sh`, whose fake-browse tests live in that
-suite) to the research suite and runs it with stdlib `unittest`. gstack reads
+`mermaid_check.sh`, `mermaid_check_all.sh`, `render_images.sh`, whose
+fake-browse tests live in that suite) to the research suite and runs it with
+stdlib `unittest`. `.gitignore` lists `.gstack/` because gstack's browse appends
+it on every daemon start; tracked files under it (`pregate.json`) are
+unaffected, and a new config file there needs `git add -f`. gstack reads
 this file from the base branch, so a mapping added in a PR only takes effect
 after it merges; until then a test that names the script by its repo-relative
 path is what resolves the lane. The mapping does not replace the three required

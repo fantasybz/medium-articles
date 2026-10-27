@@ -106,17 +106,19 @@ fail=0
 for m in "$W"/diagram-*.mmd; do
   [ -e "$m" ] || break
   n="$(basename "$m" .mmd)"
-  if out="$("$HERE/mermaid_check.sh" "$m" "$W/$n" 2>&1)"; then cp "$W/$n.png" "$IMG/$n.png"; echo "  $n: $(echo "$out" | head -1 | sed 's/.*png  //')"
+  if out="$("$HERE/mermaid_check.sh" "$m" "$W/$n" 2>&1)"; then
+    if cp "$W/$n.png" "$IMG/$n.png"; then echo "  $n: $(echo "$out" | head -1 | sed 's/.*png  //')"; else echo "  $n: FAIL (copy)"; fail=$((fail+1)); fi
   else echo "  $n: FAIL"; echo "$out" | sed 's/^/     /'; fail=$((fail+1)); fi
 done
 
 # 瀏覽器已在清舊檔之前由 prepare_headless_viewport 準備好（只有表格的發布包也走那一次）。
-# 表格截圖走與 mermaid_check.sh 同一道 PNG 檔頭核對：寬要是 #wrap 的 HEADLESS_SCALE 倍，否則是 1x 或裁切，
-# 不能進 images/。先截到 $W，核對過才複製。印出「png WxH, Nx」並以 0 退出；否則印原因、非 0 退出。
+# 表格截圖走與 mermaid_check.sh 同一道 PNG 檔頭核對：寬、高都要是 #wrap 的 HEADLESS_SCALE 倍，否則是 1x 或裁切，
+# 不能進 images/。先截到 $W（FAIL 的截圖留在那裡供檢視），核對過才複製。印出「png WxH, Nx」並以 0 退出；否則印原因、非 0 退出。
 table_png_verdict() {
   python3 - "$1" "$2" "$HEADLESS_SCALE" <<'EOF'
 import struct, sys
-path, wpx, scale = sys.argv[1], sys.argv[2], int(sys.argv[3])
+path, wrap, scale = sys.argv[1], sys.argv[2], int(sys.argv[3])
+PNG_TOL_PX = 4   # 2x 截圖的畫素取整，同 mermaid_check.sh
 try:
     head = open(path, 'rb').read(24)
 except OSError as e:
@@ -124,27 +126,35 @@ except OSError as e:
 if head[:8] != b'\x89PNG\r\n\x1a\n' or len(head) < 24:
     print("screenshot is not a PNG"); sys.exit(1)
 w, h = struct.unpack('>II', head[16:24])
-if not wpx.isdigit():
-    print(f"png {w}x{h}, but the #wrap width is unknown ({wpx})"); sys.exit(1)
-if abs(w - scale * int(wpx)) > 4:
-    print(f"png {w}px wide, expected {scale}x of the {wpx}px #wrap"); sys.exit(1)
+ww, _, wh = wrap.partition('@')
+if not (ww.isdigit() and wh.isdigit()):
+    print(f"png {w}x{h}, but the #wrap size is unknown ({wrap})"); sys.exit(1)
+if abs(w - scale * int(ww)) > PNG_TOL_PX:
+    print(f"png {w}px wide, expected {scale}x of the {ww}px #wrap"); sys.exit(1)
+if abs(h - scale * int(wh)) > PNG_TOL_PX:
+    print(f"png {h}px tall, expected {scale}x of the {wh}px #wrap (clipped screenshot?)"); sys.exit(1)
 print(f"png {w}x{h}, {scale}x")
 EOF
 }
 for h in "$W"/table-*.html; do
   [ -e "$h" ] || break
   n="$(basename "$h" .html)"
-  if ! "$BROWSE" load-html "$h" >/dev/null 2>&1; then
-    echo "  $n: FAIL (load-html)"; fail=$((fail+1)); continue
+  # browse 把失敗原因寫在 stderr：收下來印在 FAIL 列下面，不要只剩一個括號
+  if ! err="$("$BROWSE" load-html "$h" 2>&1 >/dev/null)"; then
+    echo "  $n: FAIL (load-html)"; printf '%s\n' "$err" | sed '/^$/d; s/^/     /'; fail=$((fail+1)); continue
   fi
   "$BROWSE" js "new Promise(r=>setTimeout(r,800)).then(()=>'ok')" >/dev/null 2>&1 || true
-  wpx=$("$BROWSE" js "Math.round(document.querySelector('#wrap').getBoundingClientRect().width)" 2>/dev/null) || wpx="?"
-  verdict=""
-  if "$BROWSE" screenshot "$W/$n.png" --selector '#wrap' >/dev/null 2>&1 && verdict="$(table_png_verdict "$W/$n.png" "$wpx")"; then
-    cp "$W/$n.png" "$IMG/$n.png"; echo "  $n: ${wpx}px wide ($verdict)"
+  wrap=$("$BROWSE" js "(()=>{const r=document.querySelector('#wrap').getBoundingClientRect();return Math.round(r.width)+'@'+Math.round(r.height)})()" 2>/dev/null) || wrap="?"
+  verdict=""; err="$("$BROWSE" screenshot "$W/$n.png" --selector '#wrap' 2>&1 >/dev/null)"; rc=$?
+  if [ "$rc" = "0" ] && verdict="$(table_png_verdict "$W/$n.png" "$wrap")"; then
+    if cp "$W/$n.png" "$IMG/$n.png"; then echo "  $n: ${wrap%@*}px wide ($verdict)"; else echo "  $n: FAIL (copy)"; fail=$((fail+1)); fi
   else
-    echo "  $n: FAIL (${verdict:-screenshot})"; rm -f "$W/$n.png"; fail=$((fail+1))
+    echo "  $n: FAIL (${verdict:-screenshot})"; printf '%s\n' "$err" | sed '/^$/d; s/^/     /'; fail=$((fail+1))
   fi
 done
-echo "== images in $IMG: $(ls "$IMG" | wc -l | tr -d ' ')  (FAILs: $fail)"
+# 最後數一次：images/ 裡的 PNG 要正好等於 figures.json 的圖＋表＋本機資產數，少一張就是 FAIL（cp 或清檔出了問題）
+expected=$(python3 -c "import json,sys; s=json.load(open(sys.argv[1])); print(len(s.get('figures',[]))+len(s.get('tables',[]))+len(s.get('assets',[])))" "$PUB/figures.json")
+actual=$(find "$IMG" -maxdepth 1 -name '*.png' | wc -l | tr -d ' ')
+echo "== images in $IMG: $actual of $expected  (FAILs: $fail)"
+[ "$actual" = "$expected" ] || { echo "  images/ holds $actual PNGs, figures.json expects $expected"; fail=$((fail+1)); }
 [ "$fail" = "0" ]

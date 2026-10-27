@@ -15,6 +15,9 @@
     ],
     "research/scripts/render_images.sh": [
       "research/scripts/test_research_scripts.py"
+    ],
+    "research/scripts/mermaid_check_all.sh": [
+      "research/scripts/test_research_scripts.py"
     ]
   }
 }
