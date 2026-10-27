@@ -10,7 +10,7 @@
 | 項目 | 新分頁讀回的值 |
 |---|---|
 | Topics | Software Testing、Code Review、AI、Software Engineering、Engineering Management |
-| 封面圖 | `diagram-01.png`（`1*tAFGUekCIWEd6qayUszNuw.png`）；原圖尺寸已核對 |
+| 封面圖 | `diagram-01.png`（`1*GFWOFlXX_RmgbTUH1v55-g.png`，1092×942；2026-10-27 重灌後選回新版並讀回確認） |
 | 預覽標題 | 同一份規格，跑十次（二）：契約篇—把要求變成驗收，中間還缺哪些判斷？ |
 | 預覽摘要 | 要求寫好了，檢查就一定可信嗎？從三行輸入推導應有結果，再用刻意錯法與合法差異，檢查驗收工具看得見什麼。 |
 | Notify subscribers | 已勾選，`isPublishToEmail: true` |
@@ -43,3 +43,11 @@ Medium 會在標題的破折號旁加入空白或細空白；比對沿用發布�
 從新分頁讀回，仍為 `isPublished: false`；排程為 **2026-11-24 09:00 Asia/Taipei**（`publishAt: 1795482000000`），與原排程相符。本次僅核對，沒有重貼正文或更動發布設定。
 
 正文與目前貼稿逐塊相符：226 個文字區塊、54 個連結、7 張圖、0 條分隔線。連結數量及圖片槽位通過既有驗證器；本次不重查所有外部引文的可用性。
+
+## 2026-10-27 重灌：流程圖改為完整尺寸
+
+`diagram-01.png` 原本是 `research/scripts/mermaid_check.sh` 修正前的退回截圖（664×582，瀏覽器預設的 300 CSS px）。作者 2026-10-27 決定重灌，先以修正後的 `research/scripts/render_images.sh` 重繪整包：只有 `diagram-01.png` 變成 1092×942，其餘表格位元組不變。再以 `./tools/medium_draft.sh 2026-11-same-spec-contract --post f7684c057c0e` 重灌（未加 `--reuse-figures`），台北時間 23:25 完成讀回。
+
+儲存後重新讀回兩次：**226 個文字區塊、54 個連結、7 張圖** 均與貼稿相符，placeholder 為 0。`diagram-01` 由 `1*tAFGUekCIWEd6qayUszNuw.png`（664×582）換成 `1*GFWOFlXX_RmgbTUH1v55-g.png`（1092×942，自 Medium CDN 讀 PNG 檔頭核對），其餘 6 張圖保留原識別碼。
+
+重灌把封面重設成內文第一張圖（表格 `1*XFszBI6N9nX3O12Hda4wqw.png`，1698×476），在 `/p/f7684c057c0e/submission` 用 Change preview image 依識別碼選回新版 `diagram-01.png`（`1*GFWOFlXX_RmgbTUH1v55-g.png`，1092×942）、按 Done。預覽摘要被換成自動摘錄，已把自訂句填回 Write a preview subtitle 欄並以 Tab 離開欄位。沒有按 Schedule to publish。另開新分頁讀回：封面為新版 `diagram-01.png`，預覽摘要、標題、`publishAt: 1795482000000`（2026-11-24 09:00 Asia/Taipei）、`isPublished: false` 與通知設定（開啟，`isPublishToEmail: true`）皆與重灌前的快照相同。這次重灌的貼稿 SHA-256 為 `0dcf2f5d05a071851e5d03700a5d7415a96e508b9d311a085eaafaf060c9503a`；重灌前後快照存於本機 `.context/refill-2026-10-27/`，未納入 git。

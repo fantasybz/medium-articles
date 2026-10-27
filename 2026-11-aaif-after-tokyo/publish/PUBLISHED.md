@@ -39,3 +39,11 @@
 | 發布位置 | 個人 profile，未投稿 publication |
 
 Story image 使用筆者自己的東京會場照片（`asset-01.png`，也是內文第一張圖，所以重灌沒有動到封面）。2026-10-26 重灌後，原排程、預覽標題、封面原圖及通知設定與更新前相符；預覽摘要一度讀回為自動摘自 TL;DR 的首句，同日依作者指示在發布對話框重設為自訂句並把「六場錄影」改為「七場」，從新分頁讀回確認，沒有按 Schedule to publish。系列文章目前仍為排程稿，待實際公開後再更新「即將發布」標示；英文版連到先行排程的中文版本。
+
+## 2026-10-27 重灌：系列總覽圖改為完整尺寸
+
+系列總覽圖 `diagram-01.png` 原本是 `research/scripts/mermaid_check.sh` 修正前的退回截圖（664×948，瀏覽器預設的 300 CSS px）。作者 2026-10-27 決定重灌，先以修正後的 `research/scripts/render_images.sh` 重繪整包：只有 `diagram-01.png` 變成 1156×1664，其餘表格與照片位元組不變。再以 `./tools/medium_draft.sh 2026-11-aaif-after-tokyo --post e3d060cb8b03` 重灌（未加 `--reuse-figures`），台北時間 23:04 完成讀回。
+
+儲存後重新讀回兩次：**214 個文字區塊、94 個連結、23 張圖、19 個 caption** 均與貼稿相符，placeholder 為 0。`diagram-01` 由 `1*hcfJVSrI3ZyNIne3eMmvSQ.png`（664×948）換成 `1*F4Urac80aH8T4p1KGCd5fw.png`（1156×1664，自 Medium CDN 讀 PNG 檔頭核對），其餘 22 張圖保留原識別碼。
+
+封面是內文第一張圖 `asset-01.png`（`1*jY2nu2UmaSugznxXM7TsMA.png`，1080×1080），位元組沒變，重灌後仍是同一個識別碼，不需要重選。預覽摘要被換成自動摘錄，已把自訂句填回 Write a preview subtitle 欄並以 Tab 離開欄位。沒有按 Schedule to publish。另開新分頁讀回：封面為原照片，預覽摘要、標題、`publishAt: 1793581200000`（2026-11-02 09:00 Asia/Taipei）、`isPublished: false` 與通知設定（關閉，`isPublishToEmail: false`）皆與重灌前的快照相同。這次重灌的貼稿 SHA-256 為 `dc59296554a1951d7e270960e97b74f0086998219e6598da8862af081ff6da2e`；重灌前後快照存於本機 `.context/refill-2026-10-27/`，未納入 git。

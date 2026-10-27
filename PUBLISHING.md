@@ -541,7 +541,20 @@ Claude Code 接手複核兩篇後續文章。可靠度篇修正了對營運篇 G
 
 本輪已實作的工具修正：`mermaid_check.sh` 截圖前把 svg 設成 viewBox 的寬高，並核對 `#wrap` 與 PNG 的寬度和 2x 倍率，對不上就 FAIL；`_common.sh` 的 `prepare_headless_viewport` 只在 `browse status` 回報健康的無旗標 daemon 時繼續，其餘一律以 75 退出（見第 2 步），`render_images.sh` 在清舊圖之前、`mermaid_check_all.sh` 在清工作目錄之前先跑這個檢查；`render_images.sh` 的表格截圖也核對寬高是 `#wrap` 的 2 倍，最後 `images/` 的 PNG 數要等於 `figures.json` 所列；三支腳本都有 fake-browse 測試（`research/scripts/test_research_scripts.py`）。後續工具建議，本輪未實作：讓 `render_images.sh` 寫出每張圖來源與 PNG 的 SHA-256 側檔並加 corpus 測試，過期的 PNG 才能在離線測試中被發現；讓 ledger 記的貼稿 SHA-256（本輪起各篇「第二次重灌」小節都有）與 committed 的 `medium-paste.md` 對照，重灌後再改貼稿就會在離線測試亮紅；讓 `medium_draft.sh` 比照 `collect.sh` 取鎖，並在 `--post` 前讀取 publishAt、在底線內拒絕執行；讓 pre-flight 也看 `browse status` 的 `URL:`／`Tabs:`，別的 session 正在用的無旗標 daemon 才擋得到；加一個對 committed `diagram-*.png` 檔頭寬度的 corpus 測試，已發布的舊包列白名單、排程中的包必須修。這些都要配 fake-browse 測試。
 
-尚未處理的波及範圍（2026-10-27 第三輪 Red Team 指出）：下列排程稿的 Mermaid 圖仍是 664 px 寬的退回截圖，其中六份以該圖當封面——AAIF 系列〈東京之後〉中英（`2026-11-aaif-after-tokyo`，11/02 與 11/04 發布，圖在內文）、〈交接〉中英（`2026-11-aaif-agent-handoffs`，11/09 與 11/11，封面）、〈記憶〉中英（`2026-11-aaif-agent-memory`，11/16 與 11/18，封面），以及 `2026-11-same-spec-overview`（11/10，封面）與 `2026-11-same-spec-contract`（11/24，封面）。這些發布包屬於別的系列與工作階段，本輪沒有動；是否在各自發布底線（發布前 12 小時）之前依本小節的流程重繪、重灌並選回封面，由作者決定。已發布文章不回頭重傳。
+波及範圍（2026-10-27 第三輪 Red Team 指出，同日處理完畢）：AAIF 系列〈東京之後〉中英（`2026-11-aaif-after-tokyo`）、〈交接〉中英（`2026-11-aaif-agent-handoffs`）、〈記憶〉中英（`2026-11-aaif-agent-memory`），以及 `2026-11-same-spec-overview` 與 `2026-11-same-spec-contract` 這 8 份排程稿，Mermaid 圖都還是 664 px 寬的退回截圖。當時說其中六份拿該圖當封面，重灌前讀回 `/submission` 才確認只有 same-spec 兩份如此；AAIF 六份用作者的照片（`asset-01.png`）當封面，其中〈交接〉〈記憶〉四份重灌時會被重設成總覽圖，要選回照片。作者 10/27 決定處理後，8 包以修正後的 `render_images.sh` 重繪（每包只有 `diagram-01.png` 變了，表格與照片位元組不變），再依本小節第 2 步逐份 `--post` 重灌：重灌前先讀回 `/submission` 存成快照，重灌後在 `/submission` 用 Change preview image 依識別碼選回封面（這 8 份這條路都可用），預覽摘要被重設的七份填回自訂句後以 Tab 離開欄位，最後另開新分頁讀回，與快照逐欄比對。三篇 AAIF 的總覽圖每種語言是同一份檔案，所以新識別碼也相同（中文 `1*F4Urac80aH8T4p1KGCd5fw`，英文 `1*13c3rtiPYUnqcMNjg63q_Q`）。〈記憶〉中文第一次執行在載入 Drafts 頁時遇到 `net::ERR_ABORTED`，還沒開編輯器就停止，讀回確認文章未被更動，重跑後完成。已發布文章（包括同樣帶有 664 px 圖的 `2026-11-agentic-eval-economics`）不回頭重傳。各篇細節見 ledger 的「2026-10-27 重灌」小節。
+
+2026-10-27 重灌後的讀回結果（台北時間 23:04–23:25，每份都另開新分頁讀回；排程、`isPublished: false`、標題、預覽摘要與通知設定都與重灌前的快照相同）：
+
+| 排程稿 | Post ID | 發布時間（Asia/Taipei） | 文字區塊 | 連結 | 圖片 | caption | 新 `diagram-01` | 封面（讀回的 previewImage） |
+|---|---|---|---:|---:|---:|---:|---|---|
+| 〈東京之後〉（中） | `e3d060cb8b03` | 2026-11-02 09:00 | 214 | 94 | 23 | 19 | `1*F4Urac80aH8T4p1KGCd5fw`（1156×1664） | 照片 `1*jY2nu2UmaSugznxXM7TsMA`（未被重設） |
+| 〈東京之後〉（英） | `565d3e375896` | 2026-11-04 09:00 | 214 | 95 | 23 | 19 | `1*13c3rtiPYUnqcMNjg63q_Q`（1546×1664） | 照片 `1*jY2nu2UmaSugznxXM7TsMA`（未被重設） |
+| 〈交接〉（中） | `e68dc5ab1275` | 2026-11-09 09:00 | 160 | 54 | 14 | 10 | `1*F4Urac80aH8T4p1KGCd5fw`（1156×1664） | 照片 `1*l8bZZAVGBqlT0sVQdyRXdg`（選回） |
+| same-spec 總論（中） | `6986ee29219e` | 2026-11-10 09:00 | 174 | 47 | 7 | 0 | `1*SJ2XnnrTTGSk_dvHAYedDA`（1340×1784） | 新版 `diagram-01`（選回） |
+| 〈交接〉（英） | `8b39e1abe616` | 2026-11-11 09:00 | 160 | 55 | 14 | 10 | `1*13c3rtiPYUnqcMNjg63q_Q`（1546×1664） | 照片 `1*l8bZZAVGBqlT0sVQdyRXdg`（選回） |
+| 〈記憶〉（中） | `5380c278562e` | 2026-11-16 09:00 | 126 | 49 | 13 | 7 | `1*F4Urac80aH8T4p1KGCd5fw`（1156×1664） | 照片 `1*yXCiu5bX04CCZi96j9C3LA`（選回） |
+| 〈記憶〉（英） | `bbf6a23c6481` | 2026-11-18 09:00 | 126 | 50 | 13 | 7 | `1*13c3rtiPYUnqcMNjg63q_Q`（1546×1664） | 照片 `1*yXCiu5bX04CCZi96j9C3LA`（選回） |
+| same-spec 契約篇（中） | `f7684c057c0e` | 2026-11-24 09:00 | 226 | 54 | 7 | 0 | `1*GFWOFlXX_RmgbTUH1v55-g`（1092×942） | 新版 `diagram-01`（選回） |
 
 ### 2026-10-24：後續可靠度與付款實作篇精修
 
