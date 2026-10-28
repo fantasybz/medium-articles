@@ -2,7 +2,7 @@
 
 > **TL;DR** — 如果付款被多扣一次，測試還會全綠嗎？審閱 agent 寫的測試，要從這類問題開始：它把什麼當成正確，又真的抓得到什麼錯誤？本篇先辨識測試被放寬、把現有 bug 當答案，以及沒有測到需求的幾種情況，再說明如何比較修改前後的斷言、讓新測試重現舊 bug，並刻意改壞程式來檢查測試的辨識力。這些方法能整理出值得人追問的線索，仍需要有人確認需求是否完整。文末的工作坊實例與十題清單，把這項判斷帶回一份實際的測試套件。
 
-> 系列導覽：[總論](https://medium.com/p/582f24223eea) → **一、測試篇（本篇）** → [二、Review 篇](https://medium.com/p/ccbf0cbe2691) → 三、可靠度篇（即將發布） → 四、付款實作篇（即將發布）
+> 系列導覽：[總論](https://medium.com/p/582f24223eea) → **一、測試篇（本篇）** → [二、Review 篇](https://medium.com/p/ccbf0cbe2691) → [三、可靠度篇](https://medium.com/p/3c64a9622777) → 四、付款實作篇（即將發布）
 
 ---
 
@@ -626,7 +626,7 @@ Lisa Crispin 與 Tip House 的《Testing Extreme Programming》說「人人都�
 - [總論：綠燈不是驗收—agent 時代的測試、Review 與可靠度](https://medium.com/p/582f24223eea)
 - **一、測試篇（本篇）**
 - [二、Review 篇：Review 是控制點，不是瓶頸—分流、reviewer agent 艦隊與閉環禁令](https://medium.com/p/ccbf0cbe2691)
-- 三、可靠度篇：SWE-Gate 量測到的 34%—constraint tests、pass^k 與授權擴張的閘門（即將發布）
+- [三、可靠度篇：SWE-Gate 量測到的 34%—constraint tests、pass^k 與授權擴張的閘門](https://medium.com/p/3c64a9622777)
 - 四、付款實作篇：買一瓶無糖純喫綠茶，從 Review 約束走到 mutation score（即將發布）
 
 ---

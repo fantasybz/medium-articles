@@ -3,6 +3,7 @@
 **標題** 綠燈不是驗收（三）可靠度篇：SWE-Gate 量測到的 34%—constraint tests、pass^k 與授權擴張的閘門
 **Post ID** `3c64a9622777`（草稿／排程網址 https://medium.com/p/3c64a9622777/edit；上線後的穩定短網址 https://medium.com/p/3c64a9622777）
 **排程** 2026-10-27（二）09:00 GMT+8（2026-10-24 已重新讀取 Medium 排程確認）
+**上線** 2026-10-27（二）09:01 GMT+8 依排程自動發布；正式網址 https://fantasybz.medium.com/綠燈不是驗收-三-可靠度篇-swe-gate-量測到的-34-constraint-tests-pass-k-與授權擴張的閘門-3c64a9622777（2026-10-28 讀回）
 **建立方式** `./tools/medium_draft.sh 2026-10-green-reliability`，逐塊比對零差異（見 [PUBLISHING.md](../../PUBLISHING.md)）
 **2026-10-26** 原稿與貼稿修訂後已重灌並讀回；同日 /ship 審查發現重繪的圖只有一半解析度，腳本修正後第二次重灌，見文末兩節。
 
@@ -204,3 +205,9 @@ Claude Code 接手複核後修訂原稿與貼稿（見[研究紀錄](../../resea
 儲存後重新讀回：**169 個文字區塊、22 個連結、7 張圖、10 條分隔線**均與貼稿相符，placeholder 為 0。三張表保留原識別碼（`table-01` `1*whb3ph8ndZguMFPKOmqvWQ`、`table-02` `1*oIg_kdBNO5DM3zYsqzvsQQ`、`table-03` `1*RlRojU6hvMn24AP5sW7Xaw`）；四張圖取得新識別碼：`diagram-01` `1*b1Fwtm5Nir8qJywCqoELPg`（1076×1136）、`diagram-02` `1*wLbhRvny2qsr3TZmF73T5A`（1468×1136）、`diagram-03` `1*HDQHsdzOpJcyuTti1DfSBg`（1456×1136）、`diagram-04` `1*a1gqo2NKunT7yQ65yGgeUg`（1300×1808）。上一節的四個 664 px 識別碼已不在內文裡。
 
 重灌仍把封面重設成第一張圖 `table-01`，依上一節的方法從 `/p/<id>/edit` 的 Change featured image 選回新版 `diagram-02.png`，重新載入 `/submission` 讀回 `previewImage.id = 1*wLbhRvny2qsr3TZmF73T5A.png`（1468×1136）。標題、預覽摘要、五個 Topics、通知設定與排程均未改變：`isPublished: false`，`publishAt: 1793062800000`（2026-10-27 09:00 Asia/Taipei）。這次重灌的貼稿 `medium-paste.md` SHA-256 為 `b0cfff1cdf4b2a00036f95d8e955bb1af7b1e8975237cee106f14df3d5bf0c4b`；重灌前後快照存於本機 `.context/ship-2026-10-26c/`，未納入 git。
+
+## 2026-10-28 上線核對
+
+依排程於 2026-10-27 09:01:01（Asia/Taipei）自動發布，`firstPublishedAt` 與公開頁的 `article:published_time` 相符。另開公開頁讀回：**169 個文字區塊、22 個連結、7 張圖、10 條分隔線**與貼稿相符；封面為 `diagram-02.png`（`1*wLbhRvny2qsr3TZmF73T5A.png`，1468×1136），訂閱通知開啟（`isPublishToEmail: true`），預覽摘要與 10/26 第二次重灌後的讀回相同。
+
+同日把總論、測試篇與 Review 篇中文版裡指向本篇的「（即將發布）」換成本篇連結並重新發布，經過見各篇 ledger 的「2026-10-28 可靠度篇上線後的連結回填」。本篇文末的英文版連結，待英文版（`4b6d147bff0d`，排程 10/29 09:00）上線後再補。
