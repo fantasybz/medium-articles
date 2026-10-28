@@ -44,7 +44,7 @@ flowchart TB
     subgraph action["Part 1: Action | Once tools are connected"]
         direction LR
         A["What may it do?<br/>What actually happened?<br/>What counts as done?"]
-        B["Targets and task authorization<br/>Results in external systems<br/>Evidence against requirements"]
+        B["Targets and task authorization<br/>Results in external systems<br/>Evidence that requirements are met"]
         A --> B
     end
 
