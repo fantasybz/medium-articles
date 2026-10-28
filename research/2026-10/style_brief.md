@@ -88,6 +88,8 @@ AAIF 兩篇共 13 個場次（含 Kong 工作坊），各以 2～3 個 H3 小標
 
 作者指出第一篇的 Kong 段落比較長，開頭應先交代全貌，並說明後面各段會帶到哪些概念，讓讀者自行挑段閱讀；這段也要當全文的引子，加強與第三節的鋪陳。落實方式：保留原開場句，接著用一段交代這個展示讓作者看見什麼，以及它和全文主軸的關係；再用一段依小標說明各段內容，並提示熟悉相關機制的讀者可以從哪一段讀起。段落結尾補一段橋接，停在下一節要回答的問題上，不預先念出下一節的標題。導讀只寫在這個較長的段落，不套用到每一節。細節見[場次導讀與來源註記](aaif-agntcon/reader-entry-refinement.md)末節。
 
+10/28 作者另選第二篇的§五、§九與第三篇的§四、§五、§六比照處理，各約 2,900–3,200 字，都比 Kong 段長；其餘段落仍不加導讀。全貌句要寫這一節真正的主軸，不能把作者的延伸寫成講者的流程；跳讀提示不寫成每節相同的句型；沒有小標的長段落（第三篇§六）補上小標，讀者才有地方可跳，結構比照第二篇§九的驗收設計。
+
 ## Conference and book material (new for this cycle)
 - **A session is cited as speaker, company, session, slide/timestamp**: 「在 AGNTCon Japan 的 X 場，<講者>（<公司>）在 slide N 說…」. Stage numbers are organiser-, vendor- or team-reported and say so; press coverage is not a source. Ground truth is `notes_sep10/11.md`.
 - **References entry for a session**: `org — [session title](https://sched.co/<id>)`, or the slide PDF URL from `sessions.md` when one exists.
