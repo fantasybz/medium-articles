@@ -21,7 +21,7 @@
 | 圖的種類 | `flowchart`、`timeline`、`mindmap`、`sequenceDiagram`、`quadrantChart`；不用 `gantt`、`pie`、`xychart`（表格或文字更清楚） | 這幾種在 700px 下撐得住 |
 | 表格 | 表格不是圖，直接用 markdown 表格；貼 Medium 時才轉 PNG | 表格截圖縮到卡片尺寸會糊，也不該當封面 |
 
-`research/scripts/mermaid_check.sh` 截圖前先把 svg 設成 viewBox 的寬高，再核對 `#wrap` 的實際寬度，以及 PNG 的畫素寬高是否都是 `#wrap` 的 2 倍（高度不符代表截圖被裁切，同樣 FAIL），所以每張圖的 PNG 應該是 2 ×（viewBox 寬 + 32）px 寬，與表格的 1800 px 同一個比例。若一張 PNG 只有 664 px 寬，那是 2026-10-26 之前的腳本截到了瀏覽器預設的 300 px，圖本身沒有問題：mermaid 11 輸出 `width="100%"`，拿掉 `max-width` 後，svg 在 inline-block 容器裡沒有可解析的寬度。已發布文章的圖不必回頭重傳；尚未發布的排程稿是否在發布底線前重繪並重灌，由作者決定，名單與底線見 PUBLISHING.md 的 2026-10-25／26 小節。
+`research/scripts/mermaid_check.sh` 截圖前先把 svg 設成 viewBox 的寬高，再核對 `#wrap` 的實際寬度，以及 PNG 的畫素寬高是否都是 `#wrap` 的 2 倍（高度不符代表截圖被裁切，同樣 FAIL），所以每張圖的 PNG 應該是 2 ×（viewBox 寬 + 32）px 寬，與表格的 1800 px 同一個比例。若一張 PNG 只有 664 px 寬，那是 2026-10-26 之前的腳本截到了瀏覽器預設的 300 px，圖本身沒有問題：mermaid 11 輸出 `width="100%"`，拿掉 `max-width` 後，svg 在 inline-block 容器裡沒有可解析的寬度。已發布文章的圖不必回頭重傳；當時尚未發布的 8 份排程稿已於 2026-10-27 重繪並重灌，名單與讀回結果見 PUBLISHING.md 的 2026-10-25／26 小節末。
 
 **寬的東西直著畫，窄的東西排兩欄。** `timeline` 是橫排的（每個時間點一欄、事件往下疊；2026-09 總論 diagram-02 十個時間點實測 1568×400、高／寬 0.26），超過四個時間點改用兩欄 `flowchart`（左右各一個 `direction TB` 的 subgraph），五層架構用 TB 疊起來，
 Before／After 用上下兩張卡片而不是左右並排；五步以內的線性流程如果直排，會變成 245×595 的細長條；

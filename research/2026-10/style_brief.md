@@ -84,6 +84,10 @@ AAIF 兩篇共 13 個場次（含 Kong 工作坊），各以 2～3 個 H3 小標
 
 作者試讀 AAIF 三篇後指出：讀起來不連貫，觀念與資訊不清楚；專有名詞仍難懂，引入新概念時要用容易懂的例子讓讀者進入情境；每篇的主軸要向下展開到每一段，段落之間的連貫要再提升；並要和已發布或已排程的 Medium 文章有更深的回扣，收集來源時交叉參考 OpenAI、Anthropic、AI Engineer 與 AAIF 頻道的相關材料。本輪的落實方式：每篇開頭先用一句話立主軸，再用一張閱讀地圖表把各場演講對到主軸的某一題；術語一律用該節情境裡的小例子帶入（門禁櫃台、公司總機、SOP 資料夾、檔案指紋、遊戲存檔、共用文件的版本）；查核方法與限制集中到文末註記；文末另設〈延伸閱讀：本文接回的幾篇〉，正文在需要處點名既有系列的章節。詳見[重新分析紀錄](aaif-agntcon/rewrite-2026-10-25.md)。
 
+## 長段落的全貌與引子（作者回饋，2026-10-27）
+
+作者指出第一篇的 Kong 段落比較長，開頭應先交代全貌，並說明後面各段會帶到哪些概念，讓讀者自行挑段閱讀；這段也要當全文的引子，加強與第三節的鋪陳。落實方式：保留原開場句，接著用一段交代這個展示讓作者看見什麼，以及它和全文主軸的關係；再用一段依小標說明各段內容，並提示熟悉相關機制的讀者可以從哪一段讀起。段落結尾補一段橋接，停在下一節要回答的問題上，不預先念出下一節的標題。導讀只寫在這個較長的段落，不套用到每一節。細節見[場次導讀與來源註記](aaif-agntcon/reader-entry-refinement.md)末節。
+
 ## Conference and book material (new for this cycle)
 - **A session is cited as speaker, company, session, slide/timestamp**: 「在 AGNTCon Japan 的 X 場，<講者>（<公司>）在 slide N 說…」. Stage numbers are organiser-, vendor- or team-reported and say so; press coverage is not a source. Ground truth is `notes_sep10/11.md`.
 - **References entry for a session**: `org — [session title](https://sched.co/<id>)`, or the slide PDF URL from `sessions.md` when one exists.

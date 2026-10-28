@@ -290,9 +290,10 @@ Medium 之後把預覽圖重設成**內文第一張 figure**。三篇分論的�
    若原封面這次也重繪了，則選同一張圖的新版，並核對上傳後的新識別碼。
 
 **預覽摘要也可能被重設**（2026-10-26 實測）：六份 AAIF 排程稿重灌後，五份的 Write a preview subtitle
-欄讀回變成 Medium 自動摘自首段的句子，只有一份的自訂摘要留著；原因沒有查明，所以重灌後一律到
+欄讀回變成 Medium 自動摘自首段的句子，只有一份的自訂摘要留著（英文第一篇 `565d3e375896`）。2026-10-27 再重灌第一篇中英，結果相同：中文又被重設、英文仍留著。原因沒有查明，所以重灌後一律到
 `/p/<id>/submission` 核對。重填只要把句子填回該欄、按 Tab 離開欄位，Medium 就存了，不必按任何
 按鈕；另開新分頁讀回 `extendedPreviewContent.subtitle` 確認。同樣不要按 `Schedule to publish`。
+2026-10-28 再重灌第一篇中文時，`/submission` 這條路存不進去：填回後送出的 `UpdateSubmitFormStoryPreviewMetadataMutation` 連續五次回 `13 INTERNAL: setting post subtitle: getting post deltas: … TutuClient.GET /p/<id>/deltas?baseRev=-1 500 (… provisioned throughput exceeded)`，新分頁讀回仍是自動摘句。改走編輯頁右上角三點選單的 **Change display title / subtitle**：它是舊版編輯器的浮動表單，上下兩個可編輯欄位分別是標題（`.js-customTitleControlTitle`）與副標（`.js-customTitleControlSubtitle`），把副標換成自訂句、標題保持原字（選取時要指定副標那一欄，選錯會把句子打進標題），按 Done 後送出的是 `POST /p/<id>/deltas`（type 4 標題、type 5 副標），回 `success: true`，新分頁讀回副標已更新。
 
 2026-09-23 逐一核對中英八篇後，封面對應為總論 `diagram-04`、測試篇 `diagram-03`、
 Review 篇 `diagram-02`、可靠度篇 `diagram-02`；八份 ledger 的當前設定已同步更正。
@@ -541,7 +542,22 @@ Claude Code 接手複核兩篇後續文章。可靠度篇修正了對營運篇 G
 
 本輪已實作的工具修正：`mermaid_check.sh` 截圖前把 svg 設成 viewBox 的寬高，並核對 `#wrap` 與 PNG 的寬度和 2x 倍率，對不上就 FAIL；`_common.sh` 的 `prepare_headless_viewport` 只在 `browse status` 回報健康的無旗標 daemon 時繼續，其餘一律以 75 退出（見第 2 步），`render_images.sh` 在清舊圖之前、`mermaid_check_all.sh` 在清工作目錄之前先跑這個檢查；`render_images.sh` 的表格截圖也核對寬高是 `#wrap` 的 2 倍，最後 `images/` 的 PNG 數要等於 `figures.json` 所列；三支腳本都有 fake-browse 測試（`research/scripts/test_research_scripts.py`）。後續工具建議，本輪未實作：讓 `render_images.sh` 寫出每張圖來源與 PNG 的 SHA-256 側檔並加 corpus 測試，過期的 PNG 才能在離線測試中被發現；讓 ledger 記的貼稿 SHA-256（本輪起各篇「第二次重灌」小節都有）與 committed 的 `medium-paste.md` 對照，重灌後再改貼稿就會在離線測試亮紅；讓 `medium_draft.sh` 比照 `collect.sh` 取鎖，並在 `--post` 前讀取 publishAt、在底線內拒絕執行；讓 pre-flight 也看 `browse status` 的 `URL:`／`Tabs:`，別的 session 正在用的無旗標 daemon 才擋得到；加一個對 committed `diagram-*.png` 檔頭寬度的 corpus 測試，已發布的舊包列白名單、排程中的包必須修。這些都要配 fake-browse 測試。
 
-尚未處理的波及範圍（2026-10-27 第三輪 Red Team 指出）：下列排程稿的 Mermaid 圖仍是 664 px 寬的退回截圖，其中六份以該圖當封面——AAIF 系列〈東京之後〉中英（`2026-11-aaif-after-tokyo`，11/02 與 11/04 發布，圖在內文）、〈交接〉中英（`2026-11-aaif-agent-handoffs`，11/09 與 11/11，封面）、〈記憶〉中英（`2026-11-aaif-agent-memory`，11/16 與 11/18，封面），以及 `2026-11-same-spec-overview`（11/10，封面）與 `2026-11-same-spec-contract`（11/24，封面）。這些發布包屬於別的系列與工作階段，本輪沒有動；是否在各自發布底線（發布前 12 小時）之前依本小節的流程重繪、重灌並選回封面，由作者決定。已發布文章不回頭重傳。
+波及範圍（2026-10-27 第三輪 Red Team 指出，同日處理完畢）：AAIF 系列〈東京之後〉中英（`2026-11-aaif-after-tokyo`）、〈交接〉中英（`2026-11-aaif-agent-handoffs`）、〈記憶〉中英（`2026-11-aaif-agent-memory`），以及 `2026-11-same-spec-overview` 與 `2026-11-same-spec-contract` 這 8 份排程稿，Mermaid 圖都還是 664 px 寬的退回截圖。當時說其中六份拿該圖當封面，重灌前讀回 `/submission` 才確認只有 same-spec 兩份如此；AAIF 六份用作者的照片（`asset-01.png`）當封面，其中〈交接〉〈記憶〉四份重灌時會被重設成總覽圖，要選回照片。作者 10/27 決定處理後，8 包以修正後的 `render_images.sh` 重繪（每包只有 `diagram-01.png` 變了，表格與照片位元組不變），再依本小節第 2 步逐份 `--post` 重灌：重灌前先讀回 `/submission` 存成快照，重灌後在 `/submission` 用 Change preview image 依識別碼選回封面（這 8 份這條路都可用），預覽摘要被重設的七份填回自訂句後以 Tab 離開欄位，最後另開新分頁讀回，與快照逐欄比對。三篇 AAIF 的總覽圖每種語言是同一份檔案，所以新識別碼也相同（中文 `1*F4Urac80aH8T4p1KGCd5fw`，英文 `1*13c3rtiPYUnqcMNjg63q_Q`）。〈記憶〉中文第一次執行在載入 Drafts 頁時遇到 `net::ERR_ABORTED`，還沒開編輯器就停止，讀回確認文章未被更動，重跑後完成。已發布文章（包括同樣帶有 664 px 圖的 `2026-11-agentic-eval-economics`）不回頭重傳。各篇細節見 ledger 的「2026-10-27 重灌」小節。
+
+2026-10-27 重灌後的讀回結果（台北時間 23:04–23:25，每份都另開新分頁讀回；排程、`isPublished: false`、標題、預覽摘要與通知設定都與重灌前的快照相同）：
+
+| 排程稿 | Post ID | 發布時間（Asia/Taipei） | 文字區塊 | 連結 | 圖片 | caption | 新 `diagram-01` | 封面（讀回的 previewImage） |
+|---|---|---|---:|---:|---:|---:|---|---|
+| 〈東京之後〉（中） | `e3d060cb8b03` | 2026-11-02 09:00 | 214 | 94 | 23 | 19 | `1*F4Urac80aH8T4p1KGCd5fw`（1156×1664） | 照片 `1*jY2nu2UmaSugznxXM7TsMA`（未被重設） |
+| 〈東京之後〉（英） | `565d3e375896` | 2026-11-04 09:00 | 214 | 95 | 23 | 19 | `1*13c3rtiPYUnqcMNjg63q_Q`（1546×1664） | 照片 `1*jY2nu2UmaSugznxXM7TsMA`（未被重設） |
+| 〈交接〉（中） | `e68dc5ab1275` | 2026-11-09 09:00 | 160 | 54 | 14 | 10 | `1*F4Urac80aH8T4p1KGCd5fw`（1156×1664） | 照片 `1*l8bZZAVGBqlT0sVQdyRXdg`（選回） |
+| same-spec 總論（中） | `6986ee29219e` | 2026-11-10 09:00 | 174 | 47 | 7 | 0 | `1*SJ2XnnrTTGSk_dvHAYedDA`（1340×1784） | 新版 `diagram-01`（選回） |
+| 〈交接〉（英） | `8b39e1abe616` | 2026-11-11 09:00 | 160 | 55 | 14 | 10 | `1*13c3rtiPYUnqcMNjg63q_Q`（1546×1664） | 照片 `1*l8bZZAVGBqlT0sVQdyRXdg`（選回） |
+| 〈記憶〉（中） | `5380c278562e` | 2026-11-16 09:00 | 126 | 49 | 13 | 7 | `1*F4Urac80aH8T4p1KGCd5fw`（1156×1664） | 照片 `1*yXCiu5bX04CCZi96j9C3LA`（選回） |
+| 〈記憶〉（英） | `bbf6a23c6481` | 2026-11-18 09:00 | 126 | 50 | 13 | 7 | `1*13c3rtiPYUnqcMNjg63q_Q`（1546×1664） | 照片 `1*yXCiu5bX04CCZi96j9C3LA`（選回） |
+| same-spec 契約篇（中） | `f7684c057c0e` | 2026-11-24 09:00 | 226 | 54 | 7 | 0 | `1*GFWOFlXX_RmgbTUH1v55-g`（1092×942） | 新版 `diagram-01`（選回） |
+
+〈東京之後〉中英兩份在同晚 23:3x 又因第二節改版重灌（見下方 AAIF〈2026-10-27：第一篇第二節補上全貌與閱讀順序〉），那次用的發布包裡總覽圖還是 664 px，Medium 上的圖因此回到舊識別碼（`1*hcfJVSrI3ZyNIne3eMmvSQ`／`1*mf8T9LOLrhV6-KSPoIQGwQ`，10/28 唯讀讀回確認）。10/28 把兩者合在同一個發布包（該次改版的兩個 commit，加上重繪的總覽圖），再重灌一次：中文 217 段、94 個連結，英文 217 段、95 個連結，各 23 張圖、19 個 caption，兩次比對相符；編輯頁第二張圖分別是 `1*F4Urac80aH8T4p1KGCd5fw` 與 `1*13c3rtiPYUnqcMNjg63q_Q`。封面照片未被重設，英文摘要留著，中文摘要被重設後改用編輯頁選單存回（見〈整篇重灌〉的預覽摘要段）；兩份另開新分頁讀回，各欄都與這次重灌前的快照相同。
 
 ### 2026-10-24：後續可靠度與付款實作篇精修
 
@@ -624,6 +640,17 @@ Review 第七節依讀者回饋補清 PR head 不變、整合候選版本仍可�
 六個日期為週一／週三；10/24 再核對十一月日曆，與既有週二／週四時段錯開。六份 AAIF 的 Notify subscribers 均關閉。封面均使用作者照片：第一篇為東京會場，第二篇為東京辦公室窗外的東京鐵塔日景，第三篇為澀谷觀景台夜景。前兩篇的排程、Topics、預覽文字、封面識別與尺寸、通知設定均與更新前相符。原六篇規劃剩餘五份草稿先前已確認沒有排程，舊批次程式保持暫停。
 
 各版計數、Topics、封面、預覽、時間戳與來源限制見 [AAIF 發布紀錄](research/2026-10/aaif-agntcon/publication.md)。41 份簡報原檔及索引在本機研究目錄；[公開清單](research/2026-10/aaif-agntcon/slides.md)記錄原站連結、檔案驗證與未能下載的 ADK Google Slides。排程稿仍不能當成已公開的 Ambassador 申請作品；實際上線後再確認日期並補齊系列與語言入口。
+
+### 2026-10-27：第一篇第二節補上全貌與閱讀順序，中英排程稿重灌
+
+作者試讀第一篇後要求：Kong 段落開頭先交代全貌，說明後面各段會帶到哪些概念，讓讀者自行挑段閱讀；這段也要當全文的引子，加強與第三節的鋪陳。第二節因此補上開場的全貌段與導讀段，〈把「允許、發生、完成」拆開看〉補齊三個詞在內文的對應，收束句前加一段橋接。同輪也改正兩處誤寫成午休的貼文時間（實為 9 月 10 日下午 4:42）。理由與口吻檢查見[場次導讀與來源註記](research/2026-10/aaif-agntcon/reader-entry-refinement.md)末節。依作者確認（「以上都要」）就地重灌中英兩份排程稿：
+
+```bash
+./tools/medium_draft.sh 2026-11-aaif-after-tokyo --post e3d060cb8b03
+./tools/medium_draft.sh 2026-11-aaif-after-tokyo en --post 565d3e375896
+```
+
+兩篇都通過 `verify_draft.py` 兩次比對：中文 217 段、94 個連結，英文 217 段、95 個連結，各 23 張圖、19 則 caption、分隔線 1、placeholder 0（逐篇 log 在 `.context/research/aaif-2026-10-27-kong-entry/`，不入版本庫）。之後逐篇另開新分頁讀回：兩篇 `isPublished: false`，排程不變（11/02、11/04 的 UTC 01:00），封面仍是會場照，Topics 五個都在，Notify 關閉。中文的預覽摘要又被重設成自動摘句，已把 ledger 記的自訂句填回、按 Tab 存檔；英文的自訂摘要仍在。兩篇都沒有按 Schedule to publish，讀回時間分別記在兩份 `PUBLISHED.md`。這次的發布包沒有帶到 10/27 稍早重繪的完整尺寸總覽圖，所以兩篇的總覽圖被換回 664 px；10/28 已以合併後的發布包重灌恢復，經過見《綠燈不是驗收》〈2026-10-25／26〉小節讀回表下方。
 
 ### 2026-10-25／26：三篇依來源重新分析改寫、Codex 三輪審稿，六份排程稿已重灌（圖說進 caption）
 

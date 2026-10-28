@@ -39,3 +39,11 @@
 | 發布位置 | 個人 profile，未投稿 publication |
 
 Story image 使用筆者自己的澀谷觀景台夜景照（`asset-01.png`）。2026-10-26 重灌後封面一度被 Medium 重設為內文第一張圖（系列總覽圖），同日依作者指示在發布對話框用 Change preview image 選回原照、按 Done 存檔，預覽摘要也重設回自訂句，兩者皆從新分頁讀回確認；沒有按 Schedule to publish。原排程、預覽標題及通知設定與更新前相符。10/25 改寫後正文保留一張澀谷開場照與一張 SKY 慶典照，另兩張澀谷照留在 `figures/` 未使用。系列文章目前仍為排程稿，待實際公開後再更新「即將發布」標示；英文版連到先行排程的中文版本。
+
+## 2026-10-27 重灌：系列總覽圖改為完整尺寸
+
+系列總覽圖 `diagram-01.png` 原本是 `research/scripts/mermaid_check.sh` 修正前的退回截圖（664×948，瀏覽器預設的 300 CSS px）。作者 2026-10-27 決定重灌，先以修正後的 `research/scripts/render_images.sh` 重繪整包：只有 `diagram-01.png` 變成 1156×1664，其餘表格與照片位元組不變。第一次執行 `./tools/medium_draft.sh 2026-11-aaif-agent-memory --post 5380c278562e` 在載入 Drafts 頁時遇到 `net::ERR_ABORTED`，還沒開編輯器就停止，讀回確認文章未被更動；重跑後完成，台北時間 23:19 讀回。
+
+儲存後重新讀回兩次：**126 個文字區塊、49 個連結、13 張圖、7 個 caption** 均與貼稿相符，placeholder 為 0。`diagram-01` 由 `1*hcfJVSrI3ZyNIne3eMmvSQ.png`（664×948）換成 `1*F4Urac80aH8T4p1KGCd5fw.png`（1156×1664，自 Medium CDN 讀 PNG 檔頭核對），其餘 12 張圖保留原識別碼。
+
+重灌把封面重設成新的總覽圖，在 `/p/5380c278562e/submission` 用 Change preview image 依識別碼選回 `asset-01.png`（`1*yXCiu5bX04CCZi96j9C3LA.png`，2400×1350）、按 Done。預覽摘要被換成自動摘錄，已把自訂句填回 Write a preview subtitle 欄並以 Tab 離開欄位。沒有按 Schedule to publish。另開新分頁讀回：封面為原照片，預覽摘要、標題、`publishAt: 1794790800000`（2026-11-16 09:00 Asia/Taipei）、`isPublished: false` 與通知設定（關閉，`isPublishToEmail: false`）皆與重灌前的快照相同。這次重灌的貼稿 SHA-256 為 `05d31ef6d798fe281d1e91c97b39012bc03861b1c9523359ce0e95d5d24a3d01`；重灌前後快照存於本機 `.context/refill-2026-10-27/`，未納入 git。

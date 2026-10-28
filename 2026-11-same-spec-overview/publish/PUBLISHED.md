@@ -10,7 +10,7 @@
 | 項目 | 新分頁讀回的值 |
 |---|---|
 | Topics | Software Testing、Code Review、AI、Software Engineering、Engineering Management |
-| 封面圖 | `diagram-01.png`（`1*jC0_0qecKfj3A1RCRMyTjA.png`）；原圖尺寸已核對 |
+| 封面圖 | `diagram-01.png`（`1*SJ2XnnrTTGSk_dvHAYedDA.png`，1340×1784；2026-10-27 重灌後選回新版並讀回確認） |
 | 預覽標題 | 同一份規格，跑十次：我們憑什麼把一種交代變成團隊預設？ |
 | 預覽摘要 | 一次成功之後，什麼證據才足以把一段自查設為團隊預設？從四十份程式與公開規格，分清需求、驗收與方法比較。 |
 | Notify subscribers | 已勾選，`isPublishToEmail: true` |
@@ -43,3 +43,11 @@ Medium 會在標題的破折號旁加入空白或細空白；比對沿用發布�
 從新分頁讀回，仍為 `isPublished: false`；排程為 **2026-11-10 09:00 Asia/Taipei**（`publishAt: 1794272400000`），與原排程相符。本次僅核對，沒有重貼正文或更動發布設定。
 
 正文與目前貼稿逐塊相符：174 個文字區塊、47 個連結、7 張圖、0 條分隔線。連結數量及圖片槽位通過既有驗證器；本次不重查所有外部引文的可用性。
+
+## 2026-10-27 重灌：流程圖改為完整尺寸
+
+`diagram-01.png` 原本是 `research/scripts/mermaid_check.sh` 修正前的退回截圖（664×878，瀏覽器預設的 300 CSS px）。作者 2026-10-27 決定重灌，先以修正後的 `research/scripts/render_images.sh` 重繪整包：只有 `diagram-01.png` 變成 1340×1784，其餘表格位元組不變。再以 `./tools/medium_draft.sh 2026-11-same-spec-overview --post 6986ee29219e` 重灌（未加 `--reuse-figures`），台北時間 23:16 完成讀回。
+
+儲存後重新讀回兩次：**174 個文字區塊、47 個連結、7 張圖** 均與貼稿相符，placeholder 為 0。`diagram-01` 由 `1*jC0_0qecKfj3A1RCRMyTjA.png`（664×878）換成 `1*SJ2XnnrTTGSk_dvHAYedDA.png`（1340×1784，自 Medium CDN 讀 PNG 檔頭核對），其餘 6 張圖保留原識別碼。
+
+重灌把封面重設成內文第一張圖（表格 `1*x8nbYx7g4NdWi6G0zquUNg.png`，1800×634），在 `/p/6986ee29219e/submission` 用 Change preview image 依識別碼選回新版 `diagram-01.png`（`1*SJ2XnnrTTGSk_dvHAYedDA.png`，1340×1784）、按 Done。預覽摘要被換成自動摘錄，已把自訂句填回 Write a preview subtitle 欄並以 Tab 離開欄位。沒有按 Schedule to publish。另開新分頁讀回：封面為新版 `diagram-01.png`，預覽摘要、標題、`publishAt: 1794272400000`（2026-11-10 09:00 Asia/Taipei）、`isPublished: false` 與通知設定（開啟，`isPublishToEmail: true`）皆與重灌前的快照相同。這次重灌的貼稿 SHA-256 為 `65d7f18bf7d826aa149c38fa317fcdcf2c7d2abb8c9436ccfbf4b8b56c12380d`；重灌前後快照存於本機 `.context/refill-2026-10-27/`，未納入 git。
