@@ -6,7 +6,7 @@
 **排程** 2026-11-18 09:00 Asia/Taipei（UTC 01:00）；新分頁讀回確認。
 **草稿** https://medium.com/p/bbf6a23c6481/edit
 **上線後穩定短網址** https://medium.com/p/bbf6a23c6481
-**核對時間** 2026-10-28T22:00:10+08:00
+**核對時間** 2026-10-29T06:37:35+08:00
 
 ## 內容核對
 
@@ -55,3 +55,17 @@ Story image 使用筆者自己的澀谷觀景台夜景照（`asset-01.png`）。
 儲存後重新讀回兩次：**135 個文字區塊、50 個連結、13 張圖、7 個 caption** 均與貼稿相符，placeholder 為 0；文字區塊比上一輪的 126 個多 9 個：六段新文字與三個新小標。`diagram-01` 仍是 `1*13c3rtiPYUnqcMNjg63q_Q.png`（1546×1664），664 px 舊圖不在稿裡。
 
 重灌又把封面重設成總覽圖，在 `/p/bbf6a23c6481/submission` 用 Change preview image 依識別碼選回 `asset-01.png`（`1*yXCiu5bX04CCZi96j9C3LA.png`，2400×1350）、按 Done；預覽摘要也被換成自動摘錄，已把自訂句填回 Write a preview subtitle 欄並以 Tab 離開欄位，這次 `/submission` 沒有出現 500 錯誤。沒有按 Schedule to publish。2026-10-28T22:00:10+08:00 另開新分頁讀回：封面為原照片，預覽摘要為自訂句，`publishAt: 1794963600000`（2026-11-18 09:00 Asia/Taipei）、`isPublished: false`、通知關閉（`isPublishToEmail: false`），Topics 五個都在。逐篇 log 存於本機 `.context/research/aaif-2026-10-28-long-sections/`，未納入 git。
+
+## 2026-10-29 重灌：付印前校稿
+
+作者 2026-10-28 要求三篇逐段做書籍付印前等級的校稿，中英文同等級，與 Codex xhigh 審三輪，依發布順序逐篇定稿、逐篇重灌。本篇是第三篇的英文版，與中文版同一輪完成：逐段精修、三輪 Codex 審稿與處置，並同步中文的口吻 pass 修正。英文另有幾項改動：
+- 兩處引文改照投影片原文：第 14 頁 "one edge case open"，以及 AIRAS 的 "our method outperforms all baselines on every benchmark"。
+- 三處《同一份規格，跑十次》的連結改指 11/12 上線的英文總論 `3700b5d771fd`。
+- 四個小標改寫：第一節小標原本的 "them" 沒有複數先行詞，另外三個的語法彆扭。
+- 篇首補上與第二篇英文同型的排程句。
+
+總覽圖直接沿用第二篇改好的 mermaid，diagram-01 與第一、二篇英文版是同一個檔。table-01 至 05 也一起重繪，其餘圖片不變。流程與實質修正見[付印前校稿紀錄](../../../research/2026-10/aaif-agntcon/prepress-polish-2026-10-29-memory.md)。
+
+以 `./tools/medium_draft.sh 2026-11-aaif-agent-memory en --post bbf6a23c6481` 從 commit `cace9af` 的發布包重灌，分支與重灌前的檢查同中文版。儲存後重新讀回兩次：**142 個文字區塊、50 個連結、13 張圖、7 個 caption** 均與貼稿相符，分隔線 1、placeholder 為 0。文字區塊比上一輪的 135 個多 7 個，即拆段多出的七段。
+
+重灌又把封面重設成總覽圖，在 `/p/bbf6a23c6481/submission` 用 Change preview image 依識別碼選回 `asset-01.png`（`1*yXCiu5bX04CCZi96j9C3LA.png`，2400×1350）、按 Done。預覽摘要也被換成自動摘錄，已把自訂句填回 Write a preview subtitle 欄並以 Tab 離開欄位。沒有按 Schedule to publish。2026-10-29T06:37:35+08:00 另開新分頁讀回：封面為原照片，預覽摘要為自訂句，`publishAt: 1794963600000`（2026-11-18 09:00 Asia/Taipei）、`isPublished: false`、通知關閉（`isPublishToEmail: false`），Topics 五個都在。貼稿 SHA-256 為 `620e1cf0ad2b22cdf4e7b98f291ab3f6f4ccabc60c80e1d4c35f88531274c93f`。逐篇 log 存於本機 `.context/research/aaif-2026-10-28-polish/`，未納入 git。

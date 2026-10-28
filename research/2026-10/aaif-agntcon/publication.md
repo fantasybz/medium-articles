@@ -133,3 +133,14 @@ Topics 均為 Artificial Intelligence、Model Context Protocol、Software Engine
 
 三篇 `isPublished: false`，Notify subscribers 關閉，Topics 五個都在，分隔線各 1、placeholder 0；都沒有按 Schedule to publish。第二篇的文字區塊比 10/28 多 7，即六個超長段落拆出來的七段。
 
+## 2026-10-29 重灌：第三篇付印前校稿
+
+第三篇照前兩篇的流程完成付印前校稿，見[付印前校稿紀錄](prepress-polish-2026-10-29-memory.md)。三篇的付印前校稿至此完成。兩份排程稿從 commit `cace9af` 就地重灌，每篇比對兩次，都相符。
+
+| 篇 | 語言 | Post ID | 排程（UTC） | 文字區塊 | 連結 | 圖 | 圖說 | 封面 | 預覽摘要 | 讀回時間 |
+|---|---|---|---|---:|---:|---:|---:|---|---|---|
+| 三 | 中 | `5380c278562e` | 11/16 01:00 | 142 | 49 | 13 | 7 | 被重設，已選回澀谷照 | 被重設，已填回 | 2026-10-29T06:34:33+08:00 |
+| 三 | 英 | `bbf6a23c6481` | 11/18 01:00 | 142 | 50 | 13 | 7 | 被重設，已選回澀谷照 | 被重設，已填回 | 2026-10-29T06:37:35+08:00 |
+
+兩篇 `isPublished: false`，Notify subscribers 關閉，Topics 五個都在，分隔線各 1、placeholder 0；都沒有按 Schedule to publish。文字區塊比 10/28 多 7，即六個超長段落拆出來的七段。
+

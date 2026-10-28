@@ -641,6 +641,17 @@ Review 第七節依讀者回饋補清 PR head 不變、整合候選版本仍可�
 
 各版計數、Topics、封面、預覽、時間戳與來源限制見 [AAIF 發布紀錄](research/2026-10/aaif-agntcon/publication.md)。41 份簡報原檔及索引在本機研究目錄；[公開清單](research/2026-10/aaif-agntcon/slides.md)記錄原站連結、檔案驗證與未能下載的 ADK Google Slides。排程稿仍不能當成已公開的 Ambassador 申請作品；實際上線後再確認日期並補齊系列與語言入口。
 
+### 2026-10-29：第三篇付印前校稿，中英排程稿重灌；三篇付印前校稿完成
+
+第三篇〈Agent 記住的經驗，下一次還能相信嗎？〉照前兩篇的流程完成付印前校稿，流程與實質修正見[付印前校稿紀錄](research/2026-10/aaif-agntcon/prepress-polish-2026-10-29-memory.md)，Codex 原話在同目錄的 `codex-polish-2026-11-aaif-agent-memory-{zh,en}-r{1,2,3}.md`。三篇的付印前校稿至此完成。`overview/` 的英文 Mermaid、SVG、PNG 與分享圖也一起更新，三篇英文版的總覽圖現在是同一個檔。從 commit `cace9af` 就地重灌兩份：
+
+```bash
+./tools/medium_draft.sh 2026-11-aaif-agent-memory --post 5380c278562e
+./tools/medium_draft.sh 2026-11-aaif-agent-memory en --post bbf6a23c6481
+```
+
+兩份都通過 `verify_draft.py` 兩次比對：142 段、13 張圖、7 則 caption，連結中文 49、英文 50，分隔線 1、placeholder 0。段數比上一輪多 7，是六個超長段落中英同步拆出來的。兩份的封面又被重設成總覽圖，預覽摘要也被換成自動摘錄，都在 `/submission` 選回澀谷照、填回自訂句。逐篇另開新分頁讀回：未公開，排程不變（11/16、11/18 的 UTC 01:00），Topics 五個都在，Notify 關閉；沒有按 Schedule to publish。
+
 ### 2026-10-29：第二篇付印前校稿，中英排程稿重灌；第一篇英文版重灌總覽圖
 
 第二篇〈把工作交給另一個 Agent 之前〉照第一篇的流程完成付印前校稿，流程與實質修正見[付印前校稿紀錄](research/2026-10/aaif-agntcon/prepress-polish-2026-10-29-handoffs.md)，Codex 原話在同目錄的 `codex-polish-2026-11-aaif-agent-handoffs-{zh,en}-r{1,2,3}.md`。英文總覽圖第一部分的 B 節點改為 "Evidence that requirements are met"，三篇共用這張圖，所以第一篇英文版也一起重灌。從 commit `b57a188` 就地重灌三份：
