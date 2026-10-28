@@ -641,6 +641,17 @@ Review 第七節依讀者回饋補清 PR head 不變、整合候選版本仍可�
 
 各版計數、Topics、封面、預覽、時間戳與來源限制見 [AAIF 發布紀錄](research/2026-10/aaif-agntcon/publication.md)。41 份簡報原檔及索引在本機研究目錄；[公開清單](research/2026-10/aaif-agntcon/slides.md)記錄原站連結、檔案驗證與未能下載的 ADK Google Slides。排程稿仍不能當成已公開的 Ambassador 申請作品；實際上線後再確認日期並補齊系列與語言入口。
 
+### 2026-10-29：第一篇付印前校稿，中英排程稿重灌
+
+作者 2026-10-28 要求三篇逐段做書籍付印前等級的校稿：中英文同等級，與 Codex xhigh 審三輪，依發布順序逐篇定稿、逐篇重灌。第一篇〈東京之後〉已完成，流程與實質修正見[付印前校稿紀錄](research/2026-10/aaif-agntcon/prepress-polish-2026-10-28.md)，Codex 原話在同目錄的 `codex-polish-2026-11-aaif-after-tokyo-{zh,en}-r{1,2,3}.md`。從 commit `d65ca46` 就地重灌兩份：
+
+```bash
+./tools/medium_draft.sh 2026-11-aaif-after-tokyo --post e3d060cb8b03
+./tools/medium_draft.sh 2026-11-aaif-after-tokyo en --post 565d3e375896
+```
+
+兩篇都通過 `verify_draft.py` 兩次比對：223 段、23 張圖、19 則 caption，連結 94／95，分隔線 1、placeholder 0。段數比上一輪多 6，是四個超長段落中英同步拆出來的。圖片方面，中文 table-01／02／03 與英文 diagram-01、table-01／02／03 是重繪的新圖，其餘照片與截圖原樣上傳。逐篇另開新分頁讀回：未公開，排程不變（11/02、11/04 的 UTC 01:00），封面仍是會場照，Topics 五個都在，Notify 關閉。中文自訂摘要這次沒有被重設（10/26、10/27 兩次都被重設），英文三次都保住；沒有按 Schedule to publish。
+
 ### 2026-10-28：第二、三篇長段落補上全貌與閱讀順序，四份排程稿重灌
 
 作者看過第一篇 Kong 段的改法後，選擇把同樣的處理套到第二、三篇最長的五節：〈交接〉§五、§九與〈記憶〉§四、§五、§六。每節開頭補上全貌與閱讀順序，結尾補一段停在下一節問題上的橋接；〈記憶〉§六另補三個小標。理由與兩份口吻檢查採用的修正見[場次導讀與來源註記](research/2026-10/aaif-agntcon/reader-entry-refinement.md)末節。依作者選擇（兩篇都做、改完重灌），從開自 main 的 `fantasybz/aaif-long-section-entries`（commit `cf13c71`）就地重灌四份：
