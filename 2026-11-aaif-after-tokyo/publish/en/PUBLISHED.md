@@ -6,7 +6,7 @@
 **排程** 2026-11-04 09:00 Asia/Taipei（UTC 01:00）；新分頁讀回確認。
 **草稿** https://medium.com/p/565d3e375896/edit
 **上線後穩定短網址** https://medium.com/p/565d3e375896
-**核對時間** 2026-10-29T01:27:19+08:00
+**核對時間** 2026-10-29T04:23:44+08:00
 
 ## 內容核對
 
@@ -63,3 +63,11 @@ Story image 使用筆者自己的東京會場照片（`asset-01.png`，也是內
 以 `./tools/medium_draft.sh 2026-11-aaif-after-tokyo en --post 565d3e375896` 從 commit `d65ca46` 的發布包重灌（分支 `fantasybz/aaif-polish-after-tokyo`，開自 main `bd8acd0`）。重灌前確認：除了已關閉的 PR #29 舊分支，沒有其他分支對這一包有未合併的改動；那兩個舊 commit 的內容已隨 PR #30 進入 main。儲存後重新讀回兩次：**223 個文字區塊、95 個連結、23 張圖、19 個 caption** 均與貼稿相符，placeholder 為 0；文字區塊比上一輪的 217 個多 6 個，即拆段多出的六段。
 
 封面仍是會場照 `asset-01.png`（`1*jY2nu2UmaSugznxXM7TsMA.png`），重灌沒有動到。自訂摘要仍在（三次重灌都保住）。沒有按 Schedule to publish。2026-10-29T01:27:19+08:00 另開新分頁讀回：`publishAt: 1793754000000`（2026-11-04 09:00 Asia/Taipei）、`isPublished: false`、通知關閉（`isPublishToEmail: false`），Topics 五個都在。逐篇 log 存於本機 `.context/research/aaif-2026-10-28-polish/`，未納入 git。
+
+## 2026-10-29 重灌：總覽圖節點字樣
+
+第二篇付印前校稿時，Codex 指出英文總覽圖第一部分 B 節點的 "Evidence against requirements" 一般會讀成反駁需求的證據，中文的意思卻是符合要求的證據。三篇共用這張圖，所以改為 "Evidence that requirements are met"，本篇的 diagram-01 也一起重繪：788×796，高寬比 1.01，與第二篇英文版是同一個檔。正文與其他 22 張圖不變。
+
+以 `./tools/medium_draft.sh 2026-11-aaif-after-tokyo en --post 565d3e375896` 從 commit `b57a188` 的發布包重灌。儲存後重新讀回兩次：**223 個文字區塊、95 個連結、23 張圖、19 個 caption** 均與貼稿相符，分隔線 1、placeholder 為 0。
+
+封面仍是會場照 `asset-01.png`（`1*jY2nu2UmaSugznxXM7TsMA.png`），自訂摘要也還在，這次重灌都沒有動到。沒有按 Schedule to publish。2026-10-29T04:23:44+08:00 另開新分頁讀回：`publishAt: 1793754000000`（2026-11-04 09:00 Asia/Taipei）、`isPublished: false`、通知關閉（`isPublishToEmail: false`），Topics 五個都在。

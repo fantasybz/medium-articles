@@ -641,6 +641,20 @@ Review 第七節依讀者回饋補清 PR head 不變、整合候選版本仍可�
 
 各版計數、Topics、封面、預覽、時間戳與來源限制見 [AAIF 發布紀錄](research/2026-10/aaif-agntcon/publication.md)。41 份簡報原檔及索引在本機研究目錄；[公開清單](research/2026-10/aaif-agntcon/slides.md)記錄原站連結、檔案驗證與未能下載的 ADK Google Slides。排程稿仍不能當成已公開的 Ambassador 申請作品；實際上線後再確認日期並補齊系列與語言入口。
 
+### 2026-10-29：第二篇付印前校稿，中英排程稿重灌；第一篇英文版重灌總覽圖
+
+第二篇〈把工作交給另一個 Agent 之前〉照第一篇的流程完成付印前校稿，流程與實質修正見[付印前校稿紀錄](research/2026-10/aaif-agntcon/prepress-polish-2026-10-29-handoffs.md)，Codex 原話在同目錄的 `codex-polish-2026-11-aaif-agent-handoffs-{zh,en}-r{1,2,3}.md`。英文總覽圖第一部分的 B 節點改為 "Evidence that requirements are met"，三篇共用這張圖，所以第一篇英文版也一起重灌。從 commit `b57a188` 就地重灌三份：
+
+```bash
+./tools/medium_draft.sh 2026-11-aaif-after-tokyo en --post 565d3e375896
+./tools/medium_draft.sh 2026-11-aaif-agent-handoffs --post e68dc5ab1275
+./tools/medium_draft.sh 2026-11-aaif-agent-handoffs en --post 8b39e1abe616
+```
+
+三份都通過 `verify_draft.py` 兩次比對：第一篇英文 223 段、95 個連結、23 張圖、19 則 caption；第二篇 170 段、14 張圖、10 則 caption，連結中文 55、英文 56；分隔線都是 1，placeholder 都是 0。第二篇的段數比上一輪多 7，是六個超長段落中英同步拆出來的。第二篇兩份的封面又被重設成總覽圖，預覽摘要也被換成自動摘錄，都在 `/submission` 選回東京鐵塔照、填回自訂句；第一篇英文的封面與摘要沒有被動到。逐篇另開新分頁讀回：未公開，排程不變（11/04、11/09、11/11 的 UTC 01:00），Topics 五個都在，Notify 關閉；沒有按 Schedule to publish。
+
+重灌前查別的分支時，`fantasybz/green-reliability-backfill` 會列出一個動到第二篇發布包的 commit。那是把 main 併進去的 merge，`git diff origin/main <branch> -- <dir>` 為空，不是未合併的改動。`git log HEAD..<branch> -- <dir>` 會把這種 merge 列出來，判斷前要再用 diff 確認。
+
 ### 2026-10-29：第一篇付印前校稿，中英排程稿重灌
 
 作者 2026-10-28 要求三篇逐段做書籍付印前等級的校稿：中英文同等級，與 Codex xhigh 審三輪，依發布順序逐篇定稿、逐篇重灌。第一篇〈東京之後〉已完成，流程與實質修正見[付印前校稿紀錄](research/2026-10/aaif-agntcon/prepress-polish-2026-10-28.md)，Codex 原話在同目錄的 `codex-polish-2026-11-aaif-after-tokyo-{zh,en}-r{1,2,3}.md`。從 commit `d65ca46` 就地重灌兩份：
