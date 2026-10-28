@@ -3,7 +3,7 @@
 **標題** 綠燈不是驗收（四）付款實作篇：買一瓶無糖純喫綠茶，從 Review 約束走到 mutation score
 **Post ID** `46377fd460fe`
 **草稿網址** https://medium.com/p/46377fd460fe/edit
-**狀態** 已排程於 **2026-11-03（二）09:00 Asia/Taipei（GMT+8）** 發布；目前尚未發布（2026-10-24 重新讀回確認）。
+**狀態** 已排程於 **2026-11-03（二）09:00 Asia/Taipei（GMT+8）** 發布；目前尚未發布（2026-10-24 重新讀回確認）；2026-10-26 原稿與貼稿修訂後已重灌並讀回，同日修正圖片解析度後第二次重灌，見文末兩節。
 **系列位置** 總論＋四部曲的第四篇〈付款實作篇〉。資料夾日期不代表發布日期。
 
 ## 設定
@@ -11,7 +11,7 @@
 | 項目 | 已讀回的值 |
 |---|---|
 | Topics | Software Testing、Code Review、AI、Software Engineering、Engineering Management |
-| 封面圖 | `diagram-01.png`（`1*H9X381hku0T7Tp5ujH2NkQ.png`） |
+| 封面圖 | `diagram-01.png`（`1*9sOsXyKXZ9JHHlLd6ZNT6A.png`，1224×792，2026-10-26 第二次重灌後已核對） |
 | 預覽標題 | 綠燈不是驗收（四）付款實作篇：買一瓶無糖純喫綠茶，從 Review 約束走到 mutation score |
 | 預覽摘要 | 一瓶無糖純喫綠茶的付款，如何從 Review 意見留下約束、寫成測試，再看懂 28.6%、85.7% 與 100% 的差別。 |
 | Notify subscribers | 維持勾選，`isPublishToEmail: true`；本次設定未來排程，沒有提前發布 |
@@ -86,3 +86,17 @@
 七張原圖的識別碼及原始尺寸均保留，封面維持原圖。另從新分頁讀取設定，確認標題、Topics、預覽標題與摘要、通知設定及原排程均保留。文章仍為 `isPublished: false`，排程 **2026-11-03 09:00 Asia/Taipei**（`publishAt: 1793667600000`）。
 
 付款程式碼連結仍保留於本篇排程稿；前三篇與總論繼續等待本篇實際發布後才回填。本輪沒有提前發布或重新排程。
+
+## 2026-10-26 重灌與讀回
+
+Claude Code 接手複核後修訂原稿與貼稿（見[研究紀錄](../../research/2026-10/reliability-payment-polish-evidence.md)的 2026-10-25／26 小節）。本篇沒有改圖，不必重繪；作者允許重開 gstack browse daemon 後，以 `./tools/medium_draft.sh 2026-10-green-payment --post 46377fd460fe` 重灌，未加 `--reuse-figures`。
+
+儲存後重新讀回：**157 個文字區塊、32 個連結、7 張圖、11 條分隔線**均與貼稿相符，placeholder 為 0。七張圖全部重傳，位元組未變，Medium 以內容定址，七個識別碼與重灌前完全相同。重灌把封面重設成第一張圖 `table-01`（`1*MUvdFYYjptz7l5_Vtj3huQ`），改走 `/p/<id>/edit` 右上角選單的 Change featured image 選回 `diagram-01.png`，重新載入 `/submission` 讀回 `previewImage.id = 1*H9X381hku0T7Tp5ujH2NkQ.png`（664×446）。標題、預覽摘要、五個 Topics、通知設定與排程均與重灌前相同：`isPublished: false`，`publishAt: 1793667600000`（2026-11-03 09:00 Asia/Taipei）。快照存於本機 `.context/ship-2026-10-26b/`，未納入 git。
+
+## 2026-10-26 第二次重灌：圖片解析度修正
+
+同日 /ship 的 Red Team 審查發現 `research/scripts/mermaid_check.sh` 的截圖只有 viewBox 一半的解析度（細節見可靠度篇 ledger 的同名小節與 MERMAID.md 第一節末）。本篇唯一的 Mermaid 圖 `diagram-01.png` 也是這樣算繪的（664×446），腳本修正後重繪整包：`diagram-01` 成為 1224×792，六張表位元組不變；再以 `./tools/medium_draft.sh 2026-10-green-payment --post 46377fd460fe` 重灌（未加 `--reuse-figures`），台北時間 11:53–11:56。
+
+儲存後重新讀回：**157 個文字區塊、32 個連結、7 張圖、11 條分隔線**均與貼稿相符，placeholder 為 0。六張表保留原識別碼（`table-01` `1*MUvdFYYjptz7l5_Vtj3huQ`、`table-02` `1*vquMIqwrBI9Rdhq6vwN5tA`、`table-03` `1*QOA-R40q6DfGZ_027r-8nQ`、`table-04` `1*D_2lGp6R2865-CsodIQung`、`table-05` `1*wbsCEQK_oF-n93Z_ffNvRw`、`table-06` `1*EOGCBFas-emVFzFNq2L50w`）；`diagram-01` 取得新識別碼 `1*9sOsXyKXZ9JHHlLd6ZNT6A`（1224×792），舊的 `1*H9X381hku0T7Tp5ujH2NkQ` 已不在內文裡。
+
+重灌仍把封面重設成第一張圖 `table-01`，從 `/p/<id>/edit` 的 Change featured image 選回新版 `diagram-01.png`，重新載入 `/submission` 讀回 `previewImage.id = 1*9sOsXyKXZ9JHHlLd6ZNT6A.png`（1224×792）。標題、預覽摘要、五個 Topics、通知設定與排程均未改變：`isPublished: false`，`publishAt: 1793667600000`（2026-11-03 09:00 Asia/Taipei）。這次重灌的貼稿 `medium-paste.md` SHA-256 為 `248b33509397418b6e083f1ef654884c2a634547c59511ef9ae8d0a3ecc9ac0c`；重灌前後快照存於本機 `.context/ship-2026-10-26c/`，未納入 git。

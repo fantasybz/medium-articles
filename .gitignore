@@ -11,3 +11,5 @@ __pycache__/
 .context/
 research/*/notion_digest.md
 research/*/community_digest.md
+.gstack/
+.claude/skills/

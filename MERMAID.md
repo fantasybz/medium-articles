@@ -21,7 +21,7 @@
 | 圖的種類 | `flowchart`、`timeline`、`mindmap`、`sequenceDiagram`、`quadrantChart`；不用 `gantt`、`pie`、`xychart`（表格或文字更清楚） | 這幾種在 700px 下撐得住 |
 | 表格 | 表格不是圖，直接用 markdown 表格；貼 Medium 時才轉 PNG | 表格截圖縮到卡片尺寸會糊，也不該當封面 |
 
-`research/scripts/mermaid_check.sh` 截圖前先把 svg 設成 viewBox 的寬高，再核對 `#wrap` 的實際寬度與 PNG 的畫素寬度，所以每張圖的 PNG 應該是 2 ×（viewBox 寬 + 32）px 寬，與表格的 1800 px 同一個比例。若一張 PNG 只有 664 px 寬，那是 2026-10-26 之前的腳本截到了瀏覽器預設的 300 px，圖本身沒有問題：mermaid 11 輸出 `width="100%"`，拿掉 `max-width` 後，svg 在 inline-block 容器裡沒有可解析的寬度。已發布文章的圖不必回頭重傳；下次重繪該發布包時會自然換成完整尺寸。
+`research/scripts/mermaid_check.sh` 截圖前先把 svg 設成 viewBox 的寬高，再核對 `#wrap` 的實際寬度，以及 PNG 的畫素寬高是否都是 `#wrap` 的 2 倍（高度不符代表截圖被裁切，同樣 FAIL），所以每張圖的 PNG 應該是 2 ×（viewBox 寬 + 32）px 寬，與表格的 1800 px 同一個比例。若一張 PNG 只有 664 px 寬，那是 2026-10-26 之前的腳本截到了瀏覽器預設的 300 px，圖本身沒有問題：mermaid 11 輸出 `width="100%"`，拿掉 `max-width` 後，svg 在 inline-block 容器裡沒有可解析的寬度。已發布文章的圖不必回頭重傳；尚未發布的排程稿是否在發布底線前重繪並重灌，由作者決定，名單與底線見 PUBLISHING.md 的 2026-10-25／26 小節。
 
 **寬的東西直著畫，窄的東西排兩欄。** `timeline` 是橫排的（每個時間點一欄、事件往下疊；2026-09 總論 diagram-02 十個時間點實測 1568×400、高／寬 0.26），超過四個時間點改用兩欄 `flowchart`（左右各一個 `direction TB` 的 subgraph），五層架構用 TB 疊起來，
 Before／After 用上下兩張卡片而不是左右並排；五步以內的線性流程如果直排，會變成 245×595 的細長條；
@@ -135,9 +135,10 @@ research/scripts/mermaid_check.sh fig.mmd out/fig    # 同上，只是 PNG／SVG
 它檢查的就是第一節的數字：寬 500–900、高／寬 0.5–1.5、節點 ≤ 12，並且要求檔案以 frontmatter `config` 開頭。
 量的是 svg 的 `viewBox`，不是畫面上的寬度（mermaid 會用 `max-width` 把 svg 縮進容器，那個數字不可信）。
 一次只能跑一張（browse 是單一 daemon）；一份 markdown 裡的所有 mermaid 區塊用 `research/scripts/mermaid_check_all.sh <file.md>` 逐張跑，結果列成一張表，FAIL 的行帶原因。
+兩支腳本開始前都讀一次 `browse status`，只有健康的、無旗標啟動的 daemon 才繼續：daemon 若以 `--headed`／`--proxy` 開著（別的 session，或剛跑完、還沒 disconnect 的 `medium_draft.sh`／`collect.sh`）、接上的是真實瀏覽器（`Mode: headed`），或讀不到健康狀態，就以 75 退出，不會自己 disconnect；確定沒人在用時，自己執行 `browse disconnect` 再重跑。`collect.sh` 跑的期間（有 `.context/collect.lock`）同樣退出 75。
 
 如果改用 mermaid-cli，字型要用 `--configFile`（`{"themeVariables":{"fontFamily":"..."}}`）給，
 理由同第三節：frontmatter 的 fontFamily 會被忽略。
 
-不合規的圖不進 `publish/images/`：`research/scripts/render_images.sh` 每張圖都走同一個檢查，FAIL 的不寫檔。這條放在最前面擋，比上線後用 `medium_patch.py` 換圖便宜得多
+不合規的圖不進 `publish/images/`：`research/scripts/render_images.sh` 每張圖都走同一個檢查（開始前一樣讀 `browse status`，拒絕時舊圖還沒被清掉），FAIL 的不寫檔；表格截圖的寬高也要是 `#wrap` 的 2 倍，否則一樣不寫檔。這條放在最前面擋，比上線後用 `medium_patch.py` 換圖便宜得多
 （換圖要兩步、還要等上傳完成，見 [PUBLISHING.md](PUBLISHING.md)）。

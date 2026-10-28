@@ -15,7 +15,7 @@ ROOT="${ROOT:-$(cd "$_COMMON_HERE/../.." && pwd)}"
 # sysexits(3)，跟 tools/medium_draft.sh 同一組
 EX_USAGE=64        # 參數錯
 EX_UNAVAILABLE=69  # 少了外部程式（browse、codex）
-EX_TEMPFAIL=75     # 暫時不能跑（collect.sh 正持有瀏覽器），稍後重試
+EX_TEMPFAIL=75     # 暫時不能跑（collect.sh 正持有瀏覽器，或 browse daemon 屬於別的 session），稍後重試
 
 # browse：repo 內的 .claude/skills 優先，再退到 $HOME（同 tools/medium_draft.sh）
 BROWSE="$ROOT/.claude/skills/gstack/browse/dist/browse"
@@ -65,11 +65,14 @@ release_collect_lock() {
   if [ "$(cat "$COLLECT_LOCK/pid" 2>/dev/null)" = "$$" ]; then rm -rf "$COLLECT_LOCK"; fi
 }
 
-# mermaid 與表格都在 headless daemon 上以 1400x1400、2x 截圖。
-# daemon 若還是 headed（medium_draft.sh 留下的），對 file:// 頁面會拒絕執行 JS，先 disconnect 讓它以 headless 重開。
-# 但 daemon 若是別的 session 以 --headed/--proxy 開的（status 會寫 started by another session），就不接手：disconnect 會
-# 踢掉那個 session 的登入；這裡以 75 退出，讓操作者自己決定要不要 disconnect（2026-10-26 實測：不擋的話 render_images.sh
-# 會先清掉舊 PNG，再讓每張圖都以「browse returned no measurement」FAIL）。
+# mermaid 與表格都在 headless daemon 上以 1400x1400、2x 截圖。開始前先讀 `browse status`，只在它回報一個健康的、
+# 無旗標啟動的 daemon 時才繼續；其餘一律以 75 退出，而且不自己 disconnect（預設拒絕）：
+# - 「started by another session」是 browse 對設定不合的 daemon 的拒絕：daemon 以 --headed/--proxy 開著——別的 session，
+#   或這個 session 的 medium_draft.sh／collect.sh 剛用過還沒 disconnect——無旗標的呼叫一律被拒。disconnect 會踢掉那個
+#   登入，所以留給操作者。
+# - 「Mode: headed」是 browse connect／open-gstack-browser 接上的真實瀏覽器，更不能動。
+# - 其他任何失敗（daemon 卡住、BROWSE_NO_AUTOSTART、鎖檔）也一樣停下：不擋的話 render_images.sh 會先清掉舊 PNG，
+#   再讓每張圖都以「browse returned no measurement」FAIL（2026-10-26 實測）。
 # `viewport --scale` 會重建 browser context 並重播上一個 load-html；緊接著再 load-html 會撞在一起，
 # mermaid 在被換掉一半的 DOM 上跑就會丟 null error。所以只在需要時改，改完等一下再載入。
 HEADLESS_VIEWPORT=1400x1400
@@ -77,13 +80,22 @@ HEADLESS_SCALE=2
 prepare_headless_viewport() {
   refuse_if_collecting
   local status cur
-  # 先接住輸出再判斷：`if cmd | grep -q` 在 cmd 失敗時永遠不會成立（CLAUDE.md）
-  status="$("$BROWSE" status 2>/dev/null)" || status=""
+  # 先接住輸出再判斷：`if cmd | grep -q` 在 cmd 失敗時永遠不會成立（CLAUDE.md）。兩個串流都要收：
+  # browse 把「別的 session」的拒絕寫在 stderr 並以 1 退出，stdout 是空的；`2>/dev/null` 加 `|| status=""`
+  # 會把它整個丟掉，下面的守門永遠不會觸發（2026-10-26 /ship 第二輪審查，三個 specialist 各自重現）。
+  status="$("$BROWSE" status 2>&1)" || true
   case "$status" in
     *"started by another session"*)
-      echo "the browse daemon belongs to another session (headed/proxy); if that session is done with it, run '$BROWSE disconnect' yourself and retry" >&2
+      echo "the browse daemon was started with --headed/--proxy (another session, or this session's medium_draft.sh/collect.sh); when nothing else is using it, run '$BROWSE disconnect' yourself and retry" >&2
       exit "$EX_TEMPFAIL" ;;
-    *"Mode: headed"*) "$BROWSE" disconnect >/dev/null 2>&1 || true ;;
+    *"Mode: headed"*)
+      echo "the browse daemon is a live headed browser (browse connect / open-gstack-browser); this script will not disconnect it" >&2
+      exit "$EX_TEMPFAIL" ;;
+    *"Status: healthy"*) ;;
+    *)
+      echo "browse status did not report a healthy daemon; not rendering. It said:" >&2
+      printf '%s\n' "$status" >&2
+      exit "$EX_TEMPFAIL" ;;
   esac
   cur="$("$BROWSE" js "window.innerWidth+'@'+window.devicePixelRatio" 2>/dev/null)" || cur=""
   if [ "$cur" != "${HEADLESS_VIEWPORT%x*}@$HEADLESS_SCALE" ]; then

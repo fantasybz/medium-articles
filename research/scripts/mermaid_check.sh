@@ -18,9 +18,9 @@
 # 目前 research/ 下所有 PASS 是 11.17.2 算出來的（2026-09-07 jsdelivr 對 mermaid@11 解析到的版本）。
 # 升版要把全部的圖重跑一遍（mermaid_check_all.sh），不要只改數字。
 #
-# 注意：browse daemon 若正處於 --headed 且匯入了 cookie，會拒絕在 file:// 頁面執行 JS；此時先 disconnect
-# 讓它以 headless 重開（_common.sh 的 prepare_headless_viewport 會做）。但 collect.sh 跑的時候不能這樣做——
-# 那會把它的登入 session 踢掉，所以看到 .context/collect.lock 就退出 75。
+# 注意：browse daemon 若是以 --headed 開的（medium_draft.sh／collect.sh 用過還沒 disconnect），無旗標的呼叫會被 browse
+# 拒絕；_common.sh 的 prepare_headless_viewport 讀到拒絕或任何不健康的狀態就以 75 退出，不會自己 disconnect——確定沒人
+# 在用時，自己執行 `browse disconnect` 再重跑。collect.sh 跑的時候（有 .context/collect.lock）同樣退出 75。
 set -euo pipefail
 MMD="${1:?usage: mermaid_check.sh <fig.mmd> [out-prefix]}"
 OUTP="${2:-${MMD%.mmd}}"
@@ -72,6 +72,8 @@ except ValueError:
 W_MIN, W_MAX = 500, 900          # CSS px，svg viewBox 的寬
 ASPECT_MIN, ASPECT_MAX = 0.5, 1.5  # 高／寬
 NODES_MAX = 12
+WRAP_TOL_PX = 2                  # #wrap 寬 vs viewBox 寬＋兩邊內距：getBoundingClientRect 與 viewBox 小數的取整
+PNG_TOL_PX = 4                   # PNG 寬 vs scale × #wrap 寬：2x 截圖的畫素取整
 if info.get('err'):
     print("RENDER ERROR:", info['err']); sys.exit(2)
 w, h, n = info['w'], info['h'], info.get('nodes', 0)
@@ -80,8 +82,10 @@ if w <= 0 or h <= 0:
     print(f"RENDER ERROR: svg viewBox is {w}x{h}"); sys.exit(2)
 # 截圖尺寸的核對（見檔頭）：#wrap 要是 svg 的 viewBox 寬加兩邊內距，PNG 要是 #wrap 的 scale 倍。
 # 退回 300px 的 svg 會在第一關被擋下；daemon 不是 2x 時在第二關。兩種都算算繪失敗。
-wrap_w = int(info.get('wrapW') or 0)
-if abs(wrap_w - (w + 2 * pad)) > 2:
+if 'wrapW' not in info or 'wrapH' not in info:
+    print("RENDER ERROR: browse measurement has no #wrap size (older daemon or script?)"); sys.exit(2)
+wrap_w, wrap_h = int(info['wrapW']), int(info['wrapH'])
+if abs(wrap_w - (w + 2 * pad)) > WRAP_TOL_PX:
     print(f"RENDER ERROR: svg drawn at {max(wrap_w - 2 * pad, 0)}px wide, not its viewBox width {w}px (fallback-width capture)"); sys.exit(2)
 try:
     with open(out + '.png', 'rb') as f: head = f.read(24)
@@ -90,8 +94,10 @@ except OSError as e:
 if head[:8] != b'\x89PNG\r\n\x1a\n' or len(head) < 24:
     print("RENDER ERROR: screenshot is not a PNG"); sys.exit(2)
 png_w, png_h = struct.unpack('>II', head[16:24])
-if abs(png_w - scale * wrap_w) > 4:
+if abs(png_w - scale * wrap_w) > PNG_TOL_PX:
     print(f"RENDER ERROR: png is {png_w}px wide, expected {scale}x of the {wrap_w}px #wrap (dpr {info.get('dpr')})"); sys.exit(2)
+if abs(png_h - scale * wrap_h) > PNG_TOL_PX:
+    print(f"RENDER ERROR: png is {png_h}px tall, expected {scale}x of the {wrap_h}px #wrap (clipped screenshot?)"); sys.exit(2)
 aspect = h / w
 problems = []
 if w > W_MAX: problems.append(f"width {w}px > {W_MAX} (text will be < 12px at 700px column)")

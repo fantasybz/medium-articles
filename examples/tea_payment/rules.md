@@ -19,6 +19,7 @@ Retain a test when the comment identifies a consequential failure, describes a r
 
 - “Could a second click charge the order twice?” becomes C1, with two calls and a one-capture expectation.
 - “Could the retry key accidentally be regenerated or reused?” becomes C2, with explicit conflict and no new provider call.
+- “Could a decline be reported as a paid result?” becomes C3, with a `DECLINED` receipt, no payment ID and no second provider call on replay.
 - “Can a timeout already have charged the customer?” becomes C4, covering both capture-then-timeout and a timeout before any side effect.
 - “Rename this local variable” remains ordinary code feedback unless an established convention belongs in a formatter/linter.
 - “Should this campaign offer refunds?” first needs a product/payment policy decision. An agent cannot manufacture the expected answer and then call it an approved constraint.

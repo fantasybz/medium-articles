@@ -4,13 +4,14 @@
 **Post ID** `4b6d147bff0d`（draft https://medium.com/p/4b6d147bff0d/edit；stable URL after publishing https://medium.com/p/4b6d147bff0d）
 **Schedule** 2026-10-29（四）09:00 GMT+8（2026-10-24 已重新讀取 Medium 排程確認）
 **Built with** `./tools/medium_draft.sh 2026-10-green-reliability en`, block-by-block verification clean
+**2026-10-26** 原稿與貼稿修訂後已重灌並讀回；同日 /ship 審查發現重繪的圖只有一半解析度，腳本修正後第二次重灌，見文末兩節。
 
 ## Settings
 
 | Item | Value |
 |---|---|
 | Topics | Software Testing、Code Review、AI、Software Engineering、Engineering Management |
-| Preview image | `diagram-02.png`（`1*3BkCssQJxK2HMOF195J5zQ.png`，1486×1136，2026-10-24 已核對） |
+| Preview image | `diagram-02.png`（`1*7Mq2-4lNefvJNHjuu8jpLQ.png`，1486×1136，2026-10-26 第二次重灌後已核對） |
 | Notify subscribers | yes (default) |
 
 ## Status (2026-09-07)
@@ -190,3 +191,19 @@ After saving under the same Post ID, fresh editor navigation verified **169 text
 Replaced diagram-01, diagram-02 and table-02 with the revised English images. The cover remains diagram-02, now `1*3BkCssQJxK2HMOF195J5zQ.png` (1486×1136); the other four image identities and dimensions are unchanged. A further fresh settings read confirmed the title, topics, display title/subtitle, notification setting and original schedule. The post remains unpublished and scheduled for **2026-10-29 09:00 Asia/Taipei** (`publishAt: 1793235600000`).
 
 Payment-code links remain absent until this language’s Part 4 actually publishes. No early publication or rescheduling was performed.
+
+## 2026-10-26 重灌與讀回
+
+Claude Code 接手複核後修訂原稿與貼稿（見[研究紀錄](../../../research/2026-10/reliability-payment-polish-evidence.md)的 2026-10-25／26 小節）。作者允許重開 gstack browse daemon 後，先以 `research/scripts/render_images.sh 2026-10-green-reliability en` 重繪整包七張圖（全部通過 MERMAID.md 檢查，`diagram-04` 長寬比 1.44），再以 `./tools/medium_draft.sh 2026-10-green-reliability en --post 4b6d147bff0d` 重灌，未加 `--reuse-figures`。
+
+儲存後重新讀回：**169 個文字區塊、23 個連結、7 張圖、10 條分隔線**均與貼稿相符，placeholder 為 0。七張圖全部重傳；Medium 以內容定址，位元組不變的三張保留原識別碼（`table-01` `1*roevPNsK7WGH3pLAxeacQQ`、`diagram-03` `1*U6DRJpDZC58Fc04m1dTEmQ`、`table-03` `1*duxy4SJVec7HPM3jrn8JQQ`），重繪後位元組改變的四張取得新識別碼：`diagram-01` `1*aoQkc56_RaP6I9LFRlriHA`（664×604）、`table-02` `1*F6zXX1lFnCCsR5Bymoor0g`（1800×586）、`diagram-02` `1*npPKf73a1qhAQ0JmQ2PKxg`（664×522）、`diagram-04` `1*Y3rm-y29DbOSYnxI59p7TQ`（664×934）。
+
+重灌把封面重設成第一張圖 `table-01`；`UpdateSubmitFormStoryPreviewMetadataMutation` 回 `500 throughput exceeded`，改走 `/p/<id>/edit` 右上角選單的 Change featured image 選回新版 `diagram-02.png`，重新載入 `/submission` 讀回 `previewImage.id = 1*npPKf73a1qhAQ0JmQ2PKxg.png`（664×522）。標題、預覽摘要、五個 Topics、通知設定與排程均與重灌前相同：`isPublished: false`，`publishAt: 1793235600000`（2026-10-29 09:00 Asia/Taipei）。重灌前後的設定與圖片識別碼快照存於本機 `.context/ship-2026-10-26b/`，未納入 git。
+
+## 2026-10-26 第二次重灌：圖片解析度修正
+
+同日 /ship 的 Red Team 審查從 PNG 檔頭看出，上一節重繪的四張圖都只有 664 px 寬：`research/scripts/mermaid_check.sh` 拿掉 mermaid 的 `max-width` 之後，`width="100%"` 的 svg 在 inline-block 容器裡退回瀏覽器預設的 300 CSS px，截圖只有 viewBox 一半的解析度，而 viewBox 的尺寸檢查照樣 PASS。10/24 的 `diagram-01`、`diagram-02` 是以別的方法算繪的完整尺寸（1266×1136、1486×1136），所以上一節的重灌把封面從 1486×1136 換成了 664×522。腳本修正（截圖前把 svg 設成 viewBox 的尺寸，並核對 `#wrap` 與 PNG 的寬度，對不上就 FAIL）後重繪整包：四張圖全部成為 2 × viewBox 的尺寸，三張表位元組不變；再以 `./tools/medium_draft.sh 2026-10-green-reliability en --post 4b6d147bff0d` 重灌（未加 `--reuse-figures`），台北時間 11:51–11:53。
+
+儲存後重新讀回：**169 個文字區塊、23 個連結、7 張圖、10 條分隔線**均與貼稿相符，placeholder 為 0。三張表保留原識別碼（`table-01` `1*roevPNsK7WGH3pLAxeacQQ`、`table-02` `1*F6zXX1lFnCCsR5Bymoor0g`、`table-03` `1*duxy4SJVec7HPM3jrn8JQQ`）；四張圖取得新識別碼：`diagram-01` `1*Xcjm6k61CPCI9f3qoozd6A`（1266×1136）、`diagram-02` `1*7Mq2-4lNefvJNHjuu8jpLQ`（1486×1136）、`diagram-03` `1*IW9b7m37dmObDlqkES8z4g`（1596×1424）、`diagram-04` `1*yfQEjw1wOWyB3tNCZo7WQg`（1374×1952）。上一節的四個 664 px 識別碼已不在內文裡。
+
+重灌仍把封面重設成第一張圖 `table-01`，依上一節的方法從 `/p/<id>/edit` 的 Change featured image 選回新版 `diagram-02.png`，重新載入 `/submission` 讀回 `previewImage.id = 1*7Mq2-4lNefvJNHjuu8jpLQ.png`（1486×1136）。標題、預覽摘要、五個 Topics、通知設定與排程均未改變：`isPublished: false`，`publishAt: 1793235600000`（2026-10-29 09:00 Asia/Taipei）。這次重灌的貼稿 `medium-paste.md` SHA-256 為 `d6b9621e5b6c70e846ee0e644794224d311fb2fb25028930cd491dc001456b9e`；重灌前後快照存於本機 `.context/ship-2026-10-26c/`，未納入 git。

@@ -51,7 +51,12 @@ exits non-zero on any mismatch.
 When adding a guard to the driver, capture the output first
 (`out=$(B eval ...) || exit 1`) and test it. `if B eval ... | grep -q ...` can
 never fire: browse writes failures to stderr with empty stdout, and a failing
-left side makes the `if` false rather than true.
+left side makes the `if` false rather than true. The capture form has the same
+trap: `status=$(browse status 2>/dev/null) || status=""` throws the refusal
+away together with its exit code, so a guard matching on it is dead against the
+real binary (the 2026-10-26 pre-flight shipped that way for half a day). Capture
+both streams (`2>&1 || true`), and make the test's fake browse write to stderr
+and exit non-zero the way the real one does.
 
 The second command covers `research/scripts/` the same way: stdlib `unittest`,
 no network, no browser. It tests the pure-Python scripts — the
@@ -65,14 +70,25 @@ each `figures.json` still matches; `sync_figures.py`'s id matching; the
 runs against a throwaway git repo with a fake `codex` first on `PATH`, so the
 missing-digest guard (exit 64 before Codex is called) and the happy path that
 writes `codex-review-<slug>.md` are both covered without a Codex session. The
-extractors, `collect.sh`, `mermaid_check*.sh` and `render_images.sh` need a
-browser or the macOS Keychain, so they are not in it; like `medium_draft.sh`,
-they check their own output at run time.
+extractors and `collect.sh` need a browser or the macOS Keychain, so they are
+not in it. `mermaid_check.sh`, `mermaid_check_all.sh` and `render_images.sh`
+are: a fake `browse` installed at the repo-local path `_common.sh` checks first
+(under a temporary `ROOT`) pins their pre-flight refusals, the screenshot size
+guards, the table verdict, the copy-or-clear rule and the sweep table; what the
+real browser draws is checked by the scripts themselves at run time, like
+`medium_draft.sh`.
 
 For gstack's pre-gate, `.gstack/pregate.json` maps generated `figures.json`
-files to that existing research suite and runs it with stdlib `unittest`.
-The explicit mapping covers corpus files discovered at runtime; it does not
-replace the three required commands above or the Medium readback checks.
+files and the browser render scripts (`research/scripts/_common.sh`,
+`mermaid_check.sh`, `mermaid_check_all.sh`, `render_images.sh`, whose
+fake-browse tests live in that suite) to the research suite and runs it with
+stdlib `unittest`. `.gitignore` lists `.gstack/` because gstack's browse appends
+it on every daemon start; tracked files under it (`pregate.json`) are
+unaffected, and a new config file there needs `git add -f`. gstack reads
+this file from the base branch, so a mapping added in a PR only takes effect
+after it merges; until then a test that names the script by its repo-relative
+path is what resolves the lane. The mapping does not replace the three required
+commands above or the Medium readback checks.
 
 The third command covers the [tea payment teaching example](examples/tea_payment/README.md):
 nine payment tests and twelve mutation-runner regression tests, all offline with

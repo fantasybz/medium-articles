@@ -12,7 +12,7 @@ Suppose a team has just approved an agent's repair PR. Someone then asks, “Can
 
 Start with a requirement that one acceptance review could miss. In this illustration, an agent repairs a data-fetching feature, and tests confirm that the returned content is correct. A reviewer then notices that it constructs its own HTTP client, the component sending network requests, instead of using the team's required shared entry point. Completing the feature and honoring that requirement are separate questions to check. A constraint here is a requirement the team has made explicit and expects later changes to preserve. It may concern an implementation choice, or it may itself be functional behavior, such as preventing duplicate payment. SWE-Gate is a study evaluating agents against benchmark tasks that checks more than functional test results: it turns requirements reviewers actually raised on PRs into executable checks and evaluates them separately. Its figures below concern its Python repair tasks, not measured results from this illustration.
 
-The 34% is what SWE-Gate (September 2026) measured on 75 Python repos and 303 patch tasks. Of the 644 patches that passed the functional tests, 221 violated one of those constraints. In plain language: one in every three green patches violates a constraint the reviewer cared about.
+The 34% is what SWE-Gate (September 2026) measured on 75 Python repos and 303 patch tasks. Of the 644 patches that passed the functional tests, 221 violated at least one of those constraints. In plain language: one in every three green patches violates a constraint the reviewer cared about.
 
 Two points need clarifying before using these numbers, so the study's conclusion is not misread.
 
@@ -30,7 +30,7 @@ Rebuild Dossier is a design premise, not an observed result. It is a paper propo
 
 Once the layers are laid out, one thing becomes visible: all three look identical on a dashboard. The light is green in every case. The only difference is what that light measured, and whether you went and measured the rest yourself. A green build never volunteers what it left out, and that is exactly what makes it dangerous.
 
-This piece deals with only two of those layers. One is the reviewer constraints, which is what the opening number measured. The other is reliability, which is whether the same thing done again still comes out right. None of the three studies above measured that layer; the reliability section explains how to measure it on your own system, using only the kind of independent evidence Rebuild Dossier warned about. Below, the constraints get written as checks first, then capability and reliability get measured separately, then the bill for review gets computed, and finally it all connects back to the gate.
+This piece deals with only two of those layers. One is the reviewer constraints, which is what the opening number measured. The other is reliability, which is whether the same thing done again still comes out right. None of the three studies above measured that layer; the reliability section explains how to measure it on your own system, using only the kind of independent evidence Rebuild Dossier called for. Below, the constraints get written as checks first, then capability and reliability get measured separately, then the bill for review gets computed, and finally it all connects back to the gate.
 
 ---
 
@@ -60,7 +60,7 @@ Six months is a reminder to reconsider, not a reason to delete the rule. A payme
 
 Now that the rules have an owner, the next question is whether the agent can change them. Section 2 of the overview splits evidence into three classes: the first is what the agent says, the second is the tests the agent wrote itself, and the third is the tests the agent cannot change. What lands here is that third class, and the mechanism has three parts.
 
-CODEOWNERS assigns review responsibility but needs merge rules to enforce it. First, assign only human owners to `tests/constraints/` and the golden set, and enable Require review from Code Owners. Second, require human approval for changes to the rule file, CODEOWNERS and verification workflow, with no agent bypass. Third, use Check 2 from the testing piece to block any weakening of category （c） assertions.
+CODEOWNERS assigns review responsibility but needs merge rules to enforce it. First, assign only human owners to `tests/constraints/` and the golden set, and enable Require review from Code Owners. Second, require human approval for changes to the rule file, CODEOWNERS and verification workflow, with no agent bypass. Third, use Check 2 from the testing piece to block any weakening of assertions in the third class （c）.
 
 The agent can propose changes on a branch but cannot approve and merge them itself. When evaluating a PR, obtain constraints and verification code from a protected version and use them against the candidate code. A PR must not rewrite its checker and then cite that checker's green result as proof of compliance. That is the independence "cannot change unilaterally" needs to preserve.
 
@@ -194,7 +194,7 @@ Keep each case's results before computing aggregate metrics. With equal attempts
 
 Two similar-looking expressions need distinguishing. Here, pass^k is measured by counting cases that pass all k attempts; raising the aggregate pass@1 to the kth power does not produce that observation. The share succeeding at least once is pass@k, another metric that this series does not use.
 
-The monthly report also includes constraint pass rate: among PRs passing functional tests, the share passing all constraint tests. Both metrics have the same premise: **pass^k and constraint pass rate must be computed from category （c） evidence**, maintained by the team and not rewriteable for acceptance by the agent under evaluation. An agent's completion report does not qualify. Its new tests must pass the test gate, receive human approval into main, and enter the protected verification process to complete the promotion described in the overview.
+The monthly report also includes constraint pass rate: among PRs passing functional tests, the share passing all constraint tests. Both metrics have the same premise: **pass^k and constraint pass rate must be computed from third-class （c） evidence**, maintained by the team and not rewriteable for acceptance by the agent under evaluation. An agent's completion report does not qualify. Its new tests must pass the test gate, receive human approval into main, and enter the protected verification process to complete the promotion described in the overview.
 
 A real report also needs to specify which revision of a PR counts as one observation. For example, define the policy before the month begins: include each PR's first functionally passing candidate submitted for acceptance once, recording its commit, applicable rules and complete check results. Retain later corrections and revalidation separately; ten green reruns of one PR are not ten successful deliveries. This is an illustrative sampling policy. A team can choose another fixed method, but comparable reports need a time window, selection method and version records. Keep this cohort of actual PRs separate from the golden-set experiment.
 
@@ -210,13 +210,13 @@ Another study of semantics-preserving rephrasing measured a drop of a similar si
 
 Changes in performance after rephrasing call for evaluating robustness to input variation. pass^k from repeated runs under fixed conditions answers a different question. The experiments can sit alongside each other, but the first is not a measurement of the second.
 
-The corroboration comes from outside code, and this is the only place in the whole series that quotes the full numbers. What Thinkingbox (a benchmark paper) measured is 507 policy-conditioned MCP workflows — multi-step tool-calling tasks carrying policy constraints, where the agent has to keep calling tools through MCP (the protocol for calling tools) and keep the rules at the same time. On that batch, Claude Opus 5 scored 66.50% pass@1 and 47.53% pass^20.
+The corroboration comes from outside code. What Thinkingbox (a benchmark paper) measured is 507 policy-conditioned MCP workflows — multi-step tool-calling tasks carrying policy constraints, where the agent has to keep calling tools through MCP (the protocol for calling tools) and keep the rules at the same time. On that batch, Claude Opus 5 scored 66.50% pass@1 and 47.53% pass^20.
 
 Looking only at the average success rate, you would expect roughly two out of three attempts to succeed. Yet fewer than half of the tasks succeed twenty times in a row. The gap is nearly twenty percentage points: the distance between capability and reliability.
 
 Its conclusion — "clean termination and valid tool calls are not proxy indicators of completion" — holds in the code domain just the same: the agent saying it finished, with every tool call well formed, is a different thing from the task having been done right.
 
-So how do you do this on your own evals? Reuse the golden set from “Agentic Engineering: Evals, Unit Economics, and Scaling”, 20 to 50 cases, and run it monthly at k = 5; that is the set the thresholds are read off. The frontier set runs separately at k = 3: it is a harder batch that does not pass yet, there to show where the ceiling is, and it is not used as a threshold. The report has three fixed columns, so every month you are looking at the same numbers; the oversight budget is reported separately. It uses the first column together with the reliability target and review effectiveness to estimate the required share, then compares that need with actual review and sustainable capacity. Section 4 works through the calculation.
+So how do you do this on your own evals? Reuse the golden set from “Agentic Engineering: Evals, Unit Economics, and Scaling”, 20 to 50 cases, and run it monthly at k = 5; that is the set the thresholds are read off. The frontier set runs separately at k = 3: it is a harder batch that does not pass yet, there to show where the ceiling is, and it is not used as a threshold. The report has three fixed columns, so every month you are looking at the same numbers. The question raised at the start, how much human review is still needed, is what this piece calls the oversight budget, and it is reported separately. It uses the first column together with the reliability target and review effectiveness to estimate the required share, then compares that need with actual review and sustainable capacity. Section 4 works through the calculation.
 
 The three columns look like this:
 
@@ -399,9 +399,9 @@ Set the reliability target, estimate the review required, then check whether sta
 
 The measurements and budget now need to support a decision: is this setup ready for broader use by more teams and the authority that comes with it? “Agentic Engineering: Evals, Unit Economics, and Scaling” organizes expansion into three scaling gates, with G2 second. This section adds reliability and review-capacity requirements to its existing conditions.
 
-The worked proposal covers low-impact, verifiable work with human approval retained for every change. Expansion can mean more tasks or participating teams within that scope. These thresholds do not authorize autonomous deployment of a real payment system. High-impact work still follows the Review article's routing policy, and strong aggregate metrics cannot compensate for an unresolved payment constraint. Define the authority being considered before applying the thresholds.
+The worked proposal covers low-impact, verifiable work with human approval retained for every change. Expansion can mean more tasks or participating teams within that scope. These thresholds do not authorize autonomous deployment of a real payment system. High-impact work still follows the Review article's triage policy, and strong aggregate metrics cannot compensate for an unresolved payment constraint. Define the authority being considered before applying the thresholds.
 
-The operations piece's G2 had three original conditions: retry rate (the share of agent runs that fail and get retried) under 15%, escape rate (the share of defects found only once they reached production) flat, and the champion system (the seed engineers in each team who push agent adoption part-time) running itself, meaning it keeps moving without a central push. This piece adds four, all labeled "my suggested value (not an industry standard)."
+The operations piece's G2 had three original conditions: retry rate (the share of tasks that need a retry) under 15%, a figure the operations piece treats as a starting point for discussion while asking that retry causes stay traceable, escape rate (the share of delivered changes whose defects are found only after they reach production) not worsening, and champions (the seed engineers in each team who push agent adoption part-time) having time and support, meaning their adoption work is actually scheduled into their workload and they have someone to turn to when they hit trouble. This piece adds four, all labeled "my suggested value (not an industry standard)."
 
 A threshold should consider stability as well as attainment. Each condition below requires two consecutive months of evidence: some require sustained attainment, while others also require violations or the required review share not to rise. If violations have already fallen to 2%, the gate should not demand another reduction every month. A healthy steady state needs a path through the gate too.
 
@@ -432,8 +432,8 @@ gates:
         op: "<"
         value: 0.15
       - metric: escape_rate
-        op: flat_two_months
-      - metric: champions_self_sustaining
+        op: not_worsening_two_months
+      - metric: champions_have_time_and_support
         op: "=="
         value: true
       - all_of:                     # pass^5 with a minimum sample size
@@ -520,7 +520,7 @@ flowchart TB
     classDef human fill:#e3f2fd,stroke:#1565c0,color:#1f2933
     subgraph cur["Original G2, operations piece"]
         direction TB
-        O1["retry rate #lt; 15%"] ~~~ O2["escape rate flat"] ~~~ O3["champion system runs itself"]
+        O1["retry rate #lt; 15%"] ~~~ O2["escape rate not worsening"] ~~~ O3["champions have time and support"]
     end
     subgraph add["Four added here: my suggested values"]
         direction TB
@@ -538,9 +538,9 @@ flowchart TB
 
 Read the illustrative report from section 4 against this gate in three steps. First, what does this month establish? Its 42 golden cases exceed the proposed minimum, with pass^5 of 0.64. A separate cohort of 100 candidate patches has complete constraint results, including seven violations: a 7% violation rate. Review demand fits within the illustrated budget, but c = 0.60 remains an assumption. The calculation is not a measured staffing guarantee.
 
-Second, what remains unknown? There is no previous month. Although 7% is below 10%, the report does not establish two months without an increase. It also lacks mutation score, retries, escaped defects and evidence that the champion system sustains itself. The decision is therefore “defer expansion because evidence is incomplete,” rather than declaring all seven conditions satisfied or declaring the agent's performance proven inadequate.
+Second, what remains unknown? There is no previous month. Although 7% is below 10%, the report does not establish two months without an increase. It also lacks mutation score, retries, escaped defects and evidence that champions have time and support. The decision is therefore “defer expansion because evidence is incomplete,” rather than declaring all seven conditions satisfied or declaring the agent's performance proven inadequate.
 
-Third, who closes the gaps? The eval owner supplies comparable records for two months and the test-effectiveness report. The process owner checks the operating metrics. The review owner calibrates c and capacity against actual volume, hours and correction records. One person may hold several roles, but the next discussion needs specified evidence rather than “keep observing.” Once all seven conditions have support, check that it applies to the proposed task scope. G2 then preserves a decision rationale that the next person can examine, beyond a pass or hold label.
+Third, who closes the gaps? The eval owner supplies comparable records for two months and the test-effectiveness report. The process owner checks the operating metrics. The review owner calibrates c and capacity against actual volume, hours and correction records. One person may hold several roles, but the next discussion needs specified evidence rather than “keep observing.” Once all seven conditions have support, check that they apply to the proposed task scope. G2 then preserves a decision rationale that the next person can examine, beyond a pass or hold label.
 
 ---
 
@@ -556,7 +556,7 @@ The second question is consistency. pass^k records how many cases in this set su
 
 The third question is staffing. r_min estimates the minimum review required under the target and model assumptions; r records actual allocation, and r_budget is what the team can sustain. Showing all three makes the resulting work and available capacity visible before autonomy expands.
 
-G2 already tracks retries, escaped defects and the champion system. The four new conditions add test effectiveness, team constraints, repeat-run consistency and human-review requirements. Together they help the team judge whether this class of tasks has sufficient verification and whether it can sustain the work that broader authority would bring.
+G2 already tracks retries, escaped defects and whether champions have time and support. The four new conditions add test effectiveness, team constraints, repeat-run consistency and human-review requirements. Together they help the team judge whether this class of tasks has sufficient verification and whether it can sustain the work that broader authority would bring.
 
 The four thresholds are starting suggestions, not industry standards. Teams can adjust them using their own data, while retaining the rationale and evidence for each change. Missing a threshold this month is not by itself a reason to lower it just enough to pass. The habit I want to preserve is making authority decisions open to scrutiny and assigning responsibility for them.
 
@@ -566,7 +566,7 @@ Likewise, repeatedly passing the same specification and producing similar implem
 
 Offline evaluation also cannot stand in for production service performance. As a hypothetical payment-service example, the team could separately define the share of real payment requests that receive a response within an agreed time and calculate it from service records, rather than from the agent's repair attempts. Measurements of actual service operation are what an SLI, or service level indicator, describes. Request scope, time window and data source still need explicit definitions. pass^k and r support the authority and staffing judgments in this article. Placing them in the same report does not change their unit into real service requests.
 
-If there is one sequence to retain, I would first establish meaningful checks of functionality and team constraints, then assess consistency across repeated tasks. The success criterion for pass^k must include those requirements, or it can describe consistently missing the same problem. Human review is a separate axis: estimate the need under the chosen target and assumptions, then confirm sufficient capacity and actual review at or above the minimum.
+If there is one sequence to retain, I would first establish meaningful checks of functionality and team constraints, then assess consistency across repeated attempts on the task set. The success criterion for pass^k must include those requirements, or it can describe consistently missing the same problem. Human review is a separate axis: estimate the need under the chosen target and assumptions, then confirm sufficient capacity and actual review at or above the minimum.
 
 That sequence makes room for the people who receive the work. If a team expands authority before discovering that its tests miss key behavior, the gap eventually falls to reviewers and on-call engineers. Making evidence and review demand explicit beforehand lets them help decide the scope, rather than inherit unaccounted work after an incident.
 

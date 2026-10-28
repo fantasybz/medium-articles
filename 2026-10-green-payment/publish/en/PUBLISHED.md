@@ -3,7 +3,7 @@
 **標題** Green Is Not Done, Part 4 — A Payment Walkthrough: Buying Unsweetened Green Tea, from Review Constraints to Mutation Score
 **Post ID** `20452944263b`
 **草稿網址** https://medium.com/p/20452944263b/edit
-**狀態** 已排程於 **2026-11-05（四）09:00 Asia/Taipei（GMT+8）** 發布；目前尚未發布（2026-10-24 重新讀回確認）。
+**狀態** 已排程於 **2026-11-05（四）09:00 Asia/Taipei（GMT+8）** 發布；目前尚未發布（2026-10-24 重新讀回確認）；2026-10-26 原稿與貼稿修訂後已重灌並讀回，同日修正圖片解析度後第二次重灌，見文末兩節。
 **系列位置** 總論＋四部曲的第四篇〈付款實作篇〉。資料夾日期不代表發布日期。
 
 ## 設定
@@ -11,7 +11,7 @@
 | 項目 | 已讀回的值 |
 |---|---|
 | Topics | Software Testing、Code Review、AI、Software Engineering、Engineering Management |
-| 封面圖 | `diagram-01.png`（`1*1Rdev5wkuGbi2GfLz393Pg.png`） |
+| 封面圖 | `diagram-01.png`（`1*VucSz2zObH3hLn-gg-p-fA.png`，1402×792，2026-10-26 第二次重灌後已核對） |
 | 預覽標題 | Green Is Not Done, Part 4 — A Tea Payment Walkthrough |
 | 預覽摘要 | Follow one tea purchase from review comments to constraint tests, then examine what mutation scores of 28.6%, 85.7% and 100% actually prove. |
 | Notify subscribers | 維持勾選，`isPublishToEmail: true`；本次設定未來排程，沒有提前發布 |
@@ -86,3 +86,17 @@ After saving under the same Post ID, fresh editor navigation verified **157 text
 All seven existing image identities and original dimensions, including the cover, are unchanged. A further fresh settings read confirmed the title, topics, display title/subtitle, notification setting and original schedule. The post remains unpublished and scheduled for **2026-11-05 09:00 Asia/Taipei** (`publishAt: 1793840400000`).
 
 Payment-code links remain present in this scheduled Part 4 draft; earlier articles wait for its actual publication. No early publication or rescheduling was performed.
+
+## 2026-10-26 重灌與讀回
+
+Claude Code 接手複核後修訂原稿與貼稿（見[研究紀錄](../../../research/2026-10/reliability-payment-polish-evidence.md)的 2026-10-25／26 小節）。本篇沒有改圖，不必重繪；作者允許重開 gstack browse daemon 後，以 `./tools/medium_draft.sh 2026-10-green-payment en --post 20452944263b` 重灌，未加 `--reuse-figures`。
+
+儲存後重新讀回：**157 個文字區塊、33 個連結、7 張圖、11 條分隔線**均與貼稿相符，placeholder 為 0。七張圖全部重傳，位元組未變，Medium 以內容定址，七個識別碼與重灌前完全相同。重灌把封面重設成第一張圖 `table-01`（`1*S1SLNvaSXMfS8PYtgZ0AJw`），改走 `/p/<id>/edit` 右上角選單的 Change featured image 選回 `diagram-01.png`，重新載入 `/submission` 讀回 `previewImage.id = 1*1Rdev5wkuGbi2GfLz393Pg.png`（664×396）。標題、預覽摘要、五個 Topics、通知設定與排程均與重灌前相同：`isPublished: false`，`publishAt: 1793840400000`（2026-11-05 09:00 Asia/Taipei）。快照存於本機 `.context/ship-2026-10-26b/`，未納入 git。
+
+## 2026-10-26 第二次重灌：圖片解析度修正
+
+同日 /ship 的 Red Team 審查發現 `research/scripts/mermaid_check.sh` 的截圖只有 viewBox 一半的解析度（細節見可靠度篇 ledger 的同名小節與 MERMAID.md 第一節末）。本篇唯一的 Mermaid 圖 `diagram-01.png` 也是這樣算繪的（664×396），腳本修正後重繪整包：`diagram-01` 成為 1402×792，六張表位元組不變；再以 `./tools/medium_draft.sh 2026-10-green-payment en --post 20452944263b` 重灌（未加 `--reuse-figures`），台北時間 11:56–11:58。
+
+儲存後重新讀回：**157 個文字區塊、33 個連結、7 張圖、11 條分隔線**均與貼稿相符，placeholder 為 0。六張表保留原識別碼（`table-01` `1*S1SLNvaSXMfS8PYtgZ0AJw`、`table-02` `1*sUKdCwKr2o7f22OrEsq05Q`、`table-03` `1*I0xM2wp_aUsysLpyyPAJIw`、`table-04` `1*SbUgAAr7uyfJQkwmhGJs5Q`、`table-05` `1*UbqVk8LI7TBNHjErMxAYUA`、`table-06` `1*SgP0pgrYYL7f3gm6OvXuQw`）；`diagram-01` 取得新識別碼 `1*VucSz2zObH3hLn-gg-p-fA`（1402×792），舊的 `1*1Rdev5wkuGbi2GfLz393Pg` 已不在內文裡。
+
+重灌仍把封面重設成第一張圖 `table-01`，從 `/p/<id>/edit` 的 Change featured image 選回新版 `diagram-01.png`，重新載入 `/submission` 讀回 `previewImage.id = 1*VucSz2zObH3hLn-gg-p-fA.png`（1402×792）。標題、預覽摘要、五個 Topics、通知設定與排程均未改變：`isPublished: false`，`publishAt: 1793840400000`（2026-11-05 09:00 Asia/Taipei）。這次重灌的貼稿 `medium-paste.md` SHA-256 為 `d3c3004140adddfa4f98537d7e961c506230679a789895c203270b296207977b`；重灌前後快照存於本機 `.context/ship-2026-10-26c/`，未納入 git。
