@@ -641,6 +641,21 @@ Review 第七節依讀者回饋補清 PR head 不變、整合候選版本仍可�
 
 各版計數、Topics、封面、預覽、時間戳與來源限制見 [AAIF 發布紀錄](research/2026-10/aaif-agntcon/publication.md)。41 份簡報原檔及索引在本機研究目錄；[公開清單](research/2026-10/aaif-agntcon/slides.md)記錄原站連結、檔案驗證與未能下載的 ADK Google Slides。排程稿仍不能當成已公開的 Ambassador 申請作品；實際上線後再確認日期並補齊系列與語言入口。
 
+### 2026-10-28：第二、三篇長段落補上全貌與閱讀順序，四份排程稿重灌
+
+作者看過第一篇 Kong 段的改法後，選擇把同樣的處理套到第二、三篇最長的五節：〈交接〉§五、§九與〈記憶〉§四、§五、§六。每節開頭補上全貌與閱讀順序，結尾補一段停在下一節問題上的橋接；〈記憶〉§六另補三個小標。理由與兩份口吻檢查採用的修正見[場次導讀與來源註記](research/2026-10/aaif-agntcon/reader-entry-refinement.md)末節。依作者選擇（兩篇都做、改完重灌），從開自 main 的 `fantasybz/aaif-long-section-entries`（commit `cf13c71`）就地重灌四份：
+
+```bash
+./tools/medium_draft.sh 2026-11-aaif-agent-handoffs --post e68dc5ab1275
+./tools/medium_draft.sh 2026-11-aaif-agent-handoffs en --post 8b39e1abe616
+./tools/medium_draft.sh 2026-11-aaif-agent-memory --post 5380c278562e
+./tools/medium_draft.sh 2026-11-aaif-agent-memory en --post bbf6a23c6481
+```
+
+重灌前先依〈2026-10-27〉的教訓查過：沒有其他分支對這兩包有未合併的改動，main 上的總覽圖已是完整尺寸；也請 phnom-penh session 在這段期間不要碰這四份稿。四份都通過 `verify_draft.py` 兩次比對：〈交接〉163 段、14 張圖、10 則 caption，連結 54／55；〈記憶〉135 段、13 張圖、7 則 caption，連結 49／50；分隔線各 1、placeholder 0（逐篇 log 在 `.context/research/aaif-2026-10-28-long-sections/`，不入版本庫）。總覽圖都是完整尺寸版，664 px 舊圖不在稿裡。
+
+封面四份都被重設成總覽圖，已在 `/submission` 用 Change preview image 依識別碼選回照片、按 Done；預覽摘要四份都被換成自動摘錄，已填回 ledger 記的自訂句並按 Tab 存檔，這次沒有遇到 500 錯誤，不必走編輯頁的備案。之後逐篇另開新分頁讀回：`isPublished: false`，排程不變（11/09、11/11、11/16、11/18 的 UTC 01:00），封面為原照片，Topics 五個都在，Notify 關閉；沒有按 Schedule to publish。讀回時間分別記在四份 `PUBLISHED.md`。用完就 `browse disconnect`，不把這幾篇的分頁留在瀏覽器裡。
+
 ### 2026-10-27：第一篇第二節補上全貌與閱讀順序，中英排程稿重灌
 
 作者試讀第一篇後要求：Kong 段落開頭先交代全貌，說明後面各段會帶到哪些概念，讓讀者自行挑段閱讀；這段也要當全文的引子，加強與第三節的鋪陳。第二節因此補上開場的全貌段與導讀段，〈把「允許、發生、完成」拆開看〉補齊三個詞在內文的對應，收束句前加一段橋接。同輪也改正兩處誤寫成午休的貼文時間（實為 9 月 10 日下午 4:42）。理由與口吻檢查見[場次導讀與來源註記](research/2026-10/aaif-agntcon/reader-entry-refinement.md)末節。依作者確認（「以上都要」）就地重灌中英兩份排程稿：
