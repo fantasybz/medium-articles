@@ -6,7 +6,7 @@
 **排程** 2026-11-18 09:00 Asia/Taipei（UTC 01:00）；新分頁讀回確認。
 **草稿** https://medium.com/p/bbf6a23c6481/edit
 **上線後穩定短網址** https://medium.com/p/bbf6a23c6481
-**核對時間** 2026-10-26T10:34:32+08:00
+**核對時間** 2026-10-28T22:00:10+08:00
 
 ## 內容核對
 
@@ -47,3 +47,11 @@ Story image 使用筆者自己的澀谷觀景台夜景照（`asset-01.png`）。
 儲存後重新讀回兩次：**126 個文字區塊、50 個連結、13 張圖、7 個 caption** 均與貼稿相符，placeholder 為 0。`diagram-01` 由 `1*mf8T9LOLrhV6-KSPoIQGwQ.png`（664×718）換成 `1*13c3rtiPYUnqcMNjg63q_Q.png`（1546×1664，自 Medium CDN 讀 PNG 檔頭核對），其餘 12 張圖保留原識別碼。
 
 重灌把封面重設成新的總覽圖，在 `/p/bbf6a23c6481/submission` 用 Change preview image 依識別碼選回 `asset-01.png`（`1*yXCiu5bX04CCZi96j9C3LA.png`，2400×1350）、按 Done。預覽摘要被換成自動摘錄，已把自訂句填回 Write a preview subtitle 欄並以 Tab 離開欄位。沒有按 Schedule to publish。另開新分頁讀回：封面為原照片，預覽摘要、標題、`publishAt: 1794963600000`（2026-11-18 09:00 Asia/Taipei）、`isPublished: false` 與通知設定（關閉，`isPublishToEmail: false`）皆與重灌前的快照相同。這次重灌的貼稿 SHA-256 為 `d326b86565435c94f72ac6a10ede3a481c98d5f69ba04b94c7afcfea1eccef36`；重灌前後快照存於本機 `.context/refill-2026-10-27/`，未納入 git。
+
+## 2026-10-28 重灌：長段落補上全貌與閱讀順序
+
+作者 2026-10-28 要求第三篇比照第一篇 Kong 段處理最長的三節，與中文版同步：§4（Agent Memory）與§5（AIRAS）開頭補閱讀順序，結尾補橋接；§6（驗收設計）開頭補閱讀順序，補上三個小標，結尾補一段交給結語的橋接；改動與理由見[場次導讀與來源註記](../../../research/2026-10/aaif-agntcon/reader-entry-refinement.md)末節。以 `./tools/medium_draft.sh 2026-11-aaif-agent-memory en --post bbf6a23c6481` 從 commit `cf13c71` 的發布包重灌（未加 `--reuse-figures`）；這個分支開自 main，總覽圖已是完整尺寸版。重灌前先確認沒有其他分支對這一包有未合併的改動，也請 phnom-penh session 在這段期間不要動這份稿。
+
+儲存後重新讀回兩次：**135 個文字區塊、50 個連結、13 張圖、7 個 caption** 均與貼稿相符，placeholder 為 0；文字區塊比上一輪的 126 個多 9 個：六段新文字與三個新小標。`diagram-01` 仍是 `1*13c3rtiPYUnqcMNjg63q_Q.png`（1546×1664），664 px 舊圖不在稿裡。
+
+重灌又把封面重設成總覽圖，在 `/p/bbf6a23c6481/submission` 用 Change preview image 依識別碼選回 `asset-01.png`（`1*yXCiu5bX04CCZi96j9C3LA.png`，2400×1350）、按 Done；預覽摘要也被換成自動摘錄，已把自訂句填回 Write a preview subtitle 欄並以 Tab 離開欄位，這次 `/submission` 沒有出現 500 錯誤。沒有按 Schedule to publish。2026-10-28T22:00:10+08:00 另開新分頁讀回：封面為原照片，預覽摘要為自訂句，`publishAt: 1794963600000`（2026-11-18 09:00 Asia/Taipei）、`isPublished: false`、通知關閉（`isPublishToEmail: false`），Topics 五個都在。逐篇 log 存於本機 `.context/research/aaif-2026-10-28-long-sections/`，未納入 git。
