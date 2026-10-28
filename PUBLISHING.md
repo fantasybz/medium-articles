@@ -293,6 +293,7 @@ Medium 之後把預覽圖重設成**內文第一張 figure**。三篇分論的�
 欄讀回變成 Medium 自動摘自首段的句子，只有一份的自訂摘要留著（英文第一篇 `565d3e375896`）。2026-10-27 再重灌第一篇中英，結果相同：中文又被重設、英文仍留著。原因沒有查明，所以重灌後一律到
 `/p/<id>/submission` 核對。重填只要把句子填回該欄、按 Tab 離開欄位，Medium 就存了，不必按任何
 按鈕；另開新分頁讀回 `extendedPreviewContent.subtitle` 確認。同樣不要按 `Schedule to publish`。
+2026-10-28 再重灌第一篇中文時，`/submission` 這條路存不進去：填回後送出的 `UpdateSubmitFormStoryPreviewMetadataMutation` 連續五次回 `13 INTERNAL: setting post subtitle: getting post deltas: … TutuClient.GET /p/<id>/deltas?baseRev=-1 500 (… provisioned throughput exceeded)`，新分頁讀回仍是自動摘句。改走編輯頁右上角三點選單的 **Change display title / subtitle**：它是舊版編輯器的浮動表單，上下兩個可編輯欄位分別是標題（`.js-customTitleControlTitle`）與副標（`.js-customTitleControlSubtitle`），把副標換成自訂句、標題保持原字（選取時要指定副標那一欄，選錯會把句子打進標題），按 Done 後送出的是 `POST /p/<id>/deltas`（type 4 標題、type 5 副標），回 `success: true`，新分頁讀回副標已更新。
 
 2026-09-23 逐一核對中英八篇後，封面對應為總論 `diagram-04`、測試篇 `diagram-03`、
 Review 篇 `diagram-02`、可靠度篇 `diagram-02`；八份 ledger 的當前設定已同步更正。
@@ -556,6 +557,8 @@ Claude Code 接手複核兩篇後續文章。可靠度篇修正了對營運篇 G
 | 〈記憶〉（英） | `bbf6a23c6481` | 2026-11-18 09:00 | 126 | 50 | 13 | 7 | `1*13c3rtiPYUnqcMNjg63q_Q`（1546×1664） | 照片 `1*yXCiu5bX04CCZi96j9C3LA`（選回） |
 | same-spec 契約篇（中） | `f7684c057c0e` | 2026-11-24 09:00 | 226 | 54 | 7 | 0 | `1*GFWOFlXX_RmgbTUH1v55-g`（1092×942） | 新版 `diagram-01`（選回） |
 
+〈東京之後〉中英兩份在同晚 23:3x 又因第二節改版重灌（見下方 AAIF〈2026-10-27：第一篇第二節補上全貌與閱讀順序〉），那次用的發布包裡總覽圖還是 664 px，Medium 上的圖因此回到舊識別碼（`1*hcfJVSrI3ZyNIne3eMmvSQ`／`1*mf8T9LOLrhV6-KSPoIQGwQ`，10/28 唯讀讀回確認）。10/28 把兩者合在同一個發布包（該次改版的兩個 commit，加上重繪的總覽圖），再重灌一次：中文 217 段、94 個連結，英文 217 段、95 個連結，各 23 張圖、19 個 caption，兩次比對相符；編輯頁第二張圖分別是 `1*F4Urac80aH8T4p1KGCd5fw` 與 `1*13c3rtiPYUnqcMNjg63q_Q`。封面照片未被重設，英文摘要留著，中文摘要被重設後改用編輯頁選單存回（見〈整篇重灌〉的預覽摘要段）；兩份另開新分頁讀回，各欄都與這次重灌前的快照相同。
+
 ### 2026-10-24：後續可靠度與付款實作篇精修
 
 第三、四篇的中英文共四份稿件完成發布前精修，重點是量測分母、抽查人力、付款狀態保留，以及核准與合併證據如何相互核對。[研究紀錄](research/2026-10/reliability-payment-polish-evidence.md)保留理由、來源、測試及審閱界線。本輪沒有修改其他系列或已發布正文。
@@ -647,7 +650,7 @@ Review 第七節依讀者回饋補清 PR head 不變、整合候選版本仍可�
 ./tools/medium_draft.sh 2026-11-aaif-after-tokyo en --post 565d3e375896
 ```
 
-兩篇都通過 `verify_draft.py` 兩次比對：中文 217 段、94 個連結，英文 217 段、95 個連結，各 23 張圖、19 則 caption、分隔線 1、placeholder 0（逐篇 log 在 `.context/research/aaif-2026-10-27-kong-entry/`，不入版本庫）。之後逐篇另開新分頁讀回：兩篇 `isPublished: false`，排程不變（11/02、11/04 的 UTC 01:00），封面仍是會場照，Topics 五個都在，Notify 關閉。中文的預覽摘要又被重設成自動摘句，已把 ledger 記的自訂句填回、按 Tab 存檔；英文的自訂摘要仍在。兩篇都沒有按 Schedule to publish，讀回時間分別記在兩份 `PUBLISHED.md`。
+兩篇都通過 `verify_draft.py` 兩次比對：中文 217 段、94 個連結，英文 217 段、95 個連結，各 23 張圖、19 則 caption、分隔線 1、placeholder 0（逐篇 log 在 `.context/research/aaif-2026-10-27-kong-entry/`，不入版本庫）。之後逐篇另開新分頁讀回：兩篇 `isPublished: false`，排程不變（11/02、11/04 的 UTC 01:00），封面仍是會場照，Topics 五個都在，Notify 關閉。中文的預覽摘要又被重設成自動摘句，已把 ledger 記的自訂句填回、按 Tab 存檔；英文的自訂摘要仍在。兩篇都沒有按 Schedule to publish，讀回時間分別記在兩份 `PUBLISHED.md`。這次的發布包沒有帶到 10/27 稍早重繪的完整尺寸總覽圖，所以兩篇的總覽圖被換回 664 px；10/28 已以合併後的發布包重灌恢復，經過見《綠燈不是驗收》〈2026-10-25／26〉小節讀回表下方。
 
 ### 2026-10-25／26：三篇依來源重新分析改寫、Codex 三輪審稿，六份排程稿已重灌（圖說進 caption）
 

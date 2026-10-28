@@ -49,3 +49,9 @@ Story image 使用筆者自己的東京會場照片（`asset-01.png`，也是內
 儲存後重新讀回兩次：**214 個文字區塊、94 個連結、23 張圖、19 個 caption** 均與貼稿相符，placeholder 為 0。`diagram-01` 由 `1*hcfJVSrI3ZyNIne3eMmvSQ.png`（664×948）換成 `1*F4Urac80aH8T4p1KGCd5fw.png`（1156×1664，自 Medium CDN 讀 PNG 檔頭核對），其餘 22 張圖保留原識別碼。
 
 封面是內文第一張圖 `asset-01.png`（`1*jY2nu2UmaSugznxXM7TsMA.png`，1080×1080），位元組沒變，重灌後仍是同一個識別碼，不需要重選。預覽摘要被換成自動摘錄，已把自訂句填回 Write a preview subtitle 欄並以 Tab 離開欄位。沒有按 Schedule to publish。另開新分頁讀回：封面為原照片，預覽摘要、標題、`publishAt: 1793581200000`（2026-11-02 09:00 Asia/Taipei）、`isPublished: false` 與通知設定（關閉，`isPublishToEmail: false`）皆與重灌前的快照相同。這次重灌的貼稿 SHA-256 為 `dc59296554a1951d7e270960e97b74f0086998219e6598da8862af081ff6da2e`；重灌前後快照存於本機 `.context/refill-2026-10-27/`，未納入 git。
+
+## 2026-10-28 重灌：第二節改版與完整尺寸總覽圖合併
+
+10/27 23:04 那輪換上的完整尺寸總覽圖，被同晚 23:3x 的第二節改版重灌換回 664 px：那次用的發布包（PR #29）裡 `diagram-01.png` 還是舊圖。10/28 唯讀讀回確認，編輯頁第二張圖回到 `1*hcfJVSrI3ZyNIne3eMmvSQ.png`。之後把兩者合在同一個發布包（該次改版的兩個 commit，加上重繪的總覽圖），以 `./tools/medium_draft.sh 2026-11-aaif-after-tokyo --post e3d060cb8b03` 再重灌一次。
+
+儲存後重新讀回兩次：**217 個文字區塊、94 個連結、23 張圖、19 個 caption** 均與貼稿相符，placeholder 為 0；編輯頁第二張圖為 `1*F4Urac80aH8T4p1KGCd5fw.png`（1156×1664）。封面 `1*jY2nu2UmaSugznxXM7TsMA.png` 是第一張圖，未被重設。預覽摘要又被換成自動摘錄。在 `/submission` 填回後，送出的 `UpdateSubmitFormStoryPreviewMetadataMutation` 連續五次回後端錯誤（`13 INTERNAL … getting post deltas … 500 (provisioned throughput exceeded)`），沒有存進去；改由編輯頁三點選單的 Change display title / subtitle 把副標換回自訂句、標題維持原字，按 Done 後以 deltas 存檔成功。沒有按 Schedule to publish。另開新分頁讀回：封面、預覽摘要、標題、`publishAt: 1793581200000`（2026-11-02 09:00 Asia/Taipei）、`isPublished: false` 與通知設定（關閉）皆與這次重灌前的快照相同。這次重灌的貼稿 SHA-256 為 `4990d695fc208c6633c3752663b324fef38305660318fd71c3d8bcc2d2c6a98e`；快照存於本機 `.context/refill-2026-10-27/`，未納入 git。

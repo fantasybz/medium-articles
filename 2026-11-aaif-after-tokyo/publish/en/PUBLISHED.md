@@ -49,3 +49,9 @@ Story image 使用筆者自己的東京會場照片（`asset-01.png`，也是內
 儲存後重新讀回兩次：**214 個文字區塊、95 個連結、23 張圖、19 個 caption** 均與貼稿相符，placeholder 為 0。`diagram-01` 換成 `1*13c3rtiPYUnqcMNjg63q_Q.png`（1546×1664）；舊圖與另兩篇英文版的總覽圖是同一份檔案（`1*mf8T9LOLrhV6-KSPoIQGwQ.png`，664×718）。這篇的 `PostViewerEdge.imageIds` 在重灌前後都是空清單，所以新識別碼改從編輯頁第二個 figure 讀取，再自 Medium CDN 讀 PNG 檔頭核對尺寸；其餘 22 張圖未重新算繪。
 
 封面是內文第一張圖 `asset-01.png`（`1*jY2nu2UmaSugznxXM7TsMA.png`，1080×1080），位元組沒變，重灌後仍是同一個識別碼，不需要重選。自訂的預覽摘要在重灌後仍在。沒有按 Schedule to publish。另開新分頁讀回：封面為原照片，預覽摘要、標題、`publishAt: 1793754000000`（2026-11-04 09:00 Asia/Taipei）、`isPublished: false` 與通知設定（關閉，`isPublishToEmail: false`）皆與重灌前的快照相同。這次重灌的貼稿 SHA-256 為 `e5522d3d27572735ad74e64137b0e4ec76228a01d45d2d23c2f9fd0a5c8b2116`；重灌前後快照存於本機 `.context/refill-2026-10-27/`，未納入 git。
+
+## 2026-10-28 重灌：第二節改版與完整尺寸總覽圖合併
+
+10/27 23:04 那輪換上的完整尺寸總覽圖，被同晚 23:3x 的第二節改版重灌換回 664 px：那次用的發布包（PR #29）裡 `diagram-01.png` 還是舊圖。10/28 唯讀讀回確認，編輯頁第二張圖回到 `1*mf8T9LOLrhV6-KSPoIQGwQ.png`。之後把兩者合在同一個發布包（該次改版的兩個 commit，加上重繪的總覽圖），以 `./tools/medium_draft.sh 2026-11-aaif-after-tokyo en --post 565d3e375896` 再重灌一次。
+
+儲存後重新讀回兩次：**217 個文字區塊、95 個連結、23 張圖、19 個 caption** 均與貼稿相符，placeholder 為 0；編輯頁第二張圖為 `1*13c3rtiPYUnqcMNjg63q_Q.png`（1546×1664）。封面 `1*jY2nu2UmaSugznxXM7TsMA.png` 是第一張圖，未被重設。自訂的預覽摘要在重灌後仍在。沒有按 Schedule to publish。另開新分頁讀回：封面、預覽摘要、標題、`publishAt: 1793754000000`（2026-11-04 09:00 Asia/Taipei）、`isPublished: false` 與通知設定（關閉）皆與這次重灌前的快照相同。這次重灌的貼稿 SHA-256 為 `14ed4e64787ff4080eebac8fe09f511172713b5625f669bc093be8d1c9297953`；快照存於本機 `.context/refill-2026-10-27/`，未納入 git。
