@@ -4,8 +4,14 @@
 #   research/scripts/mermaid_check.sh fig.mmd            # 印出尺寸與判定，並輸出 fig.png（2x）與 fig.svg
 #   research/scripts/mermaid_check.sh fig.mmd out/name   # 指定輸出前綴
 #
-# 規則來源：MERMAID.md 第一節。寬 500–900 CSS px（讀 svg 的 viewBox，不讀 bounding rect—mermaid 會用 max-width 把 svg 縮進容器）、
+# 規則來源：MERMAID.md 第一節。寬 500–900 CSS px（讀 svg 的 viewBox，不讀 bounding rect）、
 # 高／寬 0.5–1.5、節點 ≤ 12；區間兩端都算合格。判定在最下面的 python 區塊，數字也在那裡命名。
+#
+# 截圖尺寸：mermaid 11 輸出的 svg 是 width="100%" 加 style="max-width:<viewBox 寬>px"。頁面 CSS 拿掉 max-width 後，
+# svg 在 inline-block 的 #wrap 裡沒有可解析的百分比寬度，瀏覽器退回替換元素的預設 300 CSS px，於是每張圖的 PNG 都是
+# (300+16×2)×2 = 664 px 寬、文字只有一半解析度，而 viewBox 的檢查照樣 PASS（2026-10-26 /ship 的 Red Team 從可靠度篇
+# 的 PNG 看出來：10/24 以別的方法算繪的 diagram-02 是 1468 px 寬，重繪後剩 664）。所以量完 viewBox 之後，先把 svg 的
+# width／height 屬性設成 viewBox 的寬高再截圖，並核對 #wrap 的實際寬度與 PNG 的畫素寬度：對不上就是算繪失敗，不印 PASS。
 #
 # 不需要安裝 mermaid-cli：mermaid 從 jsdelivr 載入（要有網路），瀏覽器是 gstack 已經有的那顆。
 # 版本釘在 MERMAID_VERSION：版面尺寸來自 mermaid 的排版演算法，PASS／FAIL 會跟著版本漂；
@@ -21,18 +27,20 @@ OUTP="${2:-${MMD%.mmd}}"
 HERE="$(cd "$(dirname "$0")" && pwd)"
 . "$HERE/_common.sh"        # ROOT、EX_*、BROWSE、prepare_headless_viewport
 MERMAID_VERSION=11.17.2
+WRAP_PAD=16                 # #wrap 的內距（CSS px）；HTML 與下面的尺寸核對共用這個數字
 [ -f "$MMD" ] || { echo "no such file: $MMD" >&2; exit "$EX_USAGE"; }
 W="$ROOT/.context/mermaid"; mkdir -p "$W"
 HTML="$W/$(basename "$OUTP").html"
 
-python3 - "$MMD" "$HTML" "$MERMAID_VERSION" <<'EOF'
+python3 - "$MMD" "$HTML" "$MERMAID_VERSION" "$WRAP_PAD" <<'EOF'
 import html, sys
 src = open(sys.argv[1]).read()
 ver = sys.argv[3]
+pad = int(sys.argv[4])
 if not src.lstrip().startswith('---'):
     sys.exit("no frontmatter config: every figure starts with the MERMAID.md `---\\nconfig:` block")
 page = f'''<!doctype html><html><head><meta charset="utf-8">
-<style>body{{margin:0;background:#fff}} #wrap{{display:inline-block;padding:16px}} .mermaid svg{{max-width:none!important}}</style></head>
+<style>body{{margin:0;background:#fff}} #wrap{{display:inline-block;padding:{pad}px}} .mermaid svg{{max-width:none!important}}</style></head>
 <body><div id="wrap"><div class="mermaid">{html.escape(src)}</div></div>
 <script type="module">
 window.__ready=false; window.__err=null;
@@ -48,13 +56,14 @@ EOF
 prepare_headless_viewport
 "$BROWSE" load-html "$HTML" >/dev/null
 # 等到 svg 出現或 15 秒；不靠頁面裡的旗標判斷成功
-INFO=$("$BROWSE" js "new Promise(res=>{const t0=Date.now();const tick=()=>{const s=document.querySelector('svg');const ready=s&&(s.getAttribute('viewBox')||'').split(' ').map(Number)[2]>0;if(ready||Date.now()-t0>15000||window.__err){if(!s||!ready)return res(JSON.stringify({err:window.__err||(s?'svg has no viewBox after 15s':'no svg after 15s')}));const vb=(s.getAttribute('viewBox')||'0 0 0 0').split(' ').map(Number);const lbl=s.querySelector('.nodeLabel, .label, text');return res(JSON.stringify({err:s.querySelector('.error-icon')?'mermaid rendered its error diagram (syntax error)':null,w:Math.round(vb[2]),h:Math.round(vb[3]),nodes:s.querySelectorAll('.node').length,fontSize:lbl?getComputedStyle(lbl).fontSize:null}))}setTimeout(tick,300)};tick()})")
+INFO=$("$BROWSE" js "new Promise(res=>{const t0=Date.now();const tick=()=>{const s=document.querySelector('svg');const ready=s&&(s.getAttribute('viewBox')||'').split(' ').map(Number)[2]>0;if(ready||Date.now()-t0>15000||window.__err){if(!s||!ready)return res(JSON.stringify({err:window.__err||(s?'svg has no viewBox after 15s':'no svg after 15s')}));const vb=(s.getAttribute('viewBox')||'0 0 0 0').split(' ').map(Number);s.setAttribute('width',vb[2]);s.setAttribute('height',vb[3]);const wr=document.querySelector('#wrap').getBoundingClientRect();const lbl=s.querySelector('.nodeLabel, .label, text');return res(JSON.stringify({err:s.querySelector('.error-icon')?'mermaid rendered its error diagram (syntax error)':null,w:Math.round(vb[2]),h:Math.round(vb[3]),wrapW:Math.round(wr.width),wrapH:Math.round(wr.height),dpr:window.devicePixelRatio,nodes:s.querySelectorAll('.node').length,fontSize:lbl?getComputedStyle(lbl).fontSize:null}))}setTimeout(tick,300)};tick()})")
 "$BROWSE" screenshot "$OUTP.png" --selector '#wrap' >/dev/null
 "$BROWSE" js "document.querySelector('svg').outerHTML" --raw --out "$OUTP.svg" >/dev/null 2>&1 || true
 
-python3 - "$INFO" "$OUTP" <<'EOF'
-import json, sys
+python3 - "$INFO" "$OUTP" "$WRAP_PAD" "$HEADLESS_SCALE" <<'EOF'
+import json, struct, sys
 out = sys.argv[2]
+pad, scale = int(sys.argv[3]), int(sys.argv[4])
 try: info = json.loads(sys.argv[1])
 except ValueError:
     # browse 回的不是我們的 JSON（daemon 的錯誤字串之類）：一樣是算繪失敗，不要丟 traceback
@@ -69,6 +78,20 @@ w, h, n = info['w'], info['h'], info.get('nodes', 0)
 if w <= 0 or h <= 0:
     # 空的 viewBox 是算繪失敗，不是一張「aspect 0.00」的圖
     print(f"RENDER ERROR: svg viewBox is {w}x{h}"); sys.exit(2)
+# 截圖尺寸的核對（見檔頭）：#wrap 要是 svg 的 viewBox 寬加兩邊內距，PNG 要是 #wrap 的 scale 倍。
+# 退回 300px 的 svg 會在第一關被擋下；daemon 不是 2x 時在第二關。兩種都算算繪失敗。
+wrap_w = int(info.get('wrapW') or 0)
+if abs(wrap_w - (w + 2 * pad)) > 2:
+    print(f"RENDER ERROR: svg drawn at {max(wrap_w - 2 * pad, 0)}px wide, not its viewBox width {w}px (fallback-width capture)"); sys.exit(2)
+try:
+    with open(out + '.png', 'rb') as f: head = f.read(24)
+except OSError as e:
+    print(f"RENDER ERROR: no screenshot: {e}"); sys.exit(2)
+if head[:8] != b'\x89PNG\r\n\x1a\n' or len(head) < 24:
+    print("RENDER ERROR: screenshot is not a PNG"); sys.exit(2)
+png_w, png_h = struct.unpack('>II', head[16:24])
+if abs(png_w - scale * wrap_w) > 4:
+    print(f"RENDER ERROR: png is {png_w}px wide, expected {scale}x of the {wrap_w}px #wrap (dpr {info.get('dpr')})"); sys.exit(2)
 aspect = h / w
 problems = []
 if w > W_MAX: problems.append(f"width {w}px > {W_MAX} (text will be < 12px at 700px column)")
@@ -76,7 +99,7 @@ if w < W_MIN: problems.append(f"width {w}px < {W_MIN} (will be upscaled and look
 if aspect > ASPECT_MAX: problems.append(f"aspect {aspect:.2f} > {ASPECT_MAX} (too tall; split or go two-column)")
 if aspect < ASPECT_MIN: problems.append(f"aspect {aspect:.2f} < {ASPECT_MIN} (strip; go TB or stack)")
 if n > NODES_MAX: problems.append(f"{n} nodes > {NODES_MAX} (split the figure)")
-print(f"{out}.png  {w}x{h} css px, aspect {aspect:.2f}, nodes {n}, font {info.get('fontSize')}")
+print(f"{out}.png  {w}x{h} css px (png {png_w}x{png_h}, {scale}x), aspect {aspect:.2f}, nodes {n}, font {info.get('fontSize')}")
 print("PASS" if not problems else "FAIL:\n  - " + "\n  - ".join(problems))
 sys.exit(0 if not problems else 1)
 EOF

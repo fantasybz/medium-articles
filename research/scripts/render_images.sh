@@ -74,7 +74,9 @@ th{{background:#f3f4f6;font-weight:600}} .nw{{white-space:nowrap}} code{{font-fa
 print(len(spec["figures"]), "figures,", len(spec["tables"]), "tables prepared")
 EOF
 
-# 輸入都備妥了才清舊檔：figures.json 壞掉時不該連上一輪的成品一起沒了
+# 輸入都備妥了才清舊檔：figures.json 壞掉時不該連上一輪的成品一起沒了。
+# 瀏覽器也要先確認拿得到：daemon 屬於別的 session 時 prepare_headless_viewport 以 75 退出，舊 PNG 必須還在。
+if compgen -G "$W/diagram-*.mmd" >/dev/null || compgen -G "$W/table-*.html" >/dev/null; then prepare_headless_viewport; fi
 rm -f "$IMG"/diagram-*.png "$IMG"/table-*.png "$IMG"/asset-*.png "$PUB/.rendered-assets.json"
 
 python3 - "$W" "$IMG" "$PUB/.rendered-assets.json" <<'EOF' || exit 1

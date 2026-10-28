@@ -1,0 +1,34 @@
+{
+ "figures": [
+  {
+   "file": "diagram-01.png",
+   "mermaid": "---\nconfig:\n  theme: base\n  themeVariables:\n    fontSize: 16px\n    primaryColor: \"#f8f9fa\"\n    primaryTextColor: \"#1f2933\"\n    primaryBorderColor: \"#6b7280\"\n    lineColor: \"#6b7280\"\n    secondaryColor: \"#f8f9fa\"\n    tertiaryColor: \"#ffffff\"\n    clusterBkg: \"#ffffff\"\n    clusterBorder: \"#9ca3af\"\n    edgeLabelBackground: \"#ffffff\"\n  flowchart:\n    nodeSpacing: 128\n    rankSpacing: 30\n    padding: 12\n    htmlLabels: true\n    subGraphTitleMargin:\n      top: 8\n      bottom: 12\n    curve: basis\n---\nflowchart TB\n    B{\"Has the behavior<br/>been decided?\"}\n    B -->|No| C[\"Requirements owner<br/>settles policies<br/>such as null values\"]\n    C --> B\n    B -->|Yes| D{\"Positive and negative<br/>controls ready for<br/>acceptance?\"}\n    D -->|No| E[\"QA owner fixes<br/>the yardstick<br/>and re-scores\"]\n    E --> D\n    D -->|Yes| H[\"Handle this candidate;<br/>approval responsibility<br/>unchanged\"]\n    H --> I{\"Adopt the optional<br/>self-check<br/>as a default?\"}\n    I -->|No| J[\"Close this task\"]\n    I -->|Yes| K[\"Set up a scoped<br/>comparison of effect<br/>against investment\"]\n    classDef own fill:#d4edda,stroke:#2e7d32,color:#1f2933\n    classDef buy fill:#fff3cd,stroke:#b8860b,color:#1f2933\n    classDef bad fill:#ffe0e0,stroke:#c0392b,color:#1f2933\n    classDef human fill:#e3f2fd,stroke:#1565c0,color:#1f2933\n    class C,E,H human\n    class B,D,I buy\n    class J,K own\n"
+  }
+ ],
+ "tables": [
+  {
+   "file": "table-01.png",
+   "markdown": "| Layer | Question | Mainly responsible | Basis for judgment | Common mix-up |\n|---|---|---|---|---|\n| Requirements decision | For this input, what behavior counts as correct? | Requirements owner, domain lead | Recorded decisions and examples; open questions and who owns them | Letting an agent's output or a test author's guess stand in for a decision |\n| Candidate acceptance | Did this artifact do it? | QA owner, reviewer | An oracle checked with positive and negative controls, the actual acceptance result for this candidate's version, and a record of the operating conditions | Treating exit 0, \"all tests pass\" or byte-for-byte identity with a template as meeting the contract |\n| Method comparison | Is this brief worth reusing? | EM (engineering manager) / Staff and the maintainer | A comparison result obtained under a scope and units fixed in advance, checked for effect, cost, effort and limits | Inferring a team default from one success or one set of full passes |\n"
+  },
+  {
+   "file": "table-02.png",
+   "markdown": "| Rule | Example | Question | Who decides |\n|---|---|---|---|\n| The date column is output in the specified format | A row with a date converts normally | When the date is missing, output an empty field or reject the whole input? | Export feature owner (undecided) |\n| Preserve input row order and duplicate rows | Two identical rows are both kept | None | Already required by the caller (decided) |\n| Field contents stay as they are | A name containing a comma; a note containing a line break | May each record end with either LF or CRLF? | Requirements owner and QA owner confirm together |\n"
+  },
+  {
+   "file": "table-03.png",
+   "markdown": "| `text` on line 1 | R05 verdict | Counts as a message? | Exit at EOF | Legacy end summary appended? |\n|---|---|---|---|---|\n| `\" \"` (whitespace only) | Valid; printed unchanged and flushed | Yes | 0 | No |\n| `null` | Not printed | No | 5 (completed but no message) | Yes |\n| `false` | Malformed; one diagnostic emitted | No | 6 (malformed present) | No |\n| `123` | Malformed; one diagnostic emitted | No | 6 (malformed present) | No |\n"
+  },
+  {
+   "file": "table-04.png",
+   "markdown": "| What regression testing checks | What is held fixed, what changes | What it can tell you |\n|---|---|---|\n| Grader | Hold the verified positive and negative control fixtures constant; change the grader version | Does the new yardstick wrongly reject legitimate behavior, or miss a known fault? |\n| A new candidate implementation | Hold the same contract cases constant; check the new candidate | Does this candidate still meet the requirements the checks cover? |\n| Model / harness delivery method | Obtain new generation results; record the task/trial distribution and the policy version | Has the new version of the method regressed on this batch of work? |\n"
+  },
+  {
+   "file": "table-05.png",
+   "markdown": "| Output | Physical lines / records | Accept anything that parses | Byte-identical to the CRLF template | Check header and ordered records |\n|---|---|---|---|---|\n| Legitimate, CRLF | 5 / 3 | Accept | Accept | Accept |\n| Legitimate, LF | 5 / 3 | Accept | Reject | Accept |\n| Duplicates removed | 4 / 2 | Accept | Reject | Reject |\n| Header column order wrong | 5 / 3 | Accept | Reject | Reject |\n| Data row order wrong | 5 / 3 | Accept | Reject | Reject |\n| One date value wrong | 5 / 3 | Accept | Reject | Reject |\n"
+  },
+  {
+   "file": "table-06.png",
+   "markdown": "| Effect verdict | Pre-set condition | Hypothetical interval (percentage points) | What can be claimed |\n|---|---|---|---|\n| Supports exceeding the practical threshold | L > +5 | [+6, +9] | Under the specified method and assumptions, supports an improvement above 5 percentage points; adoption is supported only if cost and effort also meet their conditions |\n| Rules out an improvement reaching the threshold | U < +5 | [+1, +4] or [−2, +3] | Rules out an improvement of at least 5 percentage points; the former still supports a smaller positive improvement, and neither amounts to equivalence |\n| Still undecided | L ≤ +5 and U ≥ +5 | [+2, +8] or [−1, +7] | Can neither support adoption nor rule out an improvement reaching the threshold |\n"
+  }
+ ]
+}
