@@ -6,7 +6,7 @@
 **排程** 2026-11-11 09:00 Asia/Taipei（UTC 01:00）；新分頁讀回確認。
 **草稿** https://medium.com/p/8b39e1abe616/edit
 **上線後穩定短網址** https://medium.com/p/8b39e1abe616
-**核對時間** 2026-10-28T21:58:53+08:00
+**核對時間** 2026-10-29T04:30:13+08:00
 
 ## 內容核對
 
@@ -55,3 +55,11 @@ Story image 使用筆者在東京辦公室拍攝的東京鐵塔日景照（`asse
 儲存後重新讀回兩次：**163 個文字區塊、55 個連結、14 張圖、10 個 caption** 均與貼稿相符，placeholder 為 0；文字區塊比上一輪的 160 個多 3 段，即新增的三段。`diagram-01` 仍是 `1*13c3rtiPYUnqcMNjg63q_Q.png`（1546×1664），664 px 舊圖不在稿裡。
 
 重灌又把封面重設成總覽圖，在 `/p/8b39e1abe616/submission` 用 Change preview image 依識別碼選回 `asset-01.png`（`1*l8bZZAVGBqlT0sVQdyRXdg.png`，2048×1152）、按 Done；預覽摘要也被換成自動摘錄，已把自訂句填回 Write a preview subtitle 欄並以 Tab 離開欄位，這次 `/submission` 沒有出現 500 錯誤。沒有按 Schedule to publish。2026-10-28T21:58:53+08:00 另開新分頁讀回：封面為原照片，預覽摘要為自訂句，`publishAt: 1794358800000`（2026-11-11 09:00 Asia/Taipei）、`isPublished: false`、通知關閉（`isPublishToEmail: false`），Topics 五個都在。逐篇 log 存於本機 `.context/research/aaif-2026-10-28-long-sections/`，未納入 git。
+
+## 2026-10-29 重灌：付印前校稿
+
+作者 2026-10-28 要求三篇逐段做書籍付印前等級的校稿，中英文同等級，與 Codex xhigh 審三輪，依發布順序逐篇定稿、逐篇重灌。本篇是第二篇的英文版，與中文版同一輪完成：逐段精修、三輪 Codex 審稿與處置，並同步中文的口吻 pass 修正。六個超長段落與中文同步拆開。英文總覽圖的子圖標題改為 ASCII 冒號，E、F 兩個節點對齊中文；第一部分 B 節點的 "Evidence against requirements" 容易讀成反駁需求的證據，改為 "Evidence that requirements are met"。diagram-01 與 table-01／02／03 重繪，其餘圖片不變。流程與實質修正見[付印前校稿紀錄](../../../research/2026-10/aaif-agntcon/prepress-polish-2026-10-29-handoffs.md)。
+
+以 `./tools/medium_draft.sh 2026-11-aaif-agent-handoffs en --post 8b39e1abe616` 從 commit `b57a188` 的發布包重灌，分支與重灌前的檢查同中文版。儲存後重新讀回兩次：**170 個文字區塊、56 個連結、14 張圖、10 個 caption** 均與貼稿相符，分隔線 1、placeholder 為 0。文字區塊比上一輪的 163 個多 7 個，即拆段多出的七段。
+
+重灌又把封面重設成總覽圖，在 `/p/8b39e1abe616/submission` 用 Change preview image 依識別碼選回 `asset-01.png`（`1*l8bZZAVGBqlT0sVQdyRXdg.png`，2048×1152）、按 Done。預覽摘要也被換成自動摘錄，已把自訂句填回 Write a preview subtitle 欄並以 Tab 離開欄位。沒有按 Schedule to publish。2026-10-29T04:30:13+08:00 另開新分頁讀回：封面為原照片，預覽摘要為自訂句，`publishAt: 1794358800000`（2026-11-11 09:00 Asia/Taipei）、`isPublished: false`、通知關閉（`isPublishToEmail: false`），Topics 五個都在。貼稿 SHA-256 為 `4706dd8c3aa632f26a3d4c923544008161264d0eec638bd5ecf88ee68491d975`。逐篇 log 存於本機 `.context/research/aaif-2026-10-28-polish/`，未納入 git。

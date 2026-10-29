@@ -23,12 +23,14 @@
 | 語言 | SVG viewBox | 高／寬 | 文章 PNG | 分享 PNG |
 |---|---|---:|---|---|
 | 中文 | 546×796 CSS px | 1.46 | 1156×1664 px | 1360×2440 px |
-| English | 741×796 CSS px | 1.07 | 1546×1664 px | 1640×2342 px |
+| English | 788×796 CSS px | 1.01 | 1640×1664 px | 1640×2248 px |
 
 算繪沿用 repo 的檢查腳本；本次工作區副本另在截圖前，將 SVG 的實際寬高設為 viewBox 尺寸，避免百分比寬度在容器中縮成 300 px。PNG 以兩倍解析度輸出，正文發布包的 `diagram-01.png` 與對應語言總覽逐位元相同。照片來源與 story image 保持原有選擇。
 
 中文圖中文字、圖例及新增導讀已另行送交 zh-TW MCP，結果為 0 errors、1 warning、2 info。提示分別涉及圖內三個獨立標籤被連成一句、圖例的名詞用法，以及確實對應三篇的階段敘述，核對語境後保留。三份中文原稿及三份 Medium 貼稿也完成全稿 MCP 檢查，均為 0 errors；警告與提示保留在本輪核對紀錄，不稱為全部無警告。
 
 兩張最終分享 PNG 已逐張檢視，確認標題、三個階段、連線、圖例及署名完整且可辨識。文章內的總覽與分享圖使用相同的圖稿，三篇同語言發布包中的總覽 PNG 雜湊一致。
+
+2026-10-29 付印前校稿時更新英文版。子圖標題改用 ASCII 冒號；第一部分的 B 節點從 "Evidence against requirements" 改為 "Evidence that requirements are met"，因為前者一般會讀成反駁需求的證據；第三部分的 E、F 兩個節點改成與中文同義的 "Environment or version changed?" 與 "Corrections, deletions affect next retrieval"。英文 Mermaid、SVG、文章 PNG 與分享 PNG 都已重繪，文章 PNG 與三篇英文發布包的 `diagram-01.png` 逐位元相同。中文版沒有變動。見[第二篇付印前校稿紀錄](../prepress-polish-2026-10-29-handoffs.md)。
 
 截至 2026-10-24，圖片可獨立分享，三篇中英六版均已排程。第三篇中文為 11/16、英文為 11/18，皆為臺北時間上午 9 點；第一、二篇維持原有時段。文章仍未公開，實際狀態見[發布紀錄](../publication.md)及各篇 `publish/PUBLISHED.md`。

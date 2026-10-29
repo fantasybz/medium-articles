@@ -6,7 +6,7 @@
 **排程** 2026-11-16 09:00 Asia/Taipei（UTC 01:00）；新分頁讀回確認。
 **草稿** https://medium.com/p/5380c278562e/edit
 **上線後穩定短網址** https://medium.com/p/5380c278562e
-**核對時間** 2026-10-28T21:59:31+08:00
+**核對時間** 2026-10-29T06:34:33+08:00
 
 ## 內容核對
 
@@ -55,3 +55,11 @@ Story image 使用筆者自己的澀谷觀景台夜景照（`asset-01.png`）。
 儲存後重新讀回兩次：**135 個文字區塊、49 個連結、13 張圖、7 個 caption** 均與貼稿相符，placeholder 為 0；文字區塊比上一輪的 126 個多 9 個：六段新文字與三個新小標。`diagram-01` 仍是 `1*F4Urac80aH8T4p1KGCd5fw.png`（1156×1664），664 px 舊圖不在稿裡。
 
 重灌又把封面重設成總覽圖，在 `/p/5380c278562e/submission` 用 Change preview image 依識別碼選回 `asset-01.png`（`1*yXCiu5bX04CCZi96j9C3LA.png`，2400×1350）、按 Done；預覽摘要也被換成自動摘錄，已把自訂句填回 Write a preview subtitle 欄並以 Tab 離開欄位，這次 `/submission` 沒有出現 500 錯誤。沒有按 Schedule to publish。2026-10-28T21:59:31+08:00 另開新分頁讀回：封面為原照片，預覽摘要為自訂句，`publishAt: 1794790800000`（2026-11-16 09:00 Asia/Taipei）、`isPublished: false`、通知關閉（`isPublishToEmail: false`），Topics 五個都在。逐篇 log 存於本機 `.context/research/aaif-2026-10-28-long-sections/`，未納入 git。
+
+## 2026-10-29 重灌：付印前校稿
+
+作者 2026-10-28 要求三篇逐段做書籍付印前等級的校稿，中英文同等級，與 Codex xhigh 審三輪，依發布順序逐篇定稿、逐篇重灌。本篇是第三篇：Claude 逐段精修、統籌處理 32 項標記、三輪 Codex 審稿與處置、口吻 pass、zh-TW MCP 檢查。六個超長段落中英同步拆開，共切七處。幾處依投影片原文修正：第 28 頁圖說、第 26 頁的三種搜尋、第 18 頁的留與丟。中文 table-02／03／04／05 重繪，其餘圖片不變。流程與實質修正見[付印前校稿紀錄](../../research/2026-10/aaif-agntcon/prepress-polish-2026-10-29-memory.md)。
+
+以 `./tools/medium_draft.sh 2026-11-aaif-agent-memory --post 5380c278562e` 從 commit `cace9af` 的發布包重灌。分支 `fantasybz/aaif-polish-memory` 疊在第二篇的 `fantasybz/aaif-polish-handoffs` 之上，最底下開自 main `bd8acd0`。重灌前確認沒有其他分支對這一包有未合併的改動：`fantasybz/green-reliability-backfill` 列出的 commit 是把 main 併進去的 merge，這一包的內容與 main 相同。儲存後重新讀回兩次：**142 個文字區塊、49 個連結、13 張圖、7 個 caption** 均與貼稿相符，分隔線 1、placeholder 為 0。文字區塊比上一輪的 135 個多 7 個，即拆段多出的七段。
+
+重灌又把封面重設成總覽圖，在 `/p/5380c278562e/submission` 用 Change preview image 依識別碼選回 `asset-01.png`（`1*yXCiu5bX04CCZi96j9C3LA.png`，2400×1350）、按 Done。預覽摘要也被換成自動摘錄，已把自訂句填回 Write a preview subtitle 欄並以 Tab 離開欄位。沒有按 Schedule to publish。2026-10-29T06:34:33+08:00 另開新分頁讀回：封面為原照片，預覽摘要為自訂句，`publishAt: 1794790800000`（2026-11-16 09:00 Asia/Taipei）、`isPublished: false`、通知關閉（`isPublishToEmail: false`），Topics 五個都在。貼稿 SHA-256 為 `da3f53ae258aa4bb4d27807381e69940238210acf3cf49030d67cbd210d48018`。逐篇 log 存於本機 `.context/research/aaif-2026-10-28-polish/`，未納入 git。
